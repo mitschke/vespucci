@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="Vespucci" url="www.opal-project.de/vespucci">
+      The architecture specification and visualization tool Vespucci.
+   </description>
+   <feature url="features/de.tud.cs.st.vespucci.feature_1.3.0.jar" id="de.tud.cs.st.vespucci.feature" version="1.3.0">
+      <category name="Opal.project"/>
+   </feature>
+   <category-def name="Opal.project" label="Opal project">
+      <description>
+         OPAL - OPen Analysis Library. Its sub-projects include: Vespucci, BAT, MyBug, SAE.
+      </description>
+   </category-def>
+</site>
