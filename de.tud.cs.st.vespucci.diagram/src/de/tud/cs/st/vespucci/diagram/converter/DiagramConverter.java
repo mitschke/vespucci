@@ -92,7 +92,9 @@ public class DiagramConverter {
 		fos.close();
 		
 		return;
-
+	}
+	public boolean isDiagramFile(File file){
+		return true;
 	}
 	
 	/**

@@ -38,7 +38,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ocl.ecore;visibility:=reexport,
  org.eclipse.gef;visibility:=reexport,
  org.eclipse.emf.validation;visibility:=reexport,
- org.eclipse.emf.validation.ocl;visibility:=reexport
+ org.eclipse.emf.validation.ocl;visibility:=reexport,
+ org.eclipse.ui
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

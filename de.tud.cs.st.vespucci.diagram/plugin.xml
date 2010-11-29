@@ -582,6 +582,15 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+               label="Generate Prolog Facts"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
 
    <extension point="org.eclipse.ui.commands" id="menu-commands">
@@ -591,6 +600,11 @@
          name="Load Resource"
          categoryId="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID"
          defaultHandler="de.tud.cs.st.vespucci.vespucci_model.diagram.part.LoadResourceAction"/>
+      <command
+            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
+            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+            name="Generate Prolog Facts">
+      </command>
    </extension>
 
    <extension point="org.eclipse.ui.menus" id="context-menus">

@@ -256,7 +256,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	/**
 	 * New methods added to translate diagram to prolog facts.
 	 * 
-	 * @author Patrick Jahnke, Malte Viering
+	 * @author Patrick Jahnke, MalteV
 	 * @generated NOT
 	 */
 	@Override
