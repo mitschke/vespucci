@@ -106,6 +106,7 @@ public class DiagramConverter {
 	 */
 	public ShapesDiagramImpl loadDiagramFile(String fullPathFileName) throws FileNotFoundException, IOException
 	{
+		//TODO methods with File instead of String
        	XMIResourceImpl resource = new XMIResourceImpl();
        	File source = new File(fullPathFileName);
         

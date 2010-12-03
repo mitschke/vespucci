@@ -34,24 +34,29 @@
  */
 package de.tud.cs.st.vespucci.diagram.handler;
 
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.internal.content.Activator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.gmf.runtime.common.ui.services.statusline.GetStatusLineContributionOperation;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
 
 /**
- * A Handler for saving a *.sad to Prolog
+ * A handler for saving a *.sad to *.pl Prolog file.
+ * 
  * @author MalteV
  */
 public class GeneratePrologFacts extends AbstractHandler {
@@ -60,37 +65,41 @@ public class GeneratePrologFacts extends AbstractHandler {
 	 * 
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
-		
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
+				.getActiveMenuSelection(event);
+
 		boolean re = false;
-		if(selection.getFirstElement() instanceof IFile){
+		if (selection.getFirstElement() instanceof IFile) {
 			IFile file = (IFile) selection.getFirstElement();
 			String fname = file.getName();
 			String path = file.getRawLocation().toFile().getParent();
-			
+
 			DiagramConverter dc = new DiagramConverter();
-			if(dc.isDiagramFile(file.getFullPath().toFile())){
-			try {
-				dc.ConvertDiagramToProlog(path, fname);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (dc.isDiagramFile(file.getFullPath().toFile())) {
+				try {
+					dc.ConvertDiagramToProlog(path, fname);
+				} catch (FileNotFoundException e) {
+					IStatus is = new Status(Status.ERROR, "Vespucci",
+							"FileNotFoundException", e);
+					StatusManager.getManager().handle(is, StatusManager.SHOW);
+				} catch (IOException e) {
+					IStatus is = new Status(Status.ERROR, "Vespucci",
+							"Failed to save Prolog file", e);
+					StatusManager.getManager().handle(is, StatusManager.SHOW);
+
+				}
+				re = true;
+				// Refresh Pageview
+				try {
+					file.getProject().refreshLocal(IResource.DEPTH_INFINITE,
+							new NullProgressMonitor());
+				} catch (CoreException e1) {
+					StatusManager.getManager().handle(e1, "Vespucci");
+				}
 			}
-			re = true;
-			//Refresh Pageview 
-			try {
-				file.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-			} catch (CoreException e1) {
-				e1.printStackTrace();
-			}
-			}
-			
+
 		}
-			  
-		
-        return re;
+
+		return re;
 	}
 }
