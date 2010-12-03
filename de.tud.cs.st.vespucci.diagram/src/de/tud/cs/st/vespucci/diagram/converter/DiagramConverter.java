@@ -1,3 +1,37 @@
+/*
+ *  License (BSD Style License):
+ *   Copyright (c) 2010
+ *   Author Patrick Jahnke
+ *   Software Engineering
+ *   Department of Computer Science
+ *   Technische Universitiät Darmstadt
+ *   All rights reserved.
+ * 
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions are met:
+ * 
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   - Neither the name of the Software Engineering Group or Technische 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     endorse or promote products derived from this software without specific 
+ *     prior written permission.
+ * 
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *   POSSIBILITY OF SUCH DAMAGE.
+ */
 package de.tud.cs.st.vespucci.diagram.converter;
 
 import java.io.BufferedOutputStream;
@@ -10,12 +44,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.impl.DummyImpl;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
@@ -29,6 +68,25 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 public class DiagramConverter {
 	
 	/**
+	 * Regular expression to check parameter of Ensembles
+	 */
+	private static Pattern mParameterVariable = Pattern.compile("\\p{Upper}.*");
+
+	/**
+	 * Regular expression to split parameter names of Ensembles
+	 */
+	private static Pattern mParameterNames = Pattern.compile("(.*?)=(.*)");
+	
+	/**
+	 * Regular expression to match a parameter.
+	 */
+	private static Pattern mParameterList = Pattern
+	.compile(	"^.+?" + // match the descriptor
+				"\\(" +  // match the first bracket
+				"(.*)" + // match anything in between as group
+				"\\)$"); // match the last parenthesis by asserting the string ends here
+
+	/**
 	 * an internal member to increase the number of dependencies.
 	 */
 	private int mDependencyCounter;
@@ -38,7 +96,6 @@ public class DiagramConverter {
 	 */
 	private boolean mCreateEmptyEnsemble = false;
 
-	
 	/**
 	 * load a Diagram File
 	 * @param fullPathFileName the full path filename. 
@@ -53,7 +110,7 @@ public class DiagramConverter {
        	File source = new File(fullPathFileName);
         
    		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
-//TODO file stream closed
+
    		EObject eObject = resource.getContents().get(0);
       	return (ShapesDiagramImpl) eObject;
 	}
@@ -70,8 +127,6 @@ public class DiagramConverter {
 		String fullFileName = path + "/" + fileName;
 		ShapesDiagramImpl diagram = loadDiagramFile(fullFileName);
 		
-   		//printOut("", diagram.getShapes());
-		
 		// create a new Prolog File
 		File prologFile = new File(fullFileName + ".pl");
 		
@@ -86,15 +141,14 @@ public class DiagramConverter {
 		// translate ensemble facts
 		bos.write(this.getFacts(diagram, fileName).getBytes());
 
-		//jarkater commons.io
-		bos.flush();
-		fos.flush();
 		bos.close();
 		fos.close();
 		
 		return;
 	}
+
 	public boolean isDiagramFile(File file){
+		//TODO need to be fixed
 		return true;
 	}
 	
@@ -118,7 +172,7 @@ public class DiagramConverter {
 		// insert common information
 		strBuilder.append("% Prolog based representation of the Vespucci architecture diagram: ");
 		strBuilder.append(fileName+"\n");
-		strBuilder.append("% Created by Vespucci, Darmstadt Univerity of Techlogy, Department of Computer Science\n");
+		strBuilder.append("% Created by Vespucci, Technische Universitiät Darmstadt, Department of Computer Science\n");
 		strBuilder.append("% www.opal-project.de\n\n");
 		strBuilder.append(":- multifile ensemble/5.\n");
 		strBuilder.append(":- multifile outgoing/7.\n");
@@ -187,12 +241,17 @@ public class DiagramConverter {
         	// create Ensemble Facts:
         	if (shape == null)
         		continue;
-       		if (shape instanceof DummyImpl) //TODO dummy -> empty da gehört noch mehr zu als nur das dummy. sonder auch noch der name der haupt klasse
+       		if (shape instanceof DummyImpl)
        			mCreateEmptyEnsemble = true;
         	else if (shape instanceof EnsembleImpl)
         	{
-        		EnsembleImpl ensemble = (EnsembleImpl) shape; //TODO parameter für tamblets
-        		ensembleFacts.append("ensemble('" + fileName + "', '" + ensemble.getName() + "', [], (" + ensemble.getQuery() + "), [" + listSubEnsembles(ensemble.getShapes()) + "]).\n");
+        		EnsembleImpl ensemble = (EnsembleImpl) shape;
+        		if (this.isAbstractEnsemble(ensemble))
+        			ensembleFacts.append("abstract_ensemble");
+        		else
+        			ensembleFacts.append("ensemble");
+        		
+        		ensembleFacts.append("('" + fileName + "', '" + this.getEnsembleDescriptor(ensemble) + "', "+ getEnsembleParameters (ensemble) +", (" + ensemble.getQuery() + "), [" + listSubEnsembles(ensemble.getShapes()) + "]).\n");
            		// does children exist
 	        	if ((ensemble.getShapes() != null) && (ensemble.getShapes().size()>0))
 	        		createFacts(ensemble.getShapes(), fileName, ensembleFacts, dependencyFacts);
@@ -203,6 +262,119 @@ public class DiagramConverter {
         		dependencyFacts.append(createDependencyFact(connection, fileName));
 
         }
+	}
+	
+	/**
+	 * Check if an ensemble an abstract one.
+	 * @param ensemble
+	 * @return
+	 * @author Patrick Jahnke
+	 */
+	private boolean isAbstractEnsemble(Ensemble ensemble) {
+		String[] parameters = getEnsembleParameterDefinitions(ensemble);
+		for (int i = 0; i < parameters.length; i++) {
+			if (mParameterVariable.matcher(parameters[i]).matches())
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @return a prolog list of the form ['ParamName'=ParamName, ...]
+	 * @author Patrick Jahnke
+	 */
+	private String getEnsembleParameters(Ensemble ensemble) {
+		String[] parameters = this.getEnsembleParameterDefinitions(ensemble);
+		if (parameters.length == 0)
+			return "[]";
+		StringBuilder s = new StringBuilder("[");
+		s.append(getEncodedParameter(parameters[0]));
+		for (int i = 1; i < parameters.length; i++) {
+			s.append(", ");
+			s.append(getEncodedParameter(parameters[i]));
+		}
+		s.append("]");
+		return s.toString();
+	}
+
+	/**
+	 * the name of the ensemble. (Without parameters)
+	 * @param shape
+	 * @return
+	 * @author Patrick Jahnke
+	 */
+	private String getEnsembleDescriptor(Shape shape) {
+		String name = shape.getName().length()== 0 ? "non-editpart" : shape.getName();
+		StringBuilder s = new StringBuilder("'");
+		if (name.indexOf('(') > 0) {
+			s.append(name.subSequence(0, name.indexOf('(')));
+		} else {
+			s.append(name);
+		}
+		s.append("'");
+		return s.toString();
+	}
+
+	/**
+	 * Encode and returns the pure parameter.
+	 * @param name
+	 * @return
+	 * @author Patrick Jahnke
+	 */
+	private String getEncodedParameter(String name) {
+		StringBuilder s = new StringBuilder();
+		if (mParameterVariable.matcher(name).matches()) {
+			s.append("'");
+			s.append(name);
+			s.append("'");
+			s.append("=");
+			s.append(name);
+			return s.toString();
+		}
+		Matcher m = mParameterNames.matcher(name);
+		if (m.matches()) {
+			s.append("'");
+			s.append(m.group(1));
+			s.append("'");
+			s.append("=");
+			s.append(m.group(2));
+			return s.toString();
+		}
+
+		s.append("_");
+		s.append("=");
+		s.append(name);
+		return s.toString();
+	}
+	
+	/**
+	 * returns the parameter definitions of an ensemble
+	 * @param ensemble
+	 * @return
+	 * @author Patrick Jahnke
+	 */
+	private String[] getEnsembleParameterDefinitions(Ensemble ensemble) {
+		String name = ensemble.getName().length()== 0 ? "non-editpart" : ensemble.getName();
+		Matcher m = mParameterList.matcher(name);
+		if (!m.matches())
+			return new String[0];
+		List<String> parameterDefinitions = new LinkedList<String>();
+		String parameters = m.group(1);
+		int start = 0;
+		int matchParenthesis = 0;
+		for (int i = 0; i < parameters.length(); i++) {
+			if(parameters.charAt(i) == '(')
+				matchParenthesis++;
+			if(matchParenthesis > 0 && parameters.charAt(i) == ')')
+				matchParenthesis--;
+			if(parameters.charAt(i) == ',' && matchParenthesis == 0) {
+				parameterDefinitions.add(parameters.substring(start, i).trim());
+				start = i + 1;
+			}
+		}
+		parameterDefinitions.add(parameters.substring(start, parameters.length()).trim());
+		String[] result = new String[parameterDefinitions.size()];
+		return parameterDefinitions.toArray(result);
 	}
 	
 	/**
@@ -295,12 +467,12 @@ public class DiagramConverter {
 	
 	/**
 	 * returns the right name of an ensemble (empty or x)
-	 * @author Patrick Jahnke
+	 * @author Patrick Jahnke 
 	 */
 	private String getDependencyEnsembleName(Shape shape)
 	{
 		if (shape instanceof EnsembleImpl)
-			return shape.getName();
+			return this.getEnsembleDescriptor(shape);
 		else if (shape instanceof DummyImpl)
 			return "empty";
 		return "not_defined";

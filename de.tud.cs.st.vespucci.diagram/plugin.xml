@@ -591,17 +591,16 @@
                style="push">
             <visibleWhen>
                <with
-                     variable="activeMenuSelection">
-                  <or>
-                     <iterate>
-                        <adapt
-                              type="VespucciNavigatorItem">
-                        </adapt>
-                     </iterate>
+                     variable="selection">
+                  <iterate>
                      <adapt
-                           type="de.tud.cs.st.vespucci.diagram.Object2">
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.name"
+                              value="*.sad">
+                        </test>
                      </adapt>
-                  </or>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>
