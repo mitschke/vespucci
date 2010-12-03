@@ -61,6 +61,7 @@ public class GeneratePrologFacts extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
+		
 		boolean re = false;
 		if(selection.getFirstElement() instanceof IFile){
 			IFile file = (IFile) selection.getFirstElement();

@@ -589,6 +589,21 @@
                commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
                label="Generate Prolog Facts"
                style="push">
+            <visibleWhen>
+               <with
+                     variable="activeMenuSelection">
+                  <or>
+                     <iterate>
+                        <adapt
+                              type="VespucciNavigatorItem">
+                        </adapt>
+                     </iterate>
+                     <adapt
+                           type="de.tud.cs.st.vespucci.diagram.Object2">
+                     </adapt>
+                  </or>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
