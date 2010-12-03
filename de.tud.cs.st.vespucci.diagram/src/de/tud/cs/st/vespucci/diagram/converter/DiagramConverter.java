@@ -53,7 +53,7 @@ public class DiagramConverter {
        	File source = new File(fullPathFileName);
         
    		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
-
+//TODO file stream closed
    		EObject eObject = resource.getContents().get(0);
       	return (ShapesDiagramImpl) eObject;
 	}
@@ -73,7 +73,7 @@ public class DiagramConverter {
    		//printOut("", diagram.getShapes());
 		
 		// create a new Prolog File
-		File prologFile = new File(fullFileName + ".pl1");
+		File prologFile = new File(fullFileName + ".pl");
 		
 		// the file will be overwritten
 		FileOutputStream fos;
@@ -86,6 +86,7 @@ public class DiagramConverter {
 		// translate ensemble facts
 		bos.write(this.getFacts(diagram, fileName).getBytes());
 
+		//jarkater commons.io
 		bos.flush();
 		fos.flush();
 		bos.close();
@@ -186,11 +187,11 @@ public class DiagramConverter {
         	// create Ensemble Facts:
         	if (shape == null)
         		continue;
-       		if (shape instanceof DummyImpl)
+       		if (shape instanceof DummyImpl) //TODO dummy -> empty da gehört noch mehr zu als nur das dummy. sonder auch noch der name der haupt klasse
        			mCreateEmptyEnsemble = true;
         	else if (shape instanceof EnsembleImpl)
         	{
-        		EnsembleImpl ensemble = (EnsembleImpl) shape;
+        		EnsembleImpl ensemble = (EnsembleImpl) shape; //TODO parameter für tamblets
         		ensembleFacts.append("ensemble('" + fileName + "', '" + ensemble.getName() + "', [], (" + ensemble.getQuery() + "), [" + listSubEnsembles(ensemble.getShapes()) + "]).\n");
            		// does children exist
 	        	if ((ensemble.getShapes() != null) && (ensemble.getShapes().size()>0))
