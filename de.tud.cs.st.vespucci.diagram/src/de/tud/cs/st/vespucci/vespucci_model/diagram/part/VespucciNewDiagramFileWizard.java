@@ -99,8 +99,7 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 				.setTitle(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciNewDiagramFileWizard_CreationPageTitle);
 		myFileCreationPage
 				.setDescription(NLS
-						.bind(
-								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciNewDiagramFileWizard_CreationPageDescription,
+						.bind(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciNewDiagramFileWizard_CreationPageDescription,
 								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID));
 		IPath filePath;
 		String fileName = URI.decode(domainModelURI.trimFileExtension()
@@ -143,7 +142,7 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 	 * @generated
 	 */
 	public boolean performFinish() {
-		List affectedFiles = new LinkedList();
+		LinkedList<IFile> affectedFiles = new LinkedList<IFile>();
 		IFile diagramFile = myFileCreationPage.createNewFile();
 		de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
 				.setCharset(diagramFile);

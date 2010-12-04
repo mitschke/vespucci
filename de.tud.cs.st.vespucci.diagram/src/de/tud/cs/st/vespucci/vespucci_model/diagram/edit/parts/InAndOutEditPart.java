@@ -94,7 +94,7 @@ public class InAndOutEditPart extends ConnectionNodeEditPart implements
 		if (addFixedChild(childEditPart)) {
 			return;
 		}
-		super.addChildVisual(childEditPart, -1);
+		super.addChildVisual(childEditPart, index);
 	}
 
 	/**
@@ -151,7 +151,6 @@ public class InAndOutEditPart extends ConnectionNodeEditPart implements
 		 * @generated
 		 */
 		public InAndOutFigure() {
-			this.setLineWidth(1);
 			this.setForegroundColor(ColorConstants.black);
 
 			createContents();
@@ -176,7 +175,6 @@ public class InAndOutEditPart extends ConnectionNodeEditPart implements
 		 */
 		private RotatableDecoration createSourceDecoration() {
 			PolylineDecoration df = new PolylineDecoration();
-			df.setLineWidth(1);
 			PointList pl = new PointList();
 			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(-1));
 			pl.addPoint(getMapMode().DPtoLP(-1), getMapMode().DPtoLP(0));
@@ -191,7 +189,6 @@ public class InAndOutEditPart extends ConnectionNodeEditPart implements
 		 */
 		private RotatableDecoration createTargetDecoration() {
 			PolylineDecoration df = new PolylineDecoration();
-			df.setLineWidth(1);
 			PointList pl = new PointList();
 			pl.addPoint(getMapMode().DPtoLP(-1), getMapMode().DPtoLP(1));
 			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));

@@ -53,7 +53,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * @generated
  */
-public class VespucciElementTypes extends ElementInitializers {
+public class VespucciElementTypes {
 
 	/**
 	 * @generated
@@ -64,7 +64,7 @@ public class VespucciElementTypes extends ElementInitializers {
 	/**
 	 * @generated
 	 */
-	private static Map elements;
+	private static Map<IElementType, ENamedElement> elements;
 
 	/**
 	 * @generated
@@ -74,7 +74,7 @@ public class VespucciElementTypes extends ElementInitializers {
 	/**
 	 * @generated
 	 */
-	private static Set KNOWN_ELEMENT_TYPES;
+	private static Set<IElementType> KNOWN_ELEMENT_TYPES;
 
 	/**
 	 * @generated
@@ -230,67 +230,57 @@ public class VespucciElementTypes extends ElementInitializers {
 	public static ENamedElement getElement(IAdaptable hint) {
 		Object type = hint.getAdapter(IElementType.class);
 		if (elements == null) {
-			elements = new IdentityHashMap();
+			elements = new IdentityHashMap<IElementType, ENamedElement>();
 
-			elements
-					.put(
-							ShapesDiagram_1000,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getShapesDiagram());
+			elements.put(
+					ShapesDiagram_1000,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getShapesDiagram());
 
-			elements
-					.put(
-							Ensemble_2001,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getEnsemble());
+			elements.put(
+					Ensemble_2001,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getEnsemble());
 
-			elements
-					.put(
-							Dummy_2002,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getDummy());
+			elements.put(
+					Dummy_2002,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getDummy());
 
-			elements
-					.put(
-							Ensemble_3001,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getEnsemble());
+			elements.put(
+					Ensemble_3001,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getEnsemble());
 
-			elements
-					.put(
-							Dummy_3003,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getDummy());
+			elements.put(
+					Dummy_3003,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getDummy());
 
-			elements
-					.put(
-							Incoming_4005,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getIncoming());
+			elements.put(
+					Incoming_4005,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getIncoming());
 
-			elements
-					.put(
-							Outgoing_4003,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getOutgoing());
+			elements.put(
+					Outgoing_4003,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getOutgoing());
 
-			elements
-					.put(
-							InAndOut_4001,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getInAndOut());
+			elements.put(
+					InAndOut_4001,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getInAndOut());
 
-			elements
-					.put(
-							NotAllowed_4004,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getNotAllowed());
+			elements.put(
+					NotAllowed_4004,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getNotAllowed());
 
-			elements
-					.put(
-							Expected_4002,
-							de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-									.getExpected());
+			elements.put(
+					Expected_4002,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getExpected());
 		}
 		return (ENamedElement) elements.get(type);
 	}
@@ -307,7 +297,7 @@ public class VespucciElementTypes extends ElementInitializers {
 	 */
 	public static boolean isKnownElementType(IElementType elementType) {
 		if (KNOWN_ELEMENT_TYPES == null) {
-			KNOWN_ELEMENT_TYPES = new HashSet();
+			KNOWN_ELEMENT_TYPES = new HashSet<IElementType>();
 			KNOWN_ELEMENT_TYPES.add(ShapesDiagram_1000);
 			KNOWN_ELEMENT_TYPES.add(Ensemble_2001);
 			KNOWN_ELEMENT_TYPES.add(Dummy_2002);

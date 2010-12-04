@@ -276,6 +276,20 @@
               href="vespucci.ecore#//Ensemble"/>
         </target>
       </audits>
+      <audits
+          name="ERROR if non leaf Ensemble is not derived"
+          description="non leaf Ensemble must be derived / empty"
+          id="NonLeafEnsembleMustBeDerivedID"
+          message="Non leaf Ensemble have to be derived">
+        <rule
+            body="NonLeafEnsembleMustBeDerived"
+            language="java"/>
+        <target
+            xsi:type="gmfmap:DomainElementTarget">
+          <element
+              href="vespucci.ecore#//Ensemble"/>
+        </target>
+      </audits>
     </childContainers>
     <childContainers
         id="ConnectionsConstraintsID"

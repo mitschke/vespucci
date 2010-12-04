@@ -43,4 +43,18 @@ public class ElementInitializers {
 		// use #getInstance to access cached instance
 	}
 
+	/**
+	 * @generated
+	 */
+	public static ElementInitializers getInstance() {
+		ElementInitializers cached = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+				.getInstance().getElementInitializers();
+		if (cached == null) {
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+					.getInstance().setElementInitializers(
+							cached = new ElementInitializers());
+		}
+		return cached;
+	}
+
 }

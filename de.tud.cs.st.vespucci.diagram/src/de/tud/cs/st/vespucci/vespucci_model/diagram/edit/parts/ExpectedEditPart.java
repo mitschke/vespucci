@@ -95,7 +95,7 @@ public class ExpectedEditPart extends ConnectionNodeEditPart implements
 		if (addFixedChild(childEditPart)) {
 			return;
 		}
-		super.addChildVisual(childEditPart, -1);
+		super.addChildVisual(childEditPart, index);
 	}
 
 	/**
@@ -152,7 +152,6 @@ public class ExpectedEditPart extends ConnectionNodeEditPart implements
 		 * @generated
 		 */
 		public ExpectedFigure() {
-			this.setLineWidth(1);
 			this.setLineStyle(Graphics.LINE_DASH);
 			this.setForegroundColor(ColorConstants.black);
 
@@ -177,7 +176,6 @@ public class ExpectedEditPart extends ConnectionNodeEditPart implements
 		 */
 		private RotatableDecoration createSourceDecoration() {
 			PolylineDecoration df = new PolylineDecoration();
-			df.setLineWidth(1);
 			PointList pl = new PointList();
 			pl.addPoint(getMapMode().DPtoLP(-4), getMapMode().DPtoLP(-1));
 			pl.addPoint(getMapMode().DPtoLP(-5), getMapMode().DPtoLP(0));

@@ -107,7 +107,7 @@ public class VespucciVisualIDRegistry {
 	 * @generated
 	 */
 	public static String getType(int visualID) {
-		return String.valueOf(visualID);
+		return Integer.toString(visualID);
 	}
 
 	/**
@@ -151,6 +151,16 @@ public class VespucciVisualIDRegistry {
 			}
 		}
 		switch (containerVisualID) {
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
+			if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+					.getEnsemble().isSuperTypeOf(domainElement.eClass())) {
+				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID;
+			}
+			if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+					.getDummy().isSuperTypeOf(domainElement.eClass())) {
+				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID;
+			}
+			break;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID:
 			if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 					.getEnsemble().isSuperTypeOf(domainElement.eClass())) {
@@ -169,16 +179,6 @@ public class VespucciVisualIDRegistry {
 			if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 					.getDummy().isSuperTypeOf(domainElement.eClass())) {
 				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID;
-			}
-			break;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-			if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getEnsemble().isSuperTypeOf(domainElement.eClass())) {
-				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID;
-			}
-			if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getDummy().isSuperTypeOf(domainElement.eClass())) {
-				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID;
 			}
 			break;
 		}
@@ -208,6 +208,14 @@ public class VespucciVisualIDRegistry {
 			}
 		}
 		switch (containerVisualID) {
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
 			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -247,14 +255,6 @@ public class VespucciVisualIDRegistry {
 				return true;
 			}
 			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;

@@ -69,13 +69,15 @@ import org.eclipse.gmf.runtime.notation.View;
 /**
  * @generated
  */
-public class ShapesDiagramCanonicalEditPolicy extends
-		CanonicalConnectionEditPolicy {
+public class ShapesDiagramCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
 	 * @generated
 	 */
-	Set myFeaturesToSynchronize;
+	protected EStructuralFeature getFeatureToSynchronize() {
+		return de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+				.getShapesDiagram_Shapes();
+	}
 
 	/**
 	 * @generated
@@ -83,13 +85,11 @@ public class ShapesDiagramCanonicalEditPolicy extends
 	@SuppressWarnings("rawtypes")
 	protected List getSemanticChildrenList() {
 		View viewObject = (View) getHost().getModel();
-		List result = new LinkedList();
-		for (Iterator it = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-				.getShapesDiagram_1000SemanticChildren(viewObject).iterator(); it
-				.hasNext();) {
-			result
-					.add(((de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor) it
-							.next()).getModelElement());
+		LinkedList<EObject> result = new LinkedList<EObject>();
+		List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> childDescriptors = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+				.getShapesDiagram_1000SemanticChildren(viewObject);
+		for (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor d : childDescriptors) {
+			result.add(d.getModelElement());
 		}
 		return result;
 	}
@@ -97,84 +97,104 @@ public class ShapesDiagramCanonicalEditPolicy extends
 	/**
 	 * @generated
 	 */
-	protected boolean shouldDeleteView(View view) {
-		return true;
+	protected boolean isOrphaned(Collection<EObject> semanticChildren,
+			final View view) {
+		return isMyDiagramElement(view)
+				&& !semanticChildren.contains(view.getElement());
 	}
 
 	/**
 	 * @generated
 	 */
-	protected boolean isOrphaned(Collection semanticChildren, final View view) {
+	private boolean isMyDiagramElement(View view) {
 		int visualID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getVisualID(view);
-		switch (visualID) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
-			if (!semanticChildren.contains(view.getElement())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected String getDefaultFactoryHint() {
-		return null;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected Set getFeaturesToSynchronize() {
-		if (myFeaturesToSynchronize == null) {
-			myFeaturesToSynchronize = new HashSet();
-			myFeaturesToSynchronize
-					.add(de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getShapesDiagram_Shapes());
-		}
-		return myFeaturesToSynchronize;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected List getSemanticConnectionsList() {
-		return Collections.EMPTY_LIST;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected EObject getSourceElement(EObject relationship) {
-		return null;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected EObject getTargetElement(EObject relationship) {
-		return null;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected boolean shouldIncludeConnection(Edge connector,
-			Collection children) {
-		return false;
+		return visualID == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID
+				|| visualID == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID;
 	}
 
 	/**
 	 * @generated
 	 */
 	protected void refreshSemantic() {
-		List createdViews = new LinkedList();
-		createdViews.addAll(refreshSemanticChildren());
-		List createdConnectionViews = new LinkedList();
-		createdConnectionViews.addAll(refreshSemanticConnections());
-		createdConnectionViews.addAll(refreshConnections());
+		if (resolveSemanticElement() == null) {
+			return;
+		}
+		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
+		List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> childDescriptors = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+				.getShapesDiagram_1000SemanticChildren((View) getHost()
+						.getModel());
+		LinkedList<View> orphaned = new LinkedList<View>();
+		// we care to check only views we recognize as ours
+		LinkedList<View> knownViewChildren = new LinkedList<View>();
+		for (View v : getViewChildren()) {
+			if (isMyDiagramElement(v)) {
+				knownViewChildren.add(v);
+			}
+		}
+		// alternative to #cleanCanonicalSemanticChildren(getViewChildren(), semanticChildren)
+		//
+		// iteration happens over list of desired semantic elements, trying to find best matching View, while original CEP
+		// iterates views, potentially losing view (size/bounds) information - i.e. if there are few views to reference same EObject, only last one 
+		// to answer isOrphaned == true will be used for the domain element representation, see #cleanCanonicalSemanticChildren()
+		for (Iterator<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> descriptorsIterator = childDescriptors
+				.iterator(); descriptorsIterator.hasNext();) {
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor next = descriptorsIterator
+					.next();
+			String hint = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+					.getType(next.getVisualID());
+			LinkedList<View> perfectMatch = new LinkedList<View>(); // both semanticElement and hint match that of NodeDescriptor
+			for (View childView : getViewChildren()) {
+				EObject semanticElement = childView.getElement();
+				if (next.getModelElement().equals(semanticElement)) {
+					if (hint.equals(childView.getType())) {
+						perfectMatch.add(childView);
+						// actually, can stop iteration over view children here, but
+						// may want to use not the first view but last one as a 'real' match (the way original CEP does
+						// with its trick with viewToSemanticMap inside #cleanCanonicalSemanticChildren
+					}
+				}
+			}
+			if (perfectMatch.size() > 0) {
+				descriptorsIterator.remove(); // precise match found no need to create anything for the NodeDescriptor
+				// use only one view (first or last?), keep rest as orphaned for further consideration
+				knownViewChildren.remove(perfectMatch.getFirst());
+			}
+		}
+		// those left in knownViewChildren are subject to removal - they are our diagram elements we didn't find match to,
+		// or those we have potential matches to, and thus need to be recreated, preserving size/location information.
+		orphaned.addAll(knownViewChildren);
+		//
+		ArrayList<CreateViewRequest.ViewDescriptor> viewDescriptors = new ArrayList<CreateViewRequest.ViewDescriptor>(
+				childDescriptors.size());
+		for (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor next : childDescriptors) {
+			String hint = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+					.getType(next.getVisualID());
+			IAdaptable elementAdapter = new CanonicalElementAdapter(
+					next.getModelElement(), hint);
+			CreateViewRequest.ViewDescriptor descriptor = new CreateViewRequest.ViewDescriptor(
+					elementAdapter, Node.class, hint, ViewUtil.APPEND, false,
+					host().getDiagramPreferencesHint());
+			viewDescriptors.add(descriptor);
+		}
+
+		boolean changed = deleteViews(orphaned.iterator());
+		//
+		CreateViewRequest request = getCreateViewRequest(viewDescriptors);
+		Command cmd = getCreateViewCommand(request);
+		if (cmd != null && cmd.canExecute()) {
+			SetViewMutabilityCommand.makeMutable(
+					new EObjectAdapter(host().getNotationView())).execute();
+			executeCommand(cmd);
+			@SuppressWarnings("unchecked")
+			List<IAdaptable> nl = (List<IAdaptable>) request.getNewObject();
+			createdViews.addAll(nl);
+		}
+		if (changed || createdViews.size() > 0) {
+			postProcessRefreshSemantic(createdViews);
+		}
+
+		Collection<IAdaptable> createdConnectionViews = refreshConnections();
 
 		if (createdViews.size() > 1) {
 			// perform a layout of the container
@@ -184,6 +204,7 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 
 		createdViews.addAll(createdConnectionViews);
+
 		makeViewsImmutable(createdViews);
 	}
 
@@ -197,10 +218,10 @@ public class ShapesDiagramCanonicalEditPolicy extends
 	/**
 	 * @generated
 	 */
-	private Collection refreshConnections() {
-		Map domain2NotationMap = new HashMap();
-		Collection linkDescriptors = collectAllLinks(getDiagram(),
-				domain2NotationMap);
+	private Collection<IAdaptable> refreshConnections() {
+		Map<EObject, View> domain2NotationMap = new HashMap<EObject, View>();
+		Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> linkDescriptors = collectAllLinks(
+				getDiagram(), domain2NotationMap);
 		Collection existingLinks = new LinkedList(getDiagram().getEdges());
 		for (Iterator linksIterator = existingLinks.iterator(); linksIterator
 				.hasNext();) {
@@ -217,9 +238,9 @@ public class ShapesDiagramCanonicalEditPolicy extends
 			EObject diagramLinkObject = nextDiagramLink.getElement();
 			EObject diagramLinkSrc = nextDiagramLink.getSource().getElement();
 			EObject diagramLinkDst = nextDiagramLink.getTarget().getElement();
-			for (Iterator linkDescriptorsIterator = linkDescriptors.iterator(); linkDescriptorsIterator
-					.hasNext();) {
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor nextLinkDescriptor = (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor) linkDescriptorsIterator
+			for (Iterator<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> linkDescriptorsIterator = linkDescriptors
+					.iterator(); linkDescriptorsIterator.hasNext();) {
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor nextLinkDescriptor = linkDescriptorsIterator
 						.next();
 				if (diagramLinkObject == nextLinkDescriptor.getModelElement()
 						&& diagramLinkSrc == nextLinkDescriptor.getSource()
@@ -240,20 +261,20 @@ public class ShapesDiagramCanonicalEditPolicy extends
 	/**
 	 * @generated
 	 */
-	private Collection collectAllLinks(View view, Map domain2NotationMap) {
+	private Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> collectAllLinks(
+			View view, Map<EObject, View> domain2NotationMap) {
 		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
 				.equals(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getModelID(view))) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
-		Collection result = new LinkedList();
+		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getVisualID(view)) {
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getShapesDiagram_1000ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getShapesDiagram_1000ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -263,9 +284,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getEnsemble_2001ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getEnsemble_2001ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -275,9 +295,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getDummy_2002ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getDummy_2002ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -287,9 +306,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getEnsemble_3001ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getEnsemble_3001ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -299,9 +317,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getDummy_3003ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getDummy_3003ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -311,9 +328,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getIncoming_4005ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getIncoming_4005ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -323,9 +339,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getOutgoing_4003ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getOutgoing_4003ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -335,9 +350,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getInAndOut_4001ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getInAndOut_4001ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -347,9 +361,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getNotAllowed_4004ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getNotAllowed_4004ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -359,9 +372,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getExpected_4002ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getExpected_4002ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -385,23 +397,22 @@ public class ShapesDiagramCanonicalEditPolicy extends
 	/**
 	 * @generated
 	 */
-	private Collection createConnections(Collection linkDescriptors,
-			Map domain2NotationMap) {
-		List adapters = new LinkedList();
-		for (Iterator linkDescriptorsIterator = linkDescriptors.iterator(); linkDescriptorsIterator
-				.hasNext();) {
-			final de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor nextLinkDescriptor = (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor) linkDescriptorsIterator
-					.next();
-			EditPart sourceEditPart = getEditPart(nextLinkDescriptor
-					.getSource(), domain2NotationMap);
-			EditPart targetEditPart = getEditPart(nextLinkDescriptor
-					.getDestination(), domain2NotationMap);
+	private Collection<IAdaptable> createConnections(
+			Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> linkDescriptors,
+			Map<EObject, View> domain2NotationMap) {
+		LinkedList<IAdaptable> adapters = new LinkedList<IAdaptable>();
+		for (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor nextLinkDescriptor : linkDescriptors) {
+			EditPart sourceEditPart = getEditPart(
+					nextLinkDescriptor.getSource(), domain2NotationMap);
+			EditPart targetEditPart = getEditPart(
+					nextLinkDescriptor.getDestination(), domain2NotationMap);
 			if (sourceEditPart == null || targetEditPart == null) {
 				continue;
 			}
 			CreateConnectionViewRequest.ConnectionViewDescriptor descriptor = new CreateConnectionViewRequest.ConnectionViewDescriptor(
-					nextLinkDescriptor.getSemanticAdapter(), String
-							.valueOf(nextLinkDescriptor.getVisualID()),
+					nextLinkDescriptor.getSemanticAdapter(),
+					de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+							.getType(nextLinkDescriptor.getVisualID()),
 					ViewUtil.APPEND, false, ((IGraphicalEditPart) getHost())
 							.getDiagramPreferencesHint());
 			CreateConnectionViewRequest ccr = new CreateConnectionViewRequest(
@@ -427,11 +438,11 @@ public class ShapesDiagramCanonicalEditPolicy extends
 	 * @generated
 	 */
 	private EditPart getEditPart(EObject domainModelElement,
-			Map domain2NotationMap) {
+			Map<EObject, View> domain2NotationMap) {
 		View view = (View) domain2NotationMap.get(domainModelElement);
 		if (view != null) {
-			return (EditPart) getHost().getViewer().getEditPartRegistry().get(
-					view);
+			return (EditPart) getHost().getViewer().getEditPartRegistry()
+					.get(view);
 		}
 		return null;
 	}

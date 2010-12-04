@@ -102,8 +102,9 @@ public class IncomingReorientCommand extends EditElementCommand {
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints
-				.canExistIncoming_4005(container, getNewSource(), target);
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canExistIncoming_4005(container,
+						getLink(), getNewSource(), target);
 	}
 
 	/**
@@ -120,8 +121,9 @@ public class IncomingReorientCommand extends EditElementCommand {
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints
-				.canExistIncoming_4005(container, source, getNewTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canExistIncoming_4005(container,
+						getLink(), source, getNewTarget());
 	}
 
 	/**

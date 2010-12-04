@@ -99,9 +99,9 @@ public class ExpectedCreateCommand extends EditElementCommand {
 		if (getContainer() == null) {
 			return false;
 		}
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints
-				.canCreateExpected_4002(getContainer(), getSource(),
-						getTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canCreateExpected_4002(getContainer(),
+						getSource(), getTarget());
 	}
 
 	/**

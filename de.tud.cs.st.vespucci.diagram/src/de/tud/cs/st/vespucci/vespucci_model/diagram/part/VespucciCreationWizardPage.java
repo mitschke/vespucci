@@ -114,8 +114,7 @@ public class VespucciCreationWizardPage extends WizardNewFileCreationPage {
 		if (extension != null
 				&& !getFilePath().toString().endsWith("." + extension)) {
 			setErrorMessage(NLS
-					.bind(
-							de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizardPageExtensionError,
+					.bind(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizardPageExtensionError,
 							extension));
 			return false;
 		}

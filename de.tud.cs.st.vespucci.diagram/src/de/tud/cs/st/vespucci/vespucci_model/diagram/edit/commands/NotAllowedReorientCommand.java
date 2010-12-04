@@ -102,8 +102,9 @@ public class NotAllowedReorientCommand extends EditElementCommand {
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints
-				.canExistNotAllowed_4004(container, getNewSource(), target);
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canExistNotAllowed_4004(container,
+						getLink(), getNewSource(), target);
 	}
 
 	/**
@@ -120,8 +121,9 @@ public class NotAllowedReorientCommand extends EditElementCommand {
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints
-				.canExistNotAllowed_4004(container, source, getNewTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canExistNotAllowed_4004(container,
+						getLink(), source, getNewTarget());
 	}
 
 	/**

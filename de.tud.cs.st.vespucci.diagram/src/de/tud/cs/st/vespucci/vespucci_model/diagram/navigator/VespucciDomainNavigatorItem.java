@@ -134,10 +134,9 @@ public class VespucciDomainNavigatorItem extends PlatformObject {
 		if (obj instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) {
 			return EcoreUtil
 					.getURI(getEObject())
-					.equals(
-							EcoreUtil
-									.getURI(((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) obj)
-											.getEObject()));
+					.equals(EcoreUtil
+							.getURI(((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) obj)
+									.getEObject()));
 		}
 		return super.equals(obj);
 	}

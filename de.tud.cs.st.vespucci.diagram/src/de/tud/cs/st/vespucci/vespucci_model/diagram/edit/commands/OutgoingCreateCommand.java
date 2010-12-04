@@ -99,9 +99,9 @@ public class OutgoingCreateCommand extends EditElementCommand {
 		if (getContainer() == null) {
 			return false;
 		}
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints
-				.canCreateOutgoing_4003(getContainer(), getSource(),
-						getTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canCreateOutgoing_4003(getContainer(),
+						getSource(), getTarget());
 	}
 
 	/**

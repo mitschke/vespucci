@@ -34,8 +34,13 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.providers;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.validation.AbstractModelConstraint;
+import org.eclipse.emf.validation.IValidationContext;
 import org.eclipse.emf.validation.model.IClientSelector;
+import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
 
 /**
@@ -110,6 +115,35 @@ public class VespucciValidationProvider {
 		public boolean selects(Object object) {
 			return isInDefaultEditorContext(object);
 		}
+	}
+
+	/**
+	 * @generated NOT
+	 */
+	public static class Adapter4 extends AbstractModelConstraint {
+		//TODO change the name Adapter4 to something expressive
+		/**
+		 * Java implementation for the constraint NonLeafEnsembleMustBeDerived in All constraints about Ensemble
+		 * @author MalteV
+		 * @generated NOT
+		 */
+		public IStatus validate(IValidationContext ctx) {
+			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
+					.getTarget();
+			if (context.getShapes().size() == 0) //size()==0 => ensemble is a leaf
+				return ctx.createSuccessStatus();
+			if (context.getQuery().equals("derived")) //the ensemble is not a leaf so it must be derived
+				return ctx.createSuccessStatus();
+			return ctx
+					.createFailureStatus("Non leaf Ensembles must be derived");
+		}
+	}
+
+	/**
+	 * @generated
+	 */
+	static String formatElement(EObject object) {
+		return EMFCoreUtil.getQualifiedName(object, true);
 	}
 
 }

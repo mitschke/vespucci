@@ -99,9 +99,9 @@ public class InAndOutCreateCommand extends EditElementCommand {
 		if (getContainer() == null) {
 			return false;
 		}
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints
-				.canCreateInAndOut_4001(getContainer(), getSource(),
-						getTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canCreateInAndOut_4001(getContainer(),
+						getSource(), getTarget());
 	}
 
 	/**

@@ -262,28 +262,28 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	public void doSave(IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
-		
-		
+
 		DiagramConverter converter = new DiagramConverter();
 		try {
-			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
+			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(),
+					this.getCurrentSelectedFileName());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		// refresh Package View
-	    IProject activeProject = this.getSelectedFile().getFile().getProject();
-	    try {
-			activeProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+		IProject activeProject = this.getSelectedFile().getFile().getProject();
+		try {
+			activeProject.refreshLocal(IResource.DEPTH_INFINITE,
+					progressMonitor);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		//this.saveDiagramInTextNonRecursive(progressMonitor);
 		this.validateDiagramConstraints();
-		
-		
+
 	}
 
 	/**
@@ -410,9 +410,6 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		getSite().registerContextMenu(ActionIds.DIAGRAM_EDITOR_CONTEXT_MENU,
 				provider, getDiagramGraphicalViewer());
 	}
-
-	
-
 
 	/**
 	 * @return selected file from editor.

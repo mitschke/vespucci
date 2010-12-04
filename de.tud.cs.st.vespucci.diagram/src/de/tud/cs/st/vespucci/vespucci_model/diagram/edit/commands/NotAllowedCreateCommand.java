@@ -99,9 +99,9 @@ public class NotAllowedCreateCommand extends EditElementCommand {
 		if (getContainer() == null) {
 			return false;
 		}
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints
-				.canCreateNotAllowed_4004(getContainer(), getSource(),
-						getTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canCreateNotAllowed_4004(getContainer(),
+						getSource(), getTarget());
 	}
 
 	/**

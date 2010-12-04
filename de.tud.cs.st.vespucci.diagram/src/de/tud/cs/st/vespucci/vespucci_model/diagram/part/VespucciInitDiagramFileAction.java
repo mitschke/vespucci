@@ -125,11 +125,9 @@ public class VespucciInitDiagramFileAction implements IObjectActionDelegate {
 		}
 		Wizard wizard = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNewDiagramFileWizard(
 				domainModelURI, diagramRoot, editingDomain);
-		wizard
-				.setWindowTitle(NLS
-						.bind(
-								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InitDiagramFile_WizardTitle,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID));
+		wizard.setWindowTitle(NLS
+				.bind(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InitDiagramFile_WizardTitle,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID));
 		de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
 				.runWizard(getShell(), wizard, "InitDiagramFile"); //$NON-NLS-1$
 	}

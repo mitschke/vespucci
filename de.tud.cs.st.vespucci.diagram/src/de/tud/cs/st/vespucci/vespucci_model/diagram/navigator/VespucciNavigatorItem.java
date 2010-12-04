@@ -112,10 +112,9 @@ public class VespucciNavigatorItem
 		if (obj instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
 			return EcoreUtil
 					.getURI(getView())
-					.equals(
-							EcoreUtil
-									.getURI(((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) obj)
-											.getView()));
+					.equals(EcoreUtil
+							.getURI(((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) obj)
+									.getView()));
 		}
 		return super.equals(obj);
 	}

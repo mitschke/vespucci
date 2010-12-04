@@ -106,12 +106,29 @@ public class DiagramConverter {
 	 */
 	public ShapesDiagramImpl loadDiagramFile(String fullPathFileName) throws FileNotFoundException, IOException
 	{
-		//TODO methods with File instead of String
+		//TODO löschen?
        	XMIResourceImpl resource = new XMIResourceImpl();
        	File source = new File(fullPathFileName);
         
    		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
 
+   		EObject eObject = resource.getContents().get(0);
+      	return (ShapesDiagramImpl) eObject;
+	}
+	
+	/**
+	 * load a Diagram File
+	 * @param fullPathFileName the full path filename. 
+	 * @return ShapesDiagramImpl Object
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @author Patrick Jahnke, MalteV
+	 */
+	public ShapesDiagramImpl loadDiagramFile(File sadFile) throws FileNotFoundException, IOException
+	{
+       	XMIResourceImpl resource = new XMIResourceImpl();
+       	File source = sadFile; 
+   		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
    		EObject eObject = resource.getContents().get(0);
       	return (ShapesDiagramImpl) eObject;
 	}
@@ -147,11 +164,44 @@ public class DiagramConverter {
 		
 		return;
 	}
+	
+	/**
+	 * read the given diagram and create a prolog file. 
+	 * @param fullPathFileName Name and path of the diagram
+	 * @throws FileNotFoundException 
+	 * @throws IOException
+	 * @author Patrick Jahnke, MalteV
+	 */
+	public void ConvertDiagramToProlog (File sadFile) throws FileNotFoundException, IOException
+	{
+		String fullFileName = sadFile.getParent() + "/" + sadFile.getName();
+		ShapesDiagramImpl diagram = loadDiagramFile(sadFile);
+		
+		// create a new Prolog File
+		File prologFile = new File(sadFile.getAbsoluteFile()  + ".pl");
+		
+		// the file will be overwritten
+		FileOutputStream fos;
+		fos = new FileOutputStream(prologFile);
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		
+		// write header string
+		bos.write(this.getFileHeaderString(fullFileName).getBytes());
+		
+		// translate ensemble facts
+		bos.write(this.getFacts(diagram, sadFile.getName()).getBytes());
+
+		bos.close();
+		fos.close();
+		
+		return;
+	}
 
 	public boolean isDiagramFile(File file){
 		//TODO need to be fixed
 		return true;
 	}
+
 	
 	/**
 	 * returns a separator like %------ 

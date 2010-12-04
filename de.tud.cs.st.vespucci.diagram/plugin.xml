@@ -74,22 +74,15 @@
    </extension>
 
    <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
+      <?gmfgen generated="true"?>
   	  <wizard
-           canFinishEarly="false"
-           category="de.tud.cs.st.vespucci.diagram.category1"
-           class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
-           icon="icons/obj16/Vespucci_modelDiagramFile.gif"
-           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID"
-           name="Software Architecture Constraints Diagram">
-  	  	 <description>Software architecture constraints can be created between logical grouped objects, named ensemble.</description>  
+  	     name="%newWizardName"
+  	     icon="icons/obj16/Vespucci_modelDiagramFile.gif"
+  	     category="org.eclipse.ui.Examples"
+  	     class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
+  	     id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
+  	  	 <description>%newWizardDesc</description>  
       </wizard>
-     <category
-           id="de.tud.cs.st.vespucci.diagram.category1"
-           name="Software Architecture">
-     </category>
-     <primaryWizard
-           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
-     </primaryWizard>
    </extension>
 
    <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
@@ -147,6 +140,21 @@
       </GlobalActionHandlerProvider>
    </extension>
 
+
+   <extension point="org.eclipse.gmf.runtime.common.ui.services.markerNavigationProviders" id="markers-navigation">
+      <?gmfgen generated="true"?>
+      <MarkerNavigationProvider class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciMarkerNavigationProvider">
+         <MarkerType name="de.tud.cs.st.vespucci.diagram.diagnostic"/>
+         <Priority name="Lowest"/>
+      </MarkerNavigationProvider>
+   </extension>
+
+   <extension id="diagnostic" name="Vespucci Plugin problems" point="org.eclipse.core.resources.markers">
+      <?gmfgen generated="true"?>
+      <super type="org.eclipse.core.resources.problemmarker"/>
+      <super type="org.eclipse.gmf.runtime.common.ui.services.marker"/>
+      <persistent value="true"/>
+   </extension>   
 
    <extension point="org.eclipse.core.runtime.preferences" id="prefs">
       <?gmfgen generated="true"?>
@@ -545,181 +553,7 @@
          </selectionEnablement>
       </linkHelper>
    </extension>
-   <extension point="org.eclipse.ui.commands" id="update-cmd">
-      <?gmfgen generated="true"?>
-      <command
-         categoryId="org.eclipse.ui.category.edit"
-         defaultHandler="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdateCommand"
-         description="%update.diagram.description"
-         id="de.tud.cs.st.vespucci.vespucci_model.diagram.updateDiagram"
-         name="%update.diagram.name"/>
-   </extension>
-   
-   <extension point="org.eclipse.ui.bindings" id="update-cmd-binding">
-      <?gmfgen generated="true"?>
-      <key 
-         commandId="de.tud.cs.st.vespucci.vespucci_model.diagram.updateDiagram"
-         contextId="de.tud.cs.st.vespucci.vespucci_model.diagram.ui.diagramContext"
-         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-         sequence="F5"/>
-   </extension>
-
-   <extension point="org.eclipse.ui.menus" id="context-menus">
-      <?gmfgen generated="true"?>
-      <!-- menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=">
-      </menuContribution>
-      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=">
-      </menuContribution -->
-      <menuContribution locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
-         <command commandId="de.tud.cs.st.vespucci.diagram.LoadResourceAction">
-            <visibleWhen>
-               <and>
-                  <with variable="activePartId"><equals value="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID"/></with>
-                  <with variable="selection"><iterate ifEmpty="false"> 
-                     <instanceof value="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart"/>
-                  </iterate></with>
-               </and>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-         <command
-               commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-               label="Generate Prolog Facts"
-               style="push">
-            <visibleWhen>
-               <with
-                     variable="selection">
-                  <iterate>
-                     <adapt
-                           type="org.eclipse.core.resources.IResource">
-                        <test
-                              property="org.eclipse.core.resources.name"
-                              value="*.sad">
-                        </test>
-                     </adapt>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-   </extension>
-
-   <extension point="org.eclipse.ui.commands" id="menu-commands">
-      <?gmfgen generated="true"?>
-      <category id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID" name="%cmdcategory.name" description="%cmdcategory.desc"/>
-      <command id="de.tud.cs.st.vespucci.diagram.LoadResourceAction"
-         name="Load Resource"
-         categoryId="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID"
-         defaultHandler="de.tud.cs.st.vespucci.vespucci_model.diagram.part.LoadResourceAction"/>
-      <command
-            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
-            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-            name="Generate Prolog Facts">
-      </command>
-   </extension>
-
-   <extension point="org.eclipse.ui.menus" id="context-menus">
-      <menuContribution locationURI="menu:new">
-         <command
-               commandId="de.tud.cs.st.visarch.diagram.commands.VespucciCreationCommandID"
-               icon="icons/obj16/Vespucci_modelDiagramFile.gif">
-
-         </command>
-      </menuContribution>
-   </extension>
-         
-   <extension point="org.eclipse.ui.commands" id="menu-commands">
-      <category id="Software.Architecture.Visualization.ID" name="Software Architecture Visualization" description="%cmdcategory.desc"/>
-      <command
-            categoryId="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID"
-            defaultHandler="de.tud.cs.st.vespucci.diagram.supports.VespucciCreationWizardCommandHandler"
-            id="de.tud.cs.st.visarch.diagram.commands.VespucciCreationCommandID"
-            name="Software Architecture Constraints Diagram"/>   
-   </extension>
-
-
-   <extension point="org.eclipse.ui.handlers" id="menu-handlers">
-      <?gmfgen generated="true"?>
-   </extension>
-   
-
-
- <extension
-          point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
-      <contributionItemProvider
-			checkPluginLoaded="false"
-            class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContributionItemProvider">
-         <Priority
-               name="Low">
-         </Priority>
-
-         <popupContribution
-               class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
-            <popupStructuredContributionCriteria
-                 objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart">
-            </popupStructuredContributionCriteria>
-
-            <popupPredefinedItem
-                  path="/addGroup"
-                  id="diagramAddMenu"                  
-                  remove="true"/>
-
-            <popupPredefinedItem
-                  id="navigateGroup"                  
-                  remove="true"/>
-         </popupContribution>
-         
-         <popupContribution
-               class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
-            <popupStructuredContributionCriteria
-                 objectClass="org.eclipse.gef.EditPart">
-            </popupStructuredContributionCriteria>
-
-            <popupPredefinedItem
-                  id="navigateGroup"                  
-                  remove="true"/>
-         </popupContribution>
-      </contributionItemProvider>
-   </extension>
-
-<extension
-      point="org.eclipse.ui.popupMenus">
-   <objectContribution
-         id="VerspucciAddNewModules"
-         objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart" adaptable="false">
-      <action
-            class="de.tud.cs.st.vespucci.diagram.supports.CreateDummyAction"
-            icon="icons/obj16/Dummy.gif"
-            id="addDummyActionID"
-            label="Add Empty Ensemble"
-            menubarPath="addGroup">
-      </action>
-      <action
-            class="de.tud.cs.st.vespucci.diagram.supports.CreateEnsembleAction"
-            icon="icons/obj16/Ensemble.gif"
-            id="addEnsembleActionID"
-            label="Add Ensemble"
-            menubarPath="addGroup">
-      </action>
-   </objectContribution>
-</extension>
-<extension point="org.eclipse.gmf.runtime.common.ui.services.markerNavigationProviders" id="markers-navigation">
-      <?gmfgen generated="true"?>
-      <MarkerNavigationProvider class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciMarkerNavigationProvider">
-         <MarkerType name="de.tud.cs.st.vespucci.diagram.diagnostic"/>
-         <Priority name="Lowest"/>
-      </MarkerNavigationProvider>
-   </extension>
-
-<extension id="diagnostic" name="Vespucci Plugin problems" point="org.eclipse.core.resources.markers">
-      <?gmfgen generated="true"?>
-      <super type="org.eclipse.core.resources.problemmarker"/>
-      <super type="org.eclipse.gmf.runtime.common.ui.services.marker"/>
-      <persistent value="true"/>
-   </extension><extension point="org.eclipse.emf.validation.constraintProviders">
+   <extension point="org.eclipse.emf.validation.constraintProviders">
       <?gmfgen generated="true"?>
             <category id="VespucciDiagramConstraintsID" mandatory="false" name="Vespucci Diagram Constraints">
          <![CDATA[All diagram related constraints for Vespucci Editor.]]>
@@ -765,13 +599,23 @@
             <message><![CDATA[Ensemble query is not set! Default query is "empty".]]></message>
             <target class="vespucci_model.Ensemble"/>
          </constraint>
+                  <constraint id="NonLeafEnsembleMustBeDerivedID"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter4"
+            name="ERROR if non leaf Ensemble is not derived"
+            mode="Batch"
+            severity="ERROR" statusCode="200">
+            
+            <description><![CDATA[non leaf Ensemble must be derived / empty]]></description>
+            <message><![CDATA[Non leaf Ensemble have to be derived]]></message>
+            <target class="vespucci_model.Ensemble"/>
+         </constraint>
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/ConnectionsConstraintsID">
                   </constraints>
       </constraintProvider>
    </extension>
 
-<extension point="org.eclipse.emf.validation.constraintBindings">
+   <extension point="org.eclipse.emf.validation.constraintBindings">
       <?gmfgen generated="true"?>
       <clientContext default="false" id="de.tud.cs.st.vespucci.diagramDefaultCtx">
          <selector class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$DefaultCtx"/>
@@ -780,15 +624,110 @@
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleNameNotNullID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleNameUniqueID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryNotNullID"/>
+                  <constraint ref="de.tud.cs.st.vespucci.diagram.NonLeafEnsembleMustBeDerivedID"/>
                </binding>
 
    </extension>
 
 
+   <extension point="org.eclipse.ui.commands" id="update-cmd">
+      <?gmfgen generated="true"?>
+      <command
+         categoryId="org.eclipse.ui.category.edit"
+         defaultHandler="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdateCommand"
+         description="%update.diagram.description"
+         id="de.tud.cs.st.vespucci.vespucci_model.diagram.updateDiagram"
+         name="%update.diagram.name"/>
+   </extension>
+   
+   <extension point="org.eclipse.ui.bindings" id="update-cmd-binding">
+      <?gmfgen generated="true"?>
+      <key 
+         commandId="de.tud.cs.st.vespucci.vespucci_model.diagram.updateDiagram"
+         contextId="de.tud.cs.st.vespucci.vespucci_model.diagram.ui.diagramContext"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+         sequence="F5"/>
+   </extension>
 
+   <extension point="org.eclipse.ui.menus" id="context-menus">
+      <?gmfgen generated="true"?>
+      <!-- menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=">
+      </menuContribution>
+      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=">
+      </menuContribution -->
+      <menuContribution locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
+         <command commandId="de.tud.cs.st.vespucci.diagram.LoadResourceAction">
+            <visibleWhen>
+               <and>
+                  <with variable="activePartId"><equals value="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID"/></with>
+                  <with variable="selection"><iterate ifEmpty="false"> 
+                     <instanceof value="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart"/>
+                  </iterate></with>
+               </and>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
 
+   <extension point="org.eclipse.ui.commands" id="menu-commands">
+      <?gmfgen generated="true"?>
+      <category id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID" name="%cmdcategory.name" description="%cmdcategory.desc"/>
+      <command id="de.tud.cs.st.vespucci.diagram.LoadResourceAction"
+         name="Load Resource"
+         categoryId="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID"
+         defaultHandler="de.tud.cs.st.vespucci.vespucci_model.diagram.part.LoadResourceAction"/>
+   </extension>
 
+   <extension point="org.eclipse.ui.handlers" id="menu-handlers">
+      <?gmfgen generated="true"?>
+   </extension>
 
+   <!-- gmf generator persistent region begin -->  
+      <extension point="org.eclipse.ui.commands" id="menu-commands"> 
+          <command
+            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
+            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+            name="Generate Prolog Facts">
+      </command>
+ 
+   </extension>
+      <extension point="org.eclipse.ui.menus" id="context-menus">
+      <!-- menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=">
+      </menuContribution>
+      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=">
+      </menuContribution -->
+
+   
+          <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+               label="Generate Prolog Facts"
+               style="push">
+            <visibleWhen>
+               <with
+                     variable="selection">
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.name"
+                              value="*.sad">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      
+ 
+      
+      
+   </extension>
+        <!-- gmf generator persistent region end -->
+          
 
    <!-- optionally, specify keybindings -->
 </plugin>

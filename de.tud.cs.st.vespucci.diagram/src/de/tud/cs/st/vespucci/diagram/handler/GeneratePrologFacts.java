@@ -34,6 +34,7 @@
  */
 package de.tud.cs.st.vespucci.diagram.handler;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -55,7 +56,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
 
 /**
- * A handler for saving a *.sad to *.pl Prolog file.
+ * A handler for saving a *.sad file to a *.pl Prolog file.
  * 
  * @author MalteV
  */
@@ -66,18 +67,17 @@ public class GeneratePrologFacts extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
-				.getActiveMenuSelection(event);
-
+				.getActiveMenuSelection(event); // current package Explorer selection
 		boolean re = false;
-		if (selection.getFirstElement() instanceof IFile) {
+		if (selection.getFirstElement() instanceof IFile) { //first and only selected Element
 			IFile file = (IFile) selection.getFirstElement();
-			String fname = file.getName();
-			String path = file.getRawLocation().toFile().getParent();
-
+			//String fname = file.getName();
+			//String path = file.getRawLocation().toFile().getParent();
+			File f = file.getRawLocation().toFile();
 			DiagramConverter dc = new DiagramConverter();
-			if (dc.isDiagramFile(file.getFullPath().toFile())) {
+			if (dc.isDiagramFile(f)) {
 				try {
-					dc.ConvertDiagramToProlog(path, fname);
+					dc.ConvertDiagramToProlog(f); // generating from the *.sad a *.pl
 				} catch (FileNotFoundException e) {
 					IStatus is = new Status(Status.ERROR, "Vespucci",
 							"FileNotFoundException", e);
@@ -102,4 +102,42 @@ public class GeneratePrologFacts extends AbstractHandler {
 
 		return re;
 	}
+	/*
+	 * 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
+				.getActiveMenuSelection(event); // current package Explorer selection
+		boolean re = false;
+		if (selection.getFirstElement() instanceof IFile) { //first and only selected Element
+			IFile file = (IFile) selection.getFirstElement();
+			String fname = file.getName();
+			String path = file.getRawLocation().toFile().getParent();
+			DiagramConverter dc = new DiagramConverter();
+			if (dc.isDiagramFile(file.getFullPath().toFile())) {
+				try {
+					dc.ConvertDiagramToProlog(path, fname); // generating from the *.sad a *.pl
+				} catch (FileNotFoundException e) {
+					IStatus is = new Status(Status.ERROR, "Vespucci",
+							"FileNotFoundException", e);
+					StatusManager.getManager().handle(is, StatusManager.SHOW);
+				} catch (IOException e) {
+					IStatus is = new Status(Status.ERROR, "Vespucci",
+							"Failed to save Prolog file", e);
+					StatusManager.getManager().handle(is, StatusManager.SHOW);
+
+				}
+				re = true;
+				// Refresh Pageview
+				try {
+					file.getProject().refreshLocal(IResource.DEPTH_INFINITE,
+							new NullProgressMonitor());
+				} catch (CoreException e1) {
+					StatusManager.getManager().handle(e1, "Vespucci");
+				}
+			}
+
+		}
+
+		return re;
+	}*/
+	
 }

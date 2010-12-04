@@ -67,28 +67,22 @@ public class VespucciModelingAssistantProvider extends
 	public List getTypesForPopupBar(IAdaptable host) {
 		IGraphicalEditPart editPart = (IGraphicalEditPart) host
 				.getAdapter(IGraphicalEditPart.class);
+		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart) {
+			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_2002);
+			return types;
+		}
 		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
-			ArrayList types = new ArrayList(2);
-			types
-					.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
-			types
-					.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
+			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
 			return types;
 		}
 		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart) {
-			ArrayList types = new ArrayList(2);
-			types
-					.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
-			types
-					.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
-			return types;
-		}
-		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart) {
-			ArrayList types = new ArrayList(2);
-			types
-					.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001);
-			types
-					.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_2002);
+			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
 			return types;
 		}
 		return Collections.EMPTY_LIST;
@@ -229,8 +223,8 @@ public class VespucciModelingAssistantProvider extends
 	 */
 	public EObject selectExistingElementForSource(IAdaptable target,
 			IElementType relationshipType) {
-		return selectExistingElement(target, getTypesForSource(target,
-				relationshipType));
+		return selectExistingElement(target,
+				getTypesForSource(target, relationshipType));
 	}
 
 	/**
@@ -238,8 +232,8 @@ public class VespucciModelingAssistantProvider extends
 	 */
 	public EObject selectExistingElementForTarget(IAdaptable source,
 			IElementType relationshipType) {
-		return selectExistingElement(source, getTypesForTarget(source,
-				relationshipType));
+		return selectExistingElement(source,
+				getTypesForTarget(source, relationshipType));
 	}
 
 	/**
@@ -255,9 +249,10 @@ public class VespucciModelingAssistantProvider extends
 			return null;
 		}
 		Diagram diagram = (Diagram) editPart.getRoot().getContents().getModel();
-		Collection elements = new HashSet();
-		for (Iterator it = diagram.getElement().eAllContents(); it.hasNext();) {
-			EObject element = (EObject) it.next();
+		HashSet<EObject> elements = new HashSet<EObject>();
+		for (Iterator<EObject> it = diagram.getElement().eAllContents(); it
+				.hasNext();) {
+			EObject element = it.next();
 			if (isApplicableElement(element, types)) {
 				elements.add(element);
 			}
@@ -288,10 +283,8 @@ public class VespucciModelingAssistantProvider extends
 						.getInstance().getItemProvidersAdapterFactory());
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
 				shell, labelProvider);
-		dialog
-				.setMessage(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciModelingAssistantProviderMessage);
-		dialog
-				.setTitle(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciModelingAssistantProviderTitle);
+		dialog.setMessage(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciModelingAssistantProviderMessage);
+		dialog.setTitle(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciModelingAssistantProviderTitle);
 		dialog.setMultipleSelection(false);
 		dialog.setElements(elements);
 		EObject selected = null;

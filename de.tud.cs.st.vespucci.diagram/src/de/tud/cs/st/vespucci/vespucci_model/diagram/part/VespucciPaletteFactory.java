@@ -95,19 +95,16 @@ public class VespucciPaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createEnsemble1CreationTool() {
-		List/*<IElementType>*/types = new ArrayList/*<IElementType>*/(2);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001);
+		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
 		NodeToolEntry entry = new NodeToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Ensemble1CreationTool_title,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Ensemble1CreationTool_desc,
 				types);
 		entry.setId("createEnsemble1CreationTool"); //$NON-NLS-1$
-		entry
-				.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-						.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001));
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -116,19 +113,16 @@ public class VespucciPaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createEmptyEnsemble2CreationTool() {
-		List/*<IElementType>*/types = new ArrayList/*<IElementType>*/(2);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_2002);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
+		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_2002);
 		NodeToolEntry entry = new NodeToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.EmptyEnsemble2CreationTool_title,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.EmptyEnsemble2CreationTool_desc,
 				types);
 		entry.setId("createEmptyEnsemble2CreationTool"); //$NON-NLS-1$
-		entry
-				.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-						.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003));
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -137,17 +131,14 @@ public class VespucciPaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createIncoming1CreationTool() {
-		List/*<IElementType>*/types = new ArrayList/*<IElementType>*/(1);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Incoming_4005);
 		LinkToolEntry entry = new LinkToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Incoming1CreationTool_title,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Incoming1CreationTool_desc,
-				types);
+				Collections
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Incoming_4005));
 		entry.setId("createIncoming1CreationTool"); //$NON-NLS-1$
-		entry
-				.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-						.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Incoming_4005));
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Incoming_4005));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -156,17 +147,14 @@ public class VespucciPaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createOutgoing2CreationTool() {
-		List/*<IElementType>*/types = new ArrayList/*<IElementType>*/(1);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003);
 		LinkToolEntry entry = new LinkToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Outgoing2CreationTool_title,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Outgoing2CreationTool_desc,
-				types);
+				Collections
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003));
 		entry.setId("createOutgoing2CreationTool"); //$NON-NLS-1$
-		entry
-				.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-						.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003));
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -175,17 +163,14 @@ public class VespucciPaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createInandOut3CreationTool() {
-		List/*<IElementType>*/types = new ArrayList/*<IElementType>*/(1);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.InAndOut_4001);
 		LinkToolEntry entry = new LinkToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InandOut3CreationTool_title,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InandOut3CreationTool_desc,
-				types);
+				Collections
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.InAndOut_4001));
 		entry.setId("createInandOut3CreationTool"); //$NON-NLS-1$
-		entry
-				.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-						.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.InAndOut_4001));
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.InAndOut_4001));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -194,17 +179,14 @@ public class VespucciPaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createExpected4CreationTool() {
-		List/*<IElementType>*/types = new ArrayList/*<IElementType>*/(1);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Expected_4002);
 		LinkToolEntry entry = new LinkToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Expected4CreationTool_title,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Expected4CreationTool_desc,
-				types);
+				Collections
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Expected_4002));
 		entry.setId("createExpected4CreationTool"); //$NON-NLS-1$
-		entry
-				.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-						.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Expected_4002));
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Expected_4002));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -213,17 +195,14 @@ public class VespucciPaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createNotAllowed5CreationTool() {
-		List/*<IElementType>*/types = new ArrayList/*<IElementType>*/(1);
-		types
-				.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004);
 		LinkToolEntry entry = new LinkToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NotAllowed5CreationTool_title,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NotAllowed5CreationTool_desc,
-				types);
+				Collections
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004));
 		entry.setId("createNotAllowed5CreationTool"); //$NON-NLS-1$
-		entry
-				.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-						.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004));
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -236,13 +215,13 @@ public class VespucciPaletteFactory {
 		/**
 		 * @generated
 		 */
-		private final List elementTypes;
+		private final List<IElementType> elementTypes;
 
 		/**
 		 * @generated
 		 */
 		private NodeToolEntry(String title, String description,
-				List elementTypes) {
+				List<IElementType> elementTypes) {
 			super(title, description, null, null);
 			this.elementTypes = elementTypes;
 		}
@@ -265,13 +244,13 @@ public class VespucciPaletteFactory {
 		/**
 		 * @generated
 		 */
-		private final List relationshipTypes;
+		private final List<IElementType> relationshipTypes;
 
 		/**
 		 * @generated
 		 */
 		private LinkToolEntry(String title, String description,
-				List relationshipTypes) {
+				List<IElementType> relationshipTypes) {
 			super(title, description, null, null);
 			this.relationshipTypes = relationshipTypes;
 		}

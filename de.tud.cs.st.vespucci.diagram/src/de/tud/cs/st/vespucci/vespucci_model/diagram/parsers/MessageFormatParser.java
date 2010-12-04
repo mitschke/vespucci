@@ -210,10 +210,9 @@ public class MessageFormatParser extends
 			return new ParserEditStatus(
 					de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.ID,
 					IParserEditStatus.UNEDITABLE,
-					NLS
-							.bind(
-									de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.MessageFormatParser_InvalidInputError,
-									new Integer(pos.getErrorIndex())));
+					NLS.bind(
+							de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.MessageFormatParser_InvalidInputError,
+							new Integer(pos.getErrorIndex())));
 		}
 		return validateNewValues(values);
 	}

@@ -88,6 +88,21 @@ public class VespucciDiagramEditorPlugin extends AbstractUIPlugin {
 	/**
 	 * @generated
 	 */
+	private de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints linkConstraints;
+
+	/**
+	 * @generated
+	 */
+	private de.tud.cs.st.vespucci.vespucci_model.diagram.providers.ElementInitializers initializers;
+
+	/**
+	 * @generated
+	 */
+	private de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory oclFactory;
+
+	/**
+	 * @generated
+	 */
 	public VespucciDiagramEditorPlugin() {
 	}
 
@@ -108,6 +123,9 @@ public class VespucciDiagramEditorPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		adapterFactory.dispose();
 		adapterFactory = null;
+		linkConstraints = null;
+		initializers = null;
+		oclFactory = null;
 		instance = null;
 		super.stop(context);
 	}
@@ -123,7 +141,7 @@ public class VespucciDiagramEditorPlugin extends AbstractUIPlugin {
 	 * @generated
 	 */
 	protected ComposedAdapterFactory createAdapterFactory() {
-		List factories = new ArrayList();
+		ArrayList<AdapterFactory> factories = new ArrayList<AdapterFactory>();
 		fillItemProviderFactories(factories);
 		return new ComposedAdapterFactory(factories);
 	}
@@ -131,7 +149,7 @@ public class VespucciDiagramEditorPlugin extends AbstractUIPlugin {
 	/**
 	 * @generated
 	 */
-	protected void fillItemProviderFactories(List factories) {
+	protected void fillItemProviderFactories(List<AdapterFactory> factories) {
 		factories
 				.add(new de.tud.cs.st.vespucci.vespucci_model.provider.Vespucci_modelItemProviderAdapterFactory());
 		factories.add(new ResourceItemProviderAdapterFactory());
@@ -223,6 +241,51 @@ public class VespucciDiagramEditorPlugin extends AbstractUIPlugin {
 			documentProvider = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDocumentProvider();
 		}
 		return documentProvider;
+	}
+
+	/**
+	 * @generated
+	 */
+	public de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints getLinkConstraints() {
+		return linkConstraints;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setLinkConstraints(
+			de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.LinkConstraints lc) {
+		this.linkConstraints = lc;
+	}
+
+	/**
+	 * @generated
+	 */
+	public de.tud.cs.st.vespucci.vespucci_model.diagram.providers.ElementInitializers getElementInitializers() {
+		return initializers;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setElementInitializers(
+			de.tud.cs.st.vespucci.vespucci_model.diagram.providers.ElementInitializers i) {
+		this.initializers = i;
+	}
+
+	/**
+	 * @generated
+	 */
+	public de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory getVespucciOCLFactory() {
+		return oclFactory;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setVespucciOCLFactory(
+			de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory f) {
+		this.oclFactory = f;
 	}
 
 	/**
