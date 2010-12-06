@@ -68,7 +68,7 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 public class DiagramConverter {
 	
 	/**
-	 * Regular expression to check parameter of Ensembles!
+	 * Regular expression to check parameter of Ensembles.
 	 */
 	private static Pattern mParameterVariable = Pattern.compile("\\p{Upper}.*");
 
