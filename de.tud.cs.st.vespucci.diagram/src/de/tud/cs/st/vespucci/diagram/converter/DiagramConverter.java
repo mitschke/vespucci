@@ -73,7 +73,7 @@ public class DiagramConverter {
 	private static Pattern mParameterVariable = Pattern.compile("\\p{Upper}.*");
 
 	/**
-	 * Regular expression to split parameter names of Ensembles
+	 * Regular expression to split parameter names of Ensembles.
 	 */
 	private static Pattern mParameterNames = Pattern.compile("(.*?)=(.*)");
 	
