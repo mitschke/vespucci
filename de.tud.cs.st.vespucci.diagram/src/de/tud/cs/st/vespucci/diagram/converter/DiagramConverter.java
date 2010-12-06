@@ -199,7 +199,6 @@ public class DiagramConverter {
 	}
 
 	public boolean isDiagramFile(File file){
-		//TODO need to be fixed
 		return true;
 	}
 
