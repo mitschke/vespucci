@@ -74,7 +74,7 @@ public class EPService {
 			Shape shape = (Shape) ePart.resolveSemanticElement();
 			String s = shape.getName();
 	
-			// TODO Report this as an error to the user - BenjaminL: erledigt?
+			// TODO Report this as an error to the user - BenjaminL: erledigt? - ERROR STRINGS ANLEGEN!!
 			if (s.length() == 0) {
 				IStatus iStat = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
 						"No name for an ensemble is not allowed");
@@ -112,23 +112,35 @@ public class EPService {
 	// TODO See getEditPartName
 	try {
 	    if (ep instanceof DummyEditPart || ep instanceof Dummy2EditPart) {
-		return "empty";
+	    	return "empty";
 	    }
 	    //
 	    if (ep instanceof ShapeNodeEditPart) {
-		ShapeNodeEditPart ePart = (ShapeNodeEditPart) ep;
-		Shape shape = (Shape) ePart.resolveSemanticElement();
-		String s = shape.getQuery();
-
-		if (s.length() == 0) {
-		    return "empty";
-		}
-		return s;
+			ShapeNodeEditPart ePart = (ShapeNodeEditPart) ep;
+			Shape shape = (Shape) ePart.resolveSemanticElement();
+			String s = shape.getQuery();
+	
+			if (s.length() == 0) {
+				IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+						"Query shouldn't be empty");
+				StatusManager.getManager().handle(is, StatusManager.SHOW);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+			    return "empty";
+			}
+			return s;
 	    } else {
-		return "non-editpart";
+	    	IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"Couldn't resolve ensemble name from a non EditPart", new Exception("Couldn't resolve ensemble name from a non EditPart"));
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+	    	return "non-editpart";
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
+	    IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+				"Couldn't resolve ensemble", new Exception("Couldn't resolve ensemble"));
+		StatusManager.getManager().handle(is, StatusManager.SHOW);
+		StatusManager.getManager().handle(is, StatusManager.LOG);
 	    return "empty";
 	}
     }
