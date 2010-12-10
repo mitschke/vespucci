@@ -37,11 +37,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
@@ -49,40 +52,56 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * Provide common services, methods extracting information from edit part.
  * 
  * @author Tam-Minh Nguyen
  * @author Michael Eichberg (minor bug fixes, added TODOs)
+ * @author BenjaminL errorlog ausgaben hinzugefügt (TODOs)
  */
 public class EPService {
 
     static public String getEditPartName(Object ep) {
 	try {
 	    if (ep instanceof DummyEditPart || ep instanceof Dummy2EditPart) {
-		return "empty";
+	    	return "empty";
 	    }
 	    //
 	    if (ep instanceof ShapeNodeEditPart) {
-		ShapeNodeEditPart ePart = (ShapeNodeEditPart) ep;
-		Shape shape = (Shape) ePart.resolveSemanticElement();
-		String s = shape.getName();
-
-		// TODO Report this as an error to the user
-		if (s.length() == 0) {
-		    return "no-name";
-		}
-		return s;
+			ShapeNodeEditPart ePart = (ShapeNodeEditPart) ep;
+			Shape shape = (Shape) ePart.resolveSemanticElement();
+			String s = shape.getName();
+	
+			// TODO Report this as an error to the user - BenjaminL: erledigt?
+			if (s.length() == 0) {
+				IStatus iStat = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+						"No name for an ensemble is not allowed");
+				StatusManager.getManager().handle(iStat, StatusManager.SHOW);
+				StatusManager.getManager().handle(iStat, StatusManager.LOG);
+			    return "no-name";
+			}
+			return s;
 	    } else {
-		// TODO Report this as an error to the user (and throw an exception?)
-		return "non-editpart";
-	    }
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    // TODO Report an error (Error log?) and throw an exception?
-	    return "no_name";
-	}
+	    	IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"Couldn't resolve ensemble name from a non ShapeNode", new Exception("Couldn't resolve ensemble name from a non ShapeNode"));
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+			
+			// TODO Report this as an error to the user (and throw an exception?) - BenjaminL: erledigt?
+			return "non-editpart";
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    
+		    IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"Couldn't resolve ensemble name", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		    // TODO Report an error (Error log?) and throw an exception? - BenjaminL: erledigt?
+		    return "no_name";
+		}
     }
 
     /**
