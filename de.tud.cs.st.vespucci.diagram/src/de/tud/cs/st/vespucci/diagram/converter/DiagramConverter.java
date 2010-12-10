@@ -273,7 +273,7 @@ public class DiagramConverter {
 		// insert ensembles
 		strBuilder.append(ensembleFacts);
 		
-		// insert dependency Header
+		// insert dependency Header.
 		strBuilder.append(getDependencyHeader());
 		
 		// insert dependencies
