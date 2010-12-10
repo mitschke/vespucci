@@ -692,10 +692,7 @@
  
    </extension>
       <extension point="org.eclipse.ui.menus" id="context-menus">
-      <!-- menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=">
-      </menuContribution>
-      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=">
-      </menuContribution -->
+      
 
    
           <menuContribution
@@ -731,3 +728,4 @@
 
    <!-- optionally, specify keybindings -->
 </plugin>
+ 
