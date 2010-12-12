@@ -490,7 +490,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		Set<ConnectionEditPart> conSet = EPService
 				.getAllConnectionsToAndFromShapeList(shapeList);
 
-		// int idx = 1;
+		// int idx = 1; 
 		for (Object ee : conSet) {
 			//
 			if (ee instanceof ConnectionEditPart) {
