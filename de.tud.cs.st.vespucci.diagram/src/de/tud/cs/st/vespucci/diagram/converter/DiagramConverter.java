@@ -175,32 +175,16 @@ public class DiagramConverter {
 	 */
 	public void ConvertDiagramToProlog (File sadFile) throws FileNotFoundException, IOException
 	{
-		String fullFileName = sadFile.getParent() + "/" + sadFile.getName();
-		ShapesDiagramImpl diagram = loadDiagramFile(sadFile);
-		
-		// create a new Prolog File
-		File prologFile = new File(sadFile.getAbsoluteFile()  + ".pl");
-		
-		// the file will be overwritten
-		FileOutputStream fos;
-		fos = new FileOutputStream(prologFile);
-		BufferedOutputStream bos = new BufferedOutputStream(fos);
-		
-		// write header string
-		bos.write(this.getFileHeaderString(fullFileName).getBytes());
-		
-		// translate ensemble facts
-		bos.write(this.getFacts(diagram, sadFile.getName()).getBytes());
-
-		bos.close();
-		fos.close();
-		
-		return;
+		this.ConvertDiagramToProlog(sadFile.getParent(), sadFile.getName());
 	}
 
+	/**
+	 * Return true when the given File object is a Diagram file.
+	 * @author Patrick Jahnke
+	 */
 	public boolean isDiagramFile(File file){
-		//TODO need to be fixed
-		return true;
+		String extension = file.getName().substring((file.getName().length()-3), file.getName().length());
+		return (extension.equals("sad"));
 	}
 
 	
@@ -227,11 +211,13 @@ public class DiagramConverter {
 		strBuilder.append("% Created by Vespucci, Technische Universitiät Darmstadt, Department of Computer Science\n");
 		strBuilder.append("% www.opal-project.de\n\n");
 		strBuilder.append(":- multifile ensemble/5.\n");
+		strBuilder.append(":- multifile abstract_ensemble/5.\n");
 		strBuilder.append(":- multifile outgoing/7.\n");
 		strBuilder.append(":- multifile incoming/7.\n");
 		strBuilder.append(":- multifile not_allowed/7.\n");
 		strBuilder.append(":- multifile expected/7.\n");
 		strBuilder.append(":- discontiguous ensemble/5.\n");
+		strBuilder.append(":- discontiguous abstract_ensemble/5.\n");
 		strBuilder.append(":- discontiguous outgoing/7.\n");
 		strBuilder.append(":- discontiguous incoming/7.\n");
 		strBuilder.append(":- discontiguous not_allowed/7.\n");
@@ -303,7 +289,7 @@ public class DiagramConverter {
         		else
         			ensembleFacts.append("ensemble");
         		
-        		ensembleFacts.append("('" + fileName + "', '" + this.getEnsembleDescriptor(ensemble) + "', "+ getEnsembleParameters (ensemble) +", (" + ensemble.getQuery() + "), [" + listSubEnsembles(ensemble.getShapes()) + "]).\n");
+        		ensembleFacts.append("('" + fileName + "', " + this.getEnsembleDescriptor(ensemble) + ", "+ getEnsembleParameters (ensemble) +", (" + ensemble.getQuery() + "), [" + listSubEnsembles(ensemble.getShapes()) + "]).\n");
            		// does children exist
 	        	if ((ensemble.getShapes() != null) && (ensemble.getShapes().size()>0))
 	        		createFacts(ensemble.getShapes(), fileName, ensembleFacts, dependencyFacts);
@@ -484,33 +470,33 @@ public class DiagramConverter {
 		if (connection instanceof OutgoingImpl)
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ "'" + getDependencyEnsembleName(connection.getSource()) + "', [], "
-					+ "'" + getDependencyEnsembleName(connection.getTarget()) + "', [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
+					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof IncomingImpl)
 			transactionSB.append("incoming"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ "'" + getDependencyEnsembleName(connection.getSource()) + "', [], "
-					+ "'" + getDependencyEnsembleName(connection.getTarget()) + "', [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
+					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof ExpectedImpl)
 			transactionSB.append("expected"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ "'" + getDependencyEnsembleName(connection.getSource()) + "', [], "
-					+ "'" + getDependencyEnsembleName(connection.getTarget()) + "', [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
+					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof NotAllowedImpl)
 			transactionSB.append("not_allowed"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ "'" + getDependencyEnsembleName(connection.getSource()) + "', [], "
-					+ "'" + getDependencyEnsembleName(connection.getTarget()) + "', [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
+					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof InAndOutImpl)
 		{
 			transactionSB.append("incoming"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ "'" + getDependencyEnsembleName(connection.getSource()) + "', [], "
-					+ "'" + getDependencyEnsembleName(connection.getTarget()) + "', [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
+					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ "'" + getDependencyEnsembleName(connection.getSource()) + "', [], "
-					+ "'" + getDependencyEnsembleName(connection.getTarget()) + "', [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
+					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
 
 		}
 		mDependencyCounter++;
