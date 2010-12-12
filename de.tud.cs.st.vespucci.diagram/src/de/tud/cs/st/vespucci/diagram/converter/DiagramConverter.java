@@ -188,7 +188,7 @@ public class DiagramConverter {
 	}
 
 	
-	/**
+	/** 
 	 * returns a separator like %------ 
 	 * @author Patrick Jahnke
 	 */
