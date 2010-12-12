@@ -41,19 +41,18 @@ import java.io.IOException;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.internal.content.Activator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.gmf.runtime.common.ui.services.statusline.GetStatusLineContributionOperation;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * A handler for saving a *.sad file to a *.pl Prolog file.
@@ -79,14 +78,15 @@ public class GeneratePrologFacts extends AbstractHandler {
 				try {
 					dc.ConvertDiagramToProlog(f); // generating from the *.sad a *.pl
 				} catch (FileNotFoundException e) {
-					IStatus is = new Status(Status.ERROR, "Vespucci",
+					IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
 							"FileNotFoundException", e);
 					StatusManager.getManager().handle(is, StatusManager.SHOW);
+					StatusManager.getManager().handle(is, StatusManager.LOG);
 				} catch (IOException e) {
-					IStatus is = new Status(Status.ERROR, "Vespucci",
+					IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
 							"Failed to save Prolog file", e);
 					StatusManager.getManager().handle(is, StatusManager.SHOW);
-
+					StatusManager.getManager().handle(is, StatusManager.LOG);
 				}
 				re = true;
 				// Refresh Pageview
@@ -94,7 +94,7 @@ public class GeneratePrologFacts extends AbstractHandler {
 					file.getProject().refreshLocal(IResource.DEPTH_INFINITE,
 							new NullProgressMonitor());
 				} catch (CoreException e1) {
-					StatusManager.getManager().handle(e1, "Vespucci");
+					StatusManager.getManager().handle(e1, VespucciDiagramEditorPlugin.ID);
 				}
 			}
 

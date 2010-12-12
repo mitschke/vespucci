@@ -34,19 +34,10 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -59,8 +50,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.URIEditorInput;
-import org.eclipse.emf.ecore.resource.Resource.IOWrappedException;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
@@ -70,10 +61,6 @@ import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
 import org.eclipse.gmf.runtime.diagram.ui.actions.ActionIds;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ITextAwareEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.NoteEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDocument;
@@ -103,18 +90,12 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
 import de.tud.cs.st.vespucci.diagram.supports.EPService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart;
 
 /**
  * @generated
@@ -493,17 +474,24 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		// int idx = 1; 
 		for (Object ee : conSet) {
 			//
-			if (ee instanceof ConnectionEditPart) {
+			if (ee instanceof ConnectionEditPart)
+				{
 				ConnectionEditPart con = (ConnectionEditPart) ee;
 				Connection ci = (Connection) con.resolveSemanticElement();
 				// Connection to a Node is null
 				if (ci==null)
 					continue;
-				if (ci.isTemp()) {
-					// draw with RED
-					con.getFigure().setForegroundColor(
-							org.eclipse.draw2d.ColorConstants.red);
-					con.getFigure().repaint();
+				//TODO @author BenjaminL: WA eingefügt NoteAttachment --> ci == null --> Absturz!
+				if (ci == null){
+					IStatus iStat = new Status(Status.WARNING, VespucciDiagramEditorPlugin.ID, "NoteAttachment could not be processed while loading CHANGE THIS MESSAGE!");
+					StatusManager.getManager().handle(iStat, StatusManager.LOG);
+				}else{
+					if (ci.isTemp()) {
+						// draw with RED
+						con.getFigure().setForegroundColor(
+								org.eclipse.draw2d.ColorConstants.red);
+						con.getFigure().repaint();
+					}
 				}
 			}
 		}
