@@ -481,11 +481,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 				// Connection to a Node is null
 				if (ci==null)
 					continue;
-				//TODO @author BenjaminL: WA eingefügt NoteAttachment --> ci == null --> Absturz!
-				if (ci == null){
-					IStatus iStat = new Status(Status.WARNING, VespucciDiagramEditorPlugin.ID, "NoteAttachment could not be processed while loading CHANGE THIS MESSAGE!");
-					StatusManager.getManager().handle(iStat, StatusManager.LOG);
-				}else{
+				else{
 					if (ci.isTemp()) {
 						// draw with RED
 						con.getFigure().setForegroundColor(
