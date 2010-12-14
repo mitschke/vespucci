@@ -64,9 +64,11 @@ import org.eclipse.emf.ecore.resource.Resource.IOWrappedException;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gmf.runtime.common.ui.services.marker.MarkerNavigationService;
 import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
+import org.eclipse.gmf.runtime.diagram.core.util.ViewType;
 import org.eclipse.gmf.runtime.diagram.ui.actions.ActionIds;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
@@ -74,12 +76,15 @@ import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ITextAwareEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.NoteEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeContainerEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeDiagramEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDocument;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDocumentProvider;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.parts.DiagramDocumentEditor;
 import org.eclipse.gmf.runtime.notation.Diagram;
+import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -110,6 +115,7 @@ import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart;
@@ -121,6 +127,41 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart;
  */
 public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		IGotoMarker {
+	
+	
+	@Override
+	protected EditPartFactory getOutlineViewEditPartFactory() {
+		return new EditPartFactory() {
+
+			public EditPart createEditPart(EditPart context, Object model) {
+//				GraphicalViewer gv = getDiagramGraphicalViewer();
+//
+//				for (Iterator ite = gv.getEditPartRegistry().values()
+//						.iterator(); ite.hasNext();) {
+//					Object ep = ite.next();
+//					if(ep instanceof ConnectionEditPart) {
+//						ConnectionEditPart cep = (ConnectionEditPart)ep;
+//						cep.toString();
+//					}
+//					
+//					
+//					// Some operations against to EditPart here.
+//				}
+
+				if (context instanceof EnsembleEditPart) {
+					return null;
+				}
+				if (model instanceof Diagram) {
+					return new TreeDiagramEditPart(model);
+				} else if (model instanceof View
+						&& ViewType.GROUP.equals(((View) model).getType())) {
+					return new TreeContainerEditPart(model);
+				} else {
+					return new VespucciContainerEditPart(model);
+				}
+			}
+		};
+	}
 
 	/**
 	 * @generated
