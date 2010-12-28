@@ -69,8 +69,7 @@ public class DiagramConverter {
 	
 	
 	/**
-	 * Regular expression to check parameter of Ensembles. 
-	 * TESTTTT
+	 * Regular expression to check parameter of Ensembles.
 	 */
 	private static Pattern mParameterVariable = Pattern.compile("\\p{Upper}.*");
 
