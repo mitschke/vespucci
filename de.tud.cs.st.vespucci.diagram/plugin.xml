@@ -228,7 +228,7 @@
       <propertySections contributorId="de.tud.cs.st.vespucci.diagram">
          <propertySection id="property.section.ConnectorAppearancePropertySection" 
             filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.ConnectionEditPartPropertySectionFilter" 
-            class="de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramAppearancePreferencePageChanged" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.appearance.ConnectionAppearancePropertySection" 
             tab="property.tab.AppearancePropertySection">
          </propertySection>
          <propertySection id="property.section.ShapeColorAndFontPropertySection" 
