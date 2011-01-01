@@ -66,7 +66,7 @@
         description="non leaf Ensemble must be derived / empty"
         id="NonLeafEnsembleMustBeDerivedID"
         rule="//@expressionProviders/@providers.1/@expressions.0"
-        message="Non leaf Ensemble have to be derived"
+        message="Queries of non leaf ensemble must be derived "
         category="//@audits/@categories.1">
       <target
           xsi:type="gmfgen:GenDomainElementTarget"
