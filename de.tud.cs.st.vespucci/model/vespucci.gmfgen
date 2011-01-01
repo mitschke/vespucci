@@ -1321,7 +1321,7 @@
         xsi:type="gmfgen:GenJavaExpressionProvider">
       <expressions
           xsi:type="gmfgen:GenConstraint"
-          body="Derived"/>
+          body="NonLeafEnsembleMustBeDerived"/>
     </providers>
   </expressionProviders>
   <labelParsers
