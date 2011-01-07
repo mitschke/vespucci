@@ -63,7 +63,7 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
-import de.tud.cs.st.vespucci.diagram.listeners.EditDropPolicy;
+import de.tud.cs.st.vespucci.diagram.dnd.EditDropPolicy;
 
 /**
  * @generated

@@ -32,27 +32,67 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.listeners;
+package de.tud.cs.st.vespucci.diagram.dnd;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.ui.part.ResourceTransfer;
+
 /**
- * A Class witch provide static tools for supporting of DnD
+ * A listener for IResouce drops on the VespucciDiagram view
+ * 
  * @author MalteV
- *
+ * 
  */
-public class StaticToolsForDnD {
-	
-	
-	public static String createQueryForAMapOfIResource(Map<String,IResource> map){
-		return createQueryForAMapOfIResource(map, "");
+public class DropVespucciDiagramTargetListener extends AbstractTransferDropTargetListener {
+	/**
+	 * Constructor that set the drop type to IRecource
+	 * 
+	 * @param viewer
+	 */
+	public DropVespucciDiagramTargetListener(EditPartViewer viewer) {
+		super(viewer, ResourceTransfer.getInstance());
 	}
-	public static String createQueryForAMapOfIResource(Map<String,IResource> map, String oldQuery){
-		String res = oldQuery;
-		for(String key : map.keySet()){
-			res = res + " " + map.get(key).toString();
-		}
-		return res;
+
+	protected void handleDragOver() {
+		getCurrentEvent().detail = DND.DROP_COPY;
+		super.handleDragOver();
 	}
+
+	protected void handleDrop() {
+		// Save the IResources from the drop in a map for further tasks
+		Map<String, IResource> m = new HashMap<String, IResource>();
+		for (IResource res : ((IResource[]) getCurrentEvent().data))
+			m.put(res.toString(), res);
+		getTargetRequest().setExtendedData(m);
+		super.handleDrop();
+	}
+
+	@Override
+	public boolean isEnabled(DropTargetEvent event) {
+		return super.isEnabled(event);
+	}
+
+	@Override
+	protected void updateTargetRequest() {
+		((DirectEditRequest) getTargetRequest()).setLocation(getDropLocation());
+		super.updateTargetEditPart();
+	}
+
+	@Override
+	protected Request createTargetRequest() {
+		DirectEditRequest request = new DirectEditRequest();
+		return request;
+	}
+
 }
