@@ -93,6 +93,7 @@ import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
+import de.tud.cs.st.vespucci.diagram.listeners.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EPService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
@@ -444,7 +445,17 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			return fileInput.getFile().getParent().getLocation().toString();
 		}
 	}
-
+	/**
+	 * put a drop listener to the Vespucci diagram view
+	 * 
+	 * @author MalteV
+	 */
+	@Override
+	protected void initializeGraphicalViewer() {
+		super.initializeGraphicalViewer();
+		getDiagramGraphicalViewer().addDropTargetListener(new DropVespucciDiagramTargetListener(getDiagramGraphicalViewer()));
+	}
+	
 	/**
 	 * Temp connections will be colored in red.
 	 * 

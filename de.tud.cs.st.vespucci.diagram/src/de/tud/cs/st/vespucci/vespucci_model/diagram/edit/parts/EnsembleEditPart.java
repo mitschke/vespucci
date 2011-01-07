@@ -63,6 +63,8 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
+import de.tud.cs.st.vespucci.diagram.listeners.EditDropPolicy;
+
 /**
  * @generated
  */
@@ -99,6 +101,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
+		installEditPolicy(REQ_DIRECT_EDIT, new EditDropPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
 	}
