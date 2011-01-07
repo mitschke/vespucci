@@ -93,7 +93,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
+	 * @generated not
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
