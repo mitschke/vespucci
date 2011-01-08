@@ -67,9 +67,11 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 	protected void handleDragOver() {
 		getCurrentEvent().detail = DND.DROP_COPY;
 		super.handleDragOver();
+		
 	}
 
 	protected void handleDrop() {
+		getCurrentEvent().detail = DND.DROP_COPY;
 		// Save the IResources from the drop in a map for further tasks
 		Map<String, IResource> m = new HashMap<String, IResource>();
 		for (IResource res : ((IResource[]) getCurrentEvent().data))

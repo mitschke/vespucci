@@ -41,9 +41,9 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.gmf.runtime.common.core.command.ICommand;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
-import org.eclipse.gmf.runtime.emf.type.core.requests.GetEditContextRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
@@ -135,24 +135,41 @@ public class EditDropPolicy extends DirectEditPolicy {
 		// Shape
 		if (getHost() instanceof GraphicalEditPart
 				&& ((GraphicalEditPart) getHost()).resolveSemanticElement() instanceof Shape) {
-			//we need infos about the EMF meta modell so we refer to the Singelton that save Vespucci_modelPackage
+			// we need infos about the EMF meta modell so we refer to the
+			// Singelton that save Vespucci_modelPackage
 			EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
 					.getEPackage("http://vespucci.editor");
 			Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
+			if((((GraphicalEditPart) getHost()).resolveSemanticElement()).eClass().getEAllStructuralFeatures().contains(vesPackage.getShape_Query())){
+				
+			
+			// get the old query 
+			//String name = (String)writer.eGet(LibraryPackage.eINSTANCE.getWriter_Name());
+			
+			Object oldQuery = (((GraphicalEditPart) getHost()).resolveSemanticElement()).eGet(vesPackage.getShape_Query());
 			@SuppressWarnings("unchecked")
-			//create a Request for the Query edit
-			//org.eclipse.gmf.runtime.emf.type.core.requests.GetEditContextRequest
-			//rq = new GetEditContextRequest(editRequest, editHelperContext)
 			SetRequest sr = new SetRequest(
 					((GraphicalEditPart) getHost()).resolveSemanticElement(),
 					vesPackage.getShape_Query(),
 					StaticToolsForDnD.createQueryForAMapOfIResource(request
-							.getExtendedData()));
+							.getExtendedData(),(String) oldQuery));
+		
 			org.eclipse.gmf.runtime.common.core.command.ICommand com = new SetValueCommand(
 					sr);
-			//return the edit Request in a Proxy so it can be handled
+			// return the edit Request in a Proxy so it can be handled
 			return new org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy(
 					com);
+
+			// create a Request for the Query edit
+			// @SuppressWarnings("unchecked")
+			// EditQueryRequest editRequest = new EditQueryRequest(
+			// ((GraphicalEditPart) getHost()).resolveSemanticElement(),
+			// vesPackage.getShape_Query(), request.getExtendedData());
+			// ICommand com = new EditQueryCommand(editRequest);
+			// return new
+			// org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy(com);
+			}
+			return null;
 		}
 		return null;
 	}
