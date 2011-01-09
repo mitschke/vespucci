@@ -117,6 +117,8 @@ public class OutgoingCreateCommand extends EditElementCommand {
 		de.tud.cs.st.vespucci.vespucci_model.Outgoing newElement = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
 				.createOutgoing();
 		getContainer().getTargetConnections().add(newElement);
+		// store source connections in Ensemble		
+		getTarget().getSourceConnections().add(newElement);
 		newElement.setSource(getSource());
 		newElement.setTarget(getTarget());
 		doConfigure(newElement, monitor, info);
