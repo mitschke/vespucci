@@ -119,7 +119,7 @@ public class OutgoingCreateCommand extends EditElementCommand {
 				.createOutgoing();
 		getContainer().getTargetConnections().add(newElement);
 		// store source connections in Ensemble		
-		getTarget().getSourceConnections().add(newElement);
+		//getTarget().getSourceConnections().add(newElement);
 		newElement.setSource(getSource());
 		newElement.setTarget(getTarget());
 		doConfigure(newElement, monitor, info);
