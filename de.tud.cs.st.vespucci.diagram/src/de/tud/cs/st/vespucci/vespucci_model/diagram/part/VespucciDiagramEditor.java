@@ -1,4 +1,5 @@
 /*
+
  *  License (BSD Style License):
  *   Copyright (c) 2010
  *   Author Tam-Minh Nguyen
@@ -55,18 +56,23 @@ import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gmf.runtime.common.ui.services.marker.MarkerNavigationService;
 import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
+import org.eclipse.gmf.runtime.diagram.core.util.ViewType;
 import org.eclipse.gmf.runtime.diagram.ui.actions.ActionIds;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeContainerEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeDiagramEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDocument;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDocumentProvider;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.parts.DiagramDocumentEditor;
 import org.eclipse.gmf.runtime.notation.Diagram;
+import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -97,12 +103,47 @@ import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EPService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
 
 /**
  * @generated
  */
 public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		IGotoMarker {
+
+	@Override
+	protected EditPartFactory getOutlineViewEditPartFactory() {
+		return new EditPartFactory() {
+
+			public EditPart createEditPart(EditPart context, Object model) {
+				// GraphicalViewer gv = getDiagramGraphicalViewer();
+				//
+				// for (Iterator ite = gv.getEditPartRegistry().values()
+				// .iterator(); ite.hasNext();) {
+				// Object ep = ite.next();
+				// if(ep instanceof ConnectionEditPart) {
+				// ConnectionEditPart cep = (ConnectionEditPart)ep;
+				// cep.toString();
+				// }
+				//
+				//
+				// // Some operations against to EditPart here.
+				// }
+
+				if (context instanceof EnsembleEditPart) {
+					return null;
+				}
+				if (model instanceof Diagram) {
+					return new TreeDiagramEditPart(model);
+				} else if (model instanceof View
+						&& ViewType.GROUP.equals(((View) model).getType())) {
+					return new TreeContainerEditPart(model);
+				} else {
+					return new VespucciContainerEditPart(model);
+				}
+			}
+		};
+	}
 
 	/**
 	 * @generated
@@ -263,7 +304,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		//this.saveDiagramInTextNonRecursive(progressMonitor);
+		// this.saveDiagramInTextNonRecursive(progressMonitor);
 		this.validateDiagramConstraints();
 
 	}
@@ -445,6 +486,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			return fileInput.getFile().getParent().getLocation().toString();
 		}
 	}
+
 	/**
 	 * put a drop listener to the Vespucci diagram view
 	 * 
@@ -453,9 +495,11 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
-		getDiagramGraphicalViewer().addDropTargetListener(new DropVespucciDiagramTargetListener(getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new DropVespucciDiagramTargetListener(
+						getDiagramGraphicalViewer()));
 	}
-	
+
 	/**
 	 * Temp connections will be colored in red.
 	 * 
@@ -482,7 +526,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		Set<ConnectionEditPart> conSet = EPService
 				.getAllConnectionsToAndFromShapeList(shapeList);
 
-		// int idx = 1; 
+		// int idx = 1;
 		for (Object ee : conSet) {
 			//
 			if (ee instanceof ConnectionEditPart) {
@@ -491,26 +535,20 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 				// Connection to a Node is null
 				if (ci == null)
 					continue;
-				//TODO @author BenjaminL: WA eingefügt NoteAttachment --> ci == null --> Absturz!
-				if (ci == null) {
-					IStatus iStat = new Status(Status.WARNING,
-							VespucciDiagramEditorPlugin.ID,
-							"NoteAttachment could not be processed while loading CHANGE THIS MESSAGE!");
-					StatusManager.getManager().handle(iStat, StatusManager.LOG);
-				} else {
-					if (ci.isTemp()) {
-						// draw with RED
-						con.getFigure().setForegroundColor(
-								org.eclipse.draw2d.ColorConstants.red);
-						con.getFigure().repaint();
-					}
+
+				if (ci.isTemp()) {
+					// draw with RED
+					con.getFigure().setForegroundColor(
+							org.eclipse.draw2d.ColorConstants.red);
+					con.getFigure().repaint();
 				}
 			}
 		}
 	}
 
 	/**
-	 * Call validation on Diagram constraints (unique ID, connection allowed or not).
+	 * Call validation on Diagram constraints (unique ID, connection allowed or
+	 * not).
 	 * 
 	 * @author Tam-Minh Nguyen
 	 */
