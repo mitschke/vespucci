@@ -65,6 +65,7 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.NotAllowedImpl;
 import de.tud.cs.st.vespucci.vespucci_model.impl.OutgoingImpl;
 import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
+//TODO: Use the metamodel interfaces instead of the *impl.java Classes
 public class DiagramConverter {
 	
 	
