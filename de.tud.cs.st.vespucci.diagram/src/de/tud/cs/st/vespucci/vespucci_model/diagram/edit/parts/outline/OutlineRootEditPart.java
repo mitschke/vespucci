@@ -32,11 +32,13 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeDiagramEditPart;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * 

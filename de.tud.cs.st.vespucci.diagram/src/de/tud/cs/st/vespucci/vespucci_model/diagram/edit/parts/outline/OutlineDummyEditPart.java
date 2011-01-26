@@ -32,35 +32,24 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
-import org.eclipse.gmf.runtime.notation.View;
-import org.eclipse.gmf.runtime.notation.impl.BasicCompartmentImpl;
-import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
-import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * 
  * @author a_vovk
  *
  */
-public class OutlineEnsembleEditPart extends TreeEditPart {
+public class OutlineDummyEditPart extends TreeEditPart {
 
-	private static final String ENSEMBLE_IMAGE = "icons/outline/Ensemble.gif";
+	private static final String ENSEMBLE_IMAGE = "icons/outline/Dummy.gif";
 
-	private EObject[] objectListenningTo = new EObject[2];
-
-	public OutlineEnsembleEditPart(Object model) {
+	public OutlineDummyEditPart(Object model) {
 		super(model);
 	}
 
@@ -71,57 +60,4 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 
 		return imageDescriptor.createImage();
 	}
-
-	@Override
-	public void activate() {
-		if (isActive())
-			return;
-		super.activate();
-		View view = (View) getModel();
-		EObject semanticElement = getSemanticElement();
-		getDiagramEventBroker().addNotificationListener(view, this);
-		getDiagramEventBroker().addNotificationListener(semanticElement, this);
-		objectListenningTo[0] = view;
-		objectListenningTo[1] = semanticElement;
-	}
-
-	@Override
-	public void deactivate() {
-		if (!isActive())
-			return;
-		for (int index = 0; index < objectListenningTo.length; index++) {
-			getDiagramEventBroker().removeNotificationListener(
-					objectListenningTo[index], this);
-			objectListenningTo[index] = null;
-		}
-		super.deactivate();
-	}
-
-	protected List getModelChildren() {
-		Object model = getModel();
-		if (model instanceof EnsembleImpl) {
-			EnsembleImpl shape = (EnsembleImpl) getModel();
-			return shape.getShapes();
-		}
-		if (model instanceof ShapeImpl) {
-			ShapeImpl shape = (ShapeImpl) getModel();
-
-			EList shapes = shape.getPersistedChildren();
-			EList edges = shape.getSourceEdges();
-			for (Object i : shapes) {
-				if (i instanceof BasicCompartmentImpl) {
-					BasicCompartmentImpl bci = (BasicCompartmentImpl) i;
-					EList<View> out = new BasicEList<View>();
-					out.addAll(bci.getPersistedChildren());
-					out.addAll(edges);
-					return out;
-				}
-
-			}
-
-		}
-
-		return Collections.EMPTY_LIST;
-	}
-
 }

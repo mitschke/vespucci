@@ -32,22 +32,24 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * 
  * @author a_vovk
  *
  */
-public class OutlineTargetConnectionEditPart extends TreeEditPart {
+public class OutlineSourceConnectionEditPart extends TreeEditPart {
 
-	private static final String ENSEMBLE_IMAGE = "icons/outline/incoming.png";
+	private static final String ENSEMBLE_IMAGE = "icons/outline/outgoing.png";
 
-	public OutlineTargetConnectionEditPart(Object model) {
+	public OutlineSourceConnectionEditPart(Object model) {
 		super(model);
 	}
 
@@ -58,4 +60,5 @@ public class OutlineTargetConnectionEditPart extends TreeEditPart {
 
 		return imageDescriptor.createImage();
 	}
+
 }

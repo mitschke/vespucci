@@ -102,6 +102,11 @@ import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineDummyEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEnsembleEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineRootEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineTargetConnectionEditPart;
 
 /**
  * @generated
