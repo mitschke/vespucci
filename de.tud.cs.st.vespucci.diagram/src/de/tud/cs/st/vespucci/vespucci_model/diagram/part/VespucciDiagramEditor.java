@@ -50,8 +50,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.URIEditorInput;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
@@ -59,12 +59,10 @@ import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gmf.runtime.common.ui.services.marker.MarkerNavigationService;
 import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
-import org.eclipse.gmf.runtime.diagram.core.util.ViewType;
 import org.eclipse.gmf.runtime.diagram.ui.actions.ActionIds;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeContainerEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeDiagramEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDocument;
@@ -95,54 +93,21 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
 import de.tud.cs.st.vespucci.diagram.supports.EPService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import de.tud.cs.st.vespucci.vespucci_model.Incoming;
+import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 
 /**
  * @generated
  */
 public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		IGotoMarker {
-	
-	
-	@Override
-	protected EditPartFactory getOutlineViewEditPartFactory() {
-		return new EditPartFactory() {
-
-			public EditPart createEditPart(EditPart context, Object model) {
-//				GraphicalViewer gv = getDiagramGraphicalViewer();
-//
-//				for (Iterator ite = gv.getEditPartRegistry().values()
-//						.iterator(); ite.hasNext();) {
-//					Object ep = ite.next();
-//					if(ep instanceof ConnectionEditPart) {
-//						ConnectionEditPart cep = (ConnectionEditPart)ep;
-//						cep.toString();
-//					}
-//					
-//					
-//					// Some operations against to EditPart here.
-//				}
-
-				if (context instanceof EnsembleEditPart) {
-					return null;
-				}
-				if (model instanceof Diagram) {
-					return new TreeDiagramEditPart(model);
-				} else if (model instanceof View
-						&& ViewType.GROUP.equals(((View) model).getType())) {
-					return new TreeContainerEditPart(model);
-				} else {
-					return new VespucciContainerEditPart(model);
-				}
-			}
-		};
-	}
 
 	/**
 	 * @generated
@@ -253,6 +218,44 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	}
 
 	/**
+	 * EditPartFactory for OutlineView
+	 * 
+	 * @author a_vovk
+	 * @generated NOT
+	 */
+	@Override
+	protected EditPartFactory getOutlineViewEditPartFactory() {
+		return new EditPartFactory() {
+
+			/**
+			 * Creates EditParts for OutlineView
+			 */
+			public EditPart createEditPart(EditPart context, Object model) {
+				if (model instanceof View) {
+					// Diagram is a root edit part
+					if (model instanceof Diagram) {
+						return new OutlineRootEditPart(model);
+					}
+					View view = (View) model;
+					EObject element = view.getElement();
+					
+					if (element instanceof Ensemble) {
+						return new OutlineEnsembleEditPart(model);
+					} else if (element instanceof Dummy) {
+						return new OutlineDummyEditPart(model);
+					} else if (element instanceof Incoming) {
+						return new OutlineSourceConnectionEditPart(model);
+					} else if (element instanceof Outgoing) {
+						return new OutlineTargetConnectionEditPart(model);
+					}
+				}
+				return new TreeEditPart(model);
+
+			}
+		};
+	}
+
+	/**
 	 * @generated
 	 */
 	public void gotoMarker(IMarker marker) {
@@ -303,7 +306,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		//this.saveDiagramInTextNonRecursive(progressMonitor);
+		// this.saveDiagramInTextNonRecursive(progressMonitor);
 		this.validateDiagramConstraints();
 
 	}
@@ -512,17 +515,16 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		Set<ConnectionEditPart> conSet = EPService
 				.getAllConnectionsToAndFromShapeList(shapeList);
 
-		// int idx = 1; 
+		// int idx = 1;
 		for (Object ee : conSet) {
 			//
-			if (ee instanceof ConnectionEditPart)
-				{
+			if (ee instanceof ConnectionEditPart) {
 				ConnectionEditPart con = (ConnectionEditPart) ee;
 				Connection ci = (Connection) con.resolveSemanticElement();
 				// Connection to a Node is null
-				if (ci==null)
+				if (ci == null)
 					continue;
-				else{
+				else {
 					if (ci.isTemp()) {
 						// draw with RED
 						con.getFigure().setForegroundColor(
@@ -535,7 +537,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	}
 
 	/**
-	 * Call validation on Diagram constraints (unique ID, connection allowed or not).
+	 * Call validation on Diagram constraints (unique ID, connection allowed or
+	 * not).
 	 * 
 	 * @author Tam-Minh Nguyen
 	 */
