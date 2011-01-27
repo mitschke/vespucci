@@ -220,6 +220,10 @@
              category="domain"
              id="property.tab.domain"
              label="%tab.domain"/>
+          <propertyTab
+             category="extra"
+             id="property.tab.query"
+             label="%tab.query"/>
       </propertyTabs>
    </extension>
 
@@ -252,6 +256,14 @@
             class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.VespucciPropertySection">
             <input type="org.eclipse.gmf.runtime.notation.View"/>
             <input type="org.eclipse.gef.EditPart"/>
+            <input type="de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem"/>
+         </propertySection>
+         <propertySection
+            id="property.section.query" 
+            tab="property.tab.query"
+            class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection">
+            <input type="org.eclipse.gef.EditPart"/>
+            <input type="org.eclipse.gef.editparts.AbstractGraphicalEditPart"/>
             <input type="de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem"/>
          </propertySection>
       </propertySections>
