@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <ShapesDiagram xmi:id="_3Ic6ICczEeC-LqTJQDUVwQ"/>
+  <notation:Diagram xmi:id="_3IdhMCczEeC-LqTJQDUVwQ" type="Vespucci" element="_3Ic6ICczEeC-LqTJQDUVwQ" name="OutLineView.sad" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_33kC4CczEeC-LqTJQDUVwQ" type="Note" fontName="Segoe UI" description="TODO" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_33picCczEeC-LqTJQDUVwQ" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_33qJgCczEeC-LqTJQDUVwQ" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="_33kC4SczEeC-LqTJQDUVwQ"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_33kC4iczEeC-LqTJQDUVwQ"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_33kC4yczEeC-LqTJQDUVwQ" x="50" y="40" width="121" height="86"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_3IdhMSczEeC-LqTJQDUVwQ"/>
+  </notation:Diagram>
+</xmi:XMI>
