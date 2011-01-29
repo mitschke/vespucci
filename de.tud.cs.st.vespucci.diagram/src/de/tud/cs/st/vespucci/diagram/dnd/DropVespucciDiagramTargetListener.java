@@ -37,16 +37,15 @@ package de.tud.cs.st.vespucci.diagram.dnd;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
-import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
-import org.eclipse.swt.dnd.FileTransfer;
-import org.eclipse.ui.part.ResourceTransfer;
 
 /**
  * A listener for IResouce drops on the VespucciDiagram view
@@ -61,7 +60,7 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 	 * @param viewer
 	 */
 	public DropVespucciDiagramTargetListener(EditPartViewer viewer) {
-		super(viewer, ResourceTransfer.getInstance());
+		super(viewer, LocalSelectionTransfer.getTransfer());
 	}
 
 	protected void handleDragOver() {
@@ -72,11 +71,13 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 
 	protected void handleDrop() {
 		getCurrentEvent().detail = DND.DROP_COPY;
-		// Save the IResources from the drop in a map for further tasks
-		Map<String, IResource> m = new HashMap<String, IResource>();
-		for (IResource res : ((IResource[]) getCurrentEvent().data))
-			m.put(res.toString(), res);
+		ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
+		//System.out.println(selection);
+		Map<String, Object> m = new HashMap<String, Object>();
+		for(Object o : ((TreeSelection) selection).toList())
+			m.put(o.toString(), o);
 		getTargetRequest().setExtendedData(m);
+		// Save the IResources from the drop in a map for further tasks
 		super.handleDrop();
 	}
 
@@ -96,5 +97,7 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 		DirectEditRequest request = new DirectEditRequest();
 		return request;
 	}
+
+
 
 }

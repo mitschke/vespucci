@@ -38,7 +38,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IResource;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jdt.core.IClassFile;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.util.ISourceAttribute;
+
 /**
  * A Class witch provide static tools for supporting of DnD
  * @author MalteV
@@ -52,7 +65,7 @@ public class StaticToolsForDnD {
 	 * @param map data of the drop event
 	 * @return new query
 	 */
-	public static String createQueryForAMapOfIResource(Map<String,IResource> map){
+	public static String createQueryForAMapOfIResource(Map<String,Object> map){
 		return createQueryForAMapOfIResource(map, "");
 	}
 	
@@ -63,7 +76,7 @@ public class StaticToolsForDnD {
 	 * @param oldQuery oldQuery of the model element
 	 * @return new query
 	 */
-	public static String createQueryForAMapOfIResource(Map<String,IResource> map, String oldQuery){
+	public static String createQueryForAMapOfIResource(Map<String,Object> map, String oldQuery){
 		
 		if(oldQuery == null)
 			oldQuery = "";
@@ -78,14 +91,14 @@ public class StaticToolsForDnD {
 		//find all Packages
 		List<String> pack = getJavaPackages(map);
 		//extends the old Query
-		for(String s : classes){
+		/*for(String s : classes){
 			res = res + s +",";
 		}
 		for(String s : pack){
 			res = res + s + ",";
 		}
-		res = res.substring(0, res.length()-1);
-		return res;
+		res = res.substring(0, res.length()-1);*/
+		return "";
 	}
 	/**
 	 * Creates a List that contains for all Java Fils in map 
@@ -94,36 +107,42 @@ public class StaticToolsForDnD {
 	 * @param map 
 	 * @return
 	 */
-	private static List<String> getJavasSourceCodeFiels(Map<String,IResource> map){
-		List<String> res = new ArrayList<String>();
-		String pack = null;
-		String fileName = null;
+
+	private static List<String> getJavasSourceCodeFiels(Map<String,Object> map){
+		System.out.println("............");
 		for(String key : map.keySet()){
-			IResource entry = map.get(key);
-			if(entry.getType() == IResource.FILE){
-				if(entry.getFileExtension().equals("java")){
-					String[] ordner = entry.getProjectRelativePath().toString().split("/");
-					//ordner[0] == src
-					pack = null;
-					fileName = null;
-					for(int i = 1; i < ordner.length -1 ;i++){
-						if(pack == null){
-							pack = ordner[i];
-						}else{
-							pack = pack + "." + ordner[i];
-						}
-					}
-					fileName = ordner[ordner.length-1].substring(0, ordner[ordner.length-1].length()-5);
-					res.add("class('" + pack + "','" + fileName +"')");
-				}
-				
-			}
-					//[class('de.tud.cs.se.flashcards.model', 'AllTests')
-					//,class('de.tud.cs.se.flashcards.model','FlashcardSeriesFilterTest'),
-					//class('de.tud.cs.se.flashcards.model','FlashcardTest'
+			Object o = map.get(key);
+			//if(o instanceof ISourceAttribute)
+				//System.out.println("attribute");
+			//if(o instanceof ISourceMethod)
+				//System.out.println("methode");
+			if(o instanceof IPackageFragment) 
+				System.out.println("Package");
+			if(o instanceof ICompilationUnit)
+				System.out.println("sour code file");
+			if(o instanceof IField)
+				System.out.println("Attribut");
+			if(o instanceof IType)
+				System.out.println("classe also class ... in einem file");
+			if(o instanceof IMethod)
+				System.out.println("Methode");
+			if(o instanceof IPackageFragmentRoot) 
+				System.out.println("jar package / src Ordner");
+			if(o instanceof IProject)
+				System.out.println("Projekt Ordner");
+			if(o instanceof IClassFile)
+				System.out.println("ClassFile");
+			if(o instanceof IAdaptable) //trieft auch auf viele ander sachen zu
+				System.out.println("Libaraycontainer");
+			if(o instanceof IFile)
+				System.out.println("file"); //je nach ausgewälter ansicht können file auch *.java datein sein
+			if(o instanceof IFolder)
+				System.out.println("folder");
+			System.out.println(o.getClass());
+			
+	
 		}
-		
-		return res;
+		return null;
 	}
 	/**
 	 * Creates a List that contains for all Java Packages in map 
@@ -132,23 +151,7 @@ public class StaticToolsForDnD {
 	 * @param map
 	 * @return
 	 */
-	private static List<String> getJavaPackages(Map<String,IResource> map){
-		List<String> res = new ArrayList<String>();
-		for(String key : map.keySet()){
-			IResource entry = map.get(key);
-			if(entry.getType() == IResource.FOLDER){
-				String[] ordner = entry.getProjectRelativePath().toString().split("/");
-				String pack = null;
-				for(int i = 1; i < ordner.length;i++){
-					if(pack == null){
-						pack = ordner[i];
-					}else{
-						pack = pack + "." + ordner[i];
-					}
-				}
-				res.add("package('" + pack + "')");
-			}
-		}
-		return res;
+	private static List<String> getJavaPackages(Map<String,Object> map){
+		return null;
 	}
 }
