@@ -1274,6 +1274,18 @@
         <generatedTypes>abstractNavigatorItem</generatedTypes>
       </filter>
     </tabs>
+    <tabs
+        xsi:type="gmfgen:GenCustomPropertyTab"
+        iD="query"
+        label="Query"
+        className="ModelDescriptionPropertySection">
+      <filter
+          xsi:type="gmfgen:TypeTabFilter">
+        <types>org.eclipse.gef.EditPart</types>
+        <types>org.eclipse.gef.editparts.AbstractGraphicalEditPart</types>
+        <generatedTypes>abstractNavigatorItem</generatedTypes>
+      </filter>
+    </tabs>
   </propertySheet>
   <domainGenModel
       href="vespucci.genmodel#/"/>

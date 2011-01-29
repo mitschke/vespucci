@@ -245,7 +245,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 					}
 					View view = (View) model;
 					EObject element = view.getElement();
-					
+
 					if (element instanceof Ensemble) {
 						return new OutlineEnsembleEditPart(model);
 					} else if (element instanceof Dummy) {
@@ -544,7 +544,6 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 				// Connection to a Node is null
 				if (ci == null)
 					continue;
-
 
 				if (ci.isTemp()) {
 					// draw with RED

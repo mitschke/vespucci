@@ -80,9 +80,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		for (Iterator it = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
 				.getShapesDiagram_1000SemanticChildren(viewObject).iterator(); it
 				.hasNext();) {
-			result
-					.add(((de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor) it
-							.next()).getModelElement());
+			result.add(((de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor) it
+					.next()).getModelElement());
 		}
 		return result;
 	}
@@ -244,9 +243,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 				.getVisualID(view)) {
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getShapesDiagram_1000ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getShapesDiagram_1000ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -256,9 +254,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getEnsemble_2001ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getEnsemble_2001ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -268,9 +265,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getDummy_2002ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getDummy_2002ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -280,9 +276,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getEnsemble_3001ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getEnsemble_3001ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -292,9 +287,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getDummy_3003ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getDummy_3003ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -304,9 +298,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getIncoming_4005ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getIncoming_4005ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -316,9 +309,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getOutgoing_4003ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getOutgoing_4003ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -328,9 +320,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getInAndOut_4001ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getInAndOut_4001ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -340,9 +331,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getNotAllowed_4004ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getNotAllowed_4004ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -352,9 +342,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 		}
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result
-						.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-								.getExpected_4002ContainedLinks(view));
+				result.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+						.getExpected_4002ContainedLinks(view));
 			}
 			if (!domain2NotationMap.containsKey(view.getElement())
 					|| view.getEAnnotation("Shortcut") == null) { //$NON-NLS-1$
@@ -385,17 +374,18 @@ public class ShapesDiagramCanonicalEditPolicy extends
 				.hasNext();) {
 			final de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor nextLinkDescriptor = (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor) linkDescriptorsIterator
 					.next();
-			EditPart sourceEditPart = getEditPart(nextLinkDescriptor
-					.getSource(), domain2NotationMap);
-			EditPart targetEditPart = getEditPart(nextLinkDescriptor
-					.getDestination(), domain2NotationMap);
+			EditPart sourceEditPart = getEditPart(
+					nextLinkDescriptor.getSource(), domain2NotationMap);
+			EditPart targetEditPart = getEditPart(
+					nextLinkDescriptor.getDestination(), domain2NotationMap);
 			if (sourceEditPart == null || targetEditPart == null) {
 				continue;
 			}
 			CreateConnectionViewRequest.ConnectionViewDescriptor descriptor = new CreateConnectionViewRequest.ConnectionViewDescriptor(
-					nextLinkDescriptor.getSemanticAdapter(), String
-							.valueOf(nextLinkDescriptor.getVisualID()),
-					ViewUtil.APPEND, false, ((IGraphicalEditPart) getHost())
+					nextLinkDescriptor.getSemanticAdapter(),
+					String.valueOf(nextLinkDescriptor.getVisualID()),
+					ViewUtil.APPEND, false,
+					((IGraphicalEditPart) getHost())
 							.getDiagramPreferencesHint());
 			CreateConnectionViewRequest ccr = new CreateConnectionViewRequest(
 					descriptor);
@@ -423,8 +413,8 @@ public class ShapesDiagramCanonicalEditPolicy extends
 			Map domain2NotationMap) {
 		View view = (View) domain2NotationMap.get(domainModelElement);
 		if (view != null) {
-			return (EditPart) getHost().getViewer().getEditPartRegistry().get(
-					view);
+			return (EditPart) getHost().getViewer().getEditPartRegistry()
+					.get(view);
 		}
 		return null;
 	}
