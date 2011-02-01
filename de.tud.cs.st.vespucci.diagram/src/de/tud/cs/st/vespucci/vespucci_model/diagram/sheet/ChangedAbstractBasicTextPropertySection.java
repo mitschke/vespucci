@@ -1,5 +1,3 @@
-package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
-
 /******************************************************************************
  * Copyright (c) 2005, 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -10,8 +8,9 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
  * Contributors:
  *    IBM Corporation - initial API and implementation 
  ****************************************************************************/
+package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
-import java.awt.GridBagLayout;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,44 +19,34 @@ import org.eclipse.gmf.runtime.common.core.util.StringStatics;
 import org.eclipse.gmf.runtime.common.ui.util.StatusLineUtil;
 import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPropertySection;
 import org.eclipse.gmf.runtime.diagram.ui.properties.views.TextChangeHelper;
-import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.tabbed.ISection;
-import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 /**
- * A generic class to edit a property via text field. This class supports
- * multi-select behavior
+ * A Changed Copy of AbstractBasicTextPropertySection
+ * (org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractBasicTextPropertySection)
  * 
+ * Original version by:
  * @author natalia balaba
+ * 
+ * Changed by:
+ * @author Malte
+ * @author Benni
  */
-public abstract class MyAbstractBasicTextPropertySection
+public abstract class ChangedAbstractBasicTextPropertySection
 	extends AbstractModelerPropertySection {
-
+	
 	// text widget to display and set value of the property
 	private Text textWidget;
-
-	// label widget for the property name
-	private CLabel propertyNameLabelWidget;
 
 	/**
 	 * @return - name of the property to place in the label widget
@@ -78,7 +67,7 @@ public abstract class MyAbstractBasicTextPropertySection
 	 * @return - string representation of the property value
 	 */
 	abstract protected String getPropertyValueString();
-
+	private int startHeight = 100;
 	/**
 	 * @return - title of the command which will be executed to set the property
 	 */
@@ -98,28 +87,13 @@ public abstract class MyAbstractBasicTextPropertySection
 				case SWT.KeyDown :
 					textModified = true;
 					if (event.character == SWT.CR){
-						//textWidget.setText(textWidget.getText() + "\n");
-						//textChanged((Control)event.widget);
 
+						updateHeight();
 						getPropertyValueString();
-						//setPropertyValue();
-						//textWidget.redraw();
 					}
-										
-//					//sectionComposite.setSize(textWidget.getSize());
-//					//sectionComposite.getParent().pack();
-					
-//					//test der dynamischen anpassung der größe
-//					GC gc = new GC (textWidget);
-//					FontMetrics fm = gc.getFontMetrics ();
-//					int width = textWidget.getLineCount() * (fm.getAverageCharWidth() + 2);
-//					int height = fm.getHeight ();
-//					
-//					Point p = textWidget.computeSize(width, height);
-//					
-//					textWidget.setSize(new Point(p.x+5,p.y));
-//					
-//				    textWidget.pack();
+					if(event.character == SWT.BS || event.character == SWT.DEL){
+						updateHeight();
+					}
 					break;
 				case SWT.FocusOut :
 					textChanged((Control)event.widget);
@@ -143,6 +117,8 @@ public abstract class MyAbstractBasicTextPropertySection
 	private Composite sectionComposite;
 
 
+
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse.swt.widgets.Composite, org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
@@ -151,7 +127,6 @@ public abstract class MyAbstractBasicTextPropertySection
 		
 		doCreateControls(parent, aTabbedPropertySheetPage);
 	}
-	
 	/**
 	 * Creates the GUI <code>Control</code> for this text property section
 	 * @param parent parent <code>Composite</code>
@@ -159,116 +134,12 @@ public abstract class MyAbstractBasicTextPropertySection
 	 * @see org.eclipse.gmf.runtime.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.gmf.runtime.common.ui.properties.TabbedPropertySheetPage)
 	 */
+	
 	public void doCreateControls(Composite parent,
 			TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
-
-		/*geht so
-		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
-		//textWidget = createTextWidget(sectionComposite);
-		
-		textWidget = getWidgetFactory().createText(parent, StringStatics.BLANK, SWT.MULTI | SWT.WRAP);
-		
-		//setting form data
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, 0);
-		data.bottom = new FormAttachment(100, 0);
-		
-		propertyNameLabelWidget = createLabelWidget(sectionComposite);
-
-		startTextWidgetEventListener();
-
-		 */
-		
-		
-		//funzt auch:
-//		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
-//		FillLayout labelData = new FillLayout();
-//		sectionComposite.setLayout(labelData);
-//		textWidget = getWidgetFactory().createText(sectionComposite, StringStatics.BLANK, 
-//				SWT.BORDER | SWT.MULTI | SWT.Expand);
-
-		//ab hier tests
-		//sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
-		////textWidget = getWidgetFactory().createText(sectionComposite, StringStatics.BLANK, SWT.MULTI | SWT.WRAP);
-		
-		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
-		FillLayout labelData = new FillLayout();
-		sectionComposite.setLayout(labelData);
-		textWidget = getWidgetFactory().createText(sectionComposite, StringStatics.BLANK, 
-				SWT.BORDER | SWT.MULTI | SWT.Expand);
-	    
-		
-		
-	    
-//	    parent.open();
-//	    while (!parent.isDisposed()) {
-//	        if (!display.readAndDispatch()) display.sleep();
-//	    }
-		
-		
-	    
-//		FormData formData = new FormData();
-//		// Linke Kante von control auf 25% der Gesamtbreite + 10px Offset fixieren
-//		formData.left = new FormAttachment(25, 10);  
-//		// Untere Kante von control auf 75% der Gesamthöhe fixieren
-//		formData.bottom = new FormAttachment(75);
-//		//sectionComposite.setLayoutData(formData);
-		
-		
-		//geht
-		//textWidget = getWidgetFactory().createText(sectionComposite, StringStatics.BLANK, SWT.BORDER | SWT.MULTI);
-//		textWidget = getWidgetFactory().createText(sectionComposite, StringStatics.BLANK, 
-//				SWT.BORDER | SWT.MULTI | SWT.WRAP);
-		//sectionComposite.setLayoutData(formData);
-		//getWidgetFactory().createFormText(sectionComposite, true);
-		//textWidget = getWidgetFactory().createText(sectionComposite, StringStatics.BLANK);
-
-//		FormData formData = new FormData();
-//		// Linke Kante von control auf 25% der Gesamtbreite + 10px Offset fixieren
-//		formData.left = new FormAttachment(25, 10);  
-//		// Untere Kante von control auf 75% der Gesamthöhe fixieren
-//		formData.bottom = new FormAttachment(75);
-//		textWidget.setLayoutData(formData);
-
-		//textWidget.setSize(500, 312);
-		
-		
-//		FormData data = new FormData();
-//		data.left = new FormAttachment(0, 0);
-//		data.right = new FormAttachment(100, 0);
-//		data.top = new FormAttachment(0, 0);
-//		data.bottom = new FormAttachment(100, 0);
-//		
-//		textWidget.setLayoutData(data);
-		
-		
-//		Object asd = textWidget.getLayoutData();
-//		
-//        FormData data = new FormData();
-//        data.left = new FormAttachment(0, 0);
-//        data.right = new FormAttachment(100, 0);
-//        if (asd == null) {
-//            data.top = new FormAttachment(0, 0);
-//        } else {
-//            data.top = new FormAttachment((Integer) asd, 0, SWT.BOTTOM);
-//        }
-//        data.bottom = new FormAttachment(100, 0);
-//        data.height = 100;
-//        data.width = 100;
-//        sectionComposite.setLayoutData(data);
-		
-//		
-//		int columns = textWidget.getLineCount() + 2;
-//		GC gc = new GC (textWidget);
-//		FontMetrics fm = gc.getFontMetrics ();
-//		int width = columns * fm.getAverageCharWidth ();
-//		int height = fm.getHeight ();
-//		textWidget.setSize (textWidget.computeSize (width, height));
-		//propertyNameLabelWidget = createLabelWidget(sectionComposite);
-		
+		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);	
+		textWidget = createTextWidget(sectionComposite);
 		startTextWidgetEventListener();
 	}
 
@@ -300,18 +171,33 @@ public abstract class MyAbstractBasicTextPropertySection
 	 * @return - a text widget to display and edit the property
 	 */
 	protected Text createTextWidget(Composite parent) {
-		Text text = getWidgetFactory().createText(parent, StringStatics.BLANK);
+		getSectionComposite().getSize();
+		Text text = getWidgetFactory().createText(parent, StringStatics.BLANK, SWT.MULTI);// SWT.V_SCROLL);
 		FormData data = new FormData();
-		data.left = new FormAttachment(0, getStandardLabelWidth(parent,
-			getPropertyNameStringsArray()));
+		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, 0);
+		data.height = startHeight;
 		text.setLayoutData(data);
 		if (isReadOnly())
 			text.setEditable(false);
 		return text;
-	}
 
+	}
+	private void updateHeight(){
+		FormData data = new FormData();
+		data.left = new FormAttachment(0, 0);
+		data.right = new FormAttachment(100, 0);
+		data.top = new FormAttachment(0, 0);
+		data.height = startHeight + 10 * textWidget.getLineCount();
+		getTextWidget().setLayoutData(data);
+		Point p = getSectionComposite().getSize();
+		getSectionComposite().setSize(p.x, getTextWidget().getSize().y+15);
+		p = getSectionComposite().getParent().getSize();
+		getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+15);
+		getSectionComposite().layout();
+	}
+	
 	/**
 	 * returns as an array the property name
 	 * @return - array of strings where each describes a property name one per
@@ -322,25 +208,7 @@ public abstract class MyAbstractBasicTextPropertySection
 		return new String[] {getPropertyNameLabel()};
 	}
 
-	/**
-	 * Create a label for property name
-	 * 
-	 * @param parent -
-	 *            parent composite
-	 * @return - label to show property name
-	 */
-	protected CLabel createLabelWidget(Composite parent) {
-		CLabel label = getWidgetFactory().createCLabel(parent,
-			getPropertyNameLabel());
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(getTextWidget(),
-			-ITabbedPropertyConstants.HSPACE);
-		data.bottom = new FormAttachment(0, 100);
-		data.top = new FormAttachment(getTextWidget(), 0, SWT.CENTER);
-		label.setLayoutData(data);
-		return label;
-	}
+
 
 	/**
 	 * User pressed Enter key after editing text field - update the model
@@ -407,6 +275,7 @@ public abstract class MyAbstractBasicTextPropertySection
 	 */
 	protected void refreshUI() {
 		getTextWidget().setText(getPropertyValueString());
+		updateHeight();
 	}
 
 	/**
@@ -423,12 +292,6 @@ public abstract class MyAbstractBasicTextPropertySection
 		return textWidget;
 	}
 
-	/**
-	 * @return Returns the propertyNameLabelWidget.
-	 */
-	public CLabel getPropertyNameLabelWidget() {
-		return propertyNameLabelWidget;
-	}
 
 	/**
 	 * @return Returns the sectionComposite.

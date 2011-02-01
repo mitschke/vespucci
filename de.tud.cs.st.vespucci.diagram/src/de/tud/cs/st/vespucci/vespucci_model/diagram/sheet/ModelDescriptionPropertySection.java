@@ -40,12 +40,13 @@ import org.eclipse.emf.ecore.EPackage;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
-//TODO add author!
+
 /**
+ * @author Benni
  * @generated not
  * 
  */
-public class ModelDescriptionPropertySection extends MyAbstractBasicTextPropertySection{
+public class ModelDescriptionPropertySection extends ChangedAbstractBasicTextPropertySection{
 	
 	@Override
 	protected String getPropertyNameLabel() {
