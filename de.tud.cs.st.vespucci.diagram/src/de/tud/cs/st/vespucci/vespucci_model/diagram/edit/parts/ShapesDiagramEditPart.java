@@ -46,6 +46,8 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.NonResizableLabelEditPolicy;
 import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.diagram.dnd.CreationNewEnsembleEditPolicy;
+
 /**
  * @generated
  */
@@ -81,6 +83,7 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 		installEditPolicy(
 				EditPolicyRoles.CANONICAL_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramCanonicalEditPolicy());
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE	, new CreationNewEnsembleEditPolicy());
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 
