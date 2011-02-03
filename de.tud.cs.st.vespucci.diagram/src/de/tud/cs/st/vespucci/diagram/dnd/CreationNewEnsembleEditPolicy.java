@@ -111,10 +111,11 @@ final public class CreationNewEnsembleEditPolicy extends org.eclipse.gmf.runtime
 		.getEPackage("http://vespucci.editor");
 		Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
-		SetRequest sr = new SetRequest(createElementRequest.getEditingDomain(),createElementRequest.getNewElement(), vesPackage.getShape_Query(), "query test");
+		@SuppressWarnings("unchecked")
+		SetRequest sr = new SetRequest(createElementRequest.getEditingDomain(),createElementRequest.getNewElement(), vesPackage.getShape_Query(), StaticToolsForDnD.createQueryForAMapOfIResource(request.getExtendedData()));
 		extendedSetValueCommand svc = new extendedSetValueCommand(sr,createElementRequest);
 		
-		SetRequest sr2 = new SetRequest(createElementRequest.getEditingDomain(),createElementRequest.getNewElement(), vesPackage.getShape_Name(), "name test");
+		SetRequest sr2 = new SetRequest(createElementRequest.getEditingDomain(),createElementRequest.getNewElement(), vesPackage.getShape_Name(), StaticToolsForDnD.createNameforNewEnsemble(request.getExtendedData()));
 		extendedSetValueCommand svc2 = new extendedSetValueCommand(sr2,createElementRequest);
 		
 		

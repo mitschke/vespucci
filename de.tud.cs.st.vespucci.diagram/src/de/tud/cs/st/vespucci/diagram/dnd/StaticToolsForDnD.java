@@ -98,7 +98,7 @@ public class StaticToolsForDnD {
 			res = res + s + ",";
 		}
 		res = res.substring(0, res.length()-1);*/
-		return "";
+		return "this is a dynamic query";
 	}
 	/**
 	 * Creates a List that contains for all Java Fils in map 
@@ -153,5 +153,10 @@ public class StaticToolsForDnD {
 	 */
 	private static List<String> getJavaPackages(Map<String,Object> map){
 		return null;
+	}
+
+	public static Object createNameforNewEnsemble(Map extendedData) {
+		// TODO Auto-generated method stub
+		return "A dynamic name";
 	}
 }
