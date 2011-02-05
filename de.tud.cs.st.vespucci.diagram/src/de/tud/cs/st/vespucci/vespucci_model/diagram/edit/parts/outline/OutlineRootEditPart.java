@@ -41,13 +41,14 @@ import org.eclipse.swt.graphics.Image;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
+ * OutlineEditPart for Diagram
  * 
  * @author a_vovk
  * 
  */
 public class OutlineRootEditPart extends TreeDiagramEditPart {
 
-	private static final String ENSEMBLE_IMAGE = "icons/outline/diag.gif";
+	private static final String IMAGE = "icons/outline/diag.gif";
 
 	public OutlineRootEditPart(Object model) {
 		super(model);
@@ -56,8 +57,7 @@ public class OutlineRootEditPart extends TreeDiagramEditPart {
 	@Override
 	protected Image getImage() {
 		ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin
-				.getBundledImageDescriptor(ENSEMBLE_IMAGE);
-
+				.getBundledImageDescriptor(IMAGE);
 		return imageDescriptor.createImage();
 	}
 }

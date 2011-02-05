@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.impl.BasicCompartmentImpl;
+import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -53,11 +54,11 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 /**
  * 
  * @author a_vovk
- *
+ * 
  */
 public class OutlineEnsembleEditPart extends TreeEditPart {
 
-	private static final String ENSEMBLE_IMAGE = "icons/outline/Ensemble.gif";
+	private static final String IMAGE = "icons/outline/Ensemble.gif";
 
 	private EObject[] objectListenningTo = new EObject[2];
 
@@ -68,8 +69,7 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 	@Override
 	protected Image getImage() {
 		ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin
-				.getBundledImageDescriptor(ENSEMBLE_IMAGE);
-
+				.getBundledImageDescriptor(IMAGE);
 		return imageDescriptor.createImage();
 	}
 
@@ -100,21 +100,21 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 
 	protected List getModelChildren() {
 		Object model = getModel();
-		if (model instanceof EnsembleImpl) {
-			EnsembleImpl shape = (EnsembleImpl) getModel();
-			return shape.getShapes();
-		}
+
 		if (model instanceof ShapeImpl) {
 			ShapeImpl shape = (ShapeImpl) getModel();
 
 			EList shapes = shape.getPersistedChildren();
-			EList edges = shape.getSourceEdges();
+			EList sourceEdges = shape.getSourceEdges();
+					
+			EList targetEdges = shape.getTargetEdges();
 			for (Object i : shapes) {
 				if (i instanceof BasicCompartmentImpl) {
 					BasicCompartmentImpl bci = (BasicCompartmentImpl) i;
 					EList<View> out = new BasicEList<View>();
 					out.addAll(bci.getPersistedChildren());
-					out.addAll(edges);
+					out.addAll(sourceEdges);
+					out.addAll(targetEdges);
 					return out;
 				}
 
