@@ -2,12 +2,15 @@ package de.tud.cs.st.vespucci.diagram.dnd;
 
 import java.util.List;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.common.core.command.CompositeCommand;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
 import org.eclipse.gmf.runtime.diagram.core.util.ViewUtil;
@@ -15,18 +18,20 @@ import org.eclipse.gmf.runtime.diagram.ui.commands.CommandProxy;
 import org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy;
 import org.eclipse.gmf.runtime.diagram.ui.commands.SemanticCreateCommand;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
-import org.eclipse.gmf.runtime.diagram.ui.requests.CreateUnspecifiedTypeRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
-import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.EditCommandRequestWrapper;
 import org.eclipse.gmf.runtime.diagram.ui.requests.RefreshConnectionsRequest;
-import org.eclipse.gmf.runtime.diagram.ui.requests.RequestConstants;
+import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
+/**
+ * EditPolicy for creating new Shapes (gmf shapes) on a diagram
+ * @author MalteV
+ *
+ */
 final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 
 	/**
@@ -42,6 +47,43 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 	 */
 	protected Command getCreateElementAndViewEnsembleCommand(
 			CreateViewAndElementRequest request) {
+		/**
+		 * A modified version of the SetValueCommand
+		 * that always return true for canExecute()
+		 * that is necessary because this command is used in a CompositeCommand 
+		 * witch is only executable if all commands in the Compositecommand are executable
+		 * and the this command needs data witch will be created from an other command in the compositecommand.
+		 * @author MalteV
+		 *
+		 */
+		class extendedSetValueCommand extends SetValueCommand{
+			private final CreateElementRequest createRequest;
+			public extendedSetValueCommand(SetRequest request, CreateElementRequest createRequest) {
+				super(request);
+				this.createRequest = createRequest;
+
+			}
+
+			@Override
+			protected CommandResult doExecuteWithResult(IProgressMonitor monitor,
+					IAdaptable info) throws ExecutionException {
+				this.setElementToEdit(createRequest.getNewElement());
+				if(super.canExecute()){
+				return super.doExecuteWithResult(monitor, info);
+				}
+				return CommandResult.newErrorCommandResult("Command was not Executeable\n pls see canExecute in extendedSetValueCommand");
+			}
+
+			/**
+			 * @return this Methode returns always true!
+			 */
+			@Override
+			public boolean canExecute() {
+				return true;
+			}
+
+		}
+
 		// copied Content
 
 		// get the element descriptor
@@ -129,8 +171,10 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		cc.compose(svc2);
 		return new ICommandProxy(cc);
 	}
-
-	@Override
+	/**
+	 * return a create Comand if the request is understood
+	 */
+	@Override	
 	public Command getCommand(Request request) {
 		if (understandsRequest(request)) {
 			if (request.getType().equals(
@@ -144,7 +188,10 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		}
 		return super.getCommand(request);
 	}
-
+	/**
+	 * This class understands request of the time REQ_DropNewENSEMBLE and all Request that are
+	 * understood by CreationEditPolicy
+	 */
 	@Override
 	public boolean understandsRequest(Request request) {
 		return request.getType().equals(
