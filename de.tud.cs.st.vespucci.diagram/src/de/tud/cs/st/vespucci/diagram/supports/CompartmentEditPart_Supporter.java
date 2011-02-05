@@ -72,6 +72,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTyp
  * 
  * @date 03.15.2010
  * @author Tam-Minh Nguyen
+ * @author a_vovk
  */
 
 public class CompartmentEditPart_Supporter {
