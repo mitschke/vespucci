@@ -119,7 +119,11 @@ public class StaticToolsForDnD {
 		}*/
 		if(res.length() >= QUERY_DELIMITER.length())
 			res = res.substring(0, res.length()-QUERY_DELIMITER.length());
-		return res + "\n";
+		
+		if(res.equals(""))
+			return res;
+		else
+			return res + "\n";
 	}
 	
 	/**
