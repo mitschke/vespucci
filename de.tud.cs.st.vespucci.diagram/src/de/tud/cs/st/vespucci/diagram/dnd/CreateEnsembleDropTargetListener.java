@@ -16,7 +16,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTyp
 
 public class CreateEnsembleDropTargetListener extends
 		DropVespucciDiagramTargetListener {
-
+	public static final String REQ_DROPNEWENSEMBLE = "create new Ensemble xxx"; 
 	public CreateEnsembleDropTargetListener(EditPartViewer viewer) {
 		super(viewer);
 
@@ -53,6 +53,7 @@ public class CreateEnsembleDropTargetListener extends
 		//GraphicalEditPart p = (GraphicalEditPart) epart;
 		DiagramEditPart p = (DiagramEditPart) epart;		
 		CreateViewRequest request = CreateViewRequestFactory.getCreateShapeRequest(elementType, p.getDiagramPreferencesHint());
+		request.setType(REQ_DROPNEWENSEMBLE);
 		return request;
 }
 }

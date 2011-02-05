@@ -102,6 +102,9 @@ public class EditDropPolicy extends DirectEditPolicy {
 
 	@Override
 	public void setHost(EditPart host) {
+		class a{
+			
+		}
 		super.setHost(host);
 	}
 
