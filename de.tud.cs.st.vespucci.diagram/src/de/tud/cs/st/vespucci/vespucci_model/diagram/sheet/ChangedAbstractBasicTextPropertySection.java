@@ -67,7 +67,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 * @return - string representation of the property value
 	 */
 	abstract protected String getPropertyValueString();
-	private int startHeight = 100;
+	private int startHeight = 15;
 	/**
 	 * @return - title of the command which will be executed to set the property
 	 */
@@ -172,7 +172,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 */
 	protected Text createTextWidget(Composite parent) {
 		getSectionComposite().getSize();
-		Text text = getWidgetFactory().createText(parent, StringStatics.BLANK, SWT.MULTI);// SWT.V_SCROLL);
+		Text text = getWidgetFactory().createText(parent, StringStatics.BLANK, SWT.MULTI); //| SWT.V_SCROLL);
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(100, 0);
@@ -189,13 +189,17 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, 0);
-		data.height = startHeight + 10 * textWidget.getLineCount();
+		data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
 		getTextWidget().setLayoutData(data);
 		Point p = getSectionComposite().getSize();
-		getSectionComposite().setSize(p.x, getTextWidget().getSize().y+15);
+		getSectionComposite().setSize(p.x, getTextWidget().getSize().y+textWidget.getLineHeight());
 		p = getSectionComposite().getParent().getSize();
-		getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+15);
+		getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+textWidget.getLineHeight() * textWidget.getLineCount());
 		getSectionComposite().layout();
+		getSectionComposite().getParent().getDisplay().update();
+		
+		//TODO getSectionComposite().addPaintListener(listener)
+		//getSectionComposite().update();
 	}
 	
 	/**
