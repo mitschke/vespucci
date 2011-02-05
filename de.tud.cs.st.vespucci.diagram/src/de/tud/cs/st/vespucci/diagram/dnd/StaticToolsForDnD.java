@@ -369,4 +369,9 @@ public class StaticToolsForDnD {
 	private static List<String> getJavaPackages(Map<String,Object> map){
 		return null;
 	}
+
+	public static Object createNameforNewEnsemble(Map extendedData) {
+		// TODO Auto-generated method stub
+		return "A dynamic name";
+	}
 }
