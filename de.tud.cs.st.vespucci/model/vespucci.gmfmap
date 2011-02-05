@@ -280,7 +280,7 @@
           name="ERROR if non leaf Ensemble is not derived"
           description="non leaf Ensemble must be derived / empty"
           id="NonLeafEnsembleMustBeDerivedID"
-          message="Non leaf Ensemble have to be derived">
+          message="Queries of non leaf ensemble must be derived ">
         <rule
             body="NonLeafEnsembleMustBeDerived"
             language="java"/>

@@ -1,4 +1,5 @@
 /*
+
  *  License (BSD Style License):
  *   Copyright (c) 2010
  *   Author Tam-Minh Nguyen
@@ -95,6 +96,8 @@ import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
+import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EPService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
@@ -243,7 +246,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 					}
 					View view = (View) model;
 					EObject element = view.getElement();
-					
+
 					if (element instanceof Ensemble) {
 						return new OutlineEnsembleEditPart(model);
 					} else if (element instanceof Dummy) {
@@ -495,6 +498,22 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	}
 
 	/**
+	 * put a drop listener to the Vespucci diagram view
+	 * 
+	 * @author MalteV
+	 */
+	@Override
+	protected void initializeGraphicalViewer() {
+		super.initializeGraphicalViewer();
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new DropVespucciDiagramTargetListener(
+						getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new CreateEnsembleDropTargetListener(
+						getDiagramGraphicalViewer()));
+	}
+
+	/**
 	 * Temp connections will be colored in red.
 	 * 
 	 * @category hook point
@@ -529,13 +548,13 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 				// Connection to a Node is null
 				if (ci == null)
 					continue;
-				else {
-					if (ci.isTemp()) {
-						// draw with RED
-						con.getFigure().setForegroundColor(
-								org.eclipse.draw2d.ColorConstants.red);
-						con.getFigure().repaint();
-					}
+
+				if (ci.isTemp()) {
+					// draw with RED
+					con.getFigure().setForegroundColor(
+							org.eclipse.draw2d.ColorConstants.red);
+					con.getFigure().repaint();
+
 				}
 			}
 		}

@@ -66,7 +66,7 @@
         description="non leaf Ensemble must be derived / empty"
         id="NonLeafEnsembleMustBeDerivedID"
         rule="//@expressionProviders/@providers.1/@expressions.0"
-        message="Non leaf Ensemble have to be derived"
+        message="Queries of non leaf ensemble must be derived "
         category="//@audits/@categories.1">
       <target
           xsi:type="gmfgen:GenDomainElementTarget"
@@ -1274,6 +1274,18 @@
         <generatedTypes>abstractNavigatorItem</generatedTypes>
       </filter>
     </tabs>
+    <tabs
+        xsi:type="gmfgen:GenCustomPropertyTab"
+        iD="query"
+        label="Query"
+        className="ModelDescriptionPropertySection">
+      <filter
+          xsi:type="gmfgen:TypeTabFilter">
+        <types>org.eclipse.gef.EditPart</types>
+        <types>org.eclipse.gef.editparts.AbstractGraphicalEditPart</types>
+        <generatedTypes>abstractNavigatorItem</generatedTypes>
+      </filter>
+    </tabs>
   </propertySheet>
   <domainGenModel
       href="vespucci.genmodel#/"/>
@@ -1321,7 +1333,7 @@
         xsi:type="gmfgen:GenJavaExpressionProvider">
       <expressions
           xsi:type="gmfgen:GenConstraint"
-          body="Derived"/>
+          body="NonLeafEnsembleMustBeDerived"/>
     </providers>
   </expressionProviders>
   <labelParsers

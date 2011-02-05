@@ -135,7 +135,7 @@ public class VespucciValidationProvider {
 			if (context.getQuery().equals("derived")) //the ensemble is not a leaf so it must be derived
 				return ctx.createSuccessStatus();
 			return ctx
-					.createFailureStatus("Non leaf Ensembles must be derived");
+					.createFailureStatus("Queries of non leaf ensemble must be derived");
 		}
 	}
 
