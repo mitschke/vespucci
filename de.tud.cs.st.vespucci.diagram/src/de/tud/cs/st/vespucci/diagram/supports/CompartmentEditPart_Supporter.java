@@ -158,6 +158,8 @@ public class CompartmentEditPart_Supporter {
 					//
 					target = this.getDrawableBackTrack(target);
 				}
+				
+				
 				// draw
 				this.drawConnection(VespucciElementTypes
 						.getElementType(VespucciVisualIDRegistry.getVisualID(c
