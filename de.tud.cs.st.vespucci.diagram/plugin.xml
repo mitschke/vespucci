@@ -259,9 +259,10 @@
             <input type="de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem"/>
          </propertySection>
          <propertySection
-            id="property.section.query" 
-            tab="property.tab.query"
-            class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection">
+               class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection"
+               filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleFilter"
+               id="property.section.query"
+               tab="property.tab.query">
             <input type="org.eclipse.gef.EditPart"/>
             <input type="org.eclipse.gef.editparts.AbstractGraphicalEditPart"/>
             <input type="de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem"/>
