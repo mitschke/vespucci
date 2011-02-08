@@ -1258,6 +1258,15 @@
   <diagramUpdater/>
   <propertySheet>
     <tabs
+        xsi:type="gmfgen:GenCustomPropertyTab"
+        iD="query"
+        label="Query"
+        className="ModelDescriptionPropertySection">
+      <filter
+          xsi:type="gmfgen:CustomTabFilter"
+          className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"/>
+    </tabs>
+    <tabs
         xsi:type="gmfgen:GenStandardPropertyTab"
         iD="appearance"/>
     <tabs
@@ -1271,18 +1280,6 @@
           xsi:type="gmfgen:TypeTabFilter">
         <types>org.eclipse.gmf.runtime.notation.View</types>
         <types>org.eclipse.gef.EditPart</types>
-        <generatedTypes>abstractNavigatorItem</generatedTypes>
-      </filter>
-    </tabs>
-    <tabs
-        xsi:type="gmfgen:GenCustomPropertyTab"
-        iD="query"
-        label="Query"
-        className="ModelDescriptionPropertySection">
-      <filter
-          xsi:type="gmfgen:TypeTabFilter">
-        <types>org.eclipse.gef.EditPart</types>
-        <types>org.eclipse.gef.editparts.AbstractGraphicalEditPart</types>
         <generatedTypes>abstractNavigatorItem</generatedTypes>
       </filter>
     </tabs>

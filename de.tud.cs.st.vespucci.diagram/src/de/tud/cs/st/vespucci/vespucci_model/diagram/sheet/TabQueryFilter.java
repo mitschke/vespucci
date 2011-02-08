@@ -44,7 +44,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
  * @author Malte
  *
  */
-public class EnsembleFilter  implements IFilter{
+public class TabQueryFilter implements IFilter{
 
 	@Override
 	public boolean select(Object toTest) {

@@ -34,19 +34,106 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.ui.provider.PropertySource;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AdvancedPropertySection;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
-//TODO add author!
+
 /**
+ * @author Benni
  * @generated not
  * 
  */
-public class CopyOfModelDescriptionPropertySection extends MyAbstractBasicTextPropertySection{
-	
+public class CopyOfModelDescriptionPropertySection extends
+		ChangedAbstractBasicTextPropertySection {
+
+	/**
+	 * @generated
+	 */
+	public IPropertySource getPropertySource(Object object) {
+		if (object instanceof IPropertySource) {
+			return (IPropertySource) object;
+		}
+		AdapterFactory af = getAdapterFactory(object);
+		if (af != null) {
+			IItemPropertySource ips = (IItemPropertySource) af.adapt(object,
+					IItemPropertySource.class);
+			if (ips != null) {
+				return new PropertySource(object, ips);
+			}
+		}
+		if (object instanceof IAdaptable) {
+			return (IPropertySource) ((IAdaptable) object)
+					.getAdapter(IPropertySource.class);
+		}
+		return null;
+	}
+
+
+
+	/**
+	 * Modify/unwrap selection.
+	 * @generated
+	 */
+	protected Object transformSelection(Object selected) {
+		return selected;
+	}
+
+	/**
+	 * @generated
+	 */
+	public void setInput(IWorkbenchPart part, ISelection selection) {
+		if (selection.isEmpty()
+				|| false == selection instanceof StructuredSelection) {
+			super.setInput(part, selection);
+			return;
+		}
+		final StructuredSelection structuredSelection = ((StructuredSelection) selection);
+		ArrayList transformedSelection = new ArrayList(
+				structuredSelection.size());
+		for (Iterator it = structuredSelection.iterator(); it.hasNext();) {
+			Object r = transformSelection(it.next());
+			if (r != null) {
+				transformedSelection.add(r);
+			}
+		}
+		super.setInput(part, new StructuredSelection(transformedSelection));
+	}
+
+	/**
+	 * @generated
+	 */
+	protected AdapterFactory getAdapterFactory(Object object) {
+		if (getEditingDomain() instanceof AdapterFactoryEditingDomain) {
+			return ((AdapterFactoryEditingDomain) getEditingDomain())
+					.getAdapterFactory();
+		}
+		TransactionalEditingDomain editingDomain = TransactionUtil
+				.getEditingDomain(object);
+		if (editingDomain != null) {
+			return ((AdapterFactoryEditingDomain) editingDomain)
+					.getAdapterFactory();
+		}
+		return null;
+	}
+
 	@Override
 	protected String getPropertyNameLabel() {
 		return "";
@@ -56,7 +143,7 @@ public class CopyOfModelDescriptionPropertySection extends MyAbstractBasicTextPr
 	protected String getPropertyChangeCommandName() {
 		return "ApplicationDescriptionChangeCommand";
 	}
-	
+
 	@Override
 	protected void setPropertyValue(EObject object, Object value) {
 		if (object instanceof Shape) {
@@ -71,19 +158,17 @@ public class CopyOfModelDescriptionPropertySection extends MyAbstractBasicTextPr
 	@Override
 	protected String getPropertyValueString() {
 		EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
-			.getEPackage("http://vespucci.editor");
+				.getEPackage("http://vespucci.editor");
 		Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
-		
-		if (eObject instanceof EnsembleImpl){
+
+		if (eObject instanceof EnsembleImpl) {
 			this.getSectionComposite().setVisible(true);
 			return (String) eObject.eGet(vesPackage.getShape_Query());
-		}else{
+		} else {
 			this.getSectionComposite().setVisible(false);
 			return "<NO ENSEMBLE>";
 		}
-			
-	}
 
-	
+	}
 
 }
