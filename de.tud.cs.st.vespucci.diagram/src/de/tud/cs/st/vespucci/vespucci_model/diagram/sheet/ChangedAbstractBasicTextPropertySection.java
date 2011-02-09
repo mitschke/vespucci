@@ -58,7 +58,14 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	public void setScrolledParent(Composite scrolledParent) {
 		this.scrolledParent = scrolledParent;
 	}
-
+	Listener resizeLinstener =  new Listener () {
+	    public void handleEvent (Event e) {
+		      updateHeight();
+		    }
+		  };
+	
+	
+	
 	/**
 	 * @return - name of the property to place in the label widget
 	 */
@@ -164,11 +171,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		}
 		//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getListeners(SWT.Resize);
 		//textWidget.getParent().getParent().getParent().getParent().getParent().getParent().addListener(SWT.Resize,  new Listener () {
-		scrolledParent.addListener(SWT.Resize,  new Listener () {
-		    public void handleEvent (Event e) {
-		      updateHeight();
-		    }
-		  });
+		scrolledParent.addListener(SWT.Resize, resizeLinstener );
 		
 		startTextWidgetEventListener();
 	}
@@ -219,23 +222,27 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		return this.scrolledParent.getSize().y - 20;
 	}
 	private void updateHeight(){
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, 0);
-		//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
-		//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize()
-		//lis = getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getListeners(SWT.Resize);
-		//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
-		//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize().y - 20;
-		data.height = getHeight();
-		getTextWidget().setLayoutData(data);
-		Point p = getSectionComposite().getSize();
-		getSectionComposite().setSize(p.x, getHeight()+5);
-		//p = getSectionComposite().getParent().getSize();
-		getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+5);//+textWidget.getLineHeight() * textWidget.getLineCount());
-		getSectionComposite().layout();
-		getSectionComposite().getParent().getDisplay().update();
+		if(getTextWidget() != null && !getTextWidget().isDisposed()){
+		
+			FormData data = new FormData();
+			data.left = new FormAttachment(0, 0);
+			data.right = new FormAttachment(100, 0);
+			data.top = new FormAttachment(0, 0);
+			//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
+			//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize()
+			//lis = getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getListeners(SWT.Resize);
+			//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
+			//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize().y - 20;
+			data.height = getHeight();
+			getTextWidget().setLayoutData(data);
+			Point p = getSectionComposite().getSize();
+			getSectionComposite().setSize(p.x, getHeight()+5);
+			//p = getSectionComposite().getParent().getSize();
+			getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+5);//+textWidget.getLineHeight() * textWidget.getLineCount());
+			getSectionComposite().layout();
+			getSectionComposite().getParent().getDisplay().update();
+
+		}
 	}
 	
 	/**
