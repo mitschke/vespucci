@@ -195,10 +195,13 @@
    </extension>
 
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor" id="prop-contrib">
-      <?gmfgen generated="true"?>
+      <?gmfgen generated="false"?>
       <propertyContributor
             contributorId="de.tud.cs.st.vespucci.diagram"
             labelProvider="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.VespucciSheetLabelProvider">
+         <propertyCategory
+               category="first">
+         </propertyCategory>
          <propertyCategory category="domain"/>
          <propertyCategory category="visual"/>
          <propertyCategory category="extra"/>
@@ -206,10 +209,10 @@
    </extension>
 
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyTabs" id="proptabs">
-      <?gmfgen generated="true"?>   
+      <?gmfgen generated="false"?>   
       <propertyTabs contributorId="de.tud.cs.st.vespucci.diagram">
           <propertyTab
-             category="extra"
+             category="first"
              id="property.tab.query"
              label="%tab.query"/>
          <propertyTab
@@ -733,6 +736,7 @@
       
       
    </extension>
+     
         <!-- gmf generator persistent region end -->
           
 
