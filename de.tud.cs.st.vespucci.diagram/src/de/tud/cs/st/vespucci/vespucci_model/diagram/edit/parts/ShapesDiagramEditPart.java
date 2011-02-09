@@ -42,10 +42,12 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.handles.MoveHandle;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.NonResizableLabelEditPolicy;
 import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.CreationNewEnsembleEditPolicy;
 
 /**
@@ -83,7 +85,10 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 		installEditPolicy(
 				EditPolicyRoles.CANONICAL_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramCanonicalEditPolicy());
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE	, new CreationNewEnsembleEditPolicy());
+		//installEditPolicy(CreateEnsembleDropTargetListener.REQ_DROPNEWENSEMBLE	, new CreationNewEnsembleEditPolicy());
+		//installEditPolicy(EditPolicyRoles.CREATION_ROLE	, new CreationEditPolicy());
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
+				new CreationNewEnsembleEditPolicy());
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 

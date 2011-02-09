@@ -86,7 +86,12 @@ public class ModelDescriptionPropertySection extends
 		return null;
 	}
 
-
+	/**
+	 * @generated not
+	 */
+	protected IPropertySourceProvider getPropertySourceProvider() {
+		return null;
+	}
 
 	/**
 	 * Modify/unwrap selection.
