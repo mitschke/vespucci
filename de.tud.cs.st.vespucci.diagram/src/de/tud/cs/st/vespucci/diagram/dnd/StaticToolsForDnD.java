@@ -34,7 +34,6 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -42,17 +41,12 @@ import java.util.Map;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
-
 /**
- * A Class witch provide static tools for supporting of DnD
+ * A Class which provides static tools for supporting DnD
  * @author MalteV
  * @author BenjaminL
  */
@@ -62,7 +56,6 @@ public class StaticToolsForDnD {
 	public final static String CLASS_WITH_MEMBERS = "class_with_members";
 	public final static String CLASS = "class";
 	public final static String METHOD = "method";
-	private static final String CONSTRUCTOR = "<init>";
 	public final static String FIELD = "field";
 	private static final String QUERY_DELIMITER = " or ";
 	
@@ -201,23 +194,6 @@ public class StaticToolsForDnD {
 			System.out.println(o.getClass());
 			*/
 	}
-	
-	/**
-	 * resolving types to FQN declaration
-	 * @param type
-	 * @param jdtDeclaringType
-	 * @return
-	 */
-	@SuppressWarnings("restriction")
-	public static String typeToFQN(String type, IType jdtDeclaringType) {
-		String tmp = null;
-        try {
-			tmp = JavaModelUtil.getResolvedTypeName(type, jdtDeclaringType);
-		} catch (JavaModelException e) {
-			e.printStackTrace();
-		}
-        return tmp;
-    }
 
 	public static Object createNameforNewEnsemble(Map extendedData) {
 		// TODO Auto-generated method stub
