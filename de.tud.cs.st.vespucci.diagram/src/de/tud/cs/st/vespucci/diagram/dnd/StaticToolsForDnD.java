@@ -34,6 +34,7 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 
+import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
+
 
 /**
  * A Class witch provide static tools for supporting of DnD
@@ -59,9 +62,10 @@ public class StaticToolsForDnD {
 	public final static String CLASS_WITH_MEMBERS = "class_with_members";
 	public final static String CLASS = "class";
 	public final static String METHOD = "method";
+	private static final String CONSTRUCTOR = "<init>";
 	public final static String FIELD = "field";
 	private static final String QUERY_DELIMITER = " or ";
-	private static final String CONSTRUCTOR = "<init>";
+	
 	
 	/**
 	 * creates a new Query from the data of a drop event
@@ -73,37 +77,33 @@ public class StaticToolsForDnD {
 	}
 	
 	/**
-	 *  creates a new Query from the Data of a drop event
+	 *  creates a new Query from the data of the drop event
 	 *  under consideration of the old Query
 	 * @param map data of the drop event
-	 * @param oldQuery oldQuery of the model element
+	 * @param oldQuery old Query of the model element
 	 * @return new query
 	 */
 	public static String createQueryForAMapOfIResource(Map<String,Object> map, String oldQuery){
 		
-		if(oldQuery == null)
+		if(oldQuery == null || (oldQuery.equals("empty") && map.size()>0))
 			oldQuery = "";
-		if(oldQuery.equals("empty") && map.size()>0)
-			oldQuery = "";
-		if(oldQuery.length() > 0)
+		else if (oldQuery.length() > 0)
 			oldQuery += QUERY_DELIMITER;
 		
 		String res = oldQuery;
 		
-		//find all Java files 
-		List<String> classes = getJavasSourceCodeFiels(map);
+		//translate all DND objects to query 
+		List<String> queries = createQueryFromDNDobjects(map);
 		
 		//extending the old Query
-		if(classes != null)
-			for(String s : classes){
+		if(queries != null){
+			for(String s : queries){
 				res = res + s + QUERY_DELIMITER + "\n";
 			}
-		
-		/*for(String s : pack){
-			res = res + s + ",";
-		}*/
-		if(res.length() >= QUERY_DELIMITER.length())
-			res = res.substring(0, res.length()-QUERY_DELIMITER.length());
+		}else{
+		}
+		if(res.endsWith(QUERY_DELIMITER + "\n")) //length() >= QUERY_DELIMITER.length())
+			res = res.substring(0, res.length()-QUERY_DELIMITER.length()-1);
 		
 		if(res.equals(""))
 			return res;
@@ -121,56 +121,53 @@ public class StaticToolsForDnD {
 	 * @param map 
 	 * @return query list
 	 */
-	private static List<String> getJavasSourceCodeFiels(Map<String,Object> map){
-		//System.out.println("............");
+	private static List<String> createQueryFromDNDobjects(Map<String,Object> map){
 		LinkedList<String> list = new LinkedList<String>();
+		
 		for(String key : map.keySet()){
 			Object o = map.get(key);
 
 			//package...
 			if(o instanceof IPackageFragment){
-				//System.out.println("Package --> " + key);
-				key = key.substring(0,key.indexOf('[')).trim();
-				key = PACKAGE + "('" + key + "')";
+				key = PACKAGE + "('" + Resolver.getFQPackageNameFromIxxx(o, key) + "')";
 				list.add(key);
-			}
-			//class...
-			if(o instanceof ICompilationUnit){
-				String packagename = "";
-				String classname = "";
-
-				try {
-					ICompilationUnit asd = (ICompilationUnit) o;				
-					IPackageDeclaration[] declarations;
-				
-					declarations = asd.getPackageDeclarations();
-					if(declarations.length > 0)
-					{
-						packagename = declarations[0].getElementName(); 
-					}
-					//getting the classname
-					classname = packagename + "." + ((ICompilationUnit) o).getElementName();
-				} catch (JavaModelException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			}else if(o instanceof ICompilationUnit){
+				//CLASS
+				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
+				String classname = Resolver.getFQClassnamefromIxxx(o, key);
 				key = CLASS_WITH_MEMBERS + "('" + packagename + "','" + classname + "')";
 				list.add(key);
-			}//method
-			if(o instanceof IMethod){
-				//System.out.println("Methode --> " + key);
-				key = METHOD + "(" + getQueryFromMethod((IMethod)o) + ")";
+			}else if(o instanceof IMethod){
+				//METHOD
+				IMethod method = (IMethod) o;
+				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
+				String classname = Resolver.getFQClassnamefromIxxx(o, key);
+				String methodname = Resolver.getMethodnameFromMethod(method);
+				List<String> para = Resolver.getParameterTypesFromMethod(method);
+				StringBuffer sbPara = new StringBuffer();
+				String returntype = Resolver.getReturnTypeFromIxxx(method, key);
+				
+				sbPara.append("[");
+				for(String s : para){
+					sbPara.append("'" + s + "'");
+				}
+				sbPara.replace(sbPara.length(), sbPara.length(), "]");
+				
+				key = METHOD + "('" +packagename + "','" + classname + "','" + methodname + "','" + returntype + "'," + sbPara.toString() + ")";
 				list.add(key);
-			}
-			
-			if(o instanceof IField){
-				//System.out.println("Attribut --> " + key);
-				key = FIELD + "(" + getQueryFromField((IField)o) + ")";
+			}else if(o instanceof IField){
+				//FIELD
+				IField field = (IField) o;
+				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
+				String classname = Resolver.getFQClassnamefromIxxx(o, key);
+				String fieldname = field.getElementName();
+				String type = Resolver.getFQFieldTypeName(field);
+				
+				key = FIELD + "('" + packagename + "','" + classname + "','" + fieldname + "'," + type +  ")";
 				list.add(key);
 			}
 		}
 		return list;
-		
 		
 		/*
 		for(String key : map.keySet()){
@@ -183,10 +180,6 @@ public class StaticToolsForDnD {
 				System.out.println("Package");
 			if(o instanceof ICompilationUnit)
 				System.out.println("sour code file");
-				
-			//"oldquery or class('voller packagename', klassenname)"
-				
-				
 			if(o instanceof IField)
 				System.out.println("Attribut");
 			if(o instanceof IType)
@@ -206,74 +199,8 @@ public class StaticToolsForDnD {
 			if(o instanceof IFolder)
 				System.out.println("folder");
 			System.out.println(o.getClass());
-		}
-		return null;
-		*/
+			*/
 	}
-	
-	/**
-	 * resolve all elements from the given method to build the query (from a given method)
-	 * @param method
-	 * @return querystring
-	 * @author BenjaminL
-	 */
-	private static String getQueryFromMethod(IMethod method) {
-		//init vars
-		String packagename = "";
-		String classname = "";
-		String methodname = "";
-		String returntype = "";
-		StringBuffer sbParaTypes = new StringBuffer();
-		
-		try {
-			//getting package information
-			IPackageDeclaration[] declarations = method.getCompilationUnit().getPackageDeclarations();
-			if(declarations.length > 0)
-			{
-				packagename = declarations[0].getElementName(); 
-			}
-			
-			//getting the classname
-			classname = method.getDeclaringType().getFullyQualifiedName();
-			
-			//get methodname, set as <init> if it is the constructor
-			if(method.isConstructor())
-				methodname = CONSTRUCTOR;
-			else
-				methodname = method.getElementName();
-			
-			//getting returntype
-			returntype = typeToFQN(method.getReturnType(), method.getDeclaringType());
-			
-			//getting parametertypes
-			sbParaTypes.append("[");
-			for(String type : method.getParameterTypes()){
-				String tmp = typeToFQN(type, method.getDeclaringType());
-				sbParaTypes.append("'" + tmp + "'");
-				sbParaTypes.append(",");
-			}
-			//string corrections of the parameters
-			if(sbParaTypes.charAt(0)==',')
-				sbParaTypes.delete(sbParaTypes.length()-1,sbParaTypes.length());
-			if(sbParaTypes.charAt(sbParaTypes.length()-1)==',')
-				sbParaTypes.delete(sbParaTypes.length()-1,sbParaTypes.length());
-			sbParaTypes.append("]");
-			
-		} catch (JavaModelException e) {
-			e.printStackTrace();
-		}
-		
-		//preparing return values
-		packagename = "'" + packagename + "'";
-		classname = "'" + classname + "'";
-		methodname.replaceAll(";","");
-		methodname = "'" + methodname + "'";
-		returntype = "'" + returntype + "'";
-		
-//		System.out.println(packagename + "," + classname + "," + methodname + "," + returntype + "," + sbParaTypes.toString());
-		return packagename + "," + classname + "," + methodname + "," + returntype + "," + sbParaTypes.toString();
-	}
-	
 	
 	/**
 	 * resolving types to FQN declaration
@@ -291,53 +218,6 @@ public class StaticToolsForDnD {
 		}
         return tmp;
     }
-
-	
-	/**
-	 * resolve all elements from the given method to build the query (from a given field)
-	 * @param field
-	 * @return querystring
-	 * @author BenjaminL
-	 */
-	private static String getQueryFromField(IField field) {
-		//init vars
-		String packagename = "";
-		String classname = "";
-		String fieldname = "";
-		String type = "";
-		
-		fieldname = field.getElementName();
-		try {
-			type = typeToFQN(field.getTypeSignature(), field.getDeclaringType());
-		} catch (JavaModelException e) {
-			e.printStackTrace();
-		}
-	
-		//getting package information
-		Object o = field.getParent().getParent();
-		if(o instanceof ICompilationUnit){
-			o = (ICompilationUnit) o;
-			classname = ((ICompilationUnit) o).getElementName();
-			o = ((ICompilationUnit) o).getParent();
-			if(o instanceof IPackageFragment){
-				packagename = ((IPackageFragment) o).getElementName();
-			}
-		}
-		
-		//getting the classname
-		classname = field.getDeclaringType().getFullyQualifiedName();
-			
-		//preparing return values
-		packagename = "'" + packagename + "'";
-		classname = "'" + classname + "'";
-		fieldname.replaceAll(";","");
-		fieldname = "'" + fieldname + "'";
-		type = "'" + type + "'";
-		
-		//System.out.println(packagename + "," + classname + "," + fieldname + "," + type);
-		return packagename + "," + classname + "," + fieldname + "," + type;
-	}
-
 
 	public static Object createNameforNewEnsemble(Map extendedData) {
 		// TODO Auto-generated method stub
