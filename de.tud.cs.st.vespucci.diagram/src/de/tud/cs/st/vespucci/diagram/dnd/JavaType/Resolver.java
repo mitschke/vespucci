@@ -1,3 +1,37 @@
+/*
+ *  License (BSD Style License):
+ *   Copyright (c) 2010
+ *   Author BenjaminL
+ *   Software Engineering
+ *   Department of Computer Science
+ *   Technische Universit�t Darmstadt
+ *   All rights reserved.
+ * 
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions are met:
+ * 
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   - Neither the name of the Software Engineering Group or Technische 
+ *     Universit�t Darmstadt nor the names of its contributors may be used to 
+ *     endorse or promote products derived from this software without specific 
+ *     prior written permission.
+ * 
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *   POSSIBILITY OF SUCH DAMAGE.
+ */
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
@@ -6,7 +40,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClassFile;
@@ -19,8 +52,6 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.util.ISourceAttribute;
-import org.eclipse.jdt.internal.compiler.env.ISourceMethod;
-import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -29,7 +60,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
 /**
  * static class to get all information about the units
  * supports type conversion from java binary type to FQN
- * @author luecbn01
+ * @author BenjaminL
  */
 @SuppressWarnings("restriction")
 public class Resolver {
@@ -47,8 +78,8 @@ public class Resolver {
 	 * @param type
 	 * @param jdtDeclaringType
 	 * @return
+	 * @author BenjaminL
 	 */
-	@SuppressWarnings("restriction")
 	private static String typeToFQN(String type, IType jdtDeclaringType) {
 		String tmp = null;
         try {
@@ -103,6 +134,7 @@ public class Resolver {
 	 * @param o
 	 * @param key
 	 * @return FQN classname 
+	 * @author BenjaminL
 	 */
 	public static String getFQClassnamefromIxxx(Object o, String key){
 		// class, method, field, type
@@ -132,6 +164,7 @@ public class Resolver {
 	 * @param o
 	 * @param key
 	 * @return FQN type
+	 * @author BenjaminL
 	 */
 	public static String getReturnTypeFromIxxx(Object o, String key){
 			//method
@@ -154,6 +187,7 @@ public class Resolver {
 	 * getting all parameters from a given IMethod
 	 * @param field
 	 * @return
+	 * @author BenjaminL
 	 */
 	public static List<String> getParameterTypesFromMethod(IMethod method) {
 		List<String> parameters = new ArrayList<String>();
@@ -230,48 +264,4 @@ public class Resolver {
 		
 		return "";
 	}
-	
-	
-	
-//	private void readInformation() {
-//		
-//		//package...
-//		if(o instanceof IPackageFragment){
-//			//System.out.println("Package --> " + key);
-//			key = key.substring(0,key.indexOf('[')).trim();
-//			key = PACKAGE + "('" + key + "')";
-//			list.add(key);
-//		}else if(o instanceof ICompilationUnit){
-//			//CLASS
-//			String packagename = "";
-//			String classname = "";
-//			try {
-//				ICompilationUnit cUnit = (ICompilationUnit) o;				
-//				IPackageDeclaration[] declarations;
-//			
-//				declarations = cUnit.getPackageDeclarations();
-//				if(declarations.length > 0)
-//				{
-//					packagename = declarations[0].getElementName(); 
-//				}
-//				//getting the classname
-//				classname = packagename + "." + ((ICompilationUnit) o).getElementName();
-//			} catch (JavaModelException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			key = CLASS_WITH_MEMBERS + "('" + packagename + "','" + classname + "')";
-//			list.add(key);
-//		}else if(o instanceof IMethod){
-//			//METHOD
-//			key = METHOD + "(" + getQueryFromMethod((IMethod)o) + ")";
-//			list.add(key);
-//		}else if(o instanceof IField){
-//			//FIELD
-//			key = FIELD + "(" + getQueryFromField((IField)o) + ")";
-//			list.add(key);
-//		}
-//	}
-	
-	
 }

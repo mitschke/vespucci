@@ -64,6 +64,7 @@ public class StaticToolsForDnD {
 	 * creates a new Query from the data of a drop event
 	 * @param map data of the drop event
 	 * @return new query
+	 * @author BenjaminL
 	 */
 	public static String createQueryForAMapOfIResource(Map<String,Object> map){
 		return createQueryForAMapOfIResource(map, "");
@@ -75,6 +76,7 @@ public class StaticToolsForDnD {
 	 * @param map data of the drop event
 	 * @param oldQuery old Query of the model element
 	 * @return new query
+	 * @author BenjaminL
 	 */
 	public static String createQueryForAMapOfIResource(Map<String,Object> map, String oldQuery){
 		
@@ -113,6 +115,7 @@ public class StaticToolsForDnD {
 	 *  field:	 field(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,<FIELDNAME>,<FIELDTYPE>)
 	 * @param map 
 	 * @return query list
+	 * @author BenjaminL
 	 */
 	private static List<String> createQueryFromDNDobjects(Map<String,Object> map){
 		LinkedList<String> list = new LinkedList<String>();
@@ -200,8 +203,9 @@ public class StaticToolsForDnD {
 	 * getting the first known object name - else return "A dynamic name"
 	 * @param extendedData
 	 * @return name as string
+	 * @author BenjaminL
 	 */
-	public static Object createNameforNewEnsemble(Map extendedData) {
+	public static Object createNameforNewEnsemble(Map<?, ?> extendedData) {
 		// TODO der vorgeschlagene text (also der return string) muss markiert sein
 		
 		//getting the first known object name
