@@ -195,8 +195,24 @@ public class StaticToolsForDnD {
 			*/
 	}
 
+	
+	/**
+	 * getting the first known object name - else return "A dynamic name"
+	 * @param extendedData
+	 * @return name as string
+	 */
 	public static Object createNameforNewEnsemble(Map extendedData) {
-		// TODO Auto-generated method stub
+		// TODO der vorgeschlagene text (also der return string) muss markiert sein
+		
+		//getting the first known object name
+		for(Object key : extendedData.keySet()){
+			Object o = extendedData.get(key);
+			
+			String tmp = Resolver.getElementNameFromObject(o);
+			if(!tmp.equals(""))
+				return tmp;
+		}
+			
 		return "A dynamic name";
 	}
 }
