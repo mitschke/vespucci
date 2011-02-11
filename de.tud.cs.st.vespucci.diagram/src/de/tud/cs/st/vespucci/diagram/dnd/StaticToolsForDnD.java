@@ -91,11 +91,11 @@ public class StaticToolsForDnD {
 		//extending the old Query
 		if(queries != null){
 			for(String s : queries){
-				res = res + s + QUERY_DELIMITER + "\n";
+				res = res + s + "\n" + QUERY_DELIMITER;
 			}
 		}else{
 		}
-		if(res.endsWith(QUERY_DELIMITER + "\n")) //length() >= QUERY_DELIMITER.length())
+		if(res.endsWith(QUERY_DELIMITER)) //length() >= QUERY_DELIMITER.length())
 			res = res.substring(0, res.length()-QUERY_DELIMITER.length()-1);
 		
 		if(res.equals(""))
@@ -156,7 +156,7 @@ public class StaticToolsForDnD {
 				String fieldname = field.getElementName();
 				String type = Resolver.getFQFieldTypeName(field);
 				
-				key = FIELD + "('" + packagename + "','" + classname + "','" + fieldname + "'," + type +  ")";
+				key = FIELD + "('" + packagename + "','" + classname + "','" + fieldname + "','" + type +  "')";
 				list.add(key);
 			}
 		}

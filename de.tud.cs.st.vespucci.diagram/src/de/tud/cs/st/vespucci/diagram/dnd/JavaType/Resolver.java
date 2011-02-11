@@ -3,15 +3,24 @@ package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.util.ISourceAttribute;
+import org.eclipse.jdt.internal.compiler.env.ISourceMethod;
+import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -182,6 +191,44 @@ public class Resolver {
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return null;
+	}
+
+	/**
+	 * getting 
+	 */
+	public static String getElementNameFromObject(Object o) {
+		if(o instanceof IProject) 
+			return ((IProject) o).getName();
+		else if(o instanceof IPackageFragment) 
+			return ((IPackageFragment) o).getElementName();
+		else if(o instanceof ICompilationUnit) 
+			return ((ICompilationUnit) o).getElementName();
+		else if(o instanceof IType) 
+			return ((IType) o).getElementName();
+		else if(o instanceof IField) 
+			return ((IField) o).getElementName();
+		else if(o instanceof IMethod) 
+			return ((IMethod) o).getElementName();
+		else if(o instanceof IPackageFragmentRoot) 
+			return ((IPackageFragmentRoot) o).getElementName();
+		else if(o instanceof ISourceAttribute)
+			return ((ISourceAttribute) o).getSourceFileName().toString();
+//		else if(o instanceof ISourceMethod) 
+//			return ((ISourceMethod) o).getElementName();
+		else if(o instanceof IProject) 
+			return ((IProject) o).getName();
+		else if(o instanceof IClassFile) 
+			return ((IClassFile) o).getElementName();
+//		else if(o instanceof IAdaptable) 
+//			return ((IAdaptable) o).getElementName();
+		else if(o instanceof IFile) 
+			return ((IFile) o).getName();
+		else if(o instanceof IFolder) 
+			return ((IFolder) o).getName();
+		else
+			//nothing
+		
+		return "";
 	}
 	
 	
