@@ -81,13 +81,14 @@ public class StaticToolsForDnD {
 	 */
 	public static String createQueryForAMapOfIResource(Map<String,Object> map, String oldQuery){
 		
+		System.out.println(Resolver.isProcessable(map));
+		
 		if(oldQuery == null || (oldQuery.equals("empty") && map.size()>0))
 			oldQuery = "";
 		else if(oldQuery.trim().toLowerCase().equals(DERIVED))
 			return oldQuery;
 		else if(oldQuery.length() > 0)
 			oldQuery += QUERY_DELIMITER;
-		
 		
 		String res = oldQuery;
 		

@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -127,6 +128,36 @@ public class Resolver {
 			}
 		}
 		return null;
+	}
+	
+	
+	/**
+	 * returns true, if all dropped objects are processable
+	 * @param map
+	 * @return true / false
+	 * @author BenjaminL
+	 */
+	public static boolean isProcessable(Map<String,Object> map){
+	
+		for(String key : map.keySet()){
+			Object o = map.get(key);
+			boolean akt = false;
+			
+			if(o instanceof IPackageFragment){
+				akt = true;
+			}else if(o instanceof ICompilationUnit){
+				akt = true;
+			}else if(o instanceof IMethod){
+				akt = true;
+			}else if(o instanceof IField){
+				akt = true;
+			}
+			
+			if(akt == false)
+				return false;
+			
+		}
+		return true;		
 	}
 	
 	/**
