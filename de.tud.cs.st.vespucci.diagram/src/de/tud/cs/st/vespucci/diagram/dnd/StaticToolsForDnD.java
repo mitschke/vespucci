@@ -58,6 +58,7 @@ public class StaticToolsForDnD {
 	public final static String METHOD = "method";
 	public final static String FIELD = "field";
 	private static final String QUERY_DELIMITER = " or ";
+	private static final String DERIVED = "derived";
 	
 	
 	/**
@@ -82,8 +83,11 @@ public class StaticToolsForDnD {
 		
 		if(oldQuery == null || (oldQuery.equals("empty") && map.size()>0))
 			oldQuery = "";
-		else if (oldQuery.length() > 0)
+		else if(oldQuery.trim().toLowerCase().equals(DERIVED))
+			return oldQuery;
+		else if(oldQuery.length() > 0)
 			oldQuery += QUERY_DELIMITER;
+		
 		
 		String res = oldQuery;
 		
