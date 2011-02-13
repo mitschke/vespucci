@@ -393,6 +393,10 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private String[] getEnsembleParameterDefinitions(Ensemble ensemble) {
+		//TODO // FIXME BenjaminL: schneller hack, dass keine nullpointerexception beim speichern eines diagramms mit einem ensemble mit leeren namen auftritt - schöner kettensatz, he?
+		if(ensemble.getName()==null){
+			ensemble.setName("");
+		}
 		String name = ensemble.getName().length()== 0 ? "non-editpart" : ensemble.getName();
 		Matcher m = mParameterList.matcher(name);
 		if (!m.matches())
