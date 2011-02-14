@@ -35,6 +35,7 @@
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -266,6 +268,8 @@ public class Resolver {
 			return ((IProject) o).getName();
 		else if(o instanceof IPackageFragment) 
 			return ((IPackageFragment) o).getElementName();
+		else if(o instanceof IPackageFragmentRoot)
+			return ((IPackageFragmentRoot) o).getElementName();
 		else if(o instanceof ICompilationUnit) 
 			return ((ICompilationUnit) o).getElementName();
 		else if(o instanceof IType) 
@@ -292,7 +296,36 @@ public class Resolver {
 			return ((IFolder) o).getName();
 		else
 			//nothing
-		
 		return "";
 	}
+	
+	
+	/**
+	 * getting all packages from a IPackageFragmentRoot; e.g. a src-folder or a JAR-file which is in the project referenced libraries
+	 * @param pfr
+	 * @return list<Strings> of the included package names
+	 */
+	public static List<String> getPackagesFromPFR(IPackageFragmentRoot pfr) {
+		List<String> packages = new ArrayList<String>();
+		
+		try {
+			IJavaElement[] children = pfr.getChildren();
+			
+			for (IJavaElement aPackage : children) {
+				String packageName = aPackage.getElementName();
+				String p = getFQPackageNameFromIxxx(aPackage, packageName).trim();
+				if(p.length()>0)
+					packages.add(p);
+			}
+			return packages;
+			
+		} catch (JavaModelException e) {
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"JavaModelException: Failed to resolve packages of src-folder/JAR-file", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
+		return Collections.emptyList();
+	}
+	
 }

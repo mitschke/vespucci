@@ -42,6 +42,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
@@ -80,8 +81,6 @@ public class StaticToolsForDnD {
 	 * @author BenjaminL
 	 */
 	public static String createQueryForAMapOfIResource(Map<String,Object> map, String oldQuery){
-		
-		System.out.println(Resolver.isProcessable(map));
 		
 		if(oldQuery == null || (oldQuery.equals("empty") && map.size()>0))
 			oldQuery = "";
@@ -166,6 +165,12 @@ public class StaticToolsForDnD {
 				
 				key = FIELD + "('" + packagename + "','" + classname + "','" + fieldname + "','" + type +  "')";
 				list.add(key);
+			}else if(o instanceof IPackageFragmentRoot){
+				List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) o);
+				for(String s : packages){
+					key = PACKAGE + "('" + s + "')";
+					list.add(key);
+				}
 			}
 		}
 		return list;
@@ -202,8 +207,7 @@ public class StaticToolsForDnD {
 			System.out.println(o.getClass());
 			*/
 	}
-
-	
+	 
 	/**
 	 * getting the first known object name - else return "A dynamic name"
 	 * @param extendedData
@@ -221,7 +225,7 @@ public class StaticToolsForDnD {
 			if(!tmp.equals(""))
 				return tmp;
 		}
-			
+
 		return "A dynamic name";
 	}
 }
