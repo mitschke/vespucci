@@ -48,6 +48,7 @@ import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
 /**
  * A Class which provides static tools for supporting DnD
+ * 
  * @author MalteV
  * @author BenjaminL
  */
@@ -71,6 +72,7 @@ public class StaticToolsForDnD {
 	public static String createQueryForAMapOfIResource(Map<String,Object> map){
 		return createQueryForAMapOfIResource(map, "");
 	}
+	
 	
 	/**
 	 *  creates a new Query from the data of the drop event
@@ -109,6 +111,7 @@ public class StaticToolsForDnD {
 		else
 			return res + "\n";
 	}
+	
 	
 	/**
 	 * Creates a List that contains for all Java Files in map an entry:
@@ -207,6 +210,7 @@ public class StaticToolsForDnD {
 			System.out.println(o.getClass());
 			*/
 	}
+	
 	 
 	/**
 	 * getting the first known object name - else return "A dynamic name"

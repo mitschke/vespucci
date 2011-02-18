@@ -10,11 +10,11 @@
  ****************************************************************************/
 package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gmf.runtime.common.core.command.ICommand;
 import org.eclipse.gmf.runtime.common.core.util.StringStatics;
 import org.eclipse.gmf.runtime.common.ui.util.StatusLineUtil;
 import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPropertySection;
@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -42,8 +41,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  * @author natalia balaba
  * 
  * Changed by:
- * @author Malte
- * @author Benni
+ * @author MalteV
+ * @author BenjaminL
  */
 public abstract class ChangedAbstractBasicTextPropertySection
 	extends AbstractModelerPropertySection {
@@ -62,9 +61,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	    public void handleEvent (Event e) {
 		      updateHeight();
 		    }
-		  };
-	
-	
+	    };
 	
 	/**
 	 * @return - name of the property to place in the label widget
@@ -86,11 +83,13 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 */
 	abstract protected String getPropertyValueString();
 	private int startHeight = 15;
+	
 	/**
 	 * @return - title of the command which will be executed to set the property
 	 */
 	protected abstract String getPropertyChangeCommandName();
 
+	
 	/**
 	 * A helper to listen for events that indicate that a text field has been
 	 * changed.
@@ -134,9 +133,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 
 	private Composite sectionComposite;
 
-
-
-
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse.swt.widgets.Composite, org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
@@ -145,6 +142,8 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		
 		doCreateControls(parent, aTabbedPropertySheetPage);
 	}
+	
+	
 	/**
 	 * Creates the GUI <code>Control</code> for this text property section
 	 * @param parent parent <code>Composite</code>
@@ -152,7 +151,6 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 * @see org.eclipse.gmf.runtime.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.gmf.runtime.common.ui.properties.TabbedPropertySheetPage)
 	 */
-	
 	public void doCreateControls(Composite parent,
 			TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
@@ -169,14 +167,10 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			scrolledParent = scrolledParent.getParent();
 			
 		}
-		//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getListeners(SWT.Resize);
-		//textWidget.getParent().getParent().getParent().getParent().getParent().getParent().addListener(SWT.Resize,  new Listener () {
 		scrolledParent.addListener(SWT.Resize, resizeLinstener );
-		
 		startTextWidgetEventListener();
 	}
 
-	
 	
 	/**
 	 * Start listening to the text widget events
@@ -188,6 +182,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		}
 	}
 
+	
 	/**
 	 * Stop listening to text widget events
 	 */
@@ -196,6 +191,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			getListener().stopListeningTo(getTextWidget());
 	}
 
+	
 	/**
 	 * Instantiate a text widget
 	 * 
@@ -218,9 +214,14 @@ public abstract class ChangedAbstractBasicTextPropertySection
 
 	}
 	
+	
 	private int getHeight(){
 		return this.scrolledParent.getSize().y - 20;
 	}
+	
+	/**
+	 * calculates the new size of the widget and updates it
+	 */
 	private void updateHeight(){
 		if(getTextWidget() != null && !getTextWidget().isDisposed()){
 		
@@ -245,6 +246,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		}
 	}
 	
+	
 	/**
 	 * returns as an array the property name
 	 * @return - array of strings where each describes a property name one per
@@ -256,17 +258,15 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	}
 
 
-
 	/**
 	 * User pressed Enter key after editing text field - update the model
 	 * 
 	 * @param control <code>Control</code>
 	 */
 	protected synchronized void setPropertyValue(Control control) {
-
 		final Object value = computeNewPropertyValue();
-		ArrayList commands = new ArrayList();
-		for (Iterator it = getEObjectList().iterator(); it.hasNext();) {
+		ArrayList<ICommand> commands = new ArrayList<ICommand>();
+		for (Iterator<?> it = getEObjectList().iterator(); it.hasNext();) {
 			final EObject next = (EObject) it.next();
 			commands.add(createCommand(getPropertyChangeCommandName(), next,
 				new Runnable() {
@@ -277,15 +277,14 @@ public abstract class ChangedAbstractBasicTextPropertySection
 
 				}));
 		}
-
 		executeAsCompositeCommand(getPropertyChangeCommandName(), commands);
 		refresh();
-
 	}
 
+	
 	/**
-	 * @return - a default implementation returns contents of the text widget as
-	 *         a new value for the property. Subclasses can override.
+	 * @return - the default implementation returns contents of the text widget as
+	 *         a new value for the property. Subclasses can could be override.
 	 */
 	protected Object computeNewPropertyValue() {
 		return getTextWidget().getText();
@@ -300,6 +299,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		super.dispose();
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
@@ -316,15 +316,17 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			getListener().finishNonUserChange();
 		}
 	}
+	
 
 	/**
-	 * Refresh UI body - referesh will surround this with read action block
+	 * Refresh UI body - refresh will surround this with read action block
 	 */
 	protected void refreshUI() {
 		getTextWidget().setText(getPropertyValueString());
 		updateHeight();
 	}
 
+	
 	/**
 	 * @return Returns the listener.
 	 */
@@ -332,6 +334,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		return listener;
 	}
 
+	
 	/**
 	 * @return Returns the textWidget.
 	 */

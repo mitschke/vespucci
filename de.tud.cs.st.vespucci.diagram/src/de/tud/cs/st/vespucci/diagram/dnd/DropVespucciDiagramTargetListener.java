@@ -48,10 +48,9 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 
 /**
- * A listener for IResouce drops on the VespucciDiagram view
+ * A listener for IResource that are dropped on the VespucciDiagram view
  * 
  * @author MalteV
- * 
  */
 public class DropVespucciDiagramTargetListener extends AbstractTransferDropTargetListener {
 	/**
@@ -63,16 +62,17 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 		super(viewer, LocalSelectionTransfer.getTransfer());
 	}
 
+	
 	protected void handleDragOver() {
 		getCurrentEvent().detail = DND.DROP_COPY;
 		super.handleDragOver();
-		
 	}
 
+	
 	protected void handleDrop() {
 		getCurrentEvent().detail = DND.DROP_COPY;
 		ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-		//System.out.println(selection);
+		
 		Map<String, Object> m = new HashMap<String, Object>();
 		for(Object o : ((TreeSelection) selection).toList())
 			m.put(o.toString(), o);
@@ -81,23 +81,24 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 		super.handleDrop();
 	}
 
+	
 	@Override
 	public boolean isEnabled(DropTargetEvent event) {
 		return super.isEnabled(event);
 	}
 
+	
 	@Override
 	protected void updateTargetRequest() {
 		((DirectEditRequest) getTargetRequest()).setLocation(getDropLocation());
 		super.updateTargetEditPart();
 	}
 
+	
 	@Override
 	protected Request createTargetRequest() {
 		DirectEditRequest request = new DirectEditRequest();
 		return request;
 	}
-
-
-
+	
 }

@@ -50,8 +50,8 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * A EditDropPolicy that allow and handle the drop of IRecources on the
- * XXXEditPart that is corresponding to a subtype of the metaclass Shape The
- * Request of the drop must be a DirectEditRequest
+ * XXXEditPart that is corresponding to a subtype of the metaclass Shape. 
+ * The Request of the drop must be a DirectEditRequest.
  * 
  * @author MalteV
  * 
@@ -62,21 +62,25 @@ public class EditDropPolicy extends DirectEditPolicy {
 	public void activate() {
 		super.activate();
 	}
+	
 
 	@Override
 	public void deactivate() {
 		super.deactivate();
 	}
+	
 
 	@Override
 	public void eraseSourceFeedback(Request request) {
 		super.eraseSourceFeedback(request);
 	}
+	
 
 	@Override
 	public void eraseTargetFeedback(Request request) {
 		super.eraseTargetFeedback(request);
 	}
+	
 
 	@Override
 	public Command getCommand(Request request) {
@@ -85,11 +89,13 @@ public class EditDropPolicy extends DirectEditPolicy {
 		return null;
 	}
 
+	
 	@Override
 	public EditPart getHost() {
 		return super.getHost();
 	}
 
+	
 	@Override
 	public EditPart getTargetEditPart(Request request) {
 		EditPart ep = super.getTargetEditPart(request);
@@ -100,34 +106,40 @@ public class EditDropPolicy extends DirectEditPolicy {
 		return null;
 	}
 
+	
 	@Override
 	public void setHost(EditPart host) {
-		class a{
+		class a{	//FIXME: BenjaminL: wird die innere klasse benötigt?
 			
 		}
 		super.setHost(host);
 	}
+	
 
 	@Override
 	public void showSourceFeedback(Request request) {
 		super.showSourceFeedback(request);
 	}
 
+	
 	@Override
 	public void showTargetFeedback(Request request) {
 		super.showTargetFeedback(request);
 	}
+	
 
 	@Override
 	public String toString() {
 		return super.toString();
 	}
+	
 
 	@Override
 	public boolean understandsRequest(Request req) {
 		return super.understandsRequest(req);
 	}
 
+	
 	@Override
 	protected Command getDirectEditCommand(DirectEditRequest request) {
 		// TODO put "http://vespucci.editor" in some constant
@@ -176,10 +188,10 @@ public class EditDropPolicy extends DirectEditPolicy {
 		return null;
 	}
 
+	
 	@Override
 	protected void showCurrentEditValue(DirectEditRequest request) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

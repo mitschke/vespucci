@@ -62,7 +62,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
 public class GeneratePrologFacts extends AbstractHandler {
 
 	/**
-	 * 
+	 * TODO beschreibung einfügen
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
@@ -99,9 +99,10 @@ public class GeneratePrologFacts extends AbstractHandler {
 			}
 
 		}
-
 		return re;
 	}
+	
+	
 	/*
 	 * 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil

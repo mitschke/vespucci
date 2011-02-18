@@ -1,3 +1,37 @@
+/*
+ *  License (BSD Style License):
+ *   Copyright (c) 2010
+ *   Author MalteV
+ *   Software Engineering
+ *   Department of Computer Science
+ *   Technische Universitï¿½t Darmstadt
+ *   All rights reserved.
+ * 
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions are met:
+ * 
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   - Neither the name of the Software Engineering Group or Technische 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     endorse or promote products derived from this software without specific 
+ *     prior written permission.
+ * 
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *   POSSIBILITY OF SUCH DAMAGE.
+ */
 package de.tud.cs.st.vespucci.diagram.dnd;
 
 import java.util.List;
@@ -27,22 +61,23 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
+
 /**
- * EditPolicy for creating new Shapes (gmf shapes) on a diagram
+ * EditPolicy for creating new shapes (GMF shapes) on a Vespucci-diagram
+ * 
  * @author MalteV
- *
  */
 final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 
 	/**
-	 * This a modified version of the getCreateElementAndViewcommand of
-	 * CreationEditPolicy this version should only be use in the context of
-	 * creating new Ensembles out of a droped file Method creates a
-	 * CompositeCommand that include : - a create view element command - a
-	 * create semantic element command - two setvalue commands
+	 * This is a modified version of the getCreateElementAndViewcommand of
+	 * CreationEditPolicy. This version should only be used in the context of
+	 * creating new Ensembles out of a dropped file method.
+	 * CompositeCommand that include : - a create view element command
+	 * create semantic element command - two setValue commands
 	 * 
 	 * @param request
-	 * @return Command that creates the sematnic and the view command for the
+	 * @return Command that creates the semantic and the view command for the
 	 *         given CreateViewAndElementRequest
 	 */
 	protected Command getCreateElementAndViewEnsembleCommand(
@@ -51,10 +86,9 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		 * A modified version of the SetValueCommand
 		 * that always return true for canExecute()
 		 * that is necessary because this command is used in a CompositeCommand 
-		 * witch is only executable if all commands in the Compositecommand are executable
-		 * and the this command needs data witch will be created from an other command in the compositecommand.
+		 * which is only executable if all commands in the compositeCommand are executable
+		 * and the this command needs data which will be created from an other command in the compositeCommand.
 		 * @author MalteV
-		 *
 		 */
 		class extendedSetValueCommand extends SetValueCommand{
 			private final CreateElementRequest createRequest;
@@ -63,6 +97,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 				this.createRequest = createRequest;
 
 			}
+			
 
 			@Override
 			protected CommandResult doExecuteWithResult(IProgressMonitor monitor,
@@ -73,25 +108,25 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 				}
 				return CommandResult.newErrorCommandResult("Command was not Executeable\n pls see canExecute in extendedSetValueCommand");
 			}
+			
 
 			/**
 			 * @return this Methode returns always true!
+			 * BenjaminL: wenn du die änderst pass auch bitte oben den kommentar an!
 			 */
 			@Override
 			public boolean canExecute() {
 				return true;
 			}
-
+			
 		}
 
 		// copied Content
-
 		// get the element descriptor
 		CreateElementRequestAdapter requestAdapter = request
 				.getViewAndElementDescriptor().getCreateElementRequestAdapter();
 
 		// get the semantic request
-
 		CreateElementRequest createElementRequest = (CreateElementRequest) requestAdapter
 				.getAdapter(CreateElementRequest.class);
 
@@ -113,7 +148,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 			createElementRequest.setContainer(hostElement);
 		}
 
-		// get the create element command based on the elementdescriptor's
+		// get the create element command based on the elements descriptor
 		// request
 		Command createElementCommand = getHost().getCommand(
 				new EditCommandRequestWrapper(
@@ -134,7 +169,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		Command viewCommand = getCreateCommand(request);
 
 		Command refreshConnectionCommand = getHost().getCommand(
-				new RefreshConnectionsRequest(((List) request.getNewObject())));
+				new RefreshConnectionsRequest(((List<?>) request.getNewObject())));
 		// form the compound command and return
 		CompositeCommand cc = new CompositeCommand(semanticCommand.getLabel());
 		cc.compose(semanticCommand);
@@ -145,7 +180,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		}
 		// end copied content
 		// create two setValuecomand to set the Query and the name of the New
-		// Ensamble
+		// Ensemble
 		EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
 				.getEPackage("http://vespucci.editor");
 		Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
@@ -171,8 +206,10 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		cc.compose(svc2);
 		return new ICommandProxy(cc);
 	}
+	
+	
 	/**
-	 * return a create Comand if the request is understood
+	 * return a create command if the request is understood
 	 */
 	@Override	
 	public Command getCommand(Request request) {
@@ -188,8 +225,10 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		}
 		return super.getCommand(request);
 	}
+	
+	
 	/**
-	 * This class understands request of the time REQ_DropNewENSEMBLE and all Request that are
+	 * This class understands request of the time REQ_DROPNEWENSEMBLE and all Request that are
 	 * understood by CreationEditPolicy
 	 */
 	@Override
