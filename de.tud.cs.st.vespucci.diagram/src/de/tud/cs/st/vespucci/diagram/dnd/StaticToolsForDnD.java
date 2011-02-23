@@ -38,11 +38,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.gef.SelectionManager;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.ui.PlatformUI;
 
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
@@ -61,6 +67,7 @@ public class StaticToolsForDnD {
 	public final static String FIELD = "field";
 	private static final String QUERY_DELIMITER = " or ";
 	private static final String DERIVED = "derived";
+	private static final String STANDARD_SHAPENAME = "A dynamic name";
 	
 	
 	/**
@@ -158,6 +165,15 @@ public class StaticToolsForDnD {
 				
 				key = METHOD + "('" +packagename + "','" + classname + "','" + methodname + "','" + returntype + "'," + sbPara.toString() + ")";
 				list.add(key);
+			}else if(o instanceof IType){
+				//IType
+				IType type = (IType) o;				
+				ICompilationUnit cU = type.getCompilationUnit();
+				
+				String packagename = Resolver.getFQPackageNameFromIxxx(cU, key);
+				String classname = Resolver.getFQClassnamefromIxxx(cU, key);
+				key = CLASS_WITH_MEMBERS + "('" + packagename + "','" + classname + "')";
+				list.add(key);
 			}else if(o instanceof IField){
 				//FIELD
 				IField field = (IField) o;
@@ -219,8 +235,6 @@ public class StaticToolsForDnD {
 	 * @author BenjaminL
 	 */
 	public static Object createNameforNewEnsemble(Map<?, ?> extendedData) {
-		// TODO der vorgeschlagene text (also der return string) muss markiert sein
-		
 		//getting the first known object name
 		for(Object key : extendedData.keySet()){
 			Object o = extendedData.get(key);
@@ -229,7 +243,6 @@ public class StaticToolsForDnD {
 			if(!tmp.equals(""))
 				return tmp;
 		}
-
-		return "A dynamic name";
+		return STANDARD_SHAPENAME;
 	}
 }
