@@ -87,7 +87,8 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramCanonicalEditPolicy());
 		//installEditPolicy(CreateEnsembleDropTargetListener.REQ_DROPNEWENSEMBLE	, new CreationNewEnsembleEditPolicy());
 		//installEditPolicy(EditPolicyRoles.CREATION_ROLE	, new CreationEditPolicy());
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE	, new CreationNewEnsembleEditPolicy());
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
+				new CreationNewEnsembleEditPolicy());
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 

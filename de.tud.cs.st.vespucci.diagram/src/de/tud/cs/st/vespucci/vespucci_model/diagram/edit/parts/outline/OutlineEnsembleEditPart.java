@@ -35,23 +35,28 @@
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
+import org.eclipse.gmf.runtime.notation.NotationPackage;
+import org.eclipse.gmf.runtime.notation.Style;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.impl.BasicCompartmentImpl;
-import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
-import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
+ * OutlineEditPart for Ensemble Object
  * 
  * @author a_vovk
  * 
@@ -60,7 +65,7 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 
 	private static final String IMAGE = "icons/outline/Ensemble.gif";
 
-	private EObject[] objectListenningTo = new EObject[2];
+	private Set<EObject> objectListenningTo = new HashSet<EObject>();
 
 	public OutlineEnsembleEditPart(Object model) {
 		super(model);
@@ -79,34 +84,45 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 			return;
 		super.activate();
 		View view = (View) getModel();
-		EObject semanticElement = getSemanticElement();
-		getDiagramEventBroker().addNotificationListener(view, this);
-		getDiagramEventBroker().addNotificationListener(semanticElement, this);
-		objectListenningTo[0] = view;
-		objectListenningTo[1] = semanticElement;
+		// update Compartments
+		for (Object i : view.getPersistedChildren()) {
+			if (i instanceof BasicCompartmentImpl) {
+				getDiagramEventBroker().addNotificationListener(
+						(BasicCompartmentImpl) i, this);
+				objectListenningTo.add((BasicCompartmentImpl) i);
+			}
+		}
 	}
 
 	@Override
 	public void deactivate() {
 		if (!isActive())
 			return;
-		for (int index = 0; index < objectListenningTo.length; index++) {
-			getDiagramEventBroker().removeNotificationListener(
-					objectListenningTo[index], this);
-			objectListenningTo[index] = null;
+
+		Iterator<EObject> itr = objectListenningTo.iterator();
+		while (itr.hasNext()) {
+			EObject eObj = itr.next();
+			getDiagramEventBroker().removeNotificationListener(eObj, this);
+			// itr.remove();
 		}
+		objectListenningTo = null;
+
 		super.deactivate();
 	}
 
-	protected List getModelChildren() {
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List<?> getModelChildren() {
 		Object model = getModel();
 
 		if (model instanceof ShapeImpl) {
 			ShapeImpl shape = (ShapeImpl) getModel();
 
-			EList shapes = shape.getPersistedChildren();
+			EList<?> shapes = shape.getPersistedChildren();
+			@SuppressWarnings("rawtypes")
 			EList sourceEdges = shape.getSourceEdges();
-					
+
+			@SuppressWarnings("rawtypes")
 			EList targetEdges = shape.getTargetEdges();
 			for (Object i : shapes) {
 				if (i instanceof BasicCompartmentImpl) {
@@ -123,6 +139,22 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 		}
 
 		return Collections.EMPTY_LIST;
+	}
+
+	@Override
+	protected void handleNotificationEvent(Notification event) {
+//		if (NotationPackage.Literals.DIAGRAM__NAME.equals(event.getFeature())) {
+//			refreshVisuals();
+//		} else {
+//			Object feature = event.getFeature();
+//			if (NotationPackage.eINSTANCE.getView_PersistedChildren() == feature
+//					|| NotationPackage.eINSTANCE.getView_TransientChildren() == feature)
+//				//refreshChildren();
+//				
+//			else
+//				super.handleNotificationEvent(event);
+//		}
+		refresh();
 	}
 
 }

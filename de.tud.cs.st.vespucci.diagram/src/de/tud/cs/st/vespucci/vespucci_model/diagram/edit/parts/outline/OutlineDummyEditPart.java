@@ -41,6 +41,7 @@ import org.eclipse.swt.graphics.Image;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
+ * OutlineEditPart for dummy object
  * 
  * @author a_vovk
  *

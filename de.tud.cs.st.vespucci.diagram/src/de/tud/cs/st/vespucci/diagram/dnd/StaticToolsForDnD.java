@@ -34,37 +34,23 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.emf.common.EMFPlugin.EclipsePlugin;
-import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.Signature;
-import org.eclipse.jdt.core.util.ISourceAttribute;
-import org.eclipse.ui.internal.Workbench;
+
+import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
 /**
- * A Class witch provide static tools for supporting of DnD
+ * A Class which provides static tools for supporting DnD
+ * 
  * @author MalteV
- *
+ * @author BenjaminL
  */
 public class StaticToolsForDnD {
 	//constants for the querybuilder
@@ -74,51 +60,51 @@ public class StaticToolsForDnD {
 	public final static String METHOD = "method";
 	public final static String FIELD = "field";
 	private static final String QUERY_DELIMITER = " or ";
+	private static final String DERIVED = "derived";
 	
 	
 	/**
 	 * creates a new Query from the data of a drop event
 	 * @param map data of the drop event
 	 * @return new query
+	 * @author BenjaminL
 	 */
 	public static String createQueryForAMapOfIResource(Map<String,Object> map){
 		return createQueryForAMapOfIResource(map, "");
 	}
 	
+	
 	/**
-	 *  creates a new Query from the Data of a drop event
+	 *  creates a new Query from the data of the drop event
 	 *  under consideration of the old Query
 	 * @param map data of the drop event
-	 * @param oldQuery oldQuery of the model element
+	 * @param oldQuery old Query of the model element
 	 * @return new query
+	 * @author BenjaminL
 	 */
 	public static String createQueryForAMapOfIResource(Map<String,Object> map, String oldQuery){
 		
-		if(oldQuery == null)
+		if(oldQuery == null || (oldQuery.equals("empty") && map.size()>0))
 			oldQuery = "";
-		if(oldQuery.equals("empty") && map.size()>0)
-			oldQuery = "";
-		if(oldQuery.length() > 0)
+		else if(oldQuery.trim().toLowerCase().equals(DERIVED))
+			return oldQuery;
+		else if(oldQuery.length() > 0)
 			oldQuery += QUERY_DELIMITER;
 		
 		String res = oldQuery;
-		//find all Java files 
-		List<String> classes = getJavasSourceCodeFiels(map);
-		//find all Packages
-		//List<String> pack = getJavaPackages(map);
 		
+		//translate all DND objects to query 
+		List<String> queries = createQueryFromDNDobjects(map);
 		
 		//extending the old Query
-		if(classes != null)
-			for(String s : classes){
-				res = res + s + QUERY_DELIMITER;
+		if(queries != null){
+			for(String s : queries){
+				res = res + s + "\n" + QUERY_DELIMITER;
 			}
-		
-		/*for(String s : pack){
-			res = res + s + ",";
-		}*/
-		if(res.length() >= QUERY_DELIMITER.length())
-			res = res.substring(0, res.length()-QUERY_DELIMITER.length());
+		}else{
+		}
+		if(res.endsWith(QUERY_DELIMITER)) //length() >= QUERY_DELIMITER.length())
+			res = res.substring(0, res.length()-QUERY_DELIMITER.length()-1);
 		
 		if(res.equals(""))
 			return res;
@@ -126,51 +112,71 @@ public class StaticToolsForDnD {
 			return res + "\n";
 	}
 	
+	
 	/**
-	 * Creates a List that contains for all Java Fils in map 
-	 * an entry:
-	 * class('PACKAGE OF JAVA FILE','JAVA FILE NAME')
+	 * Creates a List that contains for all Java Files in map an entry:
+	 * e.g.:
+	 * 	package: package(<PACKAGENAME>)
+	 * 	class:   class_with_members(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>)
+	 * 	method:	 method(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,'<init>' OR <METHODNAME>,<RETURNTYPES>,<PARAMETERTYPES>)
+	 *  field:	 field(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,<FIELDNAME>,<FIELDTYPE>)
 	 * @param map 
-	 * @return
+	 * @return query list
+	 * @author BenjaminL
 	 */
-
-	private static List<String> getJavasSourceCodeFiels(Map<String,Object> map){
-		
-		
-		System.out.println("............");
+	private static List<String> createQueryFromDNDobjects(Map<String,Object> map){
 		LinkedList<String> list = new LinkedList<String>();
+		
 		for(String key : map.keySet()){
 			Object o = map.get(key);
 
 			//package...
 			if(o instanceof IPackageFragment){
-				//System.out.println("Package --> " + key);
-				key = key.substring(0,key.indexOf('[')).trim();
-				key = PACKAGE + "(" + key + ")";
+				key = PACKAGE + "('" + Resolver.getFQPackageNameFromIxxx(o, key) + "')";
 				list.add(key);
-			}
-			//class...
-			if(o instanceof ICompilationUnit){
-				//System.out.println("Class --> " + key);
-				String classname = key.substring(0,key.indexOf('[')).trim();
-				String packagename = key.substring(key.indexOf(PACKAGE),key.indexOf('\n',key.indexOf(PACKAGE)));
-				key = CLASS_WITH_MEMBERS + "(" + packagename + "," + classname + ")";
+			}else if(o instanceof ICompilationUnit){
+				//CLASS
+				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
+				String classname = Resolver.getFQClassnamefromIxxx(o, key);
+				key = CLASS_WITH_MEMBERS + "('" + packagename + "','" + classname + "')";
 				list.add(key);
-			}//method
-			if(o instanceof IMethod){
-				System.out.println("Methode --> " + key);
-				key = METHOD + "(" + getQueryFromMethod((IMethod)o) + ")";
+			}else if(o instanceof IMethod){
+				//METHOD
+				IMethod method = (IMethod) o;
+				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
+				String classname = Resolver.getFQClassnamefromIxxx(o, key);
+				String methodname = Resolver.getMethodnameFromMethod(method);
+				List<String> para = Resolver.getParameterTypesFromMethod(method);
+				StringBuffer sbPara = new StringBuffer();
+				String returntype = Resolver.getReturnTypeFromIxxx(method, key);
+				
+				sbPara.append("[");
+				for(String s : para){
+					sbPara.append("'" + s + "'");
+				}
+				sbPara.replace(sbPara.length(), sbPara.length(), "]");
+				
+				key = METHOD + "('" +packagename + "','" + classname + "','" + methodname + "','" + returntype + "'," + sbPara.toString() + ")";
 				list.add(key);
-			}
-			
-			if(o instanceof IField){
-				System.out.println("Attribut --> " + key);
-				key = FIELD + "(" + getQueryFromField((IField)o) + ")";
+			}else if(o instanceof IField){
+				//FIELD
+				IField field = (IField) o;
+				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
+				String classname = Resolver.getFQClassnamefromIxxx(o, key);
+				String fieldname = field.getElementName();
+				String type = Resolver.getFQFieldTypeName(field);
+				
+				key = FIELD + "('" + packagename + "','" + classname + "','" + fieldname + "','" + type +  "')";
 				list.add(key);
+			}else if(o instanceof IPackageFragmentRoot){
+				List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) o);
+				for(String s : packages){
+					key = PACKAGE + "('" + s + "')";
+					list.add(key);
+				}
 			}
 		}
 		return list;
-		
 		
 		/*
 		for(String key : map.keySet()){
@@ -183,10 +189,6 @@ public class StaticToolsForDnD {
 				System.out.println("Package");
 			if(o instanceof ICompilationUnit)
 				System.out.println("sour code file");
-				
-			//"oldquery or class('voller packagename', klassenname)"
-				
-				
 			if(o instanceof IField)
 				System.out.println("Attribut");
 			if(o instanceof IType)
@@ -206,176 +208,28 @@ public class StaticToolsForDnD {
 			if(o instanceof IFolder)
 				System.out.println("folder");
 			System.out.println(o.getClass());
-			
-	
-		}
-		return null;
-		*/
+			*/
 	}
 	
-	private static String getQueryFromMethod(IMethod method) {
-		//init vars
-		String packagename = "";
-		String classname = "";
-		String methodname = "";
-		String returntype = "";
-		StringBuffer sbParaTypes = new StringBuffer();
-		String types[];
-		
-		//System.out.println("decl    " + method.getDeclaringType());
-		try {
-			//getting package information
-			IPackageDeclaration[] declarations = method.getCompilationUnit().getPackageDeclarations();
-			if(declarations.length > 0)
-			{
-				packagename = declarations[0].getElementName(); 
-			}
-			
-			//getting the classname
-			classname = method.getDeclaringType().getFullyQualifiedName();
-			
-			//get methodname, set as <init> if it is the constructor
-			if(method.isConstructor())
-				methodname = "'<init>'";
-			else
-				methodname = method.getElementName();
-			
-			//getting returntype of the method
-			returntype = method.getReturnType();	//returntype = Signature.toString(returntype);
-			returntype = returntype.replaceAll(";", "");
-			returntype = Signature.getSignatureSimpleName(method.getReturnType());
-			//returntype = Signature.getSignatureQualifier(returntype);
-			
-			
-			//System.out.println("aaaa     " + method.getTypeParameterSignatures());
-			//getting parameters of the given method    //para-names unnecessary names = method.getParameterNames();
-			sbParaTypes.append("[");
-			for(String type : method.getParameterTypes()){
-//				System.out.println(Signature.getSimpleName(type));
-//				System.out.println(Signature.getSignatureQualifier(type));
-//				System.out.println(Signature.getTypeErasure(type));
-//				method.getCorrespondingResource();
-				//JDT class -  JavaModelUtil.getResolvedTypeName //ausgang ungewiss
-//				System.out.println(Signature.toString(Signature.getSimpleName(type)));
-//				JavaModelUtil.getResolvedTypeName;
-				
-				//System.out.println("Try to resolve type: " + Signature.toString(Signature.getSimpleName(type)));
-				LinkedList<String> tmpList = resolveElementToFQN(Signature.toString(Signature.getSimpleName(type)));
-				for(String s : tmpList){
-					//System.out.println("\tResolved Type: " + s);
-				}
-				if(tmpList.size()>1){
-					System.out.println("Critical - do anything - TODO");
-				}
-				if(tmpList.size()<1)
-					sbParaTypes.append("'" + Signature.getSimpleName(type) + "'");
-				else
-					sbParaTypes.append("'" + tmpList.getFirst() + "'");
-				sbParaTypes.append(",");
-				
-				IJavaElement me = method;
-			}
-			if(sbParaTypes.charAt(0)==',')
-				sbParaTypes.delete(sbParaTypes.length()-1,sbParaTypes.length());
-			if(sbParaTypes.charAt(sbParaTypes.length()-1)==',')
-				sbParaTypes.delete(sbParaTypes.length()-1,sbParaTypes.length());
-			sbParaTypes.append("]");
-			
-		} catch (JavaModelException e) {
-			e.printStackTrace();
-		}
-		
-		//preparing return values
-		packagename = "'" + packagename + "'";
-		classname = "'" + classname + "'";
-		methodname.replaceAll(";","");
-		
-		//rückgaben
-//		System.out.println("Package   \t" +packagename);
-//		System.out.println("Class     \t" +classname);
-//		System.out.println("Method    \t" +methodname);
-//		System.out.println("Returntype\t" +returntype);
-//		System.out.println("Parameter \t" +sbParaTypes.toString());
-		
-		//System.out.println(packagename + "," + classname + "," + methodname + "," + returntype + "," + sbParaTypes.toString());
-		return packagename + "," + classname + "," + methodname + "," + returntype + "," + sbParaTypes.toString();
-	}
-
-	private static LinkedList<String> resolveElementToFQN(String s){
-		Package[] packages = java.lang.Package.getPackages();
-		
-		LinkedList<String> fqns = new LinkedList<String>();
-	    for (Package aPackage : packages) {
-	        try {
-	            String fqn = aPackage.getName() + "." + s; //simpleName;
-	            //System.out.println(fqn);
-	            Class.forName(fqn);
-	            fqns.add(fqn);
-	        } catch (Exception e) {
-	            // Ignore
-	        }
-	    }
-	    return fqns;
-	}
-
-	
-	private static String getQueryFromField(IField field) {
-		//init vars
-		String packagename = "";
-		String classname = "";
-		String fieldname = "";
-		String type = "";
-		
-		fieldname = field.getElementName();
-		try {
-			type = field.getSource();
-			String[] tmp = type.split(" ");
-			if(tmp.length >=1)
-				if(tmp[1].toLowerCase().equals("static"))
-					type = tmp[3];
-				else
-					type = tmp[1];
-		} catch (JavaModelException e) {
-			e.printStackTrace();
-		}
-		
-		
-		//getting package information
-		Object o = field.getParent().getParent();
-		if(o instanceof ICompilationUnit){
-			o = (ICompilationUnit) o;
-			classname = ((ICompilationUnit) o).getElementName();
-			o = ((ICompilationUnit) o).getParent();
-			if(o instanceof IPackageFragment){
-				packagename = ((IPackageFragment) o).getElementName();
-			}
-		}
-		
-		//getting the classname
-		classname = field.getDeclaringType().getFullyQualifiedName();
-			
-		//preparing return values
-		packagename = "'" + packagename + "'";
-		classname = "'" + classname + "'";
-		fieldname.replaceAll(";","");
-		
-		//System.out.println(packagename + "," + classname + "," + fieldname + "," + type);
-		return packagename + "," + classname + "," + fieldname + "," + type;
-	}
-	
+	 
 	/**
-	 * Creates a List that contains for all Java Packages in map 
-	 * as an entry:
-	 * package('PACKAGE OF JAVA FILE')
-	 * @param map
-	 * @return
+	 * getting the first known object name - else return "A dynamic name"
+	 * @param extendedData
+	 * @return name as string
+	 * @author BenjaminL
 	 */
-	private static List<String> getJavaPackages(Map<String,Object> map){
-		return null;
-	}
+	public static Object createNameforNewEnsemble(Map<?, ?> extendedData) {
+		// TODO der vorgeschlagene text (also der return string) muss markiert sein
+		
+		//getting the first known object name
+		for(Object key : extendedData.keySet()){
+			Object o = extendedData.get(key);
+			
+			String tmp = Resolver.getElementNameFromObject(o);
+			if(!tmp.equals(""))
+				return tmp;
+		}
 
-	public static Object createNameforNewEnsemble(Map extendedData) {
-		// TODO Auto-generated method stub
 		return "A dynamic name";
 	}
 }

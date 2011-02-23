@@ -66,8 +66,11 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.OutgoingImpl;
 import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
 //TODO: Use the metamodel interfaces instead of the *impl.java Classes
+/**
+ * BITTE FÜG HIER EINE KLASSENBESCHREIBUNG EIN, außerdem fehlen oft die beschreibungen von rück- und übergabewerte!
+ * @author PatrickJ
+ */
 public class DiagramConverter {
-	
 	
 	/**
 	 * Regular expression to check parameter of Ensembles.
@@ -118,8 +121,9 @@ public class DiagramConverter {
       	return (ShapesDiagramImpl) eObject;
 	}
 	
+	
 	/**
-	 * load a Diagram File
+	 * load a diagram file
 	 * @param fullPathFileName the full path filename. 
 	 * @return ShapesDiagramImpl Object
 	 * @throws FileNotFoundException
@@ -134,6 +138,7 @@ public class DiagramConverter {
    		EObject eObject = resource.getContents().get(0);
       	return (ShapesDiagramImpl) eObject;
 	}
+	
 	
 	/**
 	 * read the given diagram and create a prolog file. 
@@ -167,6 +172,7 @@ public class DiagramConverter {
 		return;
 	}
 	
+	
 	/**
 	 * read the given diagram and create a prolog file. 
 	 * @param fullPathFileName Name and path of the diagram
@@ -179,32 +185,33 @@ public class DiagramConverter {
 		this.ConvertDiagramToProlog(sadFile.getParent(), sadFile.getName());
 	}
 
+	
 	/**
-	 * Return true when the given File object is a Diagram file.
+	 * Return true when the given file object is a diagram file.
 	 * @author Patrick Jahnke
 	 */
 	public boolean isDiagramFile(File file){
 		String extension = file.getName().substring((file.getName().length()-3), file.getName().length());
 		return (extension.equals("sad"));
 	}
-
+	
 	
 	/** 
-	 * returns a separator like %------ 
+	 * returns the separator %------ 
 	 * @author Patrick Jahnke
 	 */
 	private String getStringSeperator() {
 		return "%------\n";
 	}
 	
+	
 	/**
-	 * Build and returns a PrologFile Header.
+	 * Build and returns a prolog file header.
 	 * @author Patrick Jahnke
 	 */
 	private String getFileHeaderString(String fileName)
 	{
 		StringBuilder strBuilder = new StringBuilder();
-		// insert separator
 		strBuilder.append(getStringSeperator());
 		// insert common information
 		strBuilder.append("% Prolog based representation of the Vespucci architecture diagram: ");
@@ -227,18 +234,17 @@ public class DiagramConverter {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date date = new Date();
 		strBuilder.append("% Date <" + dateFormat.format(date) + ">.\n");
-		// insert separator
 		strBuilder.append(getStringSeperator());
-		// insert new line
 		strBuilder.append("\n");
 		
 		return strBuilder.toString();
 	}
 	
+	
 	/**
 	 * Read the diagram and create the prolog facts of ensembles and dependencies
 	 * @param diagram the diagram model where are the ensembles and dependencies are defined.
-	 * @param fileName the filenam of the diagram model
+	 * @param fileName the filename of the diagram model
 	 * @return a string with the facts
 	 * @author Patrick Jahnke
 	 */
@@ -251,7 +257,7 @@ public class DiagramConverter {
 		// create ensembles and dependencies from diagram
 		StringBuilder ensembleFacts = new StringBuilder();
 		StringBuilder dependencyFacts = new StringBuilder();
-		// reset Transaction Counter
+		// reset transaction counter
 		mDependencyCounter = 1;
 		mCreateEmptyEnsemble = false;
 		createFacts(diagram.getShapes(), fileName, ensembleFacts, dependencyFacts);
@@ -261,7 +267,7 @@ public class DiagramConverter {
 		// insert ensembles
 		strBuilder.append(ensembleFacts);
 		
-		// insert dependency Header
+		// insert dependency header
 		strBuilder.append(getDependencyHeader());
 		
 		// insert dependencies
@@ -270,6 +276,7 @@ public class DiagramConverter {
 		return strBuilder.toString();
 	}
 	
+	
 	/**
 	 * Search the diagram recursive and create all facts.
 	 * @author Patrick Jahnke
@@ -277,7 +284,7 @@ public class DiagramConverter {
 	private void createFacts(EList<Shape> shapeList, String fileName, StringBuilder ensembleFacts, StringBuilder dependencyFacts)
 	{
         for (Shape shape : shapeList) {
-        	// create Ensemble Facts:
+        	// create Ensemble facts:
         	if (shape == null)
         		continue;
        		if (shape instanceof DummyImpl)
@@ -296,12 +303,13 @@ public class DiagramConverter {
 	        		createFacts(ensemble.getShapes(), fileName, ensembleFacts, dependencyFacts);
         			
         	}
-       		// create Transaction Facts:
+       		// create transaction facts:
         	for (Connection connection : shape.getTargetConnections())
         		dependencyFacts.append(createDependencyFact(connection, fileName));
 
         }
 	}
+	
 	
 	/**
 	 * Check if an ensemble an abstract one.
@@ -317,6 +325,7 @@ public class DiagramConverter {
 		}
 		return false;
 	}
+	
 	
 	/**
 	 * @return a prolog list of the form ['ParamName'=ParamName, ...]
@@ -335,6 +344,7 @@ public class DiagramConverter {
 		s.append("]");
 		return s.toString();
 	}
+	
 
 	/**
 	 * the name of the ensemble. (Without parameters)
@@ -354,6 +364,7 @@ public class DiagramConverter {
 		return s.toString();
 	}
 
+	
 	/**
 	 * Encode and returns the pure parameter.
 	 * @param name
@@ -386,6 +397,7 @@ public class DiagramConverter {
 		return s.toString();
 	}
 	
+	
 	/**
 	 * returns the parameter definitions of an ensemble
 	 * @param ensemble
@@ -393,6 +405,10 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private String[] getEnsembleParameterDefinitions(Ensemble ensemble) {
+		//TODO // FIXME BenjaminL: schneller hack, dass keine nullpointerexception beim speichern eines diagramms mit einem ensemble mit leeren namen auftritt - schöner kettensatz, he?
+		if(ensemble.getName()==null){
+			ensemble.setName("");
+		}
 		String name = ensemble.getName().length()== 0 ? "non-editpart" : ensemble.getName();
 		Matcher m = mParameterList.matcher(name);
 		if (!m.matches())
@@ -416,6 +432,7 @@ public class DiagramConverter {
 		return parameterDefinitions.toArray(result);
 	}
 	
+	
 	/**
 	 * returns a static string for the begin of the ensemble facts. 
 	 * @author Patrick Jahnke
@@ -423,7 +440,6 @@ public class DiagramConverter {
 	private String getEnsembleHeader()
 	{
 		StringBuilder strBuilder = new StringBuilder();
-		// insert new line
 		strBuilder.append(getStringSeperator());
 		// insert common information
 		strBuilder.append("%ensemble(File, Name, Query, SubEnsembles) :- Definition of an ensemble.\n");
@@ -431,10 +447,10 @@ public class DiagramConverter {
 		strBuilder.append("%\tName - Name of the ensemble\n");
 		strBuilder.append("%\tQuery - Query that determines which source elements belong to the ensemble\n");
 		strBuilder.append("%\tSubEnsembles - List of all sub ensembles of this ensemble.\n");
-		// insert new line
 		strBuilder.append(getStringSeperator());
 		return strBuilder.toString();
 	}
+	
 
 	/**
 	 * returns a static string for the begin of the dependency facts
@@ -443,9 +459,7 @@ public class DiagramConverter {
 	private String getDependencyHeader()
 	{
 		StringBuilder strBuilder = new StringBuilder();
-		// insert new line
 		strBuilder.append("\n");
-		// insert separator
 		strBuilder.append(getStringSeperator());
 		// insert common information
 		strBuilder.append("%DEPENDENCY(File, ID, SourceE, TargetE, Type) :- Definition of a dependency between two ensembles.\n");
@@ -455,13 +469,16 @@ public class DiagramConverter {
 		strBuilder.append("%\tSourceE - The source ensemble\n");
 		strBuilder.append("%\tTargetE - The target ensemble\n");
 		strBuilder.append("%\tRelation classifier - Kinds of uses-relation between source and target ensemble (all, field_access, method_call,...)\n");
-		// insert new line
 		strBuilder.append(getStringSeperator());
 		return strBuilder.toString();
 	}
+	
 
 	/**
 	 * create a dependency fact
+	 * @param connection
+	 * @param fileName
+	 * @return
 	 * @author Patrick Jahnke
 	 */
 	private String createDependencyFact(Connection connection, String fileName)
@@ -504,8 +521,11 @@ public class DiagramConverter {
 		return transactionSB.toString();
 	}
 	
+	
 	/**
 	 * returns the right name of an ensemble (empty or x)
+	 * @param Shape
+	 * @return name of the ensemble
 	 * @author Patrick Jahnke 
 	 */
 	private String getDependencyEnsembleName(Shape shape)
@@ -516,9 +536,11 @@ public class DiagramConverter {
 			return "empty";
 		return "not_defined";
 	}
+	
 
 	/**
-	 * create a string with all subensembles of a parten.
+	 * create a string with all subensembles of a parten. //TODO: parten???
+	 * @param EList<Shape>
 	 * @author Patrick Jahnke
 	 */
 	private String listSubEnsembles(EList<Shape> shapeList)
@@ -527,7 +549,7 @@ public class DiagramConverter {
 		if (shapeList == null)
 			return strBuilder.toString();
 
-		String komma = "";
+		String komma = "";	//FIXME: ein string der komma heißt und leer ist?!
 		for (Shape shape : shapeList)
 		{
        		if (shape instanceof DummyImpl)

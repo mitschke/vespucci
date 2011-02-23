@@ -1,10 +1,10 @@
 /*
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Author MalteV
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universität Darmstadt
+ *   Technische Universitï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -34,56 +34,25 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-
+import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
+import org.eclipse.jface.viewers.IFilter;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
-//TODO add author!
+
+
 /**
- * @generated not
- * 
+ * Filter for Ensembles
+ * @author Malte
+ *
  */
-public class CopyOfModelDescriptionPropertySection extends MyAbstractBasicTextPropertySection{
-	
-	@Override
-	protected String getPropertyNameLabel() {
-		return "";
-	}
+public class TabQueryFilter implements IFilter{
 
 	@Override
-	protected String getPropertyChangeCommandName() {
-		return "ApplicationDescriptionChangeCommand";
-	}
-	
-	@Override
-	protected void setPropertyValue(EObject object, Object value) {
-		if (object instanceof Shape) {
-			EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
-					.getEPackage("http://vespucci.editor");
-			Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
-
-			object.eSet(vesPackage.getShape_Query(), value);
+	public boolean select(Object toTest) {
+		if(toTest instanceof  GraphicalEditPart
+				&& ((GraphicalEditPart) toTest).resolveSemanticElement() instanceof Shape){
+			return true;
 		}
+		return false;
 	}
-
-	@Override
-	protected String getPropertyValueString() {
-		EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
-			.getEPackage("http://vespucci.editor");
-		Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
-		
-		if (eObject instanceof EnsembleImpl){
-			this.getSectionComposite().setVisible(true);
-			return (String) eObject.eGet(vesPackage.getShape_Query());
-		}else{
-			this.getSectionComposite().setVisible(false);
-			return "<NO ENSEMBLE>";
-		}
-			
-	}
-
-	
 
 }

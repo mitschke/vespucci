@@ -10,22 +10,24 @@
  ****************************************************************************/
 package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gmf.runtime.common.core.command.ICommand;
 import org.eclipse.gmf.runtime.common.core.util.StringStatics;
 import org.eclipse.gmf.runtime.common.ui.util.StatusLineUtil;
 import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPropertySection;
 import org.eclipse.gmf.runtime.diagram.ui.properties.views.TextChangeHelper;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -39,8 +41,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  * @author natalia balaba
  * 
  * Changed by:
- * @author Malte
- * @author Benni
+ * @author MalteV
+ * @author BenjaminL
  */
 public abstract class ChangedAbstractBasicTextPropertySection
 	extends AbstractModelerPropertySection {
@@ -48,6 +50,19 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	// text widget to display and set value of the property
 	private Text textWidget;
 
+	//parent parent ... parent composite for the size of the textfield
+	private Composite scrolledParent;
+	
+
+	public void setScrolledParent(Composite scrolledParent) {
+		this.scrolledParent = scrolledParent;
+	}
+	Listener resizeLinstener =  new Listener () {
+	    public void handleEvent (Event e) {
+		      updateHeight();
+		    }
+	    };
+	
 	/**
 	 * @return - name of the property to place in the label widget
 	 */
@@ -68,11 +83,13 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 */
 	abstract protected String getPropertyValueString();
 	private int startHeight = 15;
+	
 	/**
 	 * @return - title of the command which will be executed to set the property
 	 */
 	protected abstract String getPropertyChangeCommandName();
 
+	
 	/**
 	 * A helper to listen for events that indicate that a text field has been
 	 * changed.
@@ -116,9 +133,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 
 	private Composite sectionComposite;
 
-
-
-
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse.swt.widgets.Composite, org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
@@ -127,6 +142,8 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		
 		doCreateControls(parent, aTabbedPropertySheetPage);
 	}
+	
+	
 	/**
 	 * Creates the GUI <code>Control</code> for this text property section
 	 * @param parent parent <code>Composite</code>
@@ -134,16 +151,26 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 * @see org.eclipse.gmf.runtime.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.gmf.runtime.common.ui.properties.TabbedPropertySheetPage)
 	 */
-	
 	public void doCreateControls(Composite parent,
 			TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
 		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);	
 		textWidget = createTextWidget(sectionComposite);
+		scrolledParent = parent;
+		for(;;){
+			
+			if(scrolledParent instanceof ScrolledComposite) {
+				break;
+			}
+			if(scrolledParent.getParent() == null)
+				break;
+			scrolledParent = scrolledParent.getParent();
+			
+		}
+		scrolledParent.addListener(SWT.Resize, resizeLinstener );
 		startTextWidgetEventListener();
 	}
 
-	
 	
 	/**
 	 * Start listening to the text widget events
@@ -155,6 +182,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		}
 	}
 
+	
 	/**
 	 * Stop listening to text widget events
 	 */
@@ -163,6 +191,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			getListener().stopListeningTo(getTextWidget());
 	}
 
+	
 	/**
 	 * Instantiate a text widget
 	 * 
@@ -172,7 +201,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 */
 	protected Text createTextWidget(Composite parent) {
 		getSectionComposite().getSize();
-		Text text = getWidgetFactory().createText(parent, StringStatics.BLANK, SWT.MULTI); //| SWT.V_SCROLL);
+		Text text = getWidgetFactory().createText(parent, StringStatics.BLANK, SWT.MULTI | SWT.V_SCROLL); //| SWT.V_SCROLL);
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(100, 0);
@@ -184,23 +213,39 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		return text;
 
 	}
-	private void updateHeight(){
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, 0);
-		data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
-		getTextWidget().setLayoutData(data);
-		Point p = getSectionComposite().getSize();
-		getSectionComposite().setSize(p.x, getTextWidget().getSize().y+textWidget.getLineHeight());
-		p = getSectionComposite().getParent().getSize();
-		getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+textWidget.getLineHeight() * textWidget.getLineCount());
-		getSectionComposite().layout();
-		getSectionComposite().getParent().getDisplay().update();
-		
-		//TODO getSectionComposite().addPaintListener(listener)
-		//getSectionComposite().update();
+	
+	
+	private int getHeight(){
+		return this.scrolledParent.getSize().y - 20;
 	}
+	
+	/**
+	 * calculates the new size of the widget and updates it
+	 */
+	private void updateHeight(){
+		if(getTextWidget() != null && !getTextWidget().isDisposed()){
+		
+			FormData data = new FormData();
+			data.left = new FormAttachment(0, 0);
+			data.right = new FormAttachment(100, 0);
+			data.top = new FormAttachment(0, 0);
+			//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
+			//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize()
+			//lis = getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getListeners(SWT.Resize);
+			//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
+			//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize().y - 20;
+			data.height = getHeight();
+			getTextWidget().setLayoutData(data);
+			Point p = getSectionComposite().getSize();
+			getSectionComposite().setSize(p.x, getHeight()+5);
+			//p = getSectionComposite().getParent().getSize();
+			getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+5);//+textWidget.getLineHeight() * textWidget.getLineCount());
+			getSectionComposite().layout();
+			getSectionComposite().getParent().getDisplay().update();
+
+		}
+	}
+	
 	
 	/**
 	 * returns as an array the property name
@@ -213,17 +258,15 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	}
 
 
-
 	/**
 	 * User pressed Enter key after editing text field - update the model
 	 * 
 	 * @param control <code>Control</code>
 	 */
 	protected synchronized void setPropertyValue(Control control) {
-
 		final Object value = computeNewPropertyValue();
-		ArrayList commands = new ArrayList();
-		for (Iterator it = getEObjectList().iterator(); it.hasNext();) {
+		ArrayList<ICommand> commands = new ArrayList<ICommand>();
+		for (Iterator<?> it = getEObjectList().iterator(); it.hasNext();) {
 			final EObject next = (EObject) it.next();
 			commands.add(createCommand(getPropertyChangeCommandName(), next,
 				new Runnable() {
@@ -234,15 +277,14 @@ public abstract class ChangedAbstractBasicTextPropertySection
 
 				}));
 		}
-
 		executeAsCompositeCommand(getPropertyChangeCommandName(), commands);
 		refresh();
-
 	}
 
+	
 	/**
-	 * @return - a default implementation returns contents of the text widget as
-	 *         a new value for the property. Subclasses can override.
+	 * @return - the default implementation returns contents of the text widget as
+	 *         a new value for the property. Subclasses can could be override.
 	 */
 	protected Object computeNewPropertyValue() {
 		return getTextWidget().getText();
@@ -257,6 +299,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		super.dispose();
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
@@ -273,15 +316,17 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			getListener().finishNonUserChange();
 		}
 	}
+	
 
 	/**
-	 * Refresh UI body - referesh will surround this with read action block
+	 * Refresh UI body - refresh will surround this with read action block
 	 */
 	protected void refreshUI() {
 		getTextWidget().setText(getPropertyValueString());
 		updateHeight();
 	}
 
+	
 	/**
 	 * @return Returns the listener.
 	 */
@@ -289,6 +334,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		return listener;
 	}
 
+	
 	/**
 	 * @return Returns the textWidget.
 	 */
