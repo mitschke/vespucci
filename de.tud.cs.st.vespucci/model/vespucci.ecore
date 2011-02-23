@@ -28,6 +28,8 @@
         defaultValueLiteral="[all]"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalSource" eType="#//Shape"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalTarget" eType="#//Shape"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NotAllowed" eSuperTypes="#//Connection"/>
   <eClassifiers xsi:type="ecore:EClass" name="Outgoing" eSuperTypes="#//Connection"/>

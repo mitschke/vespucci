@@ -60,6 +60,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getTarget <em>Target</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getName <em>Name</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#isTemp <em>Temp</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalSource <em>Original Source</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalTarget <em>Original Target</em>}</li>
  * </ul>
  * </p>
  *
@@ -125,6 +127,26 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @ordered
 	 */
 	protected boolean temp = TEMP_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getOriginalSource() <em>Original Source</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOriginalSource()
+	 * @generated
+	 * @ordered
+	 */
+	protected Shape originalSource;
+
+	/**
+	 * The cached value of the '{@link #getOriginalTarget() <em>Original Target</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOriginalTarget()
+	 * @generated
+	 * @ordered
+	 */
+	protected Shape originalTarget;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -268,6 +290,82 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Shape getOriginalSource() {
+		if (originalSource != null && originalSource.eIsProxy()) {
+			InternalEObject oldOriginalSource = (InternalEObject)originalSource;
+			originalSource = (Shape)eResolveProxy(oldOriginalSource);
+			if (originalSource != oldOriginalSource) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE, oldOriginalSource, originalSource));
+			}
+		}
+		return originalSource;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Shape basicGetOriginalSource() {
+		return originalSource;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setOriginalSource(Shape newOriginalSource) {
+		Shape oldOriginalSource = originalSource;
+		originalSource = newOriginalSource;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE, oldOriginalSource, originalSource));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Shape getOriginalTarget() {
+		if (originalTarget != null && originalTarget.eIsProxy()) {
+			InternalEObject oldOriginalTarget = (InternalEObject)originalTarget;
+			originalTarget = (Shape)eResolveProxy(oldOriginalTarget);
+			if (originalTarget != oldOriginalTarget) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET, oldOriginalTarget, originalTarget));
+			}
+		}
+		return originalTarget;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Shape basicGetOriginalTarget() {
+		return originalTarget;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setOriginalTarget(Shape newOriginalTarget) {
+		Shape oldOriginalTarget = originalTarget;
+		originalTarget = newOriginalTarget;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET, oldOriginalTarget, originalTarget));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -281,6 +379,12 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 				return getName();
 			case Vespucci_modelPackage.CONNECTION__TEMP:
 				return isTemp();
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
+				if (resolve) return getOriginalSource();
+				return basicGetOriginalSource();
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
+				if (resolve) return getOriginalTarget();
+				return basicGetOriginalTarget();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -304,6 +408,12 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 				return;
 			case Vespucci_modelPackage.CONNECTION__TEMP:
 				setTemp((Boolean)newValue);
+				return;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
+				setOriginalSource((Shape)newValue);
+				return;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
+				setOriginalTarget((Shape)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -329,6 +439,12 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 			case Vespucci_modelPackage.CONNECTION__TEMP:
 				setTemp(TEMP_EDEFAULT);
 				return;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
+				setOriginalSource((Shape)null);
+				return;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
+				setOriginalTarget((Shape)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -349,6 +465,10 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case Vespucci_modelPackage.CONNECTION__TEMP:
 				return temp != TEMP_EDEFAULT;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
+				return originalSource != null;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
+				return originalTarget != null;
 		}
 		return super.eIsSet(featureID);
 	}

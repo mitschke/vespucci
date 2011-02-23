@@ -51,6 +51,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getTarget <em>Target</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getName <em>Name</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#isTemp <em>Temp</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource <em>Original Source</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget <em>Original Target</em>}</li>
  * </ul>
  * </p>
  *
@@ -164,5 +166,57 @@ public interface Connection extends EObject {
 	 * @generated
 	 */
 	void setTemp(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Original Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Original Source</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Original Source</em>' reference.
+	 * @see #setOriginalSource(Shape)
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_OriginalSource()
+	 * @model
+	 * @generated
+	 */
+	Shape getOriginalSource();
+
+	/**
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource <em>Original Source</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Original Source</em>' reference.
+	 * @see #getOriginalSource()
+	 * @generated
+	 */
+	void setOriginalSource(Shape value);
+
+	/**
+	 * Returns the value of the '<em><b>Original Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Original Target</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Original Target</em>' reference.
+	 * @see #setOriginalTarget(Shape)
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_OriginalTarget()
+	 * @model
+	 * @generated
+	 */
+	Shape getOriginalTarget();
+
+	/**
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget <em>Original Target</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Original Target</em>' reference.
+	 * @see #getOriginalTarget()
+	 * @generated
+	 */
+	void setOriginalTarget(Shape value);
 
 } // Connection

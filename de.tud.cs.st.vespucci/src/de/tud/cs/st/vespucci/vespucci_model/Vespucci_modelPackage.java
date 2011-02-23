@@ -339,13 +339,31 @@ public interface Vespucci_modelPackage extends EPackage {
 	int CONNECTION__TEMP = 3;
 
 	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONNECTION__ORIGINAL_SOURCE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONNECTION__ORIGINAL_TARGET = 5;
+
+	/**
 	 * The number of structural features of the '<em>Connection</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONNECTION_FEATURE_COUNT = 4;
+	int CONNECTION_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.NotAllowedImpl <em>Not Allowed</em>}' class.
@@ -392,6 +410,24 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int NOT_ALLOWED__TEMP = CONNECTION__TEMP;
+
+	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT_ALLOWED__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT_ALLOWED__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
 
 	/**
 	 * The number of structural features of the '<em>Not Allowed</em>' class.
@@ -449,6 +485,24 @@ public interface Vespucci_modelPackage extends EPackage {
 	int OUTGOING__TEMP = CONNECTION__TEMP;
 
 	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OUTGOING__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OUTGOING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
 	 * The number of structural features of the '<em>Outgoing</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -502,6 +556,24 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int INCOMING__TEMP = CONNECTION__TEMP;
+
+	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INCOMING__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INCOMING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
 
 	/**
 	 * The number of structural features of the '<em>Incoming</em>' class.
@@ -559,6 +631,24 @@ public interface Vespucci_modelPackage extends EPackage {
 	int IN_AND_OUT__TEMP = CONNECTION__TEMP;
 
 	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IN_AND_OUT__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IN_AND_OUT__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
 	 * The number of structural features of the '<em>In And Out</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -612,6 +702,24 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int EXPECTED__TEMP = CONNECTION__TEMP;
+
+	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPECTED__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPECTED__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
 
 	/**
 	 * The number of structural features of the '<em>Expected</em>' class.
@@ -782,6 +890,28 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getConnection_Temp();
+
+	/**
+	 * Returns the meta object for the reference '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource <em>Original Source</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Original Source</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource()
+	 * @see #getConnection()
+	 * @generated
+	 */
+	EReference getConnection_OriginalSource();
+
+	/**
+	 * Returns the meta object for the reference '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget <em>Original Target</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Original Target</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget()
+	 * @see #getConnection()
+	 * @generated
+	 */
+	EReference getConnection_OriginalTarget();
 
 	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.NotAllowed <em>Not Allowed</em>}'.
@@ -984,6 +1114,22 @@ public interface Vespucci_modelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONNECTION__TEMP = eINSTANCE.getConnection_Temp();
+
+		/**
+		 * The meta object literal for the '<em><b>Original Source</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONNECTION__ORIGINAL_SOURCE = eINSTANCE.getConnection_OriginalSource();
+
+		/**
+		 * The meta object literal for the '<em><b>Original Target</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONNECTION__ORIGINAL_TARGET = eINSTANCE.getConnection_OriginalTarget();
 
 		/**
 		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.NotAllowedImpl <em>Not Allowed</em>}' class.
