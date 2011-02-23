@@ -145,17 +145,27 @@ public class OutgoingReorientCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
+		if(oldEnd != getLink().getOriginalSource() && getLink().getOriginalSource() != null){
+			getLink().setOriginalSource(null);
+			if(getLink().getOriginalTarget() == null)
+				getLink().setTemp(false);
+		}
 		getLink().setSource(getNewSource());
 		return CommandResult.newOKCommandResult(getLink());
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {
+		if(oldEnd != getLink().getOriginalTarget() && getLink().getOriginalTarget() != null){
+			getLink().setOriginalTarget(null);
+			if(getLink().getOriginalSource() == null)
+				getLink().setTemp(false);
+		}
 		getLink().setTarget(getNewTarget());
 		return CommandResult.newOKCommandResult(getLink());
 	}

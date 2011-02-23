@@ -39,6 +39,8 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.PolylineDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.impl.EAttributeImpl;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ITreeBranchEditPart;
@@ -137,6 +139,26 @@ public class NotAllowedEditPart extends ConnectionNodeEditPart implements
 		return (NotAllowedFigure) getFigure();
 	}
 
+	
+	/**
+	 * @generated NOT
+	 */
+	protected void handleNotificationEvent(Notification notification) {
+		super.handleNotificationEvent(notification);
+		if(notification.getFeature() instanceof EAttributeImpl){
+			EAttributeImpl eai = (EAttributeImpl)notification.getFeature();
+			if(eai.getName().equals("temp")){
+				if(notification.getNewBooleanValue()){
+					this.getFigure().setForegroundColor(org.eclipse.draw2d.ColorConstants.red);
+				}else{
+					this.getFigure().setForegroundColor(org.eclipse.draw2d.ColorConstants.black);
+				}
+				
+			}
+				
+        }
+	}
+	
 	/**
 	 * @generated
 	 */
