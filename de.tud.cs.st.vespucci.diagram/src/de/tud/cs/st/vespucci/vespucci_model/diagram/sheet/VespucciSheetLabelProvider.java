@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
+import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -47,9 +48,8 @@ import org.eclipse.swt.graphics.Image;
  */
 public class VespucciSheetLabelProvider extends BaseLabelProvider implements
 		ILabelProvider {
-
 	/**
-	 * @generated
+	 * @generated not
 	 */
 	public String getText(Object element) {
 		element = unwrap(element);
@@ -57,6 +57,9 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) element)
 					.getGroupName();
 		}
+		//TODO quick fix
+		if (getView(element) instanceof Diagram)
+			return ((Diagram) getView(element)).getName(); 
 		IElementType etype = getElementType(getView(element));
 		return etype == null ? "" : etype.getDisplayName();
 	}
