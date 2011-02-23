@@ -204,7 +204,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 				createElementRequest);
 		cc.compose(svc);
 		cc.compose(svc2);
-		cc.compose(new EditNameCommand(request, getHost().getRoot().getViewer()));
+		cc.compose(new SelectAndEditNameCommand(request, getHost().getRoot().getViewer()));
 		return new ICommandProxy(cc);
 	}
 	
