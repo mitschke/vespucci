@@ -38,17 +38,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.gef.SelectionManager;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.ui.PlatformUI;
 
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
@@ -59,7 +54,7 @@ import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
  * @author BenjaminL
  */
 public class StaticToolsForDnD {
-	//constants for the querybuilder
+	// constants for the querybuilder
 	public final static String PACKAGE = "package";
 	public final static String CLASS_WITH_MEMBERS = "class_with_members";
 	public final static String CLASS = "class";
@@ -68,132 +63,146 @@ public class StaticToolsForDnD {
 	private static final String QUERY_DELIMITER = " or ";
 	private static final String DERIVED = "derived";
 	private static final String STANDARD_SHAPENAME = "A dynamic name";
-	
-	
+
 	/**
 	 * creates a new Query from the data of a drop event
-	 * @param map data of the drop event
+	 * 
+	 * @param map
+	 *            data of the drop event
 	 * @return new query
 	 * @author BenjaminL
 	 */
-	public static String createQueryForAMapOfIResource(Map<String,Object> map){
+	public static String createQueryForAMapOfIResource(Map<String, Object> map) {
 		return createQueryForAMapOfIResource(map, "");
 	}
-	
-	
+
 	/**
-	 *  creates a new Query from the data of the drop event
-	 *  under consideration of the old Query
-	 * @param map data of the drop event
-	 * @param oldQuery old Query of the model element
+	 * creates a new Query from the data of the drop event under consideration
+	 * of the old Query
+	 * 
+	 * @param map
+	 *            data of the drop event
+	 * @param oldQuery
+	 *            old Query of the model element
 	 * @return new query
 	 * @author BenjaminL
 	 */
-	public static String createQueryForAMapOfIResource(Map<String,Object> map, String oldQuery){
-		
-		if(oldQuery == null || (oldQuery.equals("empty") && map.size()>0))
+	public static String createQueryForAMapOfIResource(Map<String, Object> map,
+			String oldQuery) {
+
+		if (oldQuery == null || (oldQuery.equals("empty") && map.size() > 0))
 			oldQuery = "";
-		else if(oldQuery.trim().toLowerCase().equals(DERIVED))
+		else if (oldQuery.trim().toLowerCase().equals(DERIVED))
 			return oldQuery;
-		else if(oldQuery.length() > 0)
+		else if (oldQuery.length() > 0)
 			oldQuery += QUERY_DELIMITER;
-		
+
 		String res = oldQuery;
-		
-		//translate all DND objects to query 
+
+		// translate all DND objects to query
 		List<String> queries = createQueryFromDNDobjects(map);
-		
-		//extending the old Query
-		if(queries != null){
-			for(String s : queries){
+
+		// extending the old Query
+		if (queries != null) {
+			for (String s : queries) {
 				res = res + s + "\n" + QUERY_DELIMITER;
 			}
-		}else{
+		} else {
 		}
-		if(res.endsWith(QUERY_DELIMITER)) //length() >= QUERY_DELIMITER.length())
-			res = res.substring(0, res.length()-QUERY_DELIMITER.length()-1);
-		
-		if(res.equals(""))
+		if (res.endsWith(QUERY_DELIMITER)) // length() >=
+											// QUERY_DELIMITER.length())
+			res = res.substring(0, res.length() - QUERY_DELIMITER.length() - 1);
+
+		if (res.equals(""))
 			return res;
 		else
 			return res + "\n";
 	}
-	
-	
+
 	/**
-	 * Creates a List that contains for all Java Files in map an entry:
-	 * e.g.:
-	 * 	package: package(<PACKAGENAME>)
-	 * 	class:   class_with_members(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>)
-	 * 	method:	 method(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,'<init>' OR <METHODNAME>,<RETURNTYPES>,<PARAMETERTYPES>)
-	 *  field:	 field(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,<FIELDNAME>,<FIELDTYPE>)
-	 * @param map 
+	 * Creates a List that contains for all Java Files in map an entry: e.g.:
+	 * package: package(<PACKAGENAME>) class:
+	 * class_with_members(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>) method:
+	 * method(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,'<init>' OR
+	 * <METHODNAME>,<RETURNTYPES>,<PARAMETERTYPES>) field:
+	 * field(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,<FIELDNAME>,<FIELDTYPE>)
+	 * 
+	 * @param map
 	 * @return query list
 	 * @author BenjaminL
 	 */
-	private static List<String> createQueryFromDNDobjects(Map<String,Object> map){
+	private static List<String> createQueryFromDNDobjects(
+			Map<String, Object> map) {
 		LinkedList<String> list = new LinkedList<String>();
-		
-		for(String key : map.keySet()){
+
+		for (String key : map.keySet()) {
 			Object o = map.get(key);
 
-			//package...
-			if(o instanceof IPackageFragment){
-				key = PACKAGE + "('" + Resolver.getFQPackageNameFromIxxx(o, key) + "')";
+			// package...
+			if (o instanceof IPackageFragment) {
+				key = PACKAGE + "('"
+						+ Resolver.getFQPackageNameFromIxxx(o, key) + "')";
 				list.add(key);
-			}else if(o instanceof ICompilationUnit){
-				//CLASS
+			} else if (o instanceof ICompilationUnit) {
+				// CLASS
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
 				String classname = Resolver.getFQClassnamefromIxxx(o, key);
-				key = CLASS_WITH_MEMBERS + "('" + packagename + "','" + classname + "')";
+				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
+						+ classname + "')";
 				list.add(key);
-			}else if(o instanceof IMethod){
-				//METHOD
+			} else if (o instanceof IMethod) {
+				// METHOD
 				IMethod method = (IMethod) o;
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
 				String classname = Resolver.getFQClassnamefromIxxx(o, key);
 				String methodname = Resolver.getMethodnameFromMethod(method);
-				List<String> para = Resolver.getParameterTypesFromMethod(method);
+				List<String> para = Resolver
+						.getParameterTypesFromMethod(method);
 				StringBuffer sbPara = new StringBuffer();
 				String returntype = Resolver.getReturnTypeFromIxxx(method, key);
-				
+
 				sbPara.append("[");
-				for(String s : para){
+				for (String s : para) {
 					sbPara.append("'" + s + "'");
 				}
 				sbPara.replace(sbPara.length(), sbPara.length(), "]");
-				
-				key = METHOD + "('" +packagename + "','" + classname + "','" + methodname + "','" + returntype + "'," + sbPara.toString() + ")";
+
+				key = METHOD + "('" + packagename + "','" + classname + "','"
+						+ methodname + "','" + returntype + "',"
+						+ sbPara.toString() + ")";
 				list.add(key);
-			}else if(o instanceof IType){
-				//IType
-				IType type = (IType) o;				
+			} else if (o instanceof IType) {
+				// IType
+				IType type = (IType) o;
 				ICompilationUnit cU = type.getCompilationUnit();
-				
+
 				String packagename = Resolver.getFQPackageNameFromIxxx(cU, key);
 				String classname = Resolver.getFQClassnamefromIxxx(cU, key);
-				key = CLASS_WITH_MEMBERS + "('" + packagename + "','" + classname + "')";
+				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
+						+ classname + "')";
 				list.add(key);
-			}else if(o instanceof IField){
-				//FIELD
+			} else if (o instanceof IField) {
+				// FIELD
 				IField field = (IField) o;
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
 				String classname = Resolver.getFQClassnamefromIxxx(o, key);
 				String fieldname = field.getElementName();
 				String type = Resolver.getFQFieldTypeName(field);
-				
-				key = FIELD + "('" + packagename + "','" + classname + "','" + fieldname + "','" + type +  "')";
+
+				key = FIELD + "('" + packagename + "','" + classname + "','"
+						+ fieldname + "','" + type + "')";
 				list.add(key);
-			}else if(o instanceof IPackageFragmentRoot){
-				List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) o);
-				for(String s : packages){
+			} else if (o instanceof IPackageFragmentRoot) {
+				List<String> packages = Resolver
+						.getPackagesFromPFR((IPackageFragmentRoot) o);
+				for (String s : packages) {
 					key = PACKAGE + "('" + s + "')";
 					list.add(key);
 				}
 			}
 		}
 		return list;
-		
+
 		/*
 		for(String key : map.keySet()){
 			Object o = map.get(key);
@@ -224,23 +233,24 @@ public class StaticToolsForDnD {
 			if(o instanceof IFolder)
 				System.out.println("folder");
 			System.out.println(o.getClass());
-			*/
+		*/
+		
 	}
-	
-	 
+
 	/**
 	 * getting the first known object name - else return "A dynamic name"
+	 * 
 	 * @param extendedData
 	 * @return name as string
 	 * @author BenjaminL
 	 */
 	public static Object createNameforNewEnsemble(Map<?, ?> extendedData) {
-		//getting the first known object name
-		for(Object key : extendedData.keySet()){
+		// getting the first known object name
+		for (Object key : extendedData.keySet()) {
 			Object o = extendedData.get(key);
-			
+
 			String tmp = Resolver.getElementNameFromObject(o);
-			if(!tmp.equals(""))
+			if (!tmp.equals(""))
 				return tmp;
 		}
 		return STANDARD_SHAPENAME;
