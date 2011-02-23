@@ -255,4 +255,8 @@ public class StaticToolsForDnD {
 		}
 		return STANDARD_SHAPENAME;
 	}
+
+	public static boolean isProcessable(Map extendedData) {
+		return Resolver.isProcessable(extendedData);
+	}
 }

@@ -40,19 +40,30 @@ import java.util.Map;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
+import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.gef.requests.LocationRequest;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
+
 /**
- * A listener for IResource that are dropped on the VespucciDiagram view
+ * A listener for ISelections that are dropped on the VespucciDiagram view
  * 
  * @author MalteV
  */
-public class DropVespucciDiagramTargetListener extends AbstractTransferDropTargetListener {
+public class DropVespucciDiagramTargetListener extends
+		AbstractTransferDropTargetListener {
 	/**
 	 * Constructor that set the drop type to IRecource
 	 * 
@@ -62,43 +73,86 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 		super(viewer, LocalSelectionTransfer.getTransfer());
 	}
 
-	
+	@Override
 	protected void handleDragOver() {
-		getCurrentEvent().detail = DND.DROP_COPY;
+		setData();
+		if (enable()) {
+			// The drop target can handle the drop
+			getCurrentEvent().detail = DND.DROP_COPY;
+
+		} else {
+			// The dorp target can't handle the drop
+			getCurrentEvent().detail = DND.DROP_NONE;
+		}
 		super.handleDragOver();
+
 	}
 
-	
+	@Override
 	protected void handleDrop() {
-		getCurrentEvent().detail = DND.DROP_COPY;
-		ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-		
-		Map<String, Object> m = new HashMap<String, Object>();
-		for(Object o : ((TreeSelection) selection).toList())
-			m.put(o.toString(), o);
-		getTargetRequest().setExtendedData(m);
-		// Save the IResources from the drop in a map for further tasks
+		setData();
+		if (enable()) {
+			getCurrentEvent().detail = DND.DROP_COPY;
+
+		} else {
+			getCurrentEvent().detail = DND.DROP_NONE;
+		}
 		super.handleDrop();
 	}
 
-	
+	/**
+	 * set the drop
+	 */
+	protected void setData() {
+		ISelection selection = LocalSelectionTransfer.getTransfer()
+				.getSelection();
+		Map<String, Object> m = new HashMap<String, Object>();
+		for (Object o : ((TreeSelection) selection).toList())
+			m.put(o.toString(), o);
+		getTargetRequest().setExtendedData(m);
+	}
+
 	@Override
 	public boolean isEnabled(DropTargetEvent event) {
 		return super.isEnabled(event);
 	}
 
-	
+	private boolean enable() {
+		if (getTargetEditPart() == null) {
+			;
+			// alle EditPart fuer die Drop funktionieren soll
+		} else if (getTargetEditPart() instanceof EnsembleEditPart
+				|| getTargetEditPart() instanceof Ensemble2EditPart
+				|| getTargetEditPart() instanceof ShapesDiagramEditPart) {
+			return StaticToolsForDnD.isProcessable(getTargetRequest()
+					.getExtendedData());
+		}
+		return false;
+
+	}
+
 	@Override
 	protected void updateTargetRequest() {
-		((DirectEditRequest) getTargetRequest()).setLocation(getDropLocation());
+		if (getTargetRequest() instanceof LocationRequest)
+			((LocationRequest) getTargetRequest())
+					.setLocation(getDropLocation());
+		else if (getTargetRequest() instanceof CreateRequest)
+			((CreateRequest) getTargetRequest()).setLocation(getDropLocation());
+		else
+			System.out.println("hm");
+		if (!enable()) {
+			getCurrentEvent().detail = DND.DROP_NONE;
+		} else {
+			getCurrentEvent().detail = DND.DROP_COPY;
+		}
+
 		super.updateTargetEditPart();
 	}
 
-	
 	@Override
 	protected Request createTargetRequest() {
 		DirectEditRequest request = new DirectEditRequest();
 		return request;
 	}
-	
+
 }
