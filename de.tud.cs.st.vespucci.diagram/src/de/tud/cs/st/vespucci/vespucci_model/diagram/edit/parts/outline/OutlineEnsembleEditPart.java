@@ -45,10 +45,9 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
-import org.eclipse.gmf.runtime.notation.NotationPackage;
-import org.eclipse.gmf.runtime.notation.Style;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.impl.BasicCompartmentImpl;
+import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -119,18 +118,15 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 			ShapeImpl shape = (ShapeImpl) getModel();
 
 			EList<?> shapes = shape.getPersistedChildren();
-			@SuppressWarnings("rawtypes")
-			EList sourceEdges = shape.getSourceEdges();
-
-			@SuppressWarnings("rawtypes")
-			EList targetEdges = shape.getTargetEdges();
+			EList<View> out = new BasicEList<View>();
+			
+			out.addAll(filterConnectionsFromConnectorImpl(shape.getSourceEdges()));
+			out.addAll(filterConnectionsFromConnectorImpl(shape.getTargetEdges()));
+						
 			for (Object i : shapes) {
 				if (i instanceof BasicCompartmentImpl) {
 					BasicCompartmentImpl bci = (BasicCompartmentImpl) i;
-					EList<View> out = new BasicEList<View>();
 					out.addAll(bci.getPersistedChildren());
-					out.addAll(sourceEdges);
-					out.addAll(targetEdges);
 					return out;
 				}
 
@@ -141,19 +137,24 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 		return Collections.EMPTY_LIST;
 	}
 
+	/**
+	 * Filter connections for EdgeImpl: delete ConnectorImpl
+	 * @param connections connections to filter
+	 * @return filtered connections
+	 */
+	private EList<View> filterConnectionsFromConnectorImpl(EList<View> connections){
+		EList<View> out = new BasicEList<View>();
+		for(View i: connections) {
+			if(!(i instanceof ConnectorImpl)){
+				out.add(i);
+			}
+		}
+		return out;
+	}
+	
+	
 	@Override
 	protected void handleNotificationEvent(Notification event) {
-//		if (NotationPackage.Literals.DIAGRAM__NAME.equals(event.getFeature())) {
-//			refreshVisuals();
-//		} else {
-//			Object feature = event.getFeature();
-//			if (NotationPackage.eINSTANCE.getView_PersistedChildren() == feature
-//					|| NotationPackage.eINSTANCE.getView_TransientChildren() == feature)
-//				//refreshChildren();
-//				
-//			else
-//				super.handleNotificationEvent(event);
-//		}
 		refresh();
 	}
 

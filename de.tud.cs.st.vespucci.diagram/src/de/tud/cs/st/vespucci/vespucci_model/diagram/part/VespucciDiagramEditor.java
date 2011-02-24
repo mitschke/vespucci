@@ -71,6 +71,7 @@ import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDocumentPro
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.parts.DiagramDocumentEditor;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -254,7 +255,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 						return new OutlineDummyEditPart(model);
 					} else if (element instanceof Connection) {
 						Connection conn = (Connection) element;
-						ShapeImpl shape = (ShapeImpl)context.getModel();
+						NodeImpl shape = (NodeImpl)context.getModel();
 						if (shape.getElement() == conn.getSource()) {
 							return new OutlineSourceConnectionEditPart(model);
 						} else {

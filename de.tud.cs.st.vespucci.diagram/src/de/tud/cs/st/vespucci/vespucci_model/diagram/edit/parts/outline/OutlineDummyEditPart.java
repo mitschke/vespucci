@@ -34,7 +34,16 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
+import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
+import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
@@ -44,7 +53,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
  * OutlineEditPart for dummy object
  * 
  * @author a_vovk
- *
+ * 
  */
 public class OutlineDummyEditPart extends TreeEditPart {
 
@@ -61,4 +70,38 @@ public class OutlineDummyEditPart extends TreeEditPart {
 
 		return imageDescriptor.createImage();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List<?> getModelChildren() {
+		Object model = getModel();
+
+		if (model instanceof NodeImpl) {
+			NodeImpl node = (NodeImpl) getModel();
+			return filterConnectionsFromConnectorImpl(node.getSourceEdges());
+		}
+
+		return Collections.EMPTY_LIST;
+	}
+
+	/**
+	 * Filter connections for EdgeImpl: delete ConnectorImpl
+	 * @param connections connections to filter
+	 * @return filtered connections
+	 */
+	private EList<View> filterConnectionsFromConnectorImpl(EList<View> connections){
+		EList<View> out = new BasicEList<View>();
+		for(View i: connections) {
+			if(!(i instanceof ConnectorImpl)){
+				out.add(i);
+			}
+		}
+		return out;
+	}
+
+	@Override
+	protected void handleNotificationEvent(Notification event) {
+		refresh();
+	}
+
 }

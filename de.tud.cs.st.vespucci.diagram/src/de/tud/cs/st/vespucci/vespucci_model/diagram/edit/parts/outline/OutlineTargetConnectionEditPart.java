@@ -35,9 +35,12 @@
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
+import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
+import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
@@ -60,4 +63,11 @@ public class OutlineTargetConnectionEditPart extends TreeEditPart {
 				.getBundledImageDescriptor(IMAGE);
 		return imageDescriptor.createImage();
 	}
+	
+	
+	@Override
+    protected String getText() {
+		NodeImpl sourceNode = (NodeImpl)((EdgeImpl)this.getModel()).getSource();
+		return ": "+ ((Shape)sourceNode.getElement()).getName();
+    }
 }
