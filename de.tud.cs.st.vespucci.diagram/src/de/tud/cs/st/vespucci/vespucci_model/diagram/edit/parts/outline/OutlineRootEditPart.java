@@ -35,6 +35,7 @@
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeDiagramEditPart;
+import org.eclipse.gmf.runtime.notation.impl.DiagramImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
@@ -60,4 +61,9 @@ public class OutlineRootEditPart extends TreeDiagramEditPart {
 				.getBundledImageDescriptor(IMAGE);
 		return imageDescriptor.createImage();
 	}
+	
+	@Override
+    protected String getText() {
+    	return ((DiagramImpl)this.getModel()).getName();
+    }
 }
