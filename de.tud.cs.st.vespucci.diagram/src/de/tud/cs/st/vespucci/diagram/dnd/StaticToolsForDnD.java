@@ -175,7 +175,7 @@ public class StaticToolsForDnD {
 				// IType
 				IType type = (IType) o;
 				ICompilationUnit cU = type.getCompilationUnit();
-
+				System.out.println("asd");
 				String packagename = Resolver.getFQPackageNameFromIxxx(cU, key);
 				String classname = Resolver.getFQClassnamefromIxxx(cU, key);
 				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
@@ -204,37 +204,25 @@ public class StaticToolsForDnD {
 		return list;
 
 		/*
-		for(String key : map.keySet()){
-			Object o = map.get(key);
-			//if(o instanceof ISourceAttribute)
-				//System.out.println("attribute");
-			//if(o instanceof ISourceMethod)
-				//System.out.println("methode");
-			if(o instanceof IPackageFragment) 
-				System.out.println("Package");
-			if(o instanceof ICompilationUnit)
-				System.out.println("sour code file");
-			if(o instanceof IField)
-				System.out.println("Attribut");
-			if(o instanceof IType)
-				System.out.println("classe also class ... in einem file");
-			if(o instanceof IMethod)
-				System.out.println("Methode");
-			if(o instanceof IPackageFragmentRoot) 
-				System.out.println("jar package / src Ordner");
-			if(o instanceof IProject)
-				System.out.println("Projekt Ordner");
-			if(o instanceof IClassFile)
-				System.out.println("ClassFile");
-			if(o instanceof IAdaptable) //trieft auch auf viele ander sachen zu
-				System.out.println("Libaraycontainer");
-			if(o instanceof IFile)
-				System.out.println("file"); //je nach ausgewälter ansicht können file auch *.java datein sein
-			if(o instanceof IFolder)
-				System.out.println("folder");
-			System.out.println(o.getClass());
-		*/
-		
+		 * for(String key : map.keySet()){ Object o = map.get(key); //if(o
+		 * instanceof ISourceAttribute) //System.out.println("attribute");
+		 * //if(o instanceof ISourceMethod) //System.out.println("methode");
+		 * if(o instanceof IPackageFragment) System.out.println("Package"); if(o
+		 * instanceof ICompilationUnit) System.out.println("sour code file");
+		 * if(o instanceof IField) System.out.println("Attribut"); if(o
+		 * instanceof IType)
+		 * System.out.println("classe also class ... in einem file"); if(o
+		 * instanceof IMethod) System.out.println("Methode"); if(o instanceof
+		 * IPackageFragmentRoot) System.out.println("jar package / src Ordner");
+		 * if(o instanceof IProject) System.out.println("Projekt Ordner"); if(o
+		 * instanceof IClassFile) System.out.println("ClassFile"); if(o
+		 * instanceof IAdaptable) //trieft auch auf viele ander sachen zu
+		 * System.out.println("Libaraycontainer"); if(o instanceof IFile)
+		 * System.out.println("file"); //je nach ausgewälter ansicht können file
+		 * auch *.java datein sein if(o instanceof IFolder)
+		 * System.out.println("folder"); System.out.println(o.getClass());
+		 */
+
 	}
 
 	/**
@@ -256,7 +244,8 @@ public class StaticToolsForDnD {
 		return STANDARD_SHAPENAME;
 	}
 
-	public static boolean isProcessable(Map extendedData) {
+	public static boolean isProcessable(Map<String, Object> extendedData) {
 		return Resolver.isProcessable(extendedData);
 	}
+
 }
