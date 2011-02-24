@@ -69,10 +69,12 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
  */
 @SuppressWarnings("restriction")
 public class Resolver {
-	
+
 	private static final String CONSTRUCTOR = "<init>";
-	
+
 	private static final String JAVA = ".java";
+
+	private static final String JAR_ENDING = ".jar";
 
 	public static Resolver INSTANCE;
 
@@ -80,7 +82,6 @@ public class Resolver {
 		INSTANCE = this;
 	}
 
-	
 	/**
 	 * resolving types to FQN declaration
 	 * 
@@ -99,7 +100,6 @@ public class Resolver {
 		return tmp;
 	}
 
-	
 	/**
 	 * getting the package name (FQN) from a IMethod, IPackageFragment,
 	 * ICompilationUnit, IField and IType
@@ -129,9 +129,9 @@ public class Resolver {
 					cUnit = ((IType) o).getCompilationUnit();
 				}
 				declarations = cUnit.getPackageDeclarations();
-				if (declarations.length > 0)
+				if (declarations.length > 0) {
 					return declarations[0].getElementName().trim();
-
+				}
 			} catch (JavaModelException e) {
 				IStatus is = new Status(Status.ERROR,
 						VespucciDiagramEditorPlugin.ID,
@@ -142,7 +142,6 @@ public class Resolver {
 		}
 		return null;
 	}
-	
 
 	/**
 	 * returns true, if ALL objects are processable.
@@ -157,16 +156,45 @@ public class Resolver {
 			Object o = map.get(key);
 			boolean akt = false;
 
-			if (o instanceof IPackageFragment) {
-				akt = true;
-			}else if (o instanceof IPackageFragmentRoot){
-				akt = true;
-			}else if (o instanceof ICompilationUnit) {
-				akt = true;
-			} else if (o instanceof IMethod) {
-				akt = true;
-			} else if (o instanceof IField) {
-				akt = true;
+			try {
+
+				if (o instanceof IPackageFragment) {
+					akt = true;
+				} else if (o instanceof IPackageFragmentRoot) {
+					akt = true;
+				} else if (o instanceof ICompilationUnit) {
+					ICompilationUnit cU = (ICompilationUnit) o;
+					if (cU.getUnderlyingResource().toString().toLowerCase()
+							.endsWith(JAR_ENDING))
+						akt = false;
+					else
+						akt = true;
+				} else if (o instanceof IMethod) {
+					IMethod m = (IMethod) o;
+					if (m.getUnderlyingResource().toString().toLowerCase()
+							.endsWith(JAR_ENDING))
+						akt = false;
+					else
+						akt = true;
+				} else if (o instanceof IField) {
+					IField f = (IField) o;
+					if (f.getUnderlyingResource().toString().toLowerCase()
+							.endsWith(JAR_ENDING))
+						akt = false;
+					else
+						akt = true;
+				} else if (o instanceof IType) {
+					IType t = (IType) o;
+					if (t.getUnderlyingResource().toString().toLowerCase()
+							.endsWith(JAR_ENDING))
+						akt = false;
+					else
+						akt = true;
+				}
+
+			} catch (JavaModelException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 			if (akt == false)
@@ -175,7 +203,6 @@ public class Resolver {
 		}
 		return true;
 	}
-	
 
 	/**
 	 * getting the FQN classname
@@ -207,10 +234,10 @@ public class Resolver {
 			return getFQPackageNameFromIxxx(o, key) + "." + classname;
 		}
 	}
-	
 
 	/**
-	 * returns the returntype of the given IMethod (in this moment IMethod is the only one)
+	 * returns the returntype of the given IMethod (in this moment IMethod is
+	 * the only one)
 	 * 
 	 * @param o
 	 * @param key
@@ -234,7 +261,6 @@ public class Resolver {
 		}
 		return null;
 	}
-	
 
 	/**
 	 * getting all parameters from a given IMethod
@@ -251,7 +277,7 @@ public class Resolver {
 		}
 		return parameters;
 	}
-	
+
 	/**
 	 * get the name of a method
 	 * 
@@ -274,8 +300,7 @@ public class Resolver {
 		}
 		return null;
 	}
-	
-	
+
 	/**
 	 * get the name of an field
 	 * 
@@ -294,43 +319,49 @@ public class Resolver {
 		}
 		return null;
 	}
-	
 
 	/**
 	 * try to resolve the element name of the given object
 	 * 
-	 * @param the given object
+	 * @param the
+	 *            given object
 	 * @return the element name
 	 */
 	public static String getElementNameFromObject(Object o) {
-		if (o instanceof IProject)
+		if (o instanceof IProject) {
 			return ((IProject) o).getName();
-		else if (o instanceof IPackageFragment)
+		} else if (o instanceof IPackageFragment) {
 			return ((IPackageFragment) o).getElementName();
-		else if (o instanceof IPackageFragmentRoot)
+		} else if (o instanceof IPackageFragmentRoot) {
 			return ((IPackageFragmentRoot) o).getElementName();
-		else if (o instanceof ICompilationUnit)
-			return ((ICompilationUnit) o).getElementName();
-		else if (o instanceof IType)
-			return ((IType) o).getElementName();
-		else if (o instanceof IField)
-			return ((IField) o).getElementName();
-		else if (o instanceof IMethod)
-			return ((IMethod) o).getElementName();
-		else if (o instanceof ISourceAttribute)
+		} else if (o instanceof ICompilationUnit) {
+			ICompilationUnit cU = (ICompilationUnit) o;
+			return Resolver.getFQClassnamefromIxxx(cU, "");
+		} else if (o instanceof IType) {
+			IType type = (IType) o;
+			return Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),
+					"");
+		} else if (o instanceof IField) {
+			IField field = (IField) o;
+			return Resolver.getFQPackageNameFromIxxx(field, "") + "."
+					+ field.getElementName();
+		} else if (o instanceof IMethod) {
+			IMethod method = (IMethod) o;
+			return Resolver.getFQPackageNameFromIxxx(method, "") + "."
+					+ method.getElementName();
+		} else if (o instanceof ISourceAttribute) {
 			return ((ISourceAttribute) o).getSourceFileName().toString();
-		else if (o instanceof IClassFile)
+		} else if (o instanceof IClassFile) {
 			return ((IClassFile) o).getElementName();
-		else if (o instanceof IFile)
+		} else if (o instanceof IFile) {
 			return ((IFile) o).getName();
-		else if (o instanceof IFolder)
+		} else if (o instanceof IFolder) {
 			return ((IFolder) o).getName();
-		else
+		} else
 			// nothing
-		return "";
+			return "";
 	}
 
-	
 	/**
 	 * getting all packages from a IPackageFragmentRoot; e.g. a src-folder or a
 	 * JAR-file which is in the project referenced libraries
