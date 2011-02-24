@@ -61,9 +61,9 @@ public class OutlineRootEditPart extends TreeDiagramEditPart {
 				.getBundledImageDescriptor(IMAGE);
 		return imageDescriptor.createImage();
 	}
-	
+
 	@Override
-    protected String getText() {
-    	return ((DiagramImpl)this.getModel()).getName();
-    }
+	protected String getText() {
+		return ((DiagramImpl) this.getModel()).getName();
+	}
 }

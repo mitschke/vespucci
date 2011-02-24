@@ -63,11 +63,11 @@ public class OutlineTargetConnectionEditPart extends TreeEditPart {
 				.getBundledImageDescriptor(IMAGE);
 		return imageDescriptor.createImage();
 	}
-	
-	
+
 	@Override
-    protected String getText() {
-		NodeImpl sourceNode = (NodeImpl)((EdgeImpl)this.getModel()).getSource();
-		return ": "+ ((Shape)sourceNode.getElement()).getName();
-    }
+	protected String getText() {
+		NodeImpl sourceNode = (NodeImpl) ((EdgeImpl) this.getModel())
+				.getSource();
+		return ": " + ((Shape) sourceNode.getElement()).getName();
+	}
 }

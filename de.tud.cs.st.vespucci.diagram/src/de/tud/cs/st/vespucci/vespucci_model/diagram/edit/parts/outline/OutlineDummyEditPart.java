@@ -86,13 +86,16 @@ public class OutlineDummyEditPart extends TreeEditPart {
 
 	/**
 	 * Filter connections for EdgeImpl: delete ConnectorImpl
-	 * @param connections connections to filter
+	 * 
+	 * @param connections
+	 *            connections to filter
 	 * @return filtered connections
 	 */
-	private EList<View> filterConnectionsFromConnectorImpl(EList<View> connections){
+	private EList<View> filterConnectionsFromConnectorImpl(
+			EList<View> connections) {
 		EList<View> out = new BasicEList<View>();
-		for(View i: connections) {
-			if(!(i instanceof ConnectorImpl)){
+		for (View i : connections) {
+			if (!(i instanceof ConnectorImpl)) {
 				out.add(i);
 			}
 		}

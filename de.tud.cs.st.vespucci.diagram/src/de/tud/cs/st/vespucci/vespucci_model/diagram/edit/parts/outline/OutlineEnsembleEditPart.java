@@ -119,10 +119,12 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 
 			EList<?> shapes = shape.getPersistedChildren();
 			EList<View> out = new BasicEList<View>();
-			
-			out.addAll(filterConnectionsFromConnectorImpl(shape.getSourceEdges()));
-			out.addAll(filterConnectionsFromConnectorImpl(shape.getTargetEdges()));
-						
+
+			out.addAll(filterConnectionsFromConnectorImpl(shape
+					.getSourceEdges()));
+			out.addAll(filterConnectionsFromConnectorImpl(shape
+					.getTargetEdges()));
+
 			for (Object i : shapes) {
 				if (i instanceof BasicCompartmentImpl) {
 					BasicCompartmentImpl bci = (BasicCompartmentImpl) i;
@@ -139,20 +141,22 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 
 	/**
 	 * Filter connections for EdgeImpl: delete ConnectorImpl
-	 * @param connections connections to filter
+	 * 
+	 * @param connections
+	 *            connections to filter
 	 * @return filtered connections
 	 */
-	private EList<View> filterConnectionsFromConnectorImpl(EList<View> connections){
+	private EList<View> filterConnectionsFromConnectorImpl(
+			EList<View> connections) {
 		EList<View> out = new BasicEList<View>();
-		for(View i: connections) {
-			if(!(i instanceof ConnectorImpl)){
+		for (View i : connections) {
+			if (!(i instanceof ConnectorImpl)) {
 				out.add(i);
 			}
 		}
 		return out;
 	}
-	
-	
+
 	@Override
 	protected void handleNotificationEvent(Notification event) {
 		refresh();
