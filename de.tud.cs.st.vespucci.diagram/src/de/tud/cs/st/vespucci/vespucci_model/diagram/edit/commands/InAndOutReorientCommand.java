@@ -148,9 +148,11 @@ public class InAndOutReorientCommand extends EditElementCommand {
 	 * @generated NOT
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
-		if(oldEnd != getLink().getOriginalSource() && getLink().getOriginalSource() != null){
-			getLink().setOriginalSource(null);
-			if(getLink().getOriginalTarget() == null)
+		if (oldEnd != getLink().getOriginalSource().get(
+				getLink().getOriginalSource().size() - 1)
+				&& !getLink().getOriginalSource().isEmpty()) {
+			getLink().getOriginalSource().clear();
+			if (getLink().getOriginalTarget().isEmpty())
 				getLink().setTemp(false);
 		}
 		getLink().setSource(getNewSource());
@@ -161,9 +163,11 @@ public class InAndOutReorientCommand extends EditElementCommand {
 	 * @generated NOT
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {
-		if(oldEnd != getLink().getOriginalTarget() && getLink().getOriginalTarget() != null){
-			getLink().setOriginalTarget(null);
-			if(getLink().getOriginalSource() == null)
+		if (oldEnd != getLink().getOriginalTarget().get(
+				getLink().getOriginalTarget().size() - 1)
+				&& !getLink().getOriginalTarget().isEmpty()) {
+			getLink().getOriginalTarget().clear();
+			if (getLink().getOriginalSource().isEmpty())
 				getLink().setTemp(false);
 		}
 		getLink().setTarget(getNewTarget());

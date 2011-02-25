@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
@@ -57,9 +58,9 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 public class CompartmentEditPartSupporter {
 
 	// ------------------------------------------//
-	private static final Color TMP_CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.red;
+	public static final Color TMP_CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.red;
 
-	private static final Color CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.black;
+	public static final Color CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.black;
 
 	private ShapeCompartmentEditPart compartmentToSupport;
 
@@ -100,7 +101,8 @@ public class CompartmentEditPartSupporter {
 						.getModel());
 				Connection con = (Connection) edge.getElement();
 				con.setTemp(true);
-				con.setOriginalSource(con.getSource());
+				EList<Shape> oSources = con.getOriginalSource();
+				oSources.add(con.getSource());
 				con.setSource((Shape) ((ShapeImpl) this.editPartOfCompartment
 						.getModel()).getElement());
 
@@ -109,13 +111,16 @@ public class CompartmentEditPartSupporter {
 						.getModel());
 				Connection con = (Connection) edge.getElement();
 				con.setTemp(true);
-				con.setOriginalTarget(con.getTarget());
+				EList<Shape> oTargets = con.getOriginalTarget();
+				oTargets.add(con.getTarget());
 				con.setTarget((Shape) ((ShapeImpl) this.editPartOfCompartment
 						.getModel()).getElement());
 			}
 			i.getFigure().setForegroundColor(TMP_CONNECTION_COLOR);
 		}
 	}
+	
+	
 
 	private ShapeImpl getViewFromModel(EditPart editPart, Shape shapeToFind) {
 		List<EditPart> editParts = EPService
@@ -139,28 +144,38 @@ public class CompartmentEditPartSupporter {
 		for (ConnectionEditPart i : connections) {
 			EdgeImpl edgeToRestore = (EdgeImpl) i.getModel();
 			Connection con = (Connection) edgeToRestore.getElement();
-
+			
+			
+			
 			if (con.isTemp()) {
 				if (edgeToRestore.getSource() == this.editPartOfCompartment
-						.getModel() && (con.getOriginalSource() != null)) {
+						.getModel() && (!con.getOriginalSource().isEmpty())) {
+					EList<Shape> oSources = con.getOriginalSource();
+					Shape source =oSources.remove(oSources.size()-1);
+					
 					ShapeImpl shapeImpl = getViewFromModel(
-							this.compartmentToSupport, con.getOriginalSource());
+							this.compartmentToSupport, source);
+					
+					
 					edgeToRestore.setSource(shapeImpl);
-
-					con.setSource(con.getOriginalSource());
-					con.setOriginalSource(null);
-
+					
+					con.setSource(source);
 				} else if (edgeToRestore.getTarget() == this.editPartOfCompartment
-						.getModel() && (con.getOriginalTarget() != null)) {
+						.getModel() && (!con.getOriginalTarget().isEmpty())) {
+					
+					EList<Shape> oTargets = con.getOriginalTarget();
+					Shape target =oTargets.remove(oTargets.size()-1);
+					
 					ShapeImpl shapeImpl = getViewFromModel(
-							this.compartmentToSupport, con.getOriginalTarget());
+							this.compartmentToSupport, target);
 					edgeToRestore.setTarget(shapeImpl);
-					con.setTarget(con.getOriginalTarget());
+					
+					
+					con.setTarget(target);
 
-					con.setOriginalTarget(null);
 				}
-				if (con.getOriginalSource() == null
-						&& con.getOriginalTarget() == null) {
+				if (con.getOriginalSource().isEmpty()
+						&& con.getOriginalTarget().isEmpty()) {
 					con.setTemp(false);
 					i.getFigure().setForegroundColor(CONNECTION_COLOR);
 				}

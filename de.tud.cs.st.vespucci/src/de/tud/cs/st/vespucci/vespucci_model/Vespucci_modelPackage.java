@@ -339,7 +339,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int CONNECTION__TEMP = 3;
 
 	/**
-	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -348,7 +348,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int CONNECTION__ORIGINAL_SOURCE = 4;
 
 	/**
-	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -412,7 +412,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int NOT_ALLOWED__TEMP = CONNECTION__TEMP;
 
 	/**
-	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -421,7 +421,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int NOT_ALLOWED__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
 
 	/**
-	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -485,7 +485,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int OUTGOING__TEMP = CONNECTION__TEMP;
 
 	/**
-	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -494,7 +494,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int OUTGOING__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
 
 	/**
-	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -558,7 +558,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int INCOMING__TEMP = CONNECTION__TEMP;
 
 	/**
-	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -567,7 +567,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int INCOMING__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
 
 	/**
-	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -631,7 +631,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int IN_AND_OUT__TEMP = CONNECTION__TEMP;
 
 	/**
-	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -640,7 +640,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int IN_AND_OUT__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
 
 	/**
-	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -704,7 +704,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int EXPECTED__TEMP = CONNECTION__TEMP;
 
 	/**
-	 * The feature id for the '<em><b>Original Source</b></em>' reference.
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -713,7 +713,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int EXPECTED__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
 
 	/**
-	 * The feature id for the '<em><b>Original Target</b></em>' reference.
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -892,10 +892,10 @@ public interface Vespucci_modelPackage extends EPackage {
 	EAttribute getConnection_Temp();
 
 	/**
-	 * Returns the meta object for the reference '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource <em>Original Source</em>}'.
+	 * Returns the meta object for the reference list '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource <em>Original Source</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Original Source</em>'.
+	 * @return the meta object for the reference list '<em>Original Source</em>'.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource()
 	 * @see #getConnection()
 	 * @generated
@@ -903,10 +903,10 @@ public interface Vespucci_modelPackage extends EPackage {
 	EReference getConnection_OriginalSource();
 
 	/**
-	 * Returns the meta object for the reference '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget <em>Original Target</em>}'.
+	 * Returns the meta object for the reference list '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget <em>Original Target</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Original Target</em>'.
+	 * @return the meta object for the reference list '<em>Original Target</em>'.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget()
 	 * @see #getConnection()
 	 * @generated
@@ -1116,7 +1116,7 @@ public interface Vespucci_modelPackage extends EPackage {
 		EAttribute CONNECTION__TEMP = eINSTANCE.getConnection_Temp();
 
 		/**
-		 * The meta object literal for the '<em><b>Original Source</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Original Source</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1124,7 +1124,7 @@ public interface Vespucci_modelPackage extends EPackage {
 		EReference CONNECTION__ORIGINAL_SOURCE = eINSTANCE.getConnection_OriginalSource();
 
 		/**
-		 * The meta object literal for the '<em><b>Original Target</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Original Target</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

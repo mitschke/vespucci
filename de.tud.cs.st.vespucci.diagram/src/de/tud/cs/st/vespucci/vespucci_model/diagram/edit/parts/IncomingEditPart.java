@@ -51,6 +51,8 @@ import org.eclipse.gmf.runtime.notation.IdentityAnchor;
 import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
+
 /**
  * @generated
  */
@@ -151,9 +153,9 @@ public class IncomingEditPart extends ConnectionNodeEditPart implements
 			EAttributeImpl eai = (EAttributeImpl)notification.getFeature();
 			if(eai.getName().equals("temp")){
 				if(notification.getNewBooleanValue()){
-					this.getFigure().setForegroundColor(org.eclipse.draw2d.ColorConstants.red);
+					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
 				}else{
-					this.getFigure().setForegroundColor(org.eclipse.draw2d.ColorConstants.black);
+					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.CONNECTION_COLOR);
 				}
 				
 			}
