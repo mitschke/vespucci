@@ -148,9 +148,9 @@ public class NotAllowedReorientCommand extends EditElementCommand {
 	 * @generated NOT
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
-		if (oldEnd != getLink().getOriginalSource().get(
-				getLink().getOriginalSource().size() - 1)
-				&& !getLink().getOriginalSource().isEmpty()) {
+		if (!getLink().getOriginalSource().isEmpty()
+				&& oldEnd != getLink().getOriginalSource().get(
+						getLink().getOriginalSource().size() - 1)) {
 			getLink().getOriginalSource().clear();
 			if (getLink().getOriginalTarget().isEmpty())
 				getLink().setTemp(false);
@@ -163,9 +163,9 @@ public class NotAllowedReorientCommand extends EditElementCommand {
 	 * @generated NOT
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {
-		if (oldEnd != getLink().getOriginalTarget().get(
-				getLink().getOriginalTarget().size() - 1)
-				&& !getLink().getOriginalTarget().isEmpty()) {
+		if (!getLink().getOriginalTarget().isEmpty()
+				&& oldEnd != getLink().getOriginalTarget().get(
+						getLink().getOriginalTarget().size() - 1)) {
 			getLink().getOriginalTarget().clear();
 			if (getLink().getOriginalSource().isEmpty())
 				getLink().setTemp(false);
