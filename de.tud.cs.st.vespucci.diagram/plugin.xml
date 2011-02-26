@@ -76,13 +76,18 @@
    <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
       <?gmfgen generated="true"?>
   	  <wizard
-  	     name="%newWizardName"
-  	     icon="icons/obj16/Vespucci_modelDiagramFile.gif"
-  	     category="org.eclipse.ui.Examples"
-  	     class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
-  	     id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
+           category="org.eclipse.ui.Examples/de.tud.cs.st.vespucci.diagram.category1"
+           class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
+           icon="icons/obj16/Vespucci_modelDiagramFile.gif"
+           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID"
+           name="%newWizardName">
   	  	 <description>%newWizardDesc</description>  
       </wizard>
+     <category
+           id="de.tud.cs.st.vespucci.diagram.category1"
+           name="Vespucci"
+           parentCategory="org.eclipse.ui.Examples">
+     </category>
    </extension>
 
    <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
