@@ -96,6 +96,12 @@ public class CompartmentEditPartSupporter {
 		Set<ConnectionEditPart> outisdeConnections = getConnections(this.compartmentToSupport);
 		for (ConnectionEditPart i : outisdeConnections) {
 			EdgeImpl edge = (EdgeImpl) i.getModel();
+			
+			//TODO: hack?
+			if(i.getSource().getModel() != edge.getSource() || i.getTarget().getModel() != edge.getTarget())
+				return;
+			
+			
 			if (compartmentChildren.contains(i.getSource())) {
 				edge.setSource((ShapeImpl) this.editPartOfCompartment
 						.getModel());
@@ -119,8 +125,6 @@ public class CompartmentEditPartSupporter {
 			i.getFigure().setForegroundColor(TMP_CONNECTION_COLOR);
 		}
 	}
-	
-	
 
 	private ShapeImpl getViewFromModel(EditPart editPart, Shape shapeToFind) {
 		List<EditPart> editParts = EPService
@@ -144,33 +148,29 @@ public class CompartmentEditPartSupporter {
 		for (ConnectionEditPart i : connections) {
 			EdgeImpl edgeToRestore = (EdgeImpl) i.getModel();
 			Connection con = (Connection) edgeToRestore.getElement();
-			
-			
-			
+
 			if (con.isTemp()) {
 				if (edgeToRestore.getSource() == this.editPartOfCompartment
 						.getModel() && (!con.getOriginalSource().isEmpty())) {
 					EList<Shape> oSources = con.getOriginalSource();
-					Shape source =oSources.remove(oSources.size()-1);
-					
+					Shape source = oSources.remove(oSources.size() - 1);
+
 					ShapeImpl shapeImpl = getViewFromModel(
 							this.compartmentToSupport, source);
-					
-					
+
 					edgeToRestore.setSource(shapeImpl);
-					
+
 					con.setSource(source);
 				} else if (edgeToRestore.getTarget() == this.editPartOfCompartment
 						.getModel() && (!con.getOriginalTarget().isEmpty())) {
-					
+
 					EList<Shape> oTargets = con.getOriginalTarget();
-					Shape target =oTargets.remove(oTargets.size()-1);
-					
+					Shape target = oTargets.remove(oTargets.size() - 1);
+
 					ShapeImpl shapeImpl = getViewFromModel(
 							this.compartmentToSupport, target);
 					edgeToRestore.setTarget(shapeImpl);
-					
-					
+
 					con.setTarget(target);
 
 				}
