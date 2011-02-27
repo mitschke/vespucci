@@ -175,7 +175,6 @@ public class QueryBuilder {
 				// IType
 				IType type = (IType) o;
 				ICompilationUnit cU = type.getCompilationUnit();
-				System.out.println("asd");
 				String packagename = Resolver.getFQPackageNameFromIxxx(cU, key);
 				String classname = Resolver.getFQClassnamefromIxxx(cU, key);
 				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
