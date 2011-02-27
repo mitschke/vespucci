@@ -189,7 +189,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		SetRequest sr = new SetRequest(createElementRequest.getEditingDomain(),
 				createElementRequest.getNewElement(),
 				vesPackage.getShape_Query(),
-				StaticToolsForDnD.createQueryForAMapOfIResource(request
+				QueryBuilder.createQueryForAMapOfIResource(request
 						.getExtendedData()));
 		extendedSetValueCommand svc = new extendedSetValueCommand(sr,
 				createElementRequest);
@@ -198,7 +198,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 				createElementRequest.getEditingDomain(),
 				createElementRequest.getNewElement(),
 				vesPackage.getShape_Name(),
-				StaticToolsForDnD.createNameforNewEnsemble(request
+				QueryBuilder.createNameforNewEnsemble(request
 						.getExtendedData()));
 		extendedSetValueCommand svc2 = new extendedSetValueCommand(sr2,
 				createElementRequest);

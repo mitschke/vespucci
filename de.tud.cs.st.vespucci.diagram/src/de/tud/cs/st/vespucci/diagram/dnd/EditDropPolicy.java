@@ -165,7 +165,7 @@ public class EditDropPolicy extends DirectEditPolicy {
 			SetRequest sr = new SetRequest(
 					((GraphicalEditPart) getHost()).resolveSemanticElement(),
 					vesPackage.getShape_Query(),
-					StaticToolsForDnD.createQueryForAMapOfIResource(request
+					QueryBuilder.createQueryForAMapOfIResource(request
 							.getExtendedData(),(String) oldQuery));
 		
 			org.eclipse.gmf.runtime.common.core.command.ICommand com = new SetValueCommand(
