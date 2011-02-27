@@ -43,6 +43,7 @@ import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequestFactory;
 import org.eclipse.gmf.runtime.emf.type.core.ElementTypeRegistry;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
+import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
@@ -69,6 +70,16 @@ public class CreateEnsembleDropTargetListener extends
 		super.handleDrop();
 	}
 	
+
+	@Override
+	protected void handleDragOver() {
+		super.handleDragOver();
+		//FIXME: hack!
+		if(getCurrentEvent() != null &&
+				getCurrentEvent().detail == DND.DROP_COPY)
+			getCurrentEvent().detail = DND.DROP_LINK;
+	}
+
 
 	@Override
 	public boolean isEnabled(DropTargetEvent event) {
