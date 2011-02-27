@@ -343,7 +343,7 @@ public class Resolver {
 		} else if (o instanceof IType) {
 			IType type = (IType) o;
 			return Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),
-					"");
+					"") + "." + type.getElementName();
 		} else if (o instanceof IField) {
 			IField field = (IField) o;
 			return Resolver.getFQPackageNameFromIxxx(field, "") + "." + field.getParent().getElementName() + "." + field.getElementName();
