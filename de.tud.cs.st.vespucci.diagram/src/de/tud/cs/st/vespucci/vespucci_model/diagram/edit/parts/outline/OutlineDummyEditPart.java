@@ -78,7 +78,9 @@ public class OutlineDummyEditPart extends TreeEditPart {
 
 		if (model instanceof NodeImpl) {
 			NodeImpl node = (NodeImpl) getModel();
-			return filterConnectionsFromConnectorImpl(node.getSourceEdges());
+			EList<View> out = filterConnectionsFromConnectorImpl(node.getSourceEdges());
+			out.addAll(node.getTargetEdges());
+			return out;
 		}
 
 		return Collections.EMPTY_LIST;
