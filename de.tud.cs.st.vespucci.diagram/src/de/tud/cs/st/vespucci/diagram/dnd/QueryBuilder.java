@@ -184,7 +184,7 @@ public class QueryBuilder {
 				// FIELD
 				IField field = (IField) o;
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
-				String classname = Resolver.getFQClassnamefromIxxx(o, key);
+				String classname = field.getParent().getElementName();
 				String fieldname = field.getElementName();
 				String type = Resolver.getFQFieldTypeName(field);
 
