@@ -37,15 +37,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.internal.editparts.NoteAttachmentEditPart;
-import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
 import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
@@ -55,6 +52,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
+ * Collapsement supporter for EnsembleEditPart
  * 
  * @author a_vovk
  * 
@@ -80,6 +78,12 @@ public class CompartmentEditPartSupporter {
 
 	}
 
+	/**
+	 * Update connections after EditPart was collapsed/opened
+	 * 
+	 * @param event
+	 *            collapsement event
+	 */
 	public void updateConnections(Notification event) {
 
 		this.editPartOfCompartment = (ShapeNodeEditPart) this.compartmentToSupport
@@ -96,16 +100,19 @@ public class CompartmentEditPartSupporter {
 
 	}
 
+	/**
+	 * Collapse edit part
+	 */
 	private void collapseEditPart() {
 		Set<ConnectionEditPart> outisdeConnections = getConnections(this.compartmentToSupport);
 		for (ConnectionEditPart i : outisdeConnections) {
 			EdgeImpl edge = (EdgeImpl) i.getModel();
-			
-			//TODO: hack?
-			if(i.getSource().getModel() != edge.getSource() || i.getTarget().getModel() != edge.getTarget())
+
+			// it's for undo/redo operations
+			if (i.getSource().getModel() != edge.getSource()
+					|| i.getTarget().getModel() != edge.getTarget())
 				return;
-			
-			
+
 			if (compartmentChildren.contains(i.getSource())) {
 				edge.setSource((ShapeImpl) this.editPartOfCompartment
 						.getModel());
@@ -126,10 +133,16 @@ public class CompartmentEditPartSupporter {
 				con.setTarget((Shape) ((ShapeImpl) this.editPartOfCompartment
 						.getModel()).getElement());
 			}
-//			i.getFigure().setForegroundColor(TMP_CONNECTION_COLOR);
 		}
 	}
 
+	/**
+	 * Get view for corresponding model element
+	 * 
+	 * @param editPart search in this editPart
+	 * @param shapeToFind model element
+	 * @return
+	 */
 	private ShapeImpl getViewFromModel(EditPart editPart, Shape shapeToFind) {
 		List<EditPart> editParts = EPService
 				.getAllShapesInSideCompartment(editPart);
@@ -145,6 +158,9 @@ public class CompartmentEditPartSupporter {
 		return null;
 	}
 
+	/**
+	 * Open edit part and restore the connections
+	 */
 	private void openEditPart() {
 
 		Set<ConnectionEditPart> connections = this.getAllConnections();
@@ -181,7 +197,6 @@ public class CompartmentEditPartSupporter {
 				if (con.getOriginalSource().isEmpty()
 						&& con.getOriginalTarget().isEmpty()) {
 					con.setTemp(false);
-//					i.getFigure().setForegroundColor(CONNECTION_COLOR);
 				}
 
 			}
@@ -190,6 +205,12 @@ public class CompartmentEditPartSupporter {
 
 	}
 
+	/**
+	 * Get all connections that goes in/out from ePart editPart(all
+	 * children connections from this editPart)
+	 * @param ePart 
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	private Set<ConnectionEditPart> getConnections(
 			ShapeCompartmentEditPart ePart) {
@@ -217,11 +238,15 @@ public class CompartmentEditPartSupporter {
 				connections.add(c);
 			}
 		}
-		
+
 		return filterConnectionsFromConnectorImpl(connections);
 
 	}
 
+	/**
+	 * Get all connections that belong to this editPart
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	private Set<ConnectionEditPart> getAllConnections() {
 		Set<ConnectionEditPart> connections = new HashSet<ConnectionEditPart>();
@@ -230,8 +255,7 @@ public class CompartmentEditPartSupporter {
 		return connections;
 
 	}
-	
-	
+
 	/**
 	 * Filter connections for EdgeImpl: delete ConnectorImpl
 	 * 
@@ -243,13 +267,11 @@ public class CompartmentEditPartSupporter {
 			Set<ConnectionEditPart> connections) {
 		Set<ConnectionEditPart> out = new HashSet<ConnectionEditPart>();
 		for (ConnectionEditPart i : connections) {
-			if(!(i.getModel() instanceof ConnectorImpl)) {
+			if (!(i.getModel() instanceof ConnectorImpl)) {
 				out.add(i);
 			}
 		}
 		return out;
 	}
-
-	
 
 }
