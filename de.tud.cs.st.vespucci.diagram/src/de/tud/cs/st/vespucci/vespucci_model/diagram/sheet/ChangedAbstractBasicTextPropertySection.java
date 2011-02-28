@@ -216,7 +216,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	
 	
 	private int getHeight(){
-		return this.scrolledParent.getSize().y - 20;
+		return this.scrolledParent.getSize().y - 30;
 	}
 	
 	/**
@@ -234,12 +234,12 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			//lis = getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getListeners(SWT.Resize);
 			//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
 			//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize().y - 20;
-			data.height = getHeight();
+			data.height = getHeight()-5;
 			getTextWidget().setLayoutData(data);
 			Point p = getSectionComposite().getSize();
-			getSectionComposite().setSize(p.x, getHeight()+5);
+			getSectionComposite().setSize(p.x, getHeight());
 			//p = getSectionComposite().getParent().getSize();
-			getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+5);//+textWidget.getLineHeight() * textWidget.getLineCount());
+			getSectionComposite().getParent().setSize(p.x,getTextWidget().getSize().y+15);//+textWidget.getLineHeight() * textWidget.getLineCount());
 			getSectionComposite().layout();
 			getSectionComposite().getParent().getDisplay().update();
 
