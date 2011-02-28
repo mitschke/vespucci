@@ -184,7 +184,7 @@ public class QueryBuilder {
 				IType type = (IType) o;
 				ICompilationUnit cU = type.getCompilationUnit();
 				String packagename = Resolver.getFQPackageNameFromIxxx(cU, key);
-				String classname = Resolver.getFQClassnamefromIxxx(cU, key);
+				String classname = Resolver.getFQClassnamefromIxxx(type, key);
 				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
 						+ classname + "')";
 				list.add(key);
