@@ -79,6 +79,8 @@ public class Resolver {
 
 	private static final String JAR_ENDING = ".jar";
 
+	private static final String DEFAULT_PACKAGE = "DEFAULTPACKAGE";
+
 	public static Resolver INSTANCE;
 
 	public Resolver() {
@@ -116,7 +118,11 @@ public class Resolver {
 	public static String getFQPackageNameFromIxxx(Object o, String key) {
 		// package...
 		if (o instanceof IPackageFragment) {
-			return ((IPackageFragment) o).getElementName();
+			IPackageFragment pkg = (IPackageFragment) o;
+			if(pkg.isDefaultPackage())
+				return DEFAULT_PACKAGE;
+			else
+				return ((IPackageFragment) o).getElementName();
 		} else {
 			// class, method, field, type
 			IPackageDeclaration[] declarations;
@@ -143,7 +149,7 @@ public class Resolver {
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
 		}
-		return null;
+		return DEFAULT_PACKAGE;
 	}
 
 	/**
@@ -227,21 +233,8 @@ public class Resolver {
 			return ((IField) o).getDeclaringType().getFullyQualifiedName();
 		else if (o instanceof ICompilationUnit) {
 			classname = ((ICompilationUnit) o).getElementName();
-			/*
-			try {
-				IType[] fff = ((ICompilationUnit) o).getTypes();
-				IType ddd = ((ICompilationUnit) o).getType("InnerEvenIterator");
-				//System.out.println(ddd.getFullyQualifiedName());
-			} catch (JavaModelException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println();
-			//asd = ((ICompilationUnit) o).get;
-			System.out.println(classname);
-			*/
 		} else if (o instanceof IType) {
-			classname = ((IType) o).getFullyQualifiedName();
+			return ((IType) o).getFullyQualifiedName();
 		}
 
 		if (classname.toLowerCase().endsWith(JAVA))
@@ -351,7 +344,11 @@ public class Resolver {
 		if (o instanceof IProject) {
 			return ((IProject) o).getName();
 		} else if (o instanceof IPackageFragment) {
-			return ((IPackageFragment) o).getElementName();
+			IPackageFragment pkg = (IPackageFragment) o;
+			if(pkg.isDefaultPackage())
+				return DEFAULT_PACKAGE;
+			else
+				return ((IPackageFragment) o).getElementName();
 		} else if (o instanceof IPackageFragmentRoot) {
 			return ((IPackageFragmentRoot) o).getElementName();
 		} else if (o instanceof ICompilationUnit) {
