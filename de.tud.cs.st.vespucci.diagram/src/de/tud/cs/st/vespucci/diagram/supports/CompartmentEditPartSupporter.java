@@ -45,6 +45,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
 import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
+import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.swt.graphics.Color;
 
@@ -143,12 +144,12 @@ public class CompartmentEditPartSupporter {
 	 * @param shapeToFind model element
 	 * @return
 	 */
-	private ShapeImpl getViewFromModel(EditPart editPart, Shape shapeToFind) {
+	private NodeImpl getViewFromModel(EditPart editPart, Shape shapeToFind) {
 		List<EditPart> editParts = EPService
 				.getAllShapesInSideCompartment(editPart);
 		for (EditPart i : editParts) {
-			if (i.getModel() instanceof ShapeImpl) {
-				ShapeImpl shapeImpl = (ShapeImpl) i.getModel();
+			if (i.getModel() instanceof NodeImpl) {
+				NodeImpl shapeImpl = (NodeImpl) i.getModel();
 				Shape element = (Shape) shapeImpl.getElement();
 				if (element.equals(shapeToFind)) {
 					return shapeImpl;
@@ -175,7 +176,7 @@ public class CompartmentEditPartSupporter {
 					EList<Shape> oSources = con.getOriginalSource();
 					Shape source = oSources.remove(oSources.size() - 1);
 
-					ShapeImpl shapeImpl = getViewFromModel(
+					NodeImpl shapeImpl = getViewFromModel(
 							this.compartmentToSupport, source);
 
 					edgeToRestore.setSource(shapeImpl);
@@ -187,7 +188,7 @@ public class CompartmentEditPartSupporter {
 					EList<Shape> oTargets = con.getOriginalTarget();
 					Shape target = oTargets.remove(oTargets.size() - 1);
 
-					ShapeImpl shapeImpl = getViewFromModel(
+					NodeImpl shapeImpl = getViewFromModel(
 							this.compartmentToSupport, target);
 					edgeToRestore.setTarget(shapeImpl);
 
