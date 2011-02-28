@@ -68,6 +68,8 @@ public class OutlineTargetConnectionEditPart extends TreeEditPart {
 	protected String getText() {
 		NodeImpl sourceNode = (NodeImpl) ((EdgeImpl) this.getModel())
 				.getSource();
-		return ": " + ((Shape) sourceNode.getElement()).getName();
+		if(sourceNode != null)
+			return ": " + ((Shape) sourceNode.getElement()).getName();
+		return super.getText();
 	}
 }

@@ -37,12 +37,16 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.internal.editparts.NoteAttachmentEditPart;
+import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
 import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.swt.graphics.Color;
@@ -122,7 +126,7 @@ public class CompartmentEditPartSupporter {
 				con.setTarget((Shape) ((ShapeImpl) this.editPartOfCompartment
 						.getModel()).getElement());
 			}
-			i.getFigure().setForegroundColor(TMP_CONNECTION_COLOR);
+//			i.getFigure().setForegroundColor(TMP_CONNECTION_COLOR);
 		}
 	}
 
@@ -177,7 +181,7 @@ public class CompartmentEditPartSupporter {
 				if (con.getOriginalSource().isEmpty()
 						&& con.getOriginalTarget().isEmpty()) {
 					con.setTemp(false);
-					i.getFigure().setForegroundColor(CONNECTION_COLOR);
+//					i.getFigure().setForegroundColor(CONNECTION_COLOR);
 				}
 
 			}
@@ -213,7 +217,8 @@ public class CompartmentEditPartSupporter {
 				connections.add(c);
 			}
 		}
-		return connections;
+		
+		return filterConnectionsFromConnectorImpl(connections);
 
 	}
 
@@ -225,19 +230,26 @@ public class CompartmentEditPartSupporter {
 		return connections;
 
 	}
+	
+	
+	/**
+	 * Filter connections for EdgeImpl: delete ConnectorImpl
+	 * 
+	 * @param connections
+	 *            connections to filter
+	 * @return filtered connections
+	 */
+	private Set<ConnectionEditPart> filterConnectionsFromConnectorImpl(
+			Set<ConnectionEditPart> connections) {
+		Set<ConnectionEditPart> out = new HashSet<ConnectionEditPart>();
+		for (ConnectionEditPart i : connections) {
+			if(!(i.getModel() instanceof ConnectorImpl)) {
+				out.add(i);
+			}
+		}
+		return out;
+	}
 
-	// public void cleanModelOfAConnection(EdgeImpl edge, Notification event) {
-	// Connection con = (Connection)edge.getElement();
-	//
-	// if()
-	//
-	// con.setOriginalTarget(null);
-	// if(con.getOriginalSource() == null && con.getOriginalTarget() == null){
-	// con.setTemp(false);
-	// i.getFigure().setForegroundColor(CONNECTION_COLOR);
-	// }
-	//
-	//
-	// }
+	
 
 }
