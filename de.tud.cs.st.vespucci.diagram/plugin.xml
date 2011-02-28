@@ -76,7 +76,7 @@
    <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
       <?gmfgen generated="true"?>
   	  <wizard
-           category="org.eclipse.ui.Examples/de.tud.cs.st.vespucci.diagram.category1"
+           category="org.eclipse.ui.Basic/de.tud.cs.st.vespucci.diagram.category1category1"
            class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
            icon="icons/obj16/Vespucci_modelDiagramFile.gif"
            id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID"
@@ -86,7 +86,7 @@
      <category
            id="de.tud.cs.st.vespucci.diagram.category1"
            name="Vespucci"
-           parentCategory="org.eclipse.ui.Examples">
+           parentCategory="org.eclipse.ui.Basic.Examples">
      </category>
    </extension>
 

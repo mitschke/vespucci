@@ -195,6 +195,9 @@ public class Resolver {
 			} catch (JavaModelException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e) {
+				// TODO Hack!!! This hack is implemented, to avoid in each type the check if the underlying resource is null. This approach is done because files of a jar files should be (in future) droppable!
+				return false;
 			}
 
 			if (akt == false)
@@ -340,14 +343,13 @@ public class Resolver {
 		} else if (o instanceof IType) {
 			IType type = (IType) o;
 			return Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),
-					"");
+					"") + "." + type.getElementName();
 		} else if (o instanceof IField) {
 			IField field = (IField) o;
-			return Resolver.getFQPackageNameFromIxxx(field, "") + "."
-					+ field.getElementName();
+			return Resolver.getFQPackageNameFromIxxx(field, "") + "." + field.getParent().getElementName() + "." + field.getElementName();
 		} else if (o instanceof IMethod) {
 			IMethod method = (IMethod) o;
-			return Resolver.getFQPackageNameFromIxxx(method, "") + "."
+			return Resolver.getFQPackageNameFromIxxx(method, "") + "." + method.getParent().getElementName() + "."
 					+ method.getElementName();
 		} else if (o instanceof ISourceAttribute) {
 			return ((ISourceAttribute) o).getSourceFileName().toString();

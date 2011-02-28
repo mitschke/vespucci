@@ -124,7 +124,7 @@ public class DropVespucciDiagramTargetListener extends
 		} else if (getTargetEditPart() instanceof EnsembleEditPart
 				|| getTargetEditPart() instanceof Ensemble2EditPart
 				|| getTargetEditPart() instanceof ShapesDiagramEditPart) {
-			return StaticToolsForDnD.isProcessable(getTargetRequest()
+			return QueryBuilder.isProcessable(getTargetRequest()
 					.getExtendedData());
 		}
 		return false;
