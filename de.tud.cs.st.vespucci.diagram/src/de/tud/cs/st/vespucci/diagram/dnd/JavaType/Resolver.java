@@ -42,6 +42,7 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClassFile;
@@ -59,6 +60,8 @@ import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
+
+// TODO auskommentierte sachen entfernen
 
 /**
  * static class to get all information about the units supports e.g. type
@@ -224,8 +227,21 @@ public class Resolver {
 			return ((IField) o).getDeclaringType().getFullyQualifiedName();
 		else if (o instanceof ICompilationUnit) {
 			classname = ((ICompilationUnit) o).getElementName();
+			/*
+			try {
+				IType[] fff = ((ICompilationUnit) o).getTypes();
+				IType ddd = ((ICompilationUnit) o).getType("InnerEvenIterator");
+				//System.out.println(ddd.getFullyQualifiedName());
+			} catch (JavaModelException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println();
+			//asd = ((ICompilationUnit) o).get;
+			System.out.println(classname);
+			*/
 		} else if (o instanceof IType) {
-			classname = ((IType) o).getParent().getElementName();
+			classname = ((IType) o).getFullyQualifiedName();
 		}
 
 		if (classname.toLowerCase().endsWith(JAVA))
@@ -278,6 +294,7 @@ public class Resolver {
 		for (String type : method.getParameterTypes()) {
 			parameters.add(typeToFQN(type, method.getDeclaringType()));
 		}
+		
 		return parameters;
 	}
 
@@ -342,15 +359,20 @@ public class Resolver {
 			return Resolver.getFQClassnamefromIxxx(cU, "");
 		} else if (o instanceof IType) {
 			IType type = (IType) o;
-			return Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),
-					"") + "." + type.getElementName();
+			return type.getFullyQualifiedName();
+			//return Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),"") + "." + type.getElementName();
 		} else if (o instanceof IField) {
+			/*
 			IField field = (IField) o;
+			IJavaElement fff = field.getParent();
 			return Resolver.getFQPackageNameFromIxxx(field, "") + "." + field.getParent().getElementName() + "." + field.getElementName();
+			*/
+			return Resolver.getFQClassnamefromIxxx(o, "") + "." + ((IField)o).getElementName();
 		} else if (o instanceof IMethod) {
-			IMethod method = (IMethod) o;
-			return Resolver.getFQPackageNameFromIxxx(method, "") + "." + method.getParent().getElementName() + "."
-					+ method.getElementName();
+			//IMethod method = (IMethod) o;
+			return Resolver.getFQClassnamefromIxxx(o, "") + "." + ((IMethod)o).getElementName();
+			//return Resolver.getFQPackageNameFromIxxx(method, "") + "." + method.getParent().getElementName() + "."
+			//		+ method.getElementName();
 		} else if (o instanceof ISourceAttribute) {
 			return ((ISourceAttribute) o).getSourceFileName().toString();
 		} else if (o instanceof IClassFile) {

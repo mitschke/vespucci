@@ -34,6 +34,7 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,8 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
+
+//TODO auskommentierte sachen entfernen
 
 /**
  * A Class which provides static tools for supporting DnD
@@ -162,10 +165,15 @@ public class QueryBuilder {
 				String returntype = Resolver.getReturnTypeFromIxxx(method, key);
 
 				sbPara.append("[");
-				for (String s : para) {
-					sbPara.append("'" + s + "'");
+				Iterator<String> it = para.iterator();
+				while (it.hasNext()){
+					String s = it.next();
+					if (it.hasNext())
+						sbPara.append("'" + s + "'" + ",");
+					else
+						sbPara.append("'" + s + "'");
 				}
-				sbPara.replace(sbPara.length(), sbPara.length(), "]");
+				sbPara.append("]");
 
 				key = METHOD + "('" + packagename + "','" + classname + "','"
 						+ methodname + "','" + returntype + "',"
@@ -184,10 +192,10 @@ public class QueryBuilder {
 				// FIELD
 				IField field = (IField) o;
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
-				String classname = field.getParent().getElementName();
+				String classname = Resolver.getFQClassnamefromIxxx(o, key);
 				String fieldname = field.getElementName();
 				String type = Resolver.getFQFieldTypeName(field);
-
+				
 				key = FIELD + "('" + packagename + "','" + classname + "','"
 						+ fieldname + "','" + type + "')";
 				list.add(key);
