@@ -60,6 +60,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
+// TODO auskommentierte sachen entfernen
+
 /**
  * static class to get all information about the units supports e.g. type
  * conversion from java binary type to FQN or resolving all packages from a
@@ -75,6 +77,8 @@ public class Resolver {
 	private static final String JAVA = ".java";
 
 	private static final String JAR_ENDING = ".jar";
+
+	private static final String DEFAULT_PACKAGE = "Default Package";
 
 	public static Resolver INSTANCE;
 
@@ -113,7 +117,11 @@ public class Resolver {
 	public static String getFQPackageNameFromIxxx(Object o, String key) {
 		// package...
 		if (o instanceof IPackageFragment) {
-			return ((IPackageFragment) o).getElementName();
+			IPackageFragment pkg = (IPackageFragment) o;
+			if (pkg.isDefaultPackage())
+				return "";
+			else
+				return ((IPackageFragment) o).getElementName();
 		} else {
 			// class, method, field, type
 			IPackageDeclaration[] declarations;
@@ -140,7 +148,7 @@ public class Resolver {
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
 		}
-		return null;
+		return "";
 	}
 
 	/**
@@ -196,7 +204,10 @@ public class Resolver {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullPointerException e) {
-				// TODO Hack!!! This hack is implemented, to avoid in each type the check if the underlying resource is null. This approach is done because files of a jar files should be (in future) droppable!
+				// TODO Hack!!! This hack is implemented, to avoid in each type
+				// the check if the underlying resource is null. This approach
+				// is done because files of a jar files should be (in future)
+				// droppable!
 				return false;
 			}
 
@@ -225,7 +236,7 @@ public class Resolver {
 		else if (o instanceof ICompilationUnit) {
 			classname = ((ICompilationUnit) o).getElementName();
 		} else if (o instanceof IType) {
-			classname = ((IType) o).getParent().getElementName();
+			return ((IType) o).getFullyQualifiedName();
 		}
 
 		if (classname.toLowerCase().endsWith(JAVA))
@@ -234,7 +245,11 @@ public class Resolver {
 		if (classname.equals(""))
 			return "";
 		else {
-			return getFQPackageNameFromIxxx(o, key) + "." + classname;
+			String FQNpkg = getFQPackageNameFromIxxx(o, key);
+			if (FQNpkg.equals(""))
+				return classname;
+			else
+				return FQNpkg + "." + classname;
 		}
 	}
 
@@ -278,6 +293,7 @@ public class Resolver {
 		for (String type : method.getParameterTypes()) {
 			parameters.add(typeToFQN(type, method.getDeclaringType()));
 		}
+
 		return parameters;
 	}
 
@@ -334,7 +350,11 @@ public class Resolver {
 		if (o instanceof IProject) {
 			return ((IProject) o).getName();
 		} else if (o instanceof IPackageFragment) {
-			return ((IPackageFragment) o).getElementName();
+			IPackageFragment pkg = (IPackageFragment) o;
+			if (pkg.isDefaultPackage())
+				return DEFAULT_PACKAGE;
+			else
+				return ((IPackageFragment) o).getElementName();
 		} else if (o instanceof IPackageFragmentRoot) {
 			return ((IPackageFragmentRoot) o).getElementName();
 		} else if (o instanceof ICompilationUnit) {
@@ -342,15 +362,26 @@ public class Resolver {
 			return Resolver.getFQClassnamefromIxxx(cU, "");
 		} else if (o instanceof IType) {
 			IType type = (IType) o;
-			return Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),
-					"") + "." + type.getElementName();
+			return type.getFullyQualifiedName();
+			// return
+			// Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),"") +
+			// "." + type.getElementName();
 		} else if (o instanceof IField) {
-			IField field = (IField) o;
-			return Resolver.getFQPackageNameFromIxxx(field, "") + "." + field.getParent().getElementName() + "." + field.getElementName();
+			/*
+			 * IField field = (IField) o; IJavaElement fff = field.getParent();
+			 * return Resolver.getFQPackageNameFromIxxx(field, "") + "." +
+			 * field.getParent().getElementName() + "." +
+			 * field.getElementName();
+			 */
+			return Resolver.getFQClassnamefromIxxx(o, "") + "."
+					+ ((IField) o).getElementName();
 		} else if (o instanceof IMethod) {
-			IMethod method = (IMethod) o;
-			return Resolver.getFQPackageNameFromIxxx(method, "") + "." + method.getParent().getElementName() + "."
-					+ method.getElementName();
+			// IMethod method = (IMethod) o;
+			return Resolver.getFQClassnamefromIxxx(o, "") + "."
+					+ ((IMethod) o).getElementName();
+			// return Resolver.getFQPackageNameFromIxxx(method, "") + "." +
+			// method.getParent().getElementName() + "."
+			// + method.getElementName();
 		} else if (o instanceof ISourceAttribute) {
 			return ((ISourceAttribute) o).getSourceFileName().toString();
 		} else if (o instanceof IClassFile) {
@@ -381,6 +412,10 @@ public class Resolver {
 				String packageName = aPackage.getElementName();
 				String p = getFQPackageNameFromIxxx(aPackage, packageName)
 						.trim();
+
+				IPackageFragment aPKG = (IPackageFragment) aPackage;
+				if (aPKG.isDefaultPackage())
+					packages.add("");
 				if (p.length() > 0)
 					packages.add(p);
 			}
