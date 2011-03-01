@@ -74,20 +74,23 @@
    </extension>
 
    <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
-      <?gmfgen generated="false"?>
+   		<?gmfgen generated="false"?>
   	  <wizard
-           category="org.eclipse.ui.Basic/de.tud.cs.st.vespucci.diagram.category1category1"
+           canFinishEarly="false"
+           category="de.tud.cs.st.vespucci.diagram.category1"
            class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
            icon="icons/obj16/Vespucci_modelDiagramFile.gif"
            id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID"
-           name="%newWizardName">
-  	  	 <description>%newWizardDesc</description>  
+           name="Software Architecture Constraints Diagram">
+  	  	 <description>Software architecture constraints can be created between logical grouped objects, named ensemble.</description>  
       </wizard>
      <category
            id="de.tud.cs.st.vespucci.diagram.category1"
-           name="Vespucci"
-           parentCategory="org.eclipse.ui.Basic">
+           name="Software Architecture">
      </category>
+     <primaryWizard
+           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
+     </primaryWizard>
    </extension>
 
    <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
