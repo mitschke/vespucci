@@ -253,7 +253,7 @@ public class CompartmentEditPartSupporter {
 		Set<ConnectionEditPart> connections = new HashSet<ConnectionEditPart>();
 		connections.addAll(this.editPartOfCompartment.getSourceConnections());
 		connections.addAll(this.editPartOfCompartment.getTargetConnections());
-		return connections;
+		return filterConnectionsFromConnectorImpl(connections);
 
 	}
 
