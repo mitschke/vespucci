@@ -150,11 +150,11 @@ public class QueryBuilder {
 				// CLASS
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
 				String classname = Resolver.getFQClassnamefromIxxx(o, key);
-				if(packagename.equals(""))
+				if (packagename.equals(""))
 					key = CLASS_WITH_MEMBERS + "('','" + classname + "')";
 				else
 					key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
-						+ classname + "')";
+							+ classname + "')";
 				list.add(key);
 			} else if (o instanceof IMethod) {
 				// METHOD
@@ -169,7 +169,7 @@ public class QueryBuilder {
 
 				sbPara.append("[");
 				Iterator<String> it = para.iterator();
-				while (it.hasNext()){
+				while (it.hasNext()) {
 					String s = it.next();
 					if (it.hasNext())
 						sbPara.append("'" + s + "'" + ",");
@@ -198,7 +198,7 @@ public class QueryBuilder {
 				String classname = Resolver.getFQClassnamefromIxxx(o, key);
 				String fieldname = field.getElementName();
 				String type = Resolver.getFQFieldTypeName(field);
-				
+
 				key = FIELD + "('" + packagename + "','" + classname + "','"
 						+ fieldname + "','" + type + "')";
 				list.add(key);

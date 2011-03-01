@@ -42,7 +42,6 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClassFile;
@@ -119,7 +118,7 @@ public class Resolver {
 		// package...
 		if (o instanceof IPackageFragment) {
 			IPackageFragment pkg = (IPackageFragment) o;
-			if(pkg.isDefaultPackage())
+			if (pkg.isDefaultPackage())
 				return "";
 			else
 				return ((IPackageFragment) o).getElementName();
@@ -205,7 +204,10 @@ public class Resolver {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullPointerException e) {
-				// TODO Hack!!! This hack is implemented, to avoid in each type the check if the underlying resource is null. This approach is done because files of a jar files should be (in future) droppable!
+				// TODO Hack!!! This hack is implemented, to avoid in each type
+				// the check if the underlying resource is null. This approach
+				// is done because files of a jar files should be (in future)
+				// droppable!
 				return false;
 			}
 
@@ -236,7 +238,7 @@ public class Resolver {
 		} else if (o instanceof IType) {
 			return ((IType) o).getFullyQualifiedName();
 		}
-		
+
 		if (classname.toLowerCase().endsWith(JAVA))
 			classname = classname.substring(0,
 					classname.length() - JAVA.length());
@@ -244,7 +246,7 @@ public class Resolver {
 			return "";
 		else {
 			String FQNpkg = getFQPackageNameFromIxxx(o, key);
-			if(FQNpkg.equals(""))
+			if (FQNpkg.equals(""))
 				return classname;
 			else
 				return FQNpkg + "." + classname;
@@ -291,7 +293,7 @@ public class Resolver {
 		for (String type : method.getParameterTypes()) {
 			parameters.add(typeToFQN(type, method.getDeclaringType()));
 		}
-		
+
 		return parameters;
 	}
 
@@ -349,7 +351,7 @@ public class Resolver {
 			return ((IProject) o).getName();
 		} else if (o instanceof IPackageFragment) {
 			IPackageFragment pkg = (IPackageFragment) o;
-			if(pkg.isDefaultPackage())
+			if (pkg.isDefaultPackage())
 				return DEFAULT_PACKAGE;
 			else
 				return ((IPackageFragment) o).getElementName();
@@ -361,19 +363,25 @@ public class Resolver {
 		} else if (o instanceof IType) {
 			IType type = (IType) o;
 			return type.getFullyQualifiedName();
-			//return Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),"") + "." + type.getElementName();
+			// return
+			// Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),"") +
+			// "." + type.getElementName();
 		} else if (o instanceof IField) {
 			/*
-			IField field = (IField) o;
-			IJavaElement fff = field.getParent();
-			return Resolver.getFQPackageNameFromIxxx(field, "") + "." + field.getParent().getElementName() + "." + field.getElementName();
-			*/
-			return Resolver.getFQClassnamefromIxxx(o, "") + "." + ((IField)o).getElementName();
+			 * IField field = (IField) o; IJavaElement fff = field.getParent();
+			 * return Resolver.getFQPackageNameFromIxxx(field, "") + "." +
+			 * field.getParent().getElementName() + "." +
+			 * field.getElementName();
+			 */
+			return Resolver.getFQClassnamefromIxxx(o, "") + "."
+					+ ((IField) o).getElementName();
 		} else if (o instanceof IMethod) {
-			//IMethod method = (IMethod) o;
-			return Resolver.getFQClassnamefromIxxx(o, "") + "." + ((IMethod)o).getElementName();
-			//return Resolver.getFQPackageNameFromIxxx(method, "") + "." + method.getParent().getElementName() + "."
-			//		+ method.getElementName();
+			// IMethod method = (IMethod) o;
+			return Resolver.getFQClassnamefromIxxx(o, "") + "."
+					+ ((IMethod) o).getElementName();
+			// return Resolver.getFQPackageNameFromIxxx(method, "") + "." +
+			// method.getParent().getElementName() + "."
+			// + method.getElementName();
 		} else if (o instanceof ISourceAttribute) {
 			return ((ISourceAttribute) o).getSourceFileName().toString();
 		} else if (o instanceof IClassFile) {
@@ -404,6 +412,10 @@ public class Resolver {
 				String packageName = aPackage.getElementName();
 				String p = getFQPackageNameFromIxxx(aPackage, packageName)
 						.trim();
+
+				IPackageFragment aPKG = (IPackageFragment) aPackage;
+				if (aPKG.isDefaultPackage())
+					packages.add("");
 				if (p.length() > 0)
 					packages.add(p);
 			}
