@@ -79,7 +79,7 @@ public class Resolver {
 
 	private static final String JAR_ENDING = ".jar";
 
-	private static final String DEFAULT_PACKAGE = "DEFAULTPACKAGE";
+	private static final String DEFAULT_PACKAGE = "Default Package";
 
 	public static Resolver INSTANCE;
 
@@ -120,7 +120,7 @@ public class Resolver {
 		if (o instanceof IPackageFragment) {
 			IPackageFragment pkg = (IPackageFragment) o;
 			if(pkg.isDefaultPackage())
-				return DEFAULT_PACKAGE;
+				return "";
 			else
 				return ((IPackageFragment) o).getElementName();
 		} else {
@@ -149,7 +149,7 @@ public class Resolver {
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
 		}
-		return DEFAULT_PACKAGE;
+		return "";
 	}
 
 	/**
@@ -236,14 +236,18 @@ public class Resolver {
 		} else if (o instanceof IType) {
 			return ((IType) o).getFullyQualifiedName();
 		}
-
+		
 		if (classname.toLowerCase().endsWith(JAVA))
 			classname = classname.substring(0,
 					classname.length() - JAVA.length());
 		if (classname.equals(""))
 			return "";
 		else {
-			return getFQPackageNameFromIxxx(o, key) + "." + classname;
+			String FQNpkg = getFQPackageNameFromIxxx(o, key);
+			if(FQNpkg.equals(""))
+				return classname;
+			else
+				return FQNpkg + "." + classname;
 		}
 	}
 

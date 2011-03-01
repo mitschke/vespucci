@@ -150,7 +150,10 @@ public class QueryBuilder {
 				// CLASS
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
 				String classname = Resolver.getFQClassnamefromIxxx(o, key);
-				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
+				if(packagename.equals(""))
+					key = CLASS_WITH_MEMBERS + "('','" + classname + "')";
+				else
+					key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
 						+ classname + "')";
 				list.add(key);
 			} else if (o instanceof IMethod) {
