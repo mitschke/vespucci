@@ -97,15 +97,12 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 	public void deactivate() {
 		if (!isActive())
 			return;
-
 		Iterator<EObject> itr = objectListenningTo.iterator();
 		while (itr.hasNext()) {
 			EObject eObj = itr.next();
 			getDiagramEventBroker().removeNotificationListener(eObj, this);
-			// itr.remove();
+			itr.remove();
 		}
-		objectListenningTo = null;
-
 		super.deactivate();
 	}
 
@@ -160,6 +157,7 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 	@Override
 	protected void handleNotificationEvent(Notification event) {
 		refresh();
+		//TODO: abstraction
 	}
 
 }

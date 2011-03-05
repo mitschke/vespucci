@@ -34,14 +34,17 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
-import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gmf.runtime.diagram.core.util.ViewUtil;
 import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * OutlineEditPart for TargetConnections(incoming connections)
@@ -49,26 +52,56 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
  * @author a_vovk
  * 
  */
-public class OutlineTargetConnectionEditPart extends TreeEditPart {
+public abstract class OutlineTargetConnectionEditPart extends
+		OutlineConnectionEditPart {
 
-	private static final String IMAGE = "icons/outline/incoming.png";
+	
+	private Set<EObject> objectListenningTo = new HashSet<EObject>();
 
-	public OutlineTargetConnectionEditPart(Object model) {
-		super(model);
+	@Override
+	public void activate() {
+		if (isActive())
+			return;
+		super.activate();
+		EdgeImpl edge = (EdgeImpl) getModel();
+		// update Compartments
+		org.eclipse.gmf.runtime.notation.Shape sourceShape = (org.eclipse.gmf.runtime.notation.Shape) edge.getSource();
+
+		getDiagramEventBroker().addNotificationListener(
+				ViewUtil.resolveSemanticElement(sourceShape), this);
+
+		getDiagramEventBroker().addNotificationListener(sourceShape, this);
+		objectListenningTo.add(sourceShape);
+
+//		org.eclipse.gmf.runtime.notation.Shape targetShape = (org.eclipse.gmf.runtime.notation.Shape) edge.getTarget();
+//		getDiagramEventBroker().addNotificationListener(
+//				ViewUtil.resolveSemanticElement(targetShape), this);
+//		getDiagramEventBroker().addNotificationListener(targetShape, this);
+//		objectListenningTo.add(targetShape);
 	}
 
 	@Override
-	protected Image getImage() {
-		ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin
-				.getBundledImageDescriptor(IMAGE);
-		return imageDescriptor.createImage();
+	public void deactivate() {
+		if (!isActive())
+			return;
+		Iterator<EObject> itr = objectListenningTo.iterator();
+		while (itr.hasNext()) {
+			EObject eObj = itr.next();
+			getDiagramEventBroker().removeNotificationListener(eObj, this);
+			itr.remove();
+		}
+		super.deactivate();
+	}
+	
+	public OutlineTargetConnectionEditPart(Object model) {
+		super(model);
 	}
 
 	@Override
 	protected String getText() {
 		NodeImpl sourceNode = (NodeImpl) ((EdgeImpl) this.getModel())
 				.getSource();
-		if(sourceNode != null)
+		if (sourceNode != null)
 			return ": " + ((Shape) sourceNode.getElement()).getName();
 		return super.getText();
 	}
