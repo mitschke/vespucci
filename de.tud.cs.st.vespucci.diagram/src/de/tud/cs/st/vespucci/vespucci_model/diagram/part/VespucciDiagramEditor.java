@@ -105,10 +105,22 @@ import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineDummyEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEnsembleEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineExpectedSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineExpectedTargetConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineInAndOutSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineInAndOutTargetConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineIncomingSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineIncomingTargetConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineNotAllowedSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineNotAllowedTargetConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingTargetConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineRootEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineTargetConnectionEditPart;
@@ -255,11 +267,42 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 						return new OutlineDummyEditPart(model);
 					} else if (element instanceof Connection) {
 						Connection conn = (Connection) element;
-						NodeImpl shape = (NodeImpl)context.getModel();
+						NodeImpl shape = (NodeImpl) context.getModel();
 						if (shape.getElement() == conn.getSource()) {
-							return new OutlineSourceConnectionEditPart(model);
+							if (conn instanceof Incoming) {
+								return new OutlineIncomingSourceConnectionEditPart(
+										model);
+							} else if (conn instanceof Outgoing) {
+								return new OutlineOutgoingSourceConnectionEditPart(
+										model);
+							} else if (conn instanceof Expected) {
+								return new OutlineExpectedSourceConnectionEditPart(
+										model);
+							} else if (conn instanceof InAndOut) {
+								return new OutlineInAndOutSourceConnectionEditPart(
+										model);
+							} else {
+								return new OutlineNotAllowedSourceConnectionEditPart(
+										model);
+							}
+
 						} else {
-							return new OutlineTargetConnectionEditPart(model);
+							if (conn instanceof Incoming) {
+								return new OutlineIncomingTargetConnectionEditPart(
+										model);
+							} else if (conn instanceof Outgoing) {
+								return new OutlineOutgoingTargetConnectionEditPart(
+										model);
+							} else if (conn instanceof Expected) {
+								return new OutlineExpectedTargetConnectionEditPart(
+										model);
+							} else if (conn instanceof InAndOut) {
+								return new OutlineInAndOutTargetConnectionEditPart(
+										model);
+							} else {
+								return new OutlineNotAllowedTargetConnectionEditPart(
+										model);
+							}
 						}
 
 					}
