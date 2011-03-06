@@ -108,9 +108,9 @@
          </action>
       </objectContribution>
    </extension>
-	
+	 <?gmfgen generated="false"?>
    <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
-      <?gmfgen generated="true"?>
+      <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramGlobalActionHandlerProvider"
          id="VespucciPresentation">
@@ -124,6 +124,7 @@
             </ElementType>
          </ViewId>
       </GlobalActionHandlerProvider>
+       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.ide.providers.DiagramIDEGlobalActionHandlerProvider"
          id="VespucciPresentationIDE">
@@ -134,17 +135,14 @@
             </ElementType>
          </ViewId>
       </GlobalActionHandlerProvider>
+       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
             class="org.eclipse.gmf.runtime.diagram.ui.render.providers.DiagramUIRenderGlobalActionHandlerProvider"
             id="VespucciRender">
+             <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
-         <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
-            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
-               <GlobalActionId actionId="cut"/>
-               <GlobalActionId actionId="copy"/>
-               <GlobalActionId actionId="paste"/>
-            </ElementType>
-         </ViewId>
+          <?gmfgen generated="false"?>
+        
       </GlobalActionHandlerProvider>
    </extension>
 
@@ -704,6 +702,7 @@
    </extension>
 
    <!-- gmf generator persistent region begin -->  
+
       <extension point="org.eclipse.ui.commands" id="menu-commands"> 
           <command
             defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
