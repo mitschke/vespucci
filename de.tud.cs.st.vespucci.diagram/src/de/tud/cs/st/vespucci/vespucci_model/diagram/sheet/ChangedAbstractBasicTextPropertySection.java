@@ -59,7 +59,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	}
 	Listener resizeLinstener =  new Listener () {
 	    public void handleEvent (Event e) {
-		      updateHeight();
+		     updateHeight();
 		    }
 	    };
 	
@@ -104,12 +104,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 				case SWT.KeyDown :
 					textModified = true;
 					if (event.character == SWT.CR){
-
-						updateHeight();
 						getPropertyValueString();
-					}
-					if(event.character == SWT.BS || event.character == SWT.DEL){
-						updateHeight();
 					}
 					break;
 				case SWT.FocusOut :
@@ -167,6 +162,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			scrolledParent = scrolledParent.getParent();
 			
 		}
+		
 		scrolledParent.addListener(SWT.Resize, resizeLinstener );
 		startTextWidgetEventListener();
 	}
@@ -226,8 +222,11 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 * calculates the new size of the widget and updates it
 	 */
 	private void updateHeight(){
-		if(getTextWidget() != null && !getTextWidget().isDisposed()){
-		
+		if(getTextWidget() != null && !getTextWidget().isDisposed() && getTextWidget().isVisible()){
+			getTextWidget().setVisible(false);
+			scrolledParent.setVisible(false);
+			//getTextWidget().getVerticalBar().setVisible(false);
+			//getTextWidget().getHorizontalBar().setVisible(false);
 			FormData data = new FormData();
 			data.left = new FormAttachment(0, 0);
 			data.right = new FormAttachment(100, 0);
@@ -252,17 +251,21 @@ public abstract class ChangedAbstractBasicTextPropertySection
 					break;
 				com.setSize(getWidth(),getHeight() + HEIGHTS_SCROLLLINE);
 				com = com.getParent();
-				com.layout();
+				
 				
 			}
+			com.layout();
+			//scrolledParent.getHorizontalBar().setVisible(false);
+			//scrolledParent.getVerticalBar().setVisible(false);
 			com.getParent().getDisplay().update();
 			//getSectionComposite().setSize(getWidth(),getHeight() + HEIGHTS_SCROLLLINE);//p.x, getHeight());
 			//getTextWidget().getParent().getParent().setSize(getWidth(),getHeight() + HEIGHTS_SCROLLLINE);
 			//p = getSectionComposite().getParent().getSize();
 			//getSectionComposite().getParent().setSize(getWidth(),getHeight()+ HEIGHTS_SCROLLLINE);//p.x,getTextWidget().getSize().y+15);//+textWidget.getLineHeight() * textWidget.getLineCount());
-			getSectionComposite().layout();
-			getSectionComposite().getParent().getDisplay().update();
-
+			//getSectionComposite().layout();
+			//getSectionComposite().getParent().getDisplay().update();
+			getTextWidget().setVisible(true);
+			scrolledParent.setVisible(true);
 		}
 	}
 	
@@ -324,6 +327,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
 	public void refresh() {
+		updateHeight();
 		getListener().startNonUserChange();
 		try {
 			executeAsReadAction(new Runnable() {
@@ -342,6 +346,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 	 * Refresh UI body - refresh will surround this with read action block
 	 */
 	protected void refreshUI() {
+		updateHeight();
 		getTextWidget().setText(getPropertyValueString());
 		updateHeight();
 	}
