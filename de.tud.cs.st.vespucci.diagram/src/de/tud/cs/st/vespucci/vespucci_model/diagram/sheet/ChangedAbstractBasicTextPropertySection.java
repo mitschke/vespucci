@@ -257,7 +257,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			com.layout();
 			//scrolledParent.getHorizontalBar().setVisible(false);
 			//scrolledParent.getVerticalBar().setVisible(false);
-			com.getParent().getDisplay().update();
+//			com.getParent().getDisplay().update();
 			//getSectionComposite().setSize(getWidth(),getHeight() + HEIGHTS_SCROLLLINE);//p.x, getHeight());
 			//getTextWidget().getParent().getParent().setSize(getWidth(),getHeight() + HEIGHTS_SCROLLLINE);
 			//p = getSectionComposite().getParent().getSize();
