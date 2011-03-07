@@ -297,7 +297,10 @@ public class DiagramConverter {
         		else
         			ensembleFacts.append("ensemble");
         		
-        		ensembleFacts.append("('" + fileName + "', " + this.getEnsembleDescriptor(ensemble) + ", "+ getEnsembleParameters (ensemble) +", (" + ensemble.getQuery() + "), [" + listSubEnsembles(ensemble.getShapes()) + "]).\n");
+        		// fix: inconsistent newline encodings
+        		String query = ensemble.getQuery().replaceAll("\n", " ");
+        		
+        		ensembleFacts.append("('" + fileName + "', " + this.getEnsembleDescriptor(ensemble) + ", "+ getEnsembleParameters (ensemble) +", (" + query + "), [" + listSubEnsembles(ensemble.getShapes()) + "]).\n");
            		// does children exist
 	        	if ((ensemble.getShapes() != null) && (ensemble.getShapes().size()>0))
 	        		createFacts(ensemble.getShapes(), fileName, ensembleFacts, dependencyFacts);
