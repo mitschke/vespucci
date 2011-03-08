@@ -254,6 +254,52 @@ public class Resolver {
 	}
 
 	/**
+	 * getting the classname
+	 * 
+	 * @param o
+	 * @param key
+	 * @return classname
+	 * @author BenjaminL
+	 */
+	public static String getClassnamefromIxxx(Object o, String key) {
+		// TODO: method is the same as getFQClassnamefromIxxx only the package
+		// name is not resolved - extending getFQClassnamefromIxxx with a
+		// boolean to switch between FQN and N?
+		// little hack: substring FQN without packagename
+
+		// class, method, field, type
+		String classname = "";
+		String pkg = getFQPackageNameFromIxxx(o, key);
+
+		if (o instanceof IMethod)
+			classname = ((IMethod) o).getDeclaringType()
+					.getFullyQualifiedName();
+		else if (o instanceof IField)
+			classname = ((IField) o).getDeclaringType().getFullyQualifiedName();
+		else if (o instanceof ICompilationUnit) {
+			classname = ((ICompilationUnit) o).getElementName();
+		} else if (o instanceof IType) {
+			classname = ((IType) o).getFullyQualifiedName();
+		}
+
+		// classname without package name
+		if (classname.startsWith(pkg))
+			classname = classname.substring(pkg.length());
+		if (classname.startsWith("."))
+			classname = classname.substring(1);
+
+		System.out.println(classname);
+		if (classname.toLowerCase().endsWith(JAVA))
+			classname = classname.substring(0,
+					classname.length() - JAVA.length());
+		if (classname.equals(""))
+			return "";
+		else {
+			return classname;
+		}
+	}
+
+	/**
 	 * returns the returntype of the given IMethod (in this moment IMethod is
 	 * the only one)
 	 * 
