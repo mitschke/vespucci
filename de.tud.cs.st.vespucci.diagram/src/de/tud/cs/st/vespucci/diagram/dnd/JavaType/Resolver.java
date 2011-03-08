@@ -288,7 +288,6 @@ public class Resolver {
 		if (classname.startsWith("."))
 			classname = classname.substring(1);
 
-		System.out.println(classname);
 		if (classname.toLowerCase().endsWith(JAVA))
 			classname = classname.substring(0,
 					classname.length() - JAVA.length());
