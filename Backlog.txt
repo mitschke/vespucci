@@ -1,0 +1,17 @@
+- Improving the code base
+
+
+- adding/checking how to achieve a long-term support
+
+- Display errors not only in the Problems View, but also in the diagram
+- Better support for adding comments
+- Improving the query editor (syntax highlighting,..)
+- Refactoring support; i.e., if a rename refactoring is made, the corresponding queries and ensemble names are automatically updated
+- Checking / analyzing architecture specifications
+
+- Library for architectural templates
+- Central repository for architectural templates
+- Tutorials etc. 
+
+- Automatic derivation of an initial architecture (architecture reengineering)
+
