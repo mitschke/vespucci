@@ -34,80 +34,18 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
-import java.util.Collections;
-import java.util.List;
+public class OutlineNotAllowedSourceConnectionEditPart extends
+		OutlineSourceConnectionEditPart {
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
-import org.eclipse.gmf.runtime.notation.View;
-import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
-import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
+	private static final String IMAGE = "icons/outline/notAllowed_s.gif";
 
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
-
-/**
- * OutlineEditPart for dummy object
- * 
- * @author a_vovk
- * 
- */
-public class OutlineDummyEditPart extends TreeEditPart {
-
-	private static final String ENSEMBLE_IMAGE = "icons/outline/Dummy.gif";
-
-	public OutlineDummyEditPart(Object model) {
+	public OutlineNotAllowedSourceConnectionEditPart(Object model) {
 		super(model);
 	}
 
 	@Override
-	protected Image getImage() {
-		ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin
-				.getBundledImageDescriptor(ENSEMBLE_IMAGE);
-
-		return imageDescriptor.createImage();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected List<?> getModelChildren() {
-		Object model = getModel();
-
-		if (model instanceof NodeImpl) {
-			NodeImpl node = (NodeImpl) getModel();
-			EList<View> out = filterConnectionsFromConnectorImpl(node.getSourceEdges());
-			out.addAll(node.getTargetEdges());
-			return out;
-		}
-
-		return Collections.EMPTY_LIST;
-	}
-
-	/**
-	 * Filter connections for EdgeImpl: delete ConnectorImpl
-	 * 
-	 * @param connections
-	 *            connections to filter
-	 * @return filtered connections
-	 */
-	private EList<View> filterConnectionsFromConnectorImpl(
-			EList<View> connections) {
-		EList<View> out = new BasicEList<View>();
-		for (View i : connections) {
-			if (!(i instanceof ConnectorImpl)) {
-				out.add(i);
-			}
-		}
-		return out;
-	}
-
-	@Override
-	protected void handleNotificationEvent(Notification event) {
-		refresh();
-		//TODO: abstraction
+	protected String getImagePath() {
+		return IMAGE;
 	}
 
 }

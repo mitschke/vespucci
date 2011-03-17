@@ -38,6 +38,7 @@ import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramActionBarContributor;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
@@ -63,7 +64,8 @@ public class VespucciDiagramActionBarContributor extends
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
+	 * @author a_vovk
 	 */
 	public void init(IActionBars bars, IWorkbenchPage page) {
 		super.init(bars, page);
@@ -81,5 +83,10 @@ public class VespucciDiagramActionBarContributor extends
 		IAction validateAction = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.ValidateAction(
 				page);
 		editMenu.appendToGroup("validationGroup", validateAction); //$NON-NLS-1$
+		
+		// remove compartmentMenu
+		IToolBarManager toolBarManager = bars.getToolBarManager();
+		toolBarManager.remove("compartmentMenu");
+         
 	}
 }
