@@ -311,6 +311,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		// refresh Package View

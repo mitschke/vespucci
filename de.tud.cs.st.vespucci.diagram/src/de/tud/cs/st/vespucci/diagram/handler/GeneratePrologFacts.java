@@ -87,6 +87,11 @@ public class GeneratePrologFacts extends AbstractHandler {
 							"Failed to save Prolog file", e);
 					StatusManager.getManager().handle(is, StatusManager.SHOW);
 					StatusManager.getManager().handle(is, StatusManager.LOG);
+				} catch (Exception e) {
+					IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+							"FileNotFoundException", e);
+					StatusManager.getManager().handle(is, StatusManager.SHOW);
+					StatusManager.getManager().handle(is, StatusManager.LOG);
 				}
 				re = true;
 				// Refresh Pageview

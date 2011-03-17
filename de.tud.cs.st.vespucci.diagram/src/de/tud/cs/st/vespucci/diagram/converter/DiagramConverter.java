@@ -141,11 +141,10 @@ public class DiagramConverter {
 	/**
 	 * read the given diagram and create a prolog file. 
 	 * @param fullPathFileName Name and path of the diagram
-	 * @throws FileNotFoundException 
-	 * @throws IOException
 	 * @author Patrick Jahnke
+	 * @throws Exception 
 	 */
-	public void ConvertDiagramToProlog (String path, String fileName) throws FileNotFoundException, IOException
+	public void ConvertDiagramToProlog (String path, String fileName) throws Exception
 	{
 		String fullFileName = path + "/" + fileName;
 		ShapesDiagram diagram = loadDiagramFile(fullFileName);
@@ -174,11 +173,10 @@ public class DiagramConverter {
 	/**
 	 * read the given diagram and create a prolog file. 
 	 * @param fullPathFileName Name and path of the diagram
-	 * @throws FileNotFoundException 
-	 * @throws IOException
 	 * @author Patrick Jahnke, MalteV
+	 * @throws Exception 
 	 */
-	public void ConvertDiagramToProlog (File sadFile) throws FileNotFoundException, IOException
+	public void ConvertDiagramToProlog (File sadFile) throws Exception
 	{
 		this.ConvertDiagramToProlog(sadFile.getParent(), sadFile.getName());
 	}
@@ -245,8 +243,9 @@ public class DiagramConverter {
 	 * @param fileName the filename of the diagram model
 	 * @return a string with the facts
 	 * @author Patrick Jahnke
+	 * @throws Exception 
 	 */
-	private String getFacts(ShapesDiagram diagram, String fileName)
+	private String getFacts(ShapesDiagram diagram, String fileName) throws Exception
 	{
 		StringBuilder strBuilder = new StringBuilder();
 		// insert ensemble Header
@@ -278,8 +277,9 @@ public class DiagramConverter {
 	/**
 	 * Search the diagram recursive and create all facts.
 	 * @author Patrick Jahnke
+	 * @throws Exception 
 	 */
-	private void createFacts(EList<Shape> shapeList, String fileName, StringBuilder ensembleFacts, StringBuilder dependencyFacts)
+	private void createFacts(List<Shape> shapeList, String fileName, StringBuilder ensembleFacts, StringBuilder dependencyFacts) throws Exception
 	{
         for (Shape shape : shapeList) {
         	// create Ensemble facts:
@@ -478,41 +478,66 @@ public class DiagramConverter {
 	 * @param fileName
 	 * @return
 	 * @author Patrick Jahnke
+	 * @throws Exception 
 	 */
-	private String createDependencyFact(Connection connection, String fileName)
+	private String createDependencyFact(Connection connection, String fileName) throws Exception
 	{
+		Shape source = null;
+		Shape target = null;
+
+		// Get the original source (and not the red line source)
+		if ((connection.getOriginalSource()==null)
+				|| (connection.getOriginalSource().size()==0))
+			source = connection.getSource();
+		else if ((connection.getOriginalSource()!=null)
+				&& (connection.getOriginalSource().size()==1))
+			source = connection.getOriginalSource().get(0);
+		else
+			throw new Exception ("Too many original sources in connection available. Please check the the original sources of connection: \""+connection.getName()+"\"");
+
+		// Get the original target (and not the red line target)
+		if ((connection.getOriginalTarget()==null)
+				|| (connection.getOriginalTarget().size()==0))
+			source = connection.getTarget();
+		else if ((connection.getOriginalTarget()!=null)
+				&& (connection.getOriginalTarget().size()==1))
+			source = connection.getOriginalTarget().get(0);
+		else
+			throw new Exception ("Too many original tagets in connection available. Please check the the original targets of connection: \""+connection.getName()+"\"");
+
+		
 		StringBuilder transactionSB = new StringBuilder();
 
 		if (connection instanceof Outgoing)
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof Incoming)
 			transactionSB.append("incoming"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof Expected)
 			transactionSB.append("expected"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof NotAllowed)
 			transactionSB.append("not_allowed"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof InAndOut)
 		{
 			transactionSB.append("incoming"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 
 		}
 		mDependencyCounter++;
