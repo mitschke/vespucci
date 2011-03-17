@@ -48,8 +48,6 @@ import org.eclipse.jdt.core.IType;
 
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
-//TODO auskommentierte sachen entfernen
-
 /**
  * A Class which provides static tools for supporting DnD
  * 
@@ -149,15 +147,18 @@ public class QueryBuilder {
 			} else if (o instanceof ICompilationUnit) {
 				// CLASS
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
-				String classname = Resolver.getFQClassnamefromIxxx(o, key);
-				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
-						+ classname + "')";
+				String classname = Resolver.getClassnamefromIxxx(o, key);
+				if (packagename.equals(""))
+					key = CLASS_WITH_MEMBERS + "('','" + classname + "')";
+				else
+					key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
+							+ classname + "')";
 				list.add(key);
 			} else if (o instanceof IMethod) {
 				// METHOD
 				IMethod method = (IMethod) o;
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
-				String classname = Resolver.getFQClassnamefromIxxx(o, key);
+				String classname = Resolver.getClassnamefromIxxx(o, key);
 				String methodname = Resolver.getMethodnameFromMethod(method);
 				List<String> para = Resolver
 						.getParameterTypesFromMethod(method);
@@ -166,7 +167,7 @@ public class QueryBuilder {
 
 				sbPara.append("[");
 				Iterator<String> it = para.iterator();
-				while (it.hasNext()){
+				while (it.hasNext()) {
 					String s = it.next();
 					if (it.hasNext())
 						sbPara.append("'" + s + "'" + ",");
@@ -184,7 +185,7 @@ public class QueryBuilder {
 				IType type = (IType) o;
 				ICompilationUnit cU = type.getCompilationUnit();
 				String packagename = Resolver.getFQPackageNameFromIxxx(cU, key);
-				String classname = Resolver.getFQClassnamefromIxxx(type, key);
+				String classname = Resolver.getClassnamefromIxxx(type, key);
 				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
 						+ classname + "')";
 				list.add(key);
@@ -192,10 +193,10 @@ public class QueryBuilder {
 				// FIELD
 				IField field = (IField) o;
 				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
-				String classname = Resolver.getFQClassnamefromIxxx(o, key);
+				String classname = Resolver.getClassnamefromIxxx(o, key);
 				String fieldname = field.getElementName();
 				String type = Resolver.getFQFieldTypeName(field);
-				
+
 				key = FIELD + "('" + packagename + "','" + classname + "','"
 						+ fieldname + "','" + type + "')";
 				list.add(key);

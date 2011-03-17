@@ -74,20 +74,23 @@
    </extension>
 
    <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
-      <?gmfgen generated="false"?>
+   		<?gmfgen generated="false"?>
   	  <wizard
-           category="org.eclipse.ui.Basic/de.tud.cs.st.vespucci.diagram.category1category1"
+           canFinishEarly="false"
+           category="de.tud.cs.st.vespucci.diagram.category1"
            class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
            icon="icons/obj16/Vespucci_modelDiagramFile.gif"
            id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID"
-           name="%newWizardName">
-  	  	 <description>%newWizardDesc</description>  
+           name="Software Architecture Constraints Diagram">
+  	  	 <description>Software architecture constraints can be created between logical grouped objects, named ensemble.</description>  
       </wizard>
      <category
            id="de.tud.cs.st.vespucci.diagram.category1"
-           name="Vespucci"
-           parentCategory="org.eclipse.ui.Basic">
+           name="Software Architecture">
      </category>
+     <primaryWizard
+           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
+     </primaryWizard>
    </extension>
 
    <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
@@ -105,9 +108,9 @@
          </action>
       </objectContribution>
    </extension>
-	
+	 <?gmfgen generated="false"?>
    <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
-      <?gmfgen generated="true"?>
+      <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramGlobalActionHandlerProvider"
          id="VespucciPresentation">
@@ -121,6 +124,7 @@
             </ElementType>
          </ViewId>
       </GlobalActionHandlerProvider>
+       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.ide.providers.DiagramIDEGlobalActionHandlerProvider"
          id="VespucciPresentationIDE">
@@ -131,17 +135,14 @@
             </ElementType>
          </ViewId>
       </GlobalActionHandlerProvider>
+       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
             class="org.eclipse.gmf.runtime.diagram.ui.render.providers.DiagramUIRenderGlobalActionHandlerProvider"
             id="VespucciRender">
+             <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
-         <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
-            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
-               <GlobalActionId actionId="cut"/>
-               <GlobalActionId actionId="copy"/>
-               <GlobalActionId actionId="paste"/>
-            </ElementType>
-         </ViewId>
+          <?gmfgen generated="false"?>
+        
       </GlobalActionHandlerProvider>
    </extension>
 
@@ -701,6 +702,7 @@
    </extension>
 
    <!-- gmf generator persistent region begin -->  
+
       <extension point="org.eclipse.ui.commands" id="menu-commands"> 
           <command
             defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
