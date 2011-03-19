@@ -49,8 +49,9 @@ import org.eclipse.jface.viewers.StructuredSelection;
 
 /**
  * SelectionSynchronizer for view components
+ * 
  * @author a_vovk
- *
+ * 
  */
 public class VespucciSelectionSynchronizer extends SelectionSynchronizer {
 
@@ -83,27 +84,29 @@ public class VespucciSelectionSynchronizer extends SelectionSynchronizer {
 	 */
 	protected List<EditPart> converter(EditPartViewer viewer, EditPart part) {
 		List<EditPart> parts = new ArrayList<EditPart>();
+
 		EditPart temp = (EditPart) viewer.getEditPartRegistry().get(
 				part.getModel());
-		int selectionCounter = 0;
-		if (viewer instanceof TreeViewer) {
-			List<?> editParts = viewer.getSelectedEditParts();
-			for (Object i : editParts) {
-				EditPart pp = (EditPart) i;
-				if (pp.getModel() == temp.getModel()) {
-					selectionCounter++;
-					parts.add(pp);
+		if (temp != null) {
+			int selectionCounter = 0;
+			if (viewer instanceof TreeViewer) {
+				List<?> editParts = viewer.getSelectedEditParts();
+				for (Object i : editParts) {
+					EditPart pp = (EditPart) i;
+					if (pp.getModel() == temp.getModel()) {
+						selectionCounter++;
+						parts.add(pp);
+					}
+				}
+				if (selectionCounter == 1) {
+					return parts;
+				} else if (selectionCounter > 1) {
+					parts.add(temp);
+					return parts;
 				}
 			}
-			if (selectionCounter == 1) {
-				return parts;
-			} else if (selectionCounter > 1) {
-				parts.add(temp);
-				return parts;
-			}
-		}
-		EditPart newPart = null;
-		if (temp != null) {
+			EditPart newPart = null;
+
 			newPart = (EditPart) temp;
 			parts.add(newPart);
 		}
