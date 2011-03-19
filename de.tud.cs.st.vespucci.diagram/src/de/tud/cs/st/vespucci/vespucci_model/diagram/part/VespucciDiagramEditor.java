@@ -58,6 +58,7 @@ import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.gmf.runtime.common.ui.services.marker.MarkerNavigationService;
 import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
 import org.eclipse.gmf.runtime.diagram.ui.actions.ActionIds;
@@ -239,6 +240,15 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		}
 	}
 
+	private SelectionSynchronizer synchronizer;
+	
+	protected SelectionSynchronizer getSelectionSynchronizer() {
+		if (synchronizer == null)
+			synchronizer = new VespucciSelectionSynchronizer();
+		return synchronizer;
+	}
+	
+	
 	/**
 	 * EditPartFactory for OutlineView
 	 * 
