@@ -123,47 +123,10 @@ public class EnsembleEnsembleCompartment2EditPart extends
 	@Override
 	protected void handleNotificationEvent(Notification event) {
 		super.handleNotificationEvent(event);
-		// ShapeImpl tmpl = (ShapeImpl) this.getParent().getModel();
-		// Shape t = (Shape) tmpl.getElement();
-		// // NotationPackage.eINSTANCE.get
-		// System.out.println("Notific: " + t.getName());
-		// System.out.println("Event:" + event.getFeature());
-		// TODO: delete/move connection???
 		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(
 				event.getFeature())) {
 			this.abm.updateConnections(event);
 		}
-//		else if (event.getEventType() == Notification.REMOVE) {
-//			if (NotationPackage.eINSTANCE.getView_TargetEdges().equals(
-//					event.getFeature())) {
-//				if (event.getOldValue() instanceof EdgeImpl) {
-//					EdgeImpl edge = (EdgeImpl) event.getOldValue();
-//					if (edge.getElement() != null) {
-//						Connection con = (Connection) edge.getElement();
-//						if (con.getOriginalTarget() != null) {
-//							con.setOriginalTarget(null);
-//							System.out.println("Ziehen target");
-//						}
-//					}
-//
-//				}
-//
-//			} else if (NotationPackage.eINSTANCE.getView_SourceEdges().equals(
-//					event.getFeature())) {
-//				if (event.getOldValue() instanceof EdgeImpl) {
-//					EdgeImpl edge = (EdgeImpl) event.getOldValue();
-//					if (edge.getElement() != null) {
-//						Connection con = (Connection) edge.getElement();
-//						if (con.getOriginalSource() != null) {
-//							con.setOriginalSource(null);
-//							System.out.println("Ziehen source");
-//						}
-//					}
-//
-//				}
-//
-//			}
-//		}
 
 	}
 }
