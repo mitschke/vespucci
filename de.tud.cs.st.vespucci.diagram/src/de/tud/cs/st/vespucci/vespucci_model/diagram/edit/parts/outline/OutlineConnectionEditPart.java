@@ -46,7 +46,7 @@ public abstract class OutlineConnectionEditPart extends TreeEditPart {
 	public OutlineConnectionEditPart(Object model) {
 		super(model);
 	}
-
+	
 	@Override
 	protected Image getImage() {
 		ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin
@@ -59,7 +59,6 @@ public abstract class OutlineConnectionEditPart extends TreeEditPart {
 	protected void handleNotificationEvent(Notification notification) {
 		super.handleNotificationEvent(notification);
 		reactivateSemanticElement();
-		//TODO: abstraction
 	}
 
 }

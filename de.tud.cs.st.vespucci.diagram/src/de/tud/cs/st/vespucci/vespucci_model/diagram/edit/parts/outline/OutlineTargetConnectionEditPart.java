@@ -92,8 +92,12 @@ public abstract class OutlineTargetConnectionEditPart extends
 	protected String getText() {
 		NodeImpl sourceNode = (NodeImpl) ((EdgeImpl) this.getModel())
 				.getSource();
-		if (sourceNode != null)
-			return ": " + ((Shape) sourceNode.getElement()).getName();
-		return super.getText();
+		String name = "";
+		if (sourceNode != null){
+			name = ((Shape) sourceNode.getElement()).getName();
+			if(name == null)
+				name = "";
+		}
+		return ": " + name;
 	}
 }
