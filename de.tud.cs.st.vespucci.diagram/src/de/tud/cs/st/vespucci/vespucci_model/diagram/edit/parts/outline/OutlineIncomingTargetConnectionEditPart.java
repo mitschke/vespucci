@@ -34,10 +34,17 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
-public class OutlineIncomingTargetConnectionEditPart extends OutlineTargetConnectionEditPart{
-	
+/**
+ * OutlineIncomingTargetConnectionEditPart
+ * 
+ * @author a_vovk
+ * 
+ */
+public class OutlineIncomingTargetConnectionEditPart extends
+		OutlineTargetConnectionEditPart {
+
 	private static final String IMAGE = "icons/outline/incoming_t.gif";
-	
+
 	public OutlineIncomingTargetConnectionEditPart(Object model) {
 		super(model);
 	}

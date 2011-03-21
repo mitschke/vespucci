@@ -34,10 +34,17 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
-public class OutlineExpectedSourceConnectionEditPart  extends OutlineSourceConnectionEditPart{
+/**
+ * OutlineExpectedSourceConnectionEditPart
+ * 
+ * @author a_vovk
+ * 
+ */
+public class OutlineExpectedSourceConnectionEditPart extends
+		OutlineSourceConnectionEditPart {
 
-	private static final String IMAGE ="icons/outline/expected_s.gif";
-	
+	private static final String IMAGE = "icons/outline/expected_s.gif";
+
 	public OutlineExpectedSourceConnectionEditPart(Object model) {
 		super(model);
 	}
@@ -46,6 +53,5 @@ public class OutlineExpectedSourceConnectionEditPart  extends OutlineSourceConne
 	protected String getImagePath() {
 		return IMAGE;
 	}
-	
-	
+
 }

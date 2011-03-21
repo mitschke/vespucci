@@ -42,7 +42,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.diagram.core.util.ViewUtil;
 import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
-import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
@@ -55,7 +54,6 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 public abstract class OutlineTargetConnectionEditPart extends
 		OutlineConnectionEditPart {
 
-	
 	private Set<EObject> objectListenningTo = new HashSet<EObject>();
 
 	@Override
@@ -64,20 +62,13 @@ public abstract class OutlineTargetConnectionEditPart extends
 			return;
 		super.activate();
 		EdgeImpl edge = (EdgeImpl) getModel();
-		// update Compartments
-		org.eclipse.gmf.runtime.notation.Shape sourceShape = (org.eclipse.gmf.runtime.notation.Shape) edge.getSource();
-
+		org.eclipse.gmf.runtime.notation.Shape sourceShape = (org.eclipse.gmf.runtime.notation.Shape) edge
+				.getSource();
 		getDiagramEventBroker().addNotificationListener(
 				ViewUtil.resolveSemanticElement(sourceShape), this);
 
 		getDiagramEventBroker().addNotificationListener(sourceShape, this);
 		objectListenningTo.add(sourceShape);
-
-//		org.eclipse.gmf.runtime.notation.Shape targetShape = (org.eclipse.gmf.runtime.notation.Shape) edge.getTarget();
-//		getDiagramEventBroker().addNotificationListener(
-//				ViewUtil.resolveSemanticElement(targetShape), this);
-//		getDiagramEventBroker().addNotificationListener(targetShape, this);
-//		objectListenningTo.add(targetShape);
 	}
 
 	@Override
@@ -92,7 +83,7 @@ public abstract class OutlineTargetConnectionEditPart extends
 		}
 		super.deactivate();
 	}
-	
+
 	public OutlineTargetConnectionEditPart(Object model) {
 		super(model);
 	}

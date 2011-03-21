@@ -34,10 +34,17 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
-public class OutlineNotAllowedTargetConnectionEditPart extends OutlineTargetConnectionEditPart{
+/**
+ * OutlineNotAllowedTargetConnectionEditPart
+ * 
+ * @author a_vovk
+ * 
+ */
+public class OutlineNotAllowedTargetConnectionEditPart extends
+		OutlineTargetConnectionEditPart {
 
 	private static final String IMAGE = "icons/outline/notAllowed_t.gif";
-	
+
 	public OutlineNotAllowedTargetConnectionEditPart(Object model) {
 		super(model);
 	}

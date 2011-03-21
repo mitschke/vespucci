@@ -34,6 +34,12 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
+/**
+ * OutlineInAndOutTargetConnectionEditPart
+ * 
+ * @author a_vovk
+ * 
+ */
 public class OutlineInAndOutTargetConnectionEditPart extends
 		OutlineTargetConnectionEditPart {
 

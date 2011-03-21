@@ -73,7 +73,6 @@ import org.eclipse.gmf.runtime.diagram.ui.resources.editor.parts.DiagramDocument
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
-import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -123,8 +122,6 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineNo
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingTargetConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineRootEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineSourceConnectionEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineTargetConnectionEditPart;
 
 /**
  * @generated
@@ -141,6 +138,11 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 * @generated
 	 */
 	public static final String CONTEXT_ID = "de.tud.cs.st.vespucci.vespucci_model.diagram.ui.diagramContext"; //$NON-NLS-1$
+	
+	/**
+	 * @generated NOT
+	 */
+	private SelectionSynchronizer synchronizer;
 
 	/**
 	 * @generated
@@ -239,9 +241,14 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			super.setDocumentProvider(input);
 		}
 	}
-
-	private SelectionSynchronizer synchronizer;
 	
+	/**
+	 * Custom SelectionSynchronizer
+	 * 
+	 * @author a_vovk
+	 * @generated NOT
+	 */
+	@Override
 	protected SelectionSynchronizer getSelectionSynchronizer() {
 		if (synchronizer == null)
 			synchronizer = new VespucciSelectionSynchronizer();
