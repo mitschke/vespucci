@@ -58,7 +58,11 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
 
 /**
- * A listener for ISelections that are dropped on the VespucciDiagram view
+ * A TransferDropTargetListener for handling the drop of ISelections on the VespucciDiagram view
+ * 
+ * the drop is enable if it can be interpreted as a query for an Ensamble
+ * 
+ * The data of the drop is storted in extendedData
  * 
  * @author MalteV
  */
@@ -117,6 +121,10 @@ public class DropVespucciDiagramTargetListener extends
 		return super.isEnabled(event);
 	}
 
+	/**
+	 * check if the drop is processable
+	 * @return
+	 */
 	private boolean enable() {
 		if (getTargetEditPart() == null) {
 			;
@@ -138,8 +146,6 @@ public class DropVespucciDiagramTargetListener extends
 					.setLocation(getDropLocation());
 		else if (getTargetRequest() instanceof CreateRequest)
 			((CreateRequest) getTargetRequest()).setLocation(getDropLocation());
-		else
-			System.out.println("hm");
 		if (!enable()) {
 			getCurrentEvent().detail = DND.DROP_NONE;
 		} else {

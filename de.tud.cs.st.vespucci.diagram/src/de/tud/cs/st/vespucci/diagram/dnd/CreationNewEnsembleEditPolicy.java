@@ -64,7 +64,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * EditPolicy for creating new shapes (GMF shapes) on a Vespucci-diagram
- * 
+ * This Policy handles a CreateViewRequest.
  * @author MalteV
  */
 final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
