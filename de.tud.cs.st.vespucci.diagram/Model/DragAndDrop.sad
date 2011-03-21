@@ -21,7 +21,7 @@
       <children xmi:type="notation:BasicCompartment" xmi:id="_Ir_mMScwEeC-LqTJQDUVwQ" type="7001"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ir-_IScwEeC-LqTJQDUVwQ" x="200" y="55" width="136" height="106"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_8LFfQCkwEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm für die „Drag and Drop“ Funktionalität aus dem Package Explorer in des Vespucci-Plug-In. " fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_8LFfQCkwEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm für die „Drag and Drop“ Funktionalität aus dem Package Explorer in das Vespucci-Plug-In. " fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_8LJwsCkwEeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>

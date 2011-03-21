@@ -115,7 +115,7 @@
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_d7y9wSOsEeCkzv8pC6Bscw" x="15" y="106" width="101" height="86"/>
         </children>
       </children>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mMTGQSOqEeCkc7phH_OITw" x="499" y="139" width="286" height="226"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mMTGQSOqEeCkc7phH_OITw" x="495" y="120" width="286" height="226"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_IoqT4CkpEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description=" Architektur Diagramm welches einen groben Überblick über das Vespucci-Plug-In gibt." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_IovzcCkpEeC7g5S-XZYxhw" type="DiagramName">
