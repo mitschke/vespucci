@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author MalteV
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universit�t Darmstadt

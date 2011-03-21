@@ -51,6 +51,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -96,6 +97,7 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
@@ -368,11 +370,20 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(),
 					this.getCurrentSelectedFileName());
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"FileNotFoundException", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 		} catch (IOException e) {
-			e.printStackTrace();
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"Failed to save Prolog file", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 		} catch (Exception e) {
-			e.printStackTrace();
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"FileNotFoundException", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 
 		// refresh Package View
