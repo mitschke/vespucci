@@ -87,6 +87,7 @@ public class VespucciDiagramActionBarContributor extends
 		// remove compartmentMenu
 		IToolBarManager toolBarManager = bars.getToolBarManager();
 		toolBarManager.remove("compartmentMenu");
+		toolBarManager.remove("diagramFilterActionMenu");
          
 	}
 }
