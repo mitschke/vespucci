@@ -62,7 +62,7 @@ public abstract class OutlineSourceConnectionEditPart extends
 			return;
 		super.activate();
 		EdgeImpl edge = (EdgeImpl) getModel();
-		org.eclipse.gmf.runtime.notation.Shape targetShape = (org.eclipse.gmf.runtime.notation.Shape) edge
+		org.eclipse.gmf.runtime.notation.Node targetShape = (org.eclipse.gmf.runtime.notation.Node) edge
 				.getTarget();
 		getDiagramEventBroker().addNotificationListener(
 				ViewUtil.resolveSemanticElement(targetShape), this);
@@ -91,9 +91,13 @@ public abstract class OutlineSourceConnectionEditPart extends
 	protected String getText() {
 		NodeImpl targetNode = (NodeImpl) ((EdgeImpl) this.getModel())
 				.getTarget();
-		if (targetNode != null)
-			return ": " + ((Shape) targetNode.getElement()).getName();
-		return super.getText();
+		String name = "";
+		if (targetNode != null){
+			name = ((Shape) targetNode.getElement()).getName();
+			if(name == null)
+				name = "";
+		}
+		return ": " + name;
 	}
 
 }

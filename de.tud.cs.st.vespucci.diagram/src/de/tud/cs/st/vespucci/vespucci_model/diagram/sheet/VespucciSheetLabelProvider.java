@@ -59,7 +59,7 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements
 		}
 		//TODO quick fix
 		if (getView(element) instanceof Diagram)
-			return ((Diagram) getView(element)).getName(); 
+			return ((Diagram) getView(element)).getName();
 		IElementType etype = getElementType(getView(element));
 		return etype == null ? "" : etype.getDisplayName();
 	}

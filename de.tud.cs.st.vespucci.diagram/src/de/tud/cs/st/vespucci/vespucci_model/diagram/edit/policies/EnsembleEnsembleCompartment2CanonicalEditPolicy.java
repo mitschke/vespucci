@@ -109,7 +109,7 @@ public class EnsembleEnsembleCompartment2CanonicalEditPolicy extends
 	 */
 	protected void refreshSemantic() {
 		super.refreshSemantic();
-		
+
 	}
 
 }

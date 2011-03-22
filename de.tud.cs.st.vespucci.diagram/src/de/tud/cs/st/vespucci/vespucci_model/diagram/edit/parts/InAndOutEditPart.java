@@ -144,7 +144,6 @@ public class InAndOutEditPart extends ConnectionNodeEditPart implements
 		return (InAndOutFigure) getFigure();
 	}
 
-	
 	/**
 	 * @generated NOT
 	 */
@@ -181,7 +180,7 @@ public class InAndOutEditPart extends ConnectionNodeEditPart implements
 
 		}
 	}
-	
+
 	/**
 	 * @generated
 	 */

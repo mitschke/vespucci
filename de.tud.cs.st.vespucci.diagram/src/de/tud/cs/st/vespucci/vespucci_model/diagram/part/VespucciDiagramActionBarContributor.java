@@ -83,11 +83,11 @@ public class VespucciDiagramActionBarContributor extends
 		IAction validateAction = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.ValidateAction(
 				page);
 		editMenu.appendToGroup("validationGroup", validateAction); //$NON-NLS-1$
-		
+
 		// remove compartmentMenu
 		IToolBarManager toolBarManager = bars.getToolBarManager();
 		toolBarManager.remove("compartmentMenu");
 		toolBarManager.remove("diagramFilterActionMenu");
-         
+
 	}
 }

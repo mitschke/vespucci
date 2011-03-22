@@ -510,7 +510,14 @@ public class DiagramConverter {
 
 		
 		StringBuilder transactionSB = new StringBuilder();
-
+		//TODO: delete next 2 lines if saved sad file doesn't
+		//contains copy/paste artifact references. Problem: if one copy from one sad file
+		// an Ensemble with dependency in another sad file than the copy of
+		// the Ensemble will contains a reference to original Ensemble in first saf file.
+		// This reference has no influence on working process but it has problem here,
+		// by converting to prolog facts
+		if(connection.getSource().eIsProxy() || connection.getTarget().eIsProxy())
+			return "";
 		if (connection instanceof Outgoing)
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "

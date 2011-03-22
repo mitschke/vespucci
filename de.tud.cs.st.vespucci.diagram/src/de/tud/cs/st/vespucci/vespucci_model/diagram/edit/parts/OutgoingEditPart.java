@@ -144,7 +144,6 @@ public class OutgoingEditPart extends ConnectionNodeEditPart implements
 		return (OutgoingFigure) getFigure();
 	}
 
-	
 	/**
 	 * @generated NOT
 	 */
@@ -181,7 +180,7 @@ public class OutgoingEditPart extends ConnectionNodeEditPart implements
 
 		}
 	}
-	
+
 	/**
 	 * @generated
 	 */
