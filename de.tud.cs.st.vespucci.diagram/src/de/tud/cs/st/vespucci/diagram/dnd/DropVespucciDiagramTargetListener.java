@@ -59,7 +59,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEdit
 /**
  * A TransferDropTargetListener for handling the drop of ISelections on the VespucciDiagram view
  * 
- * the drop is enable if it can be interpreted as a query for an Ensamble
+ * the drop is enable if it can be interpreted as a query 
  * 
  * The data of the drop is storted in extendedData
  * 

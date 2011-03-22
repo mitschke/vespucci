@@ -64,7 +64,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
-//TODO: Use the metamodel interfaces instead of the *impl.java Classes
+
 /**
  * DiagramConverter converts a *.sad into a *.pl File.
  * @author PatrickJ
@@ -406,7 +406,7 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private String[] getEnsembleParameterDefinitions(Ensemble ensemble) {
-		//TODO // FIXME BenjaminL: schneller hack, dass keine nullpointerexception beim speichern eines diagramms mit einem ensemble mit leeren namen auftritt - schöner kettensatz, he?
+		// FIXME BenjaminL: schneller hack, dass keine nullpointerexception beim speichern eines diagramms mit einem ensemble mit leeren namen auftritt - schöner kettensatz, he?
 		if(ensemble.getName()==null){
 			ensemble.setName("");
 		}
@@ -572,7 +572,7 @@ public class DiagramConverter {
 	
 
 	/**
-	 * create a string with all subensembles of a parten. //TODO: parten???
+	 * create a string with all subensembles of a parent. 
 	 * @param EList<Shape>
 	 * @author Patrick Jahnke
 	 */
@@ -582,7 +582,7 @@ public class DiagramConverter {
 		if (shapeList == null)
 			return strBuilder.toString();
 
-		String komma = "";	//FIXME: ein string der komma heißt und leer ist?!
+		String komma = "";	
 		for (Shape shape : shapeList)
 		{
        		if (shape instanceof Dummy)

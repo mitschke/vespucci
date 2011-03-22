@@ -58,6 +58,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
+ * Query Tab
  * @author Benni
  * @generated not
  * 

@@ -584,6 +584,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
+		// adds 2 TransferDropTargetListener to the diagram view. for handling DnD out of the Package Explorer
 		getDiagramGraphicalViewer().addDropTargetListener(
 				new DropVespucciDiagramTargetListener(
 						getDiagramGraphicalViewer()));
@@ -602,7 +603,6 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected void initializeGraphicalViewerContents() {
 		super.initializeGraphicalViewerContents();
-		// System.err.println("Hook point");
 
 		// get all list of connections
 		EditPart root = this.getDiagramGraphicalViewer().getRootEditPart();
@@ -624,7 +624,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			if (ee instanceof ConnectionEditPart) {
 				ConnectionEditPart con = (ConnectionEditPart) ee;
 				Connection ci = (Connection) con.resolveSemanticElement();
-				// Connection to a Node is null
+
+				//ci can be null if the connection belong to a note attachment.
+				//so we need to handle it  
 				if (ci == null)
 					continue;
 

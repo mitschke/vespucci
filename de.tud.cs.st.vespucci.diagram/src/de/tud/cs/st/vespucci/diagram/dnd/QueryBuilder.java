@@ -109,8 +109,8 @@ public class QueryBuilder {
 			}
 		} else {
 		}
-		if (res.endsWith(QUERY_DELIMITER)) // length() >=
-											// QUERY_DELIMITER.length())
+		if (res.endsWith(QUERY_DELIMITER))
+											
 			res = res.substring(0, res.length() - QUERY_DELIMITER.length() - 1);
 
 		if (res.equals(""))
