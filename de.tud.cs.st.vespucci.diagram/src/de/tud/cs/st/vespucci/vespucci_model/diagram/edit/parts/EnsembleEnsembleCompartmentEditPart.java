@@ -145,7 +145,7 @@ public class EnsembleEnsembleCompartmentEditPart extends
 		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(
 				event.getFeature())) {
 			this.abm.updateConnections(event);
-		} 
+		}
 	}
 
 }

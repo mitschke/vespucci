@@ -144,7 +144,7 @@ public class ExpectedEditPart extends ConnectionNodeEditPart implements
 	public ExpectedFigure getPrimaryShape() {
 		return (ExpectedFigure) getFigure();
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */

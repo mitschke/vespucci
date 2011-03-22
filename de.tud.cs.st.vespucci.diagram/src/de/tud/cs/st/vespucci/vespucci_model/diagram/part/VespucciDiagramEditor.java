@@ -138,7 +138,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 * @generated
 	 */
 	public static final String CONTEXT_ID = "de.tud.cs.st.vespucci.vespucci_model.diagram.ui.diagramContext"; //$NON-NLS-1$
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -241,7 +241,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			super.setDocumentProvider(input);
 		}
 	}
-	
+
 	/**
 	 * Custom SelectionSynchronizer
 	 * 
@@ -254,8 +254,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			synchronizer = new VespucciSelectionSynchronizer();
 		return synchronizer;
 	}
-	
-	
+
 	/**
 	 * EditPartFactory for OutlineView
 	 * 

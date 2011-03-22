@@ -144,7 +144,6 @@ public class NotAllowedEditPart extends ConnectionNodeEditPart implements
 		return (NotAllowedFigure) getFigure();
 	}
 
-	
 	/**
 	 * @generated NOT
 	 */
@@ -181,7 +180,7 @@ public class NotAllowedEditPart extends ConnectionNodeEditPart implements
 
 		}
 	}
-	
+
 	/**
 	 * @generated
 	 */
