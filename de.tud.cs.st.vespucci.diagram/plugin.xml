@@ -314,15 +314,17 @@
          <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
       </editpartProvider>
    </extension>
-
+	<?gmfgen generated="false"?>
    <extension point="org.eclipse.gmf.runtime.emf.ui.modelingAssistantProviders" id="modelassist-provider">
-      <?gmfgen generated="true"?>
+      <?gmfgen generated="false"?>
       <modelingAssistantProvider class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciModelingAssistantProvider">
+      <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart" id="ShapesDiagram_1000"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart" id="Ensemble_2001"/>
+         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart" id="Ensemble_3001"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart" id="Dummy_2002"/>
-         <context elements="ShapesDiagram_1000,Ensemble_2001,Dummy_2002"/>
+         <context elements="ShapesDiagram_1000,Ensemble_2001,Ensemble_3001,Dummy_2002"/>
       </modelingAssistantProvider>
    </extension>
 
