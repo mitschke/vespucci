@@ -117,7 +117,7 @@
       </children>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mMTGQSOqEeCkc7phH_OITw" x="495" y="120" width="286" height="226"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_IoqT4CkpEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description=" Architektur Diagramm welches einen groben Überblick über das Vespucci-Plug-In gibt." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_IoqT4CkpEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm welches einen groben Überblick über das Vespucci-Plug-In gibt." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_IovzcCkpEeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
@@ -141,7 +141,7 @@
       <element xsi:nil="true"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R5M-QylBEeC7g5S-XZYxhw" x="525" y="435"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_DnjVUFO5EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="sieh DiagramConverter.sad" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_DnjVUFO5EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="siehe DiagramConverter.sad" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_DnoN0FO5EeCFAqVbT4yc4A" type="DiagramName">
         <element xsi:nil="true"/>
       </children>

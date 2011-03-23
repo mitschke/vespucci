@@ -61,7 +61,7 @@
         <children xmi:type="notation:Shape" xmi:id="_3xJRkFPEEeC3v84xT_hxyw" type="2001" element="_3um68VPEEeC3v84xT_hxyw" fontName="Segoe UI">
           <children xmi:type="notation:DecorationNode" xmi:id="_3xKfsFPEEeC3v84xT_hxyw" type="5001"/>
           <children xmi:type="notation:BasicCompartment" xmi:id="_3xLGwFPEEeC3v84xT_hxyw" type="7001"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3xJRkVPEEeC3v84xT_hxyw" x="320" y="366" width="206" height="61"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3xJRkVPEEeC3v84xT_hxyw" x="240" y="366" width="286" height="61"/>
         </children>
         <children xmi:type="notation:Shape" xmi:id="_voujgFPFEeC3v84xT_hxyw" type="3001" element="_vonOwFPFEeC3v84xT_hxyw" fontName="Segoe UI">
           <children xmi:type="notation:DecorationNode" xmi:id="_vovxoFPFEeC3v84xT_hxyw" type="5006"/>
