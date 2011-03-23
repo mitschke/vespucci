@@ -354,7 +354,11 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private String getEnsembleDescriptor(Shape shape) {
-		String name = shape.getName().length()== 0 ? "non-editpart" : shape.getName();
+		String name;
+		if(shape.getName() == null)
+			name = "";
+		else
+		 name = shape.getName().length()== 0 ? "non-editpart" : shape.getName();
 		StringBuilder s = new StringBuilder("'");
 		if (name.indexOf('(') > 0) {
 			s.append(name.subSequence(0, name.indexOf('(')));
@@ -406,7 +410,6 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private String[] getEnsembleParameterDefinitions(Ensemble ensemble) {
-		// FIXME BenjaminL: schneller hack, dass keine nullpointerexception beim speichern eines diagramms mit einem ensemble mit leeren namen auftritt - schöner kettensatz, he?
 		if(ensemble.getName()==null){
 			ensemble.setName("");
 		}
