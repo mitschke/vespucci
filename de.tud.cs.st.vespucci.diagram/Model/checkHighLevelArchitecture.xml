@@ -112,7 +112,7 @@
 		<bytecodeToProlog 
 				output="${bytecode.representation}" 
 				classpathRef="opal.classpath" 
-				combineoutput="true">
+				combineoutput="false">
 
 			<fileset dir="${bin}">
 				<include name="**/*.class" />

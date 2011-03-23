@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <ShapesDiagram xmi:id="_AO978VSVEeCx5bSCwUQ8AA">
+    <shapes xmi:type="Ensemble" xmi:id="_CQQeQFSVEeCx5bSCwUQ8AA" name="Validator" query="class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.providers','VespucciValidationProvider$Adapter4')&#xA;"/>
+  </ShapesDiagram>
+  <notation:Diagram xmi:id="_APkY4FSVEeCx5bSCwUQ8AA" type="Vespucci" element="_AO978VSVEeCx5bSCwUQ8AA" name="Vespucci_Diagram_Validator.sad" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_CQjZMFSVEeCx5bSCwUQ8AA" type="2001" element="_CQQeQFSVEeCx5bSCwUQ8AA" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_CQjZMlSVEeCx5bSCwUQ8AA" type="5001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_CQjZM1SVEeCx5bSCwUQ8AA" type="7001">
+        <children xmi:type="notation:Shape" xmi:id="_49jR4FSWEeCx5bSCwUQ8AA" type="Note" fontName="Segoe UI" description="+vespucci.gmfmap -> Mapping -> Audit container... -> Audit cotainer all constrains about Ensemble -> Audit rule ERROR if non leaf Ensemble is not derived&#xD;&#xA;Plugin.xml extension point : &quot;org.eclipse.emf.validation.constraintProviders&quot;" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_49jR5FSWEeCx5bSCwUQ8AA" type="DiagramName">
+            <element xsi:nil="true"/>
+          </children>
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_49jR5VSWEeCx5bSCwUQ8AA" type="Description">
+            <element xsi:nil="true"/>
+          </children>
+          <styles xmi:type="notation:TextStyle" xmi:id="_49jR4VSWEeCx5bSCwUQ8AA"/>
+          <styles xmi:type="notation:LineTypeStyle" xmi:id="_49jR4lSWEeCx5bSCwUQ8AA"/>
+          <element xsi:nil="true"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_49jR41SWEeCx5bSCwUQ8AA" x="15" y="21" width="201" height="211"/>
+        </children>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CQjZMVSVEeCx5bSCwUQ8AA" x="200" y="70" width="276" height="276"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_qSo8oFSWEeCx5bSCwUQ8AA" type="Note" fontName="Segoe UI" description="Architektur Diagramm zum Validator: „Queries of non oleaf ensemble must be derived“" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_qSo8pFSWEeCx5bSCwUQ8AA" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_qSo8pVSWEeCx5bSCwUQ8AA" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="_qSo8oVSWEeCx5bSCwUQ8AA"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_qSo8olSWEeCx5bSCwUQ8AA"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qSo8o1SWEeCx5bSCwUQ8AA" x="10" y="30" width="161" height="151"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_APkY4VSVEeCx5bSCwUQ8AA"/>
+  </notation:Diagram>
+</xmi:XMI>
