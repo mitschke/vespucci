@@ -501,10 +501,10 @@ public class DiagramConverter {
 		// Get the original target (and not the red line target)
 		if ((connection.getOriginalTarget()==null)
 				|| (connection.getOriginalTarget().size()==0))
-			source = connection.getTarget();
+			target = connection.getTarget();
 		else if ((connection.getOriginalTarget()!=null)
 				&& (connection.getOriginalTarget().size()==1))
-			source = connection.getOriginalTarget().get(0);
+			target = connection.getOriginalTarget().get(0);
 		else
 			throw new Exception ("Too many original tagets in connection available. Please check the the original targets of connection: \""+connection.getName()+"\"");
 
