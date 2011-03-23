@@ -83,7 +83,7 @@
 		</not>
 	</condition>
 
-	<property name="architecture.pl" value="MetaModelConstrains.sad.pl"/>
+	<property name="architecture.pl" value="Vespucci_Diagram_Validator.sad.pl"/>
 	
 	<tempfile property="bytecode.representation" suffix=".pl" deleteonexit="true" prefix="Bytecode"/>
 
@@ -112,7 +112,7 @@
 		<bytecodeToProlog 
 				output="${bytecode.representation}" 
 				classpathRef="opal.classpath" 
-				combineoutput="true">
+				combineoutput="false">
 
 			<fileset dir="${bin}">
 				<include name="**/*.class" />

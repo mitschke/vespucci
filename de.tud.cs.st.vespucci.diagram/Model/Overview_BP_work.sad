@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_B8X-MVO_EeCiH-MNEVUZCw">
-    <shapes xmi:type="Ensemble" xmi:id="_VyxcsFPGEeC3v84xT_hxyw" name="&quot;GUI&quot;-Vespucci (Diagram)" query="derived">
+    <shapes xmi:type="Ensemble" xmi:id="_VyxcsFPGEeC3v84xT_hxyw" name="&quot;GUI&quot;-Vespucci Diagram" query="derived">
       <shapes xmi:type="Ensemble" xmi:id="_Gy9SoFO_EeCiH-MNEVUZCw" name="Outlineview" query="package('de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline')&#xA; or class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.part','VespucciSelectionSynchronizer')&#xA;"/>
       <shapes xmi:type="Ensemble" xmi:id="_FYaAMFO_EeCiH-MNEVUZCw" name="Drag and Drop" query="package('de.tud.cs.st.vespucci.diagram.dnd')&#xA; or package('de.tud.cs.st.vespucci.diagram.dnd.JavaType')&#xA;"/>
       <shapes xmi:type="Ensemble" xmi:id="_-hFtoFO_EeCiH-MNEVUZCw" name="VespucciDiagramEditor">
