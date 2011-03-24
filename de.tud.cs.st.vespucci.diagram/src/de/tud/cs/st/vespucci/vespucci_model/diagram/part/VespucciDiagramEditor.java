@@ -139,7 +139,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 * @generated
 	 */
 	public static final String CONTEXT_ID = "de.tud.cs.st.vespucci.vespucci_model.diagram.ui.diagramContext"; //$NON-NLS-1$
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -242,7 +242,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			super.setDocumentProvider(input);
 		}
 	}
-	
+
 	/**
 	 * Custom SelectionSynchronizer
 	 * 
@@ -255,8 +255,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			synchronizer = new VespucciSelectionSynchronizer();
 		return synchronizer;
 	}
-	
-	
+
 	/**
 	 * EditPartFactory for OutlineView
 	 * 
@@ -369,18 +368,19 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(),
 					this.getCurrentSelectedFileName());
 		} catch (FileNotFoundException e) {
-			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-					"FileNotFoundException", e);
+			IStatus is = new Status(Status.ERROR,
+					VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		} catch (IOException e) {
-			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+			IStatus is = new Status(Status.ERROR,
+					VespucciDiagramEditorPlugin.ID,
 					"Failed to save Prolog file", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		} catch (Exception e) {
-			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-					"FileNotFoundException", e);
+			IStatus is = new Status(Status.ERROR,
+					VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
@@ -501,6 +501,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			return StructuredSelection.EMPTY;
 		}
 		Diagram diagram = document.getDiagram();
+		if (diagram == null || diagram.eResource() == null) {
+			return StructuredSelection.EMPTY;
+		}
 		IFile file = WorkspaceSynchronizer.getFile(diagram.eResource());
 		if (file != null) {
 			de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem item = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem(
