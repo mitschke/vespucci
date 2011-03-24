@@ -37,6 +37,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  * A Changed Copy of AbstractBasicTextPropertySection
  * (org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractBasicTextPropertySection)
  * 
+ * 
+ * 
  * Original version by:
  * @author natalia balaba
  * 
@@ -153,7 +155,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		textWidget = createTextWidget(sectionComposite);
 		scrolledParent = parent;
 		for(;;){
-			//TODO: There must be a nicer way for redraw the text widget then to say the first scrolledcomposite to .layout()
+			//TODO: There must be a nicer way for redraw the text widget then to say the first scrolledcomposite .layout()
 			//the scrolledParent should be "main" composite for the query tab
 			if(scrolledParent instanceof ScrolledComposite) {
 				break;
