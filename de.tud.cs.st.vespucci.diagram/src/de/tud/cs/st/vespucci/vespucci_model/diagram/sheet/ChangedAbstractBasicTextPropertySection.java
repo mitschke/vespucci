@@ -153,7 +153,8 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		textWidget = createTextWidget(sectionComposite);
 		scrolledParent = parent;
 		for(;;){
-			
+			//TODO: There must be a nicer way for redraw the text widget then to say the first scrolledcomposite to .layout()
+			//the scrolledParent should be "main" composite for the query tab
 			if(scrolledParent instanceof ScrolledComposite) {
 				break;
 			}
@@ -164,6 +165,7 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		}
 		
 		scrolledParent.addListener(SWT.Resize, resizeLinstener );
+		updateHeight();
 		startTextWidgetEventListener();
 	}
 
@@ -232,9 +234,9 @@ public abstract class ChangedAbstractBasicTextPropertySection
 			data.height = getHeight();
 			data.width = getWidth();
 			getTextWidget().setLayoutData(data);
-			Point p = getSectionComposite().getSize();
 			int HEIGHTS_SCROLLLINE = 30;
 			Composite com = getSectionComposite();
+			//TODO: there must be a nice way to update the heights and widths of the textwidget and its parents
 			for(;;){
 				
 				if(com instanceof ScrolledComposite) {
