@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author MalteV
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universit�t Darmstadt
@@ -95,7 +94,7 @@ public class QueryBuilder {
 			oldQuery = "";
 		else if (oldQuery.trim().toLowerCase().equals(DERIVED))
 			return oldQuery;
-		else if (oldQuery.length() > 0)
+		else if (oldQuery.trim().length() > 0)
 			oldQuery += QUERY_DELIMITER;
 
 		String res = oldQuery;
@@ -110,8 +109,8 @@ public class QueryBuilder {
 			}
 		} else {
 		}
-		if (res.endsWith(QUERY_DELIMITER)) // length() >=
-											// QUERY_DELIMITER.length())
+		if (res.endsWith(QUERY_DELIMITER))
+											
 			res = res.substring(0, res.length() - QUERY_DELIMITER.length() - 1);
 
 		if (res.equals(""))

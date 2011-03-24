@@ -225,17 +225,10 @@ public abstract class ChangedAbstractBasicTextPropertySection
 		if(getTextWidget() != null && !getTextWidget().isDisposed() && getTextWidget().isVisible()){
 			getTextWidget().setVisible(false);
 			scrolledParent.setVisible(false);
-			//getTextWidget().getVerticalBar().setVisible(false);
-			//getTextWidget().getHorizontalBar().setVisible(false);
 			FormData data = new FormData();
 			data.left = new FormAttachment(0, 0);
 			data.right = new FormAttachment(100, 0);
 			data.top = new FormAttachment(0, 0);
-			//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
-			//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize()
-			//lis = getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getListeners(SWT.Resize);
-			//data.height = startHeight + textWidget.getLineHeight() * textWidget.getLineCount();
-			//getTextWidget().getParent().getParent().getParent().getParent().getParent().getParent().getSize().y - 20;
 			data.height = getHeight();
 			data.width = getWidth();
 			getTextWidget().setLayoutData(data);
@@ -255,15 +248,6 @@ public abstract class ChangedAbstractBasicTextPropertySection
 				
 			}
 			com.layout();
-			//scrolledParent.getHorizontalBar().setVisible(false);
-			//scrolledParent.getVerticalBar().setVisible(false);
-//			com.getParent().getDisplay().update();
-			//getSectionComposite().setSize(getWidth(),getHeight() + HEIGHTS_SCROLLLINE);//p.x, getHeight());
-			//getTextWidget().getParent().getParent().setSize(getWidth(),getHeight() + HEIGHTS_SCROLLLINE);
-			//p = getSectionComposite().getParent().getSize();
-			//getSectionComposite().getParent().setSize(getWidth(),getHeight()+ HEIGHTS_SCROLLLINE);//p.x,getTextWidget().getSize().y+15);//+textWidget.getLineHeight() * textWidget.getLineCount());
-			//getSectionComposite().layout();
-			//getSectionComposite().getParent().getDisplay().update();
 			getTextWidget().setVisible(true);
 			scrolledParent.setVisible(true);
 		}

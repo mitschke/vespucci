@@ -54,20 +54,19 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
+import de.tud.cs.st.vespucci.vespucci_model.Incoming;
+import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
+import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.impl.DummyImpl;
-import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
-import de.tud.cs.st.vespucci.vespucci_model.impl.ExpectedImpl;
-import de.tud.cs.st.vespucci.vespucci_model.impl.InAndOutImpl;
-import de.tud.cs.st.vespucci.vespucci_model.impl.IncomingImpl;
-import de.tud.cs.st.vespucci.vespucci_model.impl.NotAllowedImpl;
-import de.tud.cs.st.vespucci.vespucci_model.impl.OutgoingImpl;
-import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
+import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
-//TODO: Use the metamodel interfaces instead of the *impl.java Classes
+
 /**
- * BITTE FÜG HIER EINE KLASSENBESCHREIBUNG EIN, außerdem fehlen oft die beschreibungen von rück- und übergabewerte!
+ * DiagramConverter converts a *.sad into a *.pl File.
  * @author PatrickJ
  */
 public class DiagramConverter {
@@ -109,16 +108,15 @@ public class DiagramConverter {
 	 * @throws IOException
 	 * @author Patrick Jahnke
 	 */
-	public ShapesDiagramImpl loadDiagramFile(String fullPathFileName) throws FileNotFoundException, IOException
+	public ShapesDiagram loadDiagramFile(String fullPathFileName) throws FileNotFoundException, IOException
 	{
-		//TODO löschen?
-       	XMIResourceImpl resource = new XMIResourceImpl();
+		XMIResourceImpl resource = new XMIResourceImpl();
        	File source = new File(fullPathFileName);
         
    		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
 
    		EObject eObject = resource.getContents().get(0);
-      	return (ShapesDiagramImpl) eObject;
+      	return (ShapesDiagram) eObject;
 	}
 	
 	
@@ -130,27 +128,26 @@ public class DiagramConverter {
 	 * @throws IOException
 	 * @author Patrick Jahnke, MalteV
 	 */
-	public ShapesDiagramImpl loadDiagramFile(File sadFile) throws FileNotFoundException, IOException
+	public ShapesDiagram loadDiagramFile(File sadFile) throws FileNotFoundException, IOException
 	{
-       	XMIResourceImpl resource = new XMIResourceImpl();
+		XMIResourceImpl resource = new XMIResourceImpl();
        	File source = sadFile; 
    		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
    		EObject eObject = resource.getContents().get(0);
-      	return (ShapesDiagramImpl) eObject;
+      	return (ShapesDiagram) eObject;
 	}
 	
 	
 	/**
 	 * read the given diagram and create a prolog file. 
 	 * @param fullPathFileName Name and path of the diagram
-	 * @throws FileNotFoundException 
-	 * @throws IOException
 	 * @author Patrick Jahnke
+	 * @throws Exception 
 	 */
-	public void ConvertDiagramToProlog (String path, String fileName) throws FileNotFoundException, IOException
+	public void ConvertDiagramToProlog (String path, String fileName) throws Exception
 	{
 		String fullFileName = path + "/" + fileName;
-		ShapesDiagramImpl diagram = loadDiagramFile(fullFileName);
+		ShapesDiagram diagram = loadDiagramFile(fullFileName);
 		
 		// create a new Prolog File
 		File prologFile = new File(fullFileName + ".pl");
@@ -176,11 +173,10 @@ public class DiagramConverter {
 	/**
 	 * read the given diagram and create a prolog file. 
 	 * @param fullPathFileName Name and path of the diagram
-	 * @throws FileNotFoundException 
-	 * @throws IOException
 	 * @author Patrick Jahnke, MalteV
+	 * @throws Exception 
 	 */
-	public void ConvertDiagramToProlog (File sadFile) throws FileNotFoundException, IOException
+	public void ConvertDiagramToProlog (File sadFile) throws Exception
 	{
 		this.ConvertDiagramToProlog(sadFile.getParent(), sadFile.getName());
 	}
@@ -247,8 +243,9 @@ public class DiagramConverter {
 	 * @param fileName the filename of the diagram model
 	 * @return a string with the facts
 	 * @author Patrick Jahnke
+	 * @throws Exception 
 	 */
-	private String getFacts(ShapesDiagramImpl diagram, String fileName)
+	private String getFacts(ShapesDiagram diagram, String fileName) throws Exception
 	{
 		StringBuilder strBuilder = new StringBuilder();
 		// insert ensemble Header
@@ -280,18 +277,19 @@ public class DiagramConverter {
 	/**
 	 * Search the diagram recursive and create all facts.
 	 * @author Patrick Jahnke
+	 * @throws Exception 
 	 */
-	private void createFacts(EList<Shape> shapeList, String fileName, StringBuilder ensembleFacts, StringBuilder dependencyFacts)
+	private void createFacts(List<Shape> shapeList, String fileName, StringBuilder ensembleFacts, StringBuilder dependencyFacts) throws Exception
 	{
         for (Shape shape : shapeList) {
         	// create Ensemble facts:
         	if (shape == null)
         		continue;
-       		if (shape instanceof DummyImpl)
+       		if (shape instanceof Dummy)
        			mCreateEmptyEnsemble = true;
-        	else if (shape instanceof EnsembleImpl)
+        	else if (shape instanceof Ensemble)
         	{
-        		EnsembleImpl ensemble = (EnsembleImpl) shape;
+        		Ensemble ensemble = (Ensemble) shape;
         		if (this.isAbstractEnsemble(ensemble))
         			ensembleFacts.append("abstract_ensemble");
         		else
@@ -356,7 +354,11 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private String getEnsembleDescriptor(Shape shape) {
-		String name = shape.getName().length()== 0 ? "non-editpart" : shape.getName();
+		String name;
+		if(shape.getName() == null)
+			name = "";
+		else
+		 name = shape.getName().length()== 0 ? "non-editpart" : shape.getName();
 		StringBuilder s = new StringBuilder("'");
 		if (name.indexOf('(') > 0) {
 			s.append(name.subSequence(0, name.indexOf('(')));
@@ -408,7 +410,6 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private String[] getEnsembleParameterDefinitions(Ensemble ensemble) {
-		//TODO // FIXME BenjaminL: schneller hack, dass keine nullpointerexception beim speichern eines diagramms mit einem ensemble mit leeren namen auftritt - schöner kettensatz, he?
 		if(ensemble.getName()==null){
 			ensemble.setName("");
 		}
@@ -483,9 +484,34 @@ public class DiagramConverter {
 	 * @param fileName
 	 * @return
 	 * @author Patrick Jahnke
+	 * @throws Exception 
 	 */
-	private String createDependencyFact(Connection connection, String fileName)
+	private String createDependencyFact(Connection connection, String fileName) throws Exception
 	{
+		Shape source = null;
+		Shape target = null;
+
+		// Get the original source (and not the red line source)
+		if ((connection.getOriginalSource()==null)
+				|| (connection.getOriginalSource().size()==0))
+			source = connection.getSource();
+		else if ((connection.getOriginalSource()!=null)
+				&& (connection.getOriginalSource().size()==1))
+			source = connection.getOriginalSource().get(0);
+		else
+			throw new Exception ("Too many original sources in connection available. Please check the the original sources of connection: \""+connection.getName()+"\"");
+
+		// Get the original target (and not the red line target)
+		if ((connection.getOriginalTarget()==null)
+				|| (connection.getOriginalTarget().size()==0))
+			target = connection.getTarget();
+		else if ((connection.getOriginalTarget()!=null)
+				&& (connection.getOriginalTarget().size()==1))
+			target = connection.getOriginalTarget().get(0);
+		else
+			throw new Exception ("Too many original tagets in connection available. Please check the the original targets of connection: \""+connection.getName()+"\"");
+
+		
 		StringBuilder transactionSB = new StringBuilder();
 		//TODO: delete next 2 lines if saved sad file doesn't
 		//contains copy/paste artifact references. Problem: if one copy from one sad file
@@ -495,36 +521,36 @@ public class DiagramConverter {
 		// by converting to prolog facts
 		if(connection.getSource().eIsProxy() || connection.getTarget().eIsProxy())
 			return "";
-		if (connection instanceof OutgoingImpl)
+		if (connection instanceof Outgoing)
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
-		else if (connection instanceof IncomingImpl)
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+		else if (connection instanceof Incoming)
 			transactionSB.append("incoming"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
-		else if (connection instanceof ExpectedImpl)
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+		else if (connection instanceof Expected)
 			transactionSB.append("expected"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
-		else if (connection instanceof NotAllowedImpl)
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+		else if (connection instanceof NotAllowed)
 			transactionSB.append("not_allowed"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
-		else if (connection instanceof InAndOutImpl)
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+		else if (connection instanceof InAndOut)
 		{
 			transactionSB.append("incoming"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(connection.getSource()) + ", [], "
-					+ getDependencyEnsembleName(connection.getTarget()) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 
 		}
 		mDependencyCounter++;
@@ -540,16 +566,16 @@ public class DiagramConverter {
 	 */
 	private String getDependencyEnsembleName(Shape shape)
 	{
-		if (shape instanceof EnsembleImpl)
+		if (shape instanceof Ensemble)
 			return this.getEnsembleDescriptor(shape);
-		else if (shape instanceof DummyImpl)
+		else if (shape instanceof Dummy)
 			return "empty";
 		return "not_defined";
 	}
 	
 
 	/**
-	 * create a string with all subensembles of a parten. //TODO: parten???
+	 * create a string with all subensembles of a parent. 
 	 * @param EList<Shape>
 	 * @author Patrick Jahnke
 	 */
@@ -559,12 +585,12 @@ public class DiagramConverter {
 		if (shapeList == null)
 			return strBuilder.toString();
 
-		String komma = "";	//FIXME: ein string der komma heißt und leer ist?!
+		String komma = "";	
 		for (Shape shape : shapeList)
 		{
-       		if (shape instanceof DummyImpl)
+       		if (shape instanceof Dummy)
        			strBuilder.append(komma + "'empty'");
-        	else if (shape instanceof EnsembleImpl)
+        	else if (shape instanceof Ensemble)
        			strBuilder.append(komma + "'" + shape.getName() + "'");
 			komma = ", ";			
 		}

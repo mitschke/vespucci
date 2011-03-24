@@ -1,5 +1,4 @@
 /*
-
  *  License (BSD Style License):
  *   Copyright (c) 2010
  *   Author Tam-Minh Nguyen
@@ -51,6 +50,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -96,6 +96,7 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
@@ -138,7 +139,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 * @generated
 	 */
 	public static final String CONTEXT_ID = "de.tud.cs.st.vespucci.vespucci_model.diagram.ui.diagramContext"; //$NON-NLS-1$
-
+	
 	/**
 	 * @generated NOT
 	 */
@@ -241,7 +242,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			super.setDocumentProvider(input);
 		}
 	}
-
+	
 	/**
 	 * Custom SelectionSynchronizer
 	 * 
@@ -254,7 +255,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			synchronizer = new VespucciSelectionSynchronizer();
 		return synchronizer;
 	}
-
+	
+	
 	/**
 	 * EditPartFactory for OutlineView
 	 * 
@@ -367,9 +369,20 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(),
 					this.getCurrentSelectedFileName());
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"FileNotFoundException", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 		} catch (IOException e) {
-			e.printStackTrace();
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"Failed to save Prolog file", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		} catch (Exception e) {
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+					"FileNotFoundException", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 
 		// refresh Package View
@@ -571,6 +584,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
+		// adds 2 TransferDropTargetListener to the diagram view. for handling DnD out of the Package Explorer
 		getDiagramGraphicalViewer().addDropTargetListener(
 				new DropVespucciDiagramTargetListener(
 						getDiagramGraphicalViewer()));
@@ -589,7 +603,6 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected void initializeGraphicalViewerContents() {
 		super.initializeGraphicalViewerContents();
-		// System.err.println("Hook point");
 
 		// get all list of connections
 		EditPart root = this.getDiagramGraphicalViewer().getRootEditPart();
@@ -611,7 +624,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			if (ee instanceof ConnectionEditPart) {
 				ConnectionEditPart con = (ConnectionEditPart) ee;
 				Connection ci = (Connection) con.resolveSemanticElement();
-				// Connection to a Node is null
+
+				//ci can be null if the connection belong to a note attachment.
+				//so we need to handle it  
 				if (ci == null)
 					continue;
 

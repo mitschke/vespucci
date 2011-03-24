@@ -83,7 +83,7 @@
 		</not>
 	</condition>
 
-	<property name="architecture.pl" value="HighLevelArchitecture.sad.pl"/>
+	<property name="architecture.pl" value="Overview_BP_work.sad.pl"/>
 	
 	<tempfile property="bytecode.representation" suffix=".pl" deleteonexit="true" prefix="Bytecode"/>
 

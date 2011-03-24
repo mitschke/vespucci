@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -85,6 +84,11 @@ public class GeneratePrologFacts extends AbstractHandler {
 				} catch (IOException e) {
 					IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
 							"Failed to save Prolog file", e);
+					StatusManager.getManager().handle(is, StatusManager.SHOW);
+					StatusManager.getManager().handle(is, StatusManager.LOG);
+				} catch (Exception e) {
+					IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+							"FileNotFoundException", e);
 					StatusManager.getManager().handle(is, StatusManager.SHOW);
 					StatusManager.getManager().handle(is, StatusManager.LOG);
 				}
