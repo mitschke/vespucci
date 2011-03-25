@@ -37,20 +37,19 @@ import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.jface.viewers.IFilter;
 
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-
 
 /**
  * Filter for Ensembles
+ * 
  * @author Malte
- *
+ * 
  */
-public class TabQueryFilter implements IFilter{
+public class TabQueryFilter implements IFilter {
 
 	@Override
 	public boolean select(Object toTest) {
-		if(toTest instanceof  GraphicalEditPart
-				&& ((GraphicalEditPart) toTest).resolveSemanticElement() instanceof Ensemble){
+		if (toTest instanceof GraphicalEditPart
+				&& ((GraphicalEditPart) toTest).resolveSemanticElement() instanceof Ensemble) {
 			return true;
 		}
 		return false;

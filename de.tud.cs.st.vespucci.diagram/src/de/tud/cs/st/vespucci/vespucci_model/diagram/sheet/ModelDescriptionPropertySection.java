@@ -46,7 +46,6 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.ui.provider.PropertySource;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AdvancedPropertySection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
@@ -59,8 +58,9 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
  * Query Tab
+ * 
  * @author Benni
- * @generated not
+ * @generated NOT
  * 
  */
 public class ModelDescriptionPropertySection extends
@@ -97,6 +97,7 @@ public class ModelDescriptionPropertySection extends
 
 	/**
 	 * Modify/unwrap selection.
+	 * 
 	 * @generated
 	 */
 	protected Object transformSelection(Object selected) {
@@ -113,9 +114,9 @@ public class ModelDescriptionPropertySection extends
 			return;
 		}
 		final StructuredSelection structuredSelection = ((StructuredSelection) selection);
-		ArrayList transformedSelection = new ArrayList(
+		ArrayList<Object> transformedSelection = new ArrayList<Object>(
 				structuredSelection.size());
-		for (Iterator it = structuredSelection.iterator(); it.hasNext();) {
+		for (Iterator<?> it = structuredSelection.iterator(); it.hasNext();) {
 			Object r = transformSelection(it.next());
 			if (r != null) {
 				transformedSelection.add(r);
