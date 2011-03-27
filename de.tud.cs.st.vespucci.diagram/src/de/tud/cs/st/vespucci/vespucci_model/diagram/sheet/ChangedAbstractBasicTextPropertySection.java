@@ -235,7 +235,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 */
 	private void updateHeight() {
 		if (getTextWidget() != null && !getTextWidget().isDisposed()
-				&& getTextWidget().isVisible()) {
+				) {
 			getTextWidget().setVisible(false);
 			scrolledParent.setVisible(false);
 			FormData data = new FormData();
