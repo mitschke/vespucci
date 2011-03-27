@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_iHkskSOqEeCkc7phH_OITw">
-    <shapes xmi:type="Ensemble" xmi:id="_kjXZkCOqEeCkc7phH_OITw" name="&quot;GUI&quot;-Vespucci (Diagram)" query="derived">
+    <shapes xmi:type="Ensemble" xmi:id="_kjXZkCOqEeCkc7phH_OITw" name="&quot;GUI&quot;-Vespucci " query="derived">
       <targetConnections xmi:type="Outgoing" xmi:id="_SGMyoCc3EeC-LqTJQDUVwQ" source="_kjXZkCOqEeCkc7phH_OITw" target="_aMdlQSOsEeCkzv8pC6Bscw"/>
       <shapes xmi:type="Ensemble" xmi:id="_Yv-HMCOuEeCOo6bch11Byg" name="Services" query="derived">
         <shapes xmi:type="Ensemble" xmi:id="_HIgr0COvEeCOo6bch11Byg" name="DragDrop" query="package('de.tud.cs.st.vespucci.diagram.dnd')">
