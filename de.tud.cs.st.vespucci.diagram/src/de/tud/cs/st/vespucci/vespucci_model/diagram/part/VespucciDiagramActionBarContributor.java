@@ -64,6 +64,8 @@ public class VespucciDiagramActionBarContributor extends
 	}
 
 	/**
+	 * remove the compartment icon from the menu-bar
+	 * 
 	 * @generated NOT
 	 * @author a_vovk
 	 */
@@ -88,6 +90,5 @@ public class VespucciDiagramActionBarContributor extends
 		IToolBarManager toolBarManager = bars.getToolBarManager();
 		toolBarManager.remove("compartmentMenu");
 		toolBarManager.remove("diagramFilterActionMenu");
-
 	}
 }
