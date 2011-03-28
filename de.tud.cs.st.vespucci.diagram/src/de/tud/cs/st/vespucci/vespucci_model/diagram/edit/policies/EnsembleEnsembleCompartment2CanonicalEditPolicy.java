@@ -106,6 +106,7 @@ public class EnsembleEnsembleCompartment2CanonicalEditPolicy extends
 	}
 
 	/**
+	 * US 48: Fix Issue 3
 	 * @generated NOT
 	 * @author Artem
 	 */
