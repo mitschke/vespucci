@@ -61,88 +61,69 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
 public class GeneratePrologFacts extends AbstractHandler {
 
 	/**
-	 * TODO beschreibung einfügen
+	 * Handels the event, if it is a IStructuredSelection. Should only be used
+	 * for Vespucci diagram files. Generates the prolog facts of the given
+	 * SAD-files.
+	 * 
+	 * @param ExecutionEvent
+	 * @return null
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
-				.getActiveMenuSelection(event); // current package Explorer selection
-		boolean re = false;
-		if (selection.getFirstElement() instanceof IFile) { //first and only selected Element
-			IFile file = (IFile) selection.getFirstElement();
-			//String fname = file.getName();
-			//String path = file.getRawLocation().toFile().getParent();
-			File f = file.getRawLocation().toFile();
-			DiagramConverter dc = new DiagramConverter();
-			if (dc.isDiagramFile(f)) {
-				try {
-					dc.ConvertDiagramToProlog(f); // generating from the *.sad a *.pl
-				} catch (FileNotFoundException e) {
-					IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-							"FileNotFoundException", e);
-					StatusManager.getManager().handle(is, StatusManager.SHOW);
-					StatusManager.getManager().handle(is, StatusManager.LOG);
-				} catch (IOException e) {
-					IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-							"Failed to save Prolog file", e);
-					StatusManager.getManager().handle(is, StatusManager.SHOW);
-					StatusManager.getManager().handle(is, StatusManager.LOG);
-				} catch (Exception e) {
-					IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-							"FileNotFoundException", e);
-					StatusManager.getManager().handle(is, StatusManager.SHOW);
-					StatusManager.getManager().handle(is, StatusManager.LOG);
-				}
-				re = true;
-				// Refresh Pageview
-				try {
-					file.getProject().refreshLocal(IResource.DEPTH_INFINITE,
-							new NullProgressMonitor());
-				} catch (CoreException e1) {
-					StatusManager.getManager().handle(e1, VespucciDiagramEditorPlugin.ID);
+				.getActiveMenuSelection(event); // current Package Explorer
+												// selection
+
+		for (Object o : selection.toArray()) { // 2011-03-28: BenjaminL iterate
+												// over each given file
+			if (o instanceof IFile) {
+				IFile file = (IFile) o;
+
+				File f = file.getRawLocation().toFile();
+				DiagramConverter dc = new DiagramConverter();
+				if (dc.isDiagramFile(f)) {
+					try {
+						dc.ConvertDiagramToProlog(f); // generating from the
+														// *.sad a
+														// *.pl
+					} catch (FileNotFoundException e) {
+						IStatus is = new Status(Status.ERROR,
+								VespucciDiagramEditorPlugin.ID,
+								"FileNotFoundException", e);
+						StatusManager.getManager().handle(is,
+								StatusManager.SHOW);
+						StatusManager.getManager()
+								.handle(is, StatusManager.LOG);
+					} catch (IOException e) {
+						IStatus is = new Status(Status.ERROR,
+								VespucciDiagramEditorPlugin.ID,
+								"Failed to save Prolog file", e);
+						StatusManager.getManager().handle(is,
+								StatusManager.SHOW);
+						StatusManager.getManager()
+								.handle(is, StatusManager.LOG);
+					} catch (Exception e) {
+						IStatus is = new Status(Status.ERROR,
+								VespucciDiagramEditorPlugin.ID,
+								"FileNotFoundException", e);
+						StatusManager.getManager().handle(is,
+								StatusManager.SHOW);
+						StatusManager.getManager()
+								.handle(is, StatusManager.LOG);
+					}
+
+					// Refresh Pageview
+					try {
+						file.getProject().refreshLocal(
+								IResource.DEPTH_INFINITE,
+								new NullProgressMonitor());
+					} catch (CoreException e1) {
+						StatusManager.getManager().handle(e1,
+								VespucciDiagramEditorPlugin.ID);
+					}
 				}
 			}
-
 		}
-		return re;
+		return null;
 	}
-	
-	
-	/*
-	 * 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
-				.getActiveMenuSelection(event); // current package Explorer selection
-		boolean re = false;
-		if (selection.getFirstElement() instanceof IFile) { //first and only selected Element
-			IFile file = (IFile) selection.getFirstElement();
-			String fname = file.getName();
-			String path = file.getRawLocation().toFile().getParent();
-			DiagramConverter dc = new DiagramConverter();
-			if (dc.isDiagramFile(file.getFullPath().toFile())) {
-				try {
-					dc.ConvertDiagramToProlog(path, fname); // generating from the *.sad a *.pl
-				} catch (FileNotFoundException e) {
-					IStatus is = new Status(Status.ERROR, "Vespucci",
-							"FileNotFoundException", e);
-					StatusManager.getManager().handle(is, StatusManager.SHOW);
-				} catch (IOException e) {
-					IStatus is = new Status(Status.ERROR, "Vespucci",
-							"Failed to save Prolog file", e);
-					StatusManager.getManager().handle(is, StatusManager.SHOW);
 
-				}
-				re = true;
-				// Refresh Pageview
-				try {
-					file.getProject().refreshLocal(IResource.DEPTH_INFINITE,
-							new NullProgressMonitor());
-				} catch (CoreException e1) {
-					StatusManager.getManager().handle(e1, "Vespucci");
-				}
-			}
-
-		}
-
-		return re;
-	}*/
-	
 }
