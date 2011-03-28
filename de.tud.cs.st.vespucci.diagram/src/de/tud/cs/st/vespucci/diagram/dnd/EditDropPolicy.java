@@ -108,9 +108,6 @@ public class EditDropPolicy extends DirectEditPolicy {
 	
 	@Override
 	public void setHost(EditPart host) {
-		class a{	//FIXME: BenjaminL: wird die innere klasse benötigt?
-			
-		}
 		super.setHost(host);
 	}
 	
