@@ -41,7 +41,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
-import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.Style;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
@@ -110,9 +109,8 @@ public class OutlineDummyEditPart extends TreeEditPart {
 	@Override
 	protected void handleNotificationEvent(Notification event) {
 		Object notifier = event.getNotifier();
-		if (NotationPackage.Literals.VIEW__ELEMENT == event.getFeature()) {
-			reactivateSemanticElement();
-		} else if (event.getNotifier() == getSemanticElement()
+		reactivateSemanticElement();
+		if (event.getNotifier() == getSemanticElement()
 				|| notifier instanceof Style) {
 			refresh();
 		}
