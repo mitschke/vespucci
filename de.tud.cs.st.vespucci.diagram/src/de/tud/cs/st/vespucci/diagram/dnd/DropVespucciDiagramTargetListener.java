@@ -35,38 +35,34 @@ package de.tud.cs.st.vespucci.diagram.dnd;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.gef.requests.LocationRequest;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
-
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
 
 /**
- * A TransferDropTargetListener for handling the drop of ISelections on the VespucciDiagram view
+ * A TransferDropTargetListener for handling the drop of ISelections on the
+ * VespucciDiagram view
  * 
- * the drop is enable if it can be interpreted as a query 
+ * the drop is enable if it can be interpreted as a query
  * 
- * The data of the drop is storted in extendedData
+ * The data of the drop is stored in extendedData
  * 
  * @author MalteV
  */
 public class DropVespucciDiagramTargetListener extends
 		AbstractTransferDropTargetListener {
+	
 	/**
 	 * Constructor that set the drop type to IRecource
 	 * 
@@ -82,13 +78,11 @@ public class DropVespucciDiagramTargetListener extends
 		if (enable()) {
 			// The drop target can handle the drop
 			getCurrentEvent().detail = DND.DROP_COPY;
-
 		} else {
 			// The dorp target can't handle the drop
 			getCurrentEvent().detail = DND.DROP_NONE;
 		}
 		super.handleDragOver();
-
 	}
 
 	@Override
@@ -96,7 +90,6 @@ public class DropVespucciDiagramTargetListener extends
 		setData();
 		if (enable()) {
 			getCurrentEvent().detail = DND.DROP_COPY;
-
 		} else {
 			getCurrentEvent().detail = DND.DROP_NONE;
 		}
@@ -122,12 +115,13 @@ public class DropVespucciDiagramTargetListener extends
 
 	/**
 	 * check if the drop is processable
+	 * 
 	 * @return
 	 */
 	private boolean enable() {
 		if (getTargetEditPart() == null) {
 			;
-			// alle EditPart fuer die Drop funktionieren soll
+			// all EditPart for which DnD should work
 		} else if (getTargetEditPart() instanceof EnsembleEditPart
 				|| getTargetEditPart() instanceof Ensemble2EditPart
 				|| getTargetEditPart() instanceof ShapesDiagramEditPart) {
@@ -135,7 +129,6 @@ public class DropVespucciDiagramTargetListener extends
 					.getExtendedData());
 		}
 		return false;
-
 	}
 
 	@Override
