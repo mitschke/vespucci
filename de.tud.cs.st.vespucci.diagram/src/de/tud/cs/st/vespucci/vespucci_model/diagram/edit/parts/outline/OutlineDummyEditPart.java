@@ -110,9 +110,13 @@ public class OutlineDummyEditPart extends TreeEditPart {
 	@Override
 	protected void handleNotificationEvent(Notification event) {
 		Object notifier = event.getNotifier();
-		if (NotationPackage.Literals.VIEW__ELEMENT == event.getFeature()) {
+		if (NotationPackage.Literals.VIEW__ELEMENT == event.getFeature() ||
+				((NotationPackage.Literals.VIEW__TARGET_EDGES == event.getFeature() ||
+				NotationPackage.Literals.VIEW__SOURCE_EDGES == event.getFeature()) &&
+				event.getEventType() != Notification.REMOVE)) {
+			
 			reactivateSemanticElement();
-		} else if (event.getNotifier() == getSemanticElement()
+		}else if (event.getNotifier() == getSemanticElement()
 				|| notifier instanceof Style) {
 			refresh();
 		}
