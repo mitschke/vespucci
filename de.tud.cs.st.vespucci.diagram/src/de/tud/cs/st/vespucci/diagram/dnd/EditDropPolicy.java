@@ -48,9 +48,9 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
- * A EditDropPolicy that allow and handle the drop of IRecources on the
- * XXXEditPart that is corresponding to a subtype of the metaclass Shape. 
- * The Request of the drop must be a DirectEditRequest.
+ * A EditDropPolicy that allow and handle the drop of ISelections on the
+ * XXXEditPart that is corresponding to a subtype of the metaclass Shape. The
+ * Request of the drop must be a DirectEditRequest.
  * 
  * @author MalteV
  * 
@@ -61,25 +61,21 @@ public class EditDropPolicy extends DirectEditPolicy {
 	public void activate() {
 		super.activate();
 	}
-	
 
 	@Override
 	public void deactivate() {
 		super.deactivate();
 	}
-	
 
 	@Override
 	public void eraseSourceFeedback(Request request) {
 		super.eraseSourceFeedback(request);
 	}
-	
 
 	@Override
 	public void eraseTargetFeedback(Request request) {
 		super.eraseTargetFeedback(request);
 	}
-	
 
 	@Override
 	public Command getCommand(Request request) {
@@ -88,13 +84,11 @@ public class EditDropPolicy extends DirectEditPolicy {
 		return null;
 	}
 
-	
 	@Override
 	public EditPart getHost() {
 		return super.getHost();
 	}
 
-	
 	@Override
 	public EditPart getTargetEditPart(Request request) {
 		EditPart ep = super.getTargetEditPart(request);
@@ -105,37 +99,31 @@ public class EditDropPolicy extends DirectEditPolicy {
 		return null;
 	}
 
-	
 	@Override
 	public void setHost(EditPart host) {
 		super.setHost(host);
 	}
-	
 
 	@Override
 	public void showSourceFeedback(Request request) {
 		super.showSourceFeedback(request);
 	}
 
-	
 	@Override
 	public void showTargetFeedback(Request request) {
 		super.showTargetFeedback(request);
 	}
-	
 
 	@Override
 	public String toString() {
 		return super.toString();
 	}
-	
 
 	@Override
 	public boolean understandsRequest(Request req) {
 		return super.understandsRequest(req);
 	}
 
-	
 	@Override
 	protected Command getDirectEditCommand(DirectEditRequest request) {
 		// TODO put "http://vespucci.editor" in some constant
@@ -150,44 +138,37 @@ public class EditDropPolicy extends DirectEditPolicy {
 			EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
 					.getEPackage("http://vespucci.editor");
 			Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
-			if((((GraphicalEditPart) getHost()).resolveSemanticElement()).eClass().getEAllStructuralFeatures().contains(vesPackage.getShape_Query())){
-				
-			
-			// get the old query 
-			//String name = (String)writer.eGet(LibraryPackage.eINSTANCE.getWriter_Name());
-			
-			Object oldQuery = (((GraphicalEditPart) getHost()).resolveSemanticElement()).eGet(vesPackage.getShape_Query());
-			@SuppressWarnings("unchecked")
-			SetRequest sr = new SetRequest(
-					((GraphicalEditPart) getHost()).resolveSemanticElement(),
-					vesPackage.getShape_Query(),
-					QueryBuilder.createQueryForAMapOfIResource(request
-							.getExtendedData(),(String) oldQuery));
-		
-			org.eclipse.gmf.runtime.common.core.command.ICommand com = new SetValueCommand(
-					sr);
-			// return the edit Request in a Proxy so it can be handled
-			return new org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy(
-					com);
+			if ((((GraphicalEditPart) getHost()).resolveSemanticElement())
+					.eClass().getEAllStructuralFeatures()
+					.contains(vesPackage.getShape_Query())) {
 
-			// create a Request for the Query edit
-			// @SuppressWarnings("unchecked")
-			// EditQueryRequest editRequest = new EditQueryRequest(
-			// ((GraphicalEditPart) getHost()).resolveSemanticElement(),
-			// vesPackage.getShape_Query(), request.getExtendedData());
-			// ICommand com = new EditQueryCommand(editRequest);
-			// return new
-			// org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy(com);
+				// get the old query
+				Object oldQuery = (((GraphicalEditPart) getHost())
+						.resolveSemanticElement()).eGet(vesPackage
+						.getShape_Query());
+				@SuppressWarnings("unchecked")
+				SetRequest sr = new SetRequest(
+						((GraphicalEditPart) getHost())
+								.resolveSemanticElement(),
+						vesPackage.getShape_Query(), QueryBuilder
+								.createQueryForAMapOfIResource(
+										request.getExtendedData(),
+										(String) oldQuery));
+
+				org.eclipse.gmf.runtime.common.core.command.ICommand com = new SetValueCommand(
+						sr);
+				// return the edit Request in a proxy so it can be handled
+				return new org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy(
+						com);
+
 			}
-			return null;
 		}
 		return null;
 	}
 
-	
 	@Override
 	protected void showCurrentEditValue(DirectEditRequest request) {
-		// TODO Auto-generated method stub
+
 	}
 
 }

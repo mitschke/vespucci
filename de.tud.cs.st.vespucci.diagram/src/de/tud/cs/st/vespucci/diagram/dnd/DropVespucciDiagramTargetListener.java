@@ -62,7 +62,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEdit
  */
 public class DropVespucciDiagramTargetListener extends
 		AbstractTransferDropTargetListener {
-	
+
 	/**
 	 * Constructor that set the drop type to IRecource
 	 * 
@@ -79,7 +79,7 @@ public class DropVespucciDiagramTargetListener extends
 			// The drop target can handle the drop
 			getCurrentEvent().detail = DND.DROP_COPY;
 		} else {
-			// The dorp target can't handle the drop
+			// The drop target can't handle the drop
 			getCurrentEvent().detail = DND.DROP_NONE;
 		}
 		super.handleDragOver();
@@ -120,7 +120,7 @@ public class DropVespucciDiagramTargetListener extends
 	 */
 	private boolean enable() {
 		if (getTargetEditPart() == null) {
-			;
+
 			// all EditPart for which DnD should work
 		} else if (getTargetEditPart() instanceof EnsembleEditPart
 				|| getTargetEditPart() instanceof Ensemble2EditPart
