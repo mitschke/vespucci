@@ -75,7 +75,7 @@ public class CreateEnsembleDropTargetListener extends
 	@Override
 	protected void handleDragOver() {
 		super.handleDragOver();
-		//TODO: find an other way to change the mouse icon. 
+		//TODO: find another way to change the mouse icon. 
 		//hack!
 		if(getCurrentEvent() != null &&
 				getCurrentEvent().detail == DND.DROP_COPY)
@@ -96,7 +96,7 @@ public class CreateEnsembleDropTargetListener extends
 	}
 	
 	/**
-	 * creats a CreateViewRequest with the IType Ensemble_2001
+	 * creates a CreateViewRequest with the IType Ensemble_2001
 	 * @see org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequestFactory#getCreateShapeRequest
 	 */
 	@Override
@@ -106,9 +106,9 @@ public class CreateEnsembleDropTargetListener extends
 		Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 		IElementType elementType = ElementTypeRegistry.getInstance().getElementType(vesPackage.getEnsemble());
 		
-		//TODO is there a way to get VespucciElementTypes.Ensemble_2001 over a methode call?
+		//TODO is there a way to get VespucciElementTypes.Ensemble_2001 over a method call?
 		elementType = VespucciElementTypes.Ensemble_2001;
-		// Get the selected edit part
+		// Get the selected editpart
 		EditPart epart = getTargetEditPart();
 		if(epart == null)
 			return new CreateViewRequest(new CreateViewRequest.ViewDescriptor(null,null));

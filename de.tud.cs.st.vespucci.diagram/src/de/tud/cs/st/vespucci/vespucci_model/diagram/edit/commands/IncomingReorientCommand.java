@@ -145,6 +145,7 @@ public class IncomingReorientCommand extends EditElementCommand {
 	}
 
 	/**
+	 * @author Artem Vovk
 	 * @generated NOT
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
@@ -160,6 +161,7 @@ public class IncomingReorientCommand extends EditElementCommand {
 	}
 
 	/**
+	 * @author Artem Vovk
 	 * @generated NOT
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {

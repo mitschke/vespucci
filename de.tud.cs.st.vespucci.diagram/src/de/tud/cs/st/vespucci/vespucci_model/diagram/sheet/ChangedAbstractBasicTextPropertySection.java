@@ -50,11 +50,19 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 public abstract class ChangedAbstractBasicTextPropertySection extends
 		AbstractModelerPropertySection {
 
+	private final int QUERY_TAB_HEIGHT_SHIFT = 35;
+
+	private final int QUERY_TAB_WIDTH_SHIFT = 45;
+
 	// text widget to display and set value of the property
 	private Text textWidget;
 
 	// parent parent ... parent composite for the size of the textfield
 	private Composite scrolledParent;
+
+	private Composite sectionComposite;
+
+	private int startHeight = 15;
 
 	public void setScrolledParent(Composite scrolledParent) {
 		this.scrolledParent = scrolledParent;
@@ -85,8 +93,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * @return - string representation of the property value
 	 */
 	abstract protected String getPropertyValueString();
-
-	private int startHeight = 15;
 
 	/**
 	 * @return - title of the command which will be executed to set the property
@@ -131,8 +137,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		}
 	};
 
-	private Composite sectionComposite;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -143,7 +147,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 */
 	public void createControls(Composite parent,
 			TabbedPropertySheetPage aTabbedPropertySheetPage) {
-
 		doCreateControls(parent, aTabbedPropertySheetPage);
 	}
 
@@ -223,19 +226,18 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	}
 
 	private int getHeight() {
-		return this.scrolledParent.getSize().y - 35;
+		return this.scrolledParent.getSize().y - QUERY_TAB_HEIGHT_SHIFT;
 	}
 
 	private int getWidth() {
-		return this.scrolledParent.getSize().x - 45;
+		return this.scrolledParent.getSize().x - QUERY_TAB_WIDTH_SHIFT;
 	}
 
 	/**
 	 * calculates the new size of the widget and updates it
 	 */
 	private void updateHeight() {
-		if (getTextWidget() != null && !getTextWidget().isDisposed()
-				) {
+		if (getTextWidget() != null && !getTextWidget().isDisposed()) {
 			getTextWidget().setVisible(false);
 			scrolledParent.setVisible(false);
 			FormData data = new FormData();
@@ -326,7 +328,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
 	public void refresh() {
-		updateHeight();
 		getListener().startNonUserChange();
 		try {
 			executeAsReadAction(new Runnable() {
@@ -344,9 +345,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * Refresh UI body - refresh will surround this with read action block
 	 */
 	protected void refreshUI() {
-		updateHeight();
 		getTextWidget().setText(getPropertyValueString());
-		updateHeight();
 	}
 
 	/**
