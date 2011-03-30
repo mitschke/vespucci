@@ -72,6 +72,7 @@ public class QueryBuilder {
 	 * @return new query
 	 * @author BenjaminL
 	 */
+	//TODO rename from createQueryForAMapOfIResource to createQueryForAMapOfISelection
 	public static String createQueryForAMapOfIResource(Map<String, Object> map) {
 		return createQueryForAMapOfIResource(map, "");
 	}
@@ -87,6 +88,7 @@ public class QueryBuilder {
 	 * @return new query
 	 * @author BenjaminL
 	 */
+	//TODO rename from createQueryForAMapOfIResource to createQueryForAMapOfISelection
 	public static String createQueryForAMapOfIResource(Map<String, Object> map,
 			String oldQuery) {
 
@@ -110,7 +112,7 @@ public class QueryBuilder {
 		} else {
 		}
 		if (res.endsWith(QUERY_DELIMITER))
-											
+			
 			res = res.substring(0, res.length() - QUERY_DELIMITER.length() - 1);
 
 		if (res.equals(""))
@@ -209,7 +211,6 @@ public class QueryBuilder {
 			}
 		}
 		return list;
-
 	}
 
 	/**
