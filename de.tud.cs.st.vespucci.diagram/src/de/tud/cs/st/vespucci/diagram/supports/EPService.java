@@ -59,7 +59,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
  * 
  * @author Tam-Minh Nguyen
  * @author Michael Eichberg (minor bug fixes, added TODOs)
- * @author BenjaminL errorlog ausgaben hinzugefügt (TODOs)
+ * @author BenjaminL errorlog ausgaben hinzugefügt
  */
 public class EPService {
 
@@ -74,7 +74,7 @@ public class EPService {
 			Shape shape = (Shape) ePart.resolveSemanticElement();
 			String s = shape.getName();
 	
-			// TODO Report this as an error to the user - BenjaminL: erledigt? - ERROR STRINGS ANLEGEN!!
+			// TODO BenjaminL: ERROR STRINGS ANLEGEN
 			if (s.length() == 0) {
 				IStatus iStat = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
 						"No name for an ensemble is not allowed");
@@ -88,18 +88,13 @@ public class EPService {
 					"Couldn't resolve ensemble name from a non ShapeNode", new Exception("Couldn't resolve ensemble name from a non ShapeNode"));
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
-			
-			// TODO Report this as an error to the user (and throw an exception?) - BenjaminL: erledigt?
 			return "non-editpart";
 		    }
 		} catch (Exception e) {
-		    e.printStackTrace();
-		    
-		    IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
 					"Couldn't resolve ensemble name", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
-		    // TODO Report an error (Error log?) and throw an exception? - BenjaminL: erledigt?
 		    return "no_name";
 		}
     }
@@ -136,7 +131,6 @@ public class EPService {
 	    	return "non-editpart";
 	    }
 	} catch (Exception e) {
-	    e.printStackTrace();
 	    IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
 				"Couldn't resolve ensemble", new Exception("Couldn't resolve ensemble"));
 		StatusManager.getManager().handle(is, StatusManager.SHOW);
@@ -240,11 +234,13 @@ public class EPService {
 	    String s = con_model.getName();
 
 	    if (s.length() == 0) {
-		s = "all";
+	    	s = "all";
 	    }
 	    return s;
 	} catch (Exception e) {
-	    // e.printStackTrace();
+		IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+				"Couldn't resolve connection classifier", new Exception("Couldn't resolve connection classifier"));
+		StatusManager.getManager().handle(is, StatusManager.LOG);
 	    return "all";
 	}
     }

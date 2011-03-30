@@ -60,8 +60,6 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
-// TODO auskommentierte sachen entfernen
-
 /**
  * static class to get all information about the units supports e.g. type
  * conversion from java binary type to FQN or resolving all packages from a
@@ -99,7 +97,10 @@ public class Resolver {
 		try {
 			tmp = JavaModelUtil.getResolvedTypeName(type, jdtDeclaringType);
 		} catch (JavaModelException e) {
-			e.printStackTrace();
+			IStatus is = new Status(Status.ERROR,
+					VespucciDiagramEditorPlugin.ID,
+					"JavaModelException: Failed to resolve type", e);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return tmp;
 	}
@@ -201,8 +202,9 @@ public class Resolver {
 				}
 
 			} catch (JavaModelException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				IStatus is = new Status(Status.ERROR,
+						VespucciDiagramEditorPlugin.ID, "JavaModelException", e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
 			} catch (NullPointerException e) {
 				// TODO Hack!!! This hack is implemented, to avoid in each type
 				// the check if the underlying resource is null. This approach
@@ -211,8 +213,7 @@ public class Resolver {
 				return false;
 			}
 
-			if (akt == false)
-				return false;
+			return akt;
 
 		}
 		return true;
@@ -319,7 +320,6 @@ public class Resolver {
 			IStatus is = new Status(Status.ERROR,
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve returntype", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return null;
@@ -349,7 +349,7 @@ public class Resolver {
 	 * @return String of the method name
 	 */
 	public static String getMethodnameFromMethod(IMethod method) {
-		// get methodname, set as <init> if it is the constructor of the class
+		// get method name, set as <init> if it is the constructor of the class
 		try {
 			if (method.isConstructor())
 				return CONSTRUCTOR;
@@ -359,7 +359,6 @@ public class Resolver {
 			IStatus is = new Status(Status.ERROR,
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve methodname", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return null;
@@ -378,7 +377,6 @@ public class Resolver {
 			IStatus is = new Status(Status.ERROR,
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve field type", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return null;
@@ -408,25 +406,12 @@ public class Resolver {
 		} else if (o instanceof IType) {
 			IType type = (IType) o;
 			return type.getFullyQualifiedName();
-			// return
-			// Resolver.getFQClassnamefromIxxx(type.getCompilationUnit(),"") +
-			// "." + type.getElementName();
 		} else if (o instanceof IField) {
-			/*
-			 * IField field = (IField) o; IJavaElement fff = field.getParent();
-			 * return Resolver.getFQPackageNameFromIxxx(field, "") + "." +
-			 * field.getParent().getElementName() + "." +
-			 * field.getElementName();
-			 */
 			return Resolver.getFQClassnamefromIxxx(o, "") + "."
 					+ ((IField) o).getElementName();
 		} else if (o instanceof IMethod) {
-			// IMethod method = (IMethod) o;
 			return Resolver.getFQClassnamefromIxxx(o, "") + "."
 					+ ((IMethod) o).getElementName();
-			// return Resolver.getFQPackageNameFromIxxx(method, "") + "." +
-			// method.getParent().getElementName() + "."
-			// + method.getElementName();
 		} else if (o instanceof ISourceAttribute) {
 			return ((ISourceAttribute) o).getSourceFileName().toString();
 		} else if (o instanceof IClassFile) {
@@ -472,7 +457,6 @@ public class Resolver {
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve packages of src-folder/JAR-file",
 					e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return Collections.emptyList();

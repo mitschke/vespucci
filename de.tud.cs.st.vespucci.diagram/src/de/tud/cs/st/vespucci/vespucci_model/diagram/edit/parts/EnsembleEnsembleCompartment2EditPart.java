@@ -64,11 +64,10 @@ public class EnsembleEnsembleCompartment2EditPart extends
 
 	/**
 	 * @generated NOT
+	 * @author Artem
 	 */
 	public EnsembleEnsembleCompartment2EditPart(View view) {
 		super(view);
-
-		//
 		abm = new CompartmentEditPartSupporter(this);
 	}
 
@@ -118,7 +117,9 @@ public class EnsembleEnsembleCompartment2EditPart extends
 	}
 
 	/**
+	 * US 48: Fix Issue 3
 	 * @generated NOT
+	 * @author Artem
 	 */
 	@Override
 	protected void handleNotificationEvent(Notification event) {
@@ -127,6 +128,5 @@ public class EnsembleEnsembleCompartment2EditPart extends
 				event.getFeature())) {
 			this.abm.updateConnections(event);
 		}
-
 	}
 }
