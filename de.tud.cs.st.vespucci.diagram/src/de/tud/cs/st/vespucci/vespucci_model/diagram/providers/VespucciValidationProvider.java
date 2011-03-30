@@ -121,7 +121,7 @@ public class VespucciValidationProvider {
 	 * @generated NOT
 	 */
 	public static class Adapter4 extends AbstractModelConstraint {
-		//TODO change the name Adapter4 to something expressive
+		//TODO change the name Adapter4 to a more expressive name
 		/**
 		 * Java implementation for the constraint NonLeafEnsembleMustBeDerived in All constraints about Ensemble
 		 * @author MalteV
