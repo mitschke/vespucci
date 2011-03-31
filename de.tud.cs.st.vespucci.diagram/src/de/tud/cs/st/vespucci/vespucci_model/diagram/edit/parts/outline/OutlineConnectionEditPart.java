@@ -41,6 +41,11 @@ import org.eclipse.swt.graphics.Image;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
+/**
+ * Abstract EditPart that represents a connection in outlineview
+ * @author a_vovk
+ *
+ */
 public abstract class OutlineConnectionEditPart extends TreeEditPart {
 
 	public OutlineConnectionEditPart(Object model) {
