@@ -391,8 +391,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			activeProject.refreshLocal(IResource.DEPTH_INFINITE,
 					progressMonitor);
 		} catch (CoreException e) {
-			IStatus iStat = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-				"Failed to refresh package view");
+			IStatus iStat = new Status(Status.ERROR,
+					VespucciDiagramEditorPlugin.ID,
+					"Failed to refresh package view");
 			StatusManager.getManager().handle(iStat, StatusManager.SHOW);
 			StatusManager.getManager().handle(iStat, StatusManager.LOG);
 		}

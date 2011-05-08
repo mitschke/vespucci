@@ -666,7 +666,7 @@
             genNodes="//@diagram/@childNodes.1 //@diagram/@topLevelNodes.1"/>
       </groups>
       <groups
-          title="Dependencies"
+          title="Constraints"
           stack="true"
           collapse="true">
         <entries
