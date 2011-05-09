@@ -162,9 +162,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 				first = temp;
 			}
 			
-			Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
-			StyleRange r1 = new StyleRange(first, 1, black, null, SWT.BOLD);
-			StyleRange r2 = new StyleRange(second, 1, black, null, SWT.BOLD);
+			Color blue = Display.getCurrent().getSystemColor(SWT.COLOR_BLUE);
+			StyleRange r1 = new StyleRange(first, 1, blue, null, SWT.BOLD);
+			StyleRange r2 = new StyleRange(second, 1, blue, null, SWT.BOLD);
 			
 			return new StyleRange[] {r1, r2};
 		}
