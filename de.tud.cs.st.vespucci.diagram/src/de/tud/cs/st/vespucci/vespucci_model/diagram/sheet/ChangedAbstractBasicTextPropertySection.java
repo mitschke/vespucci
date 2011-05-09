@@ -21,11 +21,15 @@ import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPro
 import org.eclipse.gmf.runtime.diagram.ui.properties.views.TextChangeHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -46,6 +50,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  *         Changed by:
  * @author MalteV
  * @author BenjaminL
+ * @author DominicS
  */
 public abstract class ChangedAbstractBasicTextPropertySection extends
 		AbstractModelerPropertySection {
@@ -112,6 +117,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		public void handleEvent(Event event) {
 			switch (event.type) {
 			case SWT.KeyDown:
+				doSyntaxHighlighting();
+				
 				textModified = true;
 				if (event.character == SWT.CR) {
 					getPropertyValueString();
@@ -130,9 +137,102 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 						.getActiveWorkbenchWindow().getActivePage()
 						.getActivePart();
 				StatusLineUtil.outputErrorMessage(part, StringStatics.BLANK);
-
+				
 				setPropertyValue(control);
 				textModified = false;
+			}
+		}
+		
+		/**
+		 * Returns an array of StyleRange that makes the characters at
+		 * the positions first and second of a StyledText appear in bold
+		 * print.
+		 * 
+		 * @author DominicS
+		 * @param first First bold character
+		 * @param second Second bold character
+		 * @return Array of StyleRanges that makes characters at first and second bold
+		 */
+		private StyleRange[] getBoldStyleRanges(int first, int second)
+		{
+			if (first > second)
+			{
+				int temp = second;
+				second = first;
+				first = temp;
+			}
+			
+			Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+			StyleRange r1 = new StyleRange(first, 1, black, null, SWT.BOLD);
+			StyleRange r2 = new StyleRange(second, 1, black, null, SWT.BOLD);
+			
+			return new StyleRange[] {r1, r2};
+		}
+		
+		/**
+		 * @author DominicS
+		 */
+		private void doSyntaxHighlighting()
+		{
+			Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+			
+			int offset = textWidget.getCaretOffset();
+			// Check if caret is at first position
+			// => no syntax highlighting
+			if (offset == 0)
+			{
+				// do not highlight anything:
+				textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount()-1, black, null, SWT.NORMAL));
+				return;
+			}
+			
+			int size = textWidget.getCharCount();
+			String lastChar = textWidget.getText(offset-1, offset-1);
+			
+			if (lastChar.equals("("))
+			{
+				int intend = 0;
+				for (int i = offset; i < size; i++)
+				{
+					if (textWidget.getText(i, i).equals("("))
+						intend++;
+					
+					if (textWidget.getText(i, i).equals(")")
+						&& intend == 0)
+					{
+						// Highlight both brackets						
+						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
+						break;
+					}					
+
+					if (textWidget.getText(i, i).equals(")"))
+						intend--;
+				}
+			}
+			else if (lastChar.equals(")") && offset > 2)
+			{
+				int intend = 0;
+				for (int i = offset-2; i >= 0; i--)
+				{
+					if (textWidget.getText(i, i).equals(")"))
+						intend++;
+					
+					if (textWidget.getText(i, i).equals("(")
+						&& intend == 0)
+					{
+						// Highlight both brackets	
+						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
+						break;
+					}					
+
+					if (textWidget.getText(i, i).equals("("))
+						intend--;
+				}
+			}
+			else
+			{
+				// do not highlight anything:
+				textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount()-1, black, null, SWT.NORMAL));
 			}
 		}
 	};
@@ -216,6 +316,10 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			parent,
 			SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL
 		);
+		
+		// Use a monospaced font
+		Font mono = new Font(parent.getDisplay(), "Courier New", 10, SWT.NONE);
+		st.setFont(mono);
 		
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
