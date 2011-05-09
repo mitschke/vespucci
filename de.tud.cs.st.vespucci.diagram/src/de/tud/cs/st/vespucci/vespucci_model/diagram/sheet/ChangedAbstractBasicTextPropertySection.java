@@ -21,13 +21,13 @@ import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPro
 import org.eclipse.gmf.runtime.diagram.ui.properties.views.TextChangeHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -54,8 +54,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 	private final int QUERY_TAB_WIDTH_SHIFT = 45;
 
-	// text widget to display and set value of the property
-	private Text textWidget;
+	// styled text widget to display and set value of the property
+	private StyledText textWidget;
 
 	// parent parent ... parent composite for the size of the textfield
 	private Composite scrolledParent;
@@ -209,19 +209,25 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 *            - parent composite
 	 * @return - a text widget to display and edit the property
 	 */
-	protected Text createTextWidget(Composite parent) {
+	protected StyledText createTextWidget(Composite parent) {
 		getSectionComposite().getSize();
-		Text text = getWidgetFactory().createText(parent, StringStatics.BLANK,
-				SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL); // | SWT.V_SCROLL);
+		
+		StyledText st = new StyledText(
+			parent,
+			SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL
+		);
+		
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, 0);
 		data.height = startHeight;
-		text.setLayoutData(data);
+		st.setLayoutData(data);
+		
 		if (isReadOnly())
-			text.setEditable(false);
-		return text;
+			st.setEditable(false);
+		
+		return st;
 
 	}
 
@@ -358,7 +364,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	/**
 	 * @return Returns the textWidget.
 	 */
-	protected Text getTextWidget() {
+	protected StyledText getTextWidget() {
 		return textWidget;
 	}
 
