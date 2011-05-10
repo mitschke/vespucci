@@ -170,11 +170,22 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		}
 		
 		/**
+		 * Resets the whole text style in the StyledText component to
+		 * its "normal" state.
+		 */
+		private void resetStyle()
+		{
+			Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+			textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount(), black, null, SWT.NORMAL));
+		}
+		
+		/**
 		 * @author DominicS
 		 */
 		private void doSyntaxHighlighting()
 		{
-			Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+			// first, set everything to black and normal
+			resetStyle();
 			
 			int offset = textWidget.getCaretOffset();
 			// Check if caret is at first position
@@ -182,7 +193,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			if (offset == 0)
 			{
 				// do not highlight anything:
-				textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount()-1, black, null, SWT.NORMAL));
 				return;
 			}
 			
@@ -211,6 +221,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 					}
 				}
 			}
+			
 			else if (currentChar == ')' && offset > 1)
 			{
 				int intend = 0;
@@ -233,8 +244,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 					}
 				}
 			}
-			
-			textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount(), black, null, SWT.NORMAL));
 		}
 	};
 
