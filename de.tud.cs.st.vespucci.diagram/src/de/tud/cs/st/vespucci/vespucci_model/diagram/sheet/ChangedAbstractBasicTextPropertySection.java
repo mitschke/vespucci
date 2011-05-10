@@ -162,9 +162,14 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 				first = temp;
 			}
 			
+			// Emphasis style:
+			// blue, bold and underlined
+			
 			Color blue = Display.getCurrent().getSystemColor(SWT.COLOR_BLUE);
 			StyleRange r1 = new StyleRange(first, 1, blue, null, SWT.BOLD);
 			StyleRange r2 = new StyleRange(second, 1, blue, null, SWT.BOLD);
+			r1.underline = true;
+			r2.underline = true;
 			
 			return new StyleRange[] {r1, r2};
 		}
@@ -180,6 +185,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		}
 		
 		/**
+		 * Performs syntax highlighting of the query properties tab.
+		 * So far, bracket emphasis is implemented.
+		 * 
 		 * @author DominicS
 		 */
 		private void doSyntaxHighlighting()
