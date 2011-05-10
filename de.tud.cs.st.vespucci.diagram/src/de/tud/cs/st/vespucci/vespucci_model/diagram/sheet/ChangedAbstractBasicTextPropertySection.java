@@ -187,53 +187,54 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			}
 			
 			int size = textWidget.getCharCount();
-			String lastChar = textWidget.getText(offset-1, offset-1);
+			char currentChar = textWidget.getText().charAt(offset-1);
 			
-			if (lastChar.equals("("))
+			if (currentChar == '(')
 			{
 				int intend = 0;
 				for (int i = offset; i < size; i++)
 				{
-					if (textWidget.getText(i, i).equals("("))
+					if (textWidget.getText().charAt(i) == '(') {
 						intend++;
+					}
 					
-					if (textWidget.getText(i, i).equals(")")
+					if (textWidget.getText().charAt(i) == ')'
 						&& intend == 0)
 					{
 						// Highlight both brackets						
 						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
-						break;
+						return;
 					}					
 
-					if (textWidget.getText(i, i).equals(")"))
+					if (textWidget.getText().charAt(i) == ')') {
 						intend--;
+					}
 				}
 			}
-			else if (lastChar.equals(")") && offset > 2)
+			else if (currentChar == ')' && offset > 1)
 			{
 				int intend = 0;
 				for (int i = offset-2; i >= 0; i--)
 				{
-					if (textWidget.getText(i, i).equals(")"))
+					if (textWidget.getText().charAt(i) == ')') {
 						intend++;
+					}
 					
-					if (textWidget.getText(i, i).equals("(")
+					if (textWidget.getText().charAt(i) == '('
 						&& intend == 0)
 					{
 						// Highlight both brackets	
 						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
-						break;
+						return;
 					}					
 
-					if (textWidget.getText(i, i).equals("("))
+					if (textWidget.getText().charAt(i) == '(') {
 						intend--;
+					}
 				}
 			}
-			else
-			{
-				// do not highlight anything:
-				textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount()-1, black, null, SWT.NORMAL));
-			}
+			
+			textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount(), black, null, SWT.NORMAL));
 		}
 	};
 
