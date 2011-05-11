@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -63,8 +63,6 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
-import de.tud.cs.st.vespucci.diagram.dnd.EditDropPolicy;
-
 /**
  * @generated
  */
@@ -93,7 +91,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated not
+	 * @generated
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
@@ -101,7 +99,6 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
-		installEditPolicy(REQ_DIRECT_EDIT, new EditDropPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
 	}
@@ -483,6 +480,10 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		/**
 		 * @generated
 		 */
+		private WrappingLabel fFigureEnsembleDescriptionFigure;
+		/**
+		 * @generated
+		 */
 		private WrappingLabel fFigureEnsembleQueryFigure;
 		/**
 		 * @generated
@@ -517,11 +518,48 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 
 			this.add(fFigureEnsembleQueryFigure);
 
+			RectangleFigure ensembleDescriptionContainerFigure0 = new RectangleFigure();
+
+			this.add(ensembleDescriptionContainerFigure0, BorderLayout.CENTER);
+
+			BorderLayout layoutEnsembleDescriptionContainerFigure0 = new BorderLayout();
+			ensembleDescriptionContainerFigure0
+					.setLayoutManager(layoutEnsembleDescriptionContainerFigure0);
+
+			fFigureEnsembleDescriptionFigure = new WrappingLabel();
+			fFigureEnsembleDescriptionFigure.setText("");
+
+			ensembleDescriptionContainerFigure0.add(
+					fFigureEnsembleDescriptionFigure, BorderLayout.LEFT);
+
 			fFigureEnsembleCompartmentFigure = new RectangleFigure();
 			fFigureEnsembleCompartmentFigure
 					.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK);
 
-			this.add(fFigureEnsembleCompartmentFigure, BorderLayout.CENTER);
+			ensembleDescriptionContainerFigure0.add(
+					fFigureEnsembleCompartmentFigure, BorderLayout.CENTER);
+
+			RectangleFigure ensembleDescriptionContainerFigure1 = new RectangleFigure();
+
+			ensembleDescriptionContainerFigure0.add(
+					ensembleDescriptionContainerFigure1, BorderLayout.CENTER);
+
+			BorderLayout layoutEnsembleDescriptionContainerFigure1 = new BorderLayout();
+			ensembleDescriptionContainerFigure1
+					.setLayoutManager(layoutEnsembleDescriptionContainerFigure1);
+
+			WrappingLabel ensembleDescriptionFigure2 = new WrappingLabel();
+			ensembleDescriptionFigure2.setText("");
+
+			ensembleDescriptionContainerFigure1.add(ensembleDescriptionFigure2,
+					BorderLayout.LEFT);
+
+			RectangleFigure ensembleCompartmentFigure2 = new RectangleFigure();
+			ensembleCompartmentFigure2
+					.setBackgroundColor(ENSEMBLECOMPARTMENTFIGURE2_BACK);
+
+			ensembleDescriptionContainerFigure1.add(ensembleCompartmentFigure2,
+					BorderLayout.CENTER);
 
 		}
 
@@ -530,6 +568,13 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		 */
 		public WrappingLabel getFigureEnsembleNameFigure() {
 			return fFigureEnsembleNameFigure;
+		}
+
+		/**
+		 * @generated
+		 */
+		public WrappingLabel getFigureEnsembleDescriptionFigure() {
+			return fFigureEnsembleDescriptionFigure;
 		}
 
 		/**
@@ -552,6 +597,12 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	static final Color FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK = new Color(null,
-			175, 238, 238);
+			0, 0, 0);
+
+	/**
+	 * @generated
+	 */
+	static final Color ENSEMBLECOMPARTMENTFIGURE2_BACK = new Color(null, 175,
+			238, 238);
 
 }

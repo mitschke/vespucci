@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -35,7 +35,6 @@
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
@@ -44,10 +43,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.ResizableCompartmentEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.figures.ResizableCompartmentFigure;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
-import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.View;
-
-import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
 
 /**
  * @generated
@@ -60,15 +56,11 @@ public class EnsembleEnsembleCompartment2EditPart extends
 	 */
 	public static final int VISUAL_ID = 7002;
 
-	private CompartmentEditPartSupporter abm;
-
 	/**
-	 * @generated NOT
-	 * @author Artem
+	 * @generated
 	 */
 	public EnsembleEnsembleCompartment2EditPart(View view) {
 		super(view);
-		abm = new CompartmentEditPartSupporter(this);
 	}
 
 	/**
@@ -116,17 +108,4 @@ public class EnsembleEnsembleCompartment2EditPart extends
 		}
 	}
 
-	/**
-	 * US 48: Fix Issue 3
-	 * @generated NOT
-	 * @author Artem
-	 */
-	@Override
-	protected void handleNotificationEvent(Notification event) {
-		super.handleNotificationEvent(event);
-		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(
-				event.getFeature())) {
-			this.abm.updateConnections(event);
-		}
-	}
 }
