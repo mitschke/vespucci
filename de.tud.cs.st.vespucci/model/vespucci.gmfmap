@@ -17,6 +17,8 @@
             href="vespucci.gmfgraph#EnsembleName"/>
         <features
             href="vespucci.ecore#//Shape/name"/>
+        <features
+            href="vespucci.ecore#//Shape/description"/>
       </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"

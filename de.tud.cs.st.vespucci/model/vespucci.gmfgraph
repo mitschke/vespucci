@@ -108,32 +108,69 @@
         </children>
         <children
             xsi:type="gmfgraph:Label"
-            name="EnsembleDescriptionFigure"/>
-        <children
-            xsi:type="gmfgraph:Label"
             name="EnsembleQueryFigure"
             text=""/>
         <children
             xsi:type="gmfgraph:Rectangle"
-            name="EnsembleCompartmentFigure">
+            name="EnsembleDescriptionContainerFigure">
           <layoutData
               xsi:type="gmfgraph:BorderLayoutData"/>
-          <backgroundColor
-              xsi:type="gmfgraph:RGBColor"
-              red="175"
-              green="238"
-              blue="238"/>
+          <layout
+              xsi:type="gmfgraph:BorderLayout"/>
+          <children
+              xsi:type="gmfgraph:Label"
+              name="EnsembleDescriptionFigure"
+              text="">
+            <layoutData
+                xsi:type="gmfgraph:BorderLayoutData"
+                alignment="BEGINNING"/>
+          </children>
+          <children
+              xsi:type="gmfgraph:Rectangle"
+              name="EnsembleCompartmentFigure">
+            <layoutData
+                xsi:type="gmfgraph:BorderLayoutData"/>
+            <backgroundColor
+                xsi:type="gmfgraph:RGBColor"/>
+          </children>
+          <children
+              xsi:type="gmfgraph:Rectangle"
+              name="EnsembleDescriptionContainerFigure">
+            <layoutData
+                xsi:type="gmfgraph:BorderLayoutData"/>
+            <layout
+                xsi:type="gmfgraph:BorderLayout"/>
+            <children
+                xsi:type="gmfgraph:Label"
+                name="EnsembleDescriptionFigure"
+                text="">
+              <layoutData
+                  xsi:type="gmfgraph:BorderLayoutData"
+                  alignment="BEGINNING"/>
+            </children>
+            <children
+                xsi:type="gmfgraph:Rectangle"
+                name="EnsembleCompartmentFigure">
+              <layoutData
+                  xsi:type="gmfgraph:BorderLayoutData"/>
+              <backgroundColor
+                  xsi:type="gmfgraph:RGBColor"
+                  red="175"
+                  green="238"
+                  blue="238"/>
+            </children>
+          </children>
         </children>
       </actualFigure>
       <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.0"/>
       <accessors
-          figure="//@figures.0/@descriptors.0/@actualFigure/@children.2"/>
-      <accessors
           accessor="getFigureEnsembleDescriptionFigure"
+          figure="//@figures.0/@descriptors.0/@actualFigure/@children.2/@children.0"/>
+      <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.1"/>
       <accessors
-          figure="//@figures.0/@descriptors.0/@actualFigure/@children.3"/>
+          figure="//@figures.0/@descriptors.0/@actualFigure/@children.2/@children.1"/>
     </descriptors>
     <descriptors
         name="DummyFigure">
@@ -273,12 +310,12 @@
       figure="EnsembleFigure"
       accessor="//@figures.0/@descriptors.0/@accessors.0"/>
   <labels
-      name="EnsembleQuery"
-      figure="EnsembleFigure"
-      accessor="//@figures.0/@descriptors.0/@accessors.1"/>
-  <labels
       name="EnsembleDescription"
       figure="DummyFigure"
+      accessor="//@figures.0/@descriptors.0/@accessors.1"/>
+  <labels
+      name="EnsembleQuery"
+      figure="EnsembleFigure"
       accessor="//@figures.0/@descriptors.0/@accessors.2"/>
   <labels
       name="DummyName"
