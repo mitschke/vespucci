@@ -122,7 +122,7 @@ public interface Shape extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Description</b></em>' attribute.
-	 * The default value is <code>"empty"</code>.
+	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
@@ -132,7 +132,7 @@ public interface Shape extends EObject {
 	 * @return the value of the '<em>Description</em>' attribute.
 	 * @see #setDescription(String)
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_Description()
-	 * @model default="empty"
+	 * @model default=""
 	 * @generated
 	 */
 	String getDescription();

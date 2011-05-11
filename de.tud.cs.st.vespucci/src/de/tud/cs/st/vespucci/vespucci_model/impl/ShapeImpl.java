@@ -123,7 +123,7 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String DESCRIPTION_EDEFAULT = "empty";
+	protected static final String DESCRIPTION_EDEFAULT = "";
 
 	/**
 	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
