@@ -52,6 +52,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections <em>Source Connections</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections <em>Target Connections</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getName <em>Name</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDescription <em>Description</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getQuery <em>Query</em>}</li>
  * </ul>
  * </p>
@@ -118,6 +119,33 @@ public interface Shape extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * The default value is <code>"empty"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_Description()
+	 * @model default="empty"
+	 * @generated
+	 */
+	String getDescription();
+
+	/**
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	void setDescription(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Query</b></em>' attribute.

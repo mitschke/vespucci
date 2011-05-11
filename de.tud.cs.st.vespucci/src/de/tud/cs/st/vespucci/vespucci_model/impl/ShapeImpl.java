@@ -67,6 +67,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getSourceConnections <em>Source Connections</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getTargetConnections <em>Target Connections</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getQuery <em>Query</em>}</li>
  * </ul>
  * </p>
@@ -113,6 +114,26 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = "empty";
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
@@ -203,6 +224,27 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDescription(String newDescription) {
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.SHAPE__DESCRIPTION, oldDescription, description));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getQuery() {
 		return query;
 	}
@@ -249,6 +291,8 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 				return getTargetConnections();
 			case Vespucci_modelPackage.SHAPE__NAME:
 				return getName();
+			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
+				return getDescription();
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				return getQuery();
 		}
@@ -275,6 +319,9 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 			case Vespucci_modelPackage.SHAPE__NAME:
 				setName((String)newValue);
 				return;
+			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
+				setDescription((String)newValue);
+				return;
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				setQuery((String)newValue);
 				return;
@@ -299,6 +346,9 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 			case Vespucci_modelPackage.SHAPE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				setQuery(QUERY_EDEFAULT);
 				return;
@@ -320,6 +370,8 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 				return targetConnections != null && !targetConnections.isEmpty();
 			case Vespucci_modelPackage.SHAPE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 		}
@@ -338,6 +390,8 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", description: ");
+		result.append(description);
 		result.append(", query: ");
 		result.append(query);
 		result.append(')');

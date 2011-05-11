@@ -32,7 +32,7 @@
     </tools>
     <tools
         xsi:type="gmftool:ToolGroup"
-        title="Dependencies"
+        title="Constraints"
         collapsible="true"
         stack="true">
       <tools
