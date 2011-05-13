@@ -228,7 +228,7 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(130, 100);
 		return result;
 	}
 
@@ -513,6 +513,8 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 
 			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8),
 					getMapMode().DPtoLP(8)));
+			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(130),
+					getMapMode().DPtoLP(100)));
 			createContents();
 		}
 
@@ -521,37 +523,50 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 		 */
 		private void createContents() {
 
-			RectangleFigure ensembleNameDescriptionContainerFigure0 = new RectangleFigure();
+			RectangleFigure ensembleNameContainerFigure0 = new RectangleFigure();
 
-			this.add(ensembleNameDescriptionContainerFigure0, BorderLayout.TOP);
+			this.add(ensembleNameContainerFigure0, BorderLayout.TOP);
 
-			BorderLayout layoutEnsembleNameDescriptionContainerFigure0 = new BorderLayout();
-			ensembleNameDescriptionContainerFigure0
-					.setLayoutManager(layoutEnsembleNameDescriptionContainerFigure0);
+			BorderLayout layoutEnsembleNameContainerFigure0 = new BorderLayout();
+			ensembleNameContainerFigure0
+					.setLayoutManager(layoutEnsembleNameContainerFigure0);
 
 			fFigureEnsembleNameFigure = new WrappingLabel();
-			fFigureEnsembleNameFigure.setText("");
+			fFigureEnsembleNameFigure.setText("name");
 
-			ensembleNameDescriptionContainerFigure0.add(
-					fFigureEnsembleNameFigure, BorderLayout.TOP);
-
-			fFigureEnsembleDescriptionFigure = new WrappingLabel();
-			fFigureEnsembleDescriptionFigure.setText("");
-
-			ensembleNameDescriptionContainerFigure0.add(
-					fFigureEnsembleDescriptionFigure, BorderLayout.BOTTOM);
+			ensembleNameContainerFigure0.add(fFigureEnsembleNameFigure,
+					BorderLayout.TOP);
 
 			fFigureEnsembleQueryFigure = new WrappingLabel();
 			fFigureEnsembleQueryFigure.setText("");
 
-			ensembleNameDescriptionContainerFigure0
-					.add(fFigureEnsembleQueryFigure);
+			ensembleNameContainerFigure0.add(fFigureEnsembleQueryFigure);
 
 			fFigureEnsembleCompartmentFigure = new RectangleFigure();
 			fFigureEnsembleCompartmentFigure
 					.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK);
 
 			this.add(fFigureEnsembleCompartmentFigure, BorderLayout.CENTER);
+
+			BorderLayout layoutFFigureEnsembleCompartmentFigure = new BorderLayout();
+			fFigureEnsembleCompartmentFigure
+					.setLayoutManager(layoutFFigureEnsembleCompartmentFigure);
+
+			RectangleFigure ensembleDescriptionContainerFigure0 = new RectangleFigure();
+			ensembleDescriptionContainerFigure0
+					.setBackgroundColor(ENSEMBLEDESCRIPTIONCONTAINERFIGURE0_BACK);
+
+			this.add(ensembleDescriptionContainerFigure0, BorderLayout.BOTTOM);
+
+			BorderLayout layoutEnsembleDescriptionContainerFigure0 = new BorderLayout();
+			ensembleDescriptionContainerFigure0
+					.setLayoutManager(layoutEnsembleDescriptionContainerFigure0);
+
+			fFigureEnsembleDescriptionFigure = new WrappingLabel();
+			fFigureEnsembleDescriptionFigure.setText("Description");
+
+			ensembleDescriptionContainerFigure0.add(
+					fFigureEnsembleDescriptionFigure, BorderLayout.BOTTOM);
 
 		}
 
@@ -590,5 +605,11 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 	 */
 	static final Color FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK = new Color(null,
 			175, 238, 238);
+
+	/**
+	 * @generated
+	 */
+	static final Color ENSEMBLEDESCRIPTIONCONTAINERFIGURE0_BACK = new Color(
+			null, 200, 255, 255);
 
 }
