@@ -340,7 +340,7 @@ public class VespucciViewProvider extends AbstractProvider implements
 		Node label5001 = createLabel(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID));
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameDescriptionEditPart.VISUAL_ID));
 		createCompartment(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
@@ -437,7 +437,7 @@ public class VespucciViewProvider extends AbstractProvider implements
 		Node label5006 = createLabel(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID));
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameDescription2EditPart.VISUAL_ID));
 		createCompartment(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry

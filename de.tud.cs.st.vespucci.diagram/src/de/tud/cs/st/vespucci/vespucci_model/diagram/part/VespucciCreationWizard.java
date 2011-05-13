@@ -71,6 +71,11 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 	/**
 	 * @generated
 	 */
+	protected de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardPage domainModelFilePage;
+
+	/**
+	 * @generated
+	 */
 	protected Resource diagram;
 
 	/**
@@ -131,12 +136,33 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 	 */
 	public void addPages() {
 		diagramModelFilePage = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardPage(
-				"DiagramModelFile", getSelection(), "sad"); //$NON-NLS-1$ //$NON-NLS-2$
+				"DiagramModelFile", getSelection(), "vespucci_model_diagram"); //$NON-NLS-1$ //$NON-NLS-2$
 		diagramModelFilePage
 				.setTitle(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizard_DiagramModelFilePageTitle);
 		diagramModelFilePage
 				.setDescription(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizard_DiagramModelFilePageDescription);
 		addPage(diagramModelFilePage);
+
+		domainModelFilePage = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardPage(
+				"DomainModelFile", getSelection(), "vespucci_model") { //$NON-NLS-1$ //$NON-NLS-2$
+
+			public void setVisible(boolean visible) {
+				if (visible) {
+					String fileName = diagramModelFilePage.getFileName();
+					fileName = fileName.substring(0, fileName.length()
+							- ".vespucci_model_diagram".length()); //$NON-NLS-1$
+					setFileName(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
+							.getUniqueFileName(getContainerFullPath(),
+									fileName, "vespucci_model")); //$NON-NLS-1$
+				}
+				super.setVisible(visible);
+			}
+		};
+		domainModelFilePage
+				.setTitle(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizard_DomainModelFilePageTitle);
+		domainModelFilePage
+				.setDescription(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizard_DomainModelFilePageDescription);
+		addPage(domainModelFilePage);
 	}
 
 	/**
@@ -148,7 +174,8 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 			protected void execute(IProgressMonitor monitor)
 					throws CoreException, InterruptedException {
 				diagram = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
-						.createDiagram(diagramModelFilePage.getURI(), monitor);
+						.createDiagram(diagramModelFilePage.getURI(),
+								domainModelFilePage.getURI(), monitor);
 				if (isOpenNewlyCreatedDiagramEditor() && diagram != null) {
 					try {
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil

@@ -51,7 +51,7 @@ public class VespucciUriEditorInputTester extends PropertyTester {
 			return false;
 		}
 		URIEditorInput editorInput = (URIEditorInput) receiver;
-		return "sad".equals(editorInput.getURI().fileExtension()); //$NON-NLS-1$
+		return "vespucci_model_diagram".equals(editorInput.getURI().fileExtension()); //$NON-NLS-1$
 	}
 
 }

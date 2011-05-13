@@ -189,7 +189,7 @@ public class VespucciDiagramEditorUtil {
 	 * This method should be called within a workspace modify operation since it creates resources.
 	 * @generated
 	 */
-	public static Resource createDiagram(URI diagramURI,
+	public static Resource createDiagram(URI diagramURI, URI modelURI,
 			IProgressMonitor progressMonitor) {
 		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE
 				.createEditingDomain();
@@ -199,6 +199,8 @@ public class VespucciDiagramEditorUtil {
 						3);
 		final Resource diagramResource = editingDomain.getResourceSet()
 				.createResource(diagramURI);
+		final Resource modelResource = editingDomain.getResourceSet()
+				.createResource(modelURI);
 		final String diagramName = diagramURI.lastSegment();
 		AbstractTransactionalCommand command = new AbstractTransactionalCommand(
 				editingDomain,
@@ -208,7 +210,7 @@ public class VespucciDiagramEditorUtil {
 					IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
 				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model = createInitialModel();
-				attachModelToResource(model, diagramResource);
+				attachModelToResource(model, modelResource);
 
 				Diagram diagram = ViewService
 						.createDiagram(
@@ -222,7 +224,9 @@ public class VespucciDiagramEditorUtil {
 				}
 
 				try {
-
+					modelResource
+							.save(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
+									.getSaveOptions());
 					diagramResource
 							.save(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
 									.getSaveOptions());
@@ -244,7 +248,7 @@ public class VespucciDiagramEditorUtil {
 					.getInstance().logError(
 							"Unable to create model and diagram", e); //$NON-NLS-1$
 		}
-
+		setCharset(WorkspaceSynchronizer.getFile(modelResource));
 		setCharset(WorkspaceSynchronizer.getFile(diagramResource));
 		return diagramResource;
 	}

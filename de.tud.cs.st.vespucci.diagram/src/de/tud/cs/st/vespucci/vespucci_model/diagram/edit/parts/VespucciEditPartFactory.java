@@ -70,8 +70,8 @@ public class VespucciEditPartFactory implements EditPartFactory {
 				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart(
 						view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart(
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameDescriptionEditPart.VISUAL_ID:
+				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameDescriptionEditPart(
 						view);
 
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
@@ -86,8 +86,8 @@ public class VespucciEditPartFactory implements EditPartFactory {
 				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart(
 						view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart(
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameDescription2EditPart.VISUAL_ID:
+				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameDescription2EditPart(
 						view);
 
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID:

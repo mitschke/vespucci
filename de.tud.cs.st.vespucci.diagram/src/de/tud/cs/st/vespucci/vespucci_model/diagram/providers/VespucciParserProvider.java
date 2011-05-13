@@ -245,11 +245,11 @@ public class VespucciParserProvider extends AbstractProvider implements
 	 */
 	protected IParser getParser(int visualID) {
 		switch (visualID) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID:
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameDescriptionEditPart.VISUAL_ID:
 			return getEnsembleNameDescription_5001Parser();
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyNameEditPart.VISUAL_ID:
 			return getDummyName_5002Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID:
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameDescription2EditPart.VISUAL_ID:
 			return getEnsembleNameDescription_5006Parser();
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyName2EditPart.VISUAL_ID:
 			return getDummyName_5005Parser();

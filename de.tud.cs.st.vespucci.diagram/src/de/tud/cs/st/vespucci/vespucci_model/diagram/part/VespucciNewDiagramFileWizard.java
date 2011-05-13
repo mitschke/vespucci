@@ -116,7 +116,8 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 		myFileCreationPage.setContainerFullPath(filePath);
 		myFileCreationPage
 				.setFileName(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
-						.getUniqueFileName(filePath, fileName, "sad")); //$NON-NLS-1$
+						.getUniqueFileName(filePath, fileName,
+								"vespucci_model_diagram")); //$NON-NLS-1$
 
 		diagramRootElementSelectionPage = new DiagramRootElementSelectionPage(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciNewDiagramFileWizard_RootSelectionPageName);
@@ -173,7 +174,6 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID,
 								de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT);
 				diagramResource.getContents().add(diagram);
-				diagramResource.getContents().add(diagram.getElement());
 				return CommandResult.newOKCommandResult();
 			}
 		};

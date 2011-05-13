@@ -311,7 +311,7 @@
       accessor="//@figures.0/@descriptors.0/@accessors.0"/>
   <labels
       name="EnsembleDescription"
-      figure="DummyFigure"
+      figure="EnsembleFigure"
       accessor="//@figures.0/@descriptors.0/@accessors.1"/>
   <labels
       name="EnsembleQuery"

@@ -38,13 +38,13 @@
 
    <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
       <?gmfgen generated="true"?>
-      <fileTypes type="text" extension="sad"/>
+      <fileTypes type="text" extension="vespucci_model_diagram"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser" id="resource-factory">
       <?gmfgen generated="true"?>
       <parser
-         type="sad"
+         type="vespucci_model_diagram"
          class="org.eclipse.gmf.runtime.emf.core.resources.GMFResourceFactory">
       </parser>
    </extension>
@@ -55,7 +55,7 @@
          id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID"
          name="%editorName"
          icon="icons/obj16/Vespucci_modelDiagramFile.gif"
-         extensions="sad"
+         extensions="vespucci_model_diagram"
          default="true"
          class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditor"
          matchingStrategy="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciMatchingStrategy"
@@ -97,7 +97,7 @@
       <?gmfgen generated="true"?>
       <objectContribution
             id="de.tud.cs.st.vespucci.diagram.InitDiagram"
-            nameFilter="*.sam"
+            nameFilter="*.vespucci_model"
             objectClass="org.eclipse.core.resources.IFile">
          <action
                label="%initDiagramActionLabel"
@@ -272,12 +272,6 @@
             <input type="org.eclipse.gmf.runtime.notation.View"/>
             <input type="org.eclipse.gef.EditPart"/>
             <input type="de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem"/>
-         </propertySection>
-         <propertySection
-            id="property.section.query" 
-            tab="property.tab.query"
-            filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
-            class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection">
          </propertySection>
       </propertySections>
    </extension>
@@ -509,7 +503,7 @@
             <or>
 	           <and>
     	          <instanceof value="org.eclipse.core.resources.IFile"/>
-        	      <test property="org.eclipse.core.resources.extension" value="sad"/>
+        	      <test property="org.eclipse.core.resources.extension" value="vespucci_model_diagram"/>
                </and>
                <instanceof value="de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem"/>
             </or>
@@ -526,7 +520,7 @@
                <or>
 	              <and>
     	             <instanceof value="org.eclipse.core.resources.IFile"/>
-        	         <test property="org.eclipse.core.resources.extension" value="sad"/>
+        	         <test property="org.eclipse.core.resources.extension" value="vespucci_model_diagram"/>
                   </and>
                   <instanceof value="de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem"/>
                </or>
@@ -545,7 +539,7 @@
             <or>
 	           <and>
     	          <instanceof value="org.eclipse.core.resources.IFile"/>
-        	      <test property="org.eclipse.core.resources.extension" value="sam"/>
+        	      <test property="org.eclipse.core.resources.extension" value="vespucci_model"/>
                </and>
                <instanceof value="de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem"/>
             </or>
