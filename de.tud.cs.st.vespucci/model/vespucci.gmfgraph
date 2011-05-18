@@ -292,6 +292,7 @@
   <labels
       name="EnsembleDescription"
       figure="EnsembleFigure"
+      elementIcon="false"
       accessor="//@figures.0/@descriptors.0/@accessors.1"/>
   <labels
       name="EnsembleQuery"

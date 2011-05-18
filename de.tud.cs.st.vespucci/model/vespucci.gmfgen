@@ -142,8 +142,7 @@
           visualID="5007"
           editPartClassName="EnsembleDescription2EditPart"
           itemSemanticEditPolicyClassName="EnsembleDescription2ItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleDescriptionViewFactory"
-          elementIcon="true">
+          notationViewFactoryClassName="EnsembleDescriptionViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -260,8 +259,7 @@
           visualID="5008"
           editPartClassName="EnsembleDescriptionEditPart"
           itemSemanticEditPolicyClassName="EnsembleDescriptionItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleDescriptionViewFactory"
-          elementIcon="true">
+          notationViewFactoryClassName="EnsembleDescriptionViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap

@@ -517,7 +517,11 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		}
 
 		/**
-		 * @generated
+		 * @generated NOT
+		 * @author DominicS
+		 * 
+		 * Extended so that "Description" label
+		 * displays more than one line, if necessary.
 		 */
 		private void createContents() {
 
@@ -537,6 +541,9 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 
 			fFigureEnsembleDescriptionFigure = new WrappingLabel();
 			fFigureEnsembleDescriptionFigure.setText("");
+			// Added by DominicS:
+			// Multiline Label enabled
+			fFigureEnsembleDescriptionFigure.setTextWrap(true);
 
 			ensembleNameDescriptionContainerFigure0.add(
 					fFigureEnsembleDescriptionFigure, BorderLayout.BOTTOM);
