@@ -123,6 +123,8 @@
                 xsi:type="gmfgraph:BorderLayoutData"
                 alignment="END"
                 vertical="true"/>
+            <border
+                xsi:type="gmfgraph:LineBorder"/>
           </children>
           <children
               xsi:type="gmfgraph:Label"

@@ -43,6 +43,7 @@ import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.GridData;
 import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
@@ -517,11 +518,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		}
 
 		/**
-		 * @generated NOT
-		 * @author DominicS
-		 * 
-		 * Extended so that "Description" label
-		 * displays more than one line, if necessary.
+		 * @generated
 		 */
 		private void createContents() {
 
@@ -541,9 +538,8 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 
 			fFigureEnsembleDescriptionFigure = new WrappingLabel();
 			fFigureEnsembleDescriptionFigure.setText("");
-			// Added by DominicS:
-			// Multiline Label enabled
-			fFigureEnsembleDescriptionFigure.setTextWrap(true);
+			fFigureEnsembleDescriptionFigure.setBorder(new LineBorder(null,
+					getMapMode().DPtoLP(1)));
 
 			ensembleNameDescriptionContainerFigure0.add(
 					fFigureEnsembleDescriptionFigure, BorderLayout.BOTTOM);
@@ -570,9 +566,14 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		}
 
 		/**
-		 * @generated
+		 * @generated NOT
+		 * @author DominicS
+		 * 
+		 * Extended so that "Description" label
+		 * displays more than one line, if necessary.
 		 */
 		public WrappingLabel getFigureEnsembleDescriptionFigure() {
+			fFigureEnsembleDescriptionFigure.setTextWrap(true);
 			return fFigureEnsembleDescriptionFigure;
 		}
 
