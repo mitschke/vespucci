@@ -97,12 +97,9 @@
           name="EnsembleFigure">
         <layout
             xsi:type="gmfgraph:BorderLayout"/>
-        <preferredSize
-            dx="130"
-            dy="100"/>
         <children
             xsi:type="gmfgraph:Rectangle"
-            name="EnsembleNameContainerFigure">
+            name="EnsembleNameDescriptionContainerFigure">
           <layoutData
               xsi:type="gmfgraph:BorderLayoutData"
               alignment="BEGINNING"
@@ -112,10 +109,19 @@
           <children
               xsi:type="gmfgraph:Label"
               name="EnsembleNameFigure"
-              text="name">
+              text="">
             <layoutData
                 xsi:type="gmfgraph:BorderLayoutData"
                 alignment="BEGINNING"
+                vertical="true"/>
+          </children>
+          <children
+              xsi:type="gmfgraph:Label"
+              name="EnsembleDescriptionFigure"
+              text="">
+            <layoutData
+                xsi:type="gmfgraph:BorderLayoutData"
+                alignment="END"
                 vertical="true"/>
           </children>
           <children
@@ -129,46 +135,20 @@
           <layoutData
               xsi:type="gmfgraph:BorderLayoutData"
               vertical="true"/>
-          <layout
-              xsi:type="gmfgraph:BorderLayout"/>
           <backgroundColor
               xsi:type="gmfgraph:RGBColor"
               red="175"
               green="238"
               blue="238"/>
         </children>
-        <children
-            xsi:type="gmfgraph:Rectangle"
-            name="EnsembleDescriptionContainerFigure">
-          <layoutData
-              xsi:type="gmfgraph:BorderLayoutData"
-              alignment="END"
-              vertical="true"/>
-          <layout
-              xsi:type="gmfgraph:BorderLayout"/>
-          <backgroundColor
-              xsi:type="gmfgraph:RGBColor"
-              red="200"
-              green="255"
-              blue="255"/>
-          <children
-              xsi:type="gmfgraph:Label"
-              name="EnsembleDescriptionFigure"
-              text="Description">
-            <layoutData
-                xsi:type="gmfgraph:BorderLayoutData"
-                alignment="END"
-                vertical="true"/>
-          </children>
-        </children>
       </actualFigure>
       <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.0/@children.0"/>
       <accessors
           accessor="getFigureEnsembleDescriptionFigure"
-          figure="//@figures.0/@descriptors.0/@actualFigure/@children.2/@children.0"/>
-      <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.0/@children.1"/>
+      <accessors
+          figure="//@figures.0/@descriptors.0/@actualFigure/@children.0/@children.2"/>
       <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.1"/>
     </descriptors>
