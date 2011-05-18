@@ -538,8 +538,9 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 
 			fFigureEnsembleDescriptionFigure = new WrappingLabel();
 			fFigureEnsembleDescriptionFigure.setText("");
-			fFigureEnsembleDescriptionFigure.setBorder(new LineBorder(null,
-					getMapMode().DPtoLP(1)));
+			fFigureEnsembleDescriptionFigure.setBorder(new LineBorder(
+					FFIGUREENSEMBLEDESCRIPTIONFIGURE_BORDER, getMapMode()
+							.DPtoLP(1)));
 
 			ensembleNameDescriptionContainerFigure0.add(
 					fFigureEnsembleDescriptionFigure, BorderLayout.BOTTOM);
@@ -592,6 +593,12 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 		}
 
 	}
+
+	/**
+	 * @generated
+	 */
+	static final Color FFIGUREENSEMBLEDESCRIPTIONFIGURE_BORDER = new Color(
+			null, 176, 176, 176);
 
 	/**
 	 * @generated
