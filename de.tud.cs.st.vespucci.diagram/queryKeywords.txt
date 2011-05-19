@@ -1,0 +1,11 @@
+abstract
+boolean
+char
+double
+enum
+float
+goto
+int
+joy
+of
+painting
