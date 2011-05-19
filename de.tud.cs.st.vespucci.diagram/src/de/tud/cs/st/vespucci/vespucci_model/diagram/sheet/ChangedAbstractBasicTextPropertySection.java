@@ -86,6 +86,16 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 */
 	private final TextChangeHelper listener = new TextChangeHelper() {
 		boolean textModified = false;
+		
+		/**
+		 * Provides method for accessing the keywords
+		 */
+		private KeywordReader kwReader = new KeywordReader();
+		
+		/**
+		 * Keywords to be marked
+		 */
+		private String[] keywords = kwReader.getKeywords();
 
 		/**
 		 * Performs syntax highlighting of the query properties tab. So far,
@@ -221,9 +231,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 * Highlights all keywords.
 		 */
 		private void highlightKeywords() {
-
-			KeywordReader kwReader = new KeywordReader();
-			final String[] keywords = kwReader.getKeywords();
 
 			Pattern pattern = null;
 			Matcher matcher = null;
