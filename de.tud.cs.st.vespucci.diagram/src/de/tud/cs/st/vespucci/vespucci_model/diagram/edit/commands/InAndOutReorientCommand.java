@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universität Darmstadt
+ *   Technische Universitï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -145,17 +145,33 @@ public class InAndOutReorientCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
+	 * @author Artem Vovk
+	 * @generated NOT
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
+		if (!getLink().getOriginalSource().isEmpty()
+				&& oldEnd != getLink().getOriginalSource().get(
+						getLink().getOriginalSource().size() - 1)) {
+			getLink().getOriginalSource().clear();
+			if (getLink().getOriginalTarget().isEmpty())
+				getLink().setTemp(false);
+		}
 		getLink().setSource(getNewSource());
 		return CommandResult.newOKCommandResult(getLink());
 	}
 
 	/**
-	 * @generated
+	 * @author Artem Vovk
+	 * @generated NOT
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {
+		if (!getLink().getOriginalTarget().isEmpty()
+				&& oldEnd != getLink().getOriginalTarget().get(
+						getLink().getOriginalTarget().size() - 1)) {
+			getLink().getOriginalTarget().clear();
+			if (getLink().getOriginalSource().isEmpty())
+				getLink().setTemp(false);
+		}
 		getLink().setTarget(getNewTarget());
 		return CommandResult.newOKCommandResult(getLink());
 	}

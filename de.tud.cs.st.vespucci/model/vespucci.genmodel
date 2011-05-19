@@ -15,7 +15,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/sourceConnections"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/targetConnections"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/description"/>
       <genFeatures createChild="false" propertyCategory="" propertyDescription=""
           ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/query"/>
     </genClasses>

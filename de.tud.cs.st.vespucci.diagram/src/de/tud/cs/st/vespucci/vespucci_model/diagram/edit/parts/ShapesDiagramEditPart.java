@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universität Darmstadt
+ *   Technische Universitï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -36,16 +36,19 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts;
 
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.handles.MoveHandle;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.NonResizableLabelEditPolicy;
 import org.eclipse.gmf.runtime.notation.View;
+
+import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.CreationNewEnsembleEditPolicy;
 
 /**
  * @generated
@@ -70,7 +73,9 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 	}
 
 	/**
-	 * @generated
+	 * Turn off messes POP-UP BAR
+	 * @generated NOT
+	 * @author Tam-Minh Nguyen
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
@@ -80,7 +85,11 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 		installEditPolicy(
 				EditPolicyRoles.CANONICAL_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramCanonicalEditPolicy());
-		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
+		//installEditPolicy(CreateEnsembleDropTargetListener.REQ_DROPNEWENSEMBLE	, new CreationNewEnsembleEditPolicy());
+		//installEditPolicy(EditPolicyRoles.CREATION_ROLE	, new CreationEditPolicy());
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
+				new CreationNewEnsembleEditPolicy());
+		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 
 	/**

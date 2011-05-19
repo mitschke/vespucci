@@ -18,14 +18,6 @@
         <features
             href="vespucci.ecore#//Shape/name"/>
       </labelMappings>
-      <labelMappings
-          xsi:type="gmfmap:FeatureLabelMapping"
-          editPattern="">
-        <diagramLabel
-            href="vespucci.gmfgraph#EnsembleDescription"/>
-        <features
-            href="vespucci.ecore#//Shape/description"/>
-      </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"
           href="vespucci.gmftool#//@palette/@tools.0/@tools.0"/>

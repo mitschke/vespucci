@@ -113,7 +113,7 @@
       <viewmap
           xsi:type="gmfgen:InnerClassViewmap"
           className="EnsembleFigure"
-          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class EnsembleFigure extends org.eclipse.draw2d.RoundedRectangle {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleNameFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleDescriptionFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleQueryFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.draw2d.RectangleFigure fFigureEnsembleCompartmentFigure; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public EnsembleFigure() {&#xA;&#x9;&#x9;&#xA;&#x9;org.eclipse.draw2d.BorderLayout layoutThis = new org.eclipse.draw2d.BorderLayout();&#xA;&#x9;this.setLayoutManager(layoutThis);&#xA;&#xA;&#x9;&#x9;this.setCornerDimensions(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(8)&#xA;, getMapMode().DPtoLP(8)&#xA;));&#xA;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureEnsembleNameFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleNameFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleNameFigure, org.eclipse.draw2d.BorderLayout.TOP);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleDescriptionFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleDescriptionFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleDescriptionFigure);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleQueryFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleQueryFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleQueryFigure);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleCompartmentFigure = new org.eclipse.draw2d.RectangleFigure();&#xA;&#x9;fFigureEnsembleCompartmentFigure.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK&#xA;);&#xA;&#xA;this.add(fFigureEnsembleCompartmentFigure, org.eclipse.draw2d.BorderLayout.CENTER);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleNameFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleNameFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleDescriptionFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleDescriptionFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleQueryFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleQueryFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.draw2d.RectangleFigure getFigureEnsembleCompartmentFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleCompartmentFigure;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;/**&#xA; * @generated&#xA; */&#xA;static final org.eclipse.swt.graphics.Color FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK = new org.eclipse.swt.graphics.Color(null, 175, 238, 238);&#xA;&#xA;"/>
+          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class EnsembleFigure extends org.eclipse.draw2d.RoundedRectangle {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleNameFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleQueryFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.draw2d.RectangleFigure fFigureEnsembleCompartmentFigure; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public EnsembleFigure() {&#xA;&#x9;&#x9;&#xA;&#x9;org.eclipse.draw2d.BorderLayout layoutThis = new org.eclipse.draw2d.BorderLayout();&#xA;&#x9;this.setLayoutManager(layoutThis);&#xA;&#xA;&#x9;&#x9;this.setCornerDimensions(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(8)&#xA;, getMapMode().DPtoLP(8)&#xA;));&#xA;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureEnsembleNameFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleNameFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleNameFigure, org.eclipse.draw2d.BorderLayout.TOP);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleQueryFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleQueryFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleQueryFigure);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleCompartmentFigure = new org.eclipse.draw2d.RectangleFigure();&#xA;&#x9;fFigureEnsembleCompartmentFigure.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK&#xA;);&#xA;&#xA;this.add(fFigureEnsembleCompartmentFigure, org.eclipse.draw2d.BorderLayout.CENTER);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleNameFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleNameFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleQueryFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleQueryFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.draw2d.RectangleFigure getFigureEnsembleCompartmentFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleCompartmentFigure;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;/**&#xA; * @generated&#xA; */&#xA;static final org.eclipse.swt.graphics.Color FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK = new org.eclipse.swt.graphics.Color(null, 175, 238, 238);&#xA;&#xA;"/>
       <modelFacet>
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Ensemble"/>
@@ -139,26 +139,6 @@
             parser="//@labelParsers/@implementations.0">
           <metaFeatures
               href="vespucci.genmodel#//vespucci_model/Shape/name"/>
-        </modelFacet>
-      </labels>
-      <labels
-          visualID="5007"
-          editPartClassName="EnsembleDescription2EditPart"
-          itemSemanticEditPolicyClassName="EnsembleDescription2ItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleDescriptionViewFactory"
-          elementIcon="true">
-        <diagramRunTimeClass
-            href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
-        <viewmap
-            xsi:type="gmfgen:ParentAssignedViewmap"
-            getterName="getFigureEnsembleDescriptionFigure"
-            figureQualifiedClassName="org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel"/>
-        <modelFacet
-            xsi:type="gmfgen:FeatureLabelModelFacet"
-            parser="//@labelParsers/@implementations.0"
-            editPattern="">
-          <metaFeatures
-              href="vespucci.genmodel#//vespucci_model/Shape/description"/>
         </modelFacet>
       </labels>
     </childNodes>
@@ -232,7 +212,7 @@
       <viewmap
           xsi:type="gmfgen:InnerClassViewmap"
           className="EnsembleFigure"
-          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class EnsembleFigure extends org.eclipse.draw2d.RoundedRectangle {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleNameFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleDescriptionFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleQueryFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.draw2d.RectangleFigure fFigureEnsembleCompartmentFigure; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public EnsembleFigure() {&#xA;&#x9;&#x9;&#xA;&#x9;org.eclipse.draw2d.BorderLayout layoutThis = new org.eclipse.draw2d.BorderLayout();&#xA;&#x9;this.setLayoutManager(layoutThis);&#xA;&#xA;&#x9;&#x9;this.setCornerDimensions(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(8)&#xA;, getMapMode().DPtoLP(8)&#xA;));&#xA;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureEnsembleNameFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleNameFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleNameFigure, org.eclipse.draw2d.BorderLayout.TOP);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleDescriptionFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleDescriptionFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleDescriptionFigure);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleQueryFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleQueryFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleQueryFigure);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleCompartmentFigure = new org.eclipse.draw2d.RectangleFigure();&#xA;&#x9;fFigureEnsembleCompartmentFigure.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK&#xA;);&#xA;&#xA;this.add(fFigureEnsembleCompartmentFigure, org.eclipse.draw2d.BorderLayout.CENTER);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleNameFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleNameFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleDescriptionFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleDescriptionFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleQueryFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleQueryFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.draw2d.RectangleFigure getFigureEnsembleCompartmentFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleCompartmentFigure;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;/**&#xA; * @generated&#xA; */&#xA;static final org.eclipse.swt.graphics.Color FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK = new org.eclipse.swt.graphics.Color(null, 175, 238, 238);&#xA;&#xA;"/>
+          classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class EnsembleFigure extends org.eclipse.draw2d.RoundedRectangle {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleNameFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureEnsembleQueryFigure; &#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.draw2d.RectangleFigure fFigureEnsembleCompartmentFigure; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public EnsembleFigure() {&#xA;&#x9;&#x9;&#xA;&#x9;org.eclipse.draw2d.BorderLayout layoutThis = new org.eclipse.draw2d.BorderLayout();&#xA;&#x9;this.setLayoutManager(layoutThis);&#xA;&#xA;&#x9;&#x9;this.setCornerDimensions(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(8)&#xA;, getMapMode().DPtoLP(8)&#xA;));&#xA;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureEnsembleNameFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleNameFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleNameFigure, org.eclipse.draw2d.BorderLayout.TOP);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleQueryFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureEnsembleQueryFigure.setText(&quot;&quot;);&#xA;&#xA;this.add(fFigureEnsembleQueryFigure);&#xA;&#xA;&#xA;&#xA;fFigureEnsembleCompartmentFigure = new org.eclipse.draw2d.RectangleFigure();&#xA;&#x9;fFigureEnsembleCompartmentFigure.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK&#xA;);&#xA;&#xA;this.add(fFigureEnsembleCompartmentFigure, org.eclipse.draw2d.BorderLayout.CENTER);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleNameFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleNameFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureEnsembleQueryFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleQueryFigure;&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.draw2d.RectangleFigure getFigureEnsembleCompartmentFigure() {&#xA;&#x9;&#x9;return fFigureEnsembleCompartmentFigure;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;/**&#xA; * @generated&#xA; */&#xA;static final org.eclipse.swt.graphics.Color FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK = new org.eclipse.swt.graphics.Color(null, 175, 238, 238);&#xA;&#xA;"/>
       <modelFacet>
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Ensemble"/>
@@ -258,26 +238,6 @@
             parser="//@labelParsers/@implementations.0">
           <metaFeatures
               href="vespucci.genmodel#//vespucci_model/Shape/name"/>
-        </modelFacet>
-      </labels>
-      <labels
-          visualID="5008"
-          editPartClassName="EnsembleDescriptionEditPart"
-          itemSemanticEditPolicyClassName="EnsembleDescriptionItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleDescriptionViewFactory"
-          elementIcon="true">
-        <diagramRunTimeClass
-            href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
-        <viewmap
-            xsi:type="gmfgen:ParentAssignedViewmap"
-            getterName="getFigureEnsembleDescriptionFigure"
-            figureQualifiedClassName="org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel"/>
-        <modelFacet
-            xsi:type="gmfgen:FeatureLabelModelFacet"
-            parser="//@labelParsers/@implementations.0"
-            editPattern="">
-          <metaFeatures
-              href="vespucci.genmodel#//vespucci_model/Shape/description"/>
         </modelFacet>
       </labels>
     </topLevelNodes>
@@ -706,7 +666,7 @@
             genNodes="//@diagram/@childNodes.1 //@diagram/@topLevelNodes.1"/>
       </groups>
       <groups
-          title="Dependencies"
+          title="Constraints"
           stack="true"
           collapse="true">
         <entries
@@ -1298,6 +1258,15 @@
   <diagramUpdater/>
   <propertySheet>
     <tabs
+        xsi:type="gmfgen:GenCustomPropertyTab"
+        iD="query"
+        label="Query"
+        className="ModelDescriptionPropertySection">
+      <filter
+          xsi:type="gmfgen:CustomTabFilter"
+          className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"/>
+    </tabs>
+    <tabs
         xsi:type="gmfgen:GenStandardPropertyTab"
         iD="appearance"/>
     <tabs
@@ -1313,15 +1282,6 @@
         <types>org.eclipse.gef.EditPart</types>
         <generatedTypes>abstractNavigatorItem</generatedTypes>
       </filter>
-    </tabs>
-    <tabs
-        xsi:type="gmfgen:GenCustomPropertyTab"
-        iD="query"
-        label="Query"
-        className="ModelDescriptionPropertySection">
-      <filter
-          xsi:type="gmfgen:CustomTabFilter"
-          className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"/>
     </tabs>
   </propertySheet>
   <domainGenModel
@@ -1377,7 +1337,7 @@
       extensibleViaService="true">
     <implementations
         xsi:type="gmfgen:PredefinedParser"
-        uses="//@diagram/@childNodes.1/@labels.0/@modelFacet //@diagram/@childNodes.0/@labels.0/@modelFacet //@diagram/@childNodes.0/@labels.1/@modelFacet //@diagram/@topLevelNodes.0/@labels.0/@modelFacet //@diagram/@topLevelNodes.0/@labels.1/@modelFacet //@diagram/@topLevelNodes.1/@labels.0/@modelFacet //@diagram/@links.0/@labels.0/@modelFacet //@diagram/@links.1/@labels.0/@modelFacet //@diagram/@links.2/@labels.0/@modelFacet //@diagram/@links.3/@labels.0/@modelFacet //@diagram/@links.4/@labels.0/@modelFacet"/>
+        uses="//@diagram/@childNodes.1/@labels.0/@modelFacet //@diagram/@childNodes.0/@labels.0/@modelFacet //@diagram/@topLevelNodes.0/@labels.0/@modelFacet //@diagram/@topLevelNodes.1/@labels.0/@modelFacet //@diagram/@links.0/@labels.0/@modelFacet //@diagram/@links.1/@labels.0/@modelFacet //@diagram/@links.2/@labels.0/@modelFacet //@diagram/@links.3/@labels.0/@modelFacet //@diagram/@links.4/@labels.0/@modelFacet"/>
   </labelParsers>
   <contextMenus
       context="//@diagram">

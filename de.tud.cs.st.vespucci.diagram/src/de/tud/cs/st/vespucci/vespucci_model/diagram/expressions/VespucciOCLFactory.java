@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universität Darmstadt
+ *   Technische Universitï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -34,7 +34,9 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.expressions;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
@@ -44,11 +46,16 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.Query;
 import org.eclipse.ocl.ecore.EcoreFactory;
-import org.eclipse.ocl.ecore.OCLExpression;
-import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.OCL.Helper;
+import org.eclipse.ocl.expressions.OCLExpression;
+import org.eclipse.ocl.expressions.OperationCallExp;
+import org.eclipse.ocl.expressions.Variable;
+import org.eclipse.ocl.helper.OCLHelper;
 import org.eclipse.ocl.options.ParsingOptions;
+import org.eclipse.ocl.utilities.AbstractVisitor;
+import org.eclipse.ocl.utilities.PredefinedType;
 
 /**
  * @generated
@@ -107,7 +114,6 @@ public class VespucciOCLFactory {
 	}
 
 	/**
-	 * This is factory method, callers are responsible to keep reference to the return value if they want to reuse parsed expression
 	 * @generated
 	 */
 	public static de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression getExpression(
@@ -117,7 +123,6 @@ public class VespucciOCLFactory {
 	}
 
 	/**
-	 * This method will become private in the next release
 	 * @generated
 	 */
 	public static de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression getExpression(
@@ -141,7 +146,7 @@ public class VespucciOCLFactory {
 		/**
 		 * @generated
 		 */
-		private OCLExpression oclExpression;
+		private org.eclipse.ocl.ecore.OCLExpression oclExpression;
 
 		/**
 		 * @generated
@@ -205,10 +210,11 @@ public class VespucciOCLFactory {
 		/**
 		 * @generated
 		 */
-		private static Variable createVar(
+		private static org.eclipse.ocl.ecore.Variable createVar(
 				Environment<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?> ecoreEnv,
 				String name, EClassifier type) {
-			Variable var = EcoreFactory.eINSTANCE.createVariable();
+			org.eclipse.ocl.ecore.Variable var = EcoreFactory.eINSTANCE
+					.createVariable();
 			var.setName(name);
 			var.setType(ecoreEnv.getUMLReflection().getOCLType(type));
 			return var;

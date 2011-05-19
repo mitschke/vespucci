@@ -254,17 +254,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getShape_Description() {
-		return (EAttribute)shapeEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getShape_Query() {
-		return (EAttribute)shapeEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)shapeEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -437,7 +428,6 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		createEReference(shapeEClass, SHAPE__SOURCE_CONNECTIONS);
 		createEReference(shapeEClass, SHAPE__TARGET_CONNECTIONS);
 		createEAttribute(shapeEClass, SHAPE__NAME);
-		createEAttribute(shapeEClass, SHAPE__DESCRIPTION);
 		createEAttribute(shapeEClass, SHAPE__QUERY);
 
 		dummyEClass = createEClass(DUMMY);
@@ -508,7 +498,6 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		initEReference(getShape_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getShape_TargetConnections(), this.getConnection(), null, "targetConnections", null, 0, -1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getShape_Name(), ecorePackage.getEString(), "name", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getShape_Description(), ecorePackage.getEString(), "description", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getShape_Query(), ecorePackage.getEString(), "query", "empty", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dummyEClass, Dummy.class, "Dummy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

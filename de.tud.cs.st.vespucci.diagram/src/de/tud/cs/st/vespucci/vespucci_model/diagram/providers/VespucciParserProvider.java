@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universität Darmstadt
+ *   Technische Universitï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -75,25 +75,6 @@ public class VespucciParserProvider extends AbstractProvider implements
 	/**
 	 * @generated
 	 */
-	private IParser ensembleDescription_5008Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getEnsembleDescription_5008Parser() {
-		if (ensembleDescription_5008Parser == null) {
-			EAttribute[] features = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getShape_Description() };
-			de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser parser = new de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser(
-					features);
-			ensembleDescription_5008Parser = parser;
-		}
-		return ensembleDescription_5008Parser;
-	}
-
-	/**
-	 * @generated
-	 */
 	private IParser dummyName_5002Parser;
 
 	/**
@@ -127,25 +108,6 @@ public class VespucciParserProvider extends AbstractProvider implements
 			ensembleName_5006Parser = parser;
 		}
 		return ensembleName_5006Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser ensembleDescription_5007Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getEnsembleDescription_5007Parser() {
-		if (ensembleDescription_5007Parser == null) {
-			EAttribute[] features = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getShape_Description() };
-			de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser parser = new de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser(
-					features);
-			ensembleDescription_5007Parser = parser;
-		}
-		return ensembleDescription_5007Parser;
 	}
 
 	/**
@@ -279,14 +241,10 @@ public class VespucciParserProvider extends AbstractProvider implements
 		switch (visualID) {
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID:
 			return getEnsembleName_5001Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID:
-			return getEnsembleDescription_5008Parser();
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyNameEditPart.VISUAL_ID:
 			return getDummyName_5002Parser();
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID:
 			return getEnsembleName_5006Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID:
-			return getEnsembleDescription_5007Parser();
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyName2EditPart.VISUAL_ID:
 			return getDummyName_5005Parser();
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingNameEditPart.VISUAL_ID:
