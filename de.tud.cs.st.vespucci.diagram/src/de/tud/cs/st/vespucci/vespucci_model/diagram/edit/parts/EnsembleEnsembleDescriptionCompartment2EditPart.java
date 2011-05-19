@@ -107,7 +107,7 @@ public class EnsembleEnsembleDescriptionCompartment2EditPart extends
 			super.setRatio(ratio);
 		}
 	}
-	
+
 	/**
 	 * @generated NOT
 	 * @author DominicS
@@ -124,7 +124,7 @@ public class EnsembleEnsembleDescriptionCompartment2EditPart extends
 					.getParent().getChildren().get(1));
 
 			descriptionLabel.getFigure().setVisible(
-					!descriptionLabel.getFigure().isVisible());
+					getCompartmentFigure().isExpanded());
 		}
 	}
 
