@@ -147,5 +147,4 @@ public class EnsembleEnsembleCompartmentEditPart extends
 			this.abm.updateConnections(event);
 		}
 	}
-
 }

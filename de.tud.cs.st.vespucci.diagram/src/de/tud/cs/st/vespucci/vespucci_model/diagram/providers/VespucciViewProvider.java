@@ -350,6 +350,11 @@ public class VespucciViewProvider extends AbstractProvider implements
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID),
 				true, false, false, false);
+		createCompartment(
+				node,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart.VISUAL_ID),
+				true, false, true, true);
 		return node;
 	}
 
@@ -451,6 +456,11 @@ public class VespucciViewProvider extends AbstractProvider implements
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart.VISUAL_ID),
 				true, false, false, false);
+		createCompartment(
+				node,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartment2EditPart.VISUAL_ID),
+				true, false, true, true);
 		return node;
 	}
 

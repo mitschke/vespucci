@@ -169,6 +169,14 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 					.getFigure());
 			return true;
 		}
+		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) {
+			IFigure pane = getPrimaryShape()
+					.getFigureEnsembleDescriptionCompartmentFigure();
+			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			pane.add(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) childEditPart)
+					.getFigure());
+			return true;
+		}
 		return false;
 	}
 
@@ -187,6 +195,14 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 					.getFigureEnsembleCompartmentFigure();
 			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
 			pane.remove(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) childEditPart)
+					.getFigure());
+			return true;
+		}
+		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) {
+			IFigure pane = getPrimaryShape()
+					.getFigureEnsembleDescriptionCompartmentFigure();
+			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			pane.remove(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;
 		}
@@ -219,6 +235,10 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
 		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
 			return getPrimaryShape().getFigureEnsembleCompartmentFigure();
+		}
+		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) {
+			return getPrimaryShape()
+					.getFigureEnsembleDescriptionCompartmentFigure();
 		}
 		return getContentPane();
 	}
@@ -505,6 +525,11 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		/**
 		 * @generated
 		 */
+		private RectangleFigure fFigureEnsembleDescriptionCompartmentFigure;
+
+		/**
+		 * @generated
+		 */
 		public EnsembleFigure() {
 
 			BorderLayout layoutThis = new BorderLayout();
@@ -539,11 +564,19 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 			ensembleDescriptionCompartmentContainerFigure0
 					.setLayoutManager(layoutEnsembleDescriptionCompartmentContainerFigure0);
 
+			fFigureEnsembleDescriptionCompartmentFigure = new RectangleFigure();
+
+			ensembleDescriptionCompartmentContainerFigure0.add(
+					fFigureEnsembleDescriptionCompartmentFigure,
+					BorderLayout.TOP);
+			fFigureEnsembleDescriptionCompartmentFigure
+					.setLayoutManager(new StackLayout());
+
 			fFigureEnsembleDescriptionFigure = new WrappingLabel();
 			fFigureEnsembleDescriptionFigure.setText("");
 
-			ensembleDescriptionCompartmentContainerFigure0.add(
-					fFigureEnsembleDescriptionFigure, BorderLayout.TOP);
+			fFigureEnsembleDescriptionCompartmentFigure
+					.add(fFigureEnsembleDescriptionFigure);
 
 			fFigureEnsembleCompartmentFigure = new RectangleFigure();
 			fFigureEnsembleCompartmentFigure
@@ -584,6 +617,13 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		 */
 		public RectangleFigure getFigureEnsembleCompartmentFigure() {
 			return fFigureEnsembleCompartmentFigure;
+		}
+
+		/**
+		 * @generated
+		 */
+		public RectangleFigure getFigureEnsembleDescriptionCompartmentFigure() {
+			return fFigureEnsembleDescriptionCompartmentFigure;
 		}
 
 	}

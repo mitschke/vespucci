@@ -48,6 +48,10 @@
         <compartment
             href="vespucci.gmfgraph#EnsembleCompartment"/>
       </compartments>
+      <compartments>
+        <compartment
+            href="vespucci.gmfgraph#EnsembleDescriptionCompartment"/>
+      </compartments>
     </ownedChild>
   </nodes>
   <nodes>
