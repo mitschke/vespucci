@@ -10,6 +10,8 @@
  ****************************************************************************/
 package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
+import io.KeywordReader;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -220,15 +222,14 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 */
 		private void highlightKeywords() {
 
-			final String[] KEYWORDS = { "abstract", "boolean", "char",
-					"double", "enum", "float", "goto", "int", "joy", "of",
-					"painting" };
+			KeywordReader kwReader = new KeywordReader();
+			final String[] keywords = kwReader.getKeywords();
 
 			Pattern pattern = null;
 			Matcher matcher = null;
 			final String targetText = textWidget.getText();
 
-			for (final String str : KEYWORDS) {
+			for (final String str : keywords) {
 				pattern = Pattern.compile(String.format("\\b%s\\b", str));
 				matcher = pattern.matcher(targetText);
 
@@ -542,7 +543,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			Composite com = getSectionComposite();
 			// TODO: there must be a nice way to update the heights and widths
 			// of the textwidget and its parents
-			for (;;) {
+			while(true) {
 
 				if (com instanceof ScrolledComposite) {
 					break;
