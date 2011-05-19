@@ -12,6 +12,8 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.common.core.command.ICommand;
@@ -67,58 +69,82 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 	private Composite sectionComposite;
 
-	private int startHeight = 15;
-
-	public void setScrolledParent(Composite scrolledParent) {
-		this.scrolledParent = scrolledParent;
-	}
+	private final int startHeight = 15;
 
 	Listener resizeLinstener = new Listener() {
-		public void handleEvent(Event e) {
+		@Override
+		public void handleEvent(final Event e) {
 			updateHeight();
 		}
 	};
 
 	/**
-	 * @return - name of the property to place in the label widget
-	 */
-	abstract protected String getPropertyNameLabel();
-
-	/**
-	 * Set property value for the given object
-	 * 
-	 * @param object
-	 *            - owner of the property
-	 * @param value
-	 *            - new value
-	 */
-	abstract protected void setPropertyValue(EObject object, Object value);
-
-	/**
-	 * @return - string representation of the property value
-	 */
-	abstract protected String getPropertyValueString();
-
-	/**
-	 * @return - title of the command which will be executed to set the property
-	 */
-	protected abstract String getPropertyChangeCommandName();
-
-	/**
 	 * A helper to listen for events that indicate that a text field has been
 	 * changed.
 	 */
-	private TextChangeHelper listener = new TextChangeHelper() {
+	private final TextChangeHelper listener = new TextChangeHelper() {
 		boolean textModified = false;
+
+		/**
+		 * Performs syntax highlighting of the query properties tab. So far,
+		 * bracket emphasis is implemented.
+		 * 
+		 * @author DominicS
+		 */
+		private void doSyntaxHighlighting() {
+			// first, set everything to black and normal
+			resetStyle();
+
+			// highlight bracket, depending on caret
+			highlightBrackets();
+
+			// highlight keywords
+			// TODO use text-file instead of fields for specifying keywords
+			highlightKeywords();
+		}
+
+		/**
+		 * Returns an array of StyleRange that makes the characters at the
+		 * positions first and second of a StyledText appear in bold print.
+		 * 
+		 * @author DominicS
+		 * @param first
+		 *            First bold character
+		 * @param second
+		 *            Second bold character
+		 * @return Array of StyleRanges that makes characters at first and
+		 *         second bold
+		 */
+		private StyleRange[] getBoldStyleRanges(int first, int second) {
+			if (first > second) {
+				final int temp = second;
+				second = first;
+				first = temp;
+			}
+
+			// Emphasis style:
+			// blue, bold and underlined
+
+			final Color blue = Display.getCurrent().getSystemColor(
+					SWT.COLOR_BLUE);
+			final StyleRange r1 = new StyleRange(first, 1, blue, null, SWT.BOLD);
+			final StyleRange r2 = new StyleRange(second, 1, blue, null,
+					SWT.BOLD);
+			r1.underline = true;
+			r2.underline = true;
+
+			return new StyleRange[] { r1, r2 };
+		}
 
 		/**
 		 * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
 		 */
-		public void handleEvent(Event event) {
+		@Override
+		public void handleEvent(final Event event) {
 			switch (event.type) {
 			case SWT.KeyDown:
 				doSyntaxHighlighting();
-				
+
 				textModified = true;
 				if (event.character == SWT.CR) {
 					getPropertyValueString();
@@ -127,133 +153,142 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			case SWT.FocusOut:
 				textChanged((Control) event.widget);
 				break;
+			default:
+				break;
 			}
 		}
 
-		public void textChanged(Control control) {
+		/**
+		 * Highlights bracket at caret and corresponding bracket.
+		 */
+		private void highlightBrackets() {
+
+			final int offset = textWidget.getCaretOffset();
+			// Check if caret is at first position
+			// => no syntax highlighting
+			if (offset == 0) {
+				// do not highlight anything:
+				return;
+			}
+
+			final int size = textWidget.getCharCount();
+			final char currentChar = textWidget.getText().charAt(offset - 1);
+
+			if (currentChar == '(') {
+				int intend = 0;
+				for (int i = offset; i < size; i++) {
+					if (textWidget.getText().charAt(i) == '(') {
+						intend++;
+					}
+
+					if (textWidget.getText().charAt(i) == ')' && intend == 0) {
+						// Highlight both brackets
+						textWidget.setStyleRanges(getBoldStyleRanges(
+								offset - 1, i));
+						return;
+					}
+
+					if (textWidget.getText().charAt(i) == ')') {
+						intend--;
+					}
+				}
+			}
+
+			else if (currentChar == ')' && offset > 1) {
+				int intend = 0;
+				for (int i = offset - 2; i >= 0; i--) {
+					if (textWidget.getText().charAt(i) == ')') {
+						intend++;
+					}
+
+					if (textWidget.getText().charAt(i) == '(' && intend == 0) {
+						// Highlight both brackets
+						textWidget.setStyleRanges(getBoldStyleRanges(
+								offset - 1, i));
+						return;
+					}
+
+					if (textWidget.getText().charAt(i) == '(') {
+						intend--;
+					}
+				}
+			}
+		}
+
+		/**
+		 * Highlights all keywords.
+		 */
+		private void highlightKeywords() {
+
+			final String[] KEYWORDS = { "abstract", "boolean", "char",
+					"double", "enum", "float", "goto", "int", "joy", "of",
+					"painting" };
+
+			Pattern pattern = null;
+			Matcher matcher = null;
+			final String targetText = textWidget.getText();
+
+			for (final String str : KEYWORDS) {
+				pattern = Pattern.compile(String.format("\\b%s\\b", str));
+				matcher = pattern.matcher(targetText);
+
+				while (matcher.find()) {
+					markTextRange(matcher.start(), matcher.end());
+				}
+			}
+		}
+
+		/**
+		 * Helper for {@link #highlightKeywords()}. Marks given range.
+		 * @param start Index of first character to be marked.
+		 * @param end Index of last character to be marked.
+		 */
+		private void markTextRange(final int start, final int end) {
+
+			// TODO use eclipse-settings
+			final Color magenta = Display.getCurrent().getSystemColor(
+					SWT.COLOR_DARK_MAGENTA);
+			final int length = end - start;
+			final StyleRange styleRange = new StyleRange(start, length, magenta, null,
+					SWT.BOLD);
+
+			textWidget.setStyleRange(styleRange);
+		}
+
+		/**
+		 * Resets the whole text style in the StyledText component to its
+		 * "normal" state.
+		 */
+		private void resetStyle() {
+			final Color black = Display.getCurrent().getSystemColor(
+					SWT.COLOR_BLACK);
+			textWidget.setStyleRange(new StyleRange(0, textWidget
+					.getCharCount(), black, null, SWT.NORMAL));
+		}
+
+		@Override
+		public void textChanged(final Control control) {
 			if (textModified) {
 				// clear error message
-				IWorkbenchPart part = PlatformUI.getWorkbench()
+				final IWorkbenchPart part = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage()
 						.getActivePart();
 				StatusLineUtil.outputErrorMessage(part, StringStatics.BLANK);
-				
+
 				setPropertyValue(control);
 				textModified = false;
 			}
 		}
-		
-		/**
-		 * Returns an array of StyleRange that makes the characters at
-		 * the positions first and second of a StyledText appear in bold
-		 * print.
-		 * 
-		 * @author DominicS
-		 * @param first First bold character
-		 * @param second Second bold character
-		 * @return Array of StyleRanges that makes characters at first and second bold
-		 */
-		private StyleRange[] getBoldStyleRanges(int first, int second)
-		{
-			if (first > second)
-			{
-				int temp = second;
-				second = first;
-				first = temp;
-			}
-			
-			// Emphasis style:
-			// blue, bold and underlined
-			
-			Color blue = Display.getCurrent().getSystemColor(SWT.COLOR_BLUE);
-			StyleRange r1 = new StyleRange(first, 1, blue, null, SWT.BOLD);
-			StyleRange r2 = new StyleRange(second, 1, blue, null, SWT.BOLD);
-			r1.underline = true;
-			r2.underline = true;
-			
-			return new StyleRange[] {r1, r2};
-		}
-		
-		/**
-		 * Resets the whole text style in the StyledText component to
-		 * its "normal" state.
-		 */
-		private void resetStyle()
-		{
-			Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
-			textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount(), black, null, SWT.NORMAL));
-		}
-		
-		/**
-		 * Performs syntax highlighting of the query properties tab.
-		 * So far, bracket emphasis is implemented.
-		 * 
-		 * @author DominicS
-		 */
-		private void doSyntaxHighlighting()
-		{
-			// first, set everything to black and normal
-			resetStyle();
-			
-			int offset = textWidget.getCaretOffset();
-			// Check if caret is at first position
-			// => no syntax highlighting
-			if (offset == 0)
-			{
-				// do not highlight anything:
-				return;
-			}
-			
-			int size = textWidget.getCharCount();
-			char currentChar = textWidget.getText().charAt(offset-1);
-			
-			if (currentChar == '(')
-			{
-				int intend = 0;
-				for (int i = offset; i < size; i++)
-				{
-					if (textWidget.getText().charAt(i) == '(') {
-						intend++;
-					}
-					
-					if (textWidget.getText().charAt(i) == ')'
-						&& intend == 0)
-					{
-						// Highlight both brackets						
-						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
-						return;
-					}					
-
-					if (textWidget.getText().charAt(i) == ')') {
-						intend--;
-					}
-				}
-			}
-			
-			else if (currentChar == ')' && offset > 1)
-			{
-				int intend = 0;
-				for (int i = offset-2; i >= 0; i--)
-				{
-					if (textWidget.getText().charAt(i) == ')') {
-						intend++;
-					}
-					
-					if (textWidget.getText().charAt(i) == '('
-						&& intend == 0)
-					{
-						// Highlight both brackets	
-						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
-						return;
-					}					
-
-					if (textWidget.getText().charAt(i) == '(') {
-						intend--;
-					}
-				}
-			}
-		}
 	};
+
+	/**
+	 * @return - the default implementation returns contents of the text widget
+	 *         as a new value for the property. Subclasses can could be
+	 *         override.
+	 */
+	protected final Object computeNewPropertyValue() {
+		return getTextWidget().getText();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -263,9 +298,54 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * .swt.widgets.Composite,
 	 * org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
-	public void createControls(Composite parent,
-			TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	@Override
+	public final void createControls(final Composite parent,
+			final TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		doCreateControls(parent, aTabbedPropertySheetPage);
+	}
+
+	/**
+	 * Instantiate a text widget
+	 * 
+	 * @param parent
+	 *            - parent composite
+	 * @return - a text widget to display and edit the property
+	 */
+	protected final StyledText createTextWidget(final Composite parent) {
+		getSectionComposite().getSize();
+
+		final StyledText st = new StyledText(parent, SWT.MULTI | SWT.V_SCROLL
+				| SWT.H_SCROLL);
+
+		// Use a monospaced font
+		final Font mono = new Font(parent.getDisplay(), "Courier New", 10,
+				SWT.NONE);
+		st.setFont(mono);
+
+		final FormData data = new FormData();
+		data.left = new FormAttachment(0, 0);
+		data.right = new FormAttachment(100, 0);
+		data.top = new FormAttachment(0, 0);
+		data.height = startHeight;
+		st.setLayoutData(data);
+
+		if (isReadOnly()) {
+			st.setEditable(false);
+		}
+
+		return st;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.views.properties.tabbed.ISection#dispose()
+	 */
+	@Override
+	public final void dispose() {
+		stopTextWidgetEventListener();
+		super.dispose();
 	}
 
 	/**
@@ -278,21 +358,22 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * @see org.eclipse.gmf.runtime.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.gmf.runtime.common.ui.properties.TabbedPropertySheetPage)
 	 */
-	public void doCreateControls(Composite parent,
-			TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	public final void doCreateControls(final Composite parent,
+			final TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
 		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
 		textWidget = createTextWidget(sectionComposite);
 		scrolledParent = parent;
-		for (;;) {
+		while (true) {
 			// TODO: There must be a nicer way for redraw the text widget then
 			// to say the first scrolledcomposite .layout()
 			// the scrolledParent should be "main" composite for the query tab
 			if (scrolledParent instanceof ScrolledComposite) {
 				break;
 			}
-			if (scrolledParent.getParent() == null)
+			if (scrolledParent.getParent() == null) {
 				break;
+			}
 			scrolledParent = scrolledParent.getParent();
 
 		}
@@ -302,99 +383,26 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		startTextWidgetEventListener();
 	}
 
-	/**
-	 * Start listening to the text widget events
-	 */
-	protected void startTextWidgetEventListener() {
-		if (!isReadOnly()) {
-			getListener().startListeningTo(getTextWidget());
-			getListener().startListeningForEnter(getTextWidget());
-		}
-	}
-
-	/**
-	 * Stop listening to text widget events
-	 */
-	protected void stopTextWidgetEventListener() {
-		if (!isReadOnly())
-			getListener().stopListeningTo(getTextWidget());
-	}
-
-	/**
-	 * Instantiate a text widget
-	 * 
-	 * @param parent
-	 *            - parent composite
-	 * @return - a text widget to display and edit the property
-	 */
-	protected StyledText createTextWidget(Composite parent) {
-		getSectionComposite().getSize();
-		
-		StyledText st = new StyledText(
-			parent,
-			SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL
-		);
-		
-		// Use a monospaced font
-		Font mono = new Font(parent.getDisplay(), "Courier New", 10, SWT.NONE);
-		st.setFont(mono);
-		
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, 0);
-		data.height = startHeight;
-		st.setLayoutData(data);
-		
-		if (isReadOnly())
-			st.setEditable(false);
-		
-		return st;
-
-	}
-
 	private int getHeight() {
-		return this.scrolledParent.getSize().y - QUERY_TAB_HEIGHT_SHIFT;
-	}
-
-	private int getWidth() {
-		return this.scrolledParent.getSize().x - QUERY_TAB_WIDTH_SHIFT;
+		return scrolledParent.getSize().y - QUERY_TAB_HEIGHT_SHIFT;
 	}
 
 	/**
-	 * calculates the new size of the widget and updates it
+	 * @return Returns the listener.
 	 */
-	private void updateHeight() {
-		if (getTextWidget() != null && !getTextWidget().isDisposed()) {
-			getTextWidget().setVisible(false);
-			scrolledParent.setVisible(false);
-			FormData data = new FormData();
-			data.left = new FormAttachment(0, 0);
-			data.right = new FormAttachment(100, 0);
-			data.top = new FormAttachment(0, 0);
-			data.height = getHeight();
-			data.width = getWidth();
-			getTextWidget().setLayoutData(data);
-			int HEIGHTS_SCROLLLINE = 30;
-			Composite com = getSectionComposite();
-			// TODO: there must be a nice way to update the heights and widths
-			// of the textwidget and its parents
-			for (;;) {
-
-				if (com instanceof ScrolledComposite) {
-					break;
-				}
-				if (com.getParent() == null)
-					break;
-				com.setSize(getWidth(), getHeight() + HEIGHTS_SCROLLLINE);
-				com = com.getParent();
-
-			}
-			com.layout();
-			getTextWidget().setVisible(true);
-			scrolledParent.setVisible(true);
-		}
+	protected final TextChangeHelper getListener() {
+		return listener;
 	}
+
+	/**
+	 * @return - title of the command which will be executed to set the property
+	 */
+	protected abstract String getPropertyChangeCommandName();
+
+	/**
+	 * @return - name of the property to place in the label widget
+	 */
+	protected abstract String getPropertyNameLabel();
 
 	/**
 	 * returns as an array the property name
@@ -403,51 +411,31 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 *         property. The strings will be used to calculate common indent
 	 *         from the left
 	 */
-	protected String[] getPropertyNameStringsArray() {
+	protected final String[] getPropertyNameStringsArray() {
 		return new String[] { getPropertyNameLabel() };
 	}
 
 	/**
-	 * User pressed Enter key after editing text field - update the model
-	 * 
-	 * @param control
-	 *            <code>Control</code>
+	 * @return - string representation of the property value
 	 */
-	protected synchronized void setPropertyValue(Control control) {
-		final Object value = computeNewPropertyValue();
-		ArrayList<ICommand> commands = new ArrayList<ICommand>();
-		for (Iterator<?> it = getEObjectList().iterator(); it.hasNext();) {
-			final EObject next = (EObject) it.next();
-			commands.add(createCommand(getPropertyChangeCommandName(), next,
-					new Runnable() {
+	protected abstract String getPropertyValueString();
 
-						public void run() {
-							setPropertyValue(next, value);
-						}
-
-					}));
-		}
-		executeAsCompositeCommand(getPropertyChangeCommandName(), commands);
-		refresh();
+	/**
+	 * @return Returns the sectionComposite.
+	 */
+	public final Composite getSectionComposite() {
+		return sectionComposite;
 	}
 
 	/**
-	 * @return - the default implementation returns contents of the text widget
-	 *         as a new value for the property. Subclasses can could be
-	 *         override.
+	 * @return Returns the textWidget.
 	 */
-	protected Object computeNewPropertyValue() {
-		return getTextWidget().getText();
+	protected final StyledText getTextWidget() {
+		return textWidget;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.views.properties.tabbed.ISection#dispose()
-	 */
-	public void dispose() {
-		stopTextWidgetEventListener();
-		super.dispose();
+	private int getWidth() {
+		return scrolledParent.getSize().x - QUERY_TAB_WIDTH_SHIFT;
 	}
 
 	/*
@@ -455,11 +443,13 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
-	public void refresh() {
+	@Override
+	public final void refresh() {
 		getListener().startNonUserChange();
 		try {
 			executeAsReadAction(new Runnable() {
 
+				@Override
 				public void run() {
 					refreshUI();
 				}
@@ -472,28 +462,101 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	/**
 	 * Refresh UI body - refresh will surround this with read action block
 	 */
-	protected void refreshUI() {
+	protected final void refreshUI() {
 		getTextWidget().setText(getPropertyValueString());
 	}
 
 	/**
-	 * @return Returns the listener.
+	 * User pressed Enter key after editing text field - update the model
+	 * 
+	 * @param control
+	 *            <code>Control</code>
 	 */
-	protected TextChangeHelper getListener() {
-		return listener;
+	protected final synchronized void setPropertyValue(final Control control) {
+		final Object value = computeNewPropertyValue();
+		final ArrayList<ICommand> commands = new ArrayList<ICommand>();
+		for (final Iterator<?> it = getEObjectList().iterator(); it.hasNext();) {
+			final EObject next = (EObject) it.next();
+			commands.add(createCommand(getPropertyChangeCommandName(), next,
+					new Runnable() {
+
+						@Override
+						public void run() {
+							setPropertyValue(next, value);
+						}
+
+					}));
+		}
+		executeAsCompositeCommand(getPropertyChangeCommandName(), commands);
+		refresh();
 	}
 
 	/**
-	 * @return Returns the textWidget.
+	 * Set property value for the given object
+	 * 
+	 * @param object
+	 *            - owner of the property
+	 * @param value
+	 *            - new value
 	 */
-	protected StyledText getTextWidget() {
-		return textWidget;
+	protected abstract void setPropertyValue(EObject object, Object value);
+
+	public final void setScrolledParent(final Composite scrolledParent) {
+		this.scrolledParent = scrolledParent;
 	}
 
 	/**
-	 * @return Returns the sectionComposite.
+	 * Start listening to the text widget events
 	 */
-	public Composite getSectionComposite() {
-		return sectionComposite;
+	protected final void startTextWidgetEventListener() {
+		if (!isReadOnly()) {
+			getListener().startListeningTo(getTextWidget());
+			getListener().startListeningForEnter(getTextWidget());
+		}
+	}
+
+	/**
+	 * Stop listening to text widget events
+	 */
+	protected final void stopTextWidgetEventListener() {
+		if (!isReadOnly()) {
+			getListener().stopListeningTo(getTextWidget());
+		}
+	}
+
+	/**
+	 * calculates the new size of the widget and updates it
+	 */
+	private void updateHeight() {
+		if (getTextWidget() != null && !getTextWidget().isDisposed()) {
+			getTextWidget().setVisible(false);
+			scrolledParent.setVisible(false);
+			final FormData data = new FormData();
+			data.left = new FormAttachment(0, 0);
+			data.right = new FormAttachment(100, 0);
+			data.top = new FormAttachment(0, 0);
+			data.height = getHeight();
+			data.width = getWidth();
+			getTextWidget().setLayoutData(data);
+			final int HEIGHTS_SCROLLLINE = 30;
+			Composite com = getSectionComposite();
+			// TODO: there must be a nice way to update the heights and widths
+			// of the textwidget and its parents
+			for (;;) {
+
+				if (com instanceof ScrolledComposite) {
+					break;
+				}
+				if (com.getParent() == null) {
+					break;
+				}
+				com.setSize(getWidth(), getHeight() + HEIGHTS_SCROLLLINE);
+				com = com.getParent();
+
+			}
+			com.layout();
+			getTextWidget().setVisible(true);
+			scrolledParent.setVisible(true);
+		}
 	}
 }
