@@ -65,6 +65,22 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends
 	}
 
 	/**
+	 * @generated NOT
+	 * @author DominicS
+	 * 
+	 * Overridden to restore the saved collapse state of the
+	 * description label.
+	 */
+	@Override
+	public void activate() {
+		super.activate();
+
+		//TODO: Improve child selection
+		((EnsembleDescriptionEditPart) getParent().getChildren().get(1))
+				.getFigure().setVisible(getCompartmentFigure().isExpanded());
+	}
+
+	/**
 	 * @generated
 	 */
 	protected boolean hasModelChildrenChanged(Notification evt) {
