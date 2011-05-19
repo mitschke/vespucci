@@ -74,6 +74,10 @@ public class VespucciEditPartFactory implements EditPartFactory {
 				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart(
 						view);
 
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID:
+				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart(
+						view);
+
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
 				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart(
 						view);
@@ -88,6 +92,10 @@ public class VespucciEditPartFactory implements EditPartFactory {
 
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID:
 				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart(
+						view);
+
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID:
+				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart(
 						view);
 
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID:

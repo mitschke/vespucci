@@ -57,7 +57,7 @@ public class VespucciPaletteFactory {
 	 */
 	public void fillPalette(PaletteRoot paletteRoot) {
 		paletteRoot.add(createModules1Group());
-		paletteRoot.add(createConstraints2Group());
+		paletteRoot.add(createDependencies2Group());
 	}
 
 	/**
@@ -76,13 +76,13 @@ public class VespucciPaletteFactory {
 	}
 
 	/**
-	 * Creates "Constraints" palette tool group
+	 * Creates "Dependencies" palette tool group
 	 * @generated
 	 */
-	private PaletteContainer createConstraints2Group() {
+	private PaletteContainer createDependencies2Group() {
 		PaletteDrawer paletteContainer = new PaletteDrawer(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Constraints2Group_title);
-		paletteContainer.setId("createConstraints2Group"); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Dependencies2Group_title);
+		paletteContainer.setId("createDependencies2Group"); //$NON-NLS-1$
 		paletteContainer.add(createIncoming1CreationTool());
 		paletteContainer.add(createOutgoing2CreationTool());
 		paletteContainer.add(createInandOut3CreationTool());

@@ -277,7 +277,7 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String Constraints2Group_title;
+	public static String Dependencies2Group_title;
 
 	/**
 	 * @generated

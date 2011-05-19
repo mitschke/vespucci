@@ -155,6 +155,12 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 					.setLabel(getPrimaryShape().getFigureEnsembleNameFigure());
 			return true;
 		}
+		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart) {
+			((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart) childEditPart)
+					.setLabel(getPrimaryShape()
+							.getFigureEnsembleDescriptionFigure());
+			return true;
+		}
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
 			IFigure pane = getPrimaryShape()
 					.getFigureEnsembleCompartmentFigure();
@@ -171,6 +177,9 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	 */
 	protected boolean removeFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart) {
+			return true;
+		}
+		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart) {
 			return true;
 		}
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
@@ -483,6 +492,10 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		/**
 		 * @generated
 		 */
+		private WrappingLabel fFigureEnsembleDescriptionFigure;
+		/**
+		 * @generated
+		 */
 		private WrappingLabel fFigureEnsembleQueryFigure;
 		/**
 		 * @generated
@@ -517,11 +530,27 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 
 			this.add(fFigureEnsembleQueryFigure);
 
+			RectangleFigure ensembleDescriptionCompartmentContainerFigure0 = new RectangleFigure();
+
+			this.add(ensembleDescriptionCompartmentContainerFigure0,
+					BorderLayout.CENTER);
+
+			BorderLayout layoutEnsembleDescriptionCompartmentContainerFigure0 = new BorderLayout();
+			ensembleDescriptionCompartmentContainerFigure0
+					.setLayoutManager(layoutEnsembleDescriptionCompartmentContainerFigure0);
+
+			fFigureEnsembleDescriptionFigure = new WrappingLabel();
+			fFigureEnsembleDescriptionFigure.setText("");
+
+			ensembleDescriptionCompartmentContainerFigure0.add(
+					fFigureEnsembleDescriptionFigure, BorderLayout.TOP);
+
 			fFigureEnsembleCompartmentFigure = new RectangleFigure();
 			fFigureEnsembleCompartmentFigure
 					.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK);
 
-			this.add(fFigureEnsembleCompartmentFigure, BorderLayout.CENTER);
+			ensembleDescriptionCompartmentContainerFigure0.add(
+					fFigureEnsembleCompartmentFigure, BorderLayout.CENTER);
 
 		}
 
@@ -530,6 +559,17 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		 */
 		public WrappingLabel getFigureEnsembleNameFigure() {
 			return fFigureEnsembleNameFigure;
+		}
+
+		/**
+		 * @generated NOT
+		 * @author DominicS
+		 * 
+		 * Changed to support multiline descriptions
+		 */
+		public WrappingLabel getFigureEnsembleDescriptionFigure() {
+			fFigureEnsembleDescriptionFigure.setTextWrap(true);
+			return fFigureEnsembleDescriptionFigure;
 		}
 
 		/**
