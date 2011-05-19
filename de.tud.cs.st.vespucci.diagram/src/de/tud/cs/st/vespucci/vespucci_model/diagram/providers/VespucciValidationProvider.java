@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -118,24 +118,23 @@ public class VespucciValidationProvider {
 	}
 
 	/**
-	 * @generated NOT
+	 * @generated
 	 */
 	public static class Adapter4 extends AbstractModelConstraint {
-		//TODO change the name Adapter4 to a more expressive name
+
 		/**
-		 * Java implementation for the constraint NonLeafEnsembleMustBeDerived in All constraints about Ensemble
-		 * @author MalteV
-		 * @generated NOT
+		 * @generated
 		 */
 		public IStatus validate(IValidationContext ctx) {
 			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
 					.getTarget();
-			if (context.getShapes().size() == 0) //size()==0 => ensemble is a leaf
-				return ctx.createSuccessStatus();
-			if (context.getQuery().equals("derived")) //the ensemble is not a leaf so it must be derived
-				return ctx.createSuccessStatus();
-			return ctx
-					.createFailureStatus("Queries of non leaf ensemble must be derived");
+			// TODO: put validation code here
+			// Ensure that you remove @generated tag or use @generated NOT
+			//
+			// To construct approprate return value, use ctx.createSuccessStatus()
+			// or ctx.createFailureStatus(...)
+			throw new UnsupportedOperationException(
+					"No user java implementation provided for #validate(IValidationContext) operation"); //$NON-NLS-1$
 		}
 	}
 

@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -39,9 +39,6 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.PolylineDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.impl.EAttributeImpl;
-import org.eclipse.emf.ecore.impl.EReferenceImpl;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ITreeBranchEditPart;
@@ -49,10 +46,6 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.PolylineConnectionEx;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.notation.View;
-
-import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-import de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl;
 
 /**
  * @generated
@@ -142,43 +135,6 @@ public class OutgoingEditPart extends ConnectionNodeEditPart implements
 	 */
 	public OutgoingFigure getPrimaryShape() {
 		return (OutgoingFigure) getFigure();
-	}
-
-	/**
-	 * @generated NOT
-	 */
-	protected void handleNotificationEvent(Notification notification) {
-		super.handleNotificationEvent(notification);
-		if (notification.getFeature() instanceof EReferenceImpl) {
-			EReferenceImpl ref = (EReferenceImpl) notification.getFeature();
-			if (ref.getFeatureID() == Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE
-					|| ref.getFeatureID() == Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET) {
-				if (((ConnectionImpl) ((View) this.getModel()).getElement())
-						.isTemp()) {
-					this.getFigure().setForegroundColor(
-							CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
-				} else {
-					this.getFigure().setForegroundColor(
-							CompartmentEditPartSupporter.CONNECTION_COLOR);
-				}
-			}
-
-		}
-
-		if (notification.getFeature() instanceof EAttributeImpl) {
-			EAttributeImpl eai = (EAttributeImpl) notification.getFeature();
-			if (eai.getFeatureID() == Vespucci_modelPackage.CONNECTION__TEMP) {
-				if (notification.getNewBooleanValue()) {
-					this.getFigure().setForegroundColor(
-							CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
-				} else {
-					this.getFigure().setForegroundColor(
-							CompartmentEditPartSupporter.CONNECTION_COLOR);
-				}
-
-			}
-
-		}
 	}
 
 	/**

@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -341,6 +341,10 @@ public class VespucciViewProvider extends AbstractProvider implements
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID));
+		Node label5008 = createLabel(
+				node,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID));
 		createCompartment(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
@@ -438,6 +442,10 @@ public class VespucciViewProvider extends AbstractProvider implements
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID));
+		Node label5007 = createLabel(
+				node,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID));
 		createCompartment(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry

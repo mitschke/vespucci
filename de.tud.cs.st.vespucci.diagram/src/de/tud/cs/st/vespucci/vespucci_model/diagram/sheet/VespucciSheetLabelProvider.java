@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -36,7 +36,6 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
-import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -48,8 +47,9 @@ import org.eclipse.swt.graphics.Image;
  */
 public class VespucciSheetLabelProvider extends BaseLabelProvider implements
 		ILabelProvider {
+
 	/**
-	 * @generated not
+	 * @generated
 	 */
 	public String getText(Object element) {
 		element = unwrap(element);
@@ -57,9 +57,6 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) element)
 					.getGroupName();
 		}
-		//TODO quick fix
-		if (getView(element) instanceof Diagram)
-			return ((Diagram) getView(element)).getName();
 		IElementType etype = getElementType(getView(element));
 		return etype == null ? "" : etype.getDisplayName();
 	}

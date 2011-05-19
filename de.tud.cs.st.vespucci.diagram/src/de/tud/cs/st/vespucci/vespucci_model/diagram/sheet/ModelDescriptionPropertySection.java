@@ -39,32 +39,23 @@ import java.util.Iterator;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.ui.provider.PropertySource;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AdvancedPropertySection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
-
 /**
- * Query Tab
- * 
- * @author Benni
- * @generated NOT
- * 
+ * @generated
  */
-public class ModelDescriptionPropertySection extends
-		ChangedAbstractBasicTextPropertySection {
+public class ModelDescriptionPropertySection extends AdvancedPropertySection
+		implements IPropertySourceProvider {
 
 	/**
 	 * @generated
@@ -89,15 +80,14 @@ public class ModelDescriptionPropertySection extends
 	}
 
 	/**
-	 * @generated not
+	 * @generated
 	 */
 	protected IPropertySourceProvider getPropertySourceProvider() {
-		return null;
+		return this;
 	}
 
 	/**
 	 * Modify/unwrap selection.
-	 * 
 	 * @generated
 	 */
 	protected Object transformSelection(Object selected) {
@@ -114,9 +104,9 @@ public class ModelDescriptionPropertySection extends
 			return;
 		}
 		final StructuredSelection structuredSelection = ((StructuredSelection) selection);
-		ArrayList<Object> transformedSelection = new ArrayList<Object>(
+		ArrayList transformedSelection = new ArrayList(
 				structuredSelection.size());
-		for (Iterator<?> it = structuredSelection.iterator(); it.hasNext();) {
+		for (Iterator it = structuredSelection.iterator(); it.hasNext();) {
 			Object r = transformSelection(it.next());
 			if (r != null) {
 				transformedSelection.add(r);
@@ -140,43 +130,6 @@ public class ModelDescriptionPropertySection extends
 					.getAdapterFactory();
 		}
 		return null;
-	}
-
-	@Override
-	protected String getPropertyNameLabel() {
-		return "";
-	}
-
-	@Override
-	protected String getPropertyChangeCommandName() {
-		return "ApplicationDescriptionChangeCommand";
-	}
-
-	@Override
-	protected void setPropertyValue(EObject object, Object value) {
-		if (object instanceof Shape) {
-			EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
-					.getEPackage("http://vespucci.editor");
-			Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
-
-			object.eSet(vesPackage.getShape_Query(), value);
-		}
-	}
-
-	@Override
-	protected String getPropertyValueString() {
-		EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
-				.getEPackage("http://vespucci.editor");
-		Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
-
-		if (eObject instanceof EnsembleImpl) {
-			this.getSectionComposite().setVisible(true);
-			return (String) eObject.eGet(vesPackage.getShape_Query());
-		} else {
-			this.getSectionComposite().setVisible(false);
-			return "<NO ENSEMBLE>";
-		}
-
 	}
 
 }

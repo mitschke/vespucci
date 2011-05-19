@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -38,7 +38,6 @@ import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramActionBarContributor;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
@@ -64,10 +63,7 @@ public class VespucciDiagramActionBarContributor extends
 	}
 
 	/**
-	 * remove the compartment icon from the menu-bar
-	 * 
-	 * @generated NOT
-	 * @author a_vovk
+	 * @generated
 	 */
 	public void init(IActionBars bars, IWorkbenchPage page) {
 		super.init(bars, page);
@@ -85,10 +81,5 @@ public class VespucciDiagramActionBarContributor extends
 		IAction validateAction = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.ValidateAction(
 				page);
 		editMenu.appendToGroup("validationGroup", validateAction); //$NON-NLS-1$
-
-		// remove compartmentMenu
-		IToolBarManager toolBarManager = bars.getToolBarManager();
-		toolBarManager.remove("compartmentMenu");
-		toolBarManager.remove("diagramFilterActionMenu");
 	}
 }

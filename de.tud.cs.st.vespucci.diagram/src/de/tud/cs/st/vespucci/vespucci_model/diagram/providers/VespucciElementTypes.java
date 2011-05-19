@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -96,22 +96,18 @@ public class VespucciElementTypes {
 	 * @generated
 	 */
 	public static final IElementType Dummy_3003 = getElementType("de.tud.cs.st.vespucci.diagram.Dummy_3003"); //$NON-NLS-1$
-
 	/**
 	 * @generated
 	 */
 	public static final IElementType Incoming_4005 = getElementType("de.tud.cs.st.vespucci.diagram.Incoming_4005"); //$NON-NLS-1$
-
 	/**
 	 * @generated
 	 */
 	public static final IElementType Outgoing_4003 = getElementType("de.tud.cs.st.vespucci.diagram.Outgoing_4003"); //$NON-NLS-1$
-
 	/**
 	 * @generated
 	 */
 	public static final IElementType InAndOut_4001 = getElementType("de.tud.cs.st.vespucci.diagram.InAndOut_4001"); //$NON-NLS-1$
-
 	/**
 	 * @generated
 	 */

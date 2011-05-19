@@ -108,6 +108,9 @@
         </children>
         <children
             xsi:type="gmfgraph:Label"
+            name="EnsembleDescriptionFigure"/>
+        <children
+            xsi:type="gmfgraph:Label"
             name="EnsembleQueryFigure"
             text=""/>
         <children
@@ -125,9 +128,12 @@
       <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.0"/>
       <accessors
+          accessor="getFigureEnsembleDescriptionFigure"
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.1"/>
       <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.2"/>
+      <accessors
+          figure="//@figures.0/@descriptors.0/@actualFigure/@children.3"/>
     </descriptors>
     <descriptors
         name="DummyFigure">
@@ -261,15 +267,19 @@
       name="EnsembleCompartment"
       figure="EnsembleFigure"
       collapsible="true"
-      accessor="//@figures.0/@descriptors.0/@accessors.2"/>
+      accessor="//@figures.0/@descriptors.0/@accessors.3"/>
   <labels
       name="EnsembleName"
       figure="EnsembleFigure"
       accessor="//@figures.0/@descriptors.0/@accessors.0"/>
   <labels
-      name="EnsembleQuery"
+      name="EnsembleDescription"
       figure="EnsembleFigure"
       accessor="//@figures.0/@descriptors.0/@accessors.1"/>
+  <labels
+      name="EnsembleQuery"
+      figure="EnsembleFigure"
+      accessor="//@figures.0/@descriptors.0/@accessors.2"/>
   <labels
       name="DummyName"
       figure="DummyFigure"

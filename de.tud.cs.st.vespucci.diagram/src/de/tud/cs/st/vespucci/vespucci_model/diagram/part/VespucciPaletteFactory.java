@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -57,7 +57,7 @@ public class VespucciPaletteFactory {
 	 */
 	public void fillPalette(PaletteRoot paletteRoot) {
 		paletteRoot.add(createModules1Group());
-		paletteRoot.add(createConstraints2Group());
+		paletteRoot.add(createDependencies2Group());
 	}
 
 	/**
@@ -76,13 +76,13 @@ public class VespucciPaletteFactory {
 	}
 
 	/**
-	 * Creates "Constraints" palette tool group
+	 * Creates "Dependencies" palette tool group
 	 * @generated
 	 */
-	private PaletteContainer createConstraints2Group() {
+	private PaletteContainer createDependencies2Group() {
 		PaletteDrawer paletteContainer = new PaletteDrawer(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Constraints2Group_title);
-		paletteContainer.setId("createConstraints2Group"); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Dependencies2Group_title);
+		paletteContainer.setId("createDependencies2Group"); //$NON-NLS-1$
 		paletteContainer.add(createIncoming1CreationTool());
 		paletteContainer.add(createOutgoing2CreationTool());
 		paletteContainer.add(createInandOut3CreationTool());

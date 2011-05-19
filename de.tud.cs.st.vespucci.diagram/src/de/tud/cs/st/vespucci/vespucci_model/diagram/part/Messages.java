@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -277,7 +277,7 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String Constraints2Group_title;
+	public static String Dependencies2Group_title;
 
 	/**
 	 * @generated
@@ -367,57 +367,12 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_ShapesDiagram_1000_links;
+	public static String NavigatorGroupName_Incoming_4005_target;
 
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Ensemble_2001_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Ensemble_2001_outgoinglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Dummy_2002_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Dummy_2002_outgoinglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Ensemble_3001_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Ensemble_3001_outgoinglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_NotAllowed_4004_target;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_NotAllowed_4004_source;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Outgoing_4003_target;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Outgoing_4003_source;
+	public static String NavigatorGroupName_Incoming_4005_source;
 
 	/**
 	 * @generated
@@ -432,12 +387,52 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Incoming_4005_target;
+	public static String NavigatorGroupName_NotAllowed_4004_target;
 
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Incoming_4005_source;
+	public static String NavigatorGroupName_NotAllowed_4004_source;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Ensemble_3001_incominglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Ensemble_3001_outgoinglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Ensemble_2001_incominglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Ensemble_2001_outgoinglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Expected_4002_target;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Expected_4002_source;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Outgoing_4003_target;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Outgoing_4003_source;
 
 	/**
 	 * @generated
@@ -452,12 +447,17 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Expected_4002_target;
+	public static String NavigatorGroupName_Dummy_2002_incominglinks;
 
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Expected_4002_source;
+	public static String NavigatorGroupName_Dummy_2002_outgoinglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_ShapesDiagram_1000_links;
 
 	/**
 	 * @generated
