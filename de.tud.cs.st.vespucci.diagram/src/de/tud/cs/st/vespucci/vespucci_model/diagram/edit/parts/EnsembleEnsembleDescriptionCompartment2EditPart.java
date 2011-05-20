@@ -62,6 +62,33 @@ public class EnsembleEnsembleDescriptionCompartment2EditPart extends
 	public EnsembleEnsembleDescriptionCompartment2EditPart(View view) {
 		super(view);
 	}
+	
+	/**
+	 * @generated NOT
+	 * @return The EnsembleDescriptionEditPart of the parent Ensemble
+	 */
+	private EnsembleDescription2EditPart getDescriptionEditPart() {
+		for (Object child : getParent().getChildren()) {
+			if (child.getClass() == EnsembleDescription2EditPart.class)
+				return (EnsembleDescription2EditPart)child;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @generated NOT
+	 * @author DominicS
+	 * 
+	 * Overridden to restore the saved collapse state of the
+	 * description label.
+	 */
+	@Override
+	public void activate() {
+		super.activate();
+
+		getDescriptionEditPart().getFigure().setVisible(getCompartmentFigure().isExpanded());
+	}
 
 	/**
 	 * @generated
@@ -119,12 +146,7 @@ public class EnsembleEnsembleDescriptionCompartment2EditPart extends
 		super.handleNotificationEvent(event);
 		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(
 				event.getFeature())) {
-			//TODO: Improve child selection
-			EnsembleDescription2EditPart descriptionLabel = ((EnsembleDescription2EditPart) this
-					.getParent().getChildren().get(1));
-
-			descriptionLabel.getFigure().setVisible(
-					getCompartmentFigure().isExpanded());
+			getDescriptionEditPart().getFigure().setVisible(getCompartmentFigure().isExpanded());
 		}
 	}
 
