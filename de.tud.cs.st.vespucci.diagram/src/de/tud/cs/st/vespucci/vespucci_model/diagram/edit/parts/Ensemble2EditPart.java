@@ -39,7 +39,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.BorderLayout;
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
@@ -569,14 +572,24 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 			ensembleDescriptionCompartmentContainerFigure0.add(
 					fFigureEnsembleDescriptionCompartmentFigure,
 					BorderLayout.TOP);
+
+			BorderLayout layoutFFigureEnsembleDescriptionCompartmentFigure = new BorderLayout();
 			fFigureEnsembleDescriptionCompartmentFigure
-					.setLayoutManager(new StackLayout());
+					.setLayoutManager(layoutFFigureEnsembleDescriptionCompartmentFigure);
+
+			WrappingLabel l2 = new WrappingLabel();
+			l2.setText("");
+			l2.setMaximumSize(new Dimension(getMapMode().DPtoLP(10),
+					getMapMode().DPtoLP(10)));
+
+			fFigureEnsembleDescriptionCompartmentFigure.add(l2,
+					BorderLayout.BOTTOM);
 
 			fFigureEnsembleDescriptionFigure = new WrappingLabel();
 			fFigureEnsembleDescriptionFigure.setText("");
 
-			fFigureEnsembleDescriptionCompartmentFigure
-					.add(fFigureEnsembleDescriptionFigure);
+			fFigureEnsembleDescriptionCompartmentFigure.add(
+					fFigureEnsembleDescriptionFigure, BorderLayout.TOP);
 
 			fFigureEnsembleCompartmentFigure = new RectangleFigure();
 			fFigureEnsembleCompartmentFigure

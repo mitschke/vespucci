@@ -35,6 +35,7 @@
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
@@ -142,6 +143,12 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends
 
 			descriptionLabel.getFigure().setVisible(
 					getCompartmentFigure().isExpanded());
+
+			//			if (!getCompartmentFigure().isExpanded()) {
+			//				getFigure().setSize(
+			//					new Dimension(getFigure().getSize().width, 10)
+			//				);
+			//			}
 		}
 	}
 }

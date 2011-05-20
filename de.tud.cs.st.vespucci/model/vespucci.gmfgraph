@@ -125,10 +125,25 @@
                 alignment="BEGINNING"
                 vertical="true"/>
             <layout
-                xsi:type="gmfgraph:StackLayout"/>
+                xsi:type="gmfgraph:BorderLayout"/>
+            <children
+                xsi:type="gmfgraph:Label">
+              <layoutData
+                  xsi:type="gmfgraph:BorderLayoutData"
+                  alignment="END"
+                  vertical="true"/>
+              <maximumSize
+                  dx="10"
+                  dy="10"/>
+            </children>
             <children
                 xsi:type="gmfgraph:Label"
-                name="EnsembleDescriptionFigure"/>
+                name="EnsembleDescriptionFigure">
+              <layoutData
+                  xsi:type="gmfgraph:BorderLayoutData"
+                  alignment="BEGINNING"
+                  vertical="true"/>
+            </children>
           </children>
           <children
               xsi:type="gmfgraph:Rectangle"
@@ -147,7 +162,7 @@
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.0"/>
       <accessors
           accessor="getFigureEnsembleDescriptionFigure"
-          figure="//@figures.0/@descriptors.0/@actualFigure/@children.2/@children.0/@children.0"/>
+          figure="//@figures.0/@descriptors.0/@actualFigure/@children.2/@children.0/@children.1"/>
       <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.1"/>
       <accessors
