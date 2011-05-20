@@ -10,7 +10,6 @@
  ****************************************************************************/
 package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
-import io.KeywordReader;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,6 +38,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
+
+import de.tud.cs.st.vespucci.diagram.io.KeywordReader;
 
 /**
  * A Changed Copy of AbstractBasicTextPropertySection
@@ -96,6 +97,11 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 * Keywords to be marked
 		 */
 		private String[] keywords = kwReader.getKeywords();
+		
+		/**
+		 * Pattern to be used to match strings in query
+		 */
+		final String STRING_PATTERN = "'.+?'";
 
 		/**
 		 * Performs syntax highlighting of the query properties tab. So far,
@@ -165,6 +171,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			case SWT.FocusOut:
 				textChanged((Control) event.widget);
 				break;
+			case SWT.Activate:
+				doSyntaxHighlighting();
+				break;
 			default:
 				break;
 			}
@@ -228,22 +237,44 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		}
 
 		/**
-		 * Highlights all keywords.
+		 * Highlights all keywords and strings.
 		 */
 		private void highlightKeywords() {
 
-			Pattern pattern = null;
-			Matcher matcher = null;
 			final String targetText = textWidget.getText();
+			Pattern keywordPattern;
+			Matcher keywordMatcher = null;
 
 			for (final String str : keywords) {
-				pattern = Pattern.compile(String.format("\\b%s\\b", str));
-				matcher = pattern.matcher(targetText);
+				keywordPattern = Pattern.compile(String.format("\\b%s\\b", str));
+				keywordMatcher = keywordPattern.matcher(targetText);
 
-				while (matcher.find()) {
-					markTextRange(matcher.start(), matcher.end());
+				while (keywordMatcher.find()) {
+					markKeywords(keywordMatcher.start(), keywordMatcher.end());
 				}
 			}
+			
+			Matcher stringMatcher = Pattern.compile(STRING_PATTERN).matcher(targetText);
+			while(stringMatcher.find()){
+				markString(stringMatcher.start()+1, stringMatcher.end()-1);
+			}
+		}
+
+		/**
+		 * Helper for {@link #highlightKeywords()}. Marks given range with string-specific settings.
+		 * @param start Index of first character to be marked.
+		 * @param end Index of last character to be marked.
+		 */
+		private void markString(int start, int end) {
+
+			// TODO use eclipse-settings
+			final Color magenta = Display.getCurrent().getSystemColor(
+					SWT.COLOR_GREEN);
+			final int length = end - start;
+			final StyleRange styleRange = new StyleRange(start, length, magenta, null,
+					SWT.NORMAL);
+
+			textWidget.setStyleRange(styleRange);	
 		}
 
 		/**
@@ -251,7 +282,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 * @param start Index of first character to be marked.
 		 * @param end Index of last character to be marked.
 		 */
-		private void markTextRange(final int start, final int end) {
+		private void markKeywords(final int start, final int end) {
 
 			// TODO use eclipse-settings
 			final Color magenta = Display.getCurrent().getSystemColor(
