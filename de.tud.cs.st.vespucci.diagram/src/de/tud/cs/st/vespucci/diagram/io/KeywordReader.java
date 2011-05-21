@@ -9,7 +9,7 @@ import java.util.Scanner;
  * provides methods to retrieve these keywords.
  * 
  * @author Alexander Weitzmann
- * @version 1.0
+ * @version 1.1
  */
 public class KeywordReader {
 
@@ -49,10 +49,10 @@ public class KeywordReader {
 		
 		final List<String> keywordList = new LinkedList<String>();
 
-		// TODO add support for comments (or even XML) in queryKeywords.txt
 		while (scanner.hasNextLine()) {
 			keywordList.add(scanner.nextLine());
 		}
+		scanner.close();
 		
 		_keywords = keywordList.toArray(new String[0]);
 	}

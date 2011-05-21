@@ -10,7 +10,6 @@
  ****************************************************************************/
 package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -22,6 +21,8 @@ import org.eclipse.gmf.runtime.common.core.util.StringStatics;
 import org.eclipse.gmf.runtime.common.ui.util.StatusLineUtil;
 import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPropertySection;
 import org.eclipse.gmf.runtime.diagram.ui.properties.views.TextChangeHelper;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyleRange;
@@ -87,21 +88,21 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 */
 	private final TextChangeHelper listener = new TextChangeHelper() {
 		boolean textModified = false;
-		
+
 		/**
 		 * Provides method for accessing the keywords
 		 */
-		private KeywordReader kwReader = new KeywordReader();
-		
+		private final KeywordReader kwReader = new KeywordReader();
+
 		/**
 		 * Keywords to be marked
 		 */
-		private String[] keywords = kwReader.getKeywords();
-		
+		private final String[] keywords = kwReader.getKeywords();
+
 		/**
 		 * Pattern to be used to match strings in query
 		 */
-		final String STRING_PATTERN = "'.+?'";
+		private static final String STRING_PATTERN = "'.+?'";
 
 		/**
 		 * Performs syntax highlighting of the query properties tab. So far,
@@ -116,8 +117,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			// highlight bracket, depending on caret
 			highlightBrackets();
 
-			// highlight keywords
-			// TODO use text-file instead of fields for specifying keywords
+			// highlight keywords and Strings
 			highlightKeywords();
 		}
 
@@ -171,7 +171,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			case SWT.FocusOut:
 				textChanged((Control) event.widget);
 				break;
-			case SWT.Activate:
+			// FIXME highlight at beginning
+			case SWT.FocusIn:
 				doSyntaxHighlighting();
 				break;
 			default:
@@ -241,55 +242,67 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 */
 		private void highlightKeywords() {
 
+			// TODO use eclipse settings for boldness and italic-ness
+
 			final String targetText = textWidget.getText();
 			Pattern keywordPattern;
-			Matcher keywordMatcher = null;
+			Matcher keywordMatcher;
 
 			for (final String str : keywords) {
-				keywordPattern = Pattern.compile(String.format("\\b%s\\b", str));
+				keywordPattern = Pattern
+						.compile(String.format("\\b%s\\b", str));
 				keywordMatcher = keywordPattern.matcher(targetText);
 
 				while (keywordMatcher.find()) {
 					markKeywords(keywordMatcher.start(), keywordMatcher.end());
 				}
 			}
-			
-			Matcher stringMatcher = Pattern.compile(STRING_PATTERN).matcher(targetText);
-			while(stringMatcher.find()){
-				markString(stringMatcher.start()+1, stringMatcher.end()-1);
+
+			final Matcher stringMatcher = Pattern.compile(STRING_PATTERN,
+					Pattern.DOTALL).matcher(targetText);
+			while (stringMatcher.find()) {
+				markString(stringMatcher.start() + 1, stringMatcher.end() - 1);
 			}
 		}
 
 		/**
-		 * Helper for {@link #highlightKeywords()}. Marks given range with string-specific settings.
-		 * @param start Index of first character to be marked.
-		 * @param end Index of last character to be marked.
-		 */
-		private void markString(int start, int end) {
-
-			// TODO use eclipse-settings
-			final Color magenta = Display.getCurrent().getSystemColor(
-					SWT.COLOR_GREEN);
-			final int length = end - start;
-			final StyleRange styleRange = new StyleRange(start, length, magenta, null,
-					SWT.NORMAL);
-
-			textWidget.setStyleRange(styleRange);	
-		}
-
-		/**
 		 * Helper for {@link #highlightKeywords()}. Marks given range.
-		 * @param start Index of first character to be marked.
-		 * @param end Index of last character to be marked.
+		 * 
+		 * @param start
+		 *            Index of first character to be marked.
+		 * @param end
+		 *            Index of last character to be marked.
 		 */
 		private void markKeywords(final int start, final int end) {
 
-			// TODO use eclipse-settings
-			final Color magenta = Display.getCurrent().getSystemColor(
-					SWT.COLOR_DARK_MAGENTA);
+			final Color keywordColor = JavaUI.getColorManager().getColor(
+					PreferenceConstants.EDITOR_JAVA_KEYWORD_COLOR);
+
 			final int length = end - start;
-			final StyleRange styleRange = new StyleRange(start, length, magenta, null,
-					SWT.BOLD);
+			final StyleRange styleRange = new StyleRange(start, length,
+					keywordColor, null, SWT.BOLD);
+
+			textWidget.setStyleRange(styleRange);
+		}
+
+		/**
+		 * Helper for {@link #highlightKeywords()}. Marks given range with
+		 * string-specific settings.
+		 * 
+		 * @param start
+		 *            Index of first character to be marked.
+		 * @param end
+		 *            Index of last character to be marked.
+		 */
+		private void markString(final int start, final int end) {
+
+			// Use string-color defined in eclipse
+			final Color stringColor = JavaUI.getColorManager().getColor(
+					PreferenceConstants.EDITOR_STRING_COLOR);
+
+			final int length = end - start;
+			final StyleRange styleRange = new StyleRange(start, length,
+					stringColor, null, SWT.NORMAL);
 
 			textWidget.setStyleRange(styleRange);
 		}
@@ -581,7 +594,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			Composite com = getSectionComposite();
 			// TODO: there must be a nice way to update the heights and widths
 			// of the textwidget and its parents
-			while(true) {
+			while (true) {
 
 				if (com instanceof ScrolledComposite) {
 					break;
