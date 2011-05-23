@@ -117,6 +117,12 @@
               xsi:type="gmfgraph:BorderLayoutData"/>
           <layout
               xsi:type="gmfgraph:BorderLayout"/>
+          <minimumSize
+              dx="5"
+              dy="25"/>
+          <preferredSize
+              dx="50"
+              dy="50"/>
           <children
               xsi:type="gmfgraph:Rectangle"
               name="EnsembleDescriptionCompartmentFigure">
@@ -127,7 +133,8 @@
             <layout
                 xsi:type="gmfgraph:BorderLayout"/>
             <children
-                xsi:type="gmfgraph:Label">
+                xsi:type="gmfgraph:Label"
+                name="EnsemblePlaceholderLabelFigure">
               <layoutData
                   xsi:type="gmfgraph:BorderLayoutData"
                   alignment="END"
@@ -135,10 +142,15 @@
               <maximumSize
                   dx="10"
                   dy="5"/>
+              <font
+                  xsi:type="gmfgraph:BasicFont"
+                  faceName=""
+                  height="5"/>
             </children>
             <children
                 xsi:type="gmfgraph:Label"
-                name="EnsembleDescriptionFigure">
+                name="EnsembleDescriptionFigure"
+                text="">
               <layoutData
                   xsi:type="gmfgraph:BorderLayoutData"
                   alignment="BEGINNING"

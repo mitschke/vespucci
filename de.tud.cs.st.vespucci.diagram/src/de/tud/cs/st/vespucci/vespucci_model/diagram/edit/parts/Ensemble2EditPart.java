@@ -64,8 +64,11 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
 import de.tud.cs.st.vespucci.diagram.dnd.EditDropPolicy;
 
 /**
@@ -559,6 +562,12 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 			this.add(fFigureEnsembleQueryFigure);
 
 			RectangleFigure ensembleDescriptionCompartmentContainerFigure0 = new RectangleFigure();
+			ensembleDescriptionCompartmentContainerFigure0
+					.setPreferredSize(new Dimension(getMapMode().DPtoLP(50),
+							getMapMode().DPtoLP(50)));
+			ensembleDescriptionCompartmentContainerFigure0
+					.setMinimumSize(new Dimension(getMapMode().DPtoLP(5),
+							getMapMode().DPtoLP(25)));
 
 			this.add(ensembleDescriptionCompartmentContainerFigure0,
 					BorderLayout.CENTER);
@@ -577,13 +586,17 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 			fFigureEnsembleDescriptionCompartmentFigure
 					.setLayoutManager(layoutFFigureEnsembleDescriptionCompartmentFigure);
 
-			WrappingLabel l2 = new WrappingLabel();
-			l2.setText("");
-			l2.setMaximumSize(new Dimension(getMapMode().DPtoLP(10),
-					getMapMode().DPtoLP(5)));
+			WrappingLabel ensemblePlaceholderLabelFigure2 = new WrappingLabel();
+			ensemblePlaceholderLabelFigure2.setText("");
 
-			fFigureEnsembleDescriptionCompartmentFigure.add(l2,
-					BorderLayout.BOTTOM);
+			ensemblePlaceholderLabelFigure2
+					.setFont(ENSEMBLEPLACEHOLDERLABELFIGURE2_FONT);
+
+			ensemblePlaceholderLabelFigure2.setMaximumSize(new Dimension(
+					getMapMode().DPtoLP(10), getMapMode().DPtoLP(5)));
+
+			fFigureEnsembleDescriptionCompartmentFigure.add(
+					ensemblePlaceholderLabelFigure2, BorderLayout.BOTTOM);
 
 			fFigureEnsembleDescriptionFigure = new WrappingLabel();
 			fFigureEnsembleDescriptionFigure.setText("");
@@ -640,6 +653,13 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 		}
 
 	}
+
+	/**
+	 * @generated
+	 */
+	static final Font ENSEMBLEPLACEHOLDERLABELFIGURE2_FONT = new Font(
+			Display.getCurrent(), Display.getDefault().getSystemFont()
+					.getFontData()[0].getName(), 5, SWT.NORMAL);
 
 	/**
 	 * @generated
