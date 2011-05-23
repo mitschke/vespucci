@@ -64,7 +64,7 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends
 	public EnsembleEnsembleDescriptionCompartmentEditPart(View view) {
 		super(view);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 * @return The EnsembleDescriptionEditPart of the parent Ensemble
@@ -72,9 +72,9 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends
 	private EnsembleDescriptionEditPart getDescriptionEditPart() {
 		for (Object child : getParent().getChildren()) {
 			if (child.getClass() == EnsembleDescriptionEditPart.class)
-				return (EnsembleDescriptionEditPart)child;
+				return (EnsembleDescriptionEditPart) child;
 		}
-		
+
 		return null;
 	}
 
@@ -89,7 +89,8 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends
 	public void activate() {
 		super.activate();
 
-		getDescriptionEditPart().getFigure().setVisible(getCompartmentFigure().isExpanded());
+		getDescriptionEditPart().getFigure().setVisible(
+				getCompartmentFigure().isExpanded());
 	}
 
 	/**
@@ -148,7 +149,8 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends
 		super.handleNotificationEvent(event);
 		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(
 				event.getFeature())) {
-			getDescriptionEditPart().getFigure().setVisible(getCompartmentFigure().isExpanded());
+			getDescriptionEditPart().getFigure().setVisible(
+					getCompartmentFigure().isExpanded());
 		}
 	}
 }

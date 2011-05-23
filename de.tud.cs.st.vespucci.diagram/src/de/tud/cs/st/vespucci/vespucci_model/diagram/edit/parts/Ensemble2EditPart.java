@@ -580,7 +580,7 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 			WrappingLabel l2 = new WrappingLabel();
 			l2.setText("");
 			l2.setMaximumSize(new Dimension(getMapMode().DPtoLP(10),
-					getMapMode().DPtoLP(10)));
+					getMapMode().DPtoLP(5)));
 
 			fFigureEnsembleDescriptionCompartmentFigure.add(l2,
 					BorderLayout.BOTTOM);

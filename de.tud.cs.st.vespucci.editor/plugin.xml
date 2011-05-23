@@ -47,7 +47,7 @@
             id="de.tud.cs.st.vespucci.vespucci_model.presentation.Vespucci_modelEditorID"
             name="%_UI_Vespucci_modelEditor_label"
             icon="icons/full/obj16/Vespucci_modelModelFile.gif"
-            extensions="vespucci_model"
+            extensions="sad"
             class="de.tud.cs.st.vespucci.vespucci_model.presentation.Vespucci_modelEditor"
             contributorClass="de.tud.cs.st.vespucci.vespucci_model.presentation.Vespucci_modelActionBarContributor">
       </editor>
