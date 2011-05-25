@@ -22,6 +22,7 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyleRange;
@@ -32,12 +33,10 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import de.tud.cs.st.vespucci.diagram.io.KeywordReader;
@@ -75,12 +74,13 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	private Composite sectionComposite;
 
 	private final int startHeight = 15;
-	
+
 	/**
-	 * Preference-store of the java source viewer.
-	 * Used for highlighting and text-settings for query.
+	 * Preference-store of the java source viewer. Used for highlighting and
+	 * text-settings for query.
 	 */
-	private static final IPreferenceStore srcViewerPrefs = PreferenceConstants.getPreferenceStore();
+	private static final IPreferenceStore srcViewerPrefs = PreferenceConstants
+			.getPreferenceStore();
 
 	Listener resizeLinstener = new Listener() {
 		@Override
@@ -118,9 +118,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 * @author DominicS
 		 * @author Alexander Weitzmann
 		 */
-		private void doSyntaxHighlighting() {	
-			this.startNonUserChange();
-			
+		private void doSyntaxHighlighting() {
+			startNonUserChange();
+
 			// first, set everything to black and normal
 			resetStyle();
 
@@ -132,41 +132,26 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 			// highlight strings
 			highlightStrings();
-			
-			this.finishNonUserChange();
+
+			finishNonUserChange();
 		}
 
 		/**
-		 * Returns an array of StyleRange that makes the characters at the
-		 * positions first and second of a StyledText appear in bold print.
+		 * Returns a StyleRange that surrounds the character at the given
+		 * position with a rectangle.
 		 * 
-		 * @author DominicS
-		 * @param first
-		 *            First bold character
-		 * @param second
-		 *            Second bold character
-		 * @return Array of StyleRanges that makes characters at first and
-		 *         second bold
+		 * @param position
+		 *            The position of the bracket to be highlighted.
+		 * @return A StyleRange that highlights bracket at given position
 		 */
-		private StyleRange[] getBoldStyleRanges(int first, int second) {
-			if (first > second) {
-				final int temp = second;
-				second = first;
-				first = temp;
-			}
+		private StyleRange getBracketStyle(final int position) {
+			final StyleRange bracketStyle = textWidget
+					.getStyleRangeAtOffset(position);
 
-			// Emphasis style:
-			// blue, bold and underlined
+			// surround with rectangle
+			bracketStyle.borderStyle = SWT.BORDER_SOLID;
 
-			final Color blue = Display.getCurrent().getSystemColor(
-					SWT.COLOR_BLUE);
-			final StyleRange r1 = new StyleRange(first, 1, blue, null, SWT.BOLD);
-			final StyleRange r2 = new StyleRange(second, 1, blue, null,
-					SWT.BOLD);
-			r1.underline = true;
-			r2.underline = true;
-
-			return new StyleRange[] { r1, r2 };
+			return bracketStyle;
 		}
 
 		/**
@@ -195,6 +180,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		/**
 		 * Highlights bracket at caret and corresponding bracket.
 		 */
+		// FIXME ignore keywords and strings
 		private void highlightBrackets() {
 
 			final int offset = textWidget.getCaretOffset();
@@ -217,8 +203,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 					if (textWidget.getText().charAt(i) == ')' && intend == 0) {
 						// Highlight both brackets
-						textWidget.setStyleRanges(getBoldStyleRanges(
-								offset - 1, i));
+						textWidget.setStyleRange(getBracketStyle(i));
 						return;
 					}
 
@@ -237,8 +222,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 					if (textWidget.getText().charAt(i) == '(' && intend == 0) {
 						// Highlight both brackets
-						textWidget.setStyleRanges(getBoldStyleRanges(
-								offset - 1, i));
+						textWidget.setStyleRange(getBracketStyle(i));
 						return;
 					}
 
@@ -336,23 +320,27 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 * "normal" state.
 		 */
 		private void resetStyle() {
-			final Color foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_JAVA_DEFAULT_COLOR);
-			final Color background = JavaUI.getColorManager().getColor(AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND);
-			
-			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_BOLD);
-			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_ITALIC);
-			
+			final Color foreground = JavaUI.getColorManager().getColor(
+					PreferenceConstants.EDITOR_JAVA_DEFAULT_COLOR);
+			final Color background = JavaUI.getColorManager().getColor(
+					PreferenceConstants.EDITOR_BACKGROUND_COLOR);
+
+			final boolean bold = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_BOLD);
+			final boolean italic = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_ITALIC);
+
 			int fontstyle = SWT.NORMAL;
-			if(bold){
+			if (bold) {
 				fontstyle |= SWT.BOLD;
 			}
-			if(italic){
+			if (italic) {
 				fontstyle |= SWT.ITALIC;
 			}
-			
 
 			final StyleRange normalStyle = new StyleRange(0,
-					textWidget.getCharCount(), foreground, background, fontstyle);
+					textWidget.getCharCount(), foreground, background,
+					fontstyle);
 			textWidget.setStyleRange(normalStyle);
 		}
 
@@ -407,12 +395,11 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		final StyledText st = new StyledText(parent, SWT.MULTI | SWT.V_SCROLL
 				| SWT.H_SCROLL);
 
-		// jdt source viewer font
-		// TODO EDITOR_TEXT_FONT != source view-font !!
+		// source viewer font
+		// FIXME search for Java source viewer font
 		final Font userFont = new Font(parent.getDisplay(),
-				PreferenceConverter.getFontData(
-						srcViewerPrefs,
-						PreferenceConstants.EDITOR_TEXT_FONT));
+				PreferenceConverter.getFontData(srcViewerPrefs,
+						JFaceResources.TEXT_FONT));
 		st.setFont(userFont);
 
 		final FormData data = new FormData();
@@ -556,7 +543,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * Refresh UI body - refresh will surround this with read action block
 	 */
 	protected final void refreshUI() {
-		if(textWidget != null){
+		if (textWidget != null) {
 			textWidget.setText(getPropertyValueString());
 		}
 	}
