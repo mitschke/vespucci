@@ -66,7 +66,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	private final int QUERY_TAB_WIDTH_SHIFT = 45;
 
 	// styled text widget to display and set value of the property
-	private StyledText textWidget;
+	private MarkableStyledText textWidget;
 
 	// parent parent ... parent composite for the size of the textfield
 	private Composite scrolledParent;
@@ -194,39 +194,39 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			final int size = textWidget.getCharCount();
 			final char currentChar = textWidget.getText().charAt(offset - 1);
 
-			if (currentChar == '(') {
+			if (currentChar == '(' && !textWidget.isPositionMarked(offset - 1)) {
 				int intend = 0;
 				for (int i = offset; i < size; i++) {
-					if (textWidget.getText().charAt(i) == '(') {
+					if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
 						intend++;
 					}
 
-					if (textWidget.getText().charAt(i) == ')' && intend == 0) {
+					if (textWidget.getText().charAt(i) == ')' && intend == 0 && !textWidget.isPositionMarked(i)) {
 						// Highlight both brackets
 						textWidget.setStyleRange(getBracketStyle(i));
 						return;
 					}
 
-					if (textWidget.getText().charAt(i) == ')') {
+					if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
 						intend--;
 					}
 				}
 			}
 
-			else if (currentChar == ')' && offset > 1) {
+			else if (currentChar == ')' && offset > 1  && !textWidget.isPositionMarked(offset - 1)) {
 				int intend = 0;
 				for (int i = offset - 2; i >= 0; i--) {
-					if (textWidget.getText().charAt(i) == ')') {
+					if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
 						intend++;
 					}
 
-					if (textWidget.getText().charAt(i) == '(' && intend == 0) {
+					if (textWidget.getText().charAt(i) == '(' && intend == 0 && !textWidget.isPositionMarked(i)) {
 						// Highlight both brackets
 						textWidget.setStyleRange(getBracketStyle(i));
 						return;
 					}
 
-					if (textWidget.getText().charAt(i) == '(') {
+					if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
 						intend--;
 					}
 				}
@@ -306,12 +306,20 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			styleRange.foreground = JavaUI.getColorManager().getColor(
 					PreferenceConstants.EDITOR_STRING_COLOR);
 
+			// remove all string-markings for {@link #highlightBrackets}
+			textWidget.unmarkAllPositions();
+			
 			// highlight strings
 			while (stringMatcher.find()) {
 				styleRange.start = stringMatcher.start() + 1;
 				styleRange.length = stringMatcher.end() - styleRange.start - 1;
 
 				textWidget.setStyleRange(styleRange);
+				
+				// mark string-locations for {@link #highlightBrackets}
+				for(int i = stringMatcher.start(); i < stringMatcher.end(); ++i){
+					textWidget.markPosition(i);
+				}
 			}
 		}
 
@@ -389,10 +397,10 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 *            - parent composite
 	 * @return - a text widget to display and edit the property
 	 */
-	protected final StyledText createTextWidget(final Composite parent) {
+	protected final MarkableStyledText createTextWidget(final Composite parent) {
 		getSectionComposite().getSize();
 
-		final StyledText st = new StyledText(parent, SWT.MULTI | SWT.V_SCROLL
+		final MarkableStyledText st = new MarkableStyledText(parent, SWT.MULTI | SWT.V_SCROLL
 				| SWT.H_SCROLL);
 
 		// source viewer font
