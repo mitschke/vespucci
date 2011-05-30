@@ -91,7 +91,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	 * A helper to listen for events that indicate that a text field has been changed.
 	 */
 	private final TextChangeHelper listener = new TextChangeHelper() {
-		boolean textModified = false;
+		private boolean textModified = false;
 
 		/**
 		 * Provides method for accessing the keywords
@@ -154,20 +154,25 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		@Override
 		public void handleEvent(final Event event) {
 			switch (event.type) {
-				case SWT.KeyDown:
-					doSyntaxHighlighting();
+			case SWT.KeyDown:
+				doSyntaxHighlighting();
 
-					textModified = true;
-					if (event.character == SWT.CR) {
-						getPropertyValueString();
-					}
-					break;
-				case SWT.FocusOut:
-					textChanged((Control) event.widget);
-					break;
-				// FIXME highlight at beginning
-				default:
-					break;
+				textModified = true;
+				if (event.character == SWT.CR) {
+					getPropertyValueString();
+				}
+				break;
+			case SWT.FocusOut:
+				textChanged((Control) event.widget);
+				break;
+			case SWT.FocusIn:
+				doSyntaxHighlighting();
+				break;
+			case SWT.MouseDown:
+				doSyntaxHighlighting();
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -231,8 +236,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		 */
 		private void highlightKeywords() {
 			final String targetText = textWidget.getText();
-			Pattern keywordPattern;
-			Matcher keywordMatcher;
+			Pattern keywordPattern = null;
+			Matcher keywordMatcher = null;
 
 			// prepare style for keywords
 			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_BOLD);
@@ -327,6 +332,14 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		}
 
 		@Override
+		public void startListeningTo(final Control control) {
+			control.addListener(SWT.FocusOut, this);
+			control.addListener(SWT.Modify, this);
+			control.addListener(SWT.FocusIn, this);
+			control.addListener(SWT.MouseDown, this);
+		}
+
+		@Override
 		public void textChanged(final Control control) {
 			if (textModified) {
 				// clear error message
@@ -340,8 +353,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	};
 
 	/**
-	 * @return - the default implementation returns contents of the text widget as a new value for the property.
-	 *         Subclasses can could be override.
+	 * @return - the default implementation returns contents of the text widget as a new value for the property. Subclasses can
+	 *         could be override.
 	 */
 	protected final Object computeNewPropertyValue() {
 		return getTextWidget().getText();
@@ -349,6 +362,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse .swt.widgets.Composite,
 	 * org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
@@ -369,10 +383,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 
 		final MarkableStyledText st = new MarkableStyledText(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 
-		// source viewer font
-		// FIXME search for Java source viewer font
-		final Font userFont = new Font(parent.getDisplay(), PreferenceConverter.getFontData(srcViewerPrefs,
-				JFaceResources.TEXT_FONT));
+		final Font userFont = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
 		st.setFont(userFont);
 
 		final FormData data = new FormData();
@@ -390,11 +401,11 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		}
 
 		return st;
-
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#dispose()
 	 */
 	@Override
@@ -418,6 +429,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
 		textWidget = createTextWidget(sectionComposite);
 		scrolledParent = parent;
+
 		while (true) {
 			// TODO: There must be a nicer way for redraw the text widget then
 			// to say the first scrolledcomposite .layout()
@@ -461,8 +473,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	/**
 	 * returns as an array the property name
 	 * 
-	 * @return - array of strings where each describes a property name one per property. The strings will be used to
-	 *         calculate common indent from the left
+	 * @return - array of strings where each describes a property name one per property. The strings will be used to calculate
+	 *         common indent from the left
 	 */
 	protected final String[] getPropertyNameStringsArray() {
 		return new String[] { getPropertyNameLabel() };
@@ -493,6 +505,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
 	@Override
