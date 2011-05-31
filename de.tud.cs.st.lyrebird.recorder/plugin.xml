@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="de.tud.cs.st.classfilechangetracker.StartUp"></startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.tud.cs.st.classfilechangetracker.preferences.PreferencePage"
+            id="de.tud.cs.st.bytecodeTracker.preferences.PreferencePage"
+            name="Bytecode Recorder">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.tud.cs.st.classfilechangetracker.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         id="de.tud.cs.st.bytecodeTracker.BytecodeTrackerNature"
+         name="Bytecode Tracker Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="de.tud.cs.st.classfilechangetracker.nature.ClassFileChangeTrackerNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         id="de.tud.cs.st.bytecodeTracker.uiBytecodeTrackerNature"
+         name="Bytecode Tracker Nature"
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="de.tud.cs.st.bytecodeTracker.contribution1"
+            nameFilter="*"
+            objectClass="org.eclipse.core.resources.IProject">
+         <action
+               class="de.tud.cs.st.classfilechangetracker.nature.ToggleNatureAction"
+               enablesFor="+"
+               icon="icons/BT.gif"
+               id="de.tud.cs.st.bytecodeTracker.addRemoveNatureAction"
+               label="Add/Remove Bytecode Nature"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/BT.gif"
+            id="de.tud.cs.st.bytecodeTracker.NatureImage"
+            natureId="de.tud.cs.st.bytecodeTracker.BytecodeTrackerNature">
+      </image>
+   </extension>
+
+</plugin>
