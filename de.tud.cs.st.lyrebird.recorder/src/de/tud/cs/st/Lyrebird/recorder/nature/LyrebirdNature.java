@@ -1,4 +1,4 @@
-package de.tud.cs.st.classfilechangetracker.nature;
+package de.tud.cs.st.Lyrebird.recorder.nature;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -6,7 +6,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
-public class ClassFileChangeTrackerNature implements IProjectNature {
+public class LyrebirdNature implements IProjectNature {
 
 	/**
 	 * ID of this project nature

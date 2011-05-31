@@ -1,4 +1,4 @@
-package de.tud.cs.st.classfilechangetracker;
+package de.tud.cs.st.Lyrebird.recorder;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 

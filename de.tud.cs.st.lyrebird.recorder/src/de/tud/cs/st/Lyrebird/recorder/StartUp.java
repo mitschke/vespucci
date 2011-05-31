@@ -1,4 +1,4 @@
-package de.tud.cs.st.classfilechangetracker;
+package de.tud.cs.st.Lyrebird.recorder;
 
 
 
@@ -8,7 +8,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.ui.IStartup;
 
-import de.tud.cs.st.classfilechangetracker.changeListener.ResourceChangeListener;
+import de.tud.cs.st.Lyrebird.recorder.changeListener.ResourceChangeListener;
 
 /**
  * This class register a ResourceChangeListener on the workspace

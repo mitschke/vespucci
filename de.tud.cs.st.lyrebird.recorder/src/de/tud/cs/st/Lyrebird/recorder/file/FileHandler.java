@@ -1,4 +1,4 @@
-package de.tud.cs.st.classfilechangetracker.file;
+package de.tud.cs.st.Lyrebird.recorder.file;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,10 +18,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.classfilechangetracker.Activator;
-import de.tud.cs.st.classfilechangetracker.StartUp;
-import de.tud.cs.st.classfilechangetracker.nature.*;
-import de.tud.cs.st.classfilechangetracker.preferences.PreferenceConstants;
+import de.tud.cs.st.Lyrebird.recorder.Activator;
+import de.tud.cs.st.Lyrebird.recorder.StartUp;
+import de.tud.cs.st.Lyrebird.recorder.nature.LyrebirdNature;
+import de.tud.cs.st.Lyrebird.recorder.preferences.PreferenceConstants;
+
 
 public class FileHandler {
 	private boolean saveGlobal = false;
@@ -66,7 +67,7 @@ public class FileHandler {
 				if (resource != null
 						&& resource.getProject() != null
 						&& resource.getProject().isNatureEnabled(
-								ClassFileChangeTrackerNature.NATURE_ID)
+								LyrebirdNature.NATURE_ID)
 						&& resource.getType() == IResource.FILE
 						&& "class"
 								.equalsIgnoreCase(resource.getFileExtension())) {

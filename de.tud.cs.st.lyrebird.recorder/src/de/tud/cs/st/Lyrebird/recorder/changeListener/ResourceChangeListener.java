@@ -1,4 +1,4 @@
-package de.tud.cs.st.classfilechangetracker.changeListener;
+package de.tud.cs.st.Lyrebird.recorder.changeListener;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,9 +12,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.classfilechangetracker.Activator;
-import de.tud.cs.st.classfilechangetracker.StartUp;
-import de.tud.cs.st.classfilechangetracker.file.FileHandler;
+import de.tud.cs.st.Lyrebird.recorder.Activator;
+import de.tud.cs.st.Lyrebird.recorder.StartUp;
+import de.tud.cs.st.Lyrebird.recorder.file.FileHandler;
 
 public class ResourceChangeListener implements IResourceChangeListener {
 	FileHandler fileHandler;

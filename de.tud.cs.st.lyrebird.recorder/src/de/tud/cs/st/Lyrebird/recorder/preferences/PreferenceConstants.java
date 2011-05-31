@@ -1,4 +1,4 @@
-package de.tud.cs.st.classfilechangetracker.preferences;
+package de.tud.cs.st.Lyrebird.recorder.preferences;
 
 /**
  * Constant definitions for plug-in preferences

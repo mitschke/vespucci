@@ -1,9 +1,10 @@
-package de.tud.cs.st.classfilechangetracker.preferences;
+package de.tud.cs.st.Lyrebird.recorder.preferences;
 
 import org.eclipse.jface.preference.*;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
-import de.tud.cs.st.classfilechangetracker.Activator;
+
+import de.tud.cs.st.Lyrebird.recorder.Activator;
 
 /**
  * This class represents a preference page that
