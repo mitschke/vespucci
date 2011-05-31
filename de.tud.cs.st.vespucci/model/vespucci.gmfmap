@@ -20,6 +20,8 @@
       </labelMappings>
       <labelMappings
           xsi:type="gmfmap:FeatureLabelMapping"
+          viewPattern=""
+          editorPattern=""
           editPattern="">
         <diagramLabel
             href="vespucci.gmfgraph#EnsembleDescription"/>
