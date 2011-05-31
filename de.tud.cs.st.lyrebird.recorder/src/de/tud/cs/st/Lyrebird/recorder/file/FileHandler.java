@@ -20,7 +20,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.Lyrebird.recorder.Activator;
 import de.tud.cs.st.Lyrebird.recorder.StartUp;
-import de.tud.cs.st.Lyrebird.recorder.nature.LyrebirdNature;
+
+import de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.*;
 import de.tud.cs.st.Lyrebird.recorder.preferences.PreferenceConstants;
 
 

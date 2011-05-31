@@ -4,58 +4,117 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="de.tud.cs.st.classfilechangetracker.StartUp"></startup>
+            class="de.tud.cs.st.Lyrebird.recorder.StartUp"></startup>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="de.tud.cs.st.classfilechangetracker.preferences.PreferencePage"
+            class="de.tud.cs.st.Lyrebird.recorder.preferences.PreferencePage"
             id="de.tud.cs.st.bytecodeTracker.preferences.PreferencePage"
-            name="Bytecode Recorder">
+            name="Lyerbird Recorder">
       </page>
    </extension>
+   
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="de.tud.cs.st.classfilechangetracker.preferences.PreferenceInitializer">
+            class="de.tud.cs.st.Lyrebird.recorder.preferences.PreferenceInitializer">
       </initializer>
    </extension>
    <extension
-         id="de.tud.cs.st.bytecodeTracker.BytecodeTrackerNature"
-         name="Bytecode Tracker Nature"
+         id="LyrebirdBuilderID"
+         name="Lyrebird Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.LyrebirdBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="LyrebirdNatureID"
+         name="Lyrebird Nature"
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
-               class="de.tud.cs.st.classfilechangetracker.nature.ClassFileChangeTrackerNature">
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.LyrebirdNature">
          </run>
       </runtime>
+      <builder
+            id="Lyrebird.LyrebirdBuilderID">
+      </builder>
    </extension>
    <extension
-         id="de.tud.cs.st.bytecodeTracker.uiBytecodeTrackerNature"
-         name="Bytecode Tracker Nature"
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             adaptable="true"
-            id="de.tud.cs.st.bytecodeTracker.contribution1"
+            id="Lyrebird.RemoveNature"
             nameFilter="*"
             objectClass="org.eclipse.core.resources.IProject">
          <action
-               class="de.tud.cs.st.classfilechangetracker.nature.ToggleNatureAction"
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.ToggleNatureAction"
                enablesFor="+"
-               icon="icons/BT.gif"
-               id="de.tud.cs.st.bytecodeTracker.addRemoveNatureAction"
-               label="Add/Remove Bytecode Nature"
+               id="Lyrebird.addNatureAction"
+               label="Remove Sample Nature"
                menubarPath="additions">
          </action>
+         <visibility>
+            <and>
+               <objectState
+                     name="open"
+                     value="true">
+               </objectState>
+               <objectState
+                     name="nature"
+                     value="Lyrebird.LyrebirdNatureID">
+               </objectState>
+            </and>
+         </visibility>
       </objectContribution>
    </extension>
-   <extension
-         point="org.eclipse.ui.ide.projectNatureImages">
-      <image
-            icon="icons/BT.gif"
-            id="de.tud.cs.st.bytecodeTracker.NatureImage"
-            natureId="de.tud.cs.st.bytecodeTracker.BytecodeTrackerNature">
-      </image>
+    <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="Lyrebird.AddNature"
+            nameFilter="*"
+            objectClass="org.eclipse.core.resources.IProject">
+         <action
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.ToggleNatureAction"
+               enablesFor="+"
+               id="Lyrebird.RemoveNatureAction"
+               label="Add Sample Nature"
+               menubarPath="additions">
+         </action>
+         <visibility>
+            <and>
+               <objectState
+                     name="open"
+                     value="true">
+               </objectState>
+               <not>
+                  <objectState
+                        name="nature"
+                        value="Lyrebird.LyrebirdNatureID">
+                  </objectState>
+               </not>
+            </and>
+         </visibility>
+      </objectContribution>
    </extension>
+   
+   <extension
+         id="xmlProblem"
+         name="XML Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+  
 
 </plugin>
