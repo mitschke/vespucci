@@ -41,9 +41,6 @@
                class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.LyrebirdNature">
          </run>
       </runtime>
-      <builder
-            id="Lyrebird.LyrebirdBuilderID">
-      </builder>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
@@ -56,7 +53,7 @@
                class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.ToggleNatureAction"
                enablesFor="+"
                id="Lyrebird.addNatureAction"
-               label="Remove Sample Nature"
+               label="Remove Lyrebird Nature"
                menubarPath="additions">
          </action>
          <visibility>
@@ -84,7 +81,7 @@
                class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.ToggleNatureAction"
                enablesFor="+"
                id="Lyrebird.RemoveNatureAction"
-               label="Add Sample Nature"
+               label="Add Lyrebird Nature"
                menubarPath="additions">
          </action>
          <visibility>
@@ -104,17 +101,6 @@
       </objectContribution>
    </extension>
    
-   <extension
-         id="xmlProblem"
-         name="XML Problem"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.core.resources.problemmarker">
-      </super>
-      <persistent
-            value="true">
-      </persistent>
-   </extension>
   
 
 </plugin>
