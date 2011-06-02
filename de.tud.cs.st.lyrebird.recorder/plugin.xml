@@ -11,7 +11,7 @@
       <page
             class="de.tud.cs.st.Lyrebird.recorder.preferences.PreferencePage"
             id="de.tud.cs.st.bytecodeTracker.preferences.PreferencePage"
-            name="Lyerbird Recorder">
+            name="Lyrebird Recorder">
       </page>
    </extension>
    
