@@ -28,7 +28,7 @@
       <builder
             hasNature="true">
          <run
-               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.LyrebirdBuilder">
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.LyrebirdNature">
          </run>
       </builder>
    </extension>

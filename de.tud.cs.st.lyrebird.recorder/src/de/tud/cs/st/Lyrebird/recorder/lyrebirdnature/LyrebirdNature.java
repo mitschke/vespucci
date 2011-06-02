@@ -45,6 +45,7 @@ public class LyrebirdNature implements IProjectNature {
 	 * @see org.eclipse.core.resources.IProjectNature#deconfigure()
 	 */
 	public void deconfigure() throws CoreException {
+
 	}
 
 	/*
