@@ -109,7 +109,7 @@ public class FileHandler {
 			public boolean visit(IResourceDelta delta) throws CoreException {
 
 				IResource resource = delta.getResource();
-
+				
 				if (resource != null
 						&& resource.getProject() != null
 						&& resource.getProject().isNatureEnabled(
@@ -118,11 +118,14 @@ public class FileHandler {
 						&& "class"
 								.equalsIgnoreCase(resource.getFileExtension())) {
 					try {
-						if (resource.getFullPath().toOSString()
-								.contains(projectPath))
-							return false;
+						
+						
 
 						if (saveGlobal) {
+							//check that we dont get a change in Lyrebirds outputfolder
+							if(resource.getRawLocation().matchingFirstSegments(new Path(globalPath)) == new Path(globalPath).segmentCount())
+								return false;
+							
 							File outputfoler = new File(globalPath, resource
 									.getFullPath().toFile().getParent());
 							if (!outputfoler.exists())
@@ -137,6 +140,11 @@ public class FileHandler {
 								copyFile(getSourceFile(resource), des);
 							}
 						} else {
+							//check that we dont get a change in Lyrebirds outputfolder
+							if (resource.getProjectRelativePath().segment(0).equals(projectPath))
+								return false;
+							
+							
 							File projecFile = new File(workspaceLocation,
 									resource.getProject().getFullPath()
 											.toOSString());

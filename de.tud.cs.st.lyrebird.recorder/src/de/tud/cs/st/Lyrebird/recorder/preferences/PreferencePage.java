@@ -66,17 +66,23 @@ public class PreferencePage
 		addField(
 				new BooleanFieldEditor(
 					PreferenceConstants.P_SAVE_PER_PROJECT,
-					"Save output separately for every project",
+					"Save Lyrebird records into Eclipse projectfolder",
 					getFieldEditorParent()));
-		prefFoldername = new StringFieldEditor(PreferenceConstants.P_PROJECT_RELATIV_PATH, "Output folder (folder name must be unique)(if output is saved separately fore every project):", getFieldEditorParent());
+		
+		prefFoldername = new StringFieldEditor(PreferenceConstants.P_PROJECT_RELATIV_PATH, "Output foldername\n(Lyrebird needs an own output folder):", getFieldEditorParent());
+		
 		addField(prefFoldername);
 		prefPath = new DirectoryFieldEditor(PreferenceConstants.P_ABSOLUTE_PATH, 
-				"Output path(if logs are saved for all projects in one folder):", getFieldEditorParent());
-		prefPath.setEnabled(false, getFieldEditorParent());
+				"Global outputpath: ", getFieldEditorParent());
 		addField(prefPath);
+		setEnable();
 	}
 	
-	
+	private void setEnable(){
+		boolean saveperproject = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_SAVE_PER_PROJECT);
+		prefPath.setEnabled(!saveperproject, getFieldEditorParent());
+		prefFoldername.setEnabled(saveperproject, getFieldEditorParent());
+	}
 	 @Override
 	public void propertyChange(PropertyChangeEvent event) {
 		 //toggle the enable property of StringFieldEditor and DirectoryFieldEditor if the value of BooleanFieldEditor changes
