@@ -65,7 +65,7 @@ public class PreferencePage
 		
 		addField(
 				new BooleanFieldEditor(
-					PreferenceConstants.P_SAVE_PAIR_PROJECT,
+					PreferenceConstants.P_SAVE_PER_PROJECT,
 					"Save output separately for every project",
 					getFieldEditorParent()));
 		prefFoldername = new StringFieldEditor(PreferenceConstants.P_PROJECT_RELATIV_PATH, "Output folder (folder name must be unique)(if output is saved separately fore every project):", getFieldEditorParent());
@@ -81,7 +81,7 @@ public class PreferencePage
 	public void propertyChange(PropertyChangeEvent event) {
 		 //toggle the enable property of StringFieldEditor and DirectoryFieldEditor if the value of BooleanFieldEditor changes
 		 if(event.getSource() instanceof org.eclipse.jface.preference.BooleanFieldEditor){
-			 if(((BooleanFieldEditor) event.getSource()).getPreferenceName().equals(PreferenceConstants.P_SAVE_PAIR_PROJECT)){
+			 if(((BooleanFieldEditor) event.getSource()).getPreferenceName().equals(PreferenceConstants.P_SAVE_PER_PROJECT)){
 				 if(event.getNewValue().equals(true)){
 					 prefPath.setEnabled(false, getFieldEditorParent());
 					 prefFoldername.setEnabled(true, getFieldEditorParent());

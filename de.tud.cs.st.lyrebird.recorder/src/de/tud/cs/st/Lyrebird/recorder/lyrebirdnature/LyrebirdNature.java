@@ -31,14 +31,13 @@
  */
 package de.tud.cs.st.Lyrebird.recorder.lyrebirdnature;
 
-import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
 /**
  * ProjectNature class of the Lyrebird.recorder project
+ * 
  * @author Malte V
  */
 public class LyrebirdNature implements IProjectNature {
@@ -49,7 +48,6 @@ public class LyrebirdNature implements IProjectNature {
 	public static final String NATURE_ID = "Lyrebird.LyrebirdNatureID";
 
 	private IProject project;
-
 
 	public void configure() throws CoreException {
 	}

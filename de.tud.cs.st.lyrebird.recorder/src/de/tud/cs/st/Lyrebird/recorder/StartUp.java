@@ -42,12 +42,12 @@ import org.eclipse.ui.IStartup;
 import de.tud.cs.st.Lyrebird.recorder.changeListener.ResourceChangeListener;
 
 /**
- * This class registers a ResourceChangeListener on the workspace
- * 
+ * This class registers a ResourceChangeListener
+ * @see IStartup
  * @author Malte V
  */
 public class StartUp implements IStartup {
-	public static final String PLUGIN_ID = "SAEClassFileLogger";
+	
 	@Override
 	public void earlyStartup() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();

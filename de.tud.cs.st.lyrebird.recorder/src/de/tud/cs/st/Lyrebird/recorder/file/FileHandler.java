@@ -50,12 +50,19 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.Lyrebird.recorder.Activator;
-import de.tud.cs.st.Lyrebird.recorder.StartUp;
 
 import de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.*;
 import de.tud.cs.st.Lyrebird.recorder.preferences.PreferenceConstants;
 
 /**
+ * goes through a IResoucreDelta and copies all classfiels to
+ * projectpath\P_PROJECT_RELATIV_PATH\packageName\subpackagename\...\TIME_EVENT_CLASSNAME.class
+ * or
+ * P_ABSOLUTE_PATH\packageName\subpackagename\...\TIME_EVENT_CLASSNAME.class
+ * 
+ * TIME = point in time [in milliseconds (since January 1, 1970)] when writeResourceDeltas was called
+ * Event = Changed/Added/Removed 
+ * @see PreferenceConstants
  * @author Malte V
  */
 public class FileHandler {
@@ -72,7 +79,7 @@ public class FileHandler {
 
 	private void configOutput() throws FileNotFoundException {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		saveGlobal = !store.getBoolean(PreferenceConstants.P_SAVE_PAIR_PROJECT);
+		saveGlobal = !store.getBoolean(PreferenceConstants.P_SAVE_PER_PROJECT);
 		globalPath = store.getString(PreferenceConstants.P_ABSOLUTE_PATH);
 		projectPath = store
 				.getString(PreferenceConstants.P_PROJECT_RELATIV_PATH);
@@ -84,7 +91,12 @@ public class FileHandler {
 		}
 
 	}
-
+	/**
+	 *
+	 * 
+	 * @param delta
+	 * @throws FileNotFoundException
+	 */
 	public void writeResourceDeltas(IResourceDelta delta) throws FileNotFoundException{
 		
 			configOutput();
@@ -151,7 +163,7 @@ public class FileHandler {
 
 					} catch (IOException e) {
 						IStatus is = new Status(Status.ERROR,
-								StartUp.PLUGIN_ID, "IOException", e);
+								Activator.PLUGIN_ID, "IOException", e);
 						StatusManager.getManager()
 								.handle(is, StatusManager.LOG);
 						StatusManager.getManager()
@@ -165,7 +177,7 @@ public class FileHandler {
 		try {
 			delta.accept(visitor);
 		} catch (CoreException e) {
-			IStatus is = new Status(Status.ERROR, StartUp.PLUGIN_ID,
+			IStatus is = new Status(Status.ERROR, Activator.PLUGIN_ID,
 					"CoreException", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 
@@ -187,7 +199,7 @@ public class FileHandler {
 	}
 
 	// from https://gist.github.com/889747
-	public static void copyFile(File sourceFile, File destFile)
+	private static void copyFile(File sourceFile, File destFile)
 			throws IOException {
 		if (!destFile.exists()) {
 			destFile.createNewFile();

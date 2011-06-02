@@ -37,7 +37,7 @@ package de.tud.cs.st.Lyrebird.recorder.preferences;
  */
 public class PreferenceConstants {
 
-	public static final String P_SAVE_PAIR_PROJECT =	"savepairproject";
-	public static final String P_ABSOLUTE_PATH = "pathforallprojects";
-	public static final String P_PROJECT_RELATIV_PATH = "pathrelativetoapreject";
+	public static final String P_SAVE_PER_PROJECT =	"lyrebird.saveperproject";
+	public static final String P_ABSOLUTE_PATH = "lyrebird.pathforallprojects";
+	public static final String P_PROJECT_RELATIV_PATH = "lyrebird.pathrelativetoapreject";
 }
