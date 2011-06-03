@@ -193,7 +193,8 @@ public class FileHandler {
 	}
 
 	private File getSourceFile(IResource resource) {
-		return new File(workspaceLocation, resource.getFullPath().toOSString());
+		return resource.getRawLocation().toFile();
+		//return new File(workspaceLocation, resource.getFullPath().toOSString());
 	}
 
 	private String getKind(int kind) {
