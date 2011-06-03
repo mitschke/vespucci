@@ -67,6 +67,7 @@ class Reader(val location : File) {
     /**
      * Returns all files in a dir and all sub dirs converted into Events,
      * grouped by the event time as a List of Lists 
+     * descending ordered by time
      * ONLY PUBLIY FOR TESTING
      */
     //TODO remove currentLocation : File and use class val location instead
@@ -109,7 +110,7 @@ class Reader(val location : File) {
         var allEvents = readAllFiles(currentLocation)
         val sorted = scala.util.Sorting.stableSort(allEvents, (f : Event) => f.eventTime)
         sorted
-        sorted.reverse // (ascending order)
+        //sorted.reverse // (ascending order)
     }
 
     /**

@@ -52,7 +52,7 @@ class TestClassFileChangeReader extends org.scalatest.junit.JUnitSuite {
         // solution 1: read from a resource in the classpath (as done in the sae tests)
         // solution 2: use maven copy resources plugin and encode path as "target/choice-for-copied-resources    
         val reader = new Reader(location)     
-        var res : List[List[Event]] = reader.getAllFilesGroupedByEventTime(location)
+        var res : List[List[Event]] = reader.getAllFilesGroupedByEventTime(location).reverse
         var lastEventTime : Long = 0
         var sumEvents = 0
         var sumEventFiles = 0
