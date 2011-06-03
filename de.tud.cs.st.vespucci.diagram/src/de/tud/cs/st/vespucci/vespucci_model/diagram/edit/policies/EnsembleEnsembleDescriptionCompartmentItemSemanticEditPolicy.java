@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -32,26 +32,21 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
-
-import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.emf.common.ui.URIEditorInput;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies;
 
 /**
  * @generated
  */
-public class VespucciUriEditorInputTester extends PropertyTester {
+public class EnsembleEnsembleDescriptionCompartmentItemSemanticEditPolicy
+		extends
+		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
 	 */
-	public boolean test(Object receiver, String method, Object[] args,
-			Object expectedValue) {
-		if (false == receiver instanceof URIEditorInput) {
-			return false;
-		}
-		URIEditorInput editorInput = (URIEditorInput) receiver;
-		return "sad".equals(editorInput.getURI().fileExtension()); //$NON-NLS-1$
+	public EnsembleEnsembleDescriptionCompartmentItemSemanticEditPolicy() {
+		super(
+				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001);
 	}
 
 }

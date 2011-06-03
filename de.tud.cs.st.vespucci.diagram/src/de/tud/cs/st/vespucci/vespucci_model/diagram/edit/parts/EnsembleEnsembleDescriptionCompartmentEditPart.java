@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitï¿½t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -35,11 +35,11 @@
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.ListCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.ResizableCompartmentEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.figures.ResizableCompartmentFigure;
@@ -47,35 +47,64 @@ import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.View;
 
-import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
-
 /**
  * @generated
  */
-public class EnsembleEnsembleCompartment2EditPart extends
-		ShapeCompartmentEditPart {
+public class EnsembleEnsembleDescriptionCompartmentEditPart extends
+		ListCompartmentEditPart {
 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7002;
+	public static final int VISUAL_ID = 7003;
 
-	private CompartmentEditPartSupporter abm;
+	/**
+	 * @generated
+	 */
+	public EnsembleEnsembleDescriptionCompartmentEditPart(View view) {
+		super(view);
+	}
 
 	/**
 	 * @generated NOT
-	 * @author Artem
+	 * @return The EnsembleDescriptionEditPart of the parent Ensemble
 	 */
-	public EnsembleEnsembleCompartment2EditPart(View view) {
-		super(view);
-		abm = new CompartmentEditPartSupporter(this);
+	private EnsembleDescriptionEditPart getDescriptionEditPart() {
+		for (Object child : getParent().getChildren()) {
+			if (child.getClass() == EnsembleDescriptionEditPart.class)
+				return (EnsembleDescriptionEditPart) child;
+		}
+
+		return null;
+	}
+
+	/**
+	 * @generated NOT
+	 * @author DominicS
+	 * 
+	 * Overridden to restore the saved collapse state of the
+	 * description label.
+	 */
+	@Override
+	public void activate() {
+		super.activate();
+
+		getDescriptionEditPart().getFigure().setVisible(
+				getCompartmentFigure().isExpanded());
+	}
+
+	/**
+	 * @generated
+	 */
+	protected boolean hasModelChildrenChanged(Notification evt) {
+		return false;
 	}
 
 	/**
 	 * @generated
 	 */
 	public String getCompartmentName() {
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.EnsembleEnsembleCompartment2EditPart_title;
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.EnsembleEnsembleDescriptionCompartmentEditPart_title;
 	}
 
 	/**
@@ -97,14 +126,7 @@ public class EnsembleEnsembleCompartment2EditPart extends
 				new ResizableCompartmentEditPolicy());
 		installEditPolicy(
 				EditPolicyRoles.SEMANTIC_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartment2ItemSemanticEditPolicy());
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicy());
-		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
-				new DragDropEditPolicy());
-		installEditPolicy(
-				EditPolicyRoles.CANONICAL_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartment2CanonicalEditPolicy());
+				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleDescriptionCompartmentItemSemanticEditPolicy());
 	}
 
 	/**
@@ -117,16 +139,18 @@ public class EnsembleEnsembleCompartment2EditPart extends
 	}
 
 	/**
-	 * US 48: Fix Issue 3
 	 * @generated NOT
-	 * @author Artem
+	 * @author DominicS
+	 * 
+	 * Introduces label collapse behavior.
 	 */
 	@Override
 	protected void handleNotificationEvent(Notification event) {
 		super.handleNotificationEvent(event);
 		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(
 				event.getFeature())) {
-			this.abm.updateConnections(event);
+			getDescriptionEditPart().getFigure().setVisible(
+					getCompartmentFigure().isExpanded());
 		}
 	}
 }
