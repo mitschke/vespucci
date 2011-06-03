@@ -142,7 +142,7 @@ public class ShapeItemProvider
 				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_description_feature", "_UI_Shape_type"),
 				 Vespucci_modelPackage.Literals.SHAPE__DESCRIPTION,
 				 true,
-				 false,
+				 true,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
