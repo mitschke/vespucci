@@ -69,7 +69,7 @@ public class PreferencePage
 					"Save Lyrebird records into Eclipse projectfolder",
 					getFieldEditorParent()));
 		
-		prefFoldername = new StringFieldEditor(PreferenceConstants.P_PROJECT_RELATIV_PATH, "Output foldername\n(Lyrebird needs an own output folder):", getFieldEditorParent());
+		prefFoldername = new StringFieldEditor(PreferenceConstants.P_PROJECT_RELATIV_PATH, "Output foldername\n(Lyrebird needs it's own output folder):", getFieldEditorParent());
 		
 		addField(prefFoldername);
 		prefPath = new DirectoryFieldEditor(PreferenceConstants.P_ABSOLUTE_PATH, 
