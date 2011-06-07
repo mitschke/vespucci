@@ -56,4 +56,23 @@ class Replay(val location: File) {
     def getAllEventSets() : List[EventSet] = {
        reader.getAllEventSets
     }
+    
+    
+    def processAllEventSets(fAdd : File => _ , fRemove : File => _) {
+        getAllEventSets().foreach(processEventSet(_,fAdd, fRemove))
+    }
+    def processEventSet(eventSet: EventSet, fAdd : File => _ , fRemove : File => _){
+        eventSet.eventFiles.foreach(x => {
+            x match {
+                case Event(EventType.ADDED, _, _, file, _) => fAdd(file)
+                case Event(EventType.REMOVED, _, _, file, Some(prev)) =>
+                    if( prev.eventType != EventType.REMOVED) { fRemove(prev.eventFile) }
+                case Event(EventType.REMOVED, _, _, file, None) => // do nothing
+                case Event(EventType.CHANGED, _, _, file, Some(prev)) => {
+                   fRemove(prev.eventFile) 
+                    fAdd(file)
+                }
+            }
+        })
+    }
 }
