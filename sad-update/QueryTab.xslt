@@ -76,6 +76,17 @@
 					<xsl:value-of select="generate-id(def:children[@xmi:type='notation:DecorationNode'])" />
 				</xsl:attribute>
 			</children>
+			
+			<!-- previous existing, first compartment -->
+			<children>
+				<xsl:for-each select="def:children[@xmi:type='notation:BasicCompartment' and @type='7001']/@*">
+					<xsl:attribute name="{name()}"><xsl:value-of select="." /></xsl:attribute>
+				</xsl:for-each>
+				
+				<!-- TODO: Children of first compartment (3001-shapes) -->
+			</children>
+			
+			<!-- TODO: Second compartment, layoutConstraints -->
 		</children>
 	</xsl:template>
 	
