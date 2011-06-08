@@ -72,7 +72,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://vespucci.editor";
+	String eNS_URI = "http://vespucci.editor/2011-06-01";
 
 	/**
 	 * The package namespace name.
