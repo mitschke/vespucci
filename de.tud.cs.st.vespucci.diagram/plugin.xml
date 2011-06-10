@@ -108,6 +108,7 @@
          </action>
       </objectContribution>
    </extension>
+   
 	 <?gmfgen generated="false"?>
    <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
       <?gmfgen generated="false"?>
@@ -755,6 +756,41 @@
                priority="medium">
          </factory>
       </extension>
+       <extension
+             point="org.eclipse.gmf.runtime.diagram.ui.paletteProviders">
+          <paletteProvider>
+             <Priority
+                   name="Lowest">
+             </Priority>
+                   <contribution>
+     					<predefinedEntry id="standardGroup/zoomTool" remove="true"/>
+      				</contribution>
+             
+          </paletteProvider>
+       </extension>
+       <extension
+			point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
+			<contributionItemProvider
+				checkPluginLoaded="false"
+				class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContributionItemProvider">
+
+				<Priority name="Low"/>
+
+				<popupContribution
+					id="remove_popup_menu_id"
+					class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
+
+					<popupStructuredContributionCriteria
+						objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart">
+					</popupStructuredContributionCriteria>
+					
+					<popupPredefinedItem id="addGroup" remove="true"/>
+					<popupPredefinedItem id="navigateGroup" remove="true"/>
+					
+
+				</popupContribution>
+			</contributionItemProvider>
+		</extension>
         <!-- gmf generator persistent region end -->
           
 
