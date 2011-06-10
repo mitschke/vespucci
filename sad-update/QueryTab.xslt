@@ -77,17 +77,92 @@
 				</xsl:attribute>
 			</children>
 			
-			<!-- previous existing, first compartment -->
-			<children>
-				<xsl:for-each select="def:children[@xmi:type='notation:BasicCompartment' and @type='7001']/@*">
+			<!--  previous existing compartment -->
+			<xsl:apply-templates select="def:children[@xmi:type='notation:BasicCompartment' and (@type='7001' or @type='7002')]" />
+			
+			<!--  CHANGE: new compartment -->
+			<!-- <children xmi:type="notation:BasicCompartment" type="7003">
+				<xsl:attribute name="xmi:id">
+					<xsl:value-of select="generate-id(def:children[@xmi:type='notation:BasicCompartment'])" />
+				</xsl:attribute>
+				<styles xmi:type="notation:SortingStyle">
+					<xsl:attribute name="xmi:id">
+						<xsl:value-of select="generate-id(def:children[@xmi:type='notation:SortingStyle'])" />
+					</xsl:attribute>
+				</styles>
+				<styles xmi:type="notation:FilteringStyle">
+					<xsl:attribute name="xmi:id">
+						<xsl:value-of select="generate-id(def:children[@xmi:type='notation:FilteringStyle'])" />
+					</xsl:attribute>
+				</styles>
+			</children> -->
+			
+			<!--  previous existing layout constraints -->
+			<layoutConstraint>
+				<xsl:for-each select="def:layoutConstraint/@*">
 					<xsl:attribute name="{name()}"><xsl:value-of select="." /></xsl:attribute>
 				</xsl:for-each>
-				
-				<!-- TODO: Children of first compartment (3001-shapes) -->
+			</layoutConstraint>
+		</children>
+	</xsl:template>
+	
+	<!-- NESTED ENSEMBLE-Template -->
+	<xsl:template match="def:children[@xmi:type='notation:Shape' and @type='3001']">
+		<children>
+			<xsl:for-each select="@*">
+				<xsl:attribute name="{name()}"><xsl:value-of select="." /></xsl:attribute>
+			</xsl:for-each>
+			
+			<!-- previous existing, first decoration node -->
+			<children>
+				<xsl:for-each select="def:children[@xmi:type='notation:DecorationNode' and @type='5001']/@*">
+					<xsl:attribute name="{name()}"><xsl:value-of select="." /></xsl:attribute>
+				</xsl:for-each>
 			</children>
 			
-			<!-- TODO: Second compartment, layoutConstraints -->
+			<!-- CHANGE: additional decoration node -->
+			<children xmi:type="notation:DecorationNode" type="5008">
+				<xsl:attribute name="xmi:id">
+					<xsl:value-of select="generate-id(def:children[@xmi:type='notation:DecorationNode'])" />
+				</xsl:attribute>
+			</children>
+			
+			<!--  previous existing compartment -->
+			<xsl:apply-templates select="def:children[@xmi:type='notation:BasicCompartment' and (@type='7001' or @type='7002')]" />
+			
+			<!--  CHANGE: new compartment -->
+			<!-- <children xmi:type="notation:BasicCompartment" type="7003">
+				<xsl:attribute name="xmi:id">
+					<xsl:value-of select="generate-id(def:children[@xmi:type='notation:BasicCompartment'])" />
+				</xsl:attribute>
+				<styles xmi:type="notation:SortingStyle">
+					<xsl:attribute name="xmi:id">
+						<xsl:value-of select="generate-id(def:children[@xmi:type='notation:SortingStyle'])" />
+					</xsl:attribute>
+				</styles>
+				<styles xmi:type="notation:FilteringStyle">
+					<xsl:attribute name="xmi:id">
+						<xsl:value-of select="generate-id(def:children[@xmi:type='notation:FilteringStyle'])" />
+					</xsl:attribute>
+				</styles>
+			</children> -->
+			
+			<!--  previous existing layout constraints -->
+			<layoutConstraint>
+				<xsl:for-each select="def:layoutConstraint/@*">
+					<xsl:attribute name="{name()}"><xsl:value-of select="." /></xsl:attribute>
+				</xsl:for-each>
+			</layoutConstraint>
 		</children>
+	</xsl:template>
+	
+	<!-- Template for previous existing compartment -->
+	<xsl:template match="def:children[@xmi:type='notation:BasicCompartment' and (@type='7001' or @type='7002')]">
+		<xsl:for-each select="def:children[@xmi:type='notation:BasicCompartment' and (@type='7001' or @type='7002')]/@*">
+			<xsl:attribute name="{name()}"><xsl:value-of select="." /></xsl:attribute>
+		</xsl:for-each>
+		
+		<xsl:apply-templates select="def:children[@xmi:type='notation:Shape' and @type='3001']" />
 	</xsl:template>
 	
 	<!-- Template for all other notation:Shape elements -->
