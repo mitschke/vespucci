@@ -1353,6 +1353,15 @@
           xsi:type="gmfgen:CustomTabFilter"
           className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"/>
     </tabs>
+    <tabs
+        xsi:type="gmfgen:GenCustomPropertyTab"
+        iD="description"
+        label="Description"
+        className="EnsembleDescriptionPropertySection">
+      <filter
+          xsi:type="gmfgen:CustomTabFilter"
+          className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"/>
+    </tabs>
   </propertySheet>
   <domainGenModel
       href="vespucci.genmodel#/"/>

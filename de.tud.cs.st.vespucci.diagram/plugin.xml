@@ -214,6 +214,7 @@
          <propertyCategory
                category="first">
          </propertyCategory>
+         <propertyCategory category="second"/>
          <propertyCategory category="domain"/>
          <propertyCategory category="visual"/>
          <propertyCategory category="extra"/>
@@ -239,6 +240,10 @@
              category="domain"
              id="property.tab.domain"
              label="%tab.domain"/>
+           <propertyTab
+             category="second"
+             id="property.tab.description"
+             label="%tab.description"/>
       </propertyTabs>
    </extension>
 
@@ -278,6 +283,12 @@
             tab="property.tab.query"
             filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
             class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection">
+         </propertySection>
+         <propertySection
+            id="property.section.description" 
+            tab="property.tab.description"
+            filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
+            class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleDescriptionPropertySection">
          </propertySection>
       </propertySections>
    </extension>
