@@ -46,11 +46,7 @@ class TestClassFileChangeReader extends org.scalatest.junit.JUnitSuite {
     
     @Test
     def readAndGroupSomeTestData() {
-
-        //TODO what is the maven way for doing something like this
-        // FIXME
-        // solution 1: read from a resource in the classpath (as done in the sae tests)
-        // solution 2: use maven copy resources plugin and encode path as "target/choice-for-copied-resources    
+ 
         val reader = new Reader(location)     
         var res : List[List[Event]] = reader.getAllFilesGroupedByEventTime(location).reverse
         var lastEventTime : Long = 0
