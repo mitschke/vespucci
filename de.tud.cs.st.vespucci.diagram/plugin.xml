@@ -756,13 +756,6 @@
          </factory>
       </extension>
        <extension
-             point="org.eclipse.m2m.qvt.oml.runtime.qvtTransformation">
-          <transformation
-                file="transformations/migrate_v0_to_v1.qvto"
-                id="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1.transformationId">
-          </transformation>
-       </extension>
-       <extension
              point="org.eclipse.ui.popupMenus">
           <objectContribution
                 adaptable="false"
@@ -771,9 +764,8 @@
                 objectClass="org.eclipse.core.resources.IFile">
              <action
                    class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
-                   definitionId="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1.actionId"
                    enablesFor="1"
-                   id="de.tud.cs.st.vespucci.diagram.action1"
+                   id="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1.actionId"
                    label="Vescpucci: Migrate from v0 to 2011-06-01"
                    menubarPath="additions">
              </action>

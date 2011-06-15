@@ -44,9 +44,17 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.gef;visibility:=reexport,
  org.eclipse.emf.validation.ocl;visibility:=reexport,
  org.eclipse.jdt.ui,
- de.tud.cs.st.vespucci.transforms;bundle-version="1.0.0",
- org.eclipse.m2m.qvt.oml.runtime
+ org.eclipse.m2m.qvt.oml.runtime,
+ org.eclipse.m2m.qvt.oml.runtime.ui;bundle-version="2.1.1"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.jdt.internal.corext.util
+Import-Package: org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jdt.internal.corext.util,
+ org.eclipse.m2m.internal.qvt.oml.common,
+ org.eclipse.m2m.internal.qvt.oml.common.launch,
+ org.eclipse.m2m.internal.qvt.oml.common.ui,
+ org.eclipse.m2m.internal.qvt.oml.emf.util,
+ org.eclipse.m2m.internal.qvt.oml.emf.util.ui.choosers,
+ org.eclipse.m2m.internal.qvt.oml.runtime.ui

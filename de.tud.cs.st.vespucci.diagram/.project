@@ -25,11 +25,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>transformations</name>
-			<type>2</type>
-			<location>C:/Users/dome/UNI/SS 11/BP/bp-workspace/de.tud.cs.st.vespucci.transforms/transformations</location>
-		</link>
-	</linkedResources>
 </projectDescription>
