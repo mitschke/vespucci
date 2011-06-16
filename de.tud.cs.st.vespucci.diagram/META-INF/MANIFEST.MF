@@ -58,3 +58,4 @@ Import-Package: org.eclipse.debug.core,
  org.eclipse.m2m.internal.qvt.oml.emf.util,
  org.eclipse.m2m.internal.qvt.oml.emf.util.ui.choosers,
  org.eclipse.m2m.internal.qvt.oml.runtime.ui
+Manifest-Version: 1.0
