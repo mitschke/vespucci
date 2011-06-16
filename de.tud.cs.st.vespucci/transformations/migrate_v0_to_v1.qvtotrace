@@ -2,12 +2,12 @@
 <trace:Trace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:trace="http:///www.eclipse.org/m2m/qvt/operational/trace.ecore">
   <traceRecords>
     <mappingOperation name="toNew" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
-      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci.transforms/transforms/migrate_v0_to_v1.qvtox#//toNew"/>
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toNew"/>
     </mappingOperation>
     <context>
       <context name="self" type="ShapesDiagram">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.xmi#/"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#/"/>
         </value>
       </context>
     </context>
@@ -15,19 +15,19 @@
     <result>
       <result kind="OUT" name="result" type="ShapesDiagram">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.new.xmi#/"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/0"/>
         </value>
       </result>
     </result>
   </traceRecords>
   <traceRecords>
     <mappingOperation name="toEnsemble" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
-      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci.transforms/transforms/migrate_v0_to_v1.qvtox#//toEnsemble"/>
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toEnsemble"/>
     </mappingOperation>
     <context>
       <context name="self" type="Shape">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.xmi#//@shapes.0"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#//@shapes.0"/>
         </value>
       </context>
     </context>
@@ -35,19 +35,19 @@
     <result>
       <result kind="OUT" name="result" type="Ensemble">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.new.xmi#//@shapes.0"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/0/@shapes.0"/>
         </value>
       </result>
     </result>
   </traceRecords>
   <traceRecords>
     <mappingOperation name="toShape" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
-      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci.transforms/transforms/migrate_v0_to_v1.qvtox#//toShape"/>
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toShape"/>
     </mappingOperation>
     <context>
       <context name="self" type="Shape">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.xmi#//@shapes.0"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#//@shapes.0"/>
         </value>
       </context>
     </context>
@@ -55,39 +55,79 @@
     <result>
       <result kind="OUT" name="result" type="Shape">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.new.xmi#//@shapes.0"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/0/@shapes.0"/>
         </value>
       </result>
     </result>
   </traceRecords>
   <traceRecords>
-    <mappingOperation name="toNotAllowed" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
-      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci.transforms/transforms/migrate_v0_to_v1.qvtox#//toNotAllowed"/>
+    <mappingOperation name="toEnsemble" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toEnsemble"/>
     </mappingOperation>
     <context>
-      <context name="self" type="Connection">
+      <context name="self" type="Shape">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.xmi#//@shapes.0/@sourceConnections.0"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#//@shapes.1"/>
         </value>
       </context>
     </context>
     <parameters/>
     <result>
-      <result kind="OUT" name="result" type="NotAllowed">
+      <result kind="OUT" name="result" type="Ensemble">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.new.xmi#//@shapes.0/@sourceConnections.0"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/0/@shapes.1"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toShape" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toShape"/>
+    </mappingOperation>
+    <context>
+      <context name="self" type="Shape">
+        <value>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#//@shapes.1"/>
+        </value>
+      </context>
+    </context>
+    <parameters/>
+    <result>
+      <result kind="OUT" name="result" type="Shape">
+        <value>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/0/@shapes.1"/>
+        </value>
+      </result>
+    </result>
+  </traceRecords>
+  <traceRecords>
+    <mappingOperation name="toOutgoing" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toOutgoing"/>
+    </mappingOperation>
+    <context>
+      <context name="self" type="Connection">
+        <value>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#//@shapes.1/@sourceConnections.0"/>
+        </value>
+      </context>
+    </context>
+    <parameters/>
+    <result>
+      <result kind="OUT" name="result" type="Outgoing">
+        <value>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/0/@shapes.1/@sourceConnections.0"/>
         </value>
       </result>
     </result>
   </traceRecords>
   <traceRecords>
     <mappingOperation name="toConnection" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
-      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci.transforms/transforms/migrate_v0_to_v1.qvtox#//toConnection"/>
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toConnection"/>
     </mappingOperation>
     <context>
       <context name="self" type="Connection">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.xmi#//@shapes.0/@sourceConnections.0"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#//@shapes.1/@sourceConnections.0"/>
         </value>
       </context>
     </context>
@@ -95,39 +135,39 @@
     <result>
       <result kind="OUT" name="result" type="Connection">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.new.xmi#//@shapes.0/@sourceConnections.0"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/0/@shapes.1/@sourceConnections.0"/>
         </value>
       </result>
     </result>
   </traceRecords>
   <traceRecords>
-    <mappingOperation name="toDummy" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
-      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci.transforms/transforms/migrate_v0_to_v1.qvtox#//toDummy"/>
+    <mappingOperation name="toEnsemble" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toEnsemble"/>
     </mappingOperation>
     <context>
       <context name="self" type="Shape">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.xmi#//@shapes.1"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#//@shapes.0/@shapes.0"/>
         </value>
       </context>
     </context>
     <parameters/>
     <result>
-      <result kind="OUT" name="result" type="Dummy">
+      <result kind="OUT" name="result" type="Ensemble">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.new.xmi#//@shapes.1"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/1"/>
         </value>
       </result>
     </result>
   </traceRecords>
   <traceRecords>
     <mappingOperation name="toShape" package="migrate_v0_to_v1" module="migrate_v0_to_v1">
-      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci.transforms/transforms/migrate_v0_to_v1.qvtox#//toShape"/>
+      <runtimeMappingOperation href="platform:/resource/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvtox#//toShape"/>
     </mappingOperation>
     <context>
       <context name="self" type="Shape">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.xmi#//@shapes.1"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagram.xmi#//@shapes.0/@shapes.0"/>
         </value>
       </context>
     </context>
@@ -135,7 +175,7 @@
     <result>
       <result kind="OUT" name="result" type="Shape">
         <value>
-          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/model/ShapesDiagram.new.xmi#//@shapes.1"/>
+          <modelElement href="platform:/resource/de.tud.cs.st.vespucci/transformations/ShapesDiagram.xmi/ShapesDiagramTransformed.xmi#/1"/>
         </value>
       </result>
     </result>
