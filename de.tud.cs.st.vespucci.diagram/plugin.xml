@@ -107,9 +107,10 @@
                id="de.tud.cs.st.vespucci.diagram.InitDiagramAction">
          </action>
       </objectContribution>
+      <?gmfgen generated="false"?>
       <objectContribution
             id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1"
-            nameFilter="*.sam"
+            nameFilter="*.sad"
             objectClass="org.eclipse.core.resources.IFile">
          <action
                class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
