@@ -92,9 +92,9 @@
            id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
      </primaryWizard>
    </extension>
-
+   
+   <?gmfgen generated="false"?>
    <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
-      <?gmfgen generated="true"?>
       <objectContribution
             id="de.tud.cs.st.vespucci.diagram.InitDiagram"
             nameFilter="*.sam"
@@ -107,7 +107,6 @@
                id="de.tud.cs.st.vespucci.diagram.InitDiagramAction">
          </action>
       </objectContribution>
-      <?gmfgen generated="false"?>
       <objectContribution
             id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1"
             nameFilter="*.sad"
@@ -116,12 +115,13 @@
                class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
                enablesFor="1"
                id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1Action"
-               label="Vespucci: Migrate from v0 to 2011-06-01"
+               label="%migrateV0ToV1ActionLabel"
                menubarPath="additions">
          </action>
       </objectContribution>
    </extension>
-	 <?gmfgen generated="false"?>
+   
+   <?gmfgen generated="false"?>
    <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
