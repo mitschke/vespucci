@@ -240,10 +240,11 @@
              category="domain"
              id="property.tab.domain"
              label="%tab.domain"/>
-           <propertyTab
-             category="second"
-             id="property.tab.description"
-             label="%tab.description"/>
+          <propertyTab
+                category="second"
+                id="property.tab.description"
+                label="%tab.description">
+          </propertyTab>
       </propertyTabs>
    </extension>
 
