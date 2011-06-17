@@ -71,7 +71,7 @@ public class VespucciOCLFactory {
 	 * @generated
 	 */
 	protected VespucciOCLFactory() {
-		this.expressions = new de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression[13];
+		this.expressions = new de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression[12];
 	}
 
 	/**
@@ -103,7 +103,6 @@ public class VespucciOCLFactory {
 					"name.size()>0 and not name.oclIsUndefined()", //$NON-NLS-1$
 					"Ensemble.allInstances()->forAll(e| e <> self implies e.name <> self.name)", //$NON-NLS-1$
 					"query.size()>0 and not query.oclIsUndefined()", //$NON-NLS-1$
-					"not description.oclIsUndefined()", //$NON-NLS-1$
 			};
 			cached.expressions[index] = getExpression(
 					exprBodies[index],

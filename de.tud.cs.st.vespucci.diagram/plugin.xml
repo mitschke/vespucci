@@ -650,16 +650,6 @@
             <message><![CDATA[Queries of non leaf ensemble must be derived ]]></message>
             <target class="vespucci_model.Ensemble"/>
          </constraint>
-                  <constraint id="EnsembleDescriptionNotUndefinedId"
-            lang="OCL"
-            name="ERROR if description is undefined"
-            mode="Batch"
-            severity="ERROR" statusCode="200">
-            <![CDATA[not description.oclIsUndefined()]]>
-            <description><![CDATA[ERROR if description is undefined (may be empty)]]></description>
-            <message><![CDATA[Description must not be undefined!]]></message>
-            <target class="vespucci_model.Ensemble"/>
-         </constraint>
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/ConnectionsConstraintsID">
                   </constraints>
@@ -676,7 +666,6 @@
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleNameUniqueID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryNotNullID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.NonLeafEnsembleMustBeDerivedID"/>
-                  <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleDescriptionNotUndefinedId"/>
                </binding>
 
    </extension>
@@ -750,7 +739,7 @@
    
           <menuContribution
             allPopups="false"
-            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?endof=additions">
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
          <command
                commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
                label="Vespucci: Generate Architecural Model"
