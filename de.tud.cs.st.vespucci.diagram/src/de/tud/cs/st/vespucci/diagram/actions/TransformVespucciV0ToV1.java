@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
+
 public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	
 	private IWorkbenchPart targetPart;
