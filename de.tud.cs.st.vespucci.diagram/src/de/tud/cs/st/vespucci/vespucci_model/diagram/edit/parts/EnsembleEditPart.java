@@ -170,7 +170,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
 			IFigure pane = getPrimaryShape()
 					.getFigureEnsembleCompartmentFigure();
-			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			setupContentPane(pane); // FIXME each compartment should handle his content pane in his own way 
 			pane.add(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;
@@ -178,7 +178,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) {
 			IFigure pane = getPrimaryShape()
 					.getFigureEnsembleDescriptionCompartmentFigure();
-			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			setupContentPane(pane); // FIXME each compartment should handle his content pane in his own way 
 			pane.add(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;
@@ -199,7 +199,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
 			IFigure pane = getPrimaryShape()
 					.getFigureEnsembleCompartmentFigure();
-			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			setupContentPane(pane); // FIXME each compartment should handle his content pane in his own way 
 			pane.remove(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;
@@ -207,7 +207,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) {
 			IFigure pane = getPrimaryShape()
 					.getFigureEnsembleDescriptionCompartmentFigure();
-			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			setupContentPane(pane); // FIXME each compartment should handle its content pane in his own way 
 			pane.remove(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;

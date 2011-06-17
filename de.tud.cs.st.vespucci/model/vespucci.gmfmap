@@ -252,7 +252,8 @@
       description="All diagram related constraints for Vespucci Editor.">
     <childContainers
         id="EnsembleConstraintsID"
-        name="All constraints about Ensemble.">
+        name="All constraints about Ensemble."
+        description="">
       <audits
           name="ERROR if Ensemble name not NULL"
           id="EnsembleNameNotNullID"
@@ -298,6 +299,19 @@
         <rule
             body="NonLeafEnsembleMustBeDerived"
             language="java"/>
+        <target
+            xsi:type="gmfmap:DomainElementTarget">
+          <element
+              href="vespucci.ecore#//Ensemble"/>
+        </target>
+      </audits>
+      <audits
+          name="ERROR if description is undefined"
+          description="ERROR if description is undefined (may be empty)"
+          id="EnsembleDescriptionNotUndefinedId"
+          message="Description must not be undefined!">
+        <rule
+            body="not description.oclIsUndefined()"/>
         <target
             xsi:type="gmfmap:DomainElementTarget">
           <element
