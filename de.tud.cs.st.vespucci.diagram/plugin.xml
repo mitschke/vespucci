@@ -107,6 +107,33 @@
                id="de.tud.cs.st.vespucci.diagram.InitDiagramAction">
          </action>
       </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="de.tud.cs.st.vespucci.diagram.changeDependency"
+            objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
+         <menu
+               id="de.tud.cs.st.vespucci.diagram.EditConstraint"
+               label="%edit_constraint"
+               path="additions">
+            <separator
+                  name="de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator">
+            </separator>
+         </menu>
+         <action
+               class="de.tud.cs.st.vespucci.diagram.ActionSetDependency"
+               id="de.tud.cs.st.vespucci.diagram.SetDependency"
+               label="%set_dependency"
+               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator"
+               style="pulldown">
+         </action>
+         <action
+               class="de.tud.cs.st.vespucci.diagram.ActionSetType"
+               id="de.tud.cs.st.vespucci.diagram.SetType"
+               label="%set_type"
+               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator"
+               style="pulldown">
+         </action>
+      </objectContribution>
    </extension>
    
 	 <?gmfgen generated="false"?>
@@ -781,10 +808,10 @@
 					class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
 
 					<popupStructuredContributionCriteria
-						objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart">
+           objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart">
 					</popupStructuredContributionCriteria>
 					
-					<popupPredefinedItem id="addGroup" remove="true"/>
+					<popupPredefinedItem id="addGroup" remove="false"/>
 					<popupPredefinedItem id="navigateGroup" remove="true"/>
 					
 
