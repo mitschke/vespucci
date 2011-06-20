@@ -71,6 +71,36 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> getShapesDiagram_1000SemanticChildren(
+			View view) {
+		if (!view.isSetElement()) {
+			return Collections.emptyList();
+		}
+		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram modelElement = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) view
+				.getElement();
+		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor>();
+		for (Iterator<?> it = modelElement.getShapes().iterator(); it.hasNext();) {
+			de.tud.cs.st.vespucci.vespucci_model.Shape childElement = (de.tud.cs.st.vespucci.vespucci_model.Shape) it
+					.next();
+			int visualID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+					.getNodeVisualID(view, childElement);
+			if (visualID == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID) {
+				result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor(
+						childElement, visualID));
+				continue;
+			}
+			if (visualID == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID) {
+				result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor(
+						childElement, visualID));
+				continue;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * @generated
+	 */
 	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> getEnsembleEnsembleCompartment_7001SemanticChildren(
 			View view) {
 		if (false == view.eContainer() instanceof View) {
@@ -128,36 +158,6 @@ public class VespucciDiagramUpdater {
 				continue;
 			}
 			if (visualID == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID) {
-				result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor(
-						childElement, visualID));
-				continue;
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> getShapesDiagram_1000SemanticChildren(
-			View view) {
-		if (!view.isSetElement()) {
-			return Collections.emptyList();
-		}
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram modelElement = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) view
-				.getElement();
-		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getShapes().iterator(); it.hasNext();) {
-			de.tud.cs.st.vespucci.vespucci_model.Shape childElement = (de.tud.cs.st.vespucci.vespucci_model.Shape) it
-					.next();
-			int visualID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-					.getNodeVisualID(view, childElement);
-			if (visualID == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID) {
-				result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor(
-						childElement, visualID));
-				continue;
-			}
-			if (visualID == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID) {
 				result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor(
 						childElement, visualID));
 				continue;

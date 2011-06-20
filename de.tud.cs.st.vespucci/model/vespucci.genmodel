@@ -7,7 +7,7 @@
     copyrightFields="false" language="English">
   <foreignModel>vespucci.ecore</foreignModel>
   <genPackages prefix="Vespucci_model" basePackage="de.tud.cs.st.vespucci" disposableProviderFactory="true"
-      ecorePackage="vespucci.ecore#/">
+      fileExtensions="sam" ecorePackage="vespucci.ecore#/">
     <genClasses ecoreClass="vespucci.ecore#//ShapesDiagram">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//ShapesDiagram/shapes"/>
     </genClasses>

@@ -92,9 +92,9 @@
            id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
      </primaryWizard>
    </extension>
-
+   
+   <?gmfgen generated="false"?>
    <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
-      <?gmfgen generated="true"?>
       <objectContribution
             id="de.tud.cs.st.vespucci.diagram.InitDiagram"
             nameFilter="*.sam"
@@ -107,8 +107,21 @@
                id="de.tud.cs.st.vespucci.diagram.InitDiagramAction">
          </action>
       </objectContribution>
+      <objectContribution
+            id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1"
+            nameFilter="*.sad"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
+               enablesFor="1"
+               id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1Action"
+               label="%migrateV0ToV1ActionLabel"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
    </extension>
-	 <?gmfgen generated="false"?>
+   
+   <?gmfgen generated="false"?>
    <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
@@ -357,7 +370,7 @@
 
    <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypes" id="element-types">
       <?gmfgen generated="true"?>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.ShapesDiagram_1000"
                name="%metatype.name.ShapesDiagram_1000"
@@ -367,7 +380,7 @@
             <param name="semanticHint" value="1000"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Ensemble_2001"
                name="%metatype.name.Ensemble_2001"
@@ -377,7 +390,7 @@
             <param name="semanticHint" value="2001"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <specializationType
                id="de.tud.cs.st.vespucci.diagram.Dummy_2002"
                name="%metatype.name.Dummy_2002"
@@ -386,7 +399,7 @@
             <param name="semanticHint" value="2002"/>
          </specializationType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <specializationType
                id="de.tud.cs.st.vespucci.diagram.Ensemble_3001"
                name="%metatype.name.Ensemble_3001"
@@ -395,7 +408,7 @@
             <param name="semanticHint" value="3001"/>
          </specializationType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Dummy_3003"
                name="%metatype.name.Dummy_3003"
@@ -405,7 +418,7 @@
             <param name="semanticHint" value="3003"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Incoming_4005"
                name="%metatype.name.Incoming_4005"
@@ -415,7 +428,7 @@
             <param name="semanticHint" value="4005"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Outgoing_4003"
                name="%metatype.name.Outgoing_4003"
@@ -425,7 +438,7 @@
             <param name="semanticHint" value="4003"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.InAndOut_4001"
                name="%metatype.name.InAndOut_4001"
@@ -435,7 +448,7 @@
             <param name="semanticHint" value="4001"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.NotAllowed_4004"
                name="%metatype.name.NotAllowed_4004"
@@ -445,7 +458,7 @@
             <param name="semanticHint" value="4004"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor">
+      <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Expected_4002"
                name="%metatype.name.Expected_4002"
@@ -605,7 +618,7 @@
          <![CDATA[]]>
       </category>
       <constraintProvider cache="true">
-         <package namespaceUri="http://vespucci.editor"/>
+         <package namespaceUri="http://vespucci.editor/2011-06-01"/>
                <constraints categories="VespucciDiagramConstraintsID">
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/EnsembleConstraintsID">

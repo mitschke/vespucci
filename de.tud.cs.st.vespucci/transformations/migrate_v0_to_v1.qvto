@@ -1,0 +1,93 @@
+modeltype OldModel 'strict' uses 'http://vespucci.editor';
+modeltype NewModel 'strict' uses 'http://vespucci.editor/2011-06-01';
+
+transformation migrate_v0_to_v1(in oldModel : OldModel, out newModel : NewModel);
+
+main() {
+	oldModel.rootObjects()[ShapesDiagram]->map toNew();
+}
+
+mapping OldModel::ShapesDiagram::toNew() : NewModel::ShapesDiagram {
+	shapes += self.shapes.map toEnsemble();
+	shapes += self.shapes.map toDummy();
+}
+
+mapping OldModel::Shape::toEnsemble() : NewModel::Ensemble
+inherits OldModel::Shape::toShape
+when {self.metaClassName() = 'Ensemble'} {
+	shapes += self->oclAsType(OldModel::Ensemble).shapes.map toEnsemble();
+	shapes += self->oclAsType(OldModel::Ensemble).shapes.map toDummy();
+}
+
+mapping OldModel::Shape::toDummy() : NewModel::Dummy
+inherits OldModel::Shape::toShape
+when {self.metaClassName() = 'Dummy'} {
+}
+
+mapping OldModel::Shape::toShape() : NewModel::Shape {
+	name := self.name;
+	_query := self._query;
+	description := ''; // NEW ATTRIBUTE
+	
+	sourceConnections += self.sourceConnections.map toExpected();
+	sourceConnections += self.sourceConnections.map toInAndOut();
+	sourceConnections += self.sourceConnections.map toIncoming();
+	sourceConnections += self.sourceConnections.map toNotAllowed();
+	sourceConnections += self.sourceConnections.map toOutgoing();
+	
+	targetConnections += self.targetConnections.map toExpected();
+	targetConnections += self.targetConnections.map toInAndOut();
+	targetConnections += self.targetConnections.map toIncoming();
+	targetConnections += self.targetConnections.map toNotAllowed();
+	targetConnections += self.targetConnections.map toOutgoing();
+}
+
+mapping OldModel::Connection::toExpected() : NewModel::Expected
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'Expected'} {
+}
+
+mapping OldModel::Connection::toInAndOut() : NewModel::InAndOut
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'InAndOut'} {
+}
+
+mapping OldModel::Connection::toIncoming() : NewModel::Incoming
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'Incoming'} {
+}
+
+mapping OldModel::Connection::toNotAllowed() : NewModel::NotAllowed
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'NotAllowed'} {
+}
+
+mapping OldModel::Connection::toOutgoing() : NewModel::Outgoing
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'Outgoing'} {
+}
+
+mapping OldModel::Connection::toConnection() : NewModel::Connection {
+	name := self.name;
+	
+	originalSource += self.originalSource.xmap toEnsemble();
+	originalSource += self.originalSource.xmap toDummy();
+	originalTarget += self.originalTarget.xmap toEnsemble();
+	originalTarget += self.originalTarget.xmap toDummy();
+	
+	if self.source.oclIsTypeOf(OldModel::Ensemble) then {
+		source := self.source.map toEnsemble();
+	} else {
+		source := self.source.map toDummy();
+	} endif;
+	
+	if self.target.oclIsTypeOf(OldModel::Ensemble) then {
+		target := self.target.map toEnsemble();
+	} else {
+		target := self.target.map toDummy();
+	} endif;
+	
+	temp := self.temp;
+}
+
+// Seite 235 "Modeling project book"

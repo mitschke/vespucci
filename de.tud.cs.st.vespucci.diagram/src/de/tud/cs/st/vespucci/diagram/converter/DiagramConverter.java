@@ -107,6 +107,7 @@ public class DiagramConverter {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @author Patrick Jahnke
+	 * @author DominicS
 	 */
 	public ShapesDiagram loadDiagramFile(String fullPathFileName) throws FileNotFoundException, IOException
 	{
@@ -115,8 +116,17 @@ public class DiagramConverter {
         
    		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
 
-   		EObject eObject = resource.getContents().get(0);
-      	return (ShapesDiagram) eObject;
+   		// The "Initialize sad diagram file" action mixes up
+   		// the DiagramImpl and ShapesDiagram part, so check
+   		// the location before loading
+   		for (int i = 0; i < resource.getContents().size(); i++) {
+   			if (resource.getContents().get(i) instanceof ShapesDiagram) {
+   				EObject eObject = resource.getContents().get(i);
+   		      	return (ShapesDiagram) eObject; 
+   			}
+   		}
+
+   		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
 	}
 	
 	
