@@ -43,6 +43,8 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
@@ -282,12 +284,26 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @return True, if given name is valid; false otherwise.
 	 */
 	private static boolean checkConnName(String newName) {
-		for(String validName : connNames){
-			if(validName.equals(newName)){
-				return true;
+		String[] newNameSplit = newName.split(", ");
+		boolean valid = false;
+		
+		// check all dependencies
+		for(String newNamePart: newNameSplit){
+			// remove whitespace
+			//newNamePart = newNamePart.replaceAll("\\s", "");
+			// probe for all valid names
+			valid = false;
+			for(String validName : connNames){
+				if(validName.equals(newNamePart)){
+					valid = true;
+					break;
+				}
+			}
+			if(!valid){
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	/**

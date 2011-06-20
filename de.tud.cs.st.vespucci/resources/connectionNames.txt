@@ -1,2 +1,6 @@
 [all]
-[test]
+[call]
+[create]
+[field_access]
+[field_read]
+[field_write]
