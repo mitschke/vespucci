@@ -37,11 +37,14 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
+import de.tud.cs.st.vespucci.io.ConnectionNameReader;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
@@ -150,6 +153,8 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @ordered
 	 */
 	protected EList<Shape> originalTarget;
+	
+	private static String[] connNames;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -158,6 +163,7 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 */
 	protected ConnectionImpl() {
 		super();
+		connNames = new ConnectionNameReader().getKeywords();
 	}
 
 	/**
@@ -261,10 +267,43 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 */
 	public void setName(String newName) {
+		if(!checkConnName(newName)){
+			System.out.println(String.format("Invalid dependency: %s", newName));
+			return;
+		}
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__NAME, oldName, name));
+	}
+
+	/**
+	 * Checks if given name is valid as dependency.
+	 * 
+	 * @param newName Name of Connection-Dependency to be checked.
+	 * @return True, if given name is valid; false otherwise.
+	 */
+	private static boolean checkConnName(String newName) {
+		String[] newNameSplit = newName.split(", ");
+		boolean valid = false;
+		
+		// check all dependencies
+		for(String newNamePart: newNameSplit){
+			// remove whitespace
+			//newNamePart = newNamePart.replaceAll("\\s", "");
+			// probe for all valid names
+			valid = false;
+			for(String validName : connNames){
+				if(validName.equals(newNamePart)){
+					valid = true;
+					break;
+				}
+			}
+			if(!valid){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**

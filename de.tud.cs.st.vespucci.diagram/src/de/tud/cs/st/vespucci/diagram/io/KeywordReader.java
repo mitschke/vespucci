@@ -44,19 +44,19 @@ import java.util.Scanner;
  * provides methods to retrieve these keywords.
  * 
  * @author Alexander Weitzmann
- * @version 1.1
+ * @version 1.2
  */
 public class KeywordReader {
 
 	/**
 	 * Path to file, that contains the keywords
 	 */
-	private static final String PATH = "queryKeywords.txt";
+	private static final String PATH = "/queryKeywords.txt";
 	
 	/**
 	 * Keywords read in from given file (see {@link #PATH})
 	 */
-	private String[] _keywords;
+	private String[] keywords;
 
 	/**
 	 * Returns keywords from {@value #PATH}.
@@ -65,7 +65,7 @@ public class KeywordReader {
 	 *         text-file (see {@link #PATH}).
 	 */
 	public String[] getKeywords() {
-		return _keywords.clone();
+		return keywords.clone();
 	}
 
 	/**
@@ -79,8 +79,7 @@ public class KeywordReader {
 	 * Reads in the keyword-file.
 	 */
 	private void readKeywordFile() {
-		Scanner scanner = new Scanner(Thread.currentThread().getContextClassLoader()
-				.getResourceAsStream(PATH));
+		Scanner scanner = new Scanner(this.getClass().getResourceAsStream(PATH));
 		
 		final List<String> keywordList = new LinkedList<String>();
 
@@ -89,7 +88,7 @@ public class KeywordReader {
 		}
 		scanner.close();
 		
-		_keywords = keywordList.toArray(new String[0]);
+		keywords = keywordList.toArray(new String[0]);
 	}
 	
 }
