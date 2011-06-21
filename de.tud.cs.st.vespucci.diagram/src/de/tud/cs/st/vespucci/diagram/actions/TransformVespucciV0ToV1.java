@@ -86,154 +86,152 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 
 	@Override
 	public void run(IAction action) {
-		// get the resources from the input URI
 		final ResourceSet resourceSet = new ResourceSetImpl();
-		Job job = new Job("Convert diagram " + fileURI.toString()) {
+		
+		Job job = new Job("Convert Vespucci diagram " + fileURI.toString()) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				// execute the task ...
 				EObject source = getInput();
-				URI modelTransfUri = null;
 				if (source == null) {
+					// No source given => Cancel
 					String title = Messages.VespucciTransformationNoFileTitle;
 					String message = Messages.VespucciTransformationNoFileMessage;
 					MessageDialog.openInformation(getShell(), title,
 							NLS.bind(message, fileURI.toString()));
 
 					return Status.CANCEL_STATUS;
-				} else {
-					modelTransfUri = URI
-							.createURI("platform:/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvto"); //$NON-NLS-1$
-					URI notationTransfUri = URI
-							.createURI("platform:/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto"); //$NON-NLS-1$
 				}
 
 				try {
-					monitor.beginTask("converting...", 4);
+					// The URIs for model and notation transformation
+					URI modelTransfUri = URI
+						.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.model.qvto"); //$NON-NLS-1$
+					URI notationTransfUri = URI
+						.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto"); //$NON-NLS-1$
+					
+					// BEGIN MONITOR TASK
+					monitor.beginTask("Converting Vespucci diagram...", 7);
 
+					// Get Resource from input URI
 					Resource inResource = resourceSet
 							.getResource(fileURI, true);
 
-					// create the inputs
+					// Create the input objects for the transformation
 					List<EObject> inObjects = inResource.getContents();
-					ModelContent input_di2 = new ModelContent(inObjects);
-					ModelContent[] inputs = new ModelContent[1];
-					inputs[0] = input_di2;
-
-					// setup the execution environment details -> context
-					IContext mycontext = new Context();
-					Trace trace = null;
-
-					QvtInterpretedTransformation transformation = new QvtInterpretedTransformation(
-							TransformationUtil.getQvtModule(modelTransfUri));
-					In IntransformationRunner = new TransformationRunner.In(
-							inputs, mycontext);
-					Out OuttransformationRunner = new TransformationRunner.Out(
-							null, null, null);
-
-					monitor.worked(1);
-					// running the transformation
-					OuttransformationRunner = transformation
-							.run(IntransformationRunner);
-
-					// retrieve the outputs
-					List<ModelExtentContents> outputs = OuttransformationRunner
-							.getExtents();
-
-					// retrieve the trace
-					trace = OuttransformationRunner.getTrace();
-
-					if (trace != null && outputs.size() == 2) {
-						// processing the trace
-						URI Uri_trace = fileURI.trimFileExtension()
-								.appendFileExtension("trace");
-						EList<TraceRecord> outObjects_trace = trace
-								.getTraceRecords();
-						Resource outResource_trace = resourceSet
-								.createResource(Uri_trace);
-						outResource_trace.getContents()
-								.addAll(outObjects_trace);
-
-						// processing the outputs
-						ModelExtentContents output_notation = outputs.get(0);
-						ModelExtentContents output_di = outputs.get(1);
-						monitor.worked(1);
-
-						URI Uri_notation = fileURI.trimFileExtension()
-								.appendFileExtension("notation");
-						URI Uri_di = fileURI.trimFileExtension()
-								.appendFileExtension("di");
-
-						// the output objects got captured in the output extent
-						List<EObject> outObjects_notation = output_notation
-								.getAllRootElements();
-						List<EObject> outObjects_di = output_di
-								.getAllRootElements();
-
-						// Let's persist them using a resource for notation
-						Resource outResource_notation = resourceSet
-								.createResource(Uri_notation);
-						outResource_notation.getContents().addAll(
-								outObjects_notation);
-
-						// let's persist them using a resource for di
-						Resource outResource_di = resourceSet
-								.createResource(Uri_di);
-						outResource_di.getContents().addAll(outObjects_di);
-
-						monitor.worked(1);
-
-						try {
-							outResource_notation.save(Collections.emptyMap());
-							outResource_di.save(Collections.emptyMap());
-							outResource_trace.save(Collections.emptyMap());
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						monitor.worked(1);
-
-						// remove trace file
-						URIConverter uri = resourceSet.getURIConverter();
-						uri.delete(Uri_trace, null);
+					
+					// Determine order of objects (ShapesDiagram / DiagramImpl) in the document
+					int posShapesDiagram, posDiagramImpl;
+					if (inObjects.get(0).getClass().toString().contains("ShapesDiagramImpl")) {
+						posShapesDiagram = 0;
+						posDiagramImpl = 1;
+					} else {
+						posShapesDiagram = 1;
+						posDiagramImpl = 0;
 					}
-				} catch (final MdaException e) {
-					Display.getDefault().syncExec(new Runnable() {
-						public void run() {
-							MessageDialog
-									.openError(
-											new Shell(),
-											"Model transformation error during conversion",
-											e.toString());
-						}
-					});
-					e.printStackTrace();
-				} catch (final IOException e) {
-					Display.getDefault().syncExec(new Runnable() {
-						public void run() {
-							MessageDialog.openError(new Shell(),
-									"IO error during conversion", e.toString());
-						}
-					});
-					e.printStackTrace();
-				} catch (final RuntimeException e) {
-					Display.getDefault().syncExec(new Runnable() {
-						public void run() {
-							MessageDialog.openError(new Shell(),
-									"Error during conversion", e.toString());
-						}
-					});
-					e.printStackTrace();
-				} finally {
-					// when the transformation succeeds
-					// 1- restore the content of Di2 file i.e., di2 namespace
-					// PapyrusNamespace.restoreDi2Namespace(inAbsolutepath);
+					
+					// Get model contents
+					ModelContent shapesDiagram = new ModelContent(inObjects.subList(posShapesDiagram, posShapesDiagram + 1));
+					ModelContent notationDiagram = new ModelContent(inObjects.subList(posDiagramImpl, posDiagramImpl + 1));
+
+					// Setup the execution environment details (context)
+					IContext context = new Context();
+
+					// Create transformation objects
+					QvtInterpretedTransformation shapesDiagramTransformation = new QvtInterpretedTransformation(
+						TransformationUtil.getQvtModule(modelTransfUri));
+					In shapesDiagramInTransformationRunner = new TransformationRunner.In(
+						new ModelContent[] { shapesDiagram },
+						context
+					);
+					
+					QvtInterpretedTransformation notationDiagramTransformation = new QvtInterpretedTransformation(
+						TransformationUtil.getQvtModule(notationTransfUri));
+					In notationDiagramInTransformationRunner = new TransformationRunner.In(
+						new ModelContent[] { notationDiagram },
+						context
+					);
+					
+					// Run the transformations
+					Out shapesDiagramOutTransformationRunner = shapesDiagramTransformation
+						.run(shapesDiagramInTransformationRunner);
+					monitor.worked(2);
+					
+					Out notationDiagramOutTransformationRunner = notationDiagramTransformation
+						.run(notationDiagramInTransformationRunner);					
+					monitor.worked(2);
+
+					// Retrieve the outputs
+					List<ModelExtentContents> shapesDiagramTransfOutputs =
+						shapesDiagramOutTransformationRunner.getExtents();
+					List<ModelExtentContents> notationDiagramTransfOutputs =
+						notationDiagramOutTransformationRunner.getExtents();
+
+					// Retrieve the traces
+					Trace shapesDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
+					Trace notationDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
+
+					// Check the output validity
+					if (shapesDiagramTrace != null && shapesDiagramTransfOutputs.size() == 1 &&
+						notationDiagramTrace != null && notationDiagramTransfOutputs.size() == 1) {
+						
+						// Trace processing
+						// Get trace URI
+						URI traceURI = fileURI.trimFileExtension()
+							.appendFileExtension("trace");
+						EList<TraceRecord> shapesDiagramTraceRecords = shapesDiagramTrace
+							.getTraceRecords();
+						EList<TraceRecord> notationDiagramTraceRecords = notationDiagramTrace
+							.getTraceRecords();
+						// Create new trace file resource
+						Resource traceResource = resourceSet
+							.createResource(traceURI);
+						// Add the contents of both the traces
+						traceResource.getContents()
+							.addAll(shapesDiagramTraceRecords);
+						traceResource.getContents()
+							.addAll(notationDiagramTraceRecords);
+
+						// Output process
+						ModelExtentContents outputNotation = notationDiagramTransfOutputs.get(0);
+						ModelExtentContents outputModel = shapesDiagramTransfOutputs.get(0);
+						monitor.worked(1);
+
+						URI outputSadURI = fileURI.trimFileExtension()
+							.appendFileExtension("2011-06-01")
+							.appendFileExtension("sad");
+
+						List<EObject> outObjectsNotation = outputNotation
+							.getAllRootElements();
+						List<EObject> outObjectsModel = outputModel
+							.getAllRootElements();
+
+						// Create and fill the output resource
+						Resource outResource_notation = resourceSet
+							.createResource(outputSadURI);
+						outResource_notation.getContents().addAll(
+							outObjectsModel);
+						outResource_notation.getContents().addAll(
+							outObjectsNotation);
+
+						monitor.worked(1);
+
+						// Save the sad file
+						outResource_notation.save(Collections.emptyMap());
+						
+						monitor.worked(1);
+						
+						monitor.done();
+						return Status.OK_STATUS;
+					}
+				} catch (Exception e) {
+					handleError(e);
 				}
 
 				monitor.done();
-				return Status.OK_STATUS;
+				return Status.CANCEL_STATUS;
 			}
 		};
+		
 		job.setUser(true);
 		job.schedule();
 	}

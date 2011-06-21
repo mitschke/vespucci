@@ -193,20 +193,20 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 			final char currentChar = textWidget.getText().charAt(offset - 1);
 
 			if (currentChar == '(' && !textWidget.isPositionMarked(offset - 1)) {
-				int intend = 0;
+				int indent = 0;
 				for (int i = offset; i < size; i++) {
 					if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
-						intend++;
+						indent++;
 					}
 
-					if (textWidget.getText().charAt(i) == ')' && intend == 0 && !textWidget.isPositionMarked(i)) {
+					if (textWidget.getText().charAt(i) == ')' && indent == 0 && !textWidget.isPositionMarked(i)) {
 						// Highlight both brackets
 						textWidget.setStyleRange(getBracketStyle(i));
 						return;
 					}
 
 					if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
-						intend--;
+						indent--;
 					}
 				}
 			}
