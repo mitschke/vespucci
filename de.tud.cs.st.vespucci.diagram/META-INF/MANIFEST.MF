@@ -45,17 +45,25 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.validation.ocl;visibility:=reexport,
  org.eclipse.jdt.ui,
  org.eclipse.m2m.qvt.oml.runtime,
- org.eclipse.m2m.qvt.oml.runtime.ui;bundle-version="2.1.1"
+ org.eclipse.m2m.qvt.oml.runtime.ui;bundle-version="2.1.1",
+ org.eclipse.m2m.qvt.oml.emf.util;bundle-version="2.0.100"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.jdt.internal.corext.util,
+ org.eclipse.m2m.internal.qvt.oml.ast.env,
  org.eclipse.m2m.internal.qvt.oml.common,
  org.eclipse.m2m.internal.qvt.oml.common.launch,
  org.eclipse.m2m.internal.qvt.oml.common.ui,
  org.eclipse.m2m.internal.qvt.oml.emf.util,
  org.eclipse.m2m.internal.qvt.oml.emf.util.ui.choosers,
- org.eclipse.m2m.internal.qvt.oml.runtime.ui
-Manifest-Version: 1.0
+ org.eclipse.m2m.internal.qvt.oml.library,
+ org.eclipse.m2m.internal.qvt.oml.runtime.ui,
+ org.eclipse.m2m.internal.qvt.oml.trace,
+ org.eclipse.m2m.internal.qvt.oml.common.io,
+ org.eclipse.m2m.internal.qvt.oml.project.builder,
+ org.eclipse.m2m.internal.qvt.oml.project.nature,
+ org.eclipse.m2m.qvt.oml.debug.core.launch,
+ org.eclipse.m2m.qvt.oml.util
