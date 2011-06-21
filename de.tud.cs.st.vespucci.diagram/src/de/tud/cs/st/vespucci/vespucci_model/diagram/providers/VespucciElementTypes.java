@@ -84,14 +84,17 @@ public class VespucciElementTypes {
 	 * @generated
 	 */
 	public static final IElementType Ensemble_2001 = getElementType("de.tud.cs.st.vespucci.diagram.Ensemble_2001"); //$NON-NLS-1$
+
 	/**
 	 * @generated
 	 */
 	public static final IElementType Dummy_2002 = getElementType("de.tud.cs.st.vespucci.diagram.Dummy_2002"); //$NON-NLS-1$
+
 	/**
 	 * @generated
 	 */
 	public static final IElementType Ensemble_3001 = getElementType("de.tud.cs.st.vespucci.diagram.Ensemble_3001"); //$NON-NLS-1$
+
 	/**
 	 * @generated
 	 */
@@ -116,6 +119,7 @@ public class VespucciElementTypes {
 	 * @generated
 	 */
 	public static final IElementType NotAllowed_4004 = getElementType("de.tud.cs.st.vespucci.diagram.NotAllowed_4004"); //$NON-NLS-1$
+
 	/**
 	 * @generated
 	 */

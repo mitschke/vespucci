@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="vespucci_model"
-    nsURI="http://vespucci.editor/2011-06-01" nsPrefix="">
+    nsURI="http://vespucci.editor" nsPrefix="">
   <eClassifiers xsi:type="ecore:EClass" name="ShapesDiagram">
     <eStructuralFeatures xsi:type="ecore:EReference" name="shapes" upperBound="-1"
         eType="#//Shape" containment="true"/>
@@ -13,7 +13,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetConnections" upperBound="-1"
         eType="#//Connection" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="empty"/>
   </eClassifiers>

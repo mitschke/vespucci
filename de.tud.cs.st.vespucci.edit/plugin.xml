@@ -43,7 +43,7 @@
 
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <factory
-            uri="http://vespucci.editor"
+            uri="http://vespucci.editor/2011-06-01"
             class="de.tud.cs.st.vespucci.vespucci_model.provider.Vespucci_modelItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
