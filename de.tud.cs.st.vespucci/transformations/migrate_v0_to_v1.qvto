@@ -1,4 +1,4 @@
-modeltype OldModel 'strict' uses 'http://vespucci.editor';
+﻿modeltype OldModel 'strict' uses 'http://vespucci.editor';
 modeltype NewModel 'strict' uses 'http://vespucci.editor/2011-06-01';
 
 transformation migrate_v0_to_v1(in oldModel : OldModel, out newModel : NewModel);

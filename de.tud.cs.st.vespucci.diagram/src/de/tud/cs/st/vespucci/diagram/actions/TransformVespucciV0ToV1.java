@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.diagram.actions;
+﻿package de.tud.cs.st.vespucci.diagram.actions;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

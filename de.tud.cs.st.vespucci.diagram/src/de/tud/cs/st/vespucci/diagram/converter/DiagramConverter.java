@@ -1,10 +1,10 @@
-/*
+﻿/*
  *  License (BSD Style License):
  *   Copyright (c) 2010
  *   Author Patrick Jahnke
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universiti�t Darmstadt
+ *   Technische Universitiät Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universit�t Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -222,7 +222,7 @@ public class DiagramConverter {
 		// insert common information
 		strBuilder.append("% Prolog based representation of the Vespucci architecture diagram: ");
 		strBuilder.append(fileName+"\n");
-		strBuilder.append("% Created by Vespucci, Technische Universiti�t Darmstadt, Department of Computer Science\n");
+		strBuilder.append("% Created by Vespucci, Technische Universitiät Darmstadt, Department of Computer Science\n");
 		strBuilder.append("% www.opal-project.de\n\n");
 		strBuilder.append(":- multifile ensemble/5.\n");
 		strBuilder.append(":- multifile abstract_ensemble/5.\n");

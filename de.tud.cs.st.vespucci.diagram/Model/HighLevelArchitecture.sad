@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_iHkskSOqEeCkc7phH_OITw">
     <shapes xmi:type="Ensemble" xmi:id="_kjXZkCOqEeCkc7phH_OITw" name="&quot;GUI&quot;-Vespucci " query="derived">
@@ -66,7 +66,7 @@
           <children xmi:type="notation:BasicCompartment" xmi:id="_aa8bQSOuEeCOo6bch11Byg" type="7002"/>
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aa70MSOuEeCOo6bch11Byg" x="5" y="216" width="266" height="226"/>
         </children>
-        <children xmi:type="notation:Shape" xmi:id="_XJPBsFO4EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="für die Plugin ID" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+        <children xmi:type="notation:Shape" xmi:id="_XJPBsFO4EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="fÃ¼r die Plugin ID" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
           <children xmi:type="notation:BasicDecorationNode" xmi:id="_XJUhQFO4EeCFAqVbT4yc4A" type="DiagramName">
             <element xsi:nil="true"/>
           </children>
@@ -102,7 +102,7 @@
       </children>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mMTGQSOqEeCkc7phH_OITw" x="495" y="120" width="286" height="226"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_IoqT4CkpEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm welches einen groben Überblick über das Vespucci-Plug-In gibt." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_IoqT4CkpEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm welches einen groben Ãœberblick Ã¼ber das Vespucci-Plug-In gibt." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_IovzcCkpEeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
@@ -114,7 +114,7 @@
       <element xsi:nil="true"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IoqT4ykpEeC7g5S-XZYxhw" x="30" y="15" width="146" height="91"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_R5M-QClBEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Unter Services befindet sich ein Großteil der Funktionalität die nicht von GMF erzeugt wurde sondern nachträglich hinzugefügt wurde." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_R5M-QClBEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Unter Services befindet sich ein GroÃŸteil der FunktionalitÃ¤t die nicht von GMF erzeugt wurde sondern nachtrÃ¤glich hinzugefÃ¼gt wurde." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_R5NlUClBEeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>

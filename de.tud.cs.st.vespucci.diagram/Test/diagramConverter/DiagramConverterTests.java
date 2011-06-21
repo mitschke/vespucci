@@ -1,4 +1,4 @@
-package diagramConverter;
+﻿package diagramConverter;
 
 import static org.junit.Assert.assertTrue;
 

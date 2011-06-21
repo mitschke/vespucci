@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.vespucci_model.diagram.preferences;
+﻿package de.tud.cs.st.vespucci.vespucci_model.diagram.preferences;
 
 /******************************************************************************
  * Copyright (c) 2004, 2008 IBM Corporation and others.

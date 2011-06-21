@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.diagram.io;
+﻿package de.tud.cs.st.vespucci.diagram.io;
 
 import java.util.LinkedList;
 import java.util.List;

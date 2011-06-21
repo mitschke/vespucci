@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_M3f18CczEeC-LqTJQDUVwQ">
     <shapes xmi:type="Ensemble" xmi:id="_opeIECczEeC-LqTJQDUVwQ" name="Lib"/>
@@ -61,7 +61,7 @@
       </children>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_A_jKQSklEeC7g5S-XZYxhw" x="220" y="30" width="481" height="301"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_3I9NsCkmEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm für den  DiagramConverter. Der DiagramConverter stellt die Funktionalität für das konvertieren von Vespucci-Diagramm-Dateien (*.sad) zu Prolog Dateien." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_3I9NsCkmEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm fÃ¼r den  DiagramConverter. Der DiagramConverter stellt die FunktionalitÃ¤t fÃ¼r das konvertieren von Vespucci-Diagramm-Dateien (*.sad) zu Prolog Dateien." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_3JDUUCkmEeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
