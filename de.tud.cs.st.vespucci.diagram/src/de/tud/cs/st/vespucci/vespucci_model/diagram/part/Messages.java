@@ -55,9 +55,9 @@ public class Messages extends NLS {
 	}
 
 	public static String VespucciTransformationNoFileTitle;
-	
-	public static String VespucciTransformationNoFileMessage; 
-	
+
+	public static String VespucciTransformationNoFileMessage;
+
 	/**
 	 * @generated
 	 */
