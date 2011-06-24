@@ -42,14 +42,44 @@
  * It adds a new attribute "description" to the Shape class.
  */
 
+import VespucciVisualIDs;
+
 modeltype notation 'strict' uses 'http://www.eclipse.org/gmf/runtime/1.0.2/notation';
+modeltype ecore uses 'http://www.eclipse.org/emf/2002/Ecore';
+
+modeltype model 'strict' uses 'http://vespucci.editor/2011-06-01';
 
 transformation migrate_v0_to_v1_notation(in oldDiagram : notation, out newDiagram : notation);
 
 main() {
-	
+	oldDiagram.rootObjects()[Diagram]->map toDiagram();
 }
 
+/**
+ * Produces the top level notation tag:
+ * <code>
+ *   &lt;notation:Diagram xmi:id="_NjIzPZ5AEeCsCZmlAUqFjw" type="Vespucci"
+ *                        name="Copy1.sad" measurementUnit="Pixel"&gt;
+ * </code>
+ */
 mapping notation::Diagram::toDiagram() : notation::Diagram {
+	// ATTRIBUTES
 	
+	type := self.type;
+	name := self.name;
+	measurementUnit := self.measurementUnit;	
+	// TODO: add element (ShapesDiagram)
+	
+	// CHILDREN
+	children += self.children->map toEnsemble();
+	//styles += self.styles->map toStyles();
+	//edges += self.edges->map toEdges();
+}
+
+mapping notation::Node::toEnsemble() : notation::Shape
+when { self.type = VisualId_Ensemble_Outer } {
+	children += self.children![DecorationNode];
+	children += object DecorationNode {
+		type = "5008";
+	};
 }

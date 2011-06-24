@@ -35,7 +35,6 @@
 
 package de.tud.cs.st.vespucci.diagram.actions;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
@@ -50,14 +49,12 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.ModelExtentContents;
-import org.eclipse.m2m.internal.qvt.oml.common.MdaException;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.*;
 import org.eclipse.m2m.internal.qvt.oml.library.*;
 import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner;
@@ -68,7 +65,6 @@ import org.eclipse.m2m.internal.qvt.oml.runtime.project.TransformationUtil;
 import org.eclipse.m2m.internal.qvt.oml.trace.*;
 import org.eclipse.m2m.qvt.oml.util.IContext;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;

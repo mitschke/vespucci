@@ -769,9 +769,6 @@
          </factory>
       </extension>
        <extension
-             point="org.eclipse.m2m.qvt.oml.javaBlackboxUnits">
-       </extension>
-       <extension
              point="org.eclipse.m2m.qvt.oml.runtime.qvtTransformation">
        </extension>
         <!-- gmf generator persistent region end -->
