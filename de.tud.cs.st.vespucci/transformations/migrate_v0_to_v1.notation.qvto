@@ -79,7 +79,11 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 mapping notation::Node::toEnsemble() : notation::Shape
 when { self.type = VisualId_Ensemble_Outer } {
 	children += self.children![DecorationNode];
+	
+	// New decoration node
 	children += object DecorationNode {
 		type = "5008";
 	};
+	
+	// Ensemble compartment
 }
