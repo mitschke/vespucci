@@ -710,22 +710,10 @@
    <extension point="org.eclipse.ui.handlers" id="menu-handlers">
       <?gmfgen generated="true"?>
    </extension>
-
-   <!-- gmf generator persistent region begin -->  
-
-      <extension point="org.eclipse.ui.commands" id="menu-commands"> 
-          <command
-            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
-            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-            name="Generate Architecural Model">
-      </command>
- 
-   </extension>
-      <extension point="org.eclipse.ui.menus" id="context-menus">
-      
-
-   
-          <menuContribution
+   <extension
+         id="context-menus"
+         point="org.eclipse.ui.menus">
+      <menuContribution
             allPopups="false"
             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
          <command
@@ -748,29 +736,51 @@
             </visibleWhen>
          </command>
       </menuContribution>
-          <menuContribution
-                allPopups="false"
-                locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
-             <menu
-                   id="editConstraintPopupMenu"
-                   label="Edit Constraint">
-                <visibleWhen
-                      checkEnabled="false">
-                   <instanceof
-                         value="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
-                   </instanceof>
-                </visibleWhen>
-                <menu
-                      id="setDependencyPopupMenu"
-                      label="Set Dependency">
-                   <dynamic
-                         class="de.tud.cs.st.vespucci.diagram.SetDependencyEntries"
-                         id="de.tud.cs.st.vespucci.diagram.setDependencyEntries">
-                   </dynamic>
-                </menu>
-             </menu>
-          </menuContribution>
- </extension>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
+         <menu
+               id="editConstraintPopupMenu"
+               label="%edit_constraint">
+            <menu
+                  id="setDependencyPopupMenu"
+                  label="%set_dependency">
+               <dynamic
+                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries"
+                     id="de.tud.cs.st.vespucci.diagram.menuItems.setDependencyEntries">
+               </dynamic>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+
+   <!-- gmf generator persistent region begin -->  
+
+      <extension point="org.eclipse.ui.commands" id="menu-commands"> 
+          <command
+            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
+            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+            name="Generate Architecural Model">
+      </command>
+          <category
+                description="All commands, that change the dependency of a constraint."
+                id="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                name="%set_dependencies_category">
+          </category>
+          <command
+                categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                id="de.tud.cs.st.vespucci.diagram.setDependenciesCommand"
+                name="%set_dependency">
+          </command>
+ 
+   </extension>
+      <extension
+            point="org.eclipse.ui.handlers">
+         <handler
+               class="de.tud.cs.st.vespucci.diagram.handler.SetDependenciesHandler"
+               commandId="de.tud.cs.st.vespucci.diagram.setDependenciesCommand">
+         </handler>
+      </extension>
        <extension
             point="org.eclipse.gmf.runtime.emf.clipboard.core.clipboardSupport">
          <factory
