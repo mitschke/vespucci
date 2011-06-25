@@ -37,7 +37,7 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
-import de.tud.cs.st.vespucci.io.ConnectionNameReader;
+import de.tud.cs.st.vespucci.io.ValidDependenciesReader;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
@@ -163,7 +163,7 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 */
 	protected ConnectionImpl() {
 		super();
-		connNames = new ConnectionNameReader().getKeywords();
+		connNames = new ValidDependenciesReader().getKeywords();
 	}
 
 	/**

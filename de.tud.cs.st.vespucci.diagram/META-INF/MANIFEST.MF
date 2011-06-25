@@ -47,4 +47,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.jdt.internal.corext.util
+Import-Package: de.tud.cs.st.vespucci.io,
+ org.eclipse.jdt.internal.corext.util

@@ -107,82 +107,6 @@
                id="de.tud.cs.st.vespucci.diagram.InitDiagramAction">
          </action>
       </objectContribution>
-      <objectContribution
-            adaptable="false"
-            id="de.tud.cs.st.vespucci.diagram.changeDependency"
-            objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
-         <menu
-               id="de.tud.cs.st.vespucci.diagram.EditConstraint"
-               label="%edit_constraint"
-               path="additions">
-            <separator
-                  name="de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator">
-            </separator>
-         </menu>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetConstrTypeAction"
-               id="de.tud.cs.st.vespucci.diagram.SetType"
-               label="%set_type"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator"
-               style="push">
-         </action>
-         <menu
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyMenu"
-               label="%set_dependency"
-               path="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator">
-            <groupMarker
-                  name="de.tud.cs.st.vespucci.diagram.SetDependencyDefault">
-            </groupMarker>
-         </menu>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyField_WriteAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyField_WriteAction"
-               label="%set_dependency_Field_WriteAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyField_ReadAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyField_ReadAction"
-               label="%set_dependency_Field_ReadAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyField_AccessAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyField_AccessAction"
-               label="%set_dependency_Field_AccessAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyCreateAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyCreateAction"
-               label="%set_dependency_CreateAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyCallAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencysCallAction"
-               label="%set_dependency_CallAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyAllAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyAllAction"
-               label="%set_dependency_AllAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-      </objectContribution>
    </extension>
    
 	 <?gmfgen generated="false"?>
@@ -824,6 +748,28 @@
             </visibleWhen>
          </command>
       </menuContribution>
+          <menuContribution
+                allPopups="false"
+                locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
+             <menu
+                   id="editConstraintPopupMenu"
+                   label="Edit Constraint">
+                <visibleWhen
+                      checkEnabled="false">
+                   <instanceof
+                         value="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
+                   </instanceof>
+                </visibleWhen>
+                <menu
+                      id="setDependencyPopupMenu"
+                      label="Set Dependency">
+                   <dynamic
+                         class="de.tud.cs.st.vespucci.diagram.SetDependencyEntries"
+                         id="de.tud.cs.st.vespucci.diagram.setDependencyEntries">
+                   </dynamic>
+                </menu>
+             </menu>
+          </menuContribution>
  </extension>
        <extension
             point="org.eclipse.gmf.runtime.emf.clipboard.core.clipboardSupport">
