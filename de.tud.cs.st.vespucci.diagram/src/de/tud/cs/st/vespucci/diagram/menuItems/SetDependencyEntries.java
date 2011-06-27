@@ -1,10 +1,6 @@
 package de.tud.cs.st.vespucci.diagram.menuItems;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
@@ -43,9 +39,9 @@ public class SetDependencyEntries extends CompoundContributionItem {
 				
 				final CommandContributionItemParameter contributionParameter = (new CommandContributionItemParameter(
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-						"de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyContribution" + dependency, 
+						"de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyContribution_" + dependency, 
 						"de.tud.cs.st.vespucci.diagram.setDependenciesCommand",
-						SWT.NONE));
+						CommandContributionItem.STYLE_CHECK));
 				contributionParameter.label = dependency;
 				
 				entries[i] = new CommandContributionItem(contributionParameter);

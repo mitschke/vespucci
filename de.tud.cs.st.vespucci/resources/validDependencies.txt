@@ -1,6 +1,6 @@
-[all]
-[call]
-[create]
-[field_access]
-[field_read]
-[field_write]
+all
+call
+create
+field_access
+field_read
+field_write

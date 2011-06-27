@@ -750,6 +750,16 @@
                      id="de.tud.cs.st.vespucci.diagram.menuItems.setDependencyEntries">
                </dynamic>
             </menu>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
          </menu>
       </menuContribution>
    </extension>
