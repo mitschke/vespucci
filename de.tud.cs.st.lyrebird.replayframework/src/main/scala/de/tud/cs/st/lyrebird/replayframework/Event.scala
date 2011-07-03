@@ -36,14 +36,15 @@ import java.io.File
 
 
 /**
- * Save one Event. 
- * A event consists of
- * 	EventType: @see EventType
- * 	EventTime: ..
+ * Data class that represent a change to one classfile 
+ *
+ * 	EventType: Type of the bytecode change. Possible EventTypes ADDED, CHANGED, REMOVED
+ * 	EventTime: timestamp of the bytecode change
  * 	ResolvedClassName: package/subpackage/.../ClassName
- * 	previousEvent: if Lyrebird recorded an event to the current classFile before this event, previousEvent saves a link to the last event.
- * 					else previousEvent = None
- * IMPORTENT: it is possible to get a remove event WITHOUT a previous add / change Event.
+ * 	previousEvent: if Lyrebird has recorded an event to the current class File before this event, previousEvent saves a link to the last event.
+ * 				   else previousEvent = None
+ * 	IMPORTENT: it is possible to get a remove event WITHOUT a previous add / change event.
+ * @author Malte V
  */
 case class Event(val eventType : EventType.Value,
                  val eventTime : Long,

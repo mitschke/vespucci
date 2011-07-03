@@ -31,6 +31,11 @@
  */
 package de.tud.cs.st.lyrebird.replayframework
 
+/**
+ * Data class that saves all events that belong to one source code change
+ * All Events in one Eventset have the same eventTime
+ * @author Malte V
+ */
 case class EventSet(val eventFiles : List[Event]) {
 
 }

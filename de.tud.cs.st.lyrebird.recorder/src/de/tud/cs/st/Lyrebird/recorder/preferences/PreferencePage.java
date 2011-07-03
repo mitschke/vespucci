@@ -39,7 +39,7 @@ import org.eclipse.ui.IWorkbench;
 import de.tud.cs.st.Lyrebird.recorder.Activator;
 
 /**
- * 
+ * Preference page for the lyrebird recorder
  * @author Malte V
  */
 public class PreferencePage
@@ -56,10 +56,7 @@ public class PreferencePage
 	}
 	
 	/**
-	 * Creates the field editors. Field editors are abstractions of
-	 * the common GUI blocks needed to manipulate various types
-	 * of preferences. Each field editor knows how to save and
-	 * restore itself.
+	 * all property fields
 	 */
 	public void createFieldEditors() {
 		

@@ -43,17 +43,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 /**
- * 
+ * Add / Remove lyrebird nature from a eclipse projcet
+ * @author Malte V
  */
 public class ToggleNatureAction implements IObjectActionDelegate {
 
 	private ISelection selection;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
 	public void run(IAction action) {
 		if (selection instanceof IStructuredSelection) {
 			for (Iterator it = ((IStructuredSelection) selection).iterator(); it
@@ -73,22 +69,12 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
-	 */
+
 	public void selectionChanged(IAction action, ISelection selection) {
 		this.selection = selection;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IWorkbenchPart)
-	 */
+
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 

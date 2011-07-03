@@ -32,7 +32,6 @@
 package de.tud.cs.st.Lyrebird.recorder.changeListener;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -41,13 +40,17 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.internal.AggregateWorkingSet;
+
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.Lyrebird.recorder.Activator;
-import de.tud.cs.st.Lyrebird.recorder.StartUp;
+
 import de.tud.cs.st.Lyrebird.recorder.file.FileHandler;
+
 /**
+ * Listener that implement the IResourceChangeListener Interface These listener
+ * records bytecode changes
+ * 
  * @author Malte V
  */
 public class ResourceChangeListener implements IResourceChangeListener {
@@ -71,7 +74,7 @@ public class ResourceChangeListener implements IResourceChangeListener {
 			try {
 				fileHandler.writeResourceDeltas(delta);
 			} catch (FileNotFoundException e) {
-				IStatus is = new Status(Status.ERROR,Activator.PLUGIN_ID,
+				IStatus is = new Status(Status.ERROR, Activator.PLUGIN_ID,
 						Activator.PLUGIN_ID
 								+ ": Global output dir does not exist", e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);

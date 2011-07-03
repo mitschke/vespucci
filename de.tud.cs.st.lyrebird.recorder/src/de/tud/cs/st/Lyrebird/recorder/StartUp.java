@@ -52,7 +52,11 @@ public class StartUp implements IStartup {
 	public void earlyStartup() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IResourceChangeListener listener = new ResourceChangeListener();
-		workspace.addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE); //63
+		// POST_CHANGE:
+		// indicating an after-the-fact report of creations, deletions, and
+		// modifications
+		// to one or more resources expressed as a hierarchical resource delta
+		workspace.addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE); 
 
 	}
 

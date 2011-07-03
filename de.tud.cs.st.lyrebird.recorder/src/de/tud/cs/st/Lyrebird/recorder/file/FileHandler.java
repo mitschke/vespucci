@@ -55,10 +55,15 @@ import de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.*;
 import de.tud.cs.st.Lyrebird.recorder.preferences.PreferenceConstants;
 
 /**
+ * These class save relevant bytecode changes.
+ * A bytecode change is relevant if the project in which the bytecode change occurs has the lyrebird.nature
+ * 
+ * Saving Process:
  * goes through a IResoucreDelta and copies all classfiels to
  * projectpath\P_PROJECT_RELATIV_PATH\packageName\subpackagename\...\TIME_EVENT_CLASSNAME.class
  * or
  * P_ABSOLUTE_PATH\packageName\subpackagename\...\TIME_EVENT_CLASSNAME.class
+ *  
  * 
  * TIME = point in time [in milliseconds (since January 1, 1970)] when writeResourceDeltas was called
  * Event = Changed/Added/Removed 
@@ -72,11 +77,19 @@ public class FileHandler {
 	private File workspaceLocation;
 	long date;
 
+	/**
+	 * Constructor
+	 * @param location set workspace location
+	 */
 	public FileHandler(File location) {
 		this.workspaceLocation = location;
 
 	}
 
+	/**
+	 * Set the output behavior as it is configured in the properties page  
+	 * @throws FileNotFoundException
+	 */
 	private void configOutput() throws FileNotFoundException {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		saveGlobal = !store.getBoolean(PreferenceConstants.P_SAVE_PER_PROJECT);
@@ -92,7 +105,10 @@ public class FileHandler {
 
 	}
 	/**
-	 *
+	 * Visits all IResouces in delta (IResourceDelta) and save the corresponding file if it is relevant
+	 * a file is relevant if:
+	 * 	- it's a class file
+	 * 	- it's location is in a project with the lyrebird natur
 	 * 
 	 * @param delta
 	 * @throws FileNotFoundException
@@ -143,8 +159,7 @@ public class FileHandler {
 							//check that we dont get a change in Lyrebirds outputfolder
 							if (resource.getProjectRelativePath().segment(0).equals(projectPath))
 								return false;
-							
-							
+
 							File projecFile = new File(workspaceLocation,
 									resource.getProject().getFullPath()
 											.toOSString());
@@ -192,11 +207,21 @@ public class FileHandler {
 		}
 	}
 
+	/**
+	 * returns the file for a IResoucre
+	 * @param resource
+	 * @return
+	 */
 	private File getSourceFile(IResource resource) {
 		return resource.getRawLocation().toFile();
 		//return new File(workspaceLocation, resource.getFullPath().toOSString());
 	}
 
+	/**
+	 * Determine the event type
+	 * @param kind
+	 * @return
+	 */
 	private String getKind(int kind) {
 		if (kind == IResourceDelta.ADDED)
 			return "ADDED";

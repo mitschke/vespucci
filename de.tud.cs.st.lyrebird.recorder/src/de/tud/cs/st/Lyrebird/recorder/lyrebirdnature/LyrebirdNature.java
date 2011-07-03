@@ -36,7 +36,7 @@ import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
 /**
- * ProjectNature class of the Lyrebird.recorder project
+ * ProjectNature of the Lyrebird.recorder project
  * 
  * @author Malte V
  */

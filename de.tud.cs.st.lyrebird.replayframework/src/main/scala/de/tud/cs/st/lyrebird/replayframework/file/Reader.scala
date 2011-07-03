@@ -46,10 +46,10 @@ import de.tud.cs.st.lyrebird.replayframework._
 class Reader(val location : File) {
     private var previousEvents = Map[String, Event]()
     val SEPARATOR = "_"
-  
+
     /**
      * @return : list with all EventSets in the given location (constructor)
-     * IMPORTANT every method call will reprocess the whole directory
+     * the list is ascendet ordered by Event.eventTime
      */
     def getAllEventSets() : List[EventSet] = {
         var res = List[EventSet]()
@@ -59,18 +59,18 @@ class Reader(val location : File) {
 
     /**
      * Converts a list of Events into one EventSet
+     * All Events must have the same eventTime
      */
     private def eventsToEventSet(eventSet : List[Event]) : EventSet = {
         new EventSet(eventSet)
     }
 
     /**
-     * Returns all files in a dir and all sub dirs converted into Events,
-     * grouped by the event time as a List of Lists 
-     * descending ordered by time
+     * Returns a list of list of Events grouped by the eventTime and descending ordered by time
+     * the list of Events contains all files in the given directory and all sub directories converted into Events,
+     *
      * ONLY PUBLIY FOR TESTING
      */
-    //TODO remove currentLocation : File and use class val location instead
     def getAllFilesGroupedByEventTime(currentLocation : File) = {
         previousEvents = Map[String, Event]()
         var list = List[List[Event]]()
@@ -104,7 +104,7 @@ class Reader(val location : File) {
 
     /**
      * @return: a list with all Events in a directory and all sub directories
-     * sorted by the event time
+     * sorted by the eventTime
      */
     private def getAllFilesSortedByEventTime(currentLocation : File) : Array[Event] = {
         var allEvents = readAllFiles(currentLocation)
@@ -139,7 +139,7 @@ class Reader(val location : File) {
             false
         if (!file.getName().endsWith("class"))
             false
-        if(file.getName.split(SEPARATOR).size < 3)
+        if (file.getName.split(SEPARATOR).size < 3)
             false
         true
     }
@@ -160,7 +160,7 @@ class Reader(val location : File) {
         val resolvedName = packages + fileNameParts.drop(2).mkString.dropRight(6)
         val previousEvent = previousEvents.get(resolvedName)
         val eventType = fileNameParts(1) match {
-            case "ADDED" => EventType.ADDED
+            case "ADDED"   => EventType.ADDED
             case "CHANGED" => EventType.CHANGED
             case "REMOVED" => EventType.REMOVED
         }

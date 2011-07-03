@@ -32,7 +32,7 @@
 package de.tud.cs.st.lyrebird.replayframework
 
 /**
- * 
+ * Enum class for the 3 different EventTypen
  * @author Malte V
  */
 object EventType extends Enumeration {
