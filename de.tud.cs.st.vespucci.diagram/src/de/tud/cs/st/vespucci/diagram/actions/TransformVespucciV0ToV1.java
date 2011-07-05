@@ -251,7 +251,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	}
 
 	@Override
-	public void selectionChanged(IAction action, ISelection selection) {
+	public void selectionChanged(IAction action, ISelection selection) {		
 		fileURI = null;
 		action.setEnabled(false);
 		if (selection instanceof IStructuredSelection == false
@@ -270,5 +270,4 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 		this.targetPart = targetPart;
 	}
-
 }

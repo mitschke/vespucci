@@ -48,6 +48,29 @@
             genModel="model/vespucci.genmodel"/>
    </extension>
    <extension
+         point="org.eclipse.m2m.qvt.oml.javaBlackboxUnits">
+      <unit
+            name="TransformationHelperLibrary"
+            namespace="Converter.Utils">
+         <library
+               class="de.tud.cs.st.vespucci.transformation.TransformationHelperLibrary"
+               name="TransformationHelper">
+            <metamodel
+                  nsURI="http://www.eclipse.org/emf/2002/Ecore">
+            </metamodel>
+            <metamodel
+                  nsURI="http://vespucci.editor">
+            </metamodel>
+            <metamodel
+                  nsURI="http://vespucci.editor/2011-06-01">
+            </metamodel>
+            <metamodel
+                  nsURI="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+            </metamodel>
+         </library>
+      </unit>
+   </extension>
+   <extension
          point="org.eclipse.m2m.qvt.oml.runtime.qvtTransformation">
       <transformation
             file="transformations/migrate_v0_to_v1.model.qvto"
