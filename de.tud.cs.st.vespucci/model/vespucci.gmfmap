@@ -18,6 +18,16 @@
         <features
             href="vespucci.ecore#//Shape/name"/>
       </labelMappings>
+      <labelMappings
+          xsi:type="gmfmap:FeatureLabelMapping"
+          viewPattern=""
+          editorPattern=""
+          editPattern="">
+        <diagramLabel
+            href="vespucci.gmfgraph#EnsembleDescription"/>
+        <features
+            href="vespucci.ecore#//Shape/description"/>
+      </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"
           href="vespucci.gmftool#//@palette/@tools.0/@tools.0"/>
@@ -39,6 +49,10 @@
           children="//@nodes.0/@ownedChild/@children.0 //@nodes.0/@ownedChild/@children.1">
         <compartment
             href="vespucci.gmfgraph#EnsembleCompartment"/>
+      </compartments>
+      <compartments>
+        <compartment
+            href="vespucci.gmfgraph#EnsembleDescriptionCompartment"/>
       </compartments>
     </ownedChild>
   </nodes>

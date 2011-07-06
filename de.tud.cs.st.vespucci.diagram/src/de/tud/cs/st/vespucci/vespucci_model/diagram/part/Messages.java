@@ -357,7 +357,17 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
+	public static String EnsembleEnsembleDescriptionCompartmentEditPart_title;
+
+	/**
+	 * @generated
+	 */
 	public static String EnsembleEnsembleCompartment2EditPart_title;
+
+	/**
+	 * @generated
+	 */
+	public static String EnsembleEnsembleDescriptionCompartment2EditPart_title;
 
 	/**
 	 * @generated

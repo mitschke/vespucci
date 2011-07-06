@@ -399,6 +399,15 @@ public class Ensemble2ItemSemanticEditPolicy
 					}
 				}
 				break;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartment2EditPart.VISUAL_ID:
+				for (Iterator<?> cit = node.getChildren().iterator(); cit
+						.hasNext();) {
+					Node cnode = (Node) cit.next();
+					switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+							.getVisualID(cnode)) {
+					}
+				}
+				break;
 			}
 		}
 	}

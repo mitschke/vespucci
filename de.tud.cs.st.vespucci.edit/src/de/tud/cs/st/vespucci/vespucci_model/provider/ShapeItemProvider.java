@@ -99,6 +99,7 @@ public class ShapeItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
+			addDescriptionPropertyDescriptor(object);
 			addQueryPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -120,6 +121,28 @@ public class ShapeItemProvider
 				 Vespucci_modelPackage.Literals.SHAPE__NAME,
 				 true,
 				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Description feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDescriptionPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Shape_description_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_description_feature", "_UI_Shape_type"),
+				 Vespucci_modelPackage.Literals.SHAPE__DESCRIPTION,
+				 true,
+				 true,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
@@ -217,6 +240,7 @@ public class ShapeItemProvider
 
 		switch (notification.getFeatureID(Shape.class)) {
 			case Vespucci_modelPackage.SHAPE__NAME:
+			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

@@ -341,11 +341,20 @@ public class VespucciViewProvider extends AbstractProvider implements
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID));
+		Node label5008 = createLabel(
+				node,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID));
 		createCompartment(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID),
 				true, false, false, false);
+		createCompartment(
+				node,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart.VISUAL_ID),
+				true, false, true, true);
 		return node;
 	}
 
@@ -438,11 +447,20 @@ public class VespucciViewProvider extends AbstractProvider implements
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID));
+		Node label5007 = createLabel(
+				node,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID));
 		createCompartment(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart.VISUAL_ID),
 				true, false, false, false);
+		createCompartment(
+				node,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartment2EditPart.VISUAL_ID),
+				true, false, true, true);
 		return node;
 	}
 

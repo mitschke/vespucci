@@ -1,17 +1,16 @@
 /******************************************************************************
- * Copyright (c) 2005, 2006 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    IBM Corporation - initial API and implementation 
+ * Copyright (c) 2005, 2006 IBM Corporation and others. All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is
+ * available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: IBM Corporation - initial API and implementation
  ****************************************************************************/
 package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.common.core.command.ICommand;
@@ -19,6 +18,11 @@ import org.eclipse.gmf.runtime.common.core.util.StringStatics;
 import org.eclipse.gmf.runtime.common.ui.util.StatusLineUtil;
 import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPropertySection;
 import org.eclipse.gmf.runtime.diagram.ui.properties.views.TextChangeHelper;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jdt.ui.PreferenceConstants;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyleRange;
@@ -29,16 +33,18 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.editors.text.EditorsUI;
+import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
+import de.tud.cs.st.vespucci.diagram.io.KeywordReader;
+
 /**
- * A Changed Copy of AbstractBasicTextPropertySection
- * (org.eclipse.gmf.runtime.diagram
+ * A Changed Copy of AbstractBasicTextPropertySection (org.eclipse.gmf.runtime.diagram
  * .ui.properties.sections.AbstractBasicTextPropertySection)
  * 
  * 
@@ -51,74 +57,106 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  * @author MalteV
  * @author BenjaminL
  * @author DominicS
+ * @author Alexander Weitzmann
  */
-public abstract class ChangedAbstractBasicTextPropertySection extends
-		AbstractModelerPropertySection {
+public abstract class ChangedAbstractBasicTextPropertySection extends AbstractModelerPropertySection {
 
 	private final int QUERY_TAB_HEIGHT_SHIFT = 35;
 
 	private final int QUERY_TAB_WIDTH_SHIFT = 45;
 
 	// styled text widget to display and set value of the property
-	private StyledText textWidget;
+	private MarkableStyledText textWidget;
 
 	// parent parent ... parent composite for the size of the textfield
 	private Composite scrolledParent;
 
 	private Composite sectionComposite;
 
-	private int startHeight = 15;
+	private final int startHeight = 15;
 
-	public void setScrolledParent(Composite scrolledParent) {
-		this.scrolledParent = scrolledParent;
-	}
+	/**
+	 * Preference-store of the java source viewer. Used for highlighting and text-settings for query.
+	 */
+	private static final IPreferenceStore srcViewerPrefs = PreferenceConstants.getPreferenceStore();
 
 	Listener resizeLinstener = new Listener() {
-		public void handleEvent(Event e) {
+		@Override
+		public void handleEvent(final Event e) {
 			updateHeight();
 		}
 	};
 
 	/**
-	 * @return - name of the property to place in the label widget
+	 * A helper to listen for events that indicate that a text field has been changed.
 	 */
-	abstract protected String getPropertyNameLabel();
+	private final TextChangeHelper listener = new TextChangeHelper() {
+		private boolean textModified = false;
 
-	/**
-	 * Set property value for the given object
-	 * 
-	 * @param object
-	 *            - owner of the property
-	 * @param value
-	 *            - new value
-	 */
-	abstract protected void setPropertyValue(EObject object, Object value);
+		/**
+		 * Provides method for accessing the keywords
+		 */
+		private final KeywordReader kwReader = new KeywordReader();
 
-	/**
-	 * @return - string representation of the property value
-	 */
-	abstract protected String getPropertyValueString();
+		/**
+		 * Keywords to be marked
+		 */
+		private final String[] keywords = kwReader.getKeywords();
 
-	/**
-	 * @return - title of the command which will be executed to set the property
-	 */
-	protected abstract String getPropertyChangeCommandName();
+		/**
+		 * Pattern to be used to match strings in query including the single quotes
+		 */
+		private static final String STRING_PATTERN = "'.+?'";
 
-	/**
-	 * A helper to listen for events that indicate that a text field has been
-	 * changed.
-	 */
-	private TextChangeHelper listener = new TextChangeHelper() {
-		boolean textModified = false;
+		/**
+		 * Performs text highlighting of the query properties tab.
+		 * 
+		 * @author DominicS
+		 * @author Alexander Weitzmann
+		 */
+		private void doSyntaxHighlighting() {
+			startNonUserChange();
+
+			// first, set everything to black and normal
+			resetStyle();
+
+			// highlight bracket, depending on caret
+			highlightBrackets();
+
+			// highlight keywords
+			highlightKeywords();
+
+			// highlight strings
+			highlightStrings();
+
+			finishNonUserChange();
+		}
+
+		/**
+		 * Returns a StyleRange that surrounds the character at the given position with a rectangle.
+		 * 
+		 * @param position
+		 *            The position of the bracket to be highlighted.
+		 * @return A StyleRange that highlights bracket at given position
+		 */
+		private StyleRange getBracketStyle(final int position) {
+			final StyleRange bracketStyle = textWidget.getStyleRangeAtOffset(position);
+
+			// surround with rectangle
+			bracketStyle.borderStyle = SWT.BORDER_SOLID;
+
+			return bracketStyle;
+		}
 
 		/**
 		 * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
 		 */
-		public void handleEvent(Event event) {
+		@Override
+		public void handleEvent(final Event event) {
 			switch (event.type) {
 			case SWT.KeyDown:
 				doSyntaxHighlighting();
-				
+
 				textModified = true;
 				if (event.character == SWT.CR) {
 					getPropertyValueString();
@@ -127,145 +165,253 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			case SWT.FocusOut:
 				textChanged((Control) event.widget);
 				break;
+			case SWT.FocusIn:
+				doSyntaxHighlighting();
+				break;
+			case SWT.MouseDown:
+				doSyntaxHighlighting();
+				break;
+			default:
+				break;
 			}
 		}
 
-		public void textChanged(Control control) {
+		/**
+		 * Highlights bracket at caret and corresponding bracket.
+		 */
+		private void highlightBrackets() {
+
+			final int offset = textWidget.getCaretOffset();
+			// Check if caret is at first position
+			// => no syntax highlighting
+			if (offset == 0) {
+				// do not highlight anything:
+				return;
+			}
+
+			final int size = textWidget.getCharCount();
+			final char currentChar = textWidget.getText().charAt(offset - 1);
+
+			if (currentChar == '(' && !textWidget.isPositionMarked(offset - 1)) {
+				int intend = 0;
+				for (int i = offset; i < size; i++) {
+					if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
+						intend++;
+					}
+
+					if (textWidget.getText().charAt(i) == ')' && intend == 0 && !textWidget.isPositionMarked(i)) {
+						// Highlight both brackets
+						textWidget.setStyleRange(getBracketStyle(i));
+						return;
+					}
+
+					if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
+						intend--;
+					}
+				}
+			}
+
+			else if (currentChar == ')' && offset > 1 && !textWidget.isPositionMarked(offset - 1)) {
+				int intend = 0;
+				for (int i = offset - 2; i >= 0; i--) {
+					if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
+						intend++;
+					}
+
+					if (textWidget.getText().charAt(i) == '(' && intend == 0 && !textWidget.isPositionMarked(i)) {
+						// Highlight both brackets
+						textWidget.setStyleRange(getBracketStyle(i));
+						return;
+					}
+
+					if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
+						intend--;
+					}
+				}
+			}
+		}
+
+		/**
+		 * Highlights all keywords and strings.
+		 */
+		private void highlightKeywords() {
+			final String targetText = textWidget.getText();
+			Pattern keywordPattern = null;
+			Matcher keywordMatcher = null;
+
+			// prepare style for keywords
+			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_BOLD);
+			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_ITALIC);
+
+			final StyleRange styleRange = new StyleRange();
+			styleRange.fontStyle = SWT.NORMAL;
+			if (bold) {
+				styleRange.fontStyle |= SWT.BOLD;
+			}
+			if (italic) {
+				styleRange.fontStyle |= SWT.ITALIC;
+			}
+			styleRange.strikeout = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_STRIKETHROUGH);
+			styleRange.underline = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_UNDERLINE);
+			styleRange.foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_JAVA_KEYWORD_COLOR);
+
+			// highlight keywords
+			for (final String str : keywords) {
+				keywordPattern = Pattern.compile(String.format("\\b%s\\b", str));
+				keywordMatcher = keywordPattern.matcher(targetText);
+
+				while (keywordMatcher.find()) {
+					styleRange.start = keywordMatcher.start();
+					styleRange.length = keywordMatcher.end() - keywordMatcher.start();
+
+					textWidget.setStyleRange(styleRange);
+				}
+			}
+		}
+
+		/**
+		 * Highlights all strings
+		 */
+		private void highlightStrings() {
+			final Matcher stringMatcher = Pattern.compile(STRING_PATTERN, Pattern.DOTALL).matcher(textWidget.getText());
+
+			// prepare style for highlighting
+			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_BOLD);
+			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_ITALIC);
+
+			final StyleRange styleRange = new StyleRange();
+			styleRange.fontStyle = SWT.NORMAL;
+			if (bold) {
+				styleRange.fontStyle |= SWT.BOLD;
+			}
+			if (italic) {
+				styleRange.fontStyle |= SWT.ITALIC;
+			}
+			styleRange.strikeout = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_STRIKETHROUGH);
+			styleRange.underline = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_UNDERLINE);
+			styleRange.foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_STRING_COLOR);
+
+			// remove all string-markings for {@link #highlightBrackets}
+			textWidget.unmarkAllPositions();
+
+			// highlight strings
+			while (stringMatcher.find()) {
+				styleRange.start = stringMatcher.start() + 1;
+				styleRange.length = stringMatcher.end() - styleRange.start - 1;
+
+				textWidget.setStyleRange(styleRange);
+
+				// mark string-locations for {@link #highlightBrackets}
+				for (int i = stringMatcher.start(); i < stringMatcher.end(); ++i) {
+					textWidget.markPosition(i);
+				}
+			}
+		}
+
+		/**
+		 * Resets the whole text style in the StyledText component to its "normal" state.
+		 */
+		private void resetStyle() {
+			final Color foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_JAVA_DEFAULT_COLOR);
+			final Color background = EditorsUI.getSharedTextColors().getColor(
+					PreferenceConverter.getColor(EditorsUI.getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND));
+
+			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_BOLD);
+			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_ITALIC);
+
+			int fontstyle = SWT.NORMAL;
+			if (bold) {
+				fontstyle |= SWT.BOLD;
+			}
+			if (italic) {
+				fontstyle |= SWT.ITALIC;
+			}
+
+			final StyleRange normalStyle = new StyleRange(0, textWidget.getCharCount(), foreground, background, fontstyle);
+			textWidget.setStyleRange(normalStyle);
+		}
+
+		@Override
+		public void startListeningTo(final Control control) {
+			control.addListener(SWT.FocusOut, this);
+			control.addListener(SWT.Modify, this);
+			control.addListener(SWT.FocusIn, this);
+			control.addListener(SWT.MouseDown, this);
+		}
+
+		@Override
+		public void textChanged(final Control control) {
 			if (textModified) {
 				// clear error message
-				IWorkbenchPart part = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage()
-						.getActivePart();
+				final IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
 				StatusLineUtil.outputErrorMessage(part, StringStatics.BLANK);
-				
+
 				setPropertyValue(control);
 				textModified = false;
 			}
 		}
-		
-		/**
-		 * Returns an array of StyleRange that makes the characters at
-		 * the positions first and second of a StyledText appear in bold
-		 * print.
-		 * 
-		 * @author DominicS
-		 * @param first First bold character
-		 * @param second Second bold character
-		 * @return Array of StyleRanges that makes characters at first and second bold
-		 */
-		private StyleRange[] getBoldStyleRanges(int first, int second)
-		{
-			if (first > second)
-			{
-				int temp = second;
-				second = first;
-				first = temp;
-			}
-			
-			// Emphasis style:
-			// blue, bold and underlined
-			
-			Color blue = Display.getCurrent().getSystemColor(SWT.COLOR_BLUE);
-			StyleRange r1 = new StyleRange(first, 1, blue, null, SWT.BOLD);
-			StyleRange r2 = new StyleRange(second, 1, blue, null, SWT.BOLD);
-			r1.underline = true;
-			r2.underline = true;
-			
-			return new StyleRange[] {r1, r2};
-		}
-		
-		/**
-		 * Resets the whole text style in the StyledText component to
-		 * its "normal" state.
-		 */
-		private void resetStyle()
-		{
-			Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
-			textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount(), black, null, SWT.NORMAL));
-		}
-		
-		/**
-		 * Performs syntax highlighting of the query properties tab.
-		 * So far, bracket emphasis is implemented.
-		 * 
-		 * @author DominicS
-		 */
-		private void doSyntaxHighlighting()
-		{
-			// first, set everything to black and normal
-			resetStyle();
-			
-			int offset = textWidget.getCaretOffset();
-			// Check if caret is at first position
-			// => no syntax highlighting
-			if (offset == 0)
-			{
-				// do not highlight anything:
-				return;
-			}
-			
-			int size = textWidget.getCharCount();
-			char currentChar = textWidget.getText().charAt(offset-1);
-			
-			if (currentChar == '(')
-			{
-				int intend = 0;
-				for (int i = offset; i < size; i++)
-				{
-					if (textWidget.getText().charAt(i) == '(') {
-						intend++;
-					}
-					
-					if (textWidget.getText().charAt(i) == ')'
-						&& intend == 0)
-					{
-						// Highlight both brackets						
-						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
-						return;
-					}					
-
-					if (textWidget.getText().charAt(i) == ')') {
-						intend--;
-					}
-				}
-			}
-			
-			else if (currentChar == ')' && offset > 1)
-			{
-				int intend = 0;
-				for (int i = offset-2; i >= 0; i--)
-				{
-					if (textWidget.getText().charAt(i) == ')') {
-						intend++;
-					}
-					
-					if (textWidget.getText().charAt(i) == '('
-						&& intend == 0)
-					{
-						// Highlight both brackets	
-						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
-						return;
-					}					
-
-					if (textWidget.getText().charAt(i) == '(') {
-						intend--;
-					}
-				}
-			}
-		}
 	};
+
+	/**
+	 * @return - the default implementation returns contents of the text widget as a new value for the property. Subclasses can
+	 *         could be override.
+	 */
+	protected final Object computeNewPropertyValue() {
+		return getTextWidget().getText();
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse
-	 * .swt.widgets.Composite,
+	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse .swt.widgets.Composite,
 	 * org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
-	public void createControls(Composite parent,
-			TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	@Override
+	public final void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		doCreateControls(parent, aTabbedPropertySheetPage);
+	}
+
+	/**
+	 * Instantiate a text widget
+	 * 
+	 * @param parent
+	 *            - parent composite
+	 * @return - a text widget to display and edit the property
+	 */
+	protected final MarkableStyledText createTextWidget(final Composite parent) {
+		getSectionComposite().getSize();
+
+		final MarkableStyledText st = new MarkableStyledText(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+
+		final Font userFont = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
+		st.setFont(userFont);
+
+		final FormData data = new FormData();
+		data.left = new FormAttachment(0, 0);
+		data.right = new FormAttachment(100, 0);
+		data.top = new FormAttachment(0, 0);
+		data.height = startHeight;
+		st.setLayoutData(data);
+
+		st.setBackground(EditorsUI.getSharedTextColors().getColor(
+				PreferenceConverter.getColor(EditorsUI.getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND)));
+
+		if (isReadOnly()) {
+			st.setEditable(false);
+		}
+
+		return st;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.views.properties.tabbed.ISection#dispose()
+	 */
+	@Override
+	public final void dispose() {
+		stopTextWidgetEventListener();
+		super.dispose();
 	}
 
 	/**
@@ -278,21 +424,22 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * @see org.eclipse.gmf.runtime.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.gmf.runtime.common.ui.properties.TabbedPropertySheetPage)
 	 */
-	public void doCreateControls(Composite parent,
-			TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	public final void doCreateControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
 		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
 		textWidget = createTextWidget(sectionComposite);
 		scrolledParent = parent;
-		for (;;) {
+
+		while (true) {
 			// TODO: There must be a nicer way for redraw the text widget then
 			// to say the first scrolledcomposite .layout()
 			// the scrolledParent should be "main" composite for the query tab
 			if (scrolledParent instanceof ScrolledComposite) {
 				break;
 			}
-			if (scrolledParent.getParent() == null)
+			if (scrolledParent.getParent() == null) {
 				break;
+			}
 			scrolledParent = scrolledParent.getParent();
 
 		}
@@ -302,152 +449,58 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		startTextWidgetEventListener();
 	}
 
-	/**
-	 * Start listening to the text widget events
-	 */
-	protected void startTextWidgetEventListener() {
-		if (!isReadOnly()) {
-			getListener().startListeningTo(getTextWidget());
-			getListener().startListeningForEnter(getTextWidget());
-		}
-	}
-
-	/**
-	 * Stop listening to text widget events
-	 */
-	protected void stopTextWidgetEventListener() {
-		if (!isReadOnly())
-			getListener().stopListeningTo(getTextWidget());
-	}
-
-	/**
-	 * Instantiate a text widget
-	 * 
-	 * @param parent
-	 *            - parent composite
-	 * @return - a text widget to display and edit the property
-	 */
-	protected StyledText createTextWidget(Composite parent) {
-		getSectionComposite().getSize();
-		
-		StyledText st = new StyledText(
-			parent,
-			SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL
-		);
-		
-		// Use a monospaced font
-		Font mono = new Font(parent.getDisplay(), "Courier New", 10, SWT.NONE);
-		st.setFont(mono);
-		
-		FormData data = new FormData();
-		data.left = new FormAttachment(0, 0);
-		data.right = new FormAttachment(100, 0);
-		data.top = new FormAttachment(0, 0);
-		data.height = startHeight;
-		st.setLayoutData(data);
-		
-		if (isReadOnly())
-			st.setEditable(false);
-		
-		return st;
-
-	}
-
 	private int getHeight() {
-		return this.scrolledParent.getSize().y - QUERY_TAB_HEIGHT_SHIFT;
-	}
-
-	private int getWidth() {
-		return this.scrolledParent.getSize().x - QUERY_TAB_WIDTH_SHIFT;
+		return scrolledParent.getSize().y - QUERY_TAB_HEIGHT_SHIFT;
 	}
 
 	/**
-	 * calculates the new size of the widget and updates it
+	 * @return Returns the listener.
 	 */
-	private void updateHeight() {
-		if (getTextWidget() != null && !getTextWidget().isDisposed()) {
-			getTextWidget().setVisible(false);
-			scrolledParent.setVisible(false);
-			FormData data = new FormData();
-			data.left = new FormAttachment(0, 0);
-			data.right = new FormAttachment(100, 0);
-			data.top = new FormAttachment(0, 0);
-			data.height = getHeight();
-			data.width = getWidth();
-			getTextWidget().setLayoutData(data);
-			int HEIGHTS_SCROLLLINE = 30;
-			Composite com = getSectionComposite();
-			// TODO: there must be a nice way to update the heights and widths
-			// of the textwidget and its parents
-			for (;;) {
-
-				if (com instanceof ScrolledComposite) {
-					break;
-				}
-				if (com.getParent() == null)
-					break;
-				com.setSize(getWidth(), getHeight() + HEIGHTS_SCROLLLINE);
-				com = com.getParent();
-
-			}
-			com.layout();
-			getTextWidget().setVisible(true);
-			scrolledParent.setVisible(true);
-		}
+	protected final TextChangeHelper getListener() {
+		return listener;
 	}
+
+	/**
+	 * @return - title of the command which will be executed to set the property
+	 */
+	protected abstract String getPropertyChangeCommandName();
+
+	/**
+	 * @return - name of the property to place in the label widget
+	 */
+	protected abstract String getPropertyNameLabel();
 
 	/**
 	 * returns as an array the property name
 	 * 
-	 * @return - array of strings where each describes a property name one per
-	 *         property. The strings will be used to calculate common indent
-	 *         from the left
+	 * @return - array of strings where each describes a property name one per property. The strings will be used to calculate
+	 *         common indent from the left
 	 */
-	protected String[] getPropertyNameStringsArray() {
+	protected final String[] getPropertyNameStringsArray() {
 		return new String[] { getPropertyNameLabel() };
 	}
 
 	/**
-	 * User pressed Enter key after editing text field - update the model
-	 * 
-	 * @param control
-	 *            <code>Control</code>
+	 * @return - string representation of the property value
 	 */
-	protected synchronized void setPropertyValue(Control control) {
-		final Object value = computeNewPropertyValue();
-		ArrayList<ICommand> commands = new ArrayList<ICommand>();
-		for (Iterator<?> it = getEObjectList().iterator(); it.hasNext();) {
-			final EObject next = (EObject) it.next();
-			commands.add(createCommand(getPropertyChangeCommandName(), next,
-					new Runnable() {
+	protected abstract String getPropertyValueString();
 
-						public void run() {
-							setPropertyValue(next, value);
-						}
-
-					}));
-		}
-		executeAsCompositeCommand(getPropertyChangeCommandName(), commands);
-		refresh();
+	/**
+	 * @return Returns the sectionComposite.
+	 */
+	public final Composite getSectionComposite() {
+		return sectionComposite;
 	}
 
 	/**
-	 * @return - the default implementation returns contents of the text widget
-	 *         as a new value for the property. Subclasses can could be
-	 *         override.
+	 * @return Returns the textWidget.
 	 */
-	protected Object computeNewPropertyValue() {
-		return getTextWidget().getText();
+	protected final StyledText getTextWidget() {
+		return textWidget;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.views.properties.tabbed.ISection#dispose()
-	 */
-	public void dispose() {
-		stopTextWidgetEventListener();
-		super.dispose();
+	private int getWidth() {
+		return scrolledParent.getSize().x - QUERY_TAB_WIDTH_SHIFT;
 	}
 
 	/*
@@ -455,11 +508,13 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
-	public void refresh() {
+	@Override
+	public final void refresh() {
 		getListener().startNonUserChange();
 		try {
 			executeAsReadAction(new Runnable() {
 
+				@Override
 				public void run() {
 					refreshUI();
 				}
@@ -472,28 +527,102 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	/**
 	 * Refresh UI body - refresh will surround this with read action block
 	 */
-	protected void refreshUI() {
-		getTextWidget().setText(getPropertyValueString());
+	protected final void refreshUI() {
+		if (textWidget != null) {
+			textWidget.setText(getPropertyValueString());
+		}
 	}
 
 	/**
-	 * @return Returns the listener.
+	 * User pressed Enter key after editing text field - update the model
+	 * 
+	 * @param control
+	 *            <code>Control</code>
 	 */
-	protected TextChangeHelper getListener() {
-		return listener;
+	protected final synchronized void setPropertyValue(final Control control) {
+		final Object value = computeNewPropertyValue();
+		final ArrayList<ICommand> commands = new ArrayList<ICommand>();
+		for (final Iterator<?> it = getEObjectList().iterator(); it.hasNext();) {
+			final EObject next = (EObject) it.next();
+			commands.add(createCommand(getPropertyChangeCommandName(), next, new Runnable() {
+
+				@Override
+				public void run() {
+					setPropertyValue(next, value);
+				}
+
+			}));
+		}
+		executeAsCompositeCommand(getPropertyChangeCommandName(), commands);
+		refresh();
 	}
 
 	/**
-	 * @return Returns the textWidget.
+	 * Set property value for the given object
+	 * 
+	 * @param object
+	 *            - owner of the property
+	 * @param value
+	 *            - new value
 	 */
-	protected StyledText getTextWidget() {
-		return textWidget;
+	protected abstract void setPropertyValue(EObject object, Object value);
+
+	public final void setScrolledParent(final Composite scrolledParent) {
+		this.scrolledParent = scrolledParent;
 	}
 
 	/**
-	 * @return Returns the sectionComposite.
+	 * Start listening to the text widget events
 	 */
-	public Composite getSectionComposite() {
-		return sectionComposite;
+	protected final void startTextWidgetEventListener() {
+		if (!isReadOnly()) {
+			getListener().startListeningTo(getTextWidget());
+			getListener().startListeningForEnter(getTextWidget());
+		}
+	}
+
+	/**
+	 * Stop listening to text widget events
+	 */
+	protected final void stopTextWidgetEventListener() {
+		if (!isReadOnly()) {
+			getListener().stopListeningTo(getTextWidget());
+		}
+	}
+
+	/**
+	 * calculates the new size of the widget and updates it
+	 */
+	private void updateHeight() {
+		if (getTextWidget() != null && !getTextWidget().isDisposed()) {
+			getTextWidget().setVisible(false);
+			scrolledParent.setVisible(false);
+			final FormData data = new FormData();
+			data.left = new FormAttachment(0, 0);
+			data.right = new FormAttachment(100, 0);
+			data.top = new FormAttachment(0, 0);
+			data.height = getHeight();
+			data.width = getWidth();
+			getTextWidget().setLayoutData(data);
+			final int HEIGHTS_SCROLLLINE = 30;
+			Composite com = getSectionComposite();
+			// TODO: there must be a nice way to update the heights and widths
+			// of the textwidget and its parents
+			while (true) {
+
+				if (com instanceof ScrolledComposite) {
+					break;
+				}
+				if (com.getParent() == null) {
+					break;
+				}
+				com.setSize(getWidth(), getHeight() + HEIGHTS_SCROLLLINE);
+				com = com.getParent();
+
+			}
+			com.layout();
+			getTextWidget().setVisible(true);
+			scrolledParent.setVisible(true);
+		}
 	}
 }

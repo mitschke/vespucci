@@ -156,13 +156,22 @@ public interface Vespucci_modelPackage extends EPackage {
 	int SHAPE__NAME = 2;
 
 	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SHAPE__DESCRIPTION = 3;
+
+	/**
 	 * The feature id for the '<em><b>Query</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPE__QUERY = 3;
+	int SHAPE__QUERY = 4;
 
 	/**
 	 * The number of structural features of the '<em>Shape</em>' class.
@@ -171,7 +180,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPE_FEATURE_COUNT = 4;
+	int SHAPE_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.DummyImpl <em>Dummy</em>}' class.
@@ -209,6 +218,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int DUMMY__NAME = SHAPE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DUMMY__DESCRIPTION = SHAPE__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Query</b></em>' attribute.
@@ -264,6 +282,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int ENSEMBLE__NAME = SHAPE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENSEMBLE__DESCRIPTION = SHAPE__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Query</b></em>' attribute.
@@ -796,6 +823,17 @@ public interface Vespucci_modelPackage extends EPackage {
 	EAttribute getShape_Name();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDescription <em>Description</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Description</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getDescription()
+	 * @see #getShape()
+	 * @generated
+	 */
+	EAttribute getShape_Description();
+
+	/**
 	 * Returns the meta object for the attribute '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getQuery <em>Query</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1036,6 +1074,14 @@ public interface Vespucci_modelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute SHAPE__NAME = eINSTANCE.getShape_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SHAPE__DESCRIPTION = eINSTANCE.getShape_Description();
 
 		/**
 		 * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
