@@ -107,94 +107,6 @@
                id="de.tud.cs.st.vespucci.diagram.InitDiagramAction">
          </action>
       </objectContribution>
-      <objectContribution
-            id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1"
-            nameFilter="*.sad"
-            objectClass="org.eclipse.core.resources.IFile">
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
-               enablesFor="1"
-               id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1Action"
-               label="%migrateV0ToV1ActionLabel"
-               menubarPath="additions">
-         </action>
-      </objectContribution>
-	  <objectContribution
-            adaptable="false"
-            id="de.tud.cs.st.vespucci.diagram.changeDependency"
-            objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
-         <menu
-               id="de.tud.cs.st.vespucci.diagram.EditConstraint"
-               label="%edit_constraint"
-               path="additions">
-            <separator
-                  name="de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator">
-            </separator>
-         </menu>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetConstrTypeAction"
-               id="de.tud.cs.st.vespucci.diagram.SetType"
-               label="%set_type"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator"
-               style="push">
-         </action>
-         <menu
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyMenu"
-               label="%set_dependency"
-               path="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.ChangeConstraintSeparator">
-            <groupMarker
-                  name="de.tud.cs.st.vespucci.diagram.SetDependencyDefault">
-            </groupMarker>
-         </menu>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyField_WriteAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyField_WriteAction"
-               label="%set_dependency_Field_WriteAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyField_ReadAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyField_ReadAction"
-               label="%set_dependency_Field_ReadAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyField_AccessAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyField_AccessAction"
-               label="%set_dependency_Field_AccessAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyCreateAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyCreateAction"
-               label="%set_dependency_CreateAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyCallAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencysCallAction"
-               label="%set_dependency_CallAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.SetDependencyAllAction"
-               id="de.tud.cs.st.vespucci.diagram.SetDependencyAllAction"
-               label="%set_dependency_AllAction"
-               menubarPath="de.tud.cs.st.vespucci.diagram.EditConstraint/de.tud.cs.st.vespucci.diagram.SetDependencyMenu/de.tud.cs.st.vespucci.diagram.SetDependencyDefault"
-               state="false"
-               style="toggle">
-         </action>
-      </objectContribution>
    </extension>
    
    <?gmfgen generated="false"?>
@@ -810,22 +722,10 @@
    <extension point="org.eclipse.ui.handlers" id="menu-handlers">
       <?gmfgen generated="true"?>
    </extension>
-
-   <!-- gmf generator persistent region begin -->  
-
-      <extension point="org.eclipse.ui.commands" id="menu-commands"> 
-          <command
-            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
-            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-            name="Generate Architecural Model">
-      </command>
- 
-   </extension>
-      <extension point="org.eclipse.ui.menus" id="context-menus">
-      
-
-   
-          <menuContribution
+   <extension
+         id="context-menus"
+         point="org.eclipse.ui.menus">
+      <menuContribution
             allPopups="false"
             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
          <command
@@ -848,7 +748,61 @@
             </visibleWhen>
          </command>
       </menuContribution>
- </extension>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
+         <menu
+               id="editConstraintPopupMenu"
+               label="%edit_constraint">
+            <menu
+                  id="setDependencyPopupMenu"
+                  label="%set_dependency">
+               <dynamic
+                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries"
+                     id="de.tud.cs.st.vespucci.diagram.menuItems.setDependencyEntries">
+               </dynamic>
+            </menu>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </menu>
+      </menuContribution>
+   </extension>
+
+   <!-- gmf generator persistent region begin -->  
+
+      <extension point="org.eclipse.ui.commands" id="menu-commands"> 
+          <command
+            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
+            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+            name="Generate Architecural Model">
+      </command>
+          <category
+                description="All commands, that change the dependency of a constraint."
+                id="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                name="%set_dependencies_category">
+          </category>
+          <command
+                categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                id="de.tud.cs.st.vespucci.diagram.setDependenciesCommand"
+                name="%set_dependency">
+          </command>
+ 
+   </extension>
+      <extension
+            point="org.eclipse.ui.handlers">
+         <handler
+               class="de.tud.cs.st.vespucci.diagram.handler.SetDependenciesHandler"
+               commandId="de.tud.cs.st.vespucci.diagram.setDependenciesCommand">
+         </handler>
+      </extension>
        <extension
             point="org.eclipse.gmf.runtime.emf.clipboard.core.clipboardSupport">
          <factory

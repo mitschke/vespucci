@@ -49,14 +49,14 @@ import java.util.Scanner;
  * Basically {@link de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader}
  * 
  * @author Alexander Weitzmann
- * @version 1.0
+ * @version 1.1
  */
-public class ConnectionNameReader {
+public class ValidDependenciesReader {
 
 	/**
 	 * Path to file, that contains the keywords
 	 */
-	private static final String PATH = "/resources/connectionNames.txt";
+	private static final String PATH = "/resources/validDependencies.txt";
 
 	/**
 	 * Keywords read in from given file (see {@link #PATH})
@@ -76,7 +76,7 @@ public class ConnectionNameReader {
 	/**
 	 * Constructor.
 	 */
-	public ConnectionNameReader() {
+	public ValidDependenciesReader() {
 		readKeywordFile();
 	}
 
