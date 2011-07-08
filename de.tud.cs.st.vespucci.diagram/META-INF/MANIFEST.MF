@@ -49,4 +49,3 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.tud.cs.st.vespucci.io,
  org.eclipse.jdt.internal.corext.util
-Manifest-Version: 1.0
