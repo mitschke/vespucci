@@ -529,38 +529,43 @@ public class DiagramConverter {
 		// the Ensemble will contains a reference to original Ensemble in first saf file.
 		// This reference has no influence on working process but it has problem here,
 		// by converting to prolog facts
+		
+		// modified by Alexaner Weitzmann 09.07.11
+		// changed connection.getName(), because it does not represent the prolog syntax anymore
+		final String connectionName = String.format("[%s]", connection.getName());
+		
 		if(connection.getSource().eIsProxy() || connection.getTarget().eIsProxy())
 			return "";
 		if (connection instanceof Outgoing)
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
-					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(target) + ", [], " + connectionName + ").\n");
 		else if (connection instanceof Incoming)
 			transactionSB.append("incoming"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
-					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(target) + ", [], " + connectionName + ").\n");
 		else if (connection instanceof Expected)
 			transactionSB.append("expected"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
-					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(target) + ", [], " + connectionName + ").\n");
 		else if (connection instanceof NotAllowed)
 			transactionSB.append("not_allowed"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
-					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(target) + ", [], " + connectionName + ").\n");
 		else if (connection instanceof InAndOut)
 		{
 			transactionSB.append("incoming"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
-					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(target) + ", [], " + connectionName + ").\n");
 			transactionSB.append("outgoing"
 					+ "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
-					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+					+ getDependencyEnsembleName(target) + ", [], " + connectionName + ").\n");
 
 		}
 		mDependencyCounter++;

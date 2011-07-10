@@ -33,56 +33,52 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tud.cs.st.vespucci.diagram.menuItems;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies;
 
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.actions.CompoundContributionItem;
-import org.eclipse.ui.menus.CommandContributionItem;
-import org.eclipse.ui.menus.CommandContributionItemParameter;
-
-import de.tud.cs.st.vespucci.io.ValidDependenciesReader;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gmf.runtime.common.core.command.CompositeCommand;
+import org.eclipse.gmf.runtime.emf.type.core.IElementType;
+import org.eclipse.gmf.runtime.emf.type.core.commands.DestroyElementCommand;
+import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
+import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
+import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 
 /**
- * This class provides the entries for the
- * "Edit Constraint"/"Set Dependency"-menu. For each entry in the validDependencies-textfile 
- * ({@link de.tud.cs.st.vespucci/resources/validDependencies.txt}) one menu-entry will be generated.
+ * Super-class for all constraint-EditPolicies. To effect the behavior of constraints, methods of
+ * {@link VespucciBaseItemSemanticEditPolicy} are overwritten. The adapted methods can now
+ * manipulate the commands, that will be returned to the emf-framework
  * 
  * @author Alexander Weitzmann
  * @version 0.1
+ * 
  */
-public class SetDependencyEntries extends CompoundContributionItem {
-	
-	/**
-	 * Valid names for dependencies read from the resource-file.
-	 */
-	private static final String[] dependencies = new ValidDependenciesReader().getKeywords();
-	
-	/**
-	 * Generated entries.
-	 */
-	private IContributionItem[] entries = null;
+public class ConstraintEditPolicy extends VespucciBaseItemSemanticEditPolicy {
 
-	@Override
-	protected IContributionItem[] getContributionItems() {
-		if(entries == null && dependencies.length != 0){
-			// generate entries
-			entries = new CommandContributionItem[dependencies.length];
-			
-			for(int i = 0; i < dependencies.length; i++){
-				final String dependency = dependencies[i];
-				
-				final CommandContributionItemParameter contributionParameter = (new CommandContributionItemParameter(
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-						"de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyContribution_" + dependency, 
-						"de.tud.cs.st.vespucci.diagram.setDependenciesCommand",
-						CommandContributionItem.STYLE_CHECK));
-				contributionParameter.label = dependency;
-				
-				entries[i] = new CommandContributionItem(contributionParameter);
-			}
-		}
-		
-		return entries.clone();
+	protected ConstraintEditPolicy(final IElementType elementType) {
+		super(elementType);
+		// TODO Auto-generated constructor stub
 	}
+
+	/**
+	 * This method will be called, if the constraint shall be deleted. Handling of IMarker was
+	 * manually added.
+	 * 
+	 * @generated not
+	 */
+	@Override
+	protected Command getDestroyElementCommand(final DestroyElementRequest req) {
+		// Command, that bundles multiple commands
+		final CompositeCommand compCom = new CompositeCommand("Reset marker and destroy connection");
+
+		// TODO add reset marker command (and before that: integrate marker as attribute/feature in
+		// model)
+		// add "unset marker"-command
+//		final SetRequest unsetMarkerReq = new SetRequest(req.getElementToDestroy(), feature, value);
+//		compCom.add(new SetValueCommand(unsetMarkerReq));
+
+		// add destroy-command
+		compCom.add(new DestroyElementCommand(req));
+		return getGEFWrapper(compCom);
+	}
+
 }
