@@ -43,6 +43,7 @@
  */
 
 import VespucciVisualIDs;
+//import VespucciConverter.Utils.TransformationHelperLibrary;
 
 modeltype notation 'strict' uses 'http://www.eclipse.org/gmf/runtime/1.0.2/notation';
 modeltype ecore uses 'http://www.eclipse.org/emf/2002/Ecore';
@@ -67,8 +68,9 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	
 	type := self.type;
 	name := self.name;
-	measurementUnit := self.measurementUnit;	
+	measurementUnit := self.measurementUnit;
 	// TODO: add element (ShapesDiagram)
+	//element := self.getRememberedShapesDiagram();
 	
 	// CHILDREN
 	children += self.children->map toEnsemble();

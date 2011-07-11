@@ -51,7 +51,7 @@
          point="org.eclipse.m2m.qvt.oml.javaBlackboxUnits">
       <unit
             name="TransformationHelperLibrary"
-            namespace="Converter.Utils">
+            namespace="VespucciConverter.Utils">
          <library
                class="de.tud.cs.st.vespucci.transformation.TransformationHelperLibrary"
                name="TransformationHelper">

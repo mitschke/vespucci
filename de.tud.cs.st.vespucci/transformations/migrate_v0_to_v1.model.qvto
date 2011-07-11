@@ -42,7 +42,7 @@
  * It adds a new attribute "description" to the Shape class.
  */
 
-import Converter.Utils.TransformationHelperLibrary;
+import VespucciConverter.Utils.TransformationHelperLibrary;
 
 modeltype OldModel 'strict' uses 'http://vespucci.editor';
 modeltype NewModel 'strict' uses 'http://vespucci.editor/2011-06-01';
@@ -56,6 +56,8 @@ main() {
 mapping OldModel::ShapesDiagram::toNew() : NewModel::ShapesDiagram {
 	shapes += self.shapes.map toEnsemble();
 	shapes += self.shapes.map toDummy();
+	
+	self.remember();
 }
 
 mapping OldModel::Shape::toEnsemble() : NewModel::Ensemble
@@ -70,7 +72,7 @@ inherits OldModel::Shape::toShape
 when {self.metaClassName() = 'Dummy'} {
 }
 
-mapping OldModel::Shape::toShape() : NewModel::Shape {
+mapping OldModel::Shape::toShape() : NewModel::Shape {	
 	name := self.name;
 	_query := self._query;
 	description := ''; // NEW ATTRIBUTE
@@ -86,6 +88,8 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	targetConnections += self.targetConnections.map toIncoming();
 	targetConnections += self.targetConnections.map toNotAllowed();
 	targetConnections += self.targetConnections.map toOutgoing();
+	
+	self.remember();
 }
 
 mapping OldModel::Connection::toExpected() : NewModel::Expected
