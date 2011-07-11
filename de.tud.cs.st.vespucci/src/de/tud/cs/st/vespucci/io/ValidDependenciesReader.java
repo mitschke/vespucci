@@ -1,4 +1,4 @@
-﻿/**
+/**
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Author Tam-Minh Nguyen
