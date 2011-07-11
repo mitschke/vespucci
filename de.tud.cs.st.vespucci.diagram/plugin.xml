@@ -100,6 +100,8 @@
          </action>
       </objectContribution>
    </extension>
+   
+   <?gmfgen generated="false"?>
 	
    <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
       <?gmfgen generated="true"?>
@@ -700,6 +702,21 @@
 
    <extension point="org.eclipse.ui.handlers" id="menu-handlers">
       <?gmfgen generated="true"?>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1"
+            nameFilter="*.sad"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
+               enablesFor="1"
+               id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1Action"
+               label="Vespucci: Migrate from v0 to 2011-06-01"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
    </extension>
 
    <!-- optionally, specify keybindings -->
