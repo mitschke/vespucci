@@ -42,7 +42,6 @@
  * It adds a new attribute "description" to the Shape class.
  */
 
-import VespucciVisualIDs;
 import Converter.Utils.TransformationHelperLibrary;
 
 modeltype OldModel 'strict' uses 'http://vespucci.editor';
