@@ -1,0 +1,4 @@
+library VespucciVisualIDs;
+
+property VisualId_Ensemble_Outer : Integer = 123;
+	
