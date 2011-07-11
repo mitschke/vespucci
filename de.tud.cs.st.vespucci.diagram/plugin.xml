@@ -74,15 +74,23 @@
    </extension>
 
    <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
-      <?gmfgen generated="true"?>
+   		<?gmfgen generated="false"?>
   	  <wizard
-  	     name="%newWizardName"
-  	     icon="icons/obj16/Vespucci_modelDiagramFile.gif"
-  	     category="org.eclipse.ui.Examples"
-  	     class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
-  	     id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
-  	  	 <description>%newWizardDesc</description>  
+           canFinishEarly="false"
+           category="de.tud.cs.st.vespucci.diagram.category1"
+           class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
+           icon="icons/obj16/Vespucci_modelDiagramFile.gif"
+           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID"
+           name="Software Architecture Constraints Diagram">
+  	  	 <description>Software architecture constraints can be created between logical grouped objects, named ensemble.</description>  
       </wizard>
+     <category
+           id="de.tud.cs.st.vespucci.diagram.category1"
+           name="Software Architecture">
+     </category>
+     <primaryWizard
+           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
+     </primaryWizard>
    </extension>
 
    <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
@@ -100,9 +108,10 @@
          </action>
       </objectContribution>
    </extension>
-	
+   
+	 <?gmfgen generated="false"?>
    <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
-      <?gmfgen generated="true"?>
+      <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramGlobalActionHandlerProvider"
          id="VespucciPresentation">
@@ -116,6 +125,7 @@
             </ElementType>
          </ViewId>
       </GlobalActionHandlerProvider>
+       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.ide.providers.DiagramIDEGlobalActionHandlerProvider"
          id="VespucciPresentationIDE">
@@ -126,11 +136,14 @@
             </ElementType>
          </ViewId>
       </GlobalActionHandlerProvider>
+       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
             class="org.eclipse.gmf.runtime.diagram.ui.render.providers.DiagramUIRenderGlobalActionHandlerProvider"
             id="VespucciRender">
+             <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
-         <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
+          <?gmfgen generated="false"?>
+        <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
             <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
                <GlobalActionId actionId="cut"/>
                <GlobalActionId actionId="copy"/>
@@ -195,10 +208,13 @@
    </extension>
 
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor" id="prop-contrib">
-      <?gmfgen generated="true"?>
+      <?gmfgen generated="false"?>
       <propertyContributor
             contributorId="de.tud.cs.st.vespucci.diagram"
             labelProvider="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.VespucciSheetLabelProvider">
+         <propertyCategory
+               category="first">
+         </propertyCategory>
          <propertyCategory category="domain"/>
          <propertyCategory category="visual"/>
          <propertyCategory category="extra"/>
@@ -206,8 +222,12 @@
    </extension>
 
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyTabs" id="proptabs">
-      <?gmfgen generated="true"?>   
+      <?gmfgen generated="false"?>   
       <propertyTabs contributorId="de.tud.cs.st.vespucci.diagram">
+          <propertyTab
+             category="first"
+             id="property.tab.query"
+             label="%tab.query"/>
          <propertyTab
              category="visual"
              id="property.tab.AppearancePropertySection"
@@ -220,14 +240,6 @@
              category="domain"
              id="property.tab.domain"
              label="%tab.domain"/>
-          <propertyTab
-             category="extra"
-             id="property.tab.query"
-             label="%tab.query"/>
-          <propertyTab
-             category="extra"
-             id="property.tab.description"
-             label="%tab.description"/>
       </propertyTabs>
    </extension>
 
@@ -268,12 +280,6 @@
             filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
             class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection">
          </propertySection>
-         <propertySection
-            id="property.section.description" 
-            tab="property.tab.description"
-            filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
-            class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleDescriptionPropertySection">
-         </propertySection>
       </propertySections>
    </extension>
 
@@ -309,15 +315,18 @@
          <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
       </editpartProvider>
    </extension>
-
+	<?gmfgen generated="false"?>
    <extension point="org.eclipse.gmf.runtime.emf.ui.modelingAssistantProviders" id="modelassist-provider">
-      <?gmfgen generated="true"?>
+      <?gmfgen generated="false"?>
       <modelingAssistantProvider class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciModelingAssistantProvider">
+      <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart" id="ShapesDiagram_1000"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart" id="Ensemble_2001"/>
+         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart" id="Ensemble_3001"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart" id="Dummy_2002"/>
-         <context elements="ShapesDiagram_1000,Ensemble_2001,Dummy_2002"/>
+         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart" id="Dummy_3003"/>
+         <context elements="ShapesDiagram_1000,Ensemble_2001,Ensemble_3001,Dummy_2002,Dummy_3003"/>
       </modelingAssistantProvider>
    </extension>
 
@@ -337,7 +346,7 @@
 
    <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypes" id="element-types">
       <?gmfgen generated="true"?>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.ShapesDiagram_1000"
                name="%metatype.name.ShapesDiagram_1000"
@@ -347,7 +356,7 @@
             <param name="semanticHint" value="1000"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Ensemble_2001"
                name="%metatype.name.Ensemble_2001"
@@ -357,7 +366,7 @@
             <param name="semanticHint" value="2001"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <specializationType
                id="de.tud.cs.st.vespucci.diagram.Dummy_2002"
                name="%metatype.name.Dummy_2002"
@@ -366,7 +375,7 @@
             <param name="semanticHint" value="2002"/>
          </specializationType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <specializationType
                id="de.tud.cs.st.vespucci.diagram.Ensemble_3001"
                name="%metatype.name.Ensemble_3001"
@@ -375,7 +384,7 @@
             <param name="semanticHint" value="3001"/>
          </specializationType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Dummy_3003"
                name="%metatype.name.Dummy_3003"
@@ -385,7 +394,7 @@
             <param name="semanticHint" value="3003"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Incoming_4005"
                name="%metatype.name.Incoming_4005"
@@ -395,7 +404,7 @@
             <param name="semanticHint" value="4005"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Outgoing_4003"
                name="%metatype.name.Outgoing_4003"
@@ -405,7 +414,7 @@
             <param name="semanticHint" value="4003"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.InAndOut_4001"
                name="%metatype.name.InAndOut_4001"
@@ -415,7 +424,7 @@
             <param name="semanticHint" value="4001"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.NotAllowed_4004"
                name="%metatype.name.NotAllowed_4004"
@@ -425,7 +434,7 @@
             <param name="semanticHint" value="4004"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
+      <metamodel nsURI="http://vespucci.editor">
          <metamodelType
                id="de.tud.cs.st.vespucci.diagram.Expected_4002"
                name="%metatype.name.Expected_4002"
@@ -585,7 +594,7 @@
          <![CDATA[]]>
       </category>
       <constraintProvider cache="true">
-         <package namespaceUri="http://vespucci.editor/2011-06-01"/>
+         <package namespaceUri="http://vespucci.editor"/>
                <constraints categories="VespucciDiagramConstraintsID">
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/EnsembleConstraintsID">
@@ -701,6 +710,132 @@
    <extension point="org.eclipse.ui.handlers" id="menu-handlers">
       <?gmfgen generated="true"?>
    </extension>
+   <extension
+         id="context-menus"
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+               label="Vespucci: Generate Architecural Model"
+               style="push">
+            <visibleWhen>
+               <with
+                     variable="selection">
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.name"
+                              value="*.sad">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
+         <menu
+               id="editConstraintPopupMenu"
+               label="%edit_constraint">
+            <menu
+                  id="setDependencyPopupMenu"
+                  label="%set_dependency">
+               <dynamic
+                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries"
+                     id="de.tud.cs.st.vespucci.diagram.menuItems.setDependencyEntries">
+               </dynamic>
+            </menu>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </menu>
+      </menuContribution>
+   </extension>
+
+   <!-- gmf generator persistent region begin -->  
+
+      <extension point="org.eclipse.ui.commands" id="menu-commands"> 
+          <command
+            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
+            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+            name="Generate Architecural Model">
+      </command>
+          <category
+                description="All commands, that change the dependency of a constraint."
+                id="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                name="%set_dependencies_category">
+          </category>
+          <command
+                categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                id="de.tud.cs.st.vespucci.diagram.setDependenciesCommand"
+                name="%set_dependency">
+          </command>
+ 
+   </extension>
+      <extension
+            point="org.eclipse.ui.handlers">
+         <handler
+               class="de.tud.cs.st.vespucci.diagram.handler.SetDependenciesHandler"
+               commandId="de.tud.cs.st.vespucci.diagram.setDependenciesCommand">
+         </handler>
+      </extension>
+       <extension
+            point="org.eclipse.gmf.runtime.emf.clipboard.core.clipboardSupport">
+         <factory
+               class="de.tud.cs.st.vespucci.diagram.supports.VespucciClipboardSupportFactory"
+               priority="medium">
+         </factory>
+      </extension>
+       <extension
+             point="org.eclipse.gmf.runtime.diagram.ui.paletteProviders">
+          <paletteProvider>
+             <Priority
+                   name="Lowest">
+             </Priority>
+                   <contribution>
+     					<predefinedEntry id="standardGroup/zoomTool" remove="true"/>
+      				</contribution>
+             
+          </paletteProvider>
+       </extension>
+       <extension
+			point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
+			<contributionItemProvider
+				checkPluginLoaded="false"
+				class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContributionItemProvider">
+
+				<Priority name="Low"/>
+
+				<popupContribution
+					id="remove_popup_menu_id"
+					class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
+
+					<popupStructuredContributionCriteria
+           objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart">
+					</popupStructuredContributionCriteria>
+					
+					<popupPredefinedItem id="addGroup" remove="false"/>
+					<popupPredefinedItem id="navigateGroup" remove="true"/>
+					
+
+				</popupContribution>
+			</contributionItemProvider>
+		</extension>
+        <!-- gmf generator persistent region end -->
+          
 
    <!-- optionally, specify keybindings -->
 </plugin>
+ 
