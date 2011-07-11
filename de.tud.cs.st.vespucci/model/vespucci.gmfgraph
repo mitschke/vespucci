@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <gmfgraph:Canvas xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -117,12 +117,6 @@
               xsi:type="gmfgraph:BorderLayoutData"/>
           <layout
               xsi:type="gmfgraph:BorderLayout"/>
-          <minimumSize
-              dx="5"
-              dy="25"/>
-          <preferredSize
-              dx="50"
-              dy="50"/>
           <children
               xsi:type="gmfgraph:Rectangle"
               name="EnsembleDescriptionCompartmentFigure">
@@ -134,14 +128,14 @@
                 xsi:type="gmfgraph:BorderLayout"/>
             <children
                 xsi:type="gmfgraph:Label"
-                name="EnsemblePlaceholderLabelFigure">
+                name="EnsemblePlaceholderLabelFigure"
+                text=" ">
               <layoutData
                   xsi:type="gmfgraph:BorderLayoutData"
                   alignment="END"
                   vertical="true"/>
               <maximumSize
-                  dx="10"
-                  dy="5"/>
+                  dx="10"/>
               <font
                   xsi:type="gmfgraph:BasicFont"
                   faceName=""
@@ -167,6 +161,9 @@
                 red="175"
                 green="238"
                 blue="238"/>
+            <minimumSize
+                dx="20"
+                dy="25"/>
           </children>
         </children>
       </actualFigure>

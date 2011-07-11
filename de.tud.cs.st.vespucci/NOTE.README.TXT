@@ -1,4 +1,4 @@
-1. All code written using Eclipse-Modelling-Galileo-SR2-i 
+﻿1. All code written using Eclipse-Modelling-Galileo-SR2-i 
 	(http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/galileo/SR2/eclipse-modeling-galileo-SR2-incubation-win32.zip)
 
 2. The ecore-model file and related mapping files can be found in de.tud.cs.st.vespucci project inside the folder model.

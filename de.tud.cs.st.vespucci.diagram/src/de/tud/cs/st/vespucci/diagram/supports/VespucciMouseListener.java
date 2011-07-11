@@ -2,7 +2,7 @@
  *  Copyright (c) 2010
  *  Software Engineering
  *  Department of Computer Science
- *  Technische Universit�t Darmstadt
+ *  Technische Universität Darmstadt
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -14,7 +14,7 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *  - Neither the name of the Software Engineering Group or Technische 
- *    Universit�t Darmstadt nor the names of its contributors may be used to 
+ *    Universität Darmstadt nor the names of its contributors may be used to 
  *    endorse or promote products derived from this software without specific 
  *    prior written permission.
  *

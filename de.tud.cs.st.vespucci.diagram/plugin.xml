@@ -74,27 +74,19 @@
    </extension>
 
    <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
-   		<?gmfgen generated="false"?>
+      <?gmfgen generated="true"?>
   	  <wizard
-           canFinishEarly="false"
-           category="de.tud.cs.st.vespucci.diagram.category1"
-           class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
-           icon="icons/obj16/Vespucci_modelDiagramFile.gif"
-           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID"
-           name="Software Architecture Constraints Diagram">
-  	  	 <description>Software architecture constraints can be created between logical grouped objects, named ensemble.</description>  
+  	     name="%newWizardName"
+  	     icon="icons/obj16/Vespucci_modelDiagramFile.gif"
+  	     category="org.eclipse.ui.Examples"
+  	     class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard"
+  	     id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
+  	  	 <description>%newWizardDesc</description>  
       </wizard>
-     <category
-           id="de.tud.cs.st.vespucci.diagram.category1"
-           name="Software Architecture">
-     </category>
-     <primaryWizard
-           id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardID">
-     </primaryWizard>
    </extension>
-   
-   <?gmfgen generated="false"?>
+
    <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
+      <?gmfgen generated="true"?>
       <objectContribution
             id="de.tud.cs.st.vespucci.diagram.InitDiagram"
             nameFilter="*.sam"
@@ -107,23 +99,10 @@
                id="de.tud.cs.st.vespucci.diagram.InitDiagramAction">
          </action>
       </objectContribution>
-      <objectContribution
-            id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1"
-            nameFilter="*.sad"
-            objectClass="org.eclipse.core.resources.IFile">
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
-               enablesFor="1"
-               id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1Action"
-               label="%migrateV0ToV1ActionLabel"
-               menubarPath="additions">
-         </action>
-      </objectContribution>
    </extension>
-   
-   <?gmfgen generated="false"?>
+	
    <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
-      <?gmfgen generated="false"?>
+      <?gmfgen generated="true"?>
       <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramGlobalActionHandlerProvider"
          id="VespucciPresentation">
@@ -137,7 +116,6 @@
             </ElementType>
          </ViewId>
       </GlobalActionHandlerProvider>
-       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.ide.providers.DiagramIDEGlobalActionHandlerProvider"
          id="VespucciPresentationIDE">
@@ -148,14 +126,11 @@
             </ElementType>
          </ViewId>
       </GlobalActionHandlerProvider>
-       <?gmfgen generated="false"?>
       <GlobalActionHandlerProvider
             class="org.eclipse.gmf.runtime.diagram.ui.render.providers.DiagramUIRenderGlobalActionHandlerProvider"
             id="VespucciRender">
-             <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
-          <?gmfgen generated="false"?>
-        <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
+         <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
             <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
                <GlobalActionId actionId="cut"/>
                <GlobalActionId actionId="copy"/>
@@ -220,13 +195,10 @@
    </extension>
 
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor" id="prop-contrib">
-      <?gmfgen generated="false"?>
+      <?gmfgen generated="true"?>
       <propertyContributor
             contributorId="de.tud.cs.st.vespucci.diagram"
             labelProvider="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.VespucciSheetLabelProvider">
-         <propertyCategory
-               category="first">
-         </propertyCategory>
          <propertyCategory category="domain"/>
          <propertyCategory category="visual"/>
          <propertyCategory category="extra"/>
@@ -234,12 +206,8 @@
    </extension>
 
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyTabs" id="proptabs">
-      <?gmfgen generated="false"?>   
+      <?gmfgen generated="true"?>   
       <propertyTabs contributorId="de.tud.cs.st.vespucci.diagram">
-          <propertyTab
-             category="first"
-             id="property.tab.query"
-             label="%tab.query"/>
          <propertyTab
              category="visual"
              id="property.tab.AppearancePropertySection"
@@ -252,6 +220,14 @@
              category="domain"
              id="property.tab.domain"
              label="%tab.domain"/>
+          <propertyTab
+             category="extra"
+             id="property.tab.query"
+             label="%tab.query"/>
+          <propertyTab
+             category="extra"
+             id="property.tab.description"
+             label="%tab.description"/>
       </propertyTabs>
    </extension>
 
@@ -292,6 +268,12 @@
             filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
             class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection">
          </propertySection>
+         <propertySection
+            id="property.section.description" 
+            tab="property.tab.description"
+            filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
+            class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleDescriptionPropertySection">
+         </propertySection>
       </propertySections>
    </extension>
 
@@ -327,18 +309,15 @@
          <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
       </editpartProvider>
    </extension>
-	<?gmfgen generated="false"?>
+
    <extension point="org.eclipse.gmf.runtime.emf.ui.modelingAssistantProviders" id="modelassist-provider">
-      <?gmfgen generated="false"?>
+      <?gmfgen generated="true"?>
       <modelingAssistantProvider class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciModelingAssistantProvider">
-      <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart" id="ShapesDiagram_1000"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart" id="Ensemble_2001"/>
-         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart" id="Ensemble_3001"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart" id="Dummy_2002"/>
-         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart" id="Dummy_3003"/>
-         <context elements="ShapesDiagram_1000,Ensemble_2001,Ensemble_3001,Dummy_2002,Dummy_3003"/>
+         <context elements="ShapesDiagram_1000,Ensemble_2001,Dummy_2002"/>
       </modelingAssistantProvider>
    </extension>
 
@@ -723,54 +702,5 @@
       <?gmfgen generated="true"?>
    </extension>
 
-   <!-- gmf generator persistent region begin -->  
-
-      <extension point="org.eclipse.ui.commands" id="menu-commands"> 
-          <command
-            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
-            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-            name="Generate Architecural Model">
-      </command>
- 
-   </extension>
-      <extension point="org.eclipse.ui.menus" id="context-menus">
-      
-
-   
-          <menuContribution
-            allPopups="false"
-            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-         <command
-               commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-               label="Vespucci: Generate Architecural Model"
-               style="push">
-            <visibleWhen>
-               <with
-                     variable="selection">
-                  <iterate>
-                     <adapt
-                           type="org.eclipse.core.resources.IResource">
-                        <test
-                              property="org.eclipse.core.resources.name"
-                              value="*.sad">
-                        </test>
-                     </adapt>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-      </menuContribution>
- </extension>
-       <extension
-            point="org.eclipse.gmf.runtime.emf.clipboard.core.clipboardSupport">
-         <factory
-               class="de.tud.cs.st.vespucci.diagram.supports.VespucciClipboardSupportFactory"
-               priority="medium">
-         </factory>
-      </extension>
-        <!-- gmf generator persistent region end -->
-          
-
    <!-- optionally, specify keybindings -->
 </plugin>
- 

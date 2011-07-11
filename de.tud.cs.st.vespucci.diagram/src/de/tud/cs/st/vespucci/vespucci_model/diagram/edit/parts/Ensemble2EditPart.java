@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universit�t Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universit�t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -562,12 +562,6 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 			this.add(fFigureEnsembleQueryFigure);
 
 			RectangleFigure ensembleDescriptionCompartmentContainerFigure0 = new RectangleFigure();
-			ensembleDescriptionCompartmentContainerFigure0
-					.setPreferredSize(new Dimension(getMapMode().DPtoLP(50),
-							getMapMode().DPtoLP(50)));
-			ensembleDescriptionCompartmentContainerFigure0
-					.setMinimumSize(new Dimension(getMapMode().DPtoLP(5),
-							getMapMode().DPtoLP(25)));
 
 			this.add(ensembleDescriptionCompartmentContainerFigure0,
 					BorderLayout.CENTER);
@@ -587,13 +581,13 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 					.setLayoutManager(layoutFFigureEnsembleDescriptionCompartmentFigure);
 
 			WrappingLabel ensemblePlaceholderLabelFigure2 = new WrappingLabel();
-			ensemblePlaceholderLabelFigure2.setText("");
+			ensemblePlaceholderLabelFigure2.setText(" ");
 
 			ensemblePlaceholderLabelFigure2
 					.setFont(ENSEMBLEPLACEHOLDERLABELFIGURE2_FONT);
 
 			ensemblePlaceholderLabelFigure2.setMaximumSize(new Dimension(
-					getMapMode().DPtoLP(10), getMapMode().DPtoLP(5)));
+					getMapMode().DPtoLP(10), getMapMode().DPtoLP(0)));
 
 			fFigureEnsembleDescriptionCompartmentFigure.add(
 					ensemblePlaceholderLabelFigure2, BorderLayout.BOTTOM);
@@ -607,6 +601,8 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 			fFigureEnsembleCompartmentFigure = new RectangleFigure();
 			fFigureEnsembleCompartmentFigure
 					.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK);
+			fFigureEnsembleCompartmentFigure.setMinimumSize(new Dimension(
+					getMapMode().DPtoLP(20), getMapMode().DPtoLP(25)));
 
 			ensembleDescriptionCompartmentContainerFigure0.add(
 					fFigureEnsembleCompartmentFigure, BorderLayout.CENTER);

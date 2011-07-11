@@ -1,6 +1,6 @@
-%------
+Ôªø%------
 % Prolog based representation of the Vespucci architecture diagram: C:/files/uni/kurse/Bachelorpraktikum/ChecklistenProjekt/DiagramTest.sad
-% Created by Vespucci, Technische Universiti‰t Darmstadt, Department of Computer Science
+% Created by Vespucci, Technische Universiti√§t Darmstadt, Department of Computer Science
 % www.opal-project.de
 
 :- multifile ensemble/5.
@@ -26,8 +26,9 @@
 %	Query - Query that determines which source elements belong to the ensemble
 %	SubEnsembles - List of all sub ensembles of this ensemble.
 %------
-ensemble('AbstractEnsemble.sad', 'Beh‰lter1:', [], (derived), ['Beh‰lter2:']).
-ensemble('AbstractEnsemble.sad', 'Beh‰lter2:', [], (package('de.tud.cs.se.flashcards.model') ), []).
+ensemble('AbstractEnsemble.sad', 'Beh√§lter1:', [], (derived), ['Beh√§lter2:']).
+ensemble('AbstractEnsemble.sad', 'Beh√§lter2:', [], (package('de.tud.cs.se.flashcards.model')
+ ), []).
 ensemble('AbstractEnsemble.sad', 'Verschieben2:', [], (derived), ['Test(Test2)']).
 abstract_ensemble('AbstractEnsemble.sad', 'Test', ['Test2'=Test2], (package('de.tud.cs.se.flashcards.model.learning') ), []).
 ensemble('AbstractEnsemble.sad', 'Store.java', [], (class_with_members('de.tud.cs.se.flashcards.persistence','de.tud.cs.se.flashcards.persistence.Store') ), []).
