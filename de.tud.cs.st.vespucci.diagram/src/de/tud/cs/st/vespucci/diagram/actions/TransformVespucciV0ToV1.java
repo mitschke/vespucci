@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  License (BSD Style License):
  *   Copyright (c) 2010
  *   Author Patrick Jahnke
@@ -48,7 +48,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.m2m.qvt.oml.runtime.ui.wizards.RunInterpretedTransformationWizardDelegate;
+//import org.eclipse.m2m.qvt.oml.runtime.ui.wizards.RunInterpretedTransformationWizardDelegate;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
@@ -63,26 +63,26 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 
 	@Override
 	public void run(IAction action) {
-		try {
-			EObject source = getInput();
-			if (source == null) {
-				String title = "asdf"; //TODO Messages.ASDF
-				String message = "asdf";
-				MessageDialog.openInformation(getShell(), title, NLS.bind(message, fileURI.toString()));
-			} else {
-				URI transfUri = URI.createURI(
-					"platform:/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvto"
-				); //$NON-NLS-1$
-				ArrayList<URI> paramUris = new ArrayList<URI>();
-				paramUris.add(fileURI);
-				
-				IWizard wizard = (IWizard) new RunInterpretedTransformationWizardDelegate(transfUri, paramUris);
-				WizardDialog wizardDialog = new WizardDialog(getShell(), wizard);
-				wizardDialog.open();
-			}
-		} catch (Exception ex) {
-			handleError(ex);
-		}
+//		try {
+//			EObject source = getInput();
+//			if (source == null) {
+//				String title = "asdf"; //TODO Messages.ASDF
+//				String message = "asdf";
+//				MessageDialog.openInformation(getShell(), title, NLS.bind(message, fileURI.toString()));
+//			} else {
+//				URI transfUri = URI.createURI(
+//					"platform:/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.qvto"
+//				); //$NON-NLS-1$
+//				ArrayList<URI> paramUris = new ArrayList<URI>();
+//				paramUris.add(fileURI);
+//				
+//				IWizard wizard = (IWizard) new RunInterpretedTransformationWizardDelegate(transfUri, paramUris);
+//				WizardDialog wizardDialog = new WizardDialog(getShell(), wizard);
+//				wizardDialog.open();
+//			}
+//		} catch (Exception ex) {
+//			handleError(ex);
+//		}
 	}
 
 	private void handleError(Exception ex) {

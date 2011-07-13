@@ -1,7 +1,7 @@
-﻿/*
+/**
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author Patrick Jahnke
+ *   Author Alexander Weitzmann
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universitiät Darmstadt
