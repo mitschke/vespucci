@@ -27,13 +27,16 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Shape"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Shape"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="[all]"/>
+        defaultValueLiteral="all"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="originalSource" upperBound="-1"
         eType="#//Shape"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="originalTarget" upperBound="-1"
         eType="#//Shape"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="invalidDependencyMarker"
+        unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
+        changeable="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NotAllowed" eSuperTypes="#//Connection"/>
   <eClassifiers xsi:type="ecore:EClass" name="Outgoing" eSuperTypes="#//Connection"/>

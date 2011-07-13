@@ -4,7 +4,7 @@
  *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universität Darmstadt
+ *   Technische Universitï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -35,6 +35,8 @@
 
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.common.core.command.CompositeCommand;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
@@ -42,6 +44,8 @@ import org.eclipse.gmf.runtime.emf.type.core.commands.DestroyElementCommand;
 import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
+
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * Super-class for all constraint-EditPolicies. To effect the behavior of constraints, methods of
@@ -61,7 +65,9 @@ public class ConstraintEditPolicy extends VespucciBaseItemSemanticEditPolicy {
 
 	/**
 	 * This method will be called, if the constraint shall be deleted. Handling of IMarker was
-	 * manually added.
+	 * manually added. Note, that this somewhat cumbersome way of resetting the IMarker was
+	 * implemented, because (a lot) commands, that are requested will not be executed. Therefore
+	 * resetting the IMarker here will bear no fruit.
 	 * 
 	 * @generated not
 	 */
@@ -70,14 +76,15 @@ public class ConstraintEditPolicy extends VespucciBaseItemSemanticEditPolicy {
 		// Command, that bundles multiple commands
 		final CompositeCommand compCom = new CompositeCommand("Reset marker and destroy connection");
 
-		// TODO add reset marker command (and before that: integrate marker as attribute/feature in
-		// model)
-		// add "unset marker"-command
-//		final SetRequest unsetMarkerReq = new SetRequest(req.getElementToDestroy(), feature, value);
-//		compCom.add(new SetValueCommand(unsetMarkerReq));
+		// add "unset marker"-command //FIXME adding this command deactivates delete-option !?!
+		final EStructuralFeature markerFeature = req.getElementToDestroy().eClass()
+				.getEStructuralFeature(Vespucci_modelPackage.CONNECTION__INVALID_DEPENDENCY_MARKER);
+		final SetRequest unsetMarkerReq = new SetRequest(req.getElementToDestroy(), markerFeature, SetCommand.UNSET_VALUE);
+		compCom.add(new SetValueCommand(unsetMarkerReq));
 
 		// add destroy-command
 		compCom.add(new DestroyElementCommand(req));
+		
 		return getGEFWrapper(compCom);
 	}
 
