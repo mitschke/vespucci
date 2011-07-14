@@ -75,7 +75,7 @@ when {self.metaClassName() = 'Dummy'} {
 mapping OldModel::Shape::toShape() : NewModel::Shape {	
 	name := self.name;
 	_query := self._query;
-	description := ''; // NEW ATTRIBUTE
+	description := '<description>'; // NEW ATTRIBUTE
 	
 	sourceConnections += self.sourceConnections.map toExpected();
 	sourceConnections += self.sourceConnections.map toInAndOut();

@@ -38,9 +38,6 @@ public class TransformationHelperLibrary {
 	@Operation(contextual=true)
 	public static Shape getNextRememberedShape(Object self) 
 	{
-		if (self.getClass().equals(DiagramImpl.class))
-			return ensembles.pollFirst();
-		else
-			return ensembles.peekFirst();
+		return ensembles.pollFirst();
 	}
 }

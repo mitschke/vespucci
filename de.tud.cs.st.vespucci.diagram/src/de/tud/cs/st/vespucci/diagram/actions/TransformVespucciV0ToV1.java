@@ -233,12 +233,13 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	}
 
 	private void handleError(Exception ex) {
-		MessageDialog.openError(getShell(), "Transformation failed",
-				MessageFormat.format(
-						"{0}: {1}",
-						ex.getClass().getSimpleName(),
-						ex.getMessage() == null ? "no message" : ex
-								.getMessage()));
+//		MessageDialog.openError(getShell(), "Transformation failed",
+//				MessageFormat.format(
+//						"{0}: {1}",
+//						ex.getClass().getSimpleName(),
+//						ex.getMessage() == null ? "no message" : ex
+//								.getMessage()));
+		ex.printStackTrace();
 	}
 
 	private Shell getShell() {
