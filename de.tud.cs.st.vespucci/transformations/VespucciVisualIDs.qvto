@@ -1,4 +1,13 @@
 library VespucciVisualIDs;
 
-property VisualId_Ensemble_Outer : Integer = 123;
-	
+property VID_Ensemble_Outer : String = "2001";
+property VID_Ensemble_Outer_Ensemble_DNode : String = "5001";
+property VID_Ensemble_Outer_Ensemble_Compartment : String = "7001";
+property VID_Ensemble_Outer_Description_DNode : String = "5008";
+property VID_Ensemble_Outer_Description_Compartment : String = "7003";
+
+property VID_Ensemble_Inner : String = "3001";
+property VID_Ensemble_Inner_Ensemble_DNode : String = "5006";
+property VID_Ensemble_Inner_Ensemble_Compartment : String = "7002";
+property VID_Ensemble_Inner_Description_DNode : String = "5007";
+property VID_Ensemble_Inner_Description_Compartment : String = "7004";

@@ -1,7 +1,6 @@
 /**
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -34,6 +33,8 @@
  */
  
 /**
+ * @file
+ *
  * @author DominicS
  *
  * This file transforms a Vespucci model of version 1 (prior to 2011-06-01) to
@@ -52,6 +53,8 @@ modeltype model 'strict' uses 'http://vespucci.editor/2011-06-01';
 
 transformation migrate_v0_to_v1_notation(in oldDiagram : notation, out newDiagram : notation);
 
+//TODO Deal with "element" attributes
+
 main() {
 	oldDiagram.rootObjects()[Diagram]->map toDiagram();
 }
@@ -69,23 +72,62 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	type := self.type;
 	name := self.name;
 	measurementUnit := self.measurementUnit;
-	// TODO: add element (ShapesDiagram)
+	element := self.element;
 	//element := self.getRememberedShapesDiagram();
-	
+		
 	// CHILDREN
 	children += self.children->map toEnsemble();
-	//styles += self.styles->map toStyles();
-	//edges += self.edges->map toEdges();
+	styles += self.styles;
+	edges += self.edges;
 }
 
 mapping notation::Node::toEnsemble() : notation::Shape
-when { self.type = VisualId_Ensemble_Outer } {
-	children += self.children![DecorationNode];
-	
+inherits notation::Node::toShape
+when { self.type = VID_Ensemble_Outer } {	
 	// New decoration node
 	children += object DecorationNode {
-		type = "5008";
+		type := VID_Ensemble_Outer_Description_DNode;
 	};
 	
-	// Ensemble compartment
+	// Add Ensemble compartment
+	children += object BasicCompartment {
+		type := VID_Ensemble_Outer_Ensemble_Compartment;
+
+		children += self.children![BasicCompartment].children->map toInnerEnsemble();
+	};
+	
+	// Add Description Compartment
+	children += object BasicCompartment {
+		type := VID_Ensemble_Outer_Description_Compartment;
+	}
+}
+
+mapping notation::Node::toInnerEnsemble() : notation::Shape
+inherits notation::Node::toShape
+when { self.type = VID_Ensemble_Inner } {	
+	// New decoration node
+	children += object DecorationNode {
+		type := VID_Ensemble_Inner_Description_DNode;
+	};
+	
+	// Add Ensemble compartment
+	children += object BasicCompartment {
+		type := VID_Ensemble_Inner_Ensemble_Compartment;
+		
+		children += self.children![BasicCompartment].children->map toInnerEnsemble();
+	};
+	
+	// Add Description Compartment
+	children += object BasicCompartment {
+		type := VID_Ensemble_Inner_Description_Compartment;
+	}
+}
+
+mapping notation::Node::toShape() : notation::Shape {
+	// Type and previous existing decoration nodes
+	type := self.type;
+	children += self.children![DecorationNode];
+	layoutConstraint := self.layoutConstraint;
+	element := self.element;
+	//element := self.getNextRememberedShape().oclAsType(EObject);
 }

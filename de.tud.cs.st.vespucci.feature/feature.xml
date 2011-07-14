@@ -2,11 +2,11 @@
 <feature
       id="de.tud.cs.st.vespucci.feature"
       label="de.tud.cs.st.vespucci.feature"
-      version="1.5.0"
+      version="1.6.0"
       provider-name="Technische Universität Darmstadt">
 
    <description url="http://www.opal-project.de/vespucci_project/index.html">
-      Vespucci enables you to model a Java, Scala or Groovy program's structural dependencies to help you to understand, document and communicate an application's design.
+      Vespucci enables you to model a Java, Scala or Groovy program&apos;s structural dependencies to help you to understand, document and communicate an application&apos;s design.
    </description>
 
    <copyright url="http://www.opal-project.de/vespucci_project/index.html">
@@ -36,28 +36,28 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
          id="de.tud.cs.st.vespucci"
          download-size="0"
          install-size="0"
-         version="1.5.0"
+         version="1.6.0"
          unpack="false"/>
 
    <plugin
          id="de.tud.cs.st.vespucci.diagram"
          download-size="0"
          install-size="0"
-         version="1.5.0"
+         version="1.6.0"
          unpack="false"/>
 
    <plugin
          id="de.tud.cs.st.vespucci.edit"
          download-size="0"
          install-size="0"
-         version="1.5.0"
+         version="1.6.0"
          unpack="false"/>
 
    <plugin
          id="de.tud.cs.st.vespucci.editor"
          download-size="0"
          install-size="0"
-         version="1.5.0"
+         version="1.6.0"
          unpack="false"/>
 
 </feature>

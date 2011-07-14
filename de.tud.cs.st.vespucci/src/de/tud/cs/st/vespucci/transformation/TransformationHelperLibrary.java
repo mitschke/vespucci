@@ -3,8 +3,8 @@ package de.tud.cs.st.vespucci.transformation;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import org.eclipse.gmf.runtime.notation.impl.DiagramImpl;
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
-//import org.eclipse.gmf.runtime.notation.impl.DiagramImpl;
 
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
@@ -34,13 +34,13 @@ public class TransformationHelperLibrary {
 	{
 		return shapesDiagram;
 	}
-//	
-//	@Operation(contextual=true)
-//	public static Shape getNextRememberedShape(Object self) 
-//	{
-//		if (self.getClass().equals(DiagramImpl.class))
-//			return ensembles.pollFirst();
-//		else
-//			return ensembles.peekFirst();
-//	}
+	
+	@Operation(contextual=true)
+	public static Shape getNextRememberedShape(Object self) 
+	{
+		if (self.getClass().equals(DiagramImpl.class))
+			return ensembles.pollFirst();
+		else
+			return ensembles.peekFirst();
+	}
 }

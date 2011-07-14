@@ -57,7 +57,7 @@ mapping OldModel::ShapesDiagram::toNew() : NewModel::ShapesDiagram {
 	shapes += self.shapes.map toEnsemble();
 	shapes += self.shapes.map toDummy();
 	
-	self.remember();
+	result.remember();
 }
 
 mapping OldModel::Shape::toEnsemble() : NewModel::Ensemble
@@ -89,7 +89,7 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	targetConnections += self.targetConnections.map toNotAllowed();
 	targetConnections += self.targetConnections.map toOutgoing();
 	
-	self.remember();
+	result.remember();
 }
 
 mapping OldModel::Connection::toExpected() : NewModel::Expected
