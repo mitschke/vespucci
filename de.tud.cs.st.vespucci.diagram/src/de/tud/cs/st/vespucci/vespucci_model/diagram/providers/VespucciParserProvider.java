@@ -50,8 +50,7 @@ import org.eclipse.gmf.runtime.notation.View;
 /**
  * @generated
  */
-public class VespucciParserProvider extends AbstractProvider implements
-		IParserProvider {
+public class VespucciParserProvider extends AbstractProvider implements IParserProvider {
 
 	/**
 	 * @generated
@@ -277,28 +276,28 @@ public class VespucciParserProvider extends AbstractProvider implements
 	 */
 	protected IParser getParser(int visualID) {
 		switch (visualID) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID:
-			return getEnsembleName_5001Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID:
-			return getEnsembleDescription_5008Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyNameEditPart.VISUAL_ID:
-			return getDummyName_5002Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID:
-			return getEnsembleName_5006Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID:
-			return getEnsembleDescription_5007Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyName2EditPart.VISUAL_ID:
-			return getDummyName_5005Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingNameEditPart.VISUAL_ID:
-			return getIncomingName_6005Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingNameEditPart.VISUAL_ID:
-			return getOutgoingName_6003Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutNameEditPart.VISUAL_ID:
-			return getInAndOutName_6001Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedNameEditPart.VISUAL_ID:
-			return getNotAllowedName_6004Parser();
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart.VISUAL_ID:
-			return getExpectedName_6002Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID:
+				return getEnsembleName_5001Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID:
+				return getEnsembleDescription_5008Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyNameEditPart.VISUAL_ID:
+				return getDummyName_5002Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID:
+				return getEnsembleName_5006Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID:
+				return getEnsembleDescription_5007Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyName2EditPart.VISUAL_ID:
+				return getDummyName_5005Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingNameEditPart.VISUAL_ID:
+				return getIncomingName_6005Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingNameEditPart.VISUAL_ID:
+				return getOutgoingName_6003Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutNameEditPart.VISUAL_ID:
+				return getInAndOutName_6001Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedNameEditPart.VISUAL_ID:
+				return getNotAllowedName_6004Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart.VISUAL_ID:
+				return getExpectedName_6002Parser();
 		}
 		return null;
 	}
@@ -307,10 +306,8 @@ public class VespucciParserProvider extends AbstractProvider implements
 	 * Utility method that consults ParserService
 	 * @generated
 	 */
-	public static IParser getParser(IElementType type, EObject object,
-			String parserHint) {
-		return ParserService.getInstance().getParser(
-				new HintAdapter(type, object, parserHint));
+	public static IParser getParser(IElementType type, EObject object, String parserHint) {
+		return ParserService.getInstance().getParser(new HintAdapter(type, object, parserHint));
 	}
 
 	/**
@@ -319,13 +316,11 @@ public class VespucciParserProvider extends AbstractProvider implements
 	public IParser getParser(IAdaptable hint) {
 		String vid = (String) hint.getAdapter(String.class);
 		if (vid != null) {
-			return getParser(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-					.getVisualID(vid));
+			return getParser(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(vid));
 		}
 		View view = (View) hint.getAdapter(View.class);
 		if (view != null) {
-			return getParser(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-					.getVisualID(view));
+			return getParser(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view));
 		}
 		return null;
 	}
@@ -336,8 +331,7 @@ public class VespucciParserProvider extends AbstractProvider implements
 	public boolean provides(IOperation operation) {
 		if (operation instanceof GetParserOperation) {
 			IAdaptable hint = ((GetParserOperation) operation).getHint();
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-					.getElement(hint) == null) {
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getElement(hint) == null) {
 				return false;
 			}
 			return getParser(hint) != null;

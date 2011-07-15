@@ -116,7 +116,7 @@ public interface Connection extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * The default value is <code>"[all]"</code>.
+	 * The default value is <code>"all"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
@@ -126,7 +126,7 @@ public interface Connection extends EObject {
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_Name()
-	 * @model default="[all]"
+	 * @model default="all"
 	 * @generated
 	 */
 	String getName();

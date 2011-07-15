@@ -52,8 +52,7 @@ import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
 /**
  * @generated
  */
-public class EnsembleEnsembleCompartmentEditPart extends
-		ShapeCompartmentEditPart {
+public class EnsembleEnsembleCompartmentEditPart extends ShapeCompartmentEditPart {
 
 	// /**
 	// * Turn off messes POP-UP BAR
@@ -102,8 +101,7 @@ public class EnsembleEnsembleCompartmentEditPart extends
 	 * @generated
 	 */
 	public IFigure createFigure() {
-		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super
-				.createFigure();
+		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super.createFigure();
 		result.setTitleVisibility(false);
 		return result;
 	}
@@ -113,17 +111,13 @@ public class EnsembleEnsembleCompartmentEditPart extends
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
-				new ResizableCompartmentEditPolicy());
+		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ResizableCompartmentEditPolicy());
 		installEditPolicy(
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartmentItemSemanticEditPolicy());
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicy());
-		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
-				new DragDropEditPolicy());
-		installEditPolicy(
-				EditPolicyRoles.CANONICAL_ROLE,
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE, new CreationEditPolicy());
+		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
+		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartmentCanonicalEditPolicy());
 	}
 
@@ -142,8 +136,7 @@ public class EnsembleEnsembleCompartmentEditPart extends
 	@Override
 	protected void handleNotificationEvent(Notification event) {
 		super.handleNotificationEvent(event);
-		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(
-				event.getFeature())) {
+		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(event.getFeature())) {
 			this.abm.updateConnections(event);
 		}
 	}

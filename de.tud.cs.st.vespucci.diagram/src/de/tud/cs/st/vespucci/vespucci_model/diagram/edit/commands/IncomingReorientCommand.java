@@ -95,16 +95,14 @@ public class IncomingReorientCommand extends EditElementCommand {
 		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink()
-				.getTarget();
+		de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink().getTarget();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
-				.getLinkConstraints().canExistIncoming_4005(container,
-						getLink(), getNewSource(), target);
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
+				.canExistIncoming_4005(container, getLink(), getNewSource(), target);
 	}
 
 	/**
@@ -114,26 +112,22 @@ public class IncomingReorientCommand extends EditElementCommand {
 		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink()
-				.getSource();
+		de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink().getSource();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
-				.getLinkConstraints().canExistIncoming_4005(container,
-						getLink(), source, getNewTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
+				.canExistIncoming_4005(container, getLink(), source, getNewTarget());
 	}
 
 	/**
 	 * @generated
 	 */
-	protected CommandResult doExecuteWithResult(IProgressMonitor monitor,
-			IAdaptable info) throws ExecutionException {
+	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		if (!canExecute()) {
-			throw new ExecutionException(
-					"Invalid arguments in reorient link command"); //$NON-NLS-1$
+			throw new ExecutionException("Invalid arguments in reorient link command"); //$NON-NLS-1$
 		}
 		if (reorientDirection == ReorientRelationshipRequest.REORIENT_SOURCE) {
 			return reorientSource();
@@ -150,8 +144,7 @@ public class IncomingReorientCommand extends EditElementCommand {
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
 		if (!getLink().getOriginalSource().isEmpty()
-				&& oldEnd != getLink().getOriginalSource().get(
-						getLink().getOriginalSource().size() - 1)) {
+				&& oldEnd != getLink().getOriginalSource().get(getLink().getOriginalSource().size() - 1)) {
 			getLink().getOriginalSource().clear();
 			if (getLink().getOriginalTarget().isEmpty())
 				getLink().setTemp(false);
@@ -166,8 +159,7 @@ public class IncomingReorientCommand extends EditElementCommand {
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {
 		if (!getLink().getOriginalTarget().isEmpty()
-				&& oldEnd != getLink().getOriginalTarget().get(
-						getLink().getOriginalTarget().size() - 1)) {
+				&& oldEnd != getLink().getOriginalTarget().get(getLink().getOriginalTarget().size() - 1)) {
 			getLink().getOriginalTarget().clear();
 			if (getLink().getOriginalSource().isEmpty())
 				getLink().setTemp(false);

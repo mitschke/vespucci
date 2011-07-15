@@ -59,108 +59,84 @@ public class VespucciEditPartFactory implements EditPartFactory {
 	public EditPart createEditPart(EditPart context, Object model) {
 		if (model instanceof View) {
 			View view = (View) model;
-			switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-					.getVisualID(view)) {
+			switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view)) {
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyNameEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyNameEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyNameEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyName2EditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyName2EditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyName2EditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyName2EditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart(
+							view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartment2EditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartment2EditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartment2EditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartment2EditPart(
+							view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingNameEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingNameEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingNameEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingNameEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingNameEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingNameEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutNameEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutNameEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutNameEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedNameEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedNameEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedNameEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart(view);
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart(
-						view);
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart(view);
 
 			}
 		}
@@ -178,8 +154,7 @@ public class VespucciEditPartFactory implements EditPartFactory {
 	/**
 	 * @generated
 	 */
-	public static CellEditorLocator getTextCellEditorLocator(
-			ITextAwareEditPart source) {
+	public static CellEditorLocator getTextCellEditorLocator(ITextAwareEditPart source) {
 		if (source.getFigure() instanceof WrappingLabel)
 			return new TextCellEditorLocator((WrappingLabel) source.getFigure());
 		else {
@@ -219,15 +194,11 @@ public class VespucciEditPartFactory implements EditPartFactory {
 			Rectangle rect = getWrapLabel().getTextBounds().getCopy();
 			getWrapLabel().translateToAbsolute(rect);
 			if (!text.getFont().isDisposed()) {
-				if (getWrapLabel().isTextWrapOn()
-						&& getWrapLabel().getText().length() > 0) {
-					rect.setSize(new Dimension(text.computeSize(rect.width,
-							SWT.DEFAULT)));
+				if (getWrapLabel().isTextWrapOn() && getWrapLabel().getText().length() > 0) {
+					rect.setSize(new Dimension(text.computeSize(rect.width, SWT.DEFAULT)));
 				} else {
-					int avr = FigureUtilities.getFontMetrics(text.getFont())
-							.getAverageCharWidth();
-					rect.setSize(new Dimension(text.computeSize(SWT.DEFAULT,
-							SWT.DEFAULT)).expand(avr * 2, 0));
+					int avr = FigureUtilities.getFontMetrics(text.getFont()).getAverageCharWidth();
+					rect.setSize(new Dimension(text.computeSize(SWT.DEFAULT, SWT.DEFAULT)).expand(avr * 2, 0));
 				}
 			}
 			if (!rect.equals(new Rectangle(text.getBounds()))) {
@@ -268,10 +239,8 @@ public class VespucciEditPartFactory implements EditPartFactory {
 			Rectangle rect = getLabel().getTextBounds().getCopy();
 			getLabel().translateToAbsolute(rect);
 			if (!text.getFont().isDisposed()) {
-				int avr = FigureUtilities.getFontMetrics(text.getFont())
-						.getAverageCharWidth();
-				rect.setSize(new Dimension(text.computeSize(SWT.DEFAULT,
-						SWT.DEFAULT)).expand(avr * 2, 0));
+				int avr = FigureUtilities.getFontMetrics(text.getFont()).getAverageCharWidth();
+				rect.setSize(new Dimension(text.computeSize(SWT.DEFAULT, SWT.DEFAULT)).expand(avr * 2, 0));
 			}
 			if (!rect.equals(new Rectangle(text.getBounds()))) {
 				text.setBounds(rect.x, rect.y, rect.width, rect.height);

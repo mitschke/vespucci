@@ -81,14 +81,11 @@ public class VespucciInitDiagramFileAction implements IObjectActionDelegate {
 	public void selectionChanged(IAction action, ISelection selection) {
 		domainModelURI = null;
 		action.setEnabled(false);
-		if (selection instanceof IStructuredSelection == false
-				|| selection.isEmpty()) {
+		if (selection instanceof IStructuredSelection == false || selection.isEmpty()) {
 			return;
 		}
-		IFile file = (IFile) ((IStructuredSelection) selection)
-				.getFirstElement();
-		domainModelURI = URI.createPlatformResourceURI(file.getFullPath()
-				.toString(), true);
+		IFile file = (IFile) ((IStructuredSelection) selection).getFirstElement();
+		domainModelURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 		action.setEnabled(true);
 	}
 
@@ -103,32 +100,27 @@ public class VespucciInitDiagramFileAction implements IObjectActionDelegate {
 	 * @generated
 	 */
 	public void run(IAction action) {
-		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE
-				.createEditingDomain();
+		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE.createEditingDomain();
 		ResourceSet resourceSet = new ResourceSetImpl();
 		EObject diagramRoot = null;
 		try {
 			Resource resource = resourceSet.getResource(domainModelURI, true);
 			diagramRoot = (EObject) resource.getContents().get(0);
 		} catch (WrappedException ex) {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-					.getInstance().logError(
-							"Unable to load resource: " + domainModelURI, ex); //$NON-NLS-1$
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
+					"Unable to load resource: " + domainModelURI, ex); //$NON-NLS-1$
 		}
 		if (diagramRoot == null) {
-			MessageDialog
-					.openError(
-							getShell(),
-							de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InitDiagramFile_ResourceErrorDialogTitle,
-							de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InitDiagramFile_ResourceErrorDialogMessage);
+			MessageDialog.openError(getShell(),
+					de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InitDiagramFile_ResourceErrorDialogTitle,
+					de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InitDiagramFile_ResourceErrorDialogMessage);
 			return;
 		}
-		Wizard wizard = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNewDiagramFileWizard(
-				domainModelURI, diagramRoot, editingDomain);
-		wizard.setWindowTitle(NLS
-				.bind(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InitDiagramFile_WizardTitle,
-						de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID));
-		de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
-				.runWizard(getShell(), wizard, "InitDiagramFile"); //$NON-NLS-1$
+		Wizard wizard = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNewDiagramFileWizard(domainModelURI,
+				diagramRoot, editingDomain);
+		wizard.setWindowTitle(NLS.bind(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.InitDiagramFile_WizardTitle,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID));
+		de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil.runWizard(getShell(), wizard,
+				"InitDiagramFile"); //$NON-NLS-1$
 	}
 }
