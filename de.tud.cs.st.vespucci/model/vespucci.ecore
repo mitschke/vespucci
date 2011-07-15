@@ -34,9 +34,6 @@
         eType="#//Shape"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="originalTarget" upperBound="-1"
         eType="#//Shape"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="invalidDependencyMarker"
-        unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
-        changeable="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NotAllowed" eSuperTypes="#//Connection"/>
   <eClassifiers xsi:type="ecore:EClass" name="Outgoing" eSuperTypes="#//Connection"/>

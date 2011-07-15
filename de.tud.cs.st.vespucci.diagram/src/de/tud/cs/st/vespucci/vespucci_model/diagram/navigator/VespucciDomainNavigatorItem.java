@@ -51,34 +51,28 @@ public class VespucciDomainNavigatorItem extends PlatformObject {
 	 * @generated
 	 */
 	static {
-		final Class[] supportedTypes = new Class[] { EObject.class,
-				IPropertySource.class };
-		Platform.getAdapterManager().registerAdapters(
-				new IAdapterFactory() {
+		final Class[] supportedTypes = new Class[] { EObject.class, IPropertySource.class };
+		Platform.getAdapterManager().registerAdapters(new IAdapterFactory() {
 
-					public Object getAdapter(Object adaptableObject,
-							Class adapterType) {
-						if (adaptableObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) {
-							de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem domainNavigatorItem = (de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) adaptableObject;
-							EObject eObject = domainNavigatorItem.getEObject();
-							if (adapterType == EObject.class) {
-								return eObject;
-							}
-							if (adapterType == IPropertySource.class) {
-								return domainNavigatorItem
-										.getPropertySourceProvider()
-										.getPropertySource(eObject);
-							}
-						}
-
-						return null;
+			public Object getAdapter(Object adaptableObject, Class adapterType) {
+				if (adaptableObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) {
+					de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem domainNavigatorItem = (de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) adaptableObject;
+					EObject eObject = domainNavigatorItem.getEObject();
+					if (adapterType == EObject.class) {
+						return eObject;
 					}
-
-					public Class[] getAdapterList() {
-						return supportedTypes;
+					if (adapterType == IPropertySource.class) {
+						return domainNavigatorItem.getPropertySourceProvider().getPropertySource(eObject);
 					}
-				},
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem.class);
+				}
+
+				return null;
+			}
+
+			public Class[] getAdapterList() {
+				return supportedTypes;
+			}
+		}, de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem.class);
 	}
 
 	/**
@@ -99,8 +93,7 @@ public class VespucciDomainNavigatorItem extends PlatformObject {
 	/**
 	 * @generated
 	 */
-	public VespucciDomainNavigatorItem(EObject eObject, Object parent,
-			IPropertySourceProvider propertySourceProvider) {
+	public VespucciDomainNavigatorItem(EObject eObject, Object parent, IPropertySourceProvider propertySourceProvider) {
 		myParent = parent;
 		myEObject = eObject;
 		myPropertySourceProvider = propertySourceProvider;
@@ -132,11 +125,9 @@ public class VespucciDomainNavigatorItem extends PlatformObject {
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) {
-			return EcoreUtil
-					.getURI(getEObject())
-					.equals(EcoreUtil
-							.getURI(((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) obj)
-									.getEObject()));
+			return EcoreUtil.getURI(getEObject()).equals(
+					EcoreUtil.getURI(((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) obj)
+							.getEObject()));
 		}
 		return super.equals(obj);
 	}

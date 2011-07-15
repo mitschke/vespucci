@@ -54,7 +54,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#isTemp <em>Temp</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource <em>Original Source</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget <em>Original Target</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getInvalidDependencyMarker <em>Invalid Dependency Marker</em>}</li>
  * </ul>
  * </p>
  *
@@ -200,20 +199,5 @@ public interface Connection extends EObject {
 	 * @generated
 	 */
 	EList<Shape> getOriginalTarget();
-
-	/**
-	 * Returns the value of the '<em><b>Invalid Dependency Marker</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Invalid Dependency Marker</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Invalid Dependency Marker</em>' attribute.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_InvalidDependencyMarker()
-	 * @model unique="false" changeable="false"
-	 * @generated
-	 */
-	Object getInvalidDependencyMarker();
 
 } // Connection

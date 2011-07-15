@@ -77,21 +77,19 @@ public class VespucciOCLFactory {
 	/**
 	 * @generated
 	 */
-	public static de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression getExpression(
-			int index, EClassifier context, Map<String, EClassifier> environment) {
-		VespucciOCLFactory cached = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-				.getInstance().getVespucciOCLFactory();
+	public static de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression getExpression(int index,
+			EClassifier context, Map<String, EClassifier> environment) {
+		VespucciOCLFactory cached = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
+				.getVespucciOCLFactory();
 		if (cached == null) {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-					.getInstance().setVespucciOCLFactory(
-							cached = new VespucciOCLFactory());
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().setVespucciOCLFactory(
+					cached = new VespucciOCLFactory());
 		}
 		if (index < 0 || index >= cached.expressions.length) {
 			throw new IllegalArgumentException();
 		}
 		if (cached.expressions[index] == null) {
-			final String[] exprBodies = new String[] {
-					"self <> oppositeEnd", //$NON-NLS-1$
+			final String[] exprBodies = new String[] { "self <> oppositeEnd", //$NON-NLS-1$
 					"not self.oclIsTypeOf(Dummy)", //$NON-NLS-1$
 					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Dummy))", //$NON-NLS-1$
 					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Dummy))", //$NON-NLS-1$
@@ -104,11 +102,8 @@ public class VespucciOCLFactory {
 					"Ensemble.allInstances()->forAll(e| e <> self implies e.name <> self.name)", //$NON-NLS-1$
 					"query.size()>0 and not query.oclIsUndefined()", //$NON-NLS-1$
 			};
-			cached.expressions[index] = getExpression(
-					exprBodies[index],
-					context,
-					environment == null ? Collections
-							.<String, EClassifier> emptyMap() : environment);
+			cached.expressions[index] = getExpression(exprBodies[index], context,
+					environment == null ? Collections.<String, EClassifier> emptyMap() : environment);
 		}
 		return cached.expressions[index];
 	}
@@ -116,27 +111,23 @@ public class VespucciOCLFactory {
 	/**
 	 * @generated
 	 */
-	public static de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression getExpression(
-			String body, EClassifier context,
-			Map<String, EClassifier> environment) {
+	public static de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression getExpression(String body,
+			EClassifier context, Map<String, EClassifier> environment) {
 		return new Expression(body, context, environment);
 	}
 
 	/**
 	 * @generated
 	 */
-	public static de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression getExpression(
-			String body, EClassifier context) {
-		return getExpression(body, context,
-				Collections.<String, EClassifier> emptyMap());
+	public static de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression getExpression(String body,
+			EClassifier context) {
+		return getExpression(body, context, Collections.<String, EClassifier> emptyMap());
 	}
 
 	/**
 	 * @generated
 	 */
-	private static class Expression
-			extends
-			de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression {
+	private static class Expression extends de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression {
 
 		/**
 		 * @generated
@@ -151,8 +142,7 @@ public class VespucciOCLFactory {
 		/**
 		 * @generated
 		 */
-		public Expression(String body, EClassifier context,
-				Map<String, EClassifier> environment) {
+		public Expression(String body, EClassifier context, Map<String, EClassifier> environment) {
 			super(body, context);
 			oclInstance = org.eclipse.ocl.ecore.OCL.newInstance();
 			initCustomEnv(oclInstance.getEnvironment(), environment);
@@ -175,8 +165,7 @@ public class VespucciOCLFactory {
 				return null;
 			}
 			// on the first call, both evalEnvironment and extentMap are clear, for later we have finally, below.
-			EvaluationEnvironment<?, ?, ?, ?, ?> evalEnv = oclInstance
-					.getEvaluationEnvironment();
+			EvaluationEnvironment<?, ?, ?, ?, ?> evalEnv = oclInstance.getEvaluationEnvironment();
 			// initialize environment
 			for (Object nextKey : env.keySet()) {
 				evalEnv.replace((String) nextKey, env.get(nextKey));
@@ -193,17 +182,13 @@ public class VespucciOCLFactory {
 		/**
 		 * @generated
 		 */
-		private static void initCustomEnv(
-				Environment<?, EClassifier, ?, ?, ?, EParameter, ?, ?, ?, ?, ?, ?> ecoreEnv,
+		private static void initCustomEnv(Environment<?, EClassifier, ?, ?, ?, EParameter, ?, ?, ?, ?, ?, ?> ecoreEnv,
 				Map<String, EClassifier> environment) {
 			// Use EObject as implicit root class for any object, to allow eContainer() and other EObject operations from OCL expressions
-			ParsingOptions.setOption(ecoreEnv,
-					ParsingOptions.implicitRootClass(ecoreEnv),
-					EcorePackage.eINSTANCE.getEObject());
+			ParsingOptions.setOption(ecoreEnv, ParsingOptions.implicitRootClass(ecoreEnv), EcorePackage.eINSTANCE.getEObject());
 			for (String varName : environment.keySet()) {
 				EClassifier varType = environment.get(varName);
-				ecoreEnv.addElement(varName,
-						createVar(ecoreEnv, varName, varType), false);
+				ecoreEnv.addElement(varName, createVar(ecoreEnv, varName, varType), false);
 			}
 		}
 
@@ -211,10 +196,8 @@ public class VespucciOCLFactory {
 		 * @generated
 		 */
 		private static org.eclipse.ocl.ecore.Variable createVar(
-				Environment<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?> ecoreEnv,
-				String name, EClassifier type) {
-			org.eclipse.ocl.ecore.Variable var = EcoreFactory.eINSTANCE
-					.createVariable();
+				Environment<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?> ecoreEnv, String name, EClassifier type) {
+			org.eclipse.ocl.ecore.Variable var = EcoreFactory.eINSTANCE.createVariable();
 			var.setName(name);
 			var.setType(ecoreEnv.getUMLReflection().getOCLType(type));
 			return var;

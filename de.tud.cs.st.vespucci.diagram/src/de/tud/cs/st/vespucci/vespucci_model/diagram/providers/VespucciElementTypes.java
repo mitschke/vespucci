@@ -145,26 +145,22 @@ public class VespucciElementTypes {
 	/**
 	 * @generated
 	 */
-	private static ImageDescriptor getProvidedImageDescriptor(
-			ENamedElement element) {
+	private static ImageDescriptor getProvidedImageDescriptor(ENamedElement element) {
 		if (element instanceof EStructuralFeature) {
 			EStructuralFeature feature = ((EStructuralFeature) element);
 			EClass eContainingClass = feature.getEContainingClass();
 			EClassifier eType = feature.getEType();
 			if (eContainingClass != null && !eContainingClass.isAbstract()) {
 				element = eContainingClass;
-			} else if (eType instanceof EClass
-					&& !((EClass) eType).isAbstract()) {
+			} else if (eType instanceof EClass && !((EClass) eType).isAbstract()) {
 				element = eType;
 			}
 		}
 		if (element instanceof EClass) {
 			EClass eClass = (EClass) element;
 			if (!eClass.isAbstract()) {
-				return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-						.getInstance().getItemImageDescriptor(
-								eClass.getEPackage().getEFactoryInstance()
-										.create(eClass));
+				return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
+						.getItemImageDescriptor(eClass.getEPackage().getEFactoryInstance().create(eClass));
 			}
 		}
 		// TODO : support structural features
@@ -236,55 +232,26 @@ public class VespucciElementTypes {
 		if (elements == null) {
 			elements = new IdentityHashMap<IElementType, ENamedElement>();
 
-			elements.put(
-					ShapesDiagram_1000,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getShapesDiagram());
+			elements.put(ShapesDiagram_1000,
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShapesDiagram());
 
-			elements.put(
-					Ensemble_2001,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getEnsemble());
+			elements.put(Ensemble_2001, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getEnsemble());
 
-			elements.put(
-					Dummy_2002,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getDummy());
+			elements.put(Dummy_2002, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getDummy());
 
-			elements.put(
-					Ensemble_3001,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getEnsemble());
+			elements.put(Ensemble_3001, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getEnsemble());
 
-			elements.put(
-					Dummy_3003,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getDummy());
+			elements.put(Dummy_3003, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getDummy());
 
-			elements.put(
-					Incoming_4005,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getIncoming());
+			elements.put(Incoming_4005, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getIncoming());
 
-			elements.put(
-					Outgoing_4003,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getOutgoing());
+			elements.put(Outgoing_4003, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getOutgoing());
 
-			elements.put(
-					InAndOut_4001,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getInAndOut());
+			elements.put(InAndOut_4001, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getInAndOut());
 
-			elements.put(
-					NotAllowed_4004,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getNotAllowed());
+			elements.put(NotAllowed_4004, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getNotAllowed());
 
-			elements.put(
-					Expected_4002,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-							.getExpected());
+			elements.put(Expected_4002, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getExpected());
 		}
 		return (ENamedElement) elements.get(type);
 	}
@@ -321,26 +288,26 @@ public class VespucciElementTypes {
 	 */
 	public static IElementType getElementType(int visualID) {
 		switch (visualID) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-			return ShapesDiagram_1000;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			return Ensemble_2001;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
-			return Dummy_2002;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
-			return Ensemble_3001;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID:
-			return Dummy_3003;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
-			return Incoming_4005;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
-			return Outgoing_4003;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID:
-			return InAndOut_4001;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
-			return NotAllowed_4004;
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
-			return Expected_4002;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
+				return ShapesDiagram_1000;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
+				return Ensemble_2001;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
+				return Dummy_2002;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
+				return Ensemble_3001;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID:
+				return Dummy_3003;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
+				return Incoming_4005;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
+				return Outgoing_4003;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID:
+				return InAndOut_4001;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
+				return NotAllowed_4004;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
+				return Expected_4002;
 		}
 		return null;
 	}

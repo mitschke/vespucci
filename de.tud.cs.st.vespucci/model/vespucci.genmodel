@@ -33,8 +33,6 @@
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//Connection/temp"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//Connection/originalSource"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//Connection/originalTarget"/>
-      <genFeatures property="None" createChild="false" propertyCategory="" propertyDescription=""
-          ecoreFeature="ecore:EAttribute vespucci.ecore#//Connection/invalidDependencyMarker"/>
     </genClasses>
     <genClasses ecoreClass="vespucci.ecore#//NotAllowed"/>
     <genClasses ecoreClass="vespucci.ecore#//Outgoing"/>

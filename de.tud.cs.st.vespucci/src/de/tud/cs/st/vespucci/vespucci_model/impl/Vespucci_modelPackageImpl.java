@@ -362,15 +362,6 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getConnection_InvalidDependencyMarker() {
-		return (EAttribute)connectionEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getNotAllowed() {
 		return notAllowedEClass;
 	}
@@ -461,7 +452,6 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		createEAttribute(connectionEClass, CONNECTION__TEMP);
 		createEReference(connectionEClass, CONNECTION__ORIGINAL_SOURCE);
 		createEReference(connectionEClass, CONNECTION__ORIGINAL_TARGET);
-		createEAttribute(connectionEClass, CONNECTION__INVALID_DEPENDENCY_MARKER);
 
 		notAllowedEClass = createEClass(NOT_ALLOWED);
 
@@ -533,7 +523,6 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		initEAttribute(getConnection_Temp(), ecorePackage.getEBoolean(), "temp", "false", 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getConnection_OriginalSource(), this.getShape(), null, "originalSource", null, 0, -1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getConnection_OriginalTarget(), this.getShape(), null, "originalTarget", null, 0, -1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConnection_InvalidDependencyMarker(), ecorePackage.getEJavaObject(), "invalidDependencyMarker", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(notAllowedEClass, NotAllowed.class, "NotAllowed", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
