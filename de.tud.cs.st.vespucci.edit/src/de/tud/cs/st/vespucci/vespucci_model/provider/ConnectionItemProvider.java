@@ -207,7 +207,6 @@ public class ConnectionItemProvider
 		switch (notification.getFeatureID(Connection.class)) {
 			case Vespucci_modelPackage.CONNECTION__NAME:
 			case Vespucci_modelPackage.CONNECTION__TEMP:
-			case Vespucci_modelPackage.CONNECTION__INVALID_DEPENDENCY_MARKER:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

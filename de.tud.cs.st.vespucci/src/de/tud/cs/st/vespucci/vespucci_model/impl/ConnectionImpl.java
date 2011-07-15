@@ -76,7 +76,6 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#isTemp <em>Temp</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalSource <em>Original Source</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalTarget <em>Original Target</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getInvalidDependencyMarker <em>Invalid Dependency Marker</em>}</li>
  * </ul>
  * </p>
  *
@@ -88,7 +87,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	
 	/**
 	 * Checks if given name is valid as dependency.
-	 * @generated not
 	 * 
 	 * @param newName
 	 *            Name of Connection-Dependency to be checked.
@@ -119,7 +117,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * Convenient method to get the sad-file, currently used.
-	 * @generated not
 	 * 
 	 * @return The resource associated with currently active file in the editor.
 	 */
@@ -164,14 +161,14 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	protected Shape target;
 
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = "all";
+	protected static final String NAME_EDEFAULT = "[all]";
 
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc -->
@@ -230,38 +227,18 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	protected EList<Shape> originalTarget;
 
 	/**
-	 * The default value of the '{@link #getInvalidDependencyMarker() <em>Invalid Dependency Marker</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * Changed generated type from Object to IMarker.
-	 * <!-- end-user-doc -->
-	 * @see #getInvalidDependencyMarker()
-	 * @generated not
-	 * @ordered
-	 */
-	protected static final IMarker INVALID_DEPENDENCY_MARKER_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getInvalidDependencyMarker() <em>Invalid Dependency Marker</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * This marker represents errors, if the the dependency of this constraint (connection) is invalid.
-	 * Changed generated type from Object to IMarker.
-	 * <!-- end-user-doc -->
-	 * @see #getInvalidDependencyMarker()
-	 * @generated not
-	 * @ordered
-	 */
-	protected IMarker invalidDependencyMarker = INVALID_DEPENDENCY_MARKER_EDEFAULT;
-
-	/**
 	 * Valid dependencies for a constraint
 	 */
 	private static String[] connNames;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Added initialization of {@link #connNames}
-	 * <!-- end-user-doc -->
-	 * @generated not
+	 * Problem-marker indicating a invalid dependency.
+	 */
+	private IMarker invalidDepMarker;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
 	 */
 	protected ConnectionImpl() {
 		super();
@@ -286,16 +263,21 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	
 	/**
 	 * <!-- begin-user-doc --> Added dependencies-array <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Vespucci_modelPackage.CONNECTION__SOURCE:
-				if (resolve) return getSource();
+				if (resolve) {
+					return getSource();
+				}
 				return basicGetSource();
 			case Vespucci_modelPackage.CONNECTION__TARGET:
-				if (resolve) return getTarget();
+				if (resolve) {
+					return getTarget();
+				}
 				return basicGetTarget();
 			case Vespucci_modelPackage.CONNECTION__NAME:
 				return getName();
@@ -305,8 +287,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 				return getOriginalSource();
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
 				return getOriginalTarget();
-			case Vespucci_modelPackage.CONNECTION__INVALID_DEPENDENCY_MARKER:
-				return getInvalidDependencyMarker();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -330,8 +310,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 				return originalSource != null && !originalSource.isEmpty();
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
 				return originalTarget != null && !originalTarget.isEmpty();
-			case Vespucci_modelPackage.CONNECTION__INVALID_DEPENDENCY_MARKER:
-				return INVALID_DEPENDENCY_MARKER_EDEFAULT == null ? invalidDependencyMarker != null : !INVALID_DEPENDENCY_MARKER_EDEFAULT.equals(invalidDependencyMarker);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -378,19 +356,17 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> 
-	 * Changed unset-behavior of {@literal vespucci_modelPackage.CONNECTION__INVALID_DEPENDENCY_MARKER}
-	 * <!-- end-user-doc -->
-	 * @generated not
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Vespucci_modelPackage.CONNECTION__SOURCE:
-				setSource((Shape)null);
+				setSource((Shape) null);
 				return;
 			case Vespucci_modelPackage.CONNECTION__TARGET:
-				setTarget((Shape)null);
+				setTarget((Shape) null);
 				return;
 			case Vespucci_modelPackage.CONNECTION__NAME:
 				setName(NAME_EDEFAULT);
@@ -403,20 +379,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 				return;
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
 				getOriginalTarget().clear();
-				return;
-			case Vespucci_modelPackage.CONNECTION__INVALID_DEPENDENCY_MARKER:
-				// manually change
-				if(invalidDependencyMarker != null){
-					try {
-						invalidDependencyMarker.delete();
-					} catch (CoreException e) {
-						// TODO Auto-generated catch block
-						System.out.println("ConnectionImpl unset: could not delete marker.");
-						e.printStackTrace();
-					}
-				}
-				// manually change end
-				setInvalidDependencyMarker(INVALID_DEPENDENCY_MARKER_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -453,28 +415,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 			originalTarget = new EObjectResolvingEList<Shape>(Shape.class, this, Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET);
 		}
 		return originalTarget;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Object getInvalidDependencyMarker() {
-		return invalidDependencyMarker;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * Added cast to IMarker
-	 * <!-- end-user-doc -->
-	 * @generated not
-	 */
-	public void setInvalidDependencyMarker(Object newInvalidDependencyMarker) {
-		Object oldInvalidDependencyMarker = invalidDependencyMarker;
-		invalidDependencyMarker = (IMarker) newInvalidDependencyMarker;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__INVALID_DEPENDENCY_MARKER, oldInvalidDependencyMarker, invalidDependencyMarker));
 	}
 
 	/**
@@ -521,18 +461,17 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> Added syntactical check of dependency and feedback via ProblemView <!-- end-user-doc -->
-	 * @generated not
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
 	 */
 	@Override
 	public void setName(final String newName) {
 		// delete obsolete problem marker, indicating invalid dependency
-		if (invalidDependencyMarker != null) {
+		if (invalidDepMarker != null) {
 			try {
-				invalidDependencyMarker.delete();
+				invalidDepMarker.delete();
 			} catch (final CoreException e) {
 				// TODO Auto-generated catch block
-				System.out.println("ConnectionImpl setName: could not delete marker.");
 				e.printStackTrace();
 			}
 		}
@@ -545,12 +484,12 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 			}
 			try {
 				// create new marker
-				invalidDependencyMarker = resource.createMarker(IMarker.PROBLEM);
-				invalidDependencyMarker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_LOW);
-				invalidDependencyMarker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-				invalidDependencyMarker.setAttribute(IMarker.MESSAGE, String.format(
+				invalidDepMarker = resource.createMarker(IMarker.PROBLEM);
+				invalidDepMarker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_LOW);
+				invalidDepMarker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+				invalidDepMarker.setAttribute(IMarker.MESSAGE, String.format(
 						"Dependency \"%s\" for constraint is invalid.", newName));
-				invalidDependencyMarker.setAttribute(IMarker.LOCATION, String.format("\"%s\" --> \"%s\"", source.getName(),
+				invalidDepMarker.setAttribute(IMarker.LOCATION, String.format("\"%s\" --> \"%s\"", source.getName(),
 						target.getName()));
 			} catch (final CoreException e) {
 				// nothing to do
@@ -612,8 +551,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 		result.append(name);
 		result.append(", temp: ");
 		result.append(temp);
-		result.append(", invalidDependencyMarker: ");
-		result.append(invalidDependencyMarker);
 		result.append(')');
 		return result.toString();
 	}
