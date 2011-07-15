@@ -95,26 +95,20 @@ public class VespucciDiagramEditorUtil {
 	public static Map<?, ?> getSaveOptions() {
 		HashMap<String, Object> saveOptions = new HashMap<String, Object>();
 		saveOptions.put(XMLResource.OPTION_ENCODING, "UTF-8"); //$NON-NLS-1$
-		saveOptions.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED,
-				Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
+		saveOptions.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED, Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
 		return saveOptions;
 	}
 
 	/**
 	 * @generated
 	 */
-	public static boolean openDiagram(Resource diagram)
-			throws PartInitException {
+	public static boolean openDiagram(Resource diagram) throws PartInitException {
 		String path = diagram.getURI().toPlatformString(true);
-		IResource workspaceResource = ResourcesPlugin.getWorkspace().getRoot()
-				.findMember(new Path(path));
+		IResource workspaceResource = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(path));
 		if (workspaceResource instanceof IFile) {
-			IWorkbenchPage page = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage();
-			return null != page
-					.openEditor(
-							new FileEditorInput((IFile) workspaceResource),
-							de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditor.ID);
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			return null != page.openEditor(new FileEditorInput((IFile) workspaceResource),
+					de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditor.ID);
 		}
 		return false;
 	}
@@ -129,18 +123,15 @@ public class VespucciDiagramEditorUtil {
 		try {
 			file.setCharset("UTF-8", new NullProgressMonitor()); //$NON-NLS-1$
 		} catch (CoreException e) {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-					.getInstance()
-					.logError(
-							"Unable to set charset for file " + file.getFullPath(), e); //$NON-NLS-1$
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
+					"Unable to set charset for file " + file.getFullPath(), e); //$NON-NLS-1$
 		}
 	}
 
 	/**
 	 * @generated
 	 */
-	public static String getUniqueFileName(IPath containerFullPath,
-			String fileName, String extension) {
+	public static String getUniqueFileName(IPath containerFullPath, String fileName, String extension) {
 		if (containerFullPath == null) {
 			containerFullPath = new Path(""); //$NON-NLS-1$
 		}
@@ -172,17 +163,14 @@ public class VespucciDiagramEditorUtil {
 	public static void runWizard(Shell shell, Wizard wizard, String settingsKey) {
 		IDialogSettings pluginDialogSettings = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 				.getInstance().getDialogSettings();
-		IDialogSettings wizardDialogSettings = pluginDialogSettings
-				.getSection(settingsKey);
+		IDialogSettings wizardDialogSettings = pluginDialogSettings.getSection(settingsKey);
 		if (wizardDialogSettings == null) {
-			wizardDialogSettings = pluginDialogSettings
-					.addNewSection(settingsKey);
+			wizardDialogSettings = pluginDialogSettings.addNewSection(settingsKey);
 		}
 		wizard.setDialogSettings(wizardDialogSettings);
 		WizardDialog dialog = new WizardDialog(shell, wizard);
 		dialog.create();
-		dialog.getShell().setSize(Math.max(500, dialog.getShell().getSize().x),
-				500);
+		dialog.getShell().setSize(Math.max(500, dialog.getShell().getSize().x), 500);
 		dialog.open();
 	}
 
@@ -190,32 +178,24 @@ public class VespucciDiagramEditorUtil {
 	 * This method should be called within a workspace modify operation since it creates resources.
 	 * @generated
 	 */
-	public static Resource createDiagram(URI diagramURI,
-			IProgressMonitor progressMonitor) {
-		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE
-				.createEditingDomain();
+	public static Resource createDiagram(URI diagramURI, IProgressMonitor progressMonitor) {
+		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE.createEditingDomain();
 		progressMonitor
 				.beginTask(
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditorUtil_CreateDiagramProgressTask,
 						3);
-		final Resource diagramResource = editingDomain.getResourceSet()
-				.createResource(diagramURI);
+		final Resource diagramResource = editingDomain.getResourceSet().createResource(diagramURI);
 		final String diagramName = diagramURI.lastSegment();
-		AbstractTransactionalCommand command = new AbstractTransactionalCommand(
-				editingDomain,
+		AbstractTransactionalCommand command = new AbstractTransactionalCommand(editingDomain,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditorUtil_CreateDiagramCommandLabel,
 				Collections.EMPTY_LIST) {
-			protected CommandResult doExecuteWithResult(
-					IProgressMonitor monitor, IAdaptable info)
-					throws ExecutionException {
+			protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model = createInitialModel();
 				attachModelToResource(model, diagramResource);
 
-				Diagram diagram = ViewService
-						.createDiagram(
-								model,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT);
+				Diagram diagram = ViewService.createDiagram(model,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT);
 				if (diagram != null) {
 					diagramResource.getContents().add(diagram);
 					diagram.setName(diagramName);
@@ -224,26 +204,21 @@ public class VespucciDiagramEditorUtil {
 
 				try {
 
-					diagramResource
-							.save(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
-									.getSaveOptions());
+					diagramResource.save(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
+							.getSaveOptions());
 				} catch (IOException e) {
 
-					de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-							.getInstance()
-							.logError(
-									"Unable to store model and diagram resources", e); //$NON-NLS-1$
+					de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
+							"Unable to store model and diagram resources", e); //$NON-NLS-1$
 				}
 				return CommandResult.newOKCommandResult();
 			}
 		};
 		try {
-			OperationHistoryFactory.getOperationHistory().execute(command,
-					new SubProgressMonitor(progressMonitor, 1), null);
+			OperationHistoryFactory.getOperationHistory().execute(command, new SubProgressMonitor(progressMonitor, 1), null);
 		} catch (ExecutionException e) {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-					.getInstance().logError(
-							"Unable to create model and diagram", e); //$NON-NLS-1$
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
+					"Unable to create model and diagram", e); //$NON-NLS-1$
 		}
 
 		setCharset(WorkspaceSynchronizer.getFile(diagramResource));
@@ -257,8 +232,7 @@ public class VespucciDiagramEditorUtil {
 	 * @generated
 	 */
 	private static de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram createInitialModel() {
-		return de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
-				.createShapesDiagram();
+		return de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createShapesDiagram();
 	}
 
 	/**
@@ -267,17 +241,14 @@ public class VespucciDiagramEditorUtil {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static void attachModelToResource(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model,
-			Resource resource) {
+	private static void attachModelToResource(de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model, Resource resource) {
 		resource.getContents().add(model);
 	}
 
 	/**
 	 * @generated
 	 */
-	public static void selectElementsInDiagram(
-			IDiagramWorkbenchPart diagramPart, List<EditPart> editParts) {
+	public static void selectElementsInDiagram(IDiagramWorkbenchPart diagramPart, List<EditPart> editParts) {
 		diagramPart.getDiagramGraphicalViewer().deselectAll();
 
 		EditPart firstPrimary = null;
@@ -289,24 +260,19 @@ public class VespucciDiagramEditorUtil {
 		}
 
 		if (!editParts.isEmpty()) {
-			diagramPart.getDiagramGraphicalViewer().reveal(
-					firstPrimary != null ? firstPrimary : (EditPart) editParts
-							.get(0));
+			diagramPart.getDiagramGraphicalViewer().reveal(firstPrimary != null ? firstPrimary : (EditPart) editParts.get(0));
 		}
 	}
 
 	/**
 	 * @generated
 	 */
-	private static int findElementsInDiagramByID(DiagramEditPart diagramPart,
-			EObject element, List<EditPart> editPartCollector) {
-		IDiagramGraphicalViewer viewer = (IDiagramGraphicalViewer) diagramPart
-				.getViewer();
+	private static int findElementsInDiagramByID(DiagramEditPart diagramPart, EObject element, List<EditPart> editPartCollector) {
+		IDiagramGraphicalViewer viewer = (IDiagramGraphicalViewer) diagramPart.getViewer();
 		final int intialNumOfEditParts = editPartCollector.size();
 
 		if (element instanceof View) { // support notation element lookup
-			EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(
-					element);
+			EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(element);
 			if (editPart != null) {
 				editPartCollector.add(editPart);
 				return 1;
@@ -315,8 +281,7 @@ public class VespucciDiagramEditorUtil {
 
 		String elementID = EMFCoreUtil.getProxyID(element);
 		@SuppressWarnings("unchecked")
-		List<EditPart> associatedParts = viewer.findEditPartsForElement(
-				elementID, IGraphicalEditPart.class);
+		List<EditPart> associatedParts = viewer.findEditPartsForElement(elementID, IGraphicalEditPart.class);
 		// perform the possible hierarchy disjoint -> take the top-most parts only
 		for (EditPart nextPart : associatedParts) {
 			EditPart parentPart = nextPart.getParent();
@@ -333,8 +298,7 @@ public class VespucciDiagramEditorUtil {
 				editPartCollector.add(associatedParts.get(0));
 			} else {
 				if (element.eContainer() != null) {
-					return findElementsInDiagramByID(diagramPart,
-							element.eContainer(), editPartCollector);
+					return findElementsInDiagramByID(diagramPart, element.eContainer(), editPartCollector);
 				}
 			}
 		}
@@ -344,24 +308,19 @@ public class VespucciDiagramEditorUtil {
 	/**
 	 * @generated
 	 */
-	public static View findView(DiagramEditPart diagramEditPart,
-			EObject targetElement, LazyElement2ViewMap lazyElement2ViewMap) {
+	public static View findView(DiagramEditPart diagramEditPart, EObject targetElement, LazyElement2ViewMap lazyElement2ViewMap) {
 		boolean hasStructuralURI = false;
 		if (targetElement.eResource() instanceof XMLResource) {
-			hasStructuralURI = ((XMLResource) targetElement.eResource())
-					.getID(targetElement) == null;
+			hasStructuralURI = ((XMLResource) targetElement.eResource()).getID(targetElement) == null;
 		}
 
 		View view = null;
 		LinkedList<EditPart> editPartHolder = new LinkedList<EditPart>();
-		if (hasStructuralURI
-				&& !lazyElement2ViewMap.getElement2ViewMap().isEmpty()) {
+		if (hasStructuralURI && !lazyElement2ViewMap.getElement2ViewMap().isEmpty()) {
 			view = lazyElement2ViewMap.getElement2ViewMap().get(targetElement);
-		} else if (findElementsInDiagramByID(diagramEditPart, targetElement,
-				editPartHolder) > 0) {
+		} else if (findElementsInDiagramByID(diagramEditPart, targetElement, editPartHolder) > 0) {
 			EditPart editPart = editPartHolder.get(0);
-			view = editPart.getModel() instanceof View ? (View) editPart
-					.getModel() : null;
+			view = editPart.getModel() instanceof View ? (View) editPart.getModel() : null;
 		}
 
 		return (view == null) ? diagramEditPart.getDiagramView() : view;
@@ -418,15 +377,13 @@ public class VespucciDiagramEditorUtil {
 		/**
 		 * @generated
 		 */
-		private static boolean buildElement2ViewMap(View parentView,
-				Map<EObject, View> element2ViewMap,
+		private static boolean buildElement2ViewMap(View parentView, Map<EObject, View> element2ViewMap,
 				Set<? extends EObject> elements) {
 			if (elements.size() == element2ViewMap.size()) {
 				return true;
 			}
 
-			if (parentView.isSetElement()
-					&& !element2ViewMap.containsKey(parentView.getElement())
+			if (parentView.isSetElement() && !element2ViewMap.containsKey(parentView.getElement())
 					&& elements.contains(parentView.getElement())) {
 				element2ViewMap.put(parentView.getElement(), parentView);
 				if (elements.size() == element2ViewMap.size()) {
@@ -434,20 +391,14 @@ public class VespucciDiagramEditorUtil {
 				}
 			}
 			boolean complete = false;
-			for (Iterator<?> it = parentView.getChildren().iterator(); it
-					.hasNext() && !complete;) {
-				complete = buildElement2ViewMap((View) it.next(),
-						element2ViewMap, elements);
+			for (Iterator<?> it = parentView.getChildren().iterator(); it.hasNext() && !complete;) {
+				complete = buildElement2ViewMap((View) it.next(), element2ViewMap, elements);
 			}
-			for (Iterator<?> it = parentView.getSourceEdges().iterator(); it
-					.hasNext() && !complete;) {
-				complete = buildElement2ViewMap((View) it.next(),
-						element2ViewMap, elements);
+			for (Iterator<?> it = parentView.getSourceEdges().iterator(); it.hasNext() && !complete;) {
+				complete = buildElement2ViewMap((View) it.next(), element2ViewMap, elements);
 			}
-			for (Iterator<?> it = parentView.getTargetEdges().iterator(); it
-					.hasNext() && !complete;) {
-				complete = buildElement2ViewMap((View) it.next(),
-						element2ViewMap, elements);
+			for (Iterator<?> it = parentView.getTargetEdges().iterator(); it.hasNext() && !complete;) {
+				complete = buildElement2ViewMap((View) it.next(), element2ViewMap, elements);
 			}
 			return complete;
 		}

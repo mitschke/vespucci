@@ -47,16 +47,11 @@ public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer 
 	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = getPreferenceStore();
-		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramGeneralPreferencePage
-				.initDefaults(store);
-		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramAppearancePreferencePage
-				.initDefaults(store);
-		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramConnectionsPreferencePage
-				.initDefaults(store);
-		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramPrintingPreferencePage
-				.initDefaults(store);
-		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramRulersAndGridPreferencePage
-				.initDefaults(store);
+		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramGeneralPreferencePage.initDefaults(store);
+		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramAppearancePreferencePage.initDefaults(store);
+		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramConnectionsPreferencePage.initDefaults(store);
+		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramPrintingPreferencePage.initDefaults(store);
+		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramRulersAndGridPreferencePage.initDefaults(store);
 
 	}
 
@@ -64,7 +59,6 @@ public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer 
 	 * @generated
 	 */
 	protected IPreferenceStore getPreferenceStore() {
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-				.getInstance().getPreferenceStore();
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().getPreferenceStore();
 	}
 }

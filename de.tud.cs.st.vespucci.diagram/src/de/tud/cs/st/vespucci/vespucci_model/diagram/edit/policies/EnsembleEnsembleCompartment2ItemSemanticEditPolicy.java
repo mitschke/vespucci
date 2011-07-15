@@ -40,31 +40,25 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 /**
  * @generated
  */
-public class EnsembleEnsembleCompartment2ItemSemanticEditPolicy
-		extends
+public class EnsembleEnsembleCompartment2ItemSemanticEditPolicy extends
 		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
 	 */
 	public EnsembleEnsembleCompartment2ItemSemanticEditPolicy() {
-		super(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
+		super(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001 == req
-				.getElementType()) {
-			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.Ensemble2CreateCommand(
-					req));
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001 == req.getElementType()) {
+			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.Ensemble2CreateCommand(req));
 		}
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003 == req
-				.getElementType()) {
-			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.Dummy2CreateCommand(
-					req));
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003 == req.getElementType()) {
+			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.Dummy2CreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

@@ -53,6 +53,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
@@ -123,12 +124,12 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineNo
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingTargetConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineRootEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl;
 
 /**
  * @generated
  */
-public class VespucciDiagramEditor extends DiagramDocumentEditor implements
-		IGotoMarker {
+public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGotoMarker {
 
 	/**
 	 * @generated
@@ -166,8 +167,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected PaletteRoot createPaletteRoot(PaletteRoot existingPaletteRoot) {
 		PaletteRoot root = super.createPaletteRoot(existingPaletteRoot);
-		new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciPaletteFactory()
-				.fillPalette(root);
+		new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciPaletteFactory().fillPalette(root);
 		return root;
 	}
 
@@ -208,10 +208,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 */
 	@Override
 	protected IDocumentProvider getDocumentProvider(IEditorInput input) {
-		if (input instanceof IFileEditorInput
-				|| input instanceof URIEditorInput) {
-			return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-					.getInstance().getDocumentProvider();
+		if (input instanceof IFileEditorInput || input instanceof URIEditorInput) {
+			return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
+					.getDocumentProvider();
 		}
 		return super.getDocumentProvider(input);
 	}
@@ -221,8 +220,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 */
 	@Override
 	public TransactionalEditingDomain getEditingDomain() {
-		IDocument document = getEditorInput() != null ? getDocumentProvider()
-				.getDocument(getEditorInput()) : null;
+		IDocument document = getEditorInput() != null ? getDocumentProvider().getDocument(getEditorInput()) : null;
 		if (document instanceof IDiagramDocument) {
 			return ((IDiagramDocument) document).getEditingDomain();
 		}
@@ -234,10 +232,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 */
 	@Override
 	protected void setDocumentProvider(IEditorInput input) {
-		if (input instanceof IFileEditorInput
-				|| input instanceof URIEditorInput) {
-			setDocumentProvider(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-					.getInstance().getDocumentProvider());
+		if (input instanceof IFileEditorInput || input instanceof URIEditorInput) {
+			setDocumentProvider(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
+					.getDocumentProvider());
 		} else {
 			super.setDocumentProvider(input);
 		}
@@ -287,38 +284,28 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 						NodeImpl shape = (NodeImpl) context.getModel();
 						if (shape.getElement() == conn.getSource()) {
 							if (conn instanceof Incoming) {
-								return new OutlineIncomingSourceConnectionEditPart(
-										model);
+								return new OutlineIncomingSourceConnectionEditPart(model);
 							} else if (conn instanceof Outgoing) {
-								return new OutlineOutgoingSourceConnectionEditPart(
-										model);
+								return new OutlineOutgoingSourceConnectionEditPart(model);
 							} else if (conn instanceof Expected) {
-								return new OutlineExpectedSourceConnectionEditPart(
-										model);
+								return new OutlineExpectedSourceConnectionEditPart(model);
 							} else if (conn instanceof InAndOut) {
-								return new OutlineInAndOutSourceConnectionEditPart(
-										model);
+								return new OutlineInAndOutSourceConnectionEditPart(model);
 							} else {
-								return new OutlineNotAllowedSourceConnectionEditPart(
-										model);
+								return new OutlineNotAllowedSourceConnectionEditPart(model);
 							}
 
 						} else {
 							if (conn instanceof Incoming) {
-								return new OutlineIncomingTargetConnectionEditPart(
-										model);
+								return new OutlineIncomingTargetConnectionEditPart(model);
 							} else if (conn instanceof Outgoing) {
-								return new OutlineOutgoingTargetConnectionEditPart(
-										model);
+								return new OutlineOutgoingTargetConnectionEditPart(model);
 							} else if (conn instanceof Expected) {
-								return new OutlineExpectedTargetConnectionEditPart(
-										model);
+								return new OutlineExpectedTargetConnectionEditPart(model);
 							} else if (conn instanceof InAndOut) {
-								return new OutlineInAndOutTargetConnectionEditPart(
-										model);
+								return new OutlineInAndOutTargetConnectionEditPart(model);
 							} else {
-								return new OutlineNotAllowedTargetConnectionEditPart(
-										model);
+								return new OutlineNotAllowedTargetConnectionEditPart(model);
 							}
 						}
 
@@ -355,6 +342,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 
 	/**
 	 * New methods added to translate diagram to prolog facts.
+	 * New methods added to delete obsolete IMarker. -2011-07-15
 	 * 
 	 * @author Patrick Jahnke, MalteV
 	 * @generated NOT
@@ -365,22 +353,17 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 
 		DiagramConverter converter = new DiagramConverter();
 		try {
-			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(),
-					this.getCurrentSelectedFileName());
+			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
 		} catch (FileNotFoundException e) {
-			IStatus is = new Status(Status.ERROR,
-					VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		} catch (IOException e) {
-			IStatus is = new Status(Status.ERROR,
-					VespucciDiagramEditorPlugin.ID,
-					"Failed to save Prolog file", e);
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "Failed to save Prolog file", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		} catch (Exception e) {
-			IStatus is = new Status(Status.ERROR,
-					VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
+			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
@@ -388,12 +371,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		// refresh Package View
 		IProject activeProject = this.getSelectedFile().getFile().getProject();
 		try {
-			activeProject.refreshLocal(IResource.DEPTH_INFINITE,
-					progressMonitor);
+			activeProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
 		} catch (CoreException e) {
-			IStatus iStat = new Status(Status.ERROR,
-					VespucciDiagramEditorPlugin.ID,
-					"Failed to refresh package view");
+			IStatus iStat = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "Failed to refresh package view");
 			StatusManager.getManager().handle(iStat, StatusManager.SHOW);
 			StatusManager.getManager().handle(iStat, StatusManager.LOG);
 		}
@@ -410,8 +390,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		Shell shell = getSite().getShell();
 		IEditorInput input = getEditorInput();
 		SaveAsDialog dialog = new SaveAsDialog(shell);
-		IFile original = input instanceof IFileEditorInput ? ((IFileEditorInput) input)
-				.getFile() : null;
+		IFile original = input instanceof IFileEditorInput ? ((IFileEditorInput) input).getFile() : null;
 		if (original != null) {
 			dialog.setOriginalFile(original);
 		}
@@ -422,9 +401,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 			return;
 		}
 		if (provider.isDeleted(input) && original != null) {
-			String message = NLS
-					.bind(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SavingDeletedFile,
-							original.getName());
+			String message = NLS.bind(
+					de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SavingDeletedFile,
+					original.getName());
 			dialog.setErrorMessage(null);
 			dialog.setMessage(message, IMessageProvider.WARNING);
 		}
@@ -445,37 +424,30 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		IFile file = workspaceRoot.getFile(filePath);
 		final IEditorInput newInput = new FileEditorInput(file);
 		// Check if the editor is already open
-		IEditorMatchingStrategy matchingStrategy = getEditorDescriptor()
-				.getEditorMatchingStrategy();
-		IEditorReference[] editorRefs = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage()
+		IEditorMatchingStrategy matchingStrategy = getEditorDescriptor().getEditorMatchingStrategy();
+		IEditorReference[] editorRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getEditorReferences();
 		for (int i = 0; i < editorRefs.length; i++) {
 			if (matchingStrategy.matches(editorRefs[i], newInput)) {
-				MessageDialog
-						.openWarning(
-								shell,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveAsErrorTitle,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveAsErrorMessage);
+				MessageDialog.openWarning(shell,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveAsErrorTitle,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveAsErrorMessage);
 				return;
 			}
 		}
 		boolean success = false;
 		try {
 			provider.aboutToChange(newInput);
-			getDocumentProvider(newInput).saveDocument(progressMonitor,
-					newInput,
+			getDocumentProvider(newInput).saveDocument(progressMonitor, newInput,
 					getDocumentProvider().getDocument(getEditorInput()), true);
 			success = true;
 		} catch (CoreException x) {
 			IStatus status = x.getStatus();
 			if (status == null || status.getSeverity() != IStatus.CANCEL) {
-				ErrorDialog
-						.openError(
-								shell,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveErrorTitle,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveErrorMessage,
-								x.getStatus());
+				ErrorDialog.openError(shell,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveErrorTitle,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveErrorMessage,
+						x.getStatus());
 			}
 		} finally {
 			provider.changed(newInput);
@@ -526,8 +498,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		de.tud.cs.st.vespucci.vespucci_model.diagram.part.DiagramEditorContextMenuProvider provider = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.DiagramEditorContextMenuProvider(
 				this, getDiagramGraphicalViewer());
 		getDiagramGraphicalViewer().setContextMenu(provider);
-		getSite().registerContextMenu(ActionIds.DIAGRAM_EDITOR_CONTEXT_MENU,
-				provider, getDiagramGraphicalViewer());
+		getSite().registerContextMenu(ActionIds.DIAGRAM_EDITOR_CONTEXT_MENU, provider, getDiagramGraphicalViewer());
 	}
 
 	/**
@@ -537,8 +508,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	private IFileEditorInput getSelectedFile() {
 		// get project PATH
 		IFileEditorInput fileInput = null;
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
 			IWorkbenchPage page = window.getActivePage();
 			if (page != null) {
@@ -592,12 +562,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
 		// adds 2 TransferDropTargetListener to the diagram view. for handling DnD out of the Package Explorer
-		getDiagramGraphicalViewer().addDropTargetListener(
-				new DropVespucciDiagramTargetListener(
-						getDiagramGraphicalViewer()));
-		getDiagramGraphicalViewer().addDropTargetListener(
-				new CreateEnsembleDropTargetListener(
-						getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(new DropVespucciDiagramTargetListener(getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(new CreateEnsembleDropTargetListener(getDiagramGraphicalViewer()));
 	}
 
 	/**
@@ -620,10 +586,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		VespucciMouseListener vml = new VespucciMouseListener();
 		(((DiagramEditPart) root).getFigure()).addMouseListener(vml);
 
-		List<EditPart> shapeList = EPService
-				.getAllShapesInSideCompartment(root);
-		Set<ConnectionEditPart> conSet = EPService
-				.getAllConnectionsToAndFromShapeList(shapeList);
+		List<EditPart> shapeList = EPService.getAllShapesInSideCompartment(root);
+		Set<ConnectionEditPart> conSet = EPService.getAllConnectionsToAndFromShapeList(shapeList);
 
 		// int idx = 1;
 		for (Object ee : conSet) {
@@ -639,8 +603,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 
 				if (ci.isTemp()) {
 					// draw with RED
-					con.getFigure().setForegroundColor(
-							org.eclipse.draw2d.ColorConstants.red);
+					con.getFigure().setForegroundColor(org.eclipse.draw2d.ColorConstants.red);
 					con.getFigure().repaint();
 
 				}
@@ -655,16 +618,14 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 * @author Tam-Minh Nguyen
 	 */
 	private void validateDiagramConstraints() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
 			IWorkbenchPage page = window.getActivePage();
 			if (page != null) {
 				IWorkbenchPart workbenchPart = page.getActivePart();
 				if (workbenchPart instanceof IDiagramWorkbenchPart) {
 					final IDiagramWorkbenchPart part = (IDiagramWorkbenchPart) workbenchPart;
-					ValidateAction.runValidation(part.getDiagramEditPart(),
-							part.getDiagram());
+					ValidateAction.runValidation(part.getDiagramEditPart(), part.getDiagram());
 				}
 			}
 		}

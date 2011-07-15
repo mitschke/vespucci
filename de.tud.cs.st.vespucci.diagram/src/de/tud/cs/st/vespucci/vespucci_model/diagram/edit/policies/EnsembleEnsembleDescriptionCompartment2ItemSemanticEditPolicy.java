@@ -37,16 +37,14 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies;
 /**
  * @generated
  */
-public class EnsembleEnsembleDescriptionCompartment2ItemSemanticEditPolicy
-		extends
+public class EnsembleEnsembleDescriptionCompartment2ItemSemanticEditPolicy extends
 		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
 	 */
 	public EnsembleEnsembleDescriptionCompartment2ItemSemanticEditPolicy() {
-		super(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
+		super(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
 	}
 
 }

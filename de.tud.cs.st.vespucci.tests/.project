@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>de.tud.cs.st.vespucci.tests</name>
 	<comment></comment>
@@ -24,5 +24,6 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>Lyrebird.LyrebirdNatureID</nature>
 	</natures>
 </projectDescription>

@@ -37,7 +37,5 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
 /**
  * @generated
  */
-public class OutgoingEditHelper
-		extends
-		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
+public class OutgoingEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
 }

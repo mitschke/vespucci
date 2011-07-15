@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <gmfgen:GenEditorGenerator xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -11,7 +11,8 @@
         id="VespucciDiagramConstraintsID"
         name="Vespucci Diagram Constraints"
         description="All diagram related constraints for Vespucci Editor."
-        path="//@audits/@categories.0"/>
+        path="//@audits/@categories.0"
+        audits="//@audits/@rules.4"/>
     <categories
         id="EnsembleConstraintsID"
         name="All constraints about Ensemble."
@@ -28,8 +29,7 @@
         message="Ensemble name must be set!"
         category="//@audits/@categories.1">
       <target
-          xsi:type="gmfgen:GenDomainElementTarget"
-          contextSelector="//@audits/@clientContexts.0">
+          xsi:type="gmfgen:GenDomainElementTarget">
         <element
             href="vespucci.genmodel#//vespucci_model/Ensemble"/>
       </target>
@@ -75,8 +75,22 @@
             href="vespucci.genmodel#//vespucci_model/Ensemble"/>
       </target>
     </rules>
+    <rules
+        name="invalid constraint-dependency"
+        description="Dependencies must be derived from a set of valid keywords."
+        id="DependencyInvalidID"
+        rule="//@expressionProviders/@providers.1/@expressions.1"
+        message="Dependency is invalid."
+        category="//@audits/@categories.0">
+      <target
+          xsi:type="gmfgen:GenDomainElementTarget"
+          contextSelector="//@audits/@clientContexts.0">
+        <element
+            href="vespucci.genmodel#//vespucci_model/Connection"/>
+      </target>
+    </rules>
     <clientContexts
-        ruleTargets="//@audits/@rules.0/@target //@audits/@rules.1/@target //@audits/@rules.2/@target //@audits/@rules.3/@target"/>
+        ruleTargets="//@audits/@rules.1/@target //@audits/@rules.2/@target //@audits/@rules.3/@target //@audits/@rules.4/@target"/>
   </audits>
   <diagram
       visualID="1000"
@@ -1390,6 +1404,9 @@
       <expressions
           xsi:type="gmfgen:GenConstraint"
           body="NonLeafEnsembleMustBeDerived"/>
+      <expressions
+          xsi:type="gmfgen:GenConstraint"
+          body="ValidConstraintDependency"/>
     </providers>
   </expressionProviders>
   <labelParsers

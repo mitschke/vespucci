@@ -43,33 +43,27 @@ import org.eclipse.gmf.runtime.notation.View;
 /**
  * @generated
  */
-public class VespucciNavigatorItem
-		extends
-		de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem {
+public class VespucciNavigatorItem extends de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem {
 
 	/**
 	 * @generated
 	 */
 	static {
 		final Class[] supportedTypes = new Class[] { View.class, EObject.class };
-		Platform.getAdapterManager().registerAdapters(
-				new IAdapterFactory() {
+		Platform.getAdapterManager().registerAdapters(new IAdapterFactory() {
 
-					public Object getAdapter(Object adaptableObject,
-							Class adapterType) {
-						if (adaptableObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem
-								&& (adapterType == View.class || adapterType == EObject.class)) {
-							return ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) adaptableObject)
-									.getView();
-						}
-						return null;
-					}
+			public Object getAdapter(Object adaptableObject, Class adapterType) {
+				if (adaptableObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem
+						&& (adapterType == View.class || adapterType == EObject.class)) {
+					return ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) adaptableObject).getView();
+				}
+				return null;
+			}
 
-					public Class[] getAdapterList() {
-						return supportedTypes;
-					}
-				},
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem.class);
+			public Class[] getAdapterList() {
+				return supportedTypes;
+			}
+		}, de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem.class);
 	}
 
 	/**
@@ -110,11 +104,9 @@ public class VespucciNavigatorItem
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
-			return EcoreUtil
-					.getURI(getView())
-					.equals(EcoreUtil
-							.getURI(((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) obj)
-									.getView()));
+			return EcoreUtil.getURI(getView()).equals(
+					EcoreUtil.getURI(((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) obj)
+							.getView()));
 		}
 		return super.equals(obj);
 	}

@@ -79,24 +79,20 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(
-				EditPolicyRoles.SEMANTIC_ROLE,
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramItemSemanticEditPolicy());
-		installEditPolicy(
-				EditPolicyRoles.CANONICAL_ROLE,
+		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramCanonicalEditPolicy());
 		//installEditPolicy(CreateEnsembleDropTargetListener.REQ_DROPNEWENSEMBLE	, new CreationNewEnsembleEditPolicy());
 		//installEditPolicy(EditPolicyRoles.CREATION_ROLE	, new CreationEditPolicy());
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationNewEnsembleEditPolicy());
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE, new CreationNewEnsembleEditPolicy());
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 
 	/**
 	 * @generated
 	 */
-	/*package-local*/static class NodeLabelDragPolicy extends
-			NonResizableEditPolicy {
+	/*package-local*/static class NodeLabelDragPolicy extends NonResizableEditPolicy {
 
 		/**
 		 * @generated
@@ -126,8 +122,7 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 	/**
 	 * @generated
 	 */
-	/*package-local*/static class LinkLabelDragPolicy extends
-			NonResizableLabelEditPolicy {
+	/*package-local*/static class LinkLabelDragPolicy extends NonResizableLabelEditPolicy {
 
 		/**
 		 * @generated

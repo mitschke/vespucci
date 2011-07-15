@@ -69,8 +69,7 @@ public class NotAllowedCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	public NotAllowedCreateCommand(CreateRelationshipRequest request,
-			EObject source, EObject target) {
+	public NotAllowedCreateCommand(CreateRelationshipRequest request, EObject source, EObject target) {
 		super(request.getLabel(), null, request);
 		this.source = source;
 		this.target = target;
@@ -84,12 +83,10 @@ public class NotAllowedCreateCommand extends EditElementCommand {
 		if (source == null && target == null) {
 			return false;
 		}
-		if (source != null
-				&& false == source instanceof de.tud.cs.st.vespucci.vespucci_model.Shape) {
+		if (source != null && false == source instanceof de.tud.cs.st.vespucci.vespucci_model.Shape) {
 			return false;
 		}
-		if (target != null
-				&& false == target instanceof de.tud.cs.st.vespucci.vespucci_model.Shape) {
+		if (target != null && false == target instanceof de.tud.cs.st.vespucci.vespucci_model.Shape) {
 			return false;
 		}
 		if (getSource() == null) {
@@ -99,20 +96,17 @@ public class NotAllowedCreateCommand extends EditElementCommand {
 		if (getContainer() == null) {
 			return false;
 		}
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
-				.getLinkConstraints().canCreateNotAllowed_4004(getContainer(),
-						getSource(), getTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
+				.canCreateNotAllowed_4004(getContainer(), getSource(), getTarget());
 	}
 
 	/**
 	 * @generated NOT
 	 * @author Artem Vovk
 	 */
-	protected CommandResult doExecuteWithResult(IProgressMonitor monitor,
-			IAdaptable info) throws ExecutionException {
+	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		if (!canExecute()) {
-			throw new ExecutionException(
-					"Invalid arguments in create link command"); //$NON-NLS-1$
+			throw new ExecutionException("Invalid arguments in create link command"); //$NON-NLS-1$
 		}
 
 		de.tud.cs.st.vespucci.vespucci_model.NotAllowed newElement = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
@@ -131,23 +125,15 @@ public class NotAllowedCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	protected void doConfigure(
-			de.tud.cs.st.vespucci.vespucci_model.NotAllowed newElement,
-			IProgressMonitor monitor, IAdaptable info)
-			throws ExecutionException {
-		IElementType elementType = ((CreateElementRequest) getRequest())
-				.getElementType();
-		ConfigureRequest configureRequest = new ConfigureRequest(
-				getEditingDomain(), newElement, elementType);
-		configureRequest.setClientContext(((CreateElementRequest) getRequest())
-				.getClientContext());
+	protected void doConfigure(de.tud.cs.st.vespucci.vespucci_model.NotAllowed newElement, IProgressMonitor monitor,
+			IAdaptable info) throws ExecutionException {
+		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
+		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);
+		configureRequest.setClientContext(((CreateElementRequest) getRequest()).getClientContext());
 		configureRequest.addParameters(getRequest().getParameters());
-		configureRequest.setParameter(CreateRelationshipRequest.SOURCE,
-				getSource());
-		configureRequest.setParameter(CreateRelationshipRequest.TARGET,
-				getTarget());
-		ICommand configureCommand = elementType
-				.getEditCommand(configureRequest);
+		configureRequest.setParameter(CreateRelationshipRequest.SOURCE, getSource());
+		configureRequest.setParameter(CreateRelationshipRequest.TARGET, getTarget());
+		ICommand configureCommand = elementType.getEditCommand(configureRequest);
 		if (configureCommand != null && configureCommand.canExecute()) {
 			configureCommand.execute(monitor, info);
 		}
@@ -186,13 +172,11 @@ public class NotAllowedCreateCommand extends EditElementCommand {
 	 * Modify with appropriate logic.
 	 * @generated
 	 */
-	private static de.tud.cs.st.vespucci.vespucci_model.Shape deduceContainer(
-			EObject source, EObject target) {
+	private static de.tud.cs.st.vespucci.vespucci_model.Shape deduceContainer(EObject source, EObject target) {
 		// Find container element for the new link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
-		for (EObject element = source; element != null; element = element
-				.eContainer()) {
+		for (EObject element = source; element != null; element = element.eContainer()) {
 			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.Shape) {
 				return (de.tud.cs.st.vespucci.vespucci_model.Shape) element;
 			}

@@ -43,6 +43,8 @@ import org.eclipse.emf.validation.model.IClientSelector;
 import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.io.ValidDependenciesReader;
+
 /**
  * @generated
  */
@@ -63,8 +65,7 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static void runWithConstraints(
-			TransactionalEditingDomain editingDomain, Runnable operation) {
+	public static void runWithConstraints(TransactionalEditingDomain editingDomain, Runnable operation) {
 		final Runnable op = operation;
 		Runnable task = new Runnable() {
 			public void run() {
@@ -80,8 +81,8 @@ public class VespucciValidationProvider {
 			try {
 				editingDomain.runExclusive(task);
 			} catch (Exception e) {
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-						.getInstance().logError("Validation failed", e); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
+						"Validation failed", e); //$NON-NLS-1$
 			}
 		} else {
 			task.run();
@@ -134,8 +135,49 @@ public class VespucciValidationProvider {
 				return ctx.createSuccessStatus();
 			if (context.getQuery().equals("derived")) //the ensemble is not a leaf so it must be derived
 				return ctx.createSuccessStatus();
-			return ctx
-					.createFailureStatus("Queries of non leaf ensemble must be derived");
+			return ctx.createFailureStatus("Queries of non leaf ensemble must be derived");
+		}
+	}
+
+	/**
+	 * @generated
+	 */
+	public static class Adapter5 extends AbstractModelConstraint {
+
+		/**
+		 * All valid keywords for dependencies.
+		 */
+		String[] validDependencies = new ValidDependenciesReader().getKeywords();
+		
+		/**
+		 * Checks if given dependency for constrain is valid.
+		 * 
+		 * @author Alexander Weitzmann
+		 * @generated not
+		 * @return Success-Status, if validation successful; Failure otherwise.
+		 */
+		public IStatus validate(IValidationContext ctx) {
+			de.tud.cs.st.vespucci.vespucci_model.Connection context = (de.tud.cs.st.vespucci.vespucci_model.Connection) ctx
+					.getTarget();
+
+			String[] dependencies = context.getName().split(", ");
+			boolean valid = false;
+
+			// check all dependencies
+			for (final String dep : dependencies) {
+				// probe for all valid names
+				valid = false;
+				for (final String validDep : validDependencies) {
+					if (validDep.equals(dep)) {
+						valid = true;
+						break;
+					}
+				}
+				if (!valid) {
+					return ctx.createFailureStatus(String.format("Depdendency %s is invalid", context.getName()));
+				}
+			}
+			return ctx.createSuccessStatus();
 		}
 	}
 

@@ -40,9 +40,7 @@ import java.util.LinkedList;
 /**
  * @generated
  */
-public class VespucciNavigatorGroup
-		extends
-		de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem {
+public class VespucciNavigatorGroup extends de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem {
 
 	/**
 	 * @generated
