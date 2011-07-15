@@ -863,17 +863,6 @@
 		</extension>
 		
 		<?gmfgen generated="false"?>
-       <extension
-             id="invalidDepMarker"
-             name="Invalid Dependency"
-             point="org.eclipse.core.resources.markers">
-          <persistent
-                value="true">
-          </persistent>
-          <super
-                type="de.tud.cs.st.vespucci.diagram.diagnostic">
-          </super>
-       </extension>
         <!-- gmf generator persistent region end -->
           
 

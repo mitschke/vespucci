@@ -344,14 +344,11 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * New methods added to translate diagram to prolog facts.
 	 * New methods added to delete obsolete IMarker. -2011-07-15
 	 * 
-	 * @author Patrick Jahnke, MalteV, Alexander Weitzmann
+	 * @author Patrick Jahnke, MalteV
 	 * @generated NOT
 	 */
 	@Override
 	public void doSave(IProgressMonitor progressMonitor) {
-		// Delete obsolete "Invalid dependency"-IMarker
-		deleteObsoleteDepMarker();
-
 		super.doSave(progressMonitor);
 
 		DiagramConverter converter = new DiagramConverter();
@@ -631,27 +628,6 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 					ValidateAction.runValidation(part.getDiagramEditPart(), part.getDiagram());
 				}
 			}
-		}
-	}
-
-	/**
-	 * Deletes obsolete IMarker, indicating invalid dependencies of constraints.
-	 * 
-	 * @author Alexander Weitzmann
-	 * @generated not
-	 */
-	private void deleteObsoleteDepMarker() {
-		// TODO Auto-generated method stub
-		final IResource resource = getSelectedFile().getFile();
-		final String MARKER_TYPE = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.ID
-				+ ".invalidDepMarker";
-		try {
-			for (IMarker marker : resource.findMarkers(MARKER_TYPE, false, IResource.DEPTH_INFINITE)) {
-				System.out.println(marker.getAttribute("constraintID"));
-			}
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
