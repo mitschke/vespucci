@@ -115,7 +115,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		 * @author Alexander Weitzmann
 		 */
 		private void doSyntaxHighlighting() {
-			// Mark the start of a programmatic change
 			startNonUserChange();
 
 			// first, set everything to black and normal
@@ -130,7 +129,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 			// highlight strings
 			highlightStrings();
 
-			// Mark the end of the programmatic change
 			finishNonUserChange();
 		}
 

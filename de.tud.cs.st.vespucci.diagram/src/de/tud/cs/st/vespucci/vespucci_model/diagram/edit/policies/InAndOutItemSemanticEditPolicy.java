@@ -34,17 +34,16 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gmf.runtime.emf.type.core.commands.DestroyElementCommand;
+import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
+
 /**
- * Adapted generated class. Changed super-class, which installs additional policies for constraints.
- * Moved common method getDestroyElementCommand to super-class.
- * 
- * @generated not
- * @author Alexander Weitzmann
- * @version 0.2
+ * @generated
  */
 public class InAndOutItemSemanticEditPolicy
 		extends
-		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ConstraintEditPolicy {
+		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
@@ -52,6 +51,13 @@ public class InAndOutItemSemanticEditPolicy
 	public InAndOutItemSemanticEditPolicy() {
 		super(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.InAndOut_4001);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected Command getDestroyElementCommand(DestroyElementRequest req) {
+		return getGEFWrapper(new DestroyElementCommand(req));
 	}
 
 }

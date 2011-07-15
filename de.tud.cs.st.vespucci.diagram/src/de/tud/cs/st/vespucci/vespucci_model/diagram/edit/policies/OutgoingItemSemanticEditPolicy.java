@@ -39,16 +39,11 @@ import org.eclipse.gmf.runtime.emf.type.core.commands.DestroyElementCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
 
 /**
- * Adapted generated class. Changed super-class, which installs additional policies for constraints.
- * Moved common method getDestroyElementCommand to super-class.
- * 
- * @generated not
- * @author Alexander Weitzmann
- * @version 0.2
+ * @generated
  */
 public class OutgoingItemSemanticEditPolicy
 		extends
-		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ConstraintEditPolicy {
+		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
@@ -56,6 +51,13 @@ public class OutgoingItemSemanticEditPolicy
 	public OutgoingItemSemanticEditPolicy() {
 		super(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003);
+	}
+
+	/**
+	 * @generated
+	 */
+	protected Command getDestroyElementCommand(DestroyElementRequest req) {
+		return getGEFWrapper(new DestroyElementCommand(req));
 	}
 
 }
