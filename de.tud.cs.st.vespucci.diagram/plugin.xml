@@ -765,8 +765,8 @@
                id="editConstraintPopupMenu"
                label="%edit_constraint">
             <menu
-                  id="setDependencyPopupMenu"
-                  label="%set_dependency">
+                  id="toggleDependencyPopupMenu"
+                  label="%toggle_dependency">
                <dynamic
                      class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries"
                      id="de.tud.cs.st.vespucci.diagram.menuItems.setDependencyEntries">
@@ -801,6 +801,11 @@
           </category>
           <command
                 categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                id="de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand"
+                name="%toggle_dependency">
+          </command>
+          <command
+                categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
                 id="de.tud.cs.st.vespucci.diagram.setDependenciesCommand"
                 name="%set_dependency">
           </command>
@@ -813,6 +818,10 @@
          <handler
                class="de.tud.cs.st.vespucci.diagram.handler.SetDependenciesHandler"
                commandId="de.tud.cs.st.vespucci.diagram.setDependenciesCommand">
+         </handler>
+         <handler
+               class="de.tud.cs.st.vespucci.diagram.handler.ToggleDependenciesHandler"
+               commandId="de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand">
          </handler>
       </extension>
        <extension
