@@ -76,6 +76,10 @@ public class SetDependencyEntries extends CompoundContributionItem {
 	 * <LI>Index 1: black check mark, used to indicate a dependency, that is set for all selected
 	 * constraints.
 	 * </UL>
+	 * <UL>
+	 * <LI>Index 2: null, used to indicate a dependency, that is not set for all selected 
+	 * constraints.
+	 * </UL>
 	 */
 	private static final ImageDescriptor[] checkmark = new ImageDescriptor[3];
 
