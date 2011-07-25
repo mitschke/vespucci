@@ -50,10 +50,11 @@ public class LyrebirdNature implements IProjectNature {
 	private IProject project;
 
 	public void configure() throws CoreException {
+		// Nothing to do
 	}
 
 	public void deconfigure() throws CoreException {
-
+		// Nothing to do
 	}
 
 	public IProject getProject() {

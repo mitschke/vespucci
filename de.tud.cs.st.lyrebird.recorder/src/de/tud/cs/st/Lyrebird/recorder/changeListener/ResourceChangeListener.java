@@ -48,8 +48,8 @@ import de.tud.cs.st.Lyrebird.recorder.Activator;
 import de.tud.cs.st.Lyrebird.recorder.file.FileHandler;
 
 /**
- * Listener that implement the IResourceChangeListener Interface These listener
- * records bytecode changes
+ * Listener that implements the IResourceChangeListener interface. This listener records bytecode
+ * changes.
  * 
  * @author Malte V
  */
@@ -58,8 +58,7 @@ public class ResourceChangeListener implements IResourceChangeListener {
 
 	public ResourceChangeListener() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		fileHandler = new FileHandler(workspace.getRoot().getLocation()
-				.toFile());
+		fileHandler = new FileHandler(workspace.getRoot().getLocation().toFile());
 	}
 
 	@Override
@@ -74,9 +73,8 @@ public class ResourceChangeListener implements IResourceChangeListener {
 			try {
 				fileHandler.writeResourceDeltas(delta);
 			} catch (FileNotFoundException e) {
-				IStatus is = new Status(Status.ERROR, Activator.PLUGIN_ID,
-						Activator.PLUGIN_ID
-								+ ": Global output dir does not exist", e);
+				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID, Activator.PLUGIN_ID
+						+ ": Global output dir does not exist", e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 				StatusManager.getManager().handle(is, StatusManager.SHOW);
 				return;

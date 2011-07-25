@@ -38,15 +38,16 @@ import de.tud.cs.st.Lyrebird.recorder.Activator;
 
 /**
  * Class used to initialize default preference values.
+ * 
  * @author Malte V
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.setDefault(PreferenceConstants.P_SAVE_PER_PROJECT, true);
-		store.setDefault(PreferenceConstants.P_PROJECT_RELATIV_PATH, "Outputdir_" + Activator.PLUGIN_ID);
+		store.setDefault(PreferenceConstants.P_PROJECT_RELATIV_PATH, "Outputdir_"
+				+ Activator.PLUGIN_ID);
 		store.setDefault(PreferenceConstants.P_ABSOLUTE_PATH, "");
 	}
 

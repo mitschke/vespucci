@@ -33,11 +33,18 @@ package de.tud.cs.st.Lyrebird.recorder.preferences;
 
 /**
  * Constant definitions for plug-in preferences
+ * 
  * @author Malte V
  */
 public class PreferenceConstants {
 
-	public static final String P_SAVE_PER_PROJECT =	"lyrebird.saveperproject";
+	public static final String P_SAVE_PER_PROJECT = "lyrebird.saveperproject";
 	public static final String P_ABSOLUTE_PATH = "lyrebird.pathforallprojects";
-	public static final String P_PROJECT_RELATIV_PATH = "lyrebird.pathrelativetoapreject"; // FIXME Typo in property: toapreject ⇢ …toaproject
+	public static final String P_PROJECT_RELATIV_PATH = "lyrebird.pathrelativetoapreject"; // FIXME
+																						   // Typo
+																						   // in
+																						   // property:
+																						   // toapreject
+																						   // ⇢
+																						   // …toaproject
 }
