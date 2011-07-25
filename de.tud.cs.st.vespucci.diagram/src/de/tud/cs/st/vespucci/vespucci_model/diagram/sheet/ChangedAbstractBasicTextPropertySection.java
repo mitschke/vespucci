@@ -21,13 +21,17 @@ import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPro
 import org.eclipse.gmf.runtime.diagram.ui.properties.views.TextChangeHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -46,6 +50,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  *         Changed by:
  * @author MalteV
  * @author BenjaminL
+ * @author DominicS
  */
 public abstract class ChangedAbstractBasicTextPropertySection extends
 		AbstractModelerPropertySection {
@@ -54,8 +59,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 	private final int QUERY_TAB_WIDTH_SHIFT = 45;
 
-	// text widget to display and set value of the property
-	private Text textWidget;
+	// styled text widget to display and set value of the property
+	private StyledText textWidget;
 
 	// parent parent ... parent composite for the size of the textfield
 	private Composite scrolledParent;
@@ -112,6 +117,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		public void handleEvent(Event event) {
 			switch (event.type) {
 			case SWT.KeyDown:
+				doSyntaxHighlighting();
+				
 				textModified = true;
 				if (event.character == SWT.CR) {
 					getPropertyValueString();
@@ -130,9 +137,120 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 						.getActiveWorkbenchWindow().getActivePage()
 						.getActivePart();
 				StatusLineUtil.outputErrorMessage(part, StringStatics.BLANK);
-
+				
 				setPropertyValue(control);
 				textModified = false;
+			}
+		}
+		
+		/**
+		 * Returns an array of StyleRange that makes the characters at
+		 * the positions first and second of a StyledText appear in bold
+		 * print.
+		 * 
+		 * @author DominicS
+		 * @param first First bold character
+		 * @param second Second bold character
+		 * @return Array of StyleRanges that makes characters at first and second bold
+		 */
+		private StyleRange[] getBoldStyleRanges(int first, int second)
+		{
+			if (first > second)
+			{
+				int temp = second;
+				second = first;
+				first = temp;
+			}
+			
+			// Emphasis style:
+			// blue, bold and underlined
+			
+			Color blue = Display.getCurrent().getSystemColor(SWT.COLOR_BLUE);
+			StyleRange r1 = new StyleRange(first, 1, blue, null, SWT.BOLD);
+			StyleRange r2 = new StyleRange(second, 1, blue, null, SWT.BOLD);
+			r1.underline = true;
+			r2.underline = true;
+			
+			return new StyleRange[] {r1, r2};
+		}
+		
+		/**
+		 * Resets the whole text style in the StyledText component to
+		 * its "normal" state.
+		 */
+		private void resetStyle()
+		{
+			Color black = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+			textWidget.setStyleRange(new StyleRange(0, textWidget.getCharCount(), black, null, SWT.NORMAL));
+		}
+		
+		/**
+		 * Performs syntax highlighting of the query properties tab.
+		 * So far, bracket emphasis is implemented.
+		 * 
+		 * @author DominicS
+		 */
+		private void doSyntaxHighlighting()
+		{
+			// first, set everything to black and normal
+			resetStyle();
+			
+			int offset = textWidget.getCaretOffset();
+			// Check if caret is at first position
+			// => no syntax highlighting
+			if (offset == 0)
+			{
+				// do not highlight anything:
+				return;
+			}
+			
+			int size = textWidget.getCharCount();
+			char currentChar = textWidget.getText().charAt(offset-1);
+			
+			if (currentChar == '(')
+			{
+				int intend = 0;
+				for (int i = offset; i < size; i++)
+				{
+					if (textWidget.getText().charAt(i) == '(') {
+						intend++;
+					}
+					
+					if (textWidget.getText().charAt(i) == ')'
+						&& intend == 0)
+					{
+						// Highlight both brackets						
+						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
+						return;
+					}					
+
+					if (textWidget.getText().charAt(i) == ')') {
+						intend--;
+					}
+				}
+			}
+			
+			else if (currentChar == ')' && offset > 1)
+			{
+				int intend = 0;
+				for (int i = offset-2; i >= 0; i--)
+				{
+					if (textWidget.getText().charAt(i) == ')') {
+						intend++;
+					}
+					
+					if (textWidget.getText().charAt(i) == '('
+						&& intend == 0)
+					{
+						// Highlight both brackets	
+						textWidget.setStyleRanges(getBoldStyleRanges(offset-1, i));
+						return;
+					}					
+
+					if (textWidget.getText().charAt(i) == '(') {
+						intend--;
+					}
+				}
 			}
 		}
 	};
@@ -209,19 +327,29 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 *            - parent composite
 	 * @return - a text widget to display and edit the property
 	 */
-	protected Text createTextWidget(Composite parent) {
+	protected StyledText createTextWidget(Composite parent) {
 		getSectionComposite().getSize();
-		Text text = getWidgetFactory().createText(parent, StringStatics.BLANK,
-				SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL); // | SWT.V_SCROLL);
+		
+		StyledText st = new StyledText(
+			parent,
+			SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL
+		);
+		
+		// Use a monospaced font
+		Font mono = new Font(parent.getDisplay(), "Courier New", 10, SWT.NONE);
+		st.setFont(mono);
+		
 		FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, 0);
 		data.height = startHeight;
-		text.setLayoutData(data);
+		st.setLayoutData(data);
+		
 		if (isReadOnly())
-			text.setEditable(false);
-		return text;
+			st.setEditable(false);
+		
+		return st;
 
 	}
 
@@ -358,7 +486,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	/**
 	 * @return Returns the textWidget.
 	 */
-	protected Text getTextWidget() {
+	protected StyledText getTextWidget() {
 		return textWidget;
 	}
 
