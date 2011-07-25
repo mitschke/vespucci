@@ -42,6 +42,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+
 /**
  * Add / Remove lyrebird nature from a eclipse projcet
  * @author Malte V
@@ -78,12 +79,7 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 
-	/**
-	 * Toggles sample nature on a project
-	 * 
-	 * @param project
-	 *            to have sample nature added or removed
-	 */
+
 	private void toggleNature(IProject project) {
 		try {
 			IProjectDescription description = project.getDescription();
@@ -109,6 +105,7 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {
+			// FIXME add error to Eclipse's Error log
 		}
 	}
 

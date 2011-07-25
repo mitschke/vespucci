@@ -75,7 +75,7 @@ public class FileHandler {
 	private String globalPath = "";
 	private String projectPath = "";
 	private File workspaceLocation;
-	long date;
+	long date; // TODO either make it private or document why it has package level visibility
 
 	/**
 	 * Constructor
@@ -105,13 +105,13 @@ public class FileHandler {
 
 	}
 	/**
-	 * Visits all IResouces in delta (IResourceDelta) and save the corresponding file if it is relevant
-	 * a file is relevant if:
+	 * Visits all IResouces in delta (IResourceDelta) and saves the corresponding file if it is relevant.<br>
+	 * A file is relevant if:
 	 * 	- it's a class file
 	 * 	- it's location is in a project with the lyrebird natur
 	 * 
 	 * @param delta
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException // TODO when and why?
 	 */
 	public void writeResourceDeltas(IResourceDelta delta) throws FileNotFoundException{
 		
@@ -209,8 +209,6 @@ public class FileHandler {
 
 	/**
 	 * returns the file for a IResoucre
-	 * @param resource
-	 * @return
 	 */
 	private File getSourceFile(IResource resource) {
 		return resource.getRawLocation().toFile();
@@ -219,8 +217,7 @@ public class FileHandler {
 
 	/**
 	 * Determine the event type
-	 * @param kind
-	 * @return
+	 * TODO Do explain why/where I need to have a string based representation of the kind...
 	 */
 	private String getKind(int kind) {
 		if (kind == IResourceDelta.ADDED)
@@ -233,6 +230,7 @@ public class FileHandler {
 	}
 
 	// from https://gist.github.com/889747
+	// TODO use Jakarta Commons IO..! This implementation needs to be improved.
 	private static void copyFile(File sourceFile, File destFile)
 			throws IOException {
 		if (!destFile.exists()) {
