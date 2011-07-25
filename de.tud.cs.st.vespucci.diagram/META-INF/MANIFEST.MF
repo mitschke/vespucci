@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tud.cs.st.vespucci.diagram; singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.5.1
 Bundle-ClassPath: .
 Bundle-Activator: de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 Bundle-Vendor: %providerName
@@ -37,6 +37,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.tud.cs.st.vespucci.edit;visibility:=reexport,
  org.eclipse.ocl.ecore;visibility:=reexport,
  org.eclipse.emf.validation;visibility:=reexport,
+ org.eclipse.emf.validation.ocl;visibility:=reexport,
  org.eclipse.ui,
  org.eclipse.jdt.core;bundle-version="3.6.1",
  org.eclipse.jdt;bundle-version="3.6.1",
