@@ -62,6 +62,7 @@ import org.eclipse.gmf.runtime.diagram.ui.tools.TextDirectEditManager;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
 import org.eclipse.gmf.runtime.emf.ui.services.parser.ISemanticParser;
+import org.eclipse.gmf.runtime.gef.ui.internal.parts.WrapTextCellEditor;
 import org.eclipse.gmf.runtime.notation.FontStyle;
 import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.View;
@@ -322,9 +323,11 @@ public class EnsembleDescriptionEditPart extends CompartmentEditPart implements 
 	 */
 	protected DirectEditManager getManager() {
 		if (manager == null) {
-			setManager(new TextDirectEditManager(this, TextDirectEditManager.getTextCellEditorClass(this),
-					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.VespucciEditPartFactory
-							.getTextCellEditorLocator(this)));
+			setManager(new TextDirectEditManager(
+					this, 
+					WrapTextCellEditor.class, 
+					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.
+					VespucciEditPartFactory.getTextCellEditorLocator(this)));
 		}
 		return manager;
 	}
