@@ -41,7 +41,7 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import de.tud.cs.st.vespucci.diagram.io.KeywordReader;
+import de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader;
 
 /**
  * A Changed Copy of AbstractBasicTextPropertySection (org.eclipse.gmf.runtime.diagram
@@ -96,7 +96,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		/**
 		 * Provides method for accessing the keywords
 		 */
-		private final KeywordReader kwReader = new KeywordReader();
+		private final QueryKeywordReader kwReader = new QueryKeywordReader();
 
 		/**
 		 * Keywords to be marked
