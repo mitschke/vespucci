@@ -21,7 +21,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart;
  * For each entry in {@link #types} one menu-entry will be generated.
  * 
  * @author Alexander Weitzmann
- * @version 0.2
+ * @version 0.3
  * 
  */
 public class SetConstraintTypeEntries extends CompoundContributionItem {
@@ -40,15 +40,16 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 	/**
 	 * Descriptors for the check marks. There are two available check marks:
 	 * <UL>
-	 * <LI>Index 0: grey check mark, used to indicate a type, that at least one, but not all,
-	 * selected constraints are of this type.
+	 * <LI>Index 0: grey check mark, used to indicate a dependency, that is not set for all selected
+	 * constraints, but for at least one.
 	 * </UL>
 	 * <UL>
-	 * <LI>Index 1: black check mark, used to indicate, that all selected constraints are of this
-	 * type.
+	 * <LI>Index 1: black check mark, used to indicate a dependency, that is set for all selected
+	 * constraints.
 	 * </UL>
 	 * <UL>
-	 * <LI>Index 2: null, used to indicate, that all selected constraints are not of this type.
+	 * <LI>Index 2: unchecked, used to indicate a dependency, that is set for no selected 
+	 * constraints.
 	 * </UL>
 	 */
 	private static final ImageDescriptor[] checkmark = new ImageDescriptor[3];
@@ -59,7 +60,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checkmark_grey.png"));
+						"/resources/grayed.gif"));
 				return img.getImageData();
 			}
 		};
@@ -69,14 +70,28 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checkmark_black.png"));
+						"/resources/checked.gif"));
 				return img.getImageData();
 			}
 		};
+		
+		checkmark[2] = new ImageDescriptor() {
 
-		checkmark[2] = null;
+			@Override
+			public ImageData getImageData() {
+				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
+						"/resources/unchecked.gif"));
+				return img.getImageData();
+			}
+		};
 	}
 
+	/**
+	 * This method traverses all selected constraints and returns, which check mark should be used.
+	 * 
+	 * @param type Connection-Type to be checked.
+	 * @return The index for the correct check mark in {@link #checkmark}.
+	 */
 	private static ImageDescriptor getCheckMark(final Class type) {
 		final IStructuredSelection selection = (IStructuredSelection) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getSelectionService().getSelection();
@@ -117,7 +132,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow(), "de.tud.cs.st.vespucci.diagram.menuItems.SetConstraintType_"
 					+ type.getSimpleName(), "de.tud.cs.st.vespucci.diagram.SetConstraintType" + type.getSimpleName(),
-					CommandContributionItem.STYLE_CHECK);
+					CommandContributionItem.STYLE_PUSH);
 			// Delete "EditPart" at end of class name and use it as label
 			contributionParameter.label = typeLabel[i];
 			// Set icon

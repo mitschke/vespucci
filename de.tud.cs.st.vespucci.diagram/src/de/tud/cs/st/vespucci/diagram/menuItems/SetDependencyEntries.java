@@ -57,7 +57,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * ({@link de.tud.cs.st.vespucci/resources/validDependencies.txt}) one menu-entry will be generated.
  * 
  * @author Alexander Weitzmann
- * @version 0.3
+ * @version 0.4
  */
 public class SetDependencyEntries extends CompoundContributionItem {
 
@@ -112,11 +112,11 @@ public class SetDependencyEntries extends CompoundContributionItem {
 						"/resources/unchecked.gif"));
 				return img.getImageData();
 			}
-		};;
+		};
 	}
 
 	/**
-	 * This method traverses all selected constraints and returns, which check mark should be used,
+	 * This method traverses all selected constraints and returns, which check mark should be used.
 	 * 
 	 * @param dependency
 	 *            Dependency to be checked.
@@ -169,7 +169,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			// all constraints have the given dependency set.
 			return 1;
 		}
-		// 2 indicates, that no icon will be used i.e. entry not checked.
+		// 2 indicates, that entry is not checked.
 		return 2;
 	}
 
@@ -194,7 +194,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow(),
 					"de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyContribution_" + dependency, command,
-					CommandContributionItem.STYLE_CHECK);
+					CommandContributionItem.STYLE_PUSH);
 			contributionParameter.label = dependency;
 			contributionParameter.icon = checkmark[checkMarkIndex];
 
