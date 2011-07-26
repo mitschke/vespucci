@@ -56,12 +56,5 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>de.tud.cs.st.opal.sae</groupId>
-			<artifactId>sae-database-bytecode</artifactId>
-			<version>0.2.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
 </project>

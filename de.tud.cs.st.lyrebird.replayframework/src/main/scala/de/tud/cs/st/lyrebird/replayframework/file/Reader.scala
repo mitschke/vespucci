@@ -149,6 +149,7 @@ class Reader(val location : File) {
      * Only call this method if checkFile() returns true for a file
      */
     private def fileToEvent(file : File) : Event = {
+        
         //"calc" resolved full class name (package/subpackage/.../className 
         val loc = location.getCanonicalPath
         val dest = file.getParentFile.getCanonicalPath()
@@ -170,7 +171,7 @@ class Reader(val location : File) {
         }
         previousEvents.put(resolvedName, res)
         res
-
+     
     }
 
 }

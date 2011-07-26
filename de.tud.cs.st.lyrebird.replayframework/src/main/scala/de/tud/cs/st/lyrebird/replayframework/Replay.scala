@@ -33,20 +33,19 @@ package de.tud.cs.st.lyrebird.replayframework
 import java.io.File
 import de.tud.cs.st.lyrebird.replayframework.file.Reader
 
-
 /**
  * Central entry point to lyrebird recorder.
  * These class handles to replay previous recorded events by Lyrebird.recorder
  * @param location : default packed folder in the output folder of lyrebird recorder
  * @author Malte V
  */
-class Replay(val location: File) {
-	val reader = new Reader(location)
-	val data = reader.getAllEventSets()   
-	
+class Replay(val location : File) {
+    val reader = new Reader(location)
+    val data = reader.getAllEventSets()
+
     /**
      * foreach iteration over all EventSets
-     * EventSet are ascendent ordered by Event.eventTime  
+     * EventSet are ascendent ordered by Event.eventTime
      */
     def foreach(f : EventSet => _) : Unit = {
         data.foreach(x => f(x))
@@ -56,40 +55,30 @@ class Replay(val location: File) {
      * 			 the list is ascendant ordered by Event.eventTime
      */
     def getAllEventSets() : List[EventSet] = {
-       data
+        data
     }
-    
-    
-    def processAllEventSets(fAdd : File => _ , fRemove : File => _) {
-        getAllEventSets().foreach(processEventSet(_,fAdd, fRemove))
+
+    def processAllEventSets(fAdd : File => _, fRemove : File => _) {
+        getAllEventSets().foreach(processEventSet(_, fAdd, fRemove))
     }
-    def processEventSet(eventSet: EventSet, fAdd : File => _ , fRemove : File => _){
-        
+    def processEventSet(eventSet : EventSet, fAdd : File => _, fRemove : File => _) {
+
         eventSet.eventFiles.foreach(x => {
-          //  	try{
-                  x match {
+
+            x match {
                 case Event(EventType.ADDED, _, _, file, _) => fAdd(file)
                 case Event(EventType.REMOVED, _, _, file, Some(prev)) =>
-                    if( prev.eventType != EventType.REMOVED) { fRemove(prev.eventFile) }
+                    if (prev.eventType != EventType.REMOVED) { fRemove(prev.eventFile) }
                 case Event(EventType.REMOVED, _, _, file, None) => // do nothing
                 case Event(EventType.CHANGED, _, _, file, Some(prev)) => {
-                    if( prev.eventType != EventType.REMOVED) fRemove(prev.eventFile) 
-                   fAdd(file)
+                    if (prev.eventType != EventType.REMOVED) fRemove(prev.eventFile)
+                    fAdd(file)
                 }
                 case Event(EventType.CHANGED, _, _, file, None) => {
-                   
-                   fAdd(file)
+
+                    fAdd(file)
                 }
             }
-        /*}catch{
-            case e: Exception =>{
-                println
-                println(x)
-                println("Exeption " +  e)
-            }
-                
-        }*/}
-        
-            	)
+        })
     }
 }

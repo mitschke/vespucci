@@ -67,7 +67,7 @@ class TestClassFileChangeReader extends org.scalatest.junit.JUnitSuite {
         assertTrue(sumEventFiles == 85)
 
     }
-    @Test
+    
     def applyFonAllEvents() {
         val reader = new Replay(location)
         reader.foreach(println _)
