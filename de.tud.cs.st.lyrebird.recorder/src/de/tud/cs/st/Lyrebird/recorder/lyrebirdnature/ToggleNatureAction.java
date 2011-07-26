@@ -42,8 +42,10 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+
 /**
  * Add / Remove lyrebird nature from a eclipse projcet
+ * 
  * @author Malte V
  */
 public class ToggleNatureAction implements IObjectActionDelegate {
@@ -52,15 +54,13 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 
 	public void run(IAction action) {
 		if (selection instanceof IStructuredSelection) {
-			for (Iterator it = ((IStructuredSelection) selection).iterator(); it
-					.hasNext();) {
+			for (Iterator<?> it = ((IStructuredSelection) selection).iterator(); it.hasNext();) {
 				Object element = it.next();
 				IProject project = null;
 				if (element instanceof IProject) {
 					project = (IProject) element;
 				} else if (element instanceof IAdaptable) {
-					project = (IProject) ((IAdaptable) element)
-							.getAdapter(IProject.class);
+					project = (IProject) ((IAdaptable) element).getAdapter(IProject.class);
 				}
 				if (project != null) {
 					toggleNature(project);
@@ -69,21 +69,14 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 		}
 	}
 
-
 	public void selectionChanged(IAction action, ISelection selection) {
 		this.selection = selection;
 	}
 
-
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+		// Nothing to do
 	}
 
-	/**
-	 * Toggles sample nature on a project
-	 * 
-	 * @param project
-	 *            to have sample nature added or removed
-	 */
 	private void toggleNature(IProject project) {
 		try {
 			IProjectDescription description = project.getDescription();
@@ -94,8 +87,7 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 					// Remove the nature
 					String[] newNatures = new String[natures.length - 1];
 					System.arraycopy(natures, 0, newNatures, 0, i);
-					System.arraycopy(natures, i + 1, newNatures, i,
-							natures.length - i - 1);
+					System.arraycopy(natures, i + 1, newNatures, i, natures.length - i - 1);
 					description.setNatureIds(newNatures);
 					project.setDescription(description, null);
 					return;
@@ -109,6 +101,7 @@ public class ToggleNatureAction implements IObjectActionDelegate {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {
+			// FIXME add error to Eclipse's Error log
 		}
 	}
 

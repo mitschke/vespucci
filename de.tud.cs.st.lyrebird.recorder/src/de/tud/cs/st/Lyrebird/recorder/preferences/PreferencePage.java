@@ -40,67 +40,65 @@ import de.tud.cs.st.Lyrebird.recorder.Activator;
 
 /**
  * Preference page for the lyrebird recorder
+ * 
  * @author Malte V
  */
-public class PreferencePage
-	extends FieldEditorPreferencePage
-	implements IWorkbenchPreferencePage {
+public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private StringFieldEditor prefFoldername;
 	private DirectoryFieldEditor prefPath;
-	
+
 	public PreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("Preference page for " + Activator.PLUGIN_ID);
 	}
-	
-	/**
-	 * all property fields
-	 */
+
 	public void createFieldEditors() {
-		
-		addField(
-				new BooleanFieldEditor(
-					PreferenceConstants.P_SAVE_PER_PROJECT,
-					"Save Lyrebird records into Eclipse projectfolder",
-					getFieldEditorParent()));
-		
-		prefFoldername = new StringFieldEditor(PreferenceConstants.P_PROJECT_RELATIV_PATH, "Output foldername\n(Lyrebird needs it's own output folder):", getFieldEditorParent());
-		
+
+		addField(new BooleanFieldEditor(PreferenceConstants.P_SAVE_PER_PROJECT,
+				"Save Lyrebird records into Eclipse projectfolder", getFieldEditorParent()));
+
+		prefFoldername = new StringFieldEditor(PreferenceConstants.P_PROJECT_RELATIV_PATH,
+				"Output foldername\n(Lyrebird needs its own output folder):",
+				getFieldEditorParent());
+
 		addField(prefFoldername);
-		prefPath = new DirectoryFieldEditor(PreferenceConstants.P_ABSOLUTE_PATH, 
+		prefPath = new DirectoryFieldEditor(PreferenceConstants.P_ABSOLUTE_PATH,
 				"Global outputpath: ", getFieldEditorParent());
 		addField(prefPath);
 		setEnable();
 	}
-	
-	private void setEnable(){
-		boolean saveperproject = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_SAVE_PER_PROJECT);
+
+	private void setEnable() {
+		boolean saveperproject = Activator.getDefault().getPreferenceStore()
+				.getBoolean(PreferenceConstants.P_SAVE_PER_PROJECT);
 		prefPath.setEnabled(!saveperproject, getFieldEditorParent());
 		prefFoldername.setEnabled(saveperproject, getFieldEditorParent());
 	}
-	 @Override
+
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		 //toggle the enable property of StringFieldEditor and DirectoryFieldEditor if the value of BooleanFieldEditor changes
-		 if(event.getSource() instanceof org.eclipse.jface.preference.BooleanFieldEditor){
-			 if(((BooleanFieldEditor) event.getSource()).getPreferenceName().equals(PreferenceConstants.P_SAVE_PER_PROJECT)){
-				 if(event.getNewValue().equals(true)){
-					 prefPath.setEnabled(false, getFieldEditorParent());
-					 prefFoldername.setEnabled(true, getFieldEditorParent());
-				 }else{
-					 prefPath.setEnabled(true, getFieldEditorParent());
-					 prefFoldername.setEnabled(false, getFieldEditorParent());
-				 }
-			 }
-		 }
+		// toggle the enable property of StringFieldEditor and DirectoryFieldEditor if the value of
+		// BooleanFieldEditor changes
+		if (event.getSource() instanceof org.eclipse.jface.preference.BooleanFieldEditor) {
+			if (((BooleanFieldEditor) event.getSource()).getPreferenceName().equals(
+					PreferenceConstants.P_SAVE_PER_PROJECT)) {
+				if (event.getNewValue().equals(Boolean.TRUE)) {
+					prefPath.setEnabled(false, getFieldEditorParent());
+					prefFoldername.setEnabled(true, getFieldEditorParent());
+				} else {
+					prefPath.setEnabled(true, getFieldEditorParent());
+					prefFoldername.setEnabled(false, getFieldEditorParent());
+				}
+			}
+		}
 		super.propertyChange(event);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
+
 	public void init(IWorkbench workbench) {
+		// Nothing to do
 	}
-	
+
 }

@@ -31,8 +31,6 @@
  */
 package de.tud.cs.st.Lyrebird.recorder;
 
-
-
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
@@ -43,11 +41,12 @@ import de.tud.cs.st.Lyrebird.recorder.changeListener.ResourceChangeListener;
 
 /**
  * This class registers a ResourceChangeListener
+ * 
  * @see IStartup
  * @author Malte V
  */
 public class StartUp implements IStartup {
-	
+
 	@Override
 	public void earlyStartup() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -56,7 +55,7 @@ public class StartUp implements IStartup {
 		// indicating an after-the-fact report of creations, deletions, and
 		// modifications
 		// to one or more resources expressed as a hierarchical resource delta
-		workspace.addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE); 
+		workspace.addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE);
 
 	}
 
