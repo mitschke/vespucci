@@ -77,7 +77,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 	 * constraints.
 	 * </UL>
 	 * <UL>
-	 * <LI>Index 2: null, used to indicate a dependency, that is not set for all selected 
+	 * <LI>Index 2: unchecked, used to indicate a dependency, that is set for no selected 
 	 * constraints.
 	 * </UL>
 	 */
@@ -89,7 +89,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checkmark_grey.png"));
+						"/resources/grayed.gif"));
 				return img.getImageData();
 			}
 		};
@@ -99,12 +99,20 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checkmark_black.png"));
+						"/resources/checked.gif"));
 				return img.getImageData();
 			}
 		};
 		
-		checkmark[2] = null;
+		checkmark[2] = new ImageDescriptor() {
+
+			@Override
+			public ImageData getImageData() {
+				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
+						"/resources/unchecked.gif"));
+				return img.getImageData();
+			}
+		};;
 	}
 
 	/**
