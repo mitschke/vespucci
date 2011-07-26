@@ -34,8 +34,7 @@ package de.tud.cs.st.lyrebird.replayframework
 /**
  * Data class that saves all events that belong to one source code change
  * All Events in one Eventset have the same eventTime
- * @author Malte V
+ * 
+ * @author Malte Viering
  */
-case class EventSet(val eventFiles : List[Event]) {
-
-}
+case class EventSet(val eventFiles : List[Event]) // TODO (1) why is the parameter called eventFiles??? (2)why do you use a List to implement a Set??? // What's the purpose of this class anyway?

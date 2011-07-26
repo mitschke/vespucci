@@ -30,41 +30,40 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 package de.tud.cs.st.lyrebird.replayframework.file
+
 import java.io.File
 
 import scala.collection.immutable.SortedMap
 import scala.collection.mutable.Map
+
 import de.tud.cs.st.lyrebird.replayframework._
 
 /**
  * Reads the output dir of Lyrebird.Recorder
  * and group the recorded events in EventSets
+ * 
  * @param location : default packages folder in the output directory of Lyrebird.Recorder
  * IMPORTANT: location must be the folder of the default packages
- * @author Malte V
+ * 
+ * @author Malte Viering
  */
 class Reader(val location : File) {
+    
     private var previousEvents = Map[String, Event]()
-    val SEPARATOR = "_"
+    
+    val SEPARATOR = "_" // TODO Rename: FILE_METADATA_SEPARATOR(?)
 
     /**
      * @return : list with all EventSets in the given location (constructor)
      * the list is ascendet ordered by Event.eventTime
      */
     def getAllEventSets() : List[EventSet] = {
-        // TODO use .map()
+        // TODO use .map() function or "for(..) yield..."
         var res = List[EventSet]()
-        getAllFilesGroupedByEventTime(location).foreach(x => res = eventsToEventSet(x) :: res)
+        getAllFilesGroupedByEventTime(location).foreach(x => res = new EventSet(x) :: res)
         res
     }
 
-    /**
-     * Converts a list of Events into one EventSet
-     * All Events must have the same eventTime
-     */
-    private def eventsToEventSet(eventSet : List[Event]) : EventSet = {
-        new EventSet(eventSet)
-    }
 
     /**
      * Returns a list of list of Events grouped by the eventTime and descending ordered by time
@@ -100,7 +99,6 @@ class Reader(val location : File) {
 
         }
         subList :: list
-
     }
 
     /**
@@ -128,6 +126,7 @@ class Reader(val location : File) {
         } else {
             if (checkFile(currentLocation))
                 list = fileToEvent(currentLocation) :: list
+                // TODO else … generate warning?
         }
         list
     }
@@ -136,11 +135,13 @@ class Reader(val location : File) {
      * simple validation check
      */
     private def checkFile(file : File) : Boolean = {
+        // FIXME this method will always (in 100% of all cases) return true....
+        
         if (file.isDirectory)
             false
         if (!file.getName().endsWith("class"))
             false
-         // TODO do you check that we have something like: a.<DATE>.<KIND>.class ?
+         // TODO do you want check that we have something like: a.<DATE>.<KIND>.class ? If so, document it.
         if (file.getName.split(SEPARATOR).size < 3)
             false
         true
@@ -161,12 +162,14 @@ class Reader(val location : File) {
 
         val fileNameParts = file.getName().split(SEPARATOR)
         val resolvedName = packages + fileNameParts.drop(2).mkString.dropRight(6)
-        val previousEvent = previousEvents.get(resolvedName)
+        val previousEvent : Option[Event] = previousEvents.get(resolvedName)
         val eventType = fileNameParts(1) match {
             case "ADDED"   => EventType.ADDED
             case "CHANGED" => EventType.CHANGED
             case "REMOVED" => EventType.REMOVED
         }
+        
+        // FIXME Smells... why not just write new Event(...., previousEvent)?
         val res = previousEvent match {
             case Some(x) => new Event(eventType, fileNameParts(0).toLong, resolvedName, file, Some(x))
             case _       => new Event(eventType, fileNameParts(0).toLong, resolvedName, file, None)

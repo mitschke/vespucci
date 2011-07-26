@@ -33,7 +33,8 @@ package de.tud.cs.st.lyrebird.replayframework
 
 /**
  * Enum class for the 3 different EventTypen
- * @author Malte V
+ * 
+ * @author Malte Viering
  */
 object EventType extends Enumeration {
     val CHANGED = Value("CHANGED")

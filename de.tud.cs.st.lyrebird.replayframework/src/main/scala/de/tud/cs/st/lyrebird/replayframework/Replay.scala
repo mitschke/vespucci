@@ -30,51 +30,44 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 package de.tud.cs.st.lyrebird.replayframework
+
 import java.io.File
 import de.tud.cs.st.lyrebird.replayframework.file.Reader
 
 /**
  * Central entry point to lyrebird recorder.
  * These class handles to replay previous recorded events by Lyrebird.recorder
+ *
  * @param location : default packed folder in the output folder of lyrebird recorder
- * @author Malte V
+ * @author Malte Viering
  */
-class Replay(val location : File) {
-    val reader = new Reader(location)
-    val data = reader.getAllEventSets()
-
-    /**
-     * foreach iteration over all EventSets
-     * EventSet are ascendent ordered by Event.eventTime
-     */
-    def foreach(f : EventSet => _) : Unit = {
-        data.foreach(x => f(x))
-    }
-    /**
-     * @return : list with all EventSets in the given location
-     * 			 the list is ascendant ordered by Event.eventTime
-     */
-    def getAllEventSets() : List[EventSet] = {
-        data
+class Replay(val allEventSets : List[EventSet]) {
+        
+    def this(location: File) {
+        this(new Reader(location).getAllEventSets())
     }
 
-    def processAllEventSets(fAdd : File => _, fRemove : File => _) {
-        getAllEventSets().foreach(processEventSet(_, fAdd, fRemove))
+    // TODO this code smells: why is there not fChanged?? There is no explanation whatsoever... no examples...
+    def processAllEventSets(fAdd: File ⇒ _, fRemove: File ⇒ _) {
+        allEventSets.foreach(processEventSet(_, fAdd, fRemove))
     }
-    def processEventSet(eventSet : EventSet, fAdd : File => _, fRemove : File => _) {
-
-        eventSet.eventFiles.foreach(x => {
+    
+    // TODO this code smells: why is there not fChanged? There is no explanation whatsoever... no examples...
+    def processEventSet(eventSet: EventSet, fAdd: File ⇒ _, fRemove: File ⇒ _) {
+        eventSet.eventFiles.foreach(x ⇒ {
             x match {
-                case Event(EventType.ADDED, _, _, file, _) => fAdd(file)
-                case Event(EventType.REMOVED, _, _, file, Some(prev)) =>
-                    if (prev.eventType != EventType.REMOVED) { fRemove(prev.eventFile) }
-                case Event(EventType.REMOVED, _, _, file, None) => // do nothing
-                case Event(EventType.CHANGED, _, _, file, Some(prev)) => {
-                    if (prev.eventType != EventType.REMOVED) fRemove(prev.eventFile)
+                case Event(EventType.ADDED, _, _, file, _) ⇒ fAdd(file)
+                case Event(EventType.REMOVED, _, _, file, Some(prev)) ⇒
+                    if (prev.eventType != EventType.REMOVED) { 
+                        fRemove(prev.eventFile) 
+                     }
+                case Event(EventType.REMOVED, _, _, file, None) ⇒ // do nothing
+                case Event(EventType.CHANGED, _, _, file, Some(prev)) ⇒ {
+                    if (prev.eventType != EventType.REMOVED) 
+                        fRemove(prev.eventFile)
                     fAdd(file)
                 }
-                case Event(EventType.CHANGED, _, _, file, None) => {
-
+                case Event(EventType.CHANGED, _, _, file, None) ⇒ {
                     fAdd(file)
                 }
             }

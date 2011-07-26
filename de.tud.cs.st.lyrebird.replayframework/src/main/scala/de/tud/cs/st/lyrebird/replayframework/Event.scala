@@ -30,29 +30,25 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 package de.tud.cs.st.lyrebird.replayframework
+
 import java.io.File
 
-
-
-
 /**
- * Data class that represent a change to one classfile 
+ * Data class that represent a change to one classfile
  *
  * @param EventType Type of the bytecode change. Possible EventTypes ADDED, CHANGED, REMOVED
  * @param EventTime: timestamp of the bytecode change
  * @param ResolvedClassName: package/subpackage/.../ClassName
  * @param previousEvent if Lyrebird has recorded an event to the current class File before this event, previousEvent saves a link to the last event.
  * 				   else previousEvent = None
- * IMPORTENT: it is possible to get a remove event WITHOUT a previous add / change event.
- * @author Malte V
+ * IMPORTANT: it is possible to get a remove event WITHOUT a previous add / change event.
+ * 
+ * @author Malte Viering
  */
-case class Event(val eventType : EventType.Value,
-                 val eventTime : Long,
-                 val resolvedClassName : String,
-                 val eventFile : File,
-                 val previousEvent : Option[Event]) {
-    // resolvedClassName := package/subpackage/ClassName
-    def getCorrespondingEvent() : Option[Event] = {
-        previousEvent
-    }
+case class Event(val eventType: EventType.Value,
+                 val eventTime: Long,
+                 val resolvedClassName: String,// TODO replace resolvedClassName with binaryName (see Java Virtual Machine Specification)
+                 val eventFile: File,
+                 val previousEvent: Option[Event]) {
+
 }

@@ -39,25 +39,26 @@ import java.io.File
 import de.tud.cs.st.lyrebird.replayframework._
 import de.tud.cs.st.lyrebird.replayframework.file._
 import java.net.URL
+
+
 class TestClassFileChangeReader extends org.scalatest.junit.JUnitSuite {
 
-
     val location = new File("./src/test/recources/smallTestSet")
-    
+
     @Test
     def readAndGroupSomeTestData() {
- 
-        val reader = new Reader(location)     
-        var res : List[List[Event]] = reader.getAllFilesGroupedByEventTime(location).reverse
-        var lastEventTime : Long = 0
+
+        val reader = new Reader(location)
+        var res: List[List[Event]] = reader.getAllFilesGroupedByEventTime(location).reverse
+        var lastEventTime: Long = 0
         var sumEvents = 0
         var sumEventFiles = 0
-        res.foreach(x => {
+        res.foreach(x ⇒ {
             //check that the event time increase with every event
             assertTrue(x.head.eventTime > lastEventTime)
             lastEventTime = x.head.eventTime
             sumEvents += 1
-            x.foreach(y => {
+            x.foreach(y ⇒ {
                 //check that the eventTime is the same for all eventfiles in one event
                 assertTrue(y.eventTime == lastEventTime)
                 sumEventFiles += 1
@@ -67,10 +68,10 @@ class TestClassFileChangeReader extends org.scalatest.junit.JUnitSuite {
         assertTrue(sumEventFiles == 85)
 
     }
-    
-    def applyFonAllEvents() {
-        val reader = new Replay(location)
-        reader.foreach(println _)
+
+    // for debug purposes
+    def applyPrintlnOnAllEvents() {
+        new Replay(location).allEventSets.foreach(println _)
     }
 
 }
