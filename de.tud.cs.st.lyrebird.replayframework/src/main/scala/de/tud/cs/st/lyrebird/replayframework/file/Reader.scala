@@ -52,6 +52,7 @@ class Reader(val location : File) {
      * the list is ascendet ordered by Event.eventTime
      */
     def getAllEventSets() : List[EventSet] = {
+        // TODO use .map()
         var res = List[EventSet]()
         getAllFilesGroupedByEventTime(location).foreach(x => res = eventsToEventSet(x) :: res)
         res
@@ -139,6 +140,7 @@ class Reader(val location : File) {
             false
         if (!file.getName().endsWith("class"))
             false
+         // TODO do you check that we have something like: a.<DATE>.<KIND>.class ?
         if (file.getName.split(SEPARATOR).size < 3)
             false
         true

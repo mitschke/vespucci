@@ -64,7 +64,6 @@ class Replay(val location : File) {
     def processEventSet(eventSet : EventSet, fAdd : File => _, fRemove : File => _) {
 
         eventSet.eventFiles.foreach(x => {
-
             x match {
                 case Event(EventType.ADDED, _, _, file, _) => fAdd(file)
                 case Event(EventType.REMOVED, _, _, file, Some(prev)) =>

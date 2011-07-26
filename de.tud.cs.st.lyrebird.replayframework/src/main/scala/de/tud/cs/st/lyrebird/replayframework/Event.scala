@@ -38,12 +38,12 @@ import java.io.File
 /**
  * Data class that represent a change to one classfile 
  *
- * 	EventType: Type of the bytecode change. Possible EventTypes ADDED, CHANGED, REMOVED
- * 	EventTime: timestamp of the bytecode change
- * 	ResolvedClassName: package/subpackage/.../ClassName
- * 	previousEvent: if Lyrebird has recorded an event to the current class File before this event, previousEvent saves a link to the last event.
+ * @param EventType Type of the bytecode change. Possible EventTypes ADDED, CHANGED, REMOVED
+ * @param EventTime: timestamp of the bytecode change
+ * @param ResolvedClassName: package/subpackage/.../ClassName
+ * @param previousEvent if Lyrebird has recorded an event to the current class File before this event, previousEvent saves a link to the last event.
  * 				   else previousEvent = None
- * 	IMPORTENT: it is possible to get a remove event WITHOUT a previous add / change event.
+ * IMPORTENT: it is possible to get a remove event WITHOUT a previous add / change event.
  * @author Malte V
  */
 case class Event(val eventType : EventType.Value,
