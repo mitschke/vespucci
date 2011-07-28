@@ -36,6 +36,7 @@
 package de.tud.cs.st.vespucci.diagram.actions;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -78,153 +79,164 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
 public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 
 	private IWorkbenchPart targetPart;
-	private URI fileURI;
+	private ArrayList<URI> fileURIs;
 
 	@Override
 	public void run(IAction action) {
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		
-		Job job = new Job("Convert Vespucci diagram " + fileURI.toString()) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < fileURIs.size(); i++)
+		{
+			sb.append(fileURIs.get(i).toString());
+			if (i != fileURIs.size() - 1)
+				sb.append(", ");
+		}
+		
+		Job job = new Job("Convert Vespucci diagram " + sb.toString()) {
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				EObject source = getInput();
-				if (source == null) {
-					// No source given => Cancel
-					String title = Messages.VespucciTransformationNoFileTitle;
-					String message = Messages.VespucciTransformationNoFileMessage;
-					MessageDialog.openInformation(getShell(), title,
-							NLS.bind(message, fileURI.toString()));
-
-					return Status.CANCEL_STATUS;
-				}
-
-				try {
-					// The URIs for model and notation transformation
-					URI modelTransfUri = URI
-						.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.model.qvto"); //$NON-NLS-1$
-					URI notationTransfUri = URI
-						.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto"); //$NON-NLS-1$
-					
-					// BEGIN MONITOR TASK
-					monitor.beginTask("Converting Vespucci diagram...", 7);
-
-					// Get Resource from input URI
-					Resource inResource = resourceSet
-							.getResource(fileURI, true);
-
-					// Create the input objects for the transformation
-					List<EObject> inObjects = inResource.getContents();
-					
-					// Determine order of objects (ShapesDiagram / DiagramImpl) in the document
-					int posShapesDiagram, posDiagramImpl;
-					if (inObjects.get(0).getClass().toString().contains("ShapesDiagramImpl")) {
-						posShapesDiagram = 0;
-						posDiagramImpl = 1;
-					} else {
-						posShapesDiagram = 1;
-						posDiagramImpl = 0;
+			protected IStatus run(IProgressMonitor monitor) {				
+				for (URI fileURI : fileURIs)
+				{
+					EObject source = getInput(fileURI);
+					if (source == null) {
+						// No source given => Cancel
+						String title = Messages.VespucciTransformationNoFileTitle;
+						String message = Messages.VespucciTransformationNoFileMessage;
+						MessageDialog.openInformation(getShell(), title,
+								NLS.bind(message, fileURI.toString()));
+	
+						return Status.CANCEL_STATUS;
 					}
-					
-					// Get model contents
-					ModelContent shapesDiagram = new ModelContent(inObjects.subList(posShapesDiagram, posShapesDiagram + 1));
-					ModelContent notationDiagram = new ModelContent(inObjects.subList(posDiagramImpl, posDiagramImpl + 1));
-
-					// Setup the execution environment details (context)
-					IContext context = new Context();
-
-					// Create transformation objects
-					QvtInterpretedTransformation shapesDiagramTransformation = new QvtInterpretedTransformation(
-						TransformationUtil.getQvtModule(modelTransfUri));
-					In shapesDiagramInTransformationRunner = new TransformationRunner.In(
-						new ModelContent[] { shapesDiagram },
-						context
-					);
-					
-					QvtInterpretedTransformation notationDiagramTransformation = new QvtInterpretedTransformation(
-						TransformationUtil.getQvtModule(notationTransfUri));
-					In notationDiagramInTransformationRunner = new TransformationRunner.In(
-						new ModelContent[] { notationDiagram },
-						context
-					);
-					
-					// Run the transformations
-					Out shapesDiagramOutTransformationRunner = shapesDiagramTransformation
-						.run(shapesDiagramInTransformationRunner);
-					monitor.worked(2);
-					
-					Out notationDiagramOutTransformationRunner = notationDiagramTransformation
-						.run(notationDiagramInTransformationRunner);					
-					monitor.worked(2);
-
-					// Retrieve the outputs
-					List<ModelExtentContents> shapesDiagramTransfOutputs =
-						shapesDiagramOutTransformationRunner.getExtents();
-					List<ModelExtentContents> notationDiagramTransfOutputs =
-						notationDiagramOutTransformationRunner.getExtents();
-
-					// Retrieve the traces
-					Trace shapesDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
-					Trace notationDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
-
-					// Check the output validity
-					if (shapesDiagramTrace != null && shapesDiagramTransfOutputs.size() == 1 &&
-						notationDiagramTrace != null && notationDiagramTransfOutputs.size() == 1) {
+	
+					try {
+						// The URIs for model and notation transformation
+						URI modelTransfUri = URI
+							.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.model.qvto"); //$NON-NLS-1$
+						URI notationTransfUri = URI
+							.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto"); //$NON-NLS-1$
 						
-						// Trace processing
-						// Get trace URI
-						URI traceURI = fileURI.trimFileExtension()
-							.appendFileExtension("trace");
-						EList<TraceRecord> shapesDiagramTraceRecords = shapesDiagramTrace
-							.getTraceRecords();
-						EList<TraceRecord> notationDiagramTraceRecords = notationDiagramTrace
-							.getTraceRecords();
-						// Create new trace file resource
-						Resource traceResource = resourceSet
-							.createResource(traceURI);
-						// Add the contents of both the traces
-						traceResource.getContents()
-							.addAll(shapesDiagramTraceRecords);
-						traceResource.getContents()
-							.addAll(notationDiagramTraceRecords);
-
-						// Output process
-						ModelExtentContents outputNotation = notationDiagramTransfOutputs.get(0);
-						ModelExtentContents outputModel = shapesDiagramTransfOutputs.get(0);
-						monitor.worked(1);
-
-						URI outputSadURI = fileURI.trimFileExtension()
-							.appendFileExtension("2011-06-01")
-							.appendFileExtension("sad");
-
-						List<EObject> outObjectsNotation = outputNotation
-							.getAllRootElements();
-						List<EObject> outObjectsModel = outputModel
-							.getAllRootElements();
-
-						// Create and fill the output resource
-						Resource outResource_notation = resourceSet
-							.createResource(outputSadURI);
-						outResource_notation.getContents().addAll(
-							outObjectsModel);
-						outResource_notation.getContents().addAll(
-							outObjectsNotation);
-
-						monitor.worked(1);
-
-						// Save the sad file
-						outResource_notation.save(Collections.emptyMap());
+						// BEGIN MONITOR TASK
+						monitor.beginTask("Converting Vespucci diagram...", 7 * fileURIs.size());
+	
+						// Get Resource from input URI
+						Resource inResource = resourceSet
+								.getResource(fileURI, true);
+	
+						// Create the input objects for the transformation
+						List<EObject> inObjects = inResource.getContents();
 						
-						monitor.worked(1);
+						// Determine order of objects (ShapesDiagram / DiagramImpl) in the document
+						int posShapesDiagram, posDiagramImpl;
+						if (inObjects.get(0).getClass().toString().contains("ShapesDiagramImpl")) {
+							posShapesDiagram = 0;
+							posDiagramImpl = 1;
+						} else {
+							posShapesDiagram = 1;
+							posDiagramImpl = 0;
+						}
+						
+						// Get model contents
+						ModelContent shapesDiagram = new ModelContent(inObjects.subList(posShapesDiagram, posShapesDiagram + 1));
+						ModelContent notationDiagram = new ModelContent(inObjects.subList(posDiagramImpl, posDiagramImpl + 1));
+	
+						// Setup the execution environment details (context)
+						IContext context = new Context();
+	
+						// Create transformation objects
+						QvtInterpretedTransformation shapesDiagramTransformation = new QvtInterpretedTransformation(
+							TransformationUtil.getQvtModule(modelTransfUri));
+						In shapesDiagramInTransformationRunner = new TransformationRunner.In(
+							new ModelContent[] { shapesDiagram },
+							context
+						);
+						
+						QvtInterpretedTransformation notationDiagramTransformation = new QvtInterpretedTransformation(
+							TransformationUtil.getQvtModule(notationTransfUri));
+						In notationDiagramInTransformationRunner = new TransformationRunner.In(
+							new ModelContent[] { notationDiagram },
+							context
+						);
+						
+						// Run the transformations
+						Out shapesDiagramOutTransformationRunner = shapesDiagramTransformation
+							.run(shapesDiagramInTransformationRunner);
+						monitor.worked(2);
+						
+						Out notationDiagramOutTransformationRunner = notationDiagramTransformation
+							.run(notationDiagramInTransformationRunner);					
+						monitor.worked(2);
+	
+						// Retrieve the outputs
+						List<ModelExtentContents> shapesDiagramTransfOutputs =
+							shapesDiagramOutTransformationRunner.getExtents();
+						List<ModelExtentContents> notationDiagramTransfOutputs =
+							notationDiagramOutTransformationRunner.getExtents();
+	
+						// Retrieve the traces
+						Trace shapesDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
+						Trace notationDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
+	
+						// Check the output validity
+						if (shapesDiagramTrace != null && shapesDiagramTransfOutputs.size() == 1 &&
+							notationDiagramTrace != null && notationDiagramTransfOutputs.size() == 1) {
+							
+							// Trace processing
+							// Get trace URI
+							URI traceURI = fileURI.trimFileExtension()
+								.appendFileExtension("trace");
+							EList<TraceRecord> shapesDiagramTraceRecords = shapesDiagramTrace
+								.getTraceRecords();
+							EList<TraceRecord> notationDiagramTraceRecords = notationDiagramTrace
+								.getTraceRecords();
+							// Create new trace file resource
+							Resource traceResource = resourceSet
+								.createResource(traceURI);
+							// Add the contents of both the traces
+							traceResource.getContents()
+								.addAll(shapesDiagramTraceRecords);
+							traceResource.getContents()
+								.addAll(notationDiagramTraceRecords);
+	
+							// Output process
+							ModelExtentContents outputNotation = notationDiagramTransfOutputs.get(0);
+							ModelExtentContents outputModel = shapesDiagramTransfOutputs.get(0);
+							monitor.worked(1);
+	
+							URI outputSadURI = fileURI.trimFileExtension()
+								.appendFileExtension("2011-06-01")
+								.appendFileExtension("sad");
+	
+							List<EObject> outObjectsNotation = outputNotation
+								.getAllRootElements();
+							List<EObject> outObjectsModel = outputModel
+								.getAllRootElements();
+	
+							// Create and fill the output resource
+							Resource outResource_notation = resourceSet
+								.createResource(outputSadURI);
+							outResource_notation.getContents().addAll(
+								outObjectsModel);
+							outResource_notation.getContents().addAll(
+								outObjectsNotation);
+	
+							monitor.worked(1);
+	
+							// Save the sad file
+							outResource_notation.save(Collections.emptyMap());
+							
+							monitor.worked(1);
+						}
+					} catch (Exception e) {
+						handleError(e);
 						
 						monitor.done();
-						return Status.OK_STATUS;
+						return Status.CANCEL_STATUS;
 					}
-				} catch (Exception e) {
-					handleError(e);
 				}
-
+				
 				monitor.done();
-				return Status.CANCEL_STATUS;
+				return Status.OK_STATUS;
 			}
 		};
 		
@@ -246,24 +258,26 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		return targetPart.getSite().getShell();
 	}
 
-	private EObject getInput() {
+	private EObject getInput(URI fileURI) {
 		ResourceSetImpl rs = new ResourceSetImpl();
 		return rs.getEObject(fileURI.appendFragment("/"), true);
 	}
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {		
-		fileURI = null;
+		fileURIs = new ArrayList<URI>();
 		action.setEnabled(false);
 		if (selection instanceof IStructuredSelection == false
 				|| selection.isEmpty()) {
 			return;
 		}
-
-		IFile file = (IFile) ((IStructuredSelection) selection)
-				.getFirstElement();
-		fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(),
-				true);
+		
+		for (Object fileObject : ((IStructuredSelection)selection).toArray())
+		{
+			IFile file = (IFile)fileObject;
+			fileURIs.add(URI.createPlatformResourceURI(file.getFullPath().toString(), true));
+		}
+		
 		action.setEnabled(true);
 	}
 

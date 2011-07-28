@@ -711,10 +711,11 @@
             objectClass="org.eclipse.core.resources.IFile">
          <action
                class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
-               enablesFor="1"
+               enablesFor="+"
                id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1Action"
                label="Vespucci: Migrate from v0 to 2011-06-01"
-               menubarPath="additions">
+               menubarPath="additions"
+               style="push">
          </action>
       </objectContribution>
    </extension>
