@@ -66,9 +66,11 @@ import org.eclipse.m2m.internal.qvt.oml.runtime.project.TransformationUtil;
 import org.eclipse.m2m.internal.qvt.oml.trace.*;
 import org.eclipse.m2m.qvt.oml.util.IContext;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.actions.RenameResourceAction;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
 
@@ -202,10 +204,24 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 							ModelExtentContents outputNotation = notationDiagramTransfOutputs.get(0);
 							ModelExtentContents outputModel = shapesDiagramTransfOutputs.get(0);
 							monitor.worked(1);
-	
-							URI outputSadURI = fileURI.trimFileExtension()
-								.appendFileExtension("2011-06-01")
-								.appendFileExtension("sad");
+							
+							// Load original file
+							Resource origFile = resourceSet.getResource(fileURI, true);
+							origFile.load(null);
+							
+							// Create new file name for original file
+							URI outputOrigFileURI = fileURI.trimFileExtension()
+								.appendFileExtension("sad")
+								.appendFileExtension("old");
+							while (resourceSet.getURIConverter().exists(outputOrigFileURI, null))
+								outputOrigFileURI.appendFileExtension("old");
+							
+							// Save original file with new name
+							origFile.setURI(outputOrigFileURI);
+							origFile.save(null);
+							
+							// Delete old file
+							resourceSet.getURIConverter().delete(fileURI, null);
 	
 							List<EObject> outObjectsNotation = outputNotation
 								.getAllRootElements();
@@ -213,17 +229,18 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 								.getAllRootElements();
 	
 							// Create and fill the output resource
-							Resource outResource_notation = resourceSet
-								.createResource(outputSadURI);
-							outResource_notation.getContents().addAll(
+							// Save new file under old name
+							Resource outputResource = resourceSet
+								.createResource(fileURI);
+							outputResource.getContents().addAll(
 								outObjectsModel);
-							outResource_notation.getContents().addAll(
+							outputResource.getContents().addAll(
 								outObjectsNotation);
 	
 							monitor.worked(1);
 	
 							// Save the sad file
-							outResource_notation.save(Collections.emptyMap());
+							outputResource.save(Collections.emptyMap());
 							
 							monitor.worked(1);
 						}
@@ -244,14 +261,18 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		job.schedule();
 	}
 
-	private void handleError(Exception ex) {
-//		MessageDialog.openError(getShell(), "Transformation failed",
-//				MessageFormat.format(
-//						"{0}: {1}",
-//						ex.getClass().getSimpleName(),
-//						ex.getMessage() == null ? "no message" : ex
-//								.getMessage()));
-		ex.printStackTrace();
+	private void handleError(final Exception ex) {
+		Display.getDefault().asyncExec(new Runnable() {			
+			@Override
+			public void run() {
+				MessageDialog.openError(getShell(), "Transformation failed",
+						MessageFormat.format(
+								"{0}: {1}",
+								ex.getClass().getSimpleName(),
+								ex.getMessage() == null ? "no message" : ex
+										.getMessage()));
+			}
+		});
 	}
 
 	private Shell getShell() {
