@@ -2,7 +2,7 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tud.cs.st.vespucci.diagram; singleton:=true
-Bundle-Version: 1.5.0
+Bundle-Version: 1.5.1
 Bundle-ClassPath: .
 Bundle-Activator: de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 Bundle-Vendor: %providerName
