@@ -1,8 +1,8 @@
-﻿﻿Manifest-Version: 1.0
+﻿Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tud.cs.st.vespucci.diagram; singleton:=true
-Bundle-Version: 1.5.0
+Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 Bundle-Vendor: %providerName
@@ -49,3 +49,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.tud.cs.st.vespucci.io,
  org.eclipse.jdt.internal.corext.util
+Manifest-Version: 1.0

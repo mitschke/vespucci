@@ -608,16 +608,6 @@
       <constraintProvider cache="true">
          <package namespaceUri="http://vespucci.editor/2011-06-01"/>
                <constraints categories="VespucciDiagramConstraintsID">
-                  <constraint id="DependencyInvalidID"
-            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter5"
-            name="invalid constraint-dependency"
-            mode="Batch"
-            severity="ERROR" statusCode="200">
-            
-            <description><![CDATA[Dependencies must be derived from a set of valid keywords.]]></description>
-            <message><![CDATA[Dependency is invalid.]]></message>
-            <target class="vespucci_model.Connection"/>
-         </constraint>
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/EnsembleConstraintsID">
                   <constraint id="EnsembleNameNotNullID"
@@ -662,6 +652,16 @@
          </constraint>
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/ConnectionsConstraintsID">
+                  <constraint id="DependencyInvalidID"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter5"
+            name="invalid constraint-dependency"
+            mode="Batch"
+            severity="ERROR" statusCode="200">
+            
+            <description><![CDATA[Dependencies must be derived from a set of valid keywords.]]></description>
+            <message><![CDATA[Dependency kind is invalid.]]></message>
+            <target class="vespucci_model.Connection"/>
+         </constraint>
                   </constraints>
       </constraintProvider>
    </extension>
@@ -672,6 +672,7 @@
          <selector class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$DefaultCtx"/>
       </clientContext>
       <binding context="de.tud.cs.st.vespucci.diagramDefaultCtx">
+                  <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleNameNotNullID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleNameUniqueID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryNotNullID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.NonLeafEnsembleMustBeDerivedID"/>
