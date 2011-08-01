@@ -38,6 +38,7 @@ import java.util.HashMap;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -58,12 +59,9 @@ import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart;
 import org.eclipse.gmf.runtime.diagram.ui.providers.DiagramGlobalActionHandler;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequestFactory;
 import org.eclipse.gmf.runtime.emf.commands.core.command.CompositeTransactionalCommand;
-import org.eclipse.gmf.runtime.emf.type.core.ElementTypeRegistry;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
-
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * Handler for "Set Type"-commands in the constraint popup menu.<br>
@@ -73,7 +71,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * procedure a user initiates).
  * 
  * @author Alexander Weitzmann
- * @version 0.1
+ * @version 0.2
  */
 public class SetConstraintTypeHandler extends AbstractHandler {
 	/**
@@ -116,9 +114,10 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 	 */
 	private ConnectionEditPart[] selectedConnections;
 	/**
-	 * Array containing a map for all connections. The map associates each feature of the
-	 * connection with the corresponding value. This array is needed to restore all properties
-	 * of the recreated connections.
+	 * Array containing a map for all selected connections (see {@link #selectedConnections}). The
+	 * map associates each feature of the connection with the corresponding value. This array is
+	 * needed to restore all properties of the recreated connections. The order must correspond to
+	 * the order of {@link #selectedConnections}!
 	 */
 	private HashMap<EStructuralFeature, Object>[] featureMapArr;
 
@@ -150,7 +149,7 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 		// Save information of the connections to be destroyed.
 		for (int i = 0; i < selectedConnections.length; ++i) {
 			final EObject conn = selectedConnections[i].resolveSemanticElement();
-			HashMap<EStructuralFeature, Object> connMap = new HashMap<EStructuralFeature, Object>();
+			final HashMap<EStructuralFeature, Object> connMap = new HashMap<EStructuralFeature, Object>();
 			for (final EStructuralFeature feature : conn.eClass().getEAllStructuralFeatures()) {
 				connMap.put(feature, conn.eGet(feature));
 			}
@@ -164,8 +163,9 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 		// add delete-command as first part to the recreate-command
 		recreateCC.add(getDeleteCommand(selectedConnections));
 		// add create-command as second part
-		// TODO get correct type from command
-		final IElementType type = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Incoming_4005;
+		final SetConstraintTypeParameter typeParams = new SetConstraintTypeParameter();
+		final IElementType type = typeParams.getParameterValues().get(
+				event.getParameter("de.tud.cs.st.vespucci.diagram.SetConstraintTypeParam"));
 		recreateCC.add(getCreateCommand(type));
 		// restore properties of connections
 		// TODO
@@ -190,8 +190,6 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 				selectedConnections[0].getEditingDomain(), CONTEXT_LABEL);
 
 		for (int i = 0; i < featureMapArr.length; ++i) {
-			final HashMap<EStructuralFeature, Object> map = featureMapArr[i];
-
 			final CreateConnectionRequest connectionRequest = CreateViewRequestFactory.getCreateConnectionRequest(type,
 					getPreferencesHint());
 
@@ -200,8 +198,8 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 
 			connectionRequest.setTargetEditPart(targetEditPart);
 			connectionRequest.setType(org.eclipse.gef.RequestConstants.REQ_CONNECTION_START);
-			// TODO set to previous location
-			connectionRequest.setLocation(new Point(0, 0));
+			ConnectionAnchor oldStartAnchor = selectedConnections[i].getConnectionFigure().getSourceAnchor();
+			connectionRequest.setLocation(oldStartAnchor.getLocation(oldStartAnchor.getReferencePoint()));
 
 			// only if the connection is supported will we get a non null
 			// command from the sourceEditPart
@@ -210,8 +208,8 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 				connectionRequest.setSourceEditPart(sourceEditPart);
 				connectionRequest.setTargetEditPart(targetEditPart);
 				connectionRequest.setType(org.eclipse.gef.RequestConstants.REQ_CONNECTION_END);
-				// TODO set to previous location
-				connectionRequest.setLocation(new Point(0, 0));
+				ConnectionAnchor oldTargetAnchor = selectedConnections[i].getConnectionFigure().getTargetAnchor();
+				connectionRequest.setLocation(oldTargetAnchor.getLocation(oldTargetAnchor.getReferencePoint()));
 
 				final Command command = targetEditPart.getCommand(connectionRequest);
 				compositeCommand.compose(new CommandProxy(command));
