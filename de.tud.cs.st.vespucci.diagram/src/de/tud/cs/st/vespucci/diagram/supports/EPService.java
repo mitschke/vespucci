@@ -13,9 +13,9 @@
  *  - Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *  - Neither the name of the Software Engineering Group or Technische 
- *    Universität Darmstadt nor the names of its contributors may be used to 
- *    endorse or promote products derived from this software without specific 
+ *  - Neither the name of the Software Engineering Group or Technische
+ *    Universität Darmstadt nor the names of its contributors may be used to
+ *    endorse or promote products derived from this software without specific
  *    prior written permission.
  *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -56,193 +56,192 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
 
 /**
  * Provide common services, methods extracting information from edit part.
- * 
+ *
  * @author Tam-Minh Nguyen
- * @author Michael Eichberg (minor bug fixes, added TODOs)
- * @author BenjaminL errorlog ausgaben hinzugefügt
+ * @author Michael Eichberg - minor bug fixes, added TODOs
+ * @author Benjamin Lück - errors are now stored in the error log
  */
 public class EPService {
 
-    static public String getEditPartName(Object ep) {
-	try {
-	    if (ep instanceof DummyEditPart || ep instanceof Dummy2EditPart) {
-	    	return "empty";
-	    }
-	    //
-	    if (ep instanceof ShapeNodeEditPart) {
-			ShapeNodeEditPart ePart = (ShapeNodeEditPart) ep;
-			Shape shape = (Shape) ePart.resolveSemanticElement();
-			String s = shape.getName();
-	
-			// TODO BenjaminL: ERROR STRINGS ANLEGEN
-			if (s.length() == 0) {
-				IStatus iStat = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-						"No name for an ensemble is not allowed");
-				StatusManager.getManager().handle(iStat, StatusManager.SHOW);
-				StatusManager.getManager().handle(iStat, StatusManager.LOG);
-			    return "no-name";
+	static public String getEditPartName(Object ep) {
+		try {
+			if (ep instanceof DummyEditPart || ep instanceof Dummy2EditPart) {
+				return "empty";
 			}
-			return s;
-	    } else {
-	    	IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-					"Couldn't resolve ensemble name from a non ShapeNode", new Exception("Couldn't resolve ensemble name from a non ShapeNode"));
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-			return "non-editpart";
-		    }
+			//
+			if (ep instanceof ShapeNodeEditPart) {
+				ShapeNodeEditPart ePart = (ShapeNodeEditPart) ep;
+				Shape shape = (Shape) ePart.resolveSemanticElement();
+				String s = shape.getName();
+
+				// TODO BenjaminL: ERROR STRINGS ANLEGEN
+				if (s.length() == 0) {
+					IStatus iStat = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
+							"No name for an ensemble is not allowed");
+					StatusManager.getManager().handle(iStat, StatusManager.SHOW);
+					StatusManager.getManager().handle(iStat, StatusManager.LOG);
+					return "no-name";
+				}
+				return s;
+			} else {
+				IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
+						"Couldn't resolve ensemble name from a non ShapeNode", new Exception(
+								"Couldn't resolve ensemble name from a non ShapeNode"));
+				StatusManager.getManager().handle(is, StatusManager.SHOW);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+				return "non-editpart";
+			}
 		} catch (Exception e) {
-			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
+			IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"Couldn't resolve ensemble name", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
-		    return "no_name";
+			return "no_name";
 		}
-    }
+	}
 
-    /**
-     * @param ep
-     * @return ep query if ep is an editpart.
-     */
-    static public String getEditPartQuery(Object ep) {
-	// TODO See getEditPartName
-	try {
-	    if (ep instanceof DummyEditPart || ep instanceof Dummy2EditPart) {
-	    	return "empty";
-	    }
-	    //
-	    if (ep instanceof ShapeNodeEditPart) {
-			ShapeNodeEditPart ePart = (ShapeNodeEditPart) ep;
-			Shape shape = (Shape) ePart.resolveSemanticElement();
-			String s = shape.getQuery();
-	
-			if (s.length() == 0) {
-				IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-						"Query shouldn't be empty");
+	static public String getEditPartQuery(Object ep) {
+		// TODO See getEditPartName
+		try {
+			if (ep instanceof DummyEditPart || ep instanceof Dummy2EditPart) {
+				return "empty";
+			}
+			//
+			if (ep instanceof ShapeNodeEditPart) {
+				ShapeNodeEditPart ePart = (ShapeNodeEditPart) ep;
+				Shape shape = (Shape) ePart.resolveSemanticElement();
+				String s = shape.getQuery();
+
+				if (s.length() == 0) {
+					IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
+							"Query shouldn't be empty");
+					StatusManager.getManager().handle(is, StatusManager.SHOW);
+					StatusManager.getManager().handle(is, StatusManager.LOG);
+					return "empty";
+				}
+				return s;
+			} else {
+				IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
+						"Couldn't resolve ensemble name from a non EditPart", new Exception(
+								"Couldn't resolve ensemble name from a non EditPart"));
 				StatusManager.getManager().handle(is, StatusManager.SHOW);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
-			    return "empty";
+				return "non-editpart";
 			}
-			return s;
-	    } else {
-	    	IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-					"Couldn't resolve ensemble name from a non EditPart", new Exception("Couldn't resolve ensemble name from a non EditPart"));
+		} catch (Exception e) {
+			IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
+					"Couldn't resolve ensemble", new Exception("Couldn't resolve ensemble"));
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
-	    	return "non-editpart";
-	    }
-	} catch (Exception e) {
-	    IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-				"Couldn't resolve ensemble", new Exception("Couldn't resolve ensemble"));
-		StatusManager.getManager().handle(is, StatusManager.SHOW);
-		StatusManager.getManager().handle(is, StatusManager.LOG);
-	    return "empty";
-	}
-    }
-
-    /**
-     * @param ePart
-     * @return all shapes, children, contained by ePart recursively.
-     */
-    @SuppressWarnings("unchecked")
-    static public List<EditPart> getAllShapesInSideCompartment(EditPart ePart) {
-	List<EditPart> shapes = new ArrayList<EditPart>();
-
-	shapes.addAll(ePart.getChildren());
-
-	if (ePart instanceof GraphicalEditPart) {
-	    for (Object i : ((GraphicalEditPart) ePart).getChildren()) {
-		// System.out.println("\tePart child: " + getEditPartName(i) + "///" + i);
-		shapes.addAll(getAllShapesInSideCompartment((EditPart) i));
-	    }
+			return "empty";
+		}
 	}
 
-	return shapes;
-    }
+	/**
+	 * @param ePart
+	 * @return all shapes, children, contained by ePart recursively.
+	 */
+	@SuppressWarnings("unchecked")
+	static public List<EditPart> getAllShapesInSideCompartment(EditPart ePart) {
+		List<EditPart> shapes = new ArrayList<EditPart>();
 
-    /**
-     * @param list
-     * @return list of connection editpart connected to and from input shape list.
-     */
-    @SuppressWarnings("unchecked")
-    static public Set<ConnectionEditPart> getAllConnectionsToAndFromShapeList(List<EditPart> list) {
-	Set<ConnectionEditPart> conList = new HashSet<ConnectionEditPart>();
+		shapes.addAll(ePart.getChildren());
 
-	for (Object o : list) {
-	    if (o instanceof GraphicalEditPart) {
-		conList.addAll(((GraphicalEditPart) o).getSourceConnections());
-		conList.addAll(((GraphicalEditPart) o).getTargetConnections());
-	    }
+		if (ePart instanceof GraphicalEditPart) {
+			for (Object i : ((GraphicalEditPart) ePart).getChildren()) {
+				// System.out.println("\tePart child: " + getEditPartName(i) + "///" + i);
+				shapes.addAll(getAllShapesInSideCompartment((EditPart) i));
+			}
+		}
+
+		return shapes;
 	}
-	// conList.removeAll(tmpConnections);
-	return conList;
-    }
 
-    /**
-     * @param con
-     * @return connection facts: name, selectable/active or not.
-     * @category Debugging help method.
-     */
-    static public String getConnectionFact(ConnectionEditPart con) {
-	return "!Connection: " + EPService.getEditPartName(con.getSource()) + "-"
-		+ EPService.getEditPartName(con.getTarget()) + "/selectable: " + con.isSelectable()
-		+ "/active: " + con.isActive()
+	/**
+	 * @param list
+	 * @return list of connection editpart connected to and from input shape list.
+	 */
+	@SuppressWarnings("unchecked")
+	static public Set<ConnectionEditPart> getAllConnectionsToAndFromShapeList(List<EditPart> list) {
+		Set<ConnectionEditPart> conList = new HashSet<ConnectionEditPart>();
 
-	;
-    }
-
-    static public boolean checkIfOriginalConnection(ConnectionEditPart cep) {
-	return !org.eclipse.draw2d.ColorConstants.red.equals(cep.getFigure().getForegroundColor());
-    }
-
-    static public boolean checkIfConnectionNoSource(ConnectionEditPart con) {
-	return ((con.getSource() instanceof DummyEditPart) || (con.getSource() instanceof Dummy2EditPart));
-    }
-
-    static public boolean checkIfConnectionNoTarget(ConnectionEditPart con) {
-	return ((con.getTarget() instanceof DummyEditPart) || (con.getTarget() instanceof Dummy2EditPart));
-    }
-
-    static public EditPart getCommpartmentEditPart(EditPart ep) {
-	if (ep instanceof EnsembleEditPart) {
-	    EnsembleEditPart eep = (EnsembleEditPart) ep;
-	    return eep
-		    .getChildBySemanticHint(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-			    .getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID));
+		for (Object o : list) {
+			if (o instanceof GraphicalEditPart) {
+				conList.addAll(((GraphicalEditPart) o).getSourceConnections());
+				conList.addAll(((GraphicalEditPart) o).getTargetConnections());
+			}
+		}
+		// conList.removeAll(tmpConnections);
+		return conList;
 	}
-	if (ep instanceof Ensemble2EditPart) {
-	    Ensemble2EditPart eep = (Ensemble2EditPart) ep;
-	    return eep
-		    .getChildBySemanticHint(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-			    .getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart.VISUAL_ID));
+
+	/**
+	 * @param con
+	 * @return connection facts: name, selectable/active or not.
+	 * @category Debugging help method.
+	 */
+	static public String getConnectionFact(ConnectionEditPart con) {
+		return "!Connection: " + EPService.getEditPartName(con.getSource()) + "-"
+				+ EPService.getEditPartName(con.getTarget()) + "/selectable: " + con.isSelectable()
+				+ "/active: " + con.isActive()
+
+		;
 	}
-	return null;
-    }
 
-    /**
-     * store mouse position on each right click helping in creating new Module from context menu.
-     */
-    static public Point RECENT_MOUSE_RIGHT_CLICK_POSITION = new Point(0, 0);
-
-    /**
-     * @param connection
-     *            editpart.
-     * @return classifier as string.
-     */
-    static public String getConnectionClassifier(ConnectionEditPart con) {
-	try {
-	    Connection con_model = (Connection) con.resolveSemanticElement();
-	    String s = con_model.getName();
-
-	    if (s.length() == 0) {
-	    	s = "all";
-	    }
-	    return s;
-	} catch (Exception e) {
-		IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID,
-				"Couldn't resolve connection classifier", new Exception("Couldn't resolve connection classifier"));
-		StatusManager.getManager().handle(is, StatusManager.LOG);
-	    return "all";
+	static public boolean checkIfOriginalConnection(ConnectionEditPart cep) {
+		return !org.eclipse.draw2d.ColorConstants.red.equals(cep.getFigure().getForegroundColor());
 	}
-    }
+
+	static public boolean checkIfConnectionNoSource(ConnectionEditPart con) {
+		return ((con.getSource() instanceof DummyEditPart) || (con.getSource() instanceof Dummy2EditPart));
+	}
+
+	static public boolean checkIfConnectionNoTarget(ConnectionEditPart con) {
+		return ((con.getTarget() instanceof DummyEditPart) || (con.getTarget() instanceof Dummy2EditPart));
+	}
+
+	static public EditPart getCommpartmentEditPart(EditPart ep) {
+		if (ep instanceof EnsembleEditPart) {
+			EnsembleEditPart eep = (EnsembleEditPart) ep;
+			return eep
+					.getChildBySemanticHint(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+							.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID));
+		}
+		if (ep instanceof Ensemble2EditPart) {
+			Ensemble2EditPart eep = (Ensemble2EditPart) ep;
+			return eep
+					.getChildBySemanticHint(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+							.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart.VISUAL_ID));
+		}
+		return null;
+	}
+
+	/**
+	 * store mouse position on each right click helping in creating new Module from context menu.
+	 */
+	static public Point RECENT_MOUSE_RIGHT_CLICK_POSITION = new Point(0, 0);
+
+	/**
+	 * @param connection
+	 *            editpart.
+	 * @return classifier as string.
+	 */
+	static public String getConnectionClassifier(ConnectionEditPart con) {
+		try {
+			Connection con_model = (Connection) con.resolveSemanticElement();
+			String s = con_model.getName();
+
+			if (s.length() == 0) {
+				s = "all";
+			}
+			return s;
+		} catch (Exception e) {
+			IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
+					"Couldn't resolve connection classifier", new Exception(
+							"Couldn't resolve connection classifier"));
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+			return "all";
+		}
+	}
 
 }

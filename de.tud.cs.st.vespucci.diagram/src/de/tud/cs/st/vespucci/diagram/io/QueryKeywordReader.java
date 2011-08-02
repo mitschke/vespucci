@@ -1,7 +1,7 @@
 /**
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author Alexander Weitzmann
+ *   TODO Make sure that the license agreement does not contain "Author …"
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universitiät Darmstadt
@@ -46,6 +46,7 @@ import java.util.Scanner;
  * @author Alexander Weitzmann
  * @version 1.3
  */
+// TODO see ValidDependenciesReader
 public class QueryKeywordReader {
 
 	/**

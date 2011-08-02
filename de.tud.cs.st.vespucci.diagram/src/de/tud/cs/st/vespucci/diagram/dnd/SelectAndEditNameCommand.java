@@ -5,20 +5,20 @@
  *   Department of Computer Science
  *   Technische Universität Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -39,7 +39,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.EditPart;
@@ -55,17 +54,18 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * 
- * @author Patrick
- * 
+ * TODO Document...
+ * @author Patrick TODO who????
  */
 public class SelectAndEditNameCommand extends AbstractCommand {
+
 	private static final String COMMANDNAME = "SELECTNAMECOMMAND";
+
 	private CreateViewAndElementRequest createViewAndElementRequest = null;
+
 	private EditPartViewer editPartViewer = null;
 
-	public SelectAndEditNameCommand(
-			CreateViewAndElementRequest createViewAndElementRequest,
+	public SelectAndEditNameCommand(CreateViewAndElementRequest createViewAndElementRequest,
 			EditPartViewer editPartViewer) {
 		super(COMMANDNAME);
 		this.createViewAndElementRequest = createViewAndElementRequest;
@@ -73,20 +73,16 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 	}
 
 	@Override
-	protected CommandResult doExecuteWithResult(
-			IProgressMonitor progressMonitor, IAdaptable info)
-			throws ExecutionException {
+	protected CommandResult doExecuteWithResult(IProgressMonitor progressMonitor, IAdaptable info) {
 
-		if ((editPartViewer != null)
-				&& ((Collection) createViewAndElementRequest.getNewObject() != null)) {
+		if (editPartViewer != null && createViewAndElementRequest.getNewObject() != null) {
 			// select the Diagram Editor
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().getActiveEditor().setFocus();
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()
+					.setFocus();
 
 			// set Focus on the added Ensemble and select the Name
 			selectAddedObject(editPartViewer,
-					(Collection) createViewAndElementRequest
-							.getViewDescriptors());
+					(Collection) createViewAndElementRequest.getViewDescriptors());
 
 			return CommandResult.newOKCommandResult();
 		}
@@ -97,26 +93,21 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 	}
 
 	@Override
-	protected CommandResult doRedoWithResult(IProgressMonitor progressMonitor,
-			IAdaptable info) throws ExecutionException {
+	protected CommandResult doRedoWithResult(IProgressMonitor progressMonitor, IAdaptable info) {
 		return null;
 	}
 
 	@Override
-	protected CommandResult doUndoWithResult(IProgressMonitor progressMonitor,
-			IAdaptable info) throws ExecutionException {
+	protected CommandResult doUndoWithResult(IProgressMonitor progressMonitor, IAdaptable info) {
 		return null;
 	}
 
 	/**
 	 * Select the newly added shape view by default
-	 * 
-	 * @param viewer
-	 * @param objects
 	 */
-	protected void selectAddedObject(EditPartViewer viewer, Collection objects) {
-		final List editparts = new ArrayList();
-		for (Iterator i = objects.iterator(); i.hasNext();) {
+	protected void selectAddedObject(EditPartViewer viewer, Collection<?> objects) {
+		final List<Object>  editparts = new ArrayList<Object> ();
+		for (Iterator<?>  i = objects.iterator(); i.hasNext();) {
 			Object object = i.next();
 			if (object instanceof IAdaptable) {
 				Object editPart = viewer.getEditPartRegistry().get(
@@ -138,8 +129,7 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 					// basically, the editpart has been deleted when this
 					// code is being executed. (see RATLC00527114)
 					if (editPart.isActive()) {
-						editPart.performRequest(new Request(
-								RequestConstants.REQ_DIRECT_EDIT));
+						editPart.performRequest(new Request(RequestConstants.REQ_DIRECT_EDIT));
 						revealEditPart((EditPart) editparts.get(0));
 					}
 				}
@@ -149,11 +139,9 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 
 	/**
 	 * Reveals the newly created editpart
-	 * 
-	 * @param editPart
 	 */
 	protected void revealEditPart(EditPart editPart) {
-		if ((editPart != null) && (editPart.getViewer() != null))
+		if (editPart != null && editPart.getViewer() != null)
 			editPart.getViewer().reveal(editPart);
 	}
 }

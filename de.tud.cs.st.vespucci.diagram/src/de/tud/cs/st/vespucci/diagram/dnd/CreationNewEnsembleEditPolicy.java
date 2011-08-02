@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    IBM Corporation - initial API and implementation 
+ *    IBM Corporation - initial API and implementation
  ****************************************************************************/
 package de.tud.cs.st.vespucci.diagram.dnd;
 
@@ -41,8 +41,8 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 /**
  * EditPolicy for creating new shapes (GMF shapes) on a Vespucci-diagram This
  * policy handles a CreateViewRequest.
- * 
- * @author MalteV
+ *
+ * @author Malte Viering
  */
 final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 
@@ -51,7 +51,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 	 * CreationEditPolicy. This version should only be used in this class. This
 	 * method returns a CompositeCommand that include - a create view element
 	 * command create semantic element command - two setValue commands
-	 * 
+	 *
 	 * @param request
 	 * @return Command that creates the semantic and the view command for the
 	 *         given CreateViewAndElementRequest
@@ -64,7 +64,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		 * CompositeCommand that is only executable if all commands in the
 		 * compositeCommand are executable. This command needs data that will be
 		 * created from an other command in the compositeCommand.
-		 * 
+		 *
 		 * @author MalteV
 		 */
 		class extendedSetValueCommand extends SetValueCommand {
@@ -89,7 +89,7 @@ final public class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 			}
 
 			/**
-			 * @return this Methode returns always true!
+			 * @return <code>true</code>
 			 */
 			@Override
 			public boolean canExecute() {

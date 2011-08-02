@@ -6,20 +6,20 @@
  *   Department of Computer Science
  *   Technische Universität Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -61,13 +61,13 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
+ * TODO correct the subsequent documentation (Static class???)
  * static class to get all information about the units supports e.g. type
  * conversion from java binary type to FQN or resolving all packages from a
  * given project folder
- * 
- * @author BenjaminL
+ *
+ * @author Benjamin Lück
  */
-@SuppressWarnings("restriction")
 public class Resolver {
 
 	private static final String CONSTRUCTOR = "<init>";
@@ -81,39 +81,34 @@ public class Resolver {
 	public static Resolver INSTANCE;
 
 	public Resolver() {
+		// FIXME The following line is VERY suspicious - it is not clear, what the intention is - "a failed singleton pattern"?
 		INSTANCE = this;
 	}
 
 	/**
-	 * resolving types to FQN declaration
-	 * 
-	 * @param type
-	 * @param jdtDeclaringType
-	 * @return
-	 * @author BenjaminL
+	 * resolving types to FQN
 	 */
 	private static String typeToFQN(String type, IType jdtDeclaringType) {
-		String tmp = null;
 		try {
-			tmp = JavaModelUtil.getResolvedTypeName(type, jdtDeclaringType);
+			return JavaModelUtil.getResolvedTypeName(type, jdtDeclaringType);
 		} catch (JavaModelException e) {
-			IStatus is = new Status(Status.ERROR,
+			IStatus is = new Status(IStatus.ERROR,
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve type", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
+			// TODO document why it makes sense to return null (here)
+			return null;
 		}
-		return tmp;
 	}
 
 	/**
 	 * getting the package name (FQN) from a IMethod, IPackageFragment,
 	 * ICompilationUnit, IField and IType
-	 * 
+	 *
 	 * @param o
 	 *            one of the named Ixxx
 	 * @param key
-	 * @return FQN of the package
-	 * @author BenjaminL
+	 * @return the name of the package
 	 */
 	public static String getFQPackageNameFromIxxx(Object o, String key) {
 		// package...
@@ -141,27 +136,26 @@ public class Resolver {
 				if (declarations.length > 0) {
 					return declarations[0].getElementName().trim();
 				}
+				else
+					return "";
 			} catch (JavaModelException e) {
-				IStatus is = new Status(Status.ERROR,
+				IStatus is = new Status(IStatus.ERROR,
 						VespucciDiagramEditorPlugin.ID,
 						"JavaModelException: Failed to resolve Package", e);
 				StatusManager.getManager().handle(is, StatusManager.SHOW);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
+				// TODO does it make sense to return an empty string here? If yes, document!
+				return "";
 			}
 		}
-		return "";
 	}
 
 	/**
-	 * returns true, if ALL objects are processable.
-	 * 
-	 * @param map
-	 * @return true / false
-	 * @author BenjaminL
+	 * returns true, if ALL objects are processable. TODO what does it mean, to be processable?
 	 */
 	public static boolean isProcessable(Map<String, Object> map) {
 
-		for (String key : map.keySet()) {
+		for (String key : map.keySet()) { // FIXME the loop statement is useless; it is equivalent to "getFirst"... either correct the name of the method and documentation or the implementation!
 			Object o = map.get(key);
 			boolean akt = false;
 
@@ -202,7 +196,7 @@ public class Resolver {
 				}
 
 			} catch (JavaModelException e) {
-				IStatus is = new Status(Status.ERROR,
+				IStatus is = new Status(IStatus.ERROR,
 						VespucciDiagramEditorPlugin.ID, "JavaModelException", e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			} catch (NullPointerException e) {
@@ -221,14 +215,8 @@ public class Resolver {
 
 	/**
 	 * getting the FQN classname
-	 * 
-	 * @param o
-	 * @param key
-	 * @return FQN classname
-	 * @author BenjaminL
 	 */
-	public static String getFQClassnamefromIxxx(Object o, String key) {
-		// class, method, field, type
+	public static String getFQClassnamefromIxxx(Object o, String key) { // TODO Rename getFQClassNamefromIxxx
 		String classname = "";
 		if (o instanceof IMethod)
 			return ((IMethod) o).getDeclaringType().getFullyQualifiedName();
@@ -256,14 +244,10 @@ public class Resolver {
 
 	/**
 	 * getting the classname
-	 * 
-	 * @param o
-	 * @param key
-	 * @return classname
-	 * @author BenjaminL
 	 */
 	public static String getClassnamefromIxxx(Object o, String key) {
-		// TODO: method is the same as getFQClassnamefromIxxx only the package
+		// TODO fix the code duplication problem!
+		// method is the same as getFQClassnamefromIxxx only the package
 		// name is not resolved - extending getFQClassnamefromIxxx with a
 		// boolean to switch between FQN and N?
 		// little hack: substring FQN without packagename
@@ -300,37 +284,31 @@ public class Resolver {
 	}
 
 	/**
-	 * returns the returntype of the given IMethod (in this moment IMethod is
+	 * returns the return type of the given IMethod (in this moment IMethod is
 	 * the only one)
-	 * 
-	 * @param o
-	 * @param key
-	 * @return FQN type
-	 * @author BenjaminL
 	 */
 	public static String getReturnTypeFromIxxx(Object o, String key) {
-		// method
 		try {
 			if (o instanceof IMethod) {
 				IMethod m = (IMethod) o;
 				return typeToFQN(m.getReturnType(), m.getDeclaringType());
 			}
-
+			return null;
 		} catch (JavaModelException e) {
-			IStatus is = new Status(Status.ERROR,
+			IStatus is = new Status(IStatus.ERROR,
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve returntype", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
+			// TODO why does it make sense to return null?
+			return null;
 		}
-		return null;
+
 	}
 
 	/**
 	 * getting all parameters from a given IMethod
-	 * 
-	 * @param field
+	 *
 	 * @return returns the parameters as an string list
-	 * @author BenjaminL
 	 */
 	public static List<String> getParameterTypesFromMethod(IMethod method) {
 		List<String> parameters = new ArrayList<String>();
@@ -344,11 +322,11 @@ public class Resolver {
 
 	/**
 	 * get the name of a method
-	 * 
+	 *
 	 * @param method
 	 * @return String of the method name
 	 */
-	public static String getMethodnameFromMethod(IMethod method) {
+	public static String getMethodnameFromMethod(IMethod method) { // TODO rename getMethodName...
 		// get method name, set as <init> if it is the constructor of the class
 		try {
 			if (method.isConstructor())
@@ -356,17 +334,18 @@ public class Resolver {
 			else
 				return method.getElementName();
 		} catch (JavaModelException e) {
-			IStatus is = new Status(Status.ERROR,
+			IStatus is = new Status(IStatus.ERROR,
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve methodname", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
+			// TODO why does it make sense to return null?
+			return null;
 		}
-		return null;
 	}
 
 	/**
 	 * get the name of an field
-	 * 
+	 *
 	 * @param field
 	 * @return String of the field name
 	 */
@@ -374,17 +353,19 @@ public class Resolver {
 		try {
 			return typeToFQN(field.getTypeSignature(), field.getDeclaringType());
 		} catch (JavaModelException e) {
-			IStatus is = new Status(Status.ERROR,
+			IStatus is = new Status(IStatus.ERROR,
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve field type", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
+			// TODO why does it make sense to return null?
+			return null;
 		}
-		return null;
+
 	}
 
 	/**
 	 * try to resolve the element name of the given object
-	 * 
+	 *
 	 * @param the
 	 *            given object
 	 * @return the element name
@@ -428,8 +409,7 @@ public class Resolver {
 	/**
 	 * getting all packages from a IPackageFragmentRoot; e.g. a src-folder or a
 	 * JAR-file which is in the project referenced libraries
-	 * 
-	 * @param PFR
+	 *
 	 * @return list<Strings> of the included package names
 	 */
 	public static List<String> getPackagesFromPFR(IPackageFragmentRoot pfr) {
@@ -453,13 +433,14 @@ public class Resolver {
 
 		} catch (JavaModelException e) {
 			IStatus is = new Status(
-					Status.ERROR,
+					IStatus.ERROR,
 					VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve packages of src-folder/JAR-file",
 					e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
+			// TODO is this behavior meaningfull?
+			return Collections.emptyList();
 		}
-		return Collections.emptyList();
 	}
 
 }

@@ -1,7 +1,7 @@
 ﻿/**
  *  License (BSD Style License):
  *   Copyright (c) 2011
- *   Author Tam-Minh Nguyen
+ *   TODO remove "Author Tam-Minh Nguyen" (in License Headers)
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -33,7 +33,7 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  * 
  *
- * $Id$
+ * $Id$ TODO what is "$Id$ all about?
  */
 package de.tud.cs.st.vespucci.io;
 
@@ -46,7 +46,7 @@ import java.util.Scanner;
  * methods to retrieve these keywords. The specified file must only contain one keyword
  * per line; empty lines may be added.
  * 
- * Basically {@link de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader}
+ * TODO Write a common base class instead - Basically {@link de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader}
  * 
  * @author Alexander Weitzmann
  * @version 1.1
@@ -58,6 +58,7 @@ public class ValidDependenciesReader {
 	 */
 	private static final String PATH = "/resources/validDependencies.txt";
 
+	// TODO Why do you use an Array?
 	/**
 	 * Keywords read in from given file (see {@link #PATH})
 	 */
@@ -73,13 +74,12 @@ public class ValidDependenciesReader {
 		return keywords.clone();
 	}
 
-	/**
-	 * Constructor.
-	 */
+	// TODO What is the purpose of having multiple instances of this class? 
 	public ValidDependenciesReader() {
 		readKeywordFile();
 	}
 
+	// TODO consider making this a static utility method (will probably also solve the code duplication problem) that given a path, returns the list of keywords
 	/**
 	 * Reads in the keyword-file.
 	 */

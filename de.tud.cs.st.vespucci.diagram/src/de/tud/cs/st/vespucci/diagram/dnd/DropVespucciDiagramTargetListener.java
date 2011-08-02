@@ -5,20 +5,20 @@
  *   Department of Computer Science
  *   Technische Universität Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -53,19 +53,19 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEdit
 /**
  * A TransferDropTargetListener for handling the drop of ISelections on the
  * VespucciDiagram view
- * 
+ *
  * the drop is enable if it can be interpreted as a query
- * 
+ *
  * The data of the drop is stored in extendedData
- * 
- * @author MalteV
+ *
+ * @author Malte Viering
  */
 public class DropVespucciDiagramTargetListener extends
 		AbstractTransferDropTargetListener {
 
 	/**
 	 * Constructor that set the drop type to IRecource
-	 * 
+	 *
 	 * @param viewer
 	 */
 	public DropVespucciDiagramTargetListener(EditPartViewer viewer) {
@@ -115,8 +115,6 @@ public class DropVespucciDiagramTargetListener extends
 
 	/**
 	 * check if the drop is processable
-	 * 
-	 * @return
 	 */
 	private boolean enable() {
 		if (getTargetEditPart() == null) {
@@ -149,8 +147,7 @@ public class DropVespucciDiagramTargetListener extends
 
 	@Override
 	protected Request createTargetRequest() {
-		DirectEditRequest request = new DirectEditRequest();
-		return request;
+		return new DirectEditRequest();
 	}
 
 }

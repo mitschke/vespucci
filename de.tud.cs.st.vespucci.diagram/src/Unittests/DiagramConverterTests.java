@@ -6,20 +6,20 @@
  *   Department of Computer Science
  *   Technische Universitiät Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -32,6 +32,8 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
+// TODO move to the correct package: de.tud.cs.st.vespucci.diagram.converter.DiagramConverter
+// FIXME move all test code to a source folder called "test" (we do not want to deliver this code as part of the plugin!)
 package Unittests;
 
 import static org.junit.Assert.assertTrue;
@@ -55,7 +57,7 @@ import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
 
 public class DiagramConverterTests {
 
-	DiagramConverter dc = null;
+	private DiagramConverter dc = null;
 
 	public DiagramConverterTests()
 	{
@@ -92,7 +94,7 @@ public class DiagramConverterTests {
 			copy (sadInputStream, tempSadFile);
 			InputStream plInputStream = this.getClass().getResourceAsStream(plFile);
 			copy (plInputStream, tempPlFile);
-			
+
 			// change the filename of the sad File in the prolog file
 			tempPlFile = changeDiagramFileName(tempPlFile, sadFile, tempSadFile.getName());
 
@@ -107,30 +109,28 @@ public class DiagramConverterTests {
 			assertTrue(tempPlFile.delete());
 			assertTrue(tempSadFile.delete());
 
-		} catch (IOException e) {
-			Assert.fail(e.toString());
-		} catch (Exception e) {
+		}  catch (Exception e) {
 			Assert.fail(e.toString());
 		}
 
 	}
 
 	/**
-	 * Change the filename of the sad File in the prolog file and delete also the comments at the prolog file.
+	 * Change the filename of the sad File in the prolog file and delete also the comments in the prolog file.
 	 */
 	private File changeDiagramFileName(File plFile, String search, String replace) throws IOException {
 		// delete also the comments form pl File
 		boolean comment = false;
 		String buf = null;
 		String writeBack = null ;
-		
+
 		BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(plFile)), 1000);
 
 		File generatedPlFile = new File(plFile.getAbsoluteFile()+"l");
 		generatedPlFile.createNewFile();
 		FileOutputStream Fileoutput = new FileOutputStream(generatedPlFile) ;
 		DataOutput outFile = new DataOutputStream(Fileoutput) ;
- 
+
 		while (true)
 		{
 			buf = input.readLine();
@@ -146,7 +146,7 @@ public class DiagramConverterTests {
 				comment=false;
 				continue;
 			}
-			
+
 			if (comment==false)
 			{
 				writeBack = buf.replaceAll(search, replace)+"\n";
@@ -159,13 +159,14 @@ public class DiagramConverterTests {
 
 		return generatedPlFile;
 	}
-	
+
+	// TODO public or private
 	public File deleteComment(File plFile) throws IOException
 	{
 		boolean comment = false;
-		
+
 		String buf = null;
-		
+
 		BufferedReader input = new BufferedReader(
 				new InputStreamReader(
 						new FileInputStream(plFile)), 1000);
@@ -174,7 +175,7 @@ public class DiagramConverterTests {
 		withoutComments.createNewFile();
 		FileOutputStream Fileoutput = new FileOutputStream(withoutComments) ;
 		DataOutput outFile = new DataOutputStream(Fileoutput) ;
- 
+
 		while (true)
 		{
 			buf = input.readLine();
@@ -190,7 +191,7 @@ public class DiagramConverterTests {
 				comment=false;
 				continue;
 			}
-			
+
 			if (comment==false)
 				outFile.writeBytes(buf+"\n") ;
 		}
@@ -198,7 +199,7 @@ public class DiagramConverterTests {
 		Fileoutput.close();
 		plFile.delete();
 		withoutComments.renameTo(plFile);
-		
+
 		return new File(plFile.getAbsolutePath());
 	}
 
@@ -206,7 +207,7 @@ public class DiagramConverterTests {
 	{
 		String buf1 = null;
 		String buf2 = null;
-		
+
 		BufferedReader input1 = new BufferedReader(new InputStreamReader(new FileInputStream(one)), 1000);
 		BufferedReader input2 = new BufferedReader(new InputStreamReader(new FileInputStream(two)), 1000);
 
@@ -224,9 +225,9 @@ public class DiagramConverterTests {
 		}
 		input1.close();
 		input2.close();
-		
+
 		return true;
-		
+
 	}
 
 	private void copy(InputStream from_inputStream, File to){
