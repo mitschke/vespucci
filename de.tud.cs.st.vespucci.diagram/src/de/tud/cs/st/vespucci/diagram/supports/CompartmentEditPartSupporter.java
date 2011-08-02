@@ -13,9 +13,9 @@
  *  - Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *  - Neither the name of the Software Engineering Group or Technische 
- *    Universität Darmstadt nor the names of its contributors may be used to 
- *    endorse or promote products derived from this software without specific 
+ *  - Neither the name of the Software Engineering Group or Technische
+ *    Universität Darmstadt nor the names of its contributors may be used to
+ *    endorse or promote products derived from this software without specific
  *    prior written permission.
  *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -54,13 +54,12 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * Collapsement supporter for EnsembleEditPart
- * 
+ *
  * @author a_vovk
- * 
  */
 public class CompartmentEditPartSupporter {
 
-	// ------------------------------------------//
+
 	public static final Color TMP_CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.red;
 
 	public static final Color CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.black;
@@ -71,7 +70,6 @@ public class CompartmentEditPartSupporter {
 
 	private List<EditPart> compartmentChildren;
 
-	// ------------------------------------------//
 
 	public CompartmentEditPartSupporter(
 			ShapeCompartmentEditPart compartmentToSupport) {
@@ -81,7 +79,7 @@ public class CompartmentEditPartSupporter {
 
 	/**
 	 * Update connections after EditPart was collapsed/opened
-	 * 
+	 *
 	 * @param event
 	 *            collapsement event
 	 */
@@ -139,10 +137,9 @@ public class CompartmentEditPartSupporter {
 
 	/**
 	 * Get view for corresponding model element
-	 * 
+	 *
 	 * @param editPart search in this editPart
 	 * @param shapeToFind model element
-	 * @return
 	 */
 	private NodeImpl getViewFromModel(EditPart editPart, Shape shapeToFind) {
 		List<EditPart> editParts = EPService
@@ -199,18 +196,13 @@ public class CompartmentEditPartSupporter {
 						&& con.getOriginalTarget().isEmpty()) {
 					con.setTemp(false);
 				}
-
 			}
-
 		}
-
 	}
 
 	/**
 	 * Get all connections that goes in/out from ePart editPart(all
 	 * children connections from this editPart)
-	 * @param ePart 
-	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	private Set<ConnectionEditPart> getConnections(
@@ -241,12 +233,10 @@ public class CompartmentEditPartSupporter {
 		}
 
 		return filterConnectionsFromConnectorImpl(connections);
-
 	}
 
 	/**
-	 * Get all connections that belong to this editPart
-	 * @return
+	 * Get all connections that belong to this editPart.
 	 */
 	@SuppressWarnings("unchecked")
 	private Set<ConnectionEditPart> getAllConnections() {
@@ -254,12 +244,11 @@ public class CompartmentEditPartSupporter {
 		connections.addAll(this.editPartOfCompartment.getSourceConnections());
 		connections.addAll(this.editPartOfCompartment.getTargetConnections());
 		return filterConnectionsFromConnectorImpl(connections);
-
 	}
 
 	/**
 	 * Filter connections for EdgeImpl: delete ConnectorImpl
-	 * 
+	 *
 	 * @param connections
 	 *            connections to filter
 	 * @return filtered connections

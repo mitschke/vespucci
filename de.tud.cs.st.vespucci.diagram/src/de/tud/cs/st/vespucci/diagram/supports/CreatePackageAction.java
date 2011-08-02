@@ -13,9 +13,9 @@
  *  - Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *  - Neither the name of the Software Engineering Group or Technische 
- *    Universität Darmstadt nor the names of its contributors may be used to 
- *    endorse or promote products derived from this software without specific 
+ *  - Neither the name of the Software Engineering Group or Technische
+ *    Universität Darmstadt nor the names of its contributors may be used to
+ *    endorse or promote products derived from this software without specific
  *    prior written permission.
  *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -42,8 +42,8 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequestFactory;
-import org.eclipse.gmf.runtime.diagram.ui.requests.RequestConstants;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -56,61 +56,54 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTyp
 
 /**
  * Responsibility: create new package object called from context menu.
- * 
+ *
  * @author Tam-Minh Nguyen
- * 
  */
 public class CreatePackageAction implements IObjectActionDelegate {
 
-    public final static String ID = "addPackageActionID";
+	public final static String ID = "addPackageActionID";
 
-    private DiagramEditPart selectedElement;
+	private DiagramEditPart selectedElement;
 
-    public void run(IAction action) {
-	CreateViewRequest packageRequest = CreateViewRequestFactory.getCreateShapeRequest(
-		VespucciElementTypes.Ensemble_2001, selectedElement.getDiagramPreferencesHint());
+	public void run(IAction action) {
+		CreateViewRequest packageRequest = CreateViewRequestFactory.getCreateShapeRequest(
+				VespucciElementTypes.Ensemble_2001, selectedElement.getDiagramPreferencesHint());
 
-	packageRequest.setLocation(EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION);
+		packageRequest.setLocation(EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION);
 
-	Command createCommand = selectedElement.getCommand(packageRequest);
-	IAdaptable viewAdapter = (IAdaptable) ((List<?>) packageRequest.getNewObject()).get(0);
+		Command createCommand = selectedElement.getCommand(packageRequest);
+		IAdaptable viewAdapter = (IAdaptable) ((List<?>) packageRequest.getNewObject()).get(0);
 
-	selectedElement.getDiagramEditDomain().getDiagramCommandStack().execute(createCommand);
+		selectedElement.getDiagramEditDomain().getDiagramCommandStack().execute(createCommand);
 
-	// put the new topic in edit mode
-	final EditPartViewer viewer = selectedElement.getViewer();
-	final EditPart elementPart = (EditPart) viewer.getEditPartRegistry().get(
-		viewAdapter.getAdapter(View.class));
-	if (elementPart != null) {
-	    Display.getCurrent().asyncExec(new Runnable() {
+		// put the new topic in edit mode
+		final EditPartViewer viewer = selectedElement.getViewer();
+		final EditPart elementPart = (EditPart) viewer.getEditPartRegistry().get(
+				viewAdapter.getAdapter(View.class));
+		if (elementPart != null) {
+			Display.getCurrent().asyncExec(new Runnable() {
 
-		public void run() {
-		    viewer.setSelection(new StructuredSelection(elementPart));
-		    Request der = new Request(RequestConstants.REQ_DIRECT_EDIT);
-		    elementPart.performRequest(der);
+				public void run() {
+					viewer.setSelection(new StructuredSelection(elementPart));
+					Request der = new Request(RequestConstants.REQ_DIRECT_EDIT);
+					elementPart.performRequest(der);
+				}
+			});
 		}
-	    });
 	}
 
-    }
-
-    public void selectionChanged(IAction action, ISelection selection) {
-	selectedElement = null;
-	if (selection instanceof IStructuredSelection) {
-	    IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-	    if (structuredSelection.getFirstElement() instanceof DiagramEditPart) {
-		selectedElement = (DiagramEditPart) structuredSelection.getFirstElement();
-	    }
+	public void selectionChanged(IAction action, ISelection selection) {
+		selectedElement = null;
+		if (selection instanceof IStructuredSelection) {
+			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+			if (structuredSelection.getFirstElement() instanceof DiagramEditPart) {
+				selectedElement = (DiagramEditPart) structuredSelection.getFirstElement();
+			}
+		}
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-     * org.eclipse.ui.IWorkbenchPart)
-     */
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-    }
+	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+		// nothing to to
+	}
 
 }

@@ -5,20 +5,20 @@
  *   Department of Computer Science
  *   Technische Universität Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -39,7 +39,6 @@ import java.io.IOException;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -55,8 +54,8 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
 
 /**
  * A handler for saving a *.sad file to a *.pl Prolog file.
- * 
- * @author MalteV
+ *
+ * @author Malte Viering
  */
 public class GeneratePrologFacts extends AbstractHandler {
 
@@ -64,11 +63,10 @@ public class GeneratePrologFacts extends AbstractHandler {
 	 * Handels the event, if it is a IStructuredSelection. Should only be used
 	 * for Vespucci diagram files. Generates the prolog facts of the given
 	 * SAD-files.
-	 * 
-	 * @param ExecutionEvent
+	 *
 	 * @return null
 	 */
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
 				.getActiveMenuSelection(event); // current Package Explorer
 												// selection
@@ -86,7 +84,7 @@ public class GeneratePrologFacts extends AbstractHandler {
 														// *.sad a
 														// *.pl
 					} catch (FileNotFoundException e) {
-						IStatus is = new Status(Status.ERROR,
+						IStatus is = new Status(IStatus.ERROR,
 								VespucciDiagramEditorPlugin.ID,
 								"FileNotFoundException", e);
 						StatusManager.getManager().handle(is,
@@ -94,7 +92,7 @@ public class GeneratePrologFacts extends AbstractHandler {
 						StatusManager.getManager()
 								.handle(is, StatusManager.LOG);
 					} catch (IOException e) {
-						IStatus is = new Status(Status.ERROR,
+						IStatus is = new Status(IStatus.ERROR,
 								VespucciDiagramEditorPlugin.ID,
 								"Failed to save Prolog file", e);
 						StatusManager.getManager().handle(is,
@@ -102,7 +100,7 @@ public class GeneratePrologFacts extends AbstractHandler {
 						StatusManager.getManager()
 								.handle(is, StatusManager.LOG);
 					} catch (Exception e) {
-						IStatus is = new Status(Status.ERROR,
+						IStatus is = new Status(IStatus.ERROR,
 								VespucciDiagramEditorPlugin.ID,
 								"FileNotFoundException", e);
 						StatusManager.getManager().handle(is,

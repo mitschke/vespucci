@@ -6,20 +6,20 @@
  *   Department of Computer Science
  *   Technische Universitiät Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -64,13 +64,13 @@ import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
-
 /**
  * DiagramConverter converts a *.sad into a *.pl File.
+ *
  * @author PatrickJ
  */
 public class DiagramConverter {
-	
+
 	/**
 	 * Regular expression to check parameter of Ensembles.
 	 */
@@ -80,21 +80,20 @@ public class DiagramConverter {
 	 * Regular expression to split parameter names of Ensembles.
 	 */
 	private static Pattern mParameterNames = Pattern.compile("(.*?)=(.*)");
-	
+
 	/**
 	 * Regular expression to match a parameter.
 	 */
-	private static Pattern mParameterList = Pattern
-	.compile(	"^.+?" + // match the descriptor
-				"\\(" +  // match the first bracket
-				"(.*)" + // match anything in between as group
-				"\\)$"); // match the last parenthesis by asserting the string ends here
+	private static Pattern mParameterList = Pattern.compile("^.+?" + // match the descriptor
+			"\\(" + // match the first bracket
+			"(.*)" + // match anything in between as group
+			"\\)$"); // match the last parenthesis by asserting the string ends here
 
 	/**
 	 * an internal member to increase the number of dependencies.
 	 */
 	private int mDependencyCounter;
-	
+
 	/**
 	 * an internal member to create an empty ensemble only once.
 	 */
@@ -102,127 +101,130 @@ public class DiagramConverter {
 
 	/**
 	 * load a Diagram File
-	 * @param fullPathFileName the full path filename. 
+	 *
+	 * @param fullPathFileName
+	 *            the full path filename.
 	 * @return ShapesDiagramImpl Object
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @author Patrick Jahnke
 	 * @author DominicS
 	 */
-	public ShapesDiagram loadDiagramFile(String fullPathFileName) throws FileNotFoundException, IOException
-	{
+	public ShapesDiagram loadDiagramFile(String fullPathFileName) throws FileNotFoundException,
+			IOException {
 		XMIResourceImpl resource = new XMIResourceImpl();
-       	File source = new File(fullPathFileName);
-        
-   		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
+		File source = new File(fullPathFileName);
 
-   		// The "Initialize sad diagram file" action mixes up
-   		// the DiagramImpl and ShapesDiagram part, so check
-   		// the location before loading
-   		for (int i = 0; i < resource.getContents().size(); i++) {
-   			if (resource.getContents().get(i) instanceof ShapesDiagram) {
-   				EObject eObject = resource.getContents().get(i);
-   		      	return (ShapesDiagram) eObject; 
-   			}
-   		}
+		resource.load(new FileInputStream(source), new HashMap<Object, Object>());
 
-   		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
+		// The "Initialize sad diagram file" action mixes up
+		// the DiagramImpl and ShapesDiagram part, so check
+		// the location before loading
+		for (int i = 0; i < resource.getContents().size(); i++) {
+			if (resource.getContents().get(i) instanceof ShapesDiagram) {
+				EObject eObject = resource.getContents().get(i);
+				return (ShapesDiagram) eObject;
+			}
+		}
+
+		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
 	}
-	
-	
+
 	/**
 	 * load a diagram file
-	 * @param fullPathFileName the full path filename. 
+	 *
+	 * @param fullPathFileName
+	 *            the full path filename.
 	 * @return ShapesDiagramImpl Object
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @author Patrick Jahnke, MalteV
 	 */
-	public ShapesDiagram loadDiagramFile(File sadFile) throws FileNotFoundException, IOException
-	{
+	public ShapesDiagram loadDiagramFile(File sadFile) throws FileNotFoundException, IOException {
 		XMIResourceImpl resource = new XMIResourceImpl();
-       	File source = sadFile; 
-   		resource.load( new FileInputStream(source), new HashMap<Object,Object>());
-   		EObject eObject = resource.getContents().get(0);
-      	return (ShapesDiagram) eObject;
+		File source = sadFile;
+		resource.load(new FileInputStream(source), new HashMap<Object, Object>());
+		EObject eObject = resource.getContents().get(0);
+		return (ShapesDiagram) eObject;
 	}
-	
-	
+
 	/**
-	 * read the given diagram and create a prolog file. 
-	 * @param fullPathFileName Name and path of the diagram
+	 * read the given diagram and create a prolog file.
+	 *
+	 * @param fullPathFileName
+	 *            Name and path of the diagram
 	 * @author Patrick Jahnke
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void ConvertDiagramToProlog (String path, String fileName) throws Exception
-	{
+	public void ConvertDiagramToProlog(String path, String fileName) throws Exception {
 		String fullFileName = path + "/" + fileName;
 		ShapesDiagram diagram = loadDiagramFile(fullFileName);
-		
+
 		// create a new Prolog File
 		File prologFile = new File(fullFileName + ".pl");
-		
+
 		// the file will be overwritten
 		FileOutputStream fos;
 		fos = new FileOutputStream(prologFile);
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
-		
+
 		// write header string
 		bos.write(this.getFileHeaderString(fullFileName).getBytes());
-		
+
 		// translate ensemble facts
 		bos.write(this.getFacts(diagram, fileName).getBytes());
 
 		bos.close();
 		fos.close();
-		
+
 		return;
 	}
-	
-	
+
 	/**
-	 * read the given diagram and create a prolog file. 
-	 * @param fullPathFileName Name and path of the diagram
+	 * read the given diagram and create a prolog file.
+	 *
+	 * @param fullPathFileName
+	 *            Name and path of the diagram
 	 * @author Patrick Jahnke, MalteV
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void ConvertDiagramToProlog (File sadFile) throws Exception
-	{
+	public void ConvertDiagramToProlog(File sadFile) throws Exception {
 		this.ConvertDiagramToProlog(sadFile.getParent(), sadFile.getName());
 	}
 
-	
 	/**
 	 * Return true when the given file object is a diagram file.
+	 *
 	 * @author Patrick Jahnke
 	 */
-	public boolean isDiagramFile(File file){
-		String extension = file.getName().substring((file.getName().length()-3), file.getName().length());
+	public boolean isDiagramFile(File file) {
+		String extension = file.getName().substring((file.getName().length() - 3),
+				file.getName().length());
 		return (extension.equals("sad"));
 	}
-	
-	
-	/** 
-	 * returns the separator %------ 
+
+	/**
+	 * returns the separator %------
+	 *
 	 * @author Patrick Jahnke
 	 */
 	private String getStringSeperator() {
 		return "%------\n";
 	}
-	
-	
+
 	/**
 	 * Build and returns a prolog file header.
+	 *
 	 * @author Patrick Jahnke
 	 */
-	private String getFileHeaderString(String fileName)
-	{
+	private String getFileHeaderString(String fileName) {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append(getStringSeperator());
 		// insert common information
 		strBuilder.append("% Prolog based representation of the Vespucci architecture diagram: ");
-		strBuilder.append(fileName+"\n");
-		strBuilder.append("% Created by Vespucci, Technische Universitiät Darmstadt, Department of Computer Science\n");
+		strBuilder.append(fileName + "\n");
+		strBuilder
+				.append("% Created by Vespucci, Technische Universitiät Darmstadt, Department of Computer Science\n");
 		strBuilder.append("% www.opal-project.de\n\n");
 		strBuilder.append(":- multifile ensemble/5.\n");
 		strBuilder.append(":- multifile abstract_ensemble/5.\n");
@@ -242,21 +244,22 @@ public class DiagramConverter {
 		strBuilder.append("% Date <" + dateFormat.format(date) + ">.\n");
 		strBuilder.append(getStringSeperator());
 		strBuilder.append("\n");
-		
+
 		return strBuilder.toString();
 	}
-	
-	
+
 	/**
 	 * Read the diagram and create the prolog facts of ensembles and dependencies
-	 * @param diagram the diagram model where are the ensembles and dependencies are defined.
-	 * @param fileName the filename of the diagram model
+	 *
+	 * @param diagram
+	 *            the diagram model where are the ensembles and dependencies are defined.
+	 * @param fileName
+	 *            the filename of the diagram model
 	 * @return a string with the facts
 	 * @author Patrick Jahnke
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private String getFacts(ShapesDiagram diagram, String fileName) throws Exception
-	{
+	private String getFacts(ShapesDiagram diagram, String fileName) throws Exception {
 		StringBuilder strBuilder = new StringBuilder();
 		// insert ensemble Header
 		strBuilder.append(getEnsembleHeader());
@@ -273,57 +276,58 @@ public class DiagramConverter {
 
 		// insert ensembles
 		strBuilder.append(ensembleFacts);
-		
+
 		// insert dependency header
 		strBuilder.append(getDependencyHeader());
-		
+
 		// insert dependencies
 		strBuilder.append(dependencyFacts);
 
 		return strBuilder.toString();
 	}
-	
-	
+
 	/**
 	 * Search the diagram recursive and create all facts.
+	 *
 	 * @author Patrick Jahnke
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private void createFacts(List<Shape> shapeList, String fileName, StringBuilder ensembleFacts, StringBuilder dependencyFacts) throws Exception
-	{
-        for (Shape shape : shapeList) {
-        	// create Ensemble facts:
-        	if (shape == null)
-        		continue;
-       		if (shape instanceof Dummy)
-       			mCreateEmptyEnsemble = true;
-        	else if (shape instanceof Ensemble)
-        	{
-        		Ensemble ensemble = (Ensemble) shape;
-        		if (this.isAbstractEnsemble(ensemble))
-        			ensembleFacts.append("abstract_ensemble");
-        		else
-        			ensembleFacts.append("ensemble");
-        		
-        		// fix: inconsistent newline encodings
-        		String query = ensemble.getQuery().replaceAll("\n", " ");
-        		
-        		ensembleFacts.append("('" + fileName + "', " + this.getEnsembleDescriptor(ensemble) + ", "+ getEnsembleParameters (ensemble) +", (" + query + "), [" + listSubEnsembles(ensemble.getShapes()) + "]).\n");
-           		// does children exist
-	        	if ((ensemble.getShapes() != null) && (ensemble.getShapes().size()>0))
-	        		createFacts(ensemble.getShapes(), fileName, ensembleFacts, dependencyFacts);
-        			
-        	}
-       		// create transaction facts:
-        	for (Connection connection : shape.getTargetConnections())
-        		dependencyFacts.append(createDependencyFact(connection, fileName));
+	private void createFacts(List<Shape> shapeList, String fileName, StringBuilder ensembleFacts,
+			StringBuilder dependencyFacts) throws Exception {
+		for (Shape shape : shapeList) {
+			// create Ensemble facts:
+			if (shape == null)
+				continue;
+			if (shape instanceof Dummy)
+				mCreateEmptyEnsemble = true;
+			else if (shape instanceof Ensemble) {
+				Ensemble ensemble = (Ensemble) shape;
+				if (this.isAbstractEnsemble(ensemble))
+					ensembleFacts.append("abstract_ensemble");
+				else
+					ensembleFacts.append("ensemble");
 
-        }
+				// fix: inconsistent newline encodings
+				String query = ensemble.getQuery().replaceAll("\n", " ");
+
+				ensembleFacts.append("('" + fileName + "', " + this.getEnsembleDescriptor(ensemble)
+						+ ", " + getEnsembleParameters(ensemble) + ", (" + query + "), ["
+						+ listSubEnsembles(ensemble.getShapes()) + "]).\n");
+				// does children exist
+				if ((ensemble.getShapes() != null) && (ensemble.getShapes().size() > 0))
+					createFacts(ensemble.getShapes(), fileName, ensembleFacts, dependencyFacts);
+
+			}
+			// create transaction facts:
+			for (Connection connection : shape.getTargetConnections())
+				dependencyFacts.append(createDependencyFact(connection, fileName));
+
+		}
 	}
-	
-	
+
 	/**
 	 * Check if an ensemble an abstract one.
+	 *
 	 * @param ensemble
 	 * @return
 	 * @author Patrick Jahnke
@@ -336,8 +340,7 @@ public class DiagramConverter {
 		}
 		return false;
 	}
-	
-	
+
 	/**
 	 * @return a prolog list of the form ['ParamName'=ParamName, ...]
 	 * @author Patrick Jahnke
@@ -355,20 +358,20 @@ public class DiagramConverter {
 		s.append("]");
 		return s.toString();
 	}
-	
 
 	/**
 	 * the name of the ensemble. (Without parameters)
+	 *
 	 * @param shape
 	 * @return
 	 * @author Patrick Jahnke
 	 */
 	private String getEnsembleDescriptor(Shape shape) {
 		String name;
-		if(shape.getName() == null)
+		if (shape.getName() == null)
 			name = "";
 		else
-		 name = shape.getName().length()== 0 ? "non-editpart" : shape.getName();
+			name = shape.getName().length() == 0 ? "non-editpart" : shape.getName();
 		StringBuilder s = new StringBuilder("'");
 		if (name.indexOf('(') > 0) {
 			s.append(name.subSequence(0, name.indexOf('(')));
@@ -379,9 +382,9 @@ public class DiagramConverter {
 		return s.toString();
 	}
 
-	
 	/**
 	 * Encode and returns the pure parameter.
+	 *
 	 * @param name
 	 * @return
 	 * @author Patrick Jahnke
@@ -411,19 +414,19 @@ public class DiagramConverter {
 		s.append(name);
 		return s.toString();
 	}
-	
-	
+
 	/**
 	 * returns the parameter definitions of an ensemble
+	 *
 	 * @param ensemble
 	 * @return
 	 * @author Patrick Jahnke
 	 */
 	private String[] getEnsembleParameterDefinitions(Ensemble ensemble) {
-		if(ensemble.getName()==null){
+		if (ensemble.getName() == null) {
 			ensemble.setName("");
 		}
-		String name = ensemble.getName().length()== 0 ? "non-editpart" : ensemble.getName();
+		String name = ensemble.getName().length() == 0 ? "non-editpart" : ensemble.getName();
 		Matcher m = mParameterList.matcher(name);
 		if (!m.matches())
 			return new String[0];
@@ -432,11 +435,11 @@ public class DiagramConverter {
 		int start = 0;
 		int matchParenthesis = 0;
 		for (int i = 0; i < parameters.length(); i++) {
-			if(parameters.charAt(i) == '(')
+			if (parameters.charAt(i) == '(')
 				matchParenthesis++;
-			if(matchParenthesis > 0 && parameters.charAt(i) == ')')
+			if (matchParenthesis > 0 && parameters.charAt(i) == ')')
 				matchParenthesis--;
-			if(parameters.charAt(i) == ',' && matchParenthesis == 0) {
+			if (parameters.charAt(i) == ',' && matchParenthesis == 0) {
 				parameterDefinitions.add(parameters.substring(start, i).trim());
 				start = i + 1;
 			}
@@ -445,120 +448,120 @@ public class DiagramConverter {
 		String[] result = new String[parameterDefinitions.size()];
 		return parameterDefinitions.toArray(result);
 	}
-	
-	
+
 	/**
-	 * returns a static string for the begin of the ensemble facts. 
+	 * returns a static string for the begin of the ensemble facts.
+	 *
 	 * @author Patrick Jahnke
 	 */
-	private String getEnsembleHeader()
-	{
+	private String getEnsembleHeader() {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append(getStringSeperator());
 		// insert common information
-		strBuilder.append("%ensemble(File, Name, Query, SubEnsembles) :- Definition of an ensemble.\n");
-		strBuilder.append("%\tFile - The simple file name in which the ensemble is defined. (e.g., 'Flashcards.sad')\n");
+		strBuilder
+				.append("%ensemble(File, Name, Query, SubEnsembles) :- Definition of an ensemble.\n");
+		strBuilder
+				.append("%\tFile - The simple file name in which the ensemble is defined. (e.g., 'Flashcards.sad')\n");
 		strBuilder.append("%\tName - Name of the ensemble\n");
-		strBuilder.append("%\tQuery - Query that determines which source elements belong to the ensemble\n");
+		strBuilder
+				.append("%\tQuery - Query that determines which source elements belong to the ensemble\n");
 		strBuilder.append("%\tSubEnsembles - List of all sub ensembles of this ensemble.\n");
 		strBuilder.append(getStringSeperator());
 		return strBuilder.toString();
 	}
-	
 
 	/**
 	 * returns a static string for the begin of the dependency facts
+	 *
 	 * @return
 	 */
-	private String getDependencyHeader()
-	{
+	private String getDependencyHeader() {
 		StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("\n");
 		strBuilder.append(getStringSeperator());
 		// insert common information
-		strBuilder.append("%DEPENDENCY(File, ID, SourceE, TargetE, Type) :- Definition of a dependency between two ensembles.\n");
-		strBuilder.append("%\tDEPENDENCY - The type of the dependency. Possible values: outgoing, incoming, expected, not_allowed\n");
-		strBuilder.append("%\tFile - The simple file name in which the dependency is defined. (e.g., 'Flashcards.sad')\n");
+		strBuilder
+				.append("%DEPENDENCY(File, ID, SourceE, TargetE, Type) :- Definition of a dependency between two ensembles.\n");
+		strBuilder
+				.append("%\tDEPENDENCY - The type of the dependency. Possible values: outgoing, incoming, expected, not_allowed\n");
+		strBuilder
+				.append("%\tFile - The simple file name in which the dependency is defined. (e.g., 'Flashcards.sad')\n");
 		strBuilder.append("%\tID - An ID identifying the dependency\n");
 		strBuilder.append("%\tSourceE - The source ensemble\n");
 		strBuilder.append("%\tTargetE - The target ensemble\n");
-		strBuilder.append("%\tRelation classifier - Kinds of uses-relation between source and target ensemble (all, field_access, method_call,...)\n");
+		strBuilder
+				.append("%\tRelation classifier - Kinds of uses-relation between source and target ensemble (all, field_access, method_call,...)\n");
 		strBuilder.append(getStringSeperator());
 		return strBuilder.toString();
 	}
-	
 
 	/**
 	 * create a dependency fact
+	 *
 	 * @param connection
 	 * @param fileName
 	 * @return
 	 * @author Patrick Jahnke
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private String createDependencyFact(Connection connection, String fileName) throws Exception
-	{
+	private String createDependencyFact(Connection connection, String fileName) throws Exception {
 		Shape source = null;
 		Shape target = null;
 
 		// Get the original source (and not the red line source)
-		if ((connection.getOriginalSource()==null)
-				|| (connection.getOriginalSource().size()==0))
+		if ((connection.getOriginalSource() == null)
+				|| (connection.getOriginalSource().size() == 0))
 			source = connection.getSource();
-		else if ((connection.getOriginalSource()!=null)
-				&& (connection.getOriginalSource().size()==1))
+		else if ((connection.getOriginalSource() != null)
+				&& (connection.getOriginalSource().size() == 1))
 			source = connection.getOriginalSource().get(0);
 		else
-			throw new Exception ("Too many original sources in connection available. Please check the the original sources of connection: \""+connection.getName()+"\"");
+			throw new Exception(
+					"Too many original sources in connection available. Please check the the original sources of connection: \""
+							+ connection.getName() + "\"");
 
 		// Get the original target (and not the red line target)
-		if ((connection.getOriginalTarget()==null)
-				|| (connection.getOriginalTarget().size()==0))
+		if ((connection.getOriginalTarget() == null)
+				|| (connection.getOriginalTarget().size() == 0))
 			target = connection.getTarget();
-		else if ((connection.getOriginalTarget()!=null)
-				&& (connection.getOriginalTarget().size()==1))
+		else if ((connection.getOriginalTarget() != null)
+				&& (connection.getOriginalTarget().size() == 1))
 			target = connection.getOriginalTarget().get(0);
 		else
-			throw new Exception ("Too many original tagets in connection available. Please check the the original targets of connection: \""+connection.getName()+"\"");
+			throw new Exception(
+					"Too many original tagets in connection available. Please check the the original targets of connection: \""
+							+ connection.getName() + "\"");
 
-		
 		StringBuilder transactionSB = new StringBuilder();
-		//TODO: delete next 2 lines if saved sad file doesn't
-		//contains copy/paste artifact references. Problem: if one copy from one sad file
+		// TODO: delete next 2 lines if saved sad file doesn't
+		// contains copy/paste artifact references. Problem: if one copy from one sad file
 		// an Ensemble with dependency in another sad file than the copy of
 		// the Ensemble will contains a reference to original Ensemble in first saf file.
 		// This reference has no influence on working process but it has problem here,
 		// by converting to prolog facts
-		if(connection.getSource().eIsProxy() || connection.getTarget().eIsProxy())
+		if (connection.getSource().eIsProxy() || connection.getTarget().eIsProxy())
 			return "";
 		if (connection instanceof Outgoing)
-			transactionSB.append("outgoing"
-					+ "('" + fileName + "', " + mDependencyCounter + ", "
+			transactionSB.append("outgoing" + "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
 					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof Incoming)
-			transactionSB.append("incoming"
-					+ "('" + fileName + "', " + mDependencyCounter + ", "
+			transactionSB.append("incoming" + "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
 					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof Expected)
-			transactionSB.append("expected"
-					+ "('" + fileName + "', " + mDependencyCounter + ", "
+			transactionSB.append("expected" + "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
 					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 		else if (connection instanceof NotAllowed)
-			transactionSB.append("not_allowed"
-					+ "('" + fileName + "', " + mDependencyCounter + ", "
+			transactionSB.append("not_allowed" + "('" + fileName + "', " + mDependencyCounter
+					+ ", " + getDependencyEnsembleName(source) + ", [], "
+					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
+		else if (connection instanceof InAndOut) {
+			transactionSB.append("incoming" + "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
 					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
-		else if (connection instanceof InAndOut)
-		{
-			transactionSB.append("incoming"
-					+ "('" + fileName + "', " + mDependencyCounter + ", "
-					+ getDependencyEnsembleName(source) + ", [], "
-					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
-			transactionSB.append("outgoing"
-					+ "('" + fileName + "', " + mDependencyCounter + ", "
+			transactionSB.append("outgoing" + "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], "
 					+ getDependencyEnsembleName(target) + ", [], " + connection.getName() + ").\n");
 
@@ -566,43 +569,41 @@ public class DiagramConverter {
 		mDependencyCounter++;
 		return transactionSB.toString();
 	}
-	
-	
+
 	/**
 	 * returns the right name of an ensemble (empty or x)
+	 *
 	 * @param Shape
 	 * @return name of the ensemble
-	 * @author Patrick Jahnke 
+	 * @author Patrick Jahnke
 	 */
-	private String getDependencyEnsembleName(Shape shape)
-	{
+	private String getDependencyEnsembleName(Shape shape) {
 		if (shape instanceof Ensemble)
 			return this.getEnsembleDescriptor(shape);
 		else if (shape instanceof Dummy)
 			return "empty";
 		return "not_defined";
 	}
-	
 
 	/**
-	 * create a string with all subensembles of a parent. 
-	 * @param EList<Shape>
+	 * create a string with all subensembles of a parent.
+	 *
+	 * @param EList
+	 *            <Shape>
 	 * @author Patrick Jahnke
 	 */
-	private String listSubEnsembles(EList<Shape> shapeList)
-	{
+	private String listSubEnsembles(EList<Shape> shapeList) {
 		StringBuilder strBuilder = new StringBuilder();
 		if (shapeList == null)
 			return strBuilder.toString();
 
-		String komma = "";	
-		for (Shape shape : shapeList)
-		{
-       		if (shape instanceof Dummy)
-       			strBuilder.append(komma + "'empty'");
-        	else if (shape instanceof Ensemble)
-       			strBuilder.append(komma + "'" + shape.getName() + "'");
-			komma = ", ";			
+		String komma = "";
+		for (Shape shape : shapeList) {
+			if (shape instanceof Dummy)
+				strBuilder.append(komma + "'empty'");
+			else if (shape instanceof Ensemble)
+				strBuilder.append(komma + "'" + shape.getName() + "'");
+			komma = ", ";
 		}
 		return strBuilder.toString();
 	}

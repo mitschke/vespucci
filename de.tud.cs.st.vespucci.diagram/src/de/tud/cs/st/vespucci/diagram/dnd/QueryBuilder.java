@@ -5,20 +5,20 @@
  *   Department of Computer Science
  *   Technische Universität Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -48,10 +48,10 @@ import org.eclipse.jdt.core.IType;
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
 /**
- * A Class which provides static tools for supporting DnD
- * 
- * @author MalteV
- * @author BenjaminL
+ * A Class which provides static tools for supporting DnD.
+ *
+ * @author Malte Viering
+ * @author Benjamin Lück
  */
 public class QueryBuilder {
 	// constants for the querybuilder
@@ -66,7 +66,7 @@ public class QueryBuilder {
 
 	/**
 	 * creates a new Query from the data of a drop event
-	 * 
+	 *
 	 * @param map
 	 *            data of the drop event
 	 * @return new query
@@ -80,7 +80,7 @@ public class QueryBuilder {
 	/**
 	 * creates a new Query from the data of the drop event under consideration
 	 * of the old Query
-	 * 
+	 *
 	 * @param map
 	 *            data of the drop event
 	 * @param oldQuery
@@ -110,9 +110,10 @@ public class QueryBuilder {
 				res = res + s + "\n" + QUERY_DELIMITER;
 			}
 		} else {
+			// FIXME ... what is the purpose of this empty block?
 		}
 		if (res.endsWith(QUERY_DELIMITER))
-			
+
 			res = res.substring(0, res.length() - QUERY_DELIMITER.length() - 1);
 
 		if (res.equals(""))
@@ -122,16 +123,17 @@ public class QueryBuilder {
 	}
 
 	/**
+	 * FIXME subsequent documentation
 	 * Creates a List that contains for all Java Files in map an entry: e.g.:
 	 * package: package(<PACKAGENAME>) class:
 	 * class_with_members(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>) method:
 	 * method(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,'<init>' OR
 	 * <METHODNAME>,<RETURNTYPES>,<PARAMETERTYPES>) field:
 	 * field(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,<FIELDNAME>,<FIELDTYPE>)
-	 * 
+	 *
 	 * @param map
 	 * @return query list
-	 * @author BenjaminL
+	 * @author Benjamin Lück
 	 */
 	private static List<String> createQueryFromDNDobjects(
 			Map<String, Object> map) {
@@ -215,7 +217,7 @@ public class QueryBuilder {
 
 	/**
 	 * getting the first known object name - else return "A dynamic name"
-	 * 
+	 *
 	 * @param extendedData
 	 * @return name as string
 	 * @author BenjaminL

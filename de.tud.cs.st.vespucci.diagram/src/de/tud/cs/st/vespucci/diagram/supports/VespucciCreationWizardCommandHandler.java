@@ -6,20 +6,20 @@
  *   Department of Computer Science
  *   Technische Universität Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -49,60 +49,55 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard;
 
 /**
  * Command handler is used to call up wizard creating new Vespucci diagram.
- * 
+ *
  * @author Tam-Minh Nguyen
  */
 public class VespucciCreationWizardCommandHandler implements IHandler {
 
-    public Object execute(ExecutionEvent event) /* throws ExecutionException */{
-	IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+	public Object execute(ExecutionEvent event) /* throws ExecutionException */{
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 
-	VespucciCreationWizard wizard = new VespucciCreationWizard();
+		VespucciCreationWizard wizard = new VespucciCreationWizard();
 
-	ISelection selection = window.getSelectionService().getSelection();
+		ISelection selection = window.getSelectionService().getSelection();
 
-	if (selection instanceof IStructuredSelection) {
-	    wizard.init(window.getWorkbench(), (IStructuredSelection) selection);
-	} else {
-	    wizard.init(window.getWorkbench(), StructuredSelection.EMPTY);
+		if (selection instanceof IStructuredSelection) {
+			wizard.init(window.getWorkbench(), (IStructuredSelection) selection);
+		} else {
+			wizard.init(window.getWorkbench(), StructuredSelection.EMPTY);
+		}
+
+		Shell parent = window.getShell();
+		WizardDialog dialog = new WizardDialog(parent, wizard);
+		dialog.create();
+		dialog.open();
+
+		return null;
 	}
 
-	Shell parent = window.getShell();
-	WizardDialog dialog = new WizardDialog(parent, wizard);
-	dialog.create();
-	// WorkbenchHelp.setHelp(dialog.getShell(),
-	// IWorkbenchHelpContextIds.NEW_WIZARD_SHORTCUT);
-	dialog.open();
+	/**
+	 * Always enabled each time the plug-in started up.
+	 */
+	public boolean isEnabled() {
+		return true;
+	}
 
-	return null;
-    }
+	/**
+	 * Always handled each time the plug-in started up.
+	 */
+	public boolean isHandled() {
+		return true;
+	}
 
-    /**
-     * Always enabled each time the plug-in started up.
-     */
-    public boolean isEnabled() {
-	return true;
-    }
+	public void removeHandlerListener(IHandlerListener handlerListener) {
+		// nothing to do
+	}
 
-    /**
-     * Always handled each time the plug-in started up.
-     */
-    public boolean isHandled() {
-	return true;
-    }
+	public void addHandlerListener(IHandlerListener handlerListener) {
+		// nothing to do
+	}
 
-    /**
-     * No change will be fired.
-     */
-    public void removeHandlerListener(IHandlerListener handlerListener) {
-    }
-
-    /**
-     * No change will be fired.
-     */
-    public void addHandlerListener(IHandlerListener handlerListener) {
-    }
-
-    public void dispose() {
-    }
+	public void dispose() {
+		// nothing to do
+	}
 }
