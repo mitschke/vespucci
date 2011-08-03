@@ -1,6 +1,7 @@
 package de.tud.cs.st.vespucci.transformation;
 
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
@@ -13,7 +14,7 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
 public class TransformationHelperLibrary {
 	private static Deque<Shape> ensembles = new LinkedList<Shape>();
-	private static Deque<Connection> connections = new LinkedList<Connection>();
+	private static HashMap<Connection, Connection> connections = new HashMap<Connection, Connection>();
 	private static ShapesDiagram shapesDiagram;
 	
 	@Operation(contextual=true)
@@ -27,12 +28,13 @@ public class TransformationHelperLibrary {
 		{
 			shapesDiagram = (ShapesDiagramImpl)self;
 		}
-		else if (Connection.class.isAssignableFrom(self.getClass()))
-		{
-			connections.addLast((Connection)self);
-		}
 	}
 	
+	@Operation(contextual=true)
+	public static void remember(Connection result, Connection self)
+	{
+		connections.put(self, result);
+	}
 	
 	@Operation(contextual=true)
 	public static ShapesDiagram getRememberedShapesDiagram(Object self) 
@@ -47,8 +49,8 @@ public class TransformationHelperLibrary {
 	}
 	
 	@Operation(contextual=true)
-	public static Connection getNextRememberedConnection(Object self) 
+	public static Connection getRememberedConnection(Object self) 
 	{
-		return connections.pollFirst();
+		return connections.get((Connection)self);
 	}
 }

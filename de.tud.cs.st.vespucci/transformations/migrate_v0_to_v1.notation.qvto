@@ -78,6 +78,14 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	children += self.children->map toEnsemble();
 	styles += self.styles;
 	edges += self.edges;
+	
+	edges->forEach(e) {
+		// The following source/target related code causes inconsistences
+		e.source := e.source.late resolveone(notation::View);
+		e.target := e.target.late resolveone(notation::View);
+		
+		e.element := e.element.getRememberedConnection().oclAsType(EObject);
+	};
 }
 
 mapping notation::Node::toEnsemble() : notation::Shape
@@ -123,10 +131,18 @@ when { self.type = VID_Ensemble_Inner } {
 }
 
 mapping notation::Node::toShape() : notation::Shape {
+	
 	// Type and previous existing decoration nodes
 	type := self.type;
 	children += self.children![DecorationNode];
+	
 	layoutConstraint := self.layoutConstraint;
-	element := self.element;
+	
+	// Font styles
+	fontName := self.oclAsType(notation::Shape).fontName;
+	fontColor := self.oclAsType(notation::Shape).fontColor;
+	fontHeight := self.oclAsType(notation::Shape).fontHeight;
+	
+	// Referred model element
 	element := self.getNextRememberedShape().oclAsType(EObject);
 }
