@@ -1,7 +1,6 @@
 /**
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -77,7 +76,43 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	_query := self._query;
 	description := '<description>'; // NEW ATTRIBUTE
 	
-	sourceConnections += self.sourceConnections.map toExpected();
+	self.sourceConnections->forEach(s) {
+		if (s.metaClassName().equalsIgnoreCase('Expected')) then {
+			sourceConnections += s.map toExpected();
+		} endif;
+		if (s.metaClassName().equalsIgnoreCase('InAndOut')) then {
+			sourceConnections += s.map toInAndOut();
+		} endif;
+		if (s.metaClassName().equalsIgnoreCase('Incoming')) then {
+			sourceConnections += s.map toIncoming();
+		} endif;
+		if (s.metaClassName().equalsIgnoreCase('NotAllowed')) then {
+			sourceConnections += s.map toNotAllowed();
+		} endif;
+		if (s.metaClassName().equalsIgnoreCase('Outgoing')) then {
+			sourceConnections += s.map toOutgoing();
+		} endif;
+	};
+	
+	self.targetConnections->forEach(s) {
+		if (s.metaClassName().equalsIgnoreCase('Expected')) then {
+			targetConnections += s.map toExpected();
+		} endif;
+		if (s.metaClassName().equalsIgnoreCase('InAndOut')) then {
+			targetConnections += s.map toInAndOut();
+		} endif;
+		if (s.metaClassName().equalsIgnoreCase('Incoming')) then {
+			targetConnections += s.map toIncoming();
+		} endif;
+		if (s.metaClassName().equalsIgnoreCase('NotAllowed')) then {
+			targetConnections += s.map toNotAllowed();
+		} endif;
+		if (s.metaClassName().equalsIgnoreCase('Outgoing')) then {
+			targetConnections += s.map toOutgoing();
+		} endif;
+	};
+	
+	/*sourceConnections += self.sourceConnections.map toExpected();
 	sourceConnections += self.sourceConnections.map toInAndOut();
 	sourceConnections += self.sourceConnections.map toIncoming();
 	sourceConnections += self.sourceConnections.map toNotAllowed();
@@ -87,7 +122,7 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	targetConnections += self.targetConnections.map toInAndOut();
 	targetConnections += self.targetConnections.map toIncoming();
 	targetConnections += self.targetConnections.map toNotAllowed();
-	targetConnections += self.targetConnections.map toOutgoing();
+	targetConnections += self.targetConnections.map toOutgoing();*/
 	
 	result.remember();
 }
@@ -138,6 +173,8 @@ mapping OldModel::Connection::toConnection() : NewModel::Connection {
 	} endif;
 	
 	temp := self.temp;
+	
+	result.remember();
 }
 
 // Seite 235 "Modeling project book"

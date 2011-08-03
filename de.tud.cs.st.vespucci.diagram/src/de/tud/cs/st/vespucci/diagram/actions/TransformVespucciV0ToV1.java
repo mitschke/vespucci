@@ -34,18 +34,12 @@
 
 package de.tud.cs.st.vespucci.diagram.actions;
 
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -58,14 +52,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.gmf.runtime.notation.impl.DiagramImpl;
-import org.eclipse.jdt.ui.refactoring.RenameSupport;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.ModelExtentContents;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.*;
 import org.eclipse.m2m.internal.qvt.oml.library.*;
@@ -81,18 +71,30 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.actions.RenameResourceAction;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
 
 /**
- * @author DominicS
+ * @author Dominic Scheurer
+ * @version 0.8
  */
 @SuppressWarnings("restriction")
 public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
-
+	/**
+	 * 
+	 */
 	private IWorkbenchPart targetPart;
+	/**
+	 * 
+	 */
 	private ArrayList<IFile> files;
+	
+	/**
+	 * 
+	 */
+	public TransformVespucciV0ToV1() {
+		files = new ArrayList<IFile>();
+	}
 
 	@Override
 	public void run(IAction action) {
@@ -102,8 +104,9 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		for (int i = 0; i < files.size(); i++)
 		{
 			sb.append(URI.createPlatformResourceURI(files.get(i).getFullPath().toString(), true).toString());
-			if (i != files.size() - 1)
+			if (i != files.size() - 1) {
 				sb.append(", ");
+			}
 		}
 		
 		Job job = new Job("Convert Vespucci diagram " + sb.toString()) {
@@ -125,10 +128,10 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	
 					try {
 						// The URIs for model and notation transformation
-						URI modelTransfUri = URI
-							.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.model.qvto"); //$NON-NLS-1$
-						URI notationTransfUri = URI
-							.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto"); //$NON-NLS-1$
+						URI modelTransfUri = URI.createURI(
+							"platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.model.qvto"); //$NON-NLS-1$
+						URI notationTransfUri = URI.createURI(
+							"platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto"); //$NON-NLS-1$
 						
 						// BEGIN MONITOR TASK
 						monitor.beginTask("Converting Vespucci diagram...", 7 * files.size());
@@ -217,25 +220,10 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 							ModelExtentContents outputModel = shapesDiagramTransfOutputs.get(0);
 							monitor.worked(1);
 							
-							// Load original file
-//							Resource origFile = resourceSet.getResource(fileURI, true);
-//							origFile.load(Collections.EMPTY_MAP);
-//							
-//							// Create new file name for original file
-//							URI outputOrigFileURI = fileURI.trimFileExtension()
-//								.appendFileExtension("sad")
-//								.appendFileExtension("old");
-//							while (resourceSet.getURIConverter().exists(outputOrigFileURI, null))
-//								outputOrigFileURI.appendFileExtension("old");
-//							
-//							// Save original file with new name
-//							origFile.setURI(outputOrigFileURI);
-//							((DiagramImpl)origFile.getContents().get(1)).setName(outputOrigFileURI.lastSegment());
-//							((DiagramImpl)origFile.getContents().get(1)).setElement((EObject)origFile.getContents().get(0));
-//							origFile.save(Collections.EMPTY_MAP);
-							
+							// Rename original file							
 							IPath newPath;
-							do {
+							do // ESCA-JAVA0049:
+							{
 								newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
 							} while (newPath.toFile().exists());
 								
@@ -266,8 +254,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 							monitor.worked(1);
 						}
 					} catch (Exception e) {
-//						handleError(e);
-						e.printStackTrace();
+						handleError(e);
 						
 						monitor.done();
 						return Status.CANCEL_STATUS;
@@ -283,6 +270,10 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		job.schedule();
 	}
 
+	/**
+	 * 
+	 * @param ex
+	 */
 	private void handleError(final Exception ex) {
 		Display.getDefault().asyncExec(new Runnable() {			
 			@Override
@@ -297,21 +288,31 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		});
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private Shell getShell() {
 		return targetPart.getSite().getShell();
 	}
 
-	private EObject getInput(URI fileURI) {
+	/**
+	 * 
+	 * @param fileURI
+	 * @return
+	 */
+	private static EObject getInput(URI fileURI) {
 		ResourceSetImpl rs = new ResourceSetImpl();
 		return rs.getEObject(fileURI.appendFragment("/"), true);
 	}
 
 	@Override
-	public void selectionChanged(IAction action, ISelection selection) {		
-		files = new ArrayList<IFile>();
+	public void selectionChanged(IAction action, ISelection selection) {
+		files = new ArrayList<IFile>();		
 		action.setEnabled(false);
-		if (selection instanceof IStructuredSelection == false
-				|| selection.isEmpty()) {
+		
+		if (!(selection instanceof IStructuredSelection)
+			|| selection.isEmpty()) {
 			return;
 		}
 		
