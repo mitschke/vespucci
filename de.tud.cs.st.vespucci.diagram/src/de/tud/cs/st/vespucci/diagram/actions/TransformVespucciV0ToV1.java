@@ -1,7 +1,6 @@
 ﻿/**
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author Patrick Jahnke
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universitiät Darmstadt 
@@ -35,15 +34,23 @@
 
 package de.tud.cs.st.vespucci.diagram.actions;
 
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -51,10 +58,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.gmf.runtime.notation.impl.DiagramImpl;
+import org.eclipse.jdt.ui.refactoring.RenameSupport;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.ModelExtentContents;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.*;
 import org.eclipse.m2m.internal.qvt.oml.library.*;
@@ -81,25 +92,26 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
 public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 
 	private IWorkbenchPart targetPart;
-	private ArrayList<URI> fileURIs;
+	private ArrayList<IFile> files;
 
 	@Override
 	public void run(IAction action) {
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < fileURIs.size(); i++)
+		for (int i = 0; i < files.size(); i++)
 		{
-			sb.append(fileURIs.get(i).toString());
-			if (i != fileURIs.size() - 1)
+			sb.append(URI.createPlatformResourceURI(files.get(i).getFullPath().toString(), true).toString());
+			if (i != files.size() - 1)
 				sb.append(", ");
 		}
 		
 		Job job = new Job("Convert Vespucci diagram " + sb.toString()) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {				
-				for (URI fileURI : fileURIs)
+				for (IFile file : files)
 				{
+					URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 					EObject source = getInput(fileURI);
 					if (source == null) {
 						// No source given => Cancel
@@ -119,7 +131,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 							.createURI("platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto"); //$NON-NLS-1$
 						
 						// BEGIN MONITOR TASK
-						monitor.beginTask("Converting Vespucci diagram...", 7 * fileURIs.size());
+						monitor.beginTask("Converting Vespucci diagram...", 7 * files.size());
 	
 						// Get Resource from input URI
 						Resource inResource = resourceSet
@@ -206,19 +218,28 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 							monitor.worked(1);
 							
 							// Load original file
-							Resource origFile = resourceSet.getResource(fileURI, true);
-							origFile.load(null);
+//							Resource origFile = resourceSet.getResource(fileURI, true);
+//							origFile.load(Collections.EMPTY_MAP);
+//							
+//							// Create new file name for original file
+//							URI outputOrigFileURI = fileURI.trimFileExtension()
+//								.appendFileExtension("sad")
+//								.appendFileExtension("old");
+//							while (resourceSet.getURIConverter().exists(outputOrigFileURI, null))
+//								outputOrigFileURI.appendFileExtension("old");
+//							
+//							// Save original file with new name
+//							origFile.setURI(outputOrigFileURI);
+//							((DiagramImpl)origFile.getContents().get(1)).setName(outputOrigFileURI.lastSegment());
+//							((DiagramImpl)origFile.getContents().get(1)).setElement((EObject)origFile.getContents().get(0));
+//							origFile.save(Collections.EMPTY_MAP);
 							
-							// Create new file name for original file
-							URI outputOrigFileURI = fileURI.trimFileExtension()
-								.appendFileExtension("sad")
-								.appendFileExtension("old");
-							while (resourceSet.getURIConverter().exists(outputOrigFileURI, null))
-								outputOrigFileURI.appendFileExtension("old");
-							
-							// Save original file with new name
-							origFile.setURI(outputOrigFileURI);
-							origFile.save(null);
+							IPath newPath;
+							do {
+								newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
+							} while (newPath.toFile().exists());
+								
+							file.copy(newPath, true, new SubProgressMonitor(monitor, 1));
 							
 							// Delete old file
 							resourceSet.getURIConverter().delete(fileURI, null);
@@ -245,7 +266,8 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 							monitor.worked(1);
 						}
 					} catch (Exception e) {
-						handleError(e);
+//						handleError(e);
+						e.printStackTrace();
 						
 						monitor.done();
 						return Status.CANCEL_STATUS;
@@ -286,7 +308,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {		
-		fileURIs = new ArrayList<URI>();
+		files = new ArrayList<IFile>();
 		action.setEnabled(false);
 		if (selection instanceof IStructuredSelection == false
 				|| selection.isEmpty()) {
@@ -296,7 +318,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		for (Object fileObject : ((IStructuredSelection)selection).toArray())
 		{
 			IFile file = (IFile)fileObject;
-			fileURIs.add(URI.createPlatformResourceURI(file.getFullPath().toString(), true));
+			files.add(file);
 		}
 		
 		action.setEnabled(true);
