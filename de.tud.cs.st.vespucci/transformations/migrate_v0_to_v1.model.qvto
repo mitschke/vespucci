@@ -76,7 +76,7 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	_query := self._query;
 	description := '<description>'; // NEW ATTRIBUTE
 	
-	self.sourceConnections->forEach(s) {
+	/*self.sourceConnections->forEach(s) {
 		if (s.metaClassName().equalsIgnoreCase('Expected')) then {
 			sourceConnections += s.map toExpected();
 		} endif;
@@ -110,9 +110,9 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 		if (s.metaClassName().equalsIgnoreCase('Outgoing')) then {
 			targetConnections += s.map toOutgoing();
 		} endif;
-	};
+	};*/
 	
-	/*sourceConnections += self.sourceConnections.map toExpected();
+	sourceConnections += self.sourceConnections.map toExpected();
 	sourceConnections += self.sourceConnections.map toInAndOut();
 	sourceConnections += self.sourceConnections.map toIncoming();
 	sourceConnections += self.sourceConnections.map toNotAllowed();
@@ -122,7 +122,7 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	targetConnections += self.targetConnections.map toInAndOut();
 	targetConnections += self.targetConnections.map toIncoming();
 	targetConnections += self.targetConnections.map toNotAllowed();
-	targetConnections += self.targetConnections.map toOutgoing();*/
+	targetConnections += self.targetConnections.map toOutgoing();
 	
 	result.remember();
 }
@@ -155,22 +155,21 @@ when {self.metaClassName() = 'Outgoing'} {
 mapping OldModel::Connection::toConnection() : NewModel::Connection {
 	name := self.name;
 	
-	originalSource += self.originalSource.xmap toEnsemble();
+	/*originalSource += self.originalSource.xmap toEnsemble();
 	originalSource += self.originalSource.xmap toDummy();
 	originalTarget += self.originalTarget.xmap toEnsemble();
-	originalTarget += self.originalTarget.xmap toDummy();
+	originalTarget += self.originalTarget.xmap toDummy();*/
 	
-	if self.source.oclIsTypeOf(OldModel::Ensemble) then {
-		source := self.source.map toEnsemble();
-	} else {
-		source := self.source.map toDummy();
-	} endif;
+	self.originalSource->forEach(os) {
+		originalSource += os.late resolveone(NewModel::Shape);
+	};
 	
-	if self.target.oclIsTypeOf(OldModel::Ensemble) then {
-		target := self.target.map toEnsemble();
-	} else {
-		target := self.target.map toDummy();
-	} endif;
+	self.originalTarget->forEach(os) {
+		originalTarget += os.late resolveone(NewModel::Shape);
+	};
+	
+	source := self.source.late resolveone(NewModel::Shape);
+	target := self.target.late resolveone(NewModel::Shape);
 	
 	temp := self.temp;
 	

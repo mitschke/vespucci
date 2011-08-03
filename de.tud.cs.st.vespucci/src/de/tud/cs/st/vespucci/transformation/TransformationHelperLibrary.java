@@ -4,6 +4,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
@@ -15,6 +16,7 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 public class TransformationHelperLibrary {
 	private static Deque<Shape> ensembles = new LinkedList<Shape>();
 	private static HashMap<Connection, Connection> connections = new HashMap<Connection, Connection>();
+	private static HashMap<ShapeImpl, ShapeImpl> notationShapes = new HashMap<ShapeImpl, ShapeImpl>();
 	private static ShapesDiagram shapesDiagram;
 	
 	@Operation(contextual=true)
@@ -37,6 +39,12 @@ public class TransformationHelperLibrary {
 	}
 	
 	@Operation(contextual=true)
+	public static void rememberShape(Object result, Object self)
+	{
+		notationShapes.put((ShapeImpl)self, (ShapeImpl)result);
+	}
+	
+	@Operation(contextual=true)
 	public static ShapesDiagram getRememberedShapesDiagram(Object self) 
 	{
 		return shapesDiagram;
@@ -52,5 +60,11 @@ public class TransformationHelperLibrary {
 	public static Connection getRememberedConnection(Object self) 
 	{
 		return connections.get((Connection)self);
+	}
+	
+	@Operation(contextual=true)
+	public static Object getRememberedNotationShape(Object self) 
+	{
+		return notationShapes.get((ShapeImpl)self);
 	}
 }
