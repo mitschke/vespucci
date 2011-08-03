@@ -39,7 +39,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.gef.EditPart;
@@ -80,39 +79,10 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 	private static final String CONTEXT_LABEL = "Set type of constraint";
 
 	/**
-	 * Creates a command, that deletes given connections. Undo/Redo is supported, when command is
-	 * executed on a command stack. This method is a heavily adapted version of
-	 * {@link DiagramGlobalActionHandler#getDeleteCommand(IDiagramWorkbenchPart, IGlobalActionContext)}
-	 * .
-	 * 
-	 * @param selectedConnections
-	 *            Selected connections to be deleted.
-	 * @return The command, that will delete given connection, when executed.
-	 */
-	private static Command getDeleteCommand(final ConnectionEditPart[] selectedConnections) {
-		final GroupRequest deleteReq = new GroupRequest(org.eclipse.gef.RequestConstants.REQ_DELETE);
-		// Chosen label has no deeper meaning/functionality
-		final CompoundCommand deleteCC = new CompoundCommand(CONTEXT_LABEL);
-		final CompositeTransactionalCommand compositeCommand = new CompositeTransactionalCommand(
-				selectedConnections[0].getEditingDomain(), CONTEXT_LABEL);
-
-		// Bundle all delete-commands of the selected connections.
-		for (final ConnectionEditPart conn : selectedConnections) {
-			final Command command = conn.getCommand(deleteReq);
-			if (command != null) {
-				compositeCommand.compose(new CommandProxy(command));
-			}
-		}
-		if (!compositeCommand.isEmpty()) {
-			deleteCC.add(new ICommandProxy(compositeCommand));
-		}
-		return deleteCC;
-	}
-
-	/**
 	 * Selected connections.
 	 */
 	private ConnectionEditPart[] selectedConnections;
+
 	/**
 	 * Array containing a map for all selected connections (see {@link #selectedConnections}). The
 	 * map associates each feature of the connection with the corresponding value. This array is
@@ -161,7 +131,7 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 		 */
 		final CompoundCommand recreateCC = new CompoundCommand(CONTEXT_LABEL);
 		// add delete-command as first part to the recreate-command
-		recreateCC.add(getDeleteCommand(selectedConnections));
+		recreateCC.add(getDeleteCommand());
 		// add create-command as second part
 		final SetConstraintTypeParameter typeParams = new SetConstraintTypeParameter();
 		final IElementType type = typeParams.getParameterValues().get(
@@ -188,17 +158,17 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 		final CompoundCommand createCC = new CompoundCommand(CONTEXT_LABEL);
 		final CompositeTransactionalCommand compositeCommand = new CompositeTransactionalCommand(
 				selectedConnections[0].getEditingDomain(), CONTEXT_LABEL);
-
+		// create a create-command for each destroyed connection
 		for (int i = 0; i < featureMapArr.length; ++i) {
 			final CreateConnectionRequest connectionRequest = CreateViewRequestFactory.getCreateConnectionRequest(type,
 					getPreferencesHint());
-
+			
 			final EditPart sourceEditPart = selectedConnections[i].getSource();
 			final EditPart targetEditPart = selectedConnections[i].getTarget();
-
+			// create request
 			connectionRequest.setTargetEditPart(targetEditPart);
 			connectionRequest.setType(org.eclipse.gef.RequestConstants.REQ_CONNECTION_START);
-			ConnectionAnchor oldStartAnchor = selectedConnections[i].getConnectionFigure().getSourceAnchor();
+			final ConnectionAnchor oldStartAnchor = selectedConnections[i].getConnectionFigure().getSourceAnchor();
 			connectionRequest.setLocation(oldStartAnchor.getLocation(oldStartAnchor.getReferencePoint()));
 
 			// only if the connection is supported will we get a non null
@@ -208,13 +178,14 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 				connectionRequest.setSourceEditPart(sourceEditPart);
 				connectionRequest.setTargetEditPart(targetEditPart);
 				connectionRequest.setType(org.eclipse.gef.RequestConstants.REQ_CONNECTION_END);
-				ConnectionAnchor oldTargetAnchor = selectedConnections[i].getConnectionFigure().getTargetAnchor();
+				final ConnectionAnchor oldTargetAnchor = selectedConnections[i].getConnectionFigure().getTargetAnchor();
 				connectionRequest.setLocation(oldTargetAnchor.getLocation(oldTargetAnchor.getReferencePoint()));
-
+				// create command
 				final Command command = targetEditPart.getCommand(connectionRequest);
 				compositeCommand.compose(new CommandProxy(command));
 			}
 		}
+		// bundle create-commands
 		if (!compositeCommand.isEmpty()) {
 			createCC.add(new ICommandProxy(compositeCommand));
 		}
@@ -222,12 +193,39 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 	}
 
 	/**
+	 * Creates a command, that deletes given connections. Undo/Redo is supported, when command is
+	 * executed on a command stack. This method is a heavily adapted version of
+	 * {@link DiagramGlobalActionHandler#getDeleteCommand(IDiagramWorkbenchPart, IGlobalActionContext)}
+	 * .
+	 * 
+	 * @return The command, that will delete given connection, when executed.
+	 */
+	private Command getDeleteCommand() {
+		final GroupRequest deleteReq = new GroupRequest(org.eclipse.gef.RequestConstants.REQ_DELETE);
+		// Chosen label has no deeper meaning/functionality
+		final CompoundCommand deleteCC = new CompoundCommand(CONTEXT_LABEL);
+		final CompositeTransactionalCommand compositeCommand = new CompositeTransactionalCommand(
+				selectedConnections[0].getEditingDomain(), CONTEXT_LABEL);
+
+		// Bundle all delete-commands of the selected connections.
+		for (final ConnectionEditPart conn : selectedConnections) {
+			final Command command = conn.getCommand(deleteReq);
+			if (command != null) {
+				compositeCommand.compose(new CommandProxy(command));
+			}
+		}
+		if (!compositeCommand.isEmpty()) {
+			deleteCC.add(new ICommandProxy(compositeCommand));
+		}
+		return deleteCC;
+	}
+
+	/**
 	 * Taken from
 	 * {@link org.eclipse.gmf.runtime.diagram.ui.tools.ConnectionCreationTool#createConnection()}.
-	 * Gets the preferences hint that is to be used to find the appropriate
-	 * preference store from which to retrieve diagram preference values. The
-	 * preference hint is mapped to a preference store in the preference
-	 * registry <@link DiagramPreferencesRegistry>.
+	 * Gets the preferences hint that is to be used to find the appropriate preference store from
+	 * which to retrieve diagram preference values. The preference hint is mapped to a preference
+	 * store in the preference registry <@link DiagramPreferencesRegistry>.
 	 * 
 	 * @return the preferences hint
 	 */
