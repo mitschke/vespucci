@@ -138,10 +138,14 @@ when { self.type = VID_Ensemble_Outer } {
 		type := VID_Ensemble_Outer_Ensemble_Compartment;
 
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
-		children += self.children![BasicCompartment].children->map toEnsemble();
 		children += self.children![BasicCompartment].children->map toInnerDummy();
-		children += self.children![BasicCompartment].children->map toOuterDummy();
 		children += self.children![BasicCompartment].children->select(child | child.type = 'Note' or child.type = 'Text');
+		
+		// The following lines are only included because there exist some old
+		// sad files where the inner Ensembles have the same VisualID as the
+		// outer ones. For "normal" files they're just not executed.
+		children += self.children![BasicCompartment].children->map toEnsemble();
+		children += self.children![BasicCompartment].children->map toOuterDummy();
 	};
 	
 	// Add Description Compartment
@@ -163,10 +167,14 @@ when { self.type = VID_Ensemble_Inner } {
 		type := VID_Ensemble_Inner_Ensemble_Compartment;
 		
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
-		children += self.children![BasicCompartment].children->map toEnsemble();
 		children += self.children![BasicCompartment].children->map toInnerDummy();
-		children += self.children![BasicCompartment].children->map toOuterDummy();
 		children += self.children![BasicCompartment].children->select(child | child.type = 'Note' or child.type = 'Text');
+		
+		// The following lines are only included because there exist some old		
+		// sad files where the inner Ensembles have the same VisualID as the
+		// outer ones. For "normal" files they're just not executed.
+		children += self.children![BasicCompartment].children->map toEnsemble();
+		children += self.children![BasicCompartment].children->map toOuterDummy();
 	};
 	
 	// Add Description Compartment
