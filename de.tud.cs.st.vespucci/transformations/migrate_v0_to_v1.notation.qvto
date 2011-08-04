@@ -76,7 +76,7 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 		
 	// CHILDREN
 	children += self.children->map toEnsemble();
-	children += self.children->map toDummy();
+	children += self.children->map toOuterDummy();
 	styles += self.styles;
 	edges += self.edges;
 	
@@ -89,14 +89,22 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	};
 }
 
-mapping notation::Node::toDummy() : notation::Shape
-inherits notation::Node::toShape
+mapping notation::Node::toOuterDummy() : notation::Node
+inherits notation::Node::toDummy
 when { self.type = VID_Dummy_Outer } {
 }
 
-mapping notation::Node::toInnerDummy() : notation::Shape
-inherits notation::Node::toShape
+mapping notation::Node::toInnerDummy() : notation::Node
+inherits notation::Node::toDummy
 when { self.type = VID_Dummy_Inner } {
+}
+
+mapping notation::Node::toDummy() : notation::Node {
+	type := self.type;
+	styles := self.styles;
+	layoutConstraint := self.layoutConstraint;
+	
+	element := self.element.getRememberedShape().oclAsType(EObject);
 }
 
 mapping notation::Node::toEnsemble() : notation::Shape
@@ -112,7 +120,7 @@ when { self.type = VID_Ensemble_Outer } {
 		type := VID_Ensemble_Outer_Ensemble_Compartment;
 
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
-		children += self.children![BasicCompartment].children->map toDummy();
+		children += self.children![BasicCompartment].children->map toInnerDummy();
 	};
 	
 	// Add Description Compartment
@@ -134,7 +142,7 @@ when { self.type = VID_Ensemble_Inner } {
 		type := VID_Ensemble_Inner_Ensemble_Compartment;
 		
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
-		children += self.children![BasicCompartment].children->map toDummy();
+		children += self.children![BasicCompartment].children->map toInnerDummy();
 	};
 	
 	// Add Description Compartment
@@ -157,6 +165,4 @@ mapping notation::Node::toShape() : notation::Shape {
 	
 	// Referred model element
 	element := self.element.getRememberedShape().oclAsType(EObject);
-	
-	result.rememberShape(self);
 }
