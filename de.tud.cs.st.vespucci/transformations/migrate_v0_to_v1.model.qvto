@@ -33,7 +33,7 @@
  */
  
 /**
- * @author DominicS
+ * @author Dominic Scheurer
  *
  * This file transforms a Vespucci model of version 1 (prior to 2011-06-01) to
  * the newer version 2011-06-01.
@@ -119,11 +119,6 @@ when {self.metaClassName() = 'Outgoing'} {
 mapping OldModel::Connection::toConnection() : NewModel::Connection {
 	name := self.name;
 	
-	//originalSource += self.originalSource.xmap toEnsemble();
-	//originalSource += self.originalSource.xmap toDummy();
-	//originalTarget += self.originalTarget.xmap toEnsemble();
-	//originalTarget += self.originalTarget.xmap toDummy();
-	
 	self.originalSource->forEach(os) {
 		originalSource += os.late resolveone(NewModel::Shape);
 	};
@@ -139,5 +134,3 @@ mapping OldModel::Connection::toConnection() : NewModel::Connection {
 	
 	result.remember(self);
 }
-
-// Seite 235 "Modeling project book"

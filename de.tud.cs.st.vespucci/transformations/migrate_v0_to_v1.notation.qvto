@@ -77,15 +77,20 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	// CHILDREN
 	children += self.children->map toEnsemble();
 	children += self.children->map toOuterDummy();
+	
+	children += self.children->select(child | child.type = 'Note' or child.type = 'Text');
 	styles += self.styles;
 	edges += self.edges;
 	
-	edges->forEach(e) {
-		// The following source/target related code causes inconsistences
+	edges->forEach(e | e.type != 'NoteAttachment') {
 		e.source := e.source.late resolveone(notation::View);
 		e.target := e.target.late resolveone(notation::View);
 
 		e.element := e.element.getRememberedConnection().oclAsType(EObject);
+	};
+	
+	edges->forEach(e | e.type = 'NoteAttachment') {
+		e.source := e.source.late resolveone(notation::View);
 	};
 }
 
@@ -121,6 +126,7 @@ when { self.type = VID_Ensemble_Outer } {
 
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
 		children += self.children![BasicCompartment].children->map toInnerDummy();
+		children += self.children![BasicCompartment].children->select(child | child.type = 'Note' or child.type = 'Text');
 	};
 	
 	// Add Description Compartment
@@ -143,6 +149,7 @@ when { self.type = VID_Ensemble_Inner } {
 		
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
 		children += self.children![BasicCompartment].children->map toInnerDummy();
+		children += self.children![BasicCompartment].children->select(child | child.type = 'Note' or child.type = 'Text');
 	};
 	
 	// Add Description Compartment
