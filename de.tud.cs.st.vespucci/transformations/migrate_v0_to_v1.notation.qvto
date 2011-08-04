@@ -138,7 +138,9 @@ when { self.type = VID_Ensemble_Outer } {
 		type := VID_Ensemble_Outer_Ensemble_Compartment;
 
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
+		children += self.children![BasicCompartment].children->map toEnsemble();
 		children += self.children![BasicCompartment].children->map toInnerDummy();
+		children += self.children![BasicCompartment].children->map toOuterDummy();
 		children += self.children![BasicCompartment].children->select(child | child.type = 'Note' or child.type = 'Text');
 	};
 	
@@ -161,7 +163,9 @@ when { self.type = VID_Ensemble_Inner } {
 		type := VID_Ensemble_Inner_Ensemble_Compartment;
 		
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
+		children += self.children![BasicCompartment].children->map toEnsemble();
 		children += self.children![BasicCompartment].children->map toInnerDummy();
+		children += self.children![BasicCompartment].children->map toOuterDummy();
 		children += self.children![BasicCompartment].children->select(child | child.type = 'Note' or child.type = 'Text');
 	};
 	

@@ -216,7 +216,6 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 							
 							// Rename original file, delete old file
 							renameOriginalFile(file, monitor);
-//							resourceSet.getURIConverter().delete(fileURI, null);
 	
 							List<EObject> outObjectsNotation = outputNotation
 								.getAllRootElements();
@@ -267,12 +266,12 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	 */
 	private static void renameOriginalFile(IFile file, IProgressMonitor monitor)
 	throws CoreException {
-		IPath newPath;
-		do {
-			newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
-		} while (newPath.toFile().exists());
-		
-		file.copy(newPath, true, new SubProgressMonitor(monitor, 1));
+		IPath newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
+		while (new java.io.File(file.getWorkspace().getRoot().getLocation().toFile(), newPath.toFile().toString()).exists()) {
+			newPath = newPath.removeFileExtension().addFileExtension("old").addFileExtension("sad");
+		}
+
+		file.move(newPath, true, new SubProgressMonitor(monitor, 1));
 	}
 
 	/**
