@@ -90,7 +90,19 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	};
 	
 	edges->forEach(e | e.type = 'NoteAttachment') {
-		e.source := e.source.late resolveone(notation::View);
+		if (e.source.type = VID_Dummy_Outer or
+		    e.source.type = VID_Dummy_Inner or
+		    e.source.type = VID_Ensemble_Outer or
+		    e.source.type = VID_Ensemble_Inner) then {
+			e.source := e.source.late resolveone(notation::View);
+		} endif;
+		
+		if (e.target.type = VID_Dummy_Outer or
+		    e.target.type = VID_Dummy_Inner or
+		    e.target.type = VID_Ensemble_Outer or
+		    e.target.type = VID_Ensemble_Inner) then {
+			e.target := e.target.late resolveone(notation::View);
+		} endif;		
 	};
 }
 
@@ -108,6 +120,7 @@ mapping notation::Node::toDummy() : notation::Node {
 	type := self.type;
 	styles := self.styles;
 	layoutConstraint := self.layoutConstraint;
+	children := self.children;
 	
 	element := self.element.getRememberedShape().oclAsType(EObject);
 }
@@ -169,6 +182,9 @@ mapping notation::Node::toShape() : notation::Shape {
 	fontName := self.oclAsType(notation::Shape).fontName;
 	fontColor := self.oclAsType(notation::Shape).fontColor;
 	fontHeight := self.oclAsType(notation::Shape).fontHeight;
+	
+	// Other style properties
+	fillColor := self.oclAsType(notation::Shape).fillColor;
 	
 	// Referred model element
 	element := self.element.getRememberedShape().oclAsType(EObject);
