@@ -1,4 +1,4 @@
-/**
+/*
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -39,6 +39,8 @@
  * the newer version 2011-06-01.
  *
  * It adds a new attribute "description" to the Shape class.
+ * 
+ * --- DIAGRAM part ---
  */
 
 import VespucciConverter.Utils.TransformationHelperLibrary;

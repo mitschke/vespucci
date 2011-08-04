@@ -1,4 +1,4 @@
-/**
+/*
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -35,12 +35,14 @@
 /**
  * @file
  *
- * @author DominicS
+ * @author Dominic Scheurer
  *
  * This file transforms a Vespucci model of version 1 (prior to 2011-06-01) to
  * the newer version 2011-06-01.
  *
  * It adds a new attribute "description" to the Shape class.
+ *
+ * --- MODEL part ---
  */
 
 import VespucciVisualIDs;
@@ -52,8 +54,6 @@ modeltype ecore uses 'http://www.eclipse.org/emf/2002/Ecore';
 modeltype model 'strict' uses 'http://vespucci.editor/2011-06-01';
 
 transformation migrate_v0_to_v1_notation(in oldDiagram : notation, out newDiagram : notation);
-
-//TODO Deal with "element" attributes
 
 main() {
 	oldDiagram.rootObjects()[Diagram]->map toDiagram();

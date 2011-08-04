@@ -1,6 +1,6 @@
-﻿/**
+﻿/*
  *  License (BSD Style License):
- *   Copyright (c) 2010
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universitiät Darmstadt 
@@ -34,12 +34,14 @@
 
 package de.tud.cs.st.vespucci.diagram.actions;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -57,6 +59,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.ModelExtentContents;
+import org.eclipse.m2m.internal.qvt.oml.common.MdaException;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.*;
 import org.eclipse.m2m.internal.qvt.oml.library.*;
 import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner;
@@ -76,22 +79,20 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
 
 /**
  * @author Dominic Scheurer
- * @version 0.8
+ * @version 1.0
+ * 
+ * Action for transforming serialized Vespucci .sad files of versions
+ * prior to 2011-06-01 to the version 2011-06-01.
  */
 @SuppressWarnings("restriction")
 public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
-	/**
-	 * 
-	 */
-	private IWorkbenchPart targetPart;
-	/**
-	 * 
-	 */
-	private ArrayList<IFile> files;
+	/** The current target part */
+	private IWorkbenchPart targetPart = null;
 	
-	/**
-	 * 
-	 */
+	/** The currently active list of files for transformation */
+	private ArrayList<IFile> files = null;
+	
+	/** Standard constructor; initializes the file list */
 	public TransformVespucciV0ToV1() {
 		files = new ArrayList<IFile>();
 	}
@@ -100,6 +101,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	public void run(IAction action) {
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		
+		// Create the job title string
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < files.size(); i++)
 		{
@@ -109,7 +111,15 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 			}
 		}
 		
+		// Create the conversion job
 		Job job = new Job("Convert Vespucci diagram " + sb.toString()) {
+			/** URI to the QVTO transformation code for the model part */
+			private final URI MODEL_TRANSF_URI = URI.createURI(
+				"platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.model.qvto");
+			/** URI to the QVTO transformation code for the diagram part */
+			private final URI NOTATION_TRANSF_URI = URI.createURI(
+				"platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto");
+			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {				
 				for (IFile file : files)
@@ -125,22 +135,13 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	
 						return Status.CANCEL_STATUS;
 					}
-	
-					try {
-						// The URIs for model and notation transformation
-						URI modelTransfUri = URI.createURI(
-							"platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.model.qvto"); //$NON-NLS-1$
-						URI notationTransfUri = URI.createURI(
-							"platform:/plugin/de.tud.cs.st.vespucci/transformations/migrate_v0_to_v1.notation.qvto"); //$NON-NLS-1$
-						
-						// BEGIN MONITOR TASK
+					
+					try {						
 						monitor.beginTask("Converting Vespucci diagram...", 7 * files.size());
 	
-						// Get Resource from input URI
-						Resource inResource = resourceSet
-								.getResource(fileURI, true);
-	
-						// Create the input objects for the transformation
+						// INITIALIZING TRANSFORMATION PREREQUISITE...
+						Resource inResource = resourceSet.getResource(fileURI, true);
+
 						List<EObject> inObjects = inResource.getContents();
 						
 						// Determine order of objects (ShapesDiagram / DiagramImpl) in the document
@@ -153,29 +154,27 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 							posDiagramImpl = 0;
 						}
 						
-						// Get model contents
 						ModelContent shapesDiagram = new ModelContent(inObjects.subList(posShapesDiagram, posShapesDiagram + 1));
 						ModelContent notationDiagram = new ModelContent(inObjects.subList(posDiagramImpl, posDiagramImpl + 1));
 	
-						// Setup the execution environment details (context)
 						IContext context = new Context();
-	
-						// Create transformation objects
+
+						// CREATE TRANFORMATIONS
 						QvtInterpretedTransformation shapesDiagramTransformation = new QvtInterpretedTransformation(
-							TransformationUtil.getQvtModule(modelTransfUri));
+							TransformationUtil.getQvtModule(MODEL_TRANSF_URI));
 						In shapesDiagramInTransformationRunner = new TransformationRunner.In(
 							new ModelContent[] { shapesDiagram },
 							context
 						);
 						
 						QvtInterpretedTransformation notationDiagramTransformation = new QvtInterpretedTransformation(
-							TransformationUtil.getQvtModule(notationTransfUri));
+							TransformationUtil.getQvtModule(NOTATION_TRANSF_URI));
 						In notationDiagramInTransformationRunner = new TransformationRunner.In(
 							new ModelContent[] { notationDiagram },
 							context
 						);
-						
-						// Run the transformations
+
+						// RUN TRANSFORMATIONS
 						Out shapesDiagramOutTransformationRunner = shapesDiagramTransformation
 							.run(shapesDiagramInTransformationRunner);
 						monitor.worked(2);
@@ -183,54 +182,41 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 						Out notationDiagramOutTransformationRunner = notationDiagramTransformation
 							.run(notationDiagramInTransformationRunner);					
 						monitor.worked(2);
-	
-						// Retrieve the outputs
+
 						List<ModelExtentContents> shapesDiagramTransfOutputs =
 							shapesDiagramOutTransformationRunner.getExtents();
 						List<ModelExtentContents> notationDiagramTransfOutputs =
 							notationDiagramOutTransformationRunner.getExtents();
 	
-						// Retrieve the traces
 						Trace shapesDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
 						Trace notationDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
 	
-						// Check the output validity
+						// POST-PROCESSING
 						if (shapesDiagramTrace != null && shapesDiagramTransfOutputs.size() == 1 &&
-							notationDiagramTrace != null && notationDiagramTransfOutputs.size() == 1) {
-							
-							// Trace processing
-							// Get trace URI
+							notationDiagramTrace != null && notationDiagramTransfOutputs.size() == 1) {							
 							URI traceURI = fileURI.trimFileExtension()
 								.appendFileExtension("trace");
 							EList<TraceRecord> shapesDiagramTraceRecords = shapesDiagramTrace
 								.getTraceRecords();
 							EList<TraceRecord> notationDiagramTraceRecords = notationDiagramTrace
 								.getTraceRecords();
-							// Create new trace file resource
+
 							Resource traceResource = resourceSet
 								.createResource(traceURI);
-							// Add the contents of both the traces
+
 							traceResource.getContents()
 								.addAll(shapesDiagramTraceRecords);
 							traceResource.getContents()
 								.addAll(notationDiagramTraceRecords);
 	
-							// Output process
+							// OUTPUT PRE-PROCESSING
 							ModelExtentContents outputNotation = notationDiagramTransfOutputs.get(0);
 							ModelExtentContents outputModel = shapesDiagramTransfOutputs.get(0);
 							monitor.worked(1);
 							
-							// Rename original file							
-							IPath newPath;
-							do // ESCA-JAVA0049:
-							{
-								newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
-							} while (newPath.toFile().exists());
-								
-							file.copy(newPath, true, new SubProgressMonitor(monitor, 1));
-							
-							// Delete old file
-							resourceSet.getURIConverter().delete(fileURI, null);
+							// Rename original file, delete old file
+							renameOriginalFile(file, monitor);
+//							resourceSet.getURIConverter().delete(fileURI, null);
 	
 							List<EObject> outObjectsNotation = outputNotation
 								.getAllRootElements();
@@ -248,16 +234,17 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	
 							monitor.worked(1);
 	
-							// Save the sad file
+							// SAVE
 							outputResource.save(Collections.emptyMap());
 							
 							monitor.worked(1);
 						}
-					} catch (Exception e) {
-						handleError(e);
-						
-						monitor.done();
-						return Status.CANCEL_STATUS;
+					} catch (IOException e) {
+						return handleError(e, monitor);
+					} catch (CoreException e) {
+						return handleError(e, monitor);
+					} catch (MdaException e) {
+						return handleError(e, monitor);
 					}
 				}
 				
@@ -269,12 +256,35 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		job.setUser(true);
 		job.schedule();
 	}
+	
+	/**
+	 * Renames the given file by adding ".old" before the ".sad" file ending
+	 * as long as the resulting file name is unique.
+	 * 
+	 * @param file The file to rename
+	 * @param monitor The progress monitor to use
+	 * @throws CoreException
+	 */
+	private static void renameOriginalFile(IFile file, IProgressMonitor monitor)
+	throws CoreException {
+		IPath newPath;
+		do {
+			newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
+		} while (newPath.toFile().exists());
+		
+		file.copy(newPath, true, new SubProgressMonitor(monitor, 1));
+	}
 
 	/**
+	 * Error handling method; shows a message box including the error message.
 	 * 
-	 * @param ex
+	 * @param ex The exception to show to the user.
+	 * @param monitor The current progress monitor (will be canceled)
+	 * @return Always returns CANCEL_STATUS because of abnormal abort
 	 */
-	private void handleError(final Exception ex) {
+	private IStatus handleError(final Exception ex, IProgressMonitor monitor) {
+		monitor.done();
+		
 		Display.getDefault().asyncExec(new Runnable() {			
 			@Override
 			public void run() {
@@ -286,20 +296,22 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 										.getMessage()));
 			}
 		});
+		
+		return Status.CANCEL_STATUS;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * @return The shell for the current workbench site
 	 */
 	private Shell getShell() {
 		return targetPart.getSite().getShell();
 	}
 
 	/**
+	 * Returns the EObject contents of the file defined by the given URI.
 	 * 
-	 * @param fileURI
-	 * @return
+	 * @param fileURI URI to the file which contents are to be loaded
+	 * @return The EObject contents of the file defined by fileURI
 	 */
 	private static EObject getInput(URI fileURI) {
 		ResourceSetImpl rs = new ResourceSetImpl();
@@ -308,7 +320,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
-		files = new ArrayList<IFile>();		
+		files = new ArrayList<IFile>();
 		action.setEnabled(false);
 		
 		if (!(selection instanceof IStructuredSelection)
