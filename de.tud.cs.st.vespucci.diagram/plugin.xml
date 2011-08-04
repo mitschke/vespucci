@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <!--
  License (BSD Style License):
@@ -732,6 +732,22 @@
 
    <extension point="org.eclipse.ui.handlers" id="menu-handlers">
       <?gmfgen generated="true"?>
+   </extension>
+	<extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1"
+            nameFilter="*.sad"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
+               enablesFor="+"
+               id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1Action"
+               label="Vespucci: Migrate from v0 to 2011-06-01"
+               menubarPath="additions"
+               style="push">
+         </action>
+      </objectContribution>
    </extension>
    <extension
          id="context-menus"
