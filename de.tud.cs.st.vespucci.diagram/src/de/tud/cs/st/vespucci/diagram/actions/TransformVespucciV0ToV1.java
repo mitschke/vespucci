@@ -267,7 +267,9 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	private static void renameOriginalFile(IFile file, IProgressMonitor monitor)
 	throws CoreException {
 		IPath newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
-		while (new java.io.File(file.getWorkspace().getRoot().getLocation().toFile(), newPath.toFile().toString()).exists()) {
+		while (new java.io.File(
+				file.getWorkspace().getRoot().getLocation().toFile(),
+				newPath.toFile().toString()).exists()) {
 			newPath = newPath.removeFileExtension().addFileExtension("old").addFileExtension("sad");
 		}
 
