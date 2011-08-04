@@ -76,8 +76,8 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 		
 	// CHILDREN
 	children += self.children->map toEnsemble();
+	children += self.children->map toDummy();
 	styles += self.styles;
-	//edges := self.edges.map toEdge();
 	edges += self.edges;
 	
 	edges->forEach(e) {
@@ -89,18 +89,15 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	};
 }
 
-/*mapping notation::Edge::toEdge() : notation::Edge {
-	source := self.source.late resolveone(notation::View);
-	target := self.target.late resolveone(notation::View);
-	element := self.element.getRememberedConnection().oclAsType(EObject);
-	
-	children := self.children;
-	styles := self.styles;
-	bendpoints := self.bendpoints;
-	sourceAnchor := self.sourceAnchor;
-	targetAnchor := self.targetAnchor;
-	type := self.type;
-}*/
+mapping notation::Node::toDummy() : notation::Shape
+inherits notation::Node::toShape
+when { self.type = VID_Dummy_Outer } {
+}
+
+mapping notation::Node::toInnerDummy() : notation::Shape
+inherits notation::Node::toShape
+when { self.type = VID_Dummy_Inner } {
+}
 
 mapping notation::Node::toEnsemble() : notation::Shape
 inherits notation::Node::toShape
@@ -115,6 +112,7 @@ when { self.type = VID_Ensemble_Outer } {
 		type := VID_Ensemble_Outer_Ensemble_Compartment;
 
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
+		children += self.children![BasicCompartment].children->map toDummy();
 	};
 	
 	// Add Description Compartment
@@ -136,6 +134,7 @@ when { self.type = VID_Ensemble_Inner } {
 		type := VID_Ensemble_Inner_Ensemble_Compartment;
 		
 		children += self.children![BasicCompartment].children->map toInnerEnsemble();
+		children += self.children![BasicCompartment].children->map toDummy();
 	};
 	
 	// Add Description Compartment
@@ -157,7 +156,7 @@ mapping notation::Node::toShape() : notation::Shape {
 	fontHeight := self.oclAsType(notation::Shape).fontHeight;
 	
 	// Referred model element
-	element := self.getNextRememberedShape().oclAsType(EObject);
+	element := self.element.getRememberedShape().oclAsType(EObject);
 	
 	result.rememberShape(self);
 }

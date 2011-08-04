@@ -76,42 +76,6 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	_query := self._query;
 	description := '<description>'; // NEW ATTRIBUTE
 	
-	/*self.sourceConnections->forEach(s) {
-		if (s.metaClassName().equalsIgnoreCase('Expected')) then {
-			sourceConnections += s.map toExpected();
-		} endif;
-		if (s.metaClassName().equalsIgnoreCase('InAndOut')) then {
-			sourceConnections += s.map toInAndOut();
-		} endif;
-		if (s.metaClassName().equalsIgnoreCase('Incoming')) then {
-			sourceConnections += s.map toIncoming();
-		} endif;
-		if (s.metaClassName().equalsIgnoreCase('NotAllowed')) then {
-			sourceConnections += s.map toNotAllowed();
-		} endif;
-		if (s.metaClassName().equalsIgnoreCase('Outgoing')) then {
-			sourceConnections += s.map toOutgoing();
-		} endif;
-	};
-	
-	self.targetConnections->forEach(s) {
-		if (s.metaClassName().equalsIgnoreCase('Expected')) then {
-			targetConnections += s.map toExpected();
-		} endif;
-		if (s.metaClassName().equalsIgnoreCase('InAndOut')) then {
-			targetConnections += s.map toInAndOut();
-		} endif;
-		if (s.metaClassName().equalsIgnoreCase('Incoming')) then {
-			targetConnections += s.map toIncoming();
-		} endif;
-		if (s.metaClassName().equalsIgnoreCase('NotAllowed')) then {
-			targetConnections += s.map toNotAllowed();
-		} endif;
-		if (s.metaClassName().equalsIgnoreCase('Outgoing')) then {
-			targetConnections += s.map toOutgoing();
-		} endif;
-	};*/
-	
 	sourceConnections += self.sourceConnections.map toExpected();
 	sourceConnections += self.sourceConnections.map toInAndOut();
 	sourceConnections += self.sourceConnections.map toIncoming();
@@ -124,7 +88,7 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	targetConnections += self.targetConnections.map toNotAllowed();
 	targetConnections += self.targetConnections.map toOutgoing();
 	
-	result.remember();
+	result.remember(self);
 }
 
 mapping OldModel::Connection::toExpected() : NewModel::Expected
@@ -155,10 +119,10 @@ when {self.metaClassName() = 'Outgoing'} {
 mapping OldModel::Connection::toConnection() : NewModel::Connection {
 	name := self.name;
 	
-	/*originalSource += self.originalSource.xmap toEnsemble();
-	originalSource += self.originalSource.xmap toDummy();
-	originalTarget += self.originalTarget.xmap toEnsemble();
-	originalTarget += self.originalTarget.xmap toDummy();*/
+	//originalSource += self.originalSource.xmap toEnsemble();
+	//originalSource += self.originalSource.xmap toDummy();
+	//originalTarget += self.originalTarget.xmap toEnsemble();
+	//originalTarget += self.originalTarget.xmap toDummy();
 	
 	self.originalSource->forEach(os) {
 		originalSource += os.late resolveone(NewModel::Shape);

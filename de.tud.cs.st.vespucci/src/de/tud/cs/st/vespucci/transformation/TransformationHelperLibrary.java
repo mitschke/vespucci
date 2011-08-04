@@ -14,7 +14,8 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
 public class TransformationHelperLibrary {
-	private static Deque<Shape> ensembles = new LinkedList<Shape>();
+//	private static Deque<Shape> ensembles = new LinkedList<Shape>();
+	private static HashMap<Shape, Shape> modelShapes = new HashMap<Shape, Shape>();
 	private static HashMap<Connection, Connection> connections = new HashMap<Connection, Connection>();
 	private static HashMap<ShapeImpl, ShapeImpl> notationShapes = new HashMap<ShapeImpl, ShapeImpl>();
 	private static ShapesDiagram shapesDiagram;
@@ -22,14 +23,16 @@ public class TransformationHelperLibrary {
 	@Operation(contextual=true)
 	public static void remember(Object self) 
 	{
-		if (self.getClass().equals(EnsembleImpl.class))
-		{
-			ensembles.addLast((EnsembleImpl)self);
-		}
-		else if (self.getClass().equals(ShapesDiagramImpl.class))
+		if (self.getClass().equals(ShapesDiagramImpl.class))
 		{
 			shapesDiagram = (ShapesDiagramImpl)self;
 		}
+	}
+	
+	@Operation(contextual=true)
+	public static void remember(Shape result, Shape self) 
+	{
+		modelShapes.put(self, result);
 	}
 	
 	@Operation(contextual=true)
@@ -51,9 +54,9 @@ public class TransformationHelperLibrary {
 	}
 	
 	@Operation(contextual=true)
-	public static Shape getNextRememberedShape(Object self) 
+	public static Shape getRememberedShape(Object self) 
 	{
-		return ensembles.pollFirst();
+		return modelShapes.get(self);
 	}
 	
 	@Operation(contextual=true)
