@@ -57,7 +57,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * ({@link de.tud.cs.st.vespucci/resources/validDependencies.txt}) one menu-entry will be generated.
  * 
  * @author Alexander Weitzmann
- * @version 0.3
+ * @version 0.4
  */
 public class SetDependencyEntries extends CompoundContributionItem {
 
@@ -77,7 +77,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 	 * constraints.
 	 * </UL>
 	 * <UL>
-	 * <LI>Index 2: null, used to indicate a dependency, that is not set for all selected 
+	 * <LI>Index 2: unchecked, used to indicate a dependency, that is set for no selected 
 	 * constraints.
 	 * </UL>
 	 */
@@ -89,7 +89,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checkmark_grey.png"));
+						"/resources/grayed.gif"));
 				return img.getImageData();
 			}
 		};
@@ -99,16 +99,24 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checkmark_black.png"));
+						"/resources/checked.gif"));
 				return img.getImageData();
 			}
 		};
 		
-		checkmark[2] = null;
+		checkmark[2] = new ImageDescriptor() {
+
+			@Override
+			public ImageData getImageData() {
+				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
+						"/resources/unchecked.gif"));
+				return img.getImageData();
+			}
+		};
 	}
 
 	/**
-	 * This method traverses all selected constraints and returns, which check mark should be used,
+	 * This method traverses all selected constraints and returns, which check mark should be used.
 	 * 
 	 * @param dependency
 	 *            Dependency to be checked.
@@ -161,7 +169,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			// all constraints have the given dependency set.
 			return 1;
 		}
-		// 2 indicates, that no icon will be used i.e. entry not checked.
+		// 2 indicates, that entry is not checked.
 		return 2;
 	}
 
@@ -186,7 +194,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow(),
 					"de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyContribution_" + dependency, command,
-					CommandContributionItem.STYLE_CHECK);
+					CommandContributionItem.STYLE_PUSH);
 			contributionParameter.label = dependency;
 			contributionParameter.icon = checkmark[checkMarkIndex];
 

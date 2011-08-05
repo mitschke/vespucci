@@ -1,5 +1,12 @@
 package de.tud.cs.st.vespucci.diagram.menuItems;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
+import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -10,6 +17,7 @@ import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
+import de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeParameter;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart;
@@ -21,34 +29,23 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart;
  * For each entry in {@link #types} one menu-entry will be generated.
  * 
  * @author Alexander Weitzmann
- * @version 0.2
+ * @version 0.5
  * 
  */
 public class SetConstraintTypeEntries extends CompoundContributionItem {
-
-	/**
-	 * All types of a constraint.
-	 */
-	private static final Class[] types = { ExpectedEditPart.class, InAndOutEditPart.class, IncomingEditPart.class,
-			NotAllowedEditPart.class, OutgoingEditPart.class };
-	/**
-	 * Label to be used for menu entries. The order must corresponded to {@link #types}.
-	 */
-	private static final String[] typeLabel = {"Expected", "In- and Out", "Incoming",
-		"Not Allowed", "Outgoing" };
-
 	/**
 	 * Descriptors for the check marks. There are two available check marks:
 	 * <UL>
-	 * <LI>Index 0: grey check mark, used to indicate a type, that at least one, but not all,
-	 * selected constraints are of this type.
+	 * <LI>Index 0: grey check mark, used to indicate a dependency, that is not set for all selected
+	 * constraints, but for at least one.
 	 * </UL>
 	 * <UL>
-	 * <LI>Index 1: black check mark, used to indicate, that all selected constraints are of this
-	 * type.
+	 * <LI>Index 1: black check mark, used to indicate a dependency, that is set for all selected
+	 * constraints.
 	 * </UL>
 	 * <UL>
-	 * <LI>Index 2: null, used to indicate, that all selected constraints are not of this type.
+	 * <LI>Index 2: unchecked, used to indicate a dependency, that is set for no selected 
+	 * constraints.
 	 * </UL>
 	 */
 	private static final ImageDescriptor[] checkmark = new ImageDescriptor[3];
@@ -59,7 +56,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checkmark_grey.png"));
+						"/resources/grayed.gif"));
 				return img.getImageData();
 			}
 		};
@@ -69,23 +66,44 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checkmark_black.png"));
+						"/resources/checked.gif"));
 				return img.getImageData();
 			}
 		};
+		
+		checkmark[2] = new ImageDescriptor() {
 
-		checkmark[2] = null;
+			@Override
+			public ImageData getImageData() {
+				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
+						"/resources/unchecked.gif"));
+				return img.getImageData();
+			}
+		};
 	}
 
-	private static ImageDescriptor getCheckMark(final Class type) {
+	/**
+	 * This method traverses all selected constraints and returns, which check mark should be used.
+	 * 
+	 * @param type Connection-Type to be checked.
+	 * @return The index for the correct check mark in {@link #checkmark}.
+	 */
+	private static ImageDescriptor getCheckMark(final IElementType type) {
 		final IStructuredSelection selection = (IStructuredSelection) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getSelectionService().getSelection();
 
 		final Object[] selectionArr = selection.toArray();
+		
+		// This array will contain the casted selection-objects.
+		ConnectionEditPart[] selectedConnections = new ConnectionEditPart[selectionArr.length];
+
+		for (int i = 0; i < selectionArr.length; ++i) {
+				selectedConnections[i] = (ConnectionEditPart) selectionArr[i];
+		}
 
 		boolean selectionContainsType = false;
-		for (int i = 0; i < selection.size(); ++i) {
-			if (selectionArr[i].getClass().equals(type)) {
+		for (int i = 0; i < selectedConnections.length; ++i) {
+			if (type.getEClass().isSuperTypeOf(selectedConnections[i].resolveSemanticElement().eClass())) {
 				if (i != 0 && !selectionContainsType) {
 					// current constraint is of given type, but some constraints aren't.
 					return checkmark[0];
@@ -108,22 +126,32 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 
 	@Override
 	protected IContributionItem[] getContributionItems() {
+		// Map of all constrain types
+		Map<String, IElementType> typeParams = new SetConstraintTypeParameter().getParameterValues();
+		// entries to be generated
+		final IContributionItem[] entries = new CommandContributionItem[typeParams.size()];
 		// generate entries
-		final IContributionItem[] entries = new CommandContributionItem[types.length];
-
-		for (int i = 0; i < types.length; i++) {
-			final Class type = types[i];
+		int i = 0;
+		for(String typeName: typeParams.keySet()){
+			IElementType type = typeParams.get(typeName);
+			
 			// Create parameter for menu item
 			final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow(), "de.tud.cs.st.vespucci.diagram.menuItems.SetConstraintType_"
-					+ type.getSimpleName(), "de.tud.cs.st.vespucci.diagram.SetConstraintType" + type.getSimpleName(),
-					CommandContributionItem.STYLE_CHECK);
+					+ typeName, "de.tud.cs.st.vespucci.diagram.SetConstraintType",
+					CommandContributionItem.STYLE_PUSH);
+			// Set type for handler
+			Map<String, String> parameter = new HashMap<String, String>(1);
+			parameter.put("de.tud.cs.st.vespucci.diagram.SetConstraintTypeParam", typeName);
+			contributionParameter.parameters = parameter;
 			// Delete "EditPart" at end of class name and use it as label
-			contributionParameter.label = typeLabel[i];
+			contributionParameter.label = typeName;
 			// Set icon
 			contributionParameter.icon = getCheckMark(type);
-
+			// set menu-entry
 			entries[i] = new CommandContributionItem(contributionParameter);
+			// increment counter
+			++i;
 		}
 
 		return entries;
