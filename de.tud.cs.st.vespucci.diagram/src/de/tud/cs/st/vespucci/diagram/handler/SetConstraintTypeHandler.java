@@ -39,6 +39,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.gef.EditPart;
@@ -168,8 +169,8 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 			// create request
 			connectionRequest.setTargetEditPart(targetEditPart);
 			connectionRequest.setType(org.eclipse.gef.RequestConstants.REQ_CONNECTION_START);
-			final ConnectionAnchor oldStartAnchor = selectedConnections[i].getConnectionFigure().getSourceAnchor();
-			connectionRequest.setLocation(oldStartAnchor.getLocation(oldStartAnchor.getReferencePoint()));
+//			final ConnectionAnchor oldStartAnchor = selectedConnections[i].getConnectionFigure().getSourceAnchor();
+			connectionRequest.setLocation(selectedConnections[i].getConnectionFigure().getPoints().getFirstPoint());
 
 			// only if the connection is supported will we get a non null
 			// command from the sourceEditPart
@@ -178,8 +179,7 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 				connectionRequest.setSourceEditPart(sourceEditPart);
 				connectionRequest.setTargetEditPart(targetEditPart);
 				connectionRequest.setType(org.eclipse.gef.RequestConstants.REQ_CONNECTION_END);
-				final ConnectionAnchor oldTargetAnchor = selectedConnections[i].getConnectionFigure().getTargetAnchor();
-				connectionRequest.setLocation(oldTargetAnchor.getLocation(oldTargetAnchor.getReferencePoint()));
+				connectionRequest.setLocation(selectedConnections[i].getConnectionFigure().getPoints().getLastPoint());
 				// create command
 				final Command command = targetEditPart.getCommand(connectionRequest);
 				compositeCommand.compose(new CommandProxy(command));
