@@ -34,7 +34,12 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +48,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
@@ -57,6 +64,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.MultiRule;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -83,11 +91,17 @@ import org.eclipse.gmf.runtime.diagram.ui.resources.editor.internal.util.Diagram
 import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
 import org.eclipse.gmf.runtime.emf.core.resources.GMFResourceFactory;
 import org.eclipse.gmf.runtime.notation.Diagram;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+
+import de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1;
 
 /**
  * @generated
@@ -221,15 +235,118 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 
 		return editingDomain;
 	}
+	
+	/**
+	 * Error handling method; shows a message box including the error message.
+	 * 
+	 * @param ex The exception to show to the user.
+	 * @param message The caption of the message box
+	 */
+	private static void handleError(final Exception ex, final String message) {
+		final Display defDisplay = Display.getDefault();
+		
+		defDisplay.asyncExec(new Runnable() {			
+			@Override
+			public void run() {
+				MessageDialog.openError(
+						defDisplay.getActiveShell(),
+						message,
+						MessageFormat.format(
+								"{0}: {1}",
+								ex.getClass().getSimpleName(),
+								ex.getMessage() == null ? "no message" : ex
+										.getMessage()));
+			}
+		});
+	}
 
 	/**
-	 * @generated
+	 * Checks the namespace of a given sad file and starts the conversion
+	 * dialog if an old version is detected.
+	 * 
+	 * @generated NOT
+	 * @author Dominic Scheurer
+	 * @param file The sad file to check
+	 */
+	private static void checkConversionNeeded(final IFile file) {		
+		final Action conversionAction = new Action() {
+			/** Instance pointer for the inner Job class */
+			final Action ACTION_INSTANCE = this;
+			
+			@Override
+			public void run()
+			{
+				final Job job = new Job("Auto-Converting " + file.toString()) {									
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						final IActionDelegate transfActionDelegate =
+							new TransformVespucciV0ToV1();
+						StructuredSelection selection = new StructuredSelection(
+								new IFile[] { file }
+							);
+						transfActionDelegate.selectionChanged(ACTION_INSTANCE, selection);
+						transfActionDelegate.run(ACTION_INSTANCE);
+						
+						return Status.OK_STATUS;
+					}
+				};
+				
+				job.setUser(true);
+				job.schedule();
+			}
+		};
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(
+					new File(
+							file.getWorkspace().getRoot().getLocation().toFile(),
+							file.getFullPath().toFile().toString())
+						)
+				);
+			String line, namespace = "";
+			while ((line = br.readLine()) != null) {
+				Pattern p = Pattern.compile("^.*xmlns=\"(.*?)\".*$");
+				Matcher m = p.matcher(line);
+				if (m.find()) {
+					// Namespace attribute found...
+					namespace = m.group(1);
+					
+					if (namespace.equalsIgnoreCase("http://vespucci.editor") &&
+						MessageDialog.openQuestion(
+								Display.getDefault().getActiveShell(),
+								"Vespucci sad file conversion",
+								"Shall Vespucci convert the file \"" +
+								file.toString() +
+								"\" to the newest version?")) {
+						// old version detected, conversion requested => start
+						conversionAction.run();
+					}
+					
+					return;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			VespucciDocumentProvider.handleError(e, "File could not be found");
+		} catch (IOException e) {
+			VespucciDocumentProvider.handleError(e, "I/O exception occured");
+		}
+	}
+	
+	/**
+	 * @generated NOT
 	 */
 	protected void setDocumentContent(IDocument document, IEditorInput element) throws CoreException {
 		IDiagramDocument diagramDocument = (IDiagramDocument) document;
 		TransactionalEditingDomain domain = diagramDocument.getEditingDomain();
-		if (element instanceof FileEditorInput) {
+		if (element instanceof FileEditorInput) {			
 			IStorage storage = ((FileEditorInput) element).getStorage();
+			
+			// Modified by Dominic Scheurer:
+			// Start conversion to newer sad file version if neccessary
+			VespucciDocumentProvider.checkConversionNeeded(
+				((FileEditorInput) element).getFile()
+			);
+			
 			Diagram diagram = DiagramIOUtil.load(domain, storage, true, getProgressMonitor());
 			document.setContent(diagram);
 		} else if (element instanceof URIEditorInput) {
