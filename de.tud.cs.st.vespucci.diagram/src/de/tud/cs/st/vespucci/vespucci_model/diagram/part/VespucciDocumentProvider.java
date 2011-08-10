@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
  *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -101,6 +100,7 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
+import de.tud.cs.st.vespucci.diagram.actions.ActionDelegateWrapper;
 import de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1;
 
 /**
@@ -239,6 +239,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * Error handling method; shows a message box including the error message.
 	 * 
+	 * @generated NOT
 	 * @param ex The exception to show to the user.
 	 * @param message The caption of the message box
 	 */
@@ -269,23 +270,17 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @param file The sad file to check
 	 */
 	private static void checkConversionNeeded(final IFile file) {		
-		final Action conversionAction = new Action() {
-			/** Instance pointer for the inner Job class */
-			final Action ACTION_INSTANCE = this;
-			
+		final Action conversionAction = new Action() {			
 			@Override
 			public void run()
 			{
+				final Action ACTION_INSTANCE = this;
 				final Job job = new Job("Auto-Converting " + file.toString()) {									
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
-						final IActionDelegate transfActionDelegate =
-							new TransformVespucciV0ToV1();
-						StructuredSelection selection = new StructuredSelection(
-								new IFile[] { file }
-							);
-						transfActionDelegate.selectionChanged(ACTION_INSTANCE, selection);
-						transfActionDelegate.run(ACTION_INSTANCE);
+						ActionDelegateWrapper wrapper = new ActionDelegateWrapper(
+								new TransformVespucciV0ToV1());						
+						wrapper.executeWithFile(ACTION_INSTANCE, file);
 						
 						return Status.OK_STATUS;
 					}
