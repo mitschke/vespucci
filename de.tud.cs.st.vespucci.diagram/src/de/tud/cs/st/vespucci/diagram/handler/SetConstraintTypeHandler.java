@@ -34,12 +34,12 @@
 package de.tud.cs.st.vespucci.diagram.handler;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.gef.EditPart;
@@ -63,6 +63,8 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
+
 /**
  * Handler for "Set Type"-commands in the constraint popup menu.<br>
  * Set Type changes the class of the constraint, e.g. from Incoming to Outgoing. Thus the class of
@@ -71,9 +73,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * procedure a user initiates).
  * 
  * @author Alexander Weitzmann
- * @version 0.2
+ * @version 0.3
  */
-public class SetConstraintTypeHandler extends AbstractHandler {
+public final class SetConstraintTypeHandler extends AbstractHandler {
 	/**
 	 * Label for commands to be created.
 	 */
@@ -87,10 +89,33 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 	/**
 	 * Array containing a map for all selected connections (see {@link #selectedConnections}). The
 	 * map associates each feature of the connection with the corresponding value. This array is
-	 * needed to restore all properties of the recreated connections. The order must correspond to
+	 * needed to restore the properties of the recreated connections. The order must correspond to
 	 * the order of {@link #selectedConnections}!
 	 */
 	private HashMap<EStructuralFeature, Object>[] featureMapArr;
+
+	/**
+	 * Array containing a map for all selected connections (see {@link #selectedConnections}). The
+	 * map associates graphical parameter with the corresponding value. This array is needed to
+	 * restore the properties of the recreated connections. The order must correspond to the order
+	 * of {@link #selectedConnections}!
+	 */
+	private HashMap<String, Object>[] graphicMapArr;
+
+	/**
+	 * Source of the connection.
+	 */
+	private static final String SOURCE_ENSEMBLE = "source";
+	/**
+	 * Target of the connection.
+	 */
+	private static final String TARGET_ENSEMBLE = "target";
+
+	/**
+	 * Set containing all restored or old connections. "Old" means, that it was not newly created by
+	 * this handler and thus must not be restored.
+	 */
+	private HashSet<ConnectionEditPart> finishedConnections;
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
@@ -115,18 +140,6 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 			}
 		}
 
-		featureMapArr = new HashMap[selectedConnections.length];
-
-		// Save information of the connections to be destroyed.
-		for (int i = 0; i < selectedConnections.length; ++i) {
-			final EObject conn = selectedConnections[i].resolveSemanticElement();
-			final HashMap<EStructuralFeature, Object> connMap = new HashMap<EStructuralFeature, Object>();
-			for (final EStructuralFeature feature : conn.eClass().getEAllStructuralFeatures()) {
-				connMap.put(feature, conn.eGet(feature));
-			}
-			featureMapArr[i] = connMap;
-		}
-
 		/**
 		 * Command, that shall delete and recreate selected connections.
 		 */
@@ -138,10 +151,13 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 		final IElementType type = typeParams.getParameterValues().get(
 				event.getParameter("de.tud.cs.st.vespucci.diagram.SetConstraintTypeParam"));
 		recreateCC.add(getCreateCommand(type));
-		// restore properties of connections
-		// TODO
+		// save properties of connections to be destroyed
+		saveProperties();
 		// Execute on gmf command-stack for undo/redo-compatibility.
 		selectedConnections[0].getDiagramEditDomain().getDiagramCommandStack().execute(recreateCC);
+		// restore properties in newly created connections
+		restoreProperties();
+		// return must be null
 		return null;
 	}
 
@@ -160,17 +176,16 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 		final CompositeTransactionalCommand compositeCommand = new CompositeTransactionalCommand(
 				selectedConnections[0].getEditingDomain(), CONTEXT_LABEL);
 		// create a create-command for each destroyed connection
-		for (int i = 0; i < featureMapArr.length; ++i) {
+		for (final ConnectionEditPart con : selectedConnections) {
 			final CreateConnectionRequest connectionRequest = CreateViewRequestFactory.getCreateConnectionRequest(type,
 					getPreferencesHint());
-			
-			final EditPart sourceEditPart = selectedConnections[i].getSource();
-			final EditPart targetEditPart = selectedConnections[i].getTarget();
+
+			final EditPart sourceEditPart = con.getSource();
+			final EditPart targetEditPart = con.getTarget();
 			// create request
 			connectionRequest.setTargetEditPart(targetEditPart);
 			connectionRequest.setType(org.eclipse.gef.RequestConstants.REQ_CONNECTION_START);
-//			final ConnectionAnchor oldStartAnchor = selectedConnections[i].getConnectionFigure().getSourceAnchor();
-			connectionRequest.setLocation(selectedConnections[i].getConnectionFigure().getPoints().getFirstPoint());
+			connectionRequest.setLocation(con.getConnectionFigure().getPoints().getFirstPoint());
 
 			// only if the connection is supported will we get a non null
 			// command from the sourceEditPart
@@ -179,13 +194,14 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 				connectionRequest.setSourceEditPart(sourceEditPart);
 				connectionRequest.setTargetEditPart(targetEditPart);
 				connectionRequest.setType(org.eclipse.gef.RequestConstants.REQ_CONNECTION_END);
-				connectionRequest.setLocation(selectedConnections[i].getConnectionFigure().getPoints().getLastPoint());
+				connectionRequest.setLocation(con.getConnectionFigure().getPoints().getLastPoint());
 				// create command
 				final Command command = targetEditPart.getCommand(connectionRequest);
+				// bundle create-commands
 				compositeCommand.compose(new CommandProxy(command));
 			}
 		}
-		// bundle create-commands
+		// wrap create commands
 		if (!compositeCommand.isEmpty()) {
 			createCC.add(new ICommandProxy(compositeCommand));
 		}
@@ -221,6 +237,28 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 	}
 
 	/**
+	 * Returns a unrestored connection created by this handler with specified source and target
+	 * ensemble. If no such connection exists a runtime error will be thrown.
+	 * 
+	 * @param source
+	 *            The source of the connection.
+	 * @param target
+	 *            The target of the connection.
+	 * @return Returns a unrestored connection created by this handler with specified source and
+	 *         target ensemble, if such connection exists.
+	 */
+	private ConnectionEditPart getNewConnection(final EnsembleEditPart source, final EnsembleEditPart target) {
+		for (final Object conObj : source.getSourceConnections()) {
+			final ConnectionEditPart con = (ConnectionEditPart) conObj;
+			if (con.getTarget().equals(target) && !finishedConnections.contains(conObj)) {
+				return con;
+			}
+		}
+		// TODO delete debug
+		throw new RuntimeException("source: " + source.toString() + " target: " + target.toString());
+	}
+
+	/**
 	 * Taken from
 	 * {@link org.eclipse.gmf.runtime.diagram.ui.tools.ConnectionCreationTool#createConnection()}.
 	 * Gets the preferences hint that is to be used to find the appropriate preference store from
@@ -238,6 +276,66 @@ public class SetConstraintTypeHandler extends AbstractHandler {
 			}
 		}
 		return PreferencesHint.USE_DEFAULTS;
+	}
+
+	/**
+	 * Restores the properties saved via {@link #saveProperties()}. Note, that
+	 * {@link #selectedConnections} is obsolete at this point and can not be used anymore. In order
+	 * to find the connections, which must be restored, all connections in the diagram will be
+	 * traversed.
+	 */
+	private void restoreProperties() {
+		for (int i = 0; i < featureMapArr.length; ++i) {
+			final HashMap<String, Object> graphicMap = graphicMapArr[i];
+			// find newly created connection
+			final ConnectionEditPart con = getNewConnection((EnsembleEditPart) graphicMap.get(SOURCE_ENSEMBLE),
+					(EnsembleEditPart) graphicMap.get(TARGET_ENSEMBLE));
+
+			// Restore information from EObject (semantic model)
+			for (final Entry<EStructuralFeature, Object> entry : featureMapArr[i].entrySet()) {
+				con.resolveSemanticElement().eSet(entry.getKey(), entry.getValue());
+			}
+
+			// Restore graphical information
+			// TODO
+			// con.getFigure().setForegroundColor((Color) graphicMap.get("FontColor example"));
+		}
+	}
+
+	/**
+	 * Saves all relevant properties of the selected connections. If you add more entries to the
+	 * map, don't forget to update {@link #restoreProperties()} accordingly.
+	 */
+	private void saveProperties() {
+		// Save information from EObject (semantic model)
+		featureMapArr = new HashMap[selectedConnections.length];
+		for (int i = 0; i < selectedConnections.length; ++i) {
+			final EObject conn = selectedConnections[i].resolveSemanticElement();
+			// this map contains the information for one connection
+			final HashMap<EStructuralFeature, Object> map = new HashMap<EStructuralFeature, Object>();
+			for (final EStructuralFeature feature : conn.eClass().getEAllStructuralFeatures()) {
+				map.put(feature, conn.eGet(feature));
+			}
+			// populate array
+			featureMapArr[i] = map;
+		}
+		// Save graphical information
+		graphicMapArr = new HashMap[selectedConnections.length];
+		for (int i = 0; i < selectedConnections.length; ++i) {
+			// this map contains the information for one connection
+			final HashMap<String, Object> map = new HashMap<String, Object>();
+			final ConnectionEditPart con = selectedConnections[i];
+
+			// source and target will not be restored (since this will be already correct after
+			// initial creation), but is used for finding the created connection
+			map.put(SOURCE_ENSEMBLE, con.getSource());
+			map.put(TARGET_ENSEMBLE, con.getTarget());
+			// the following properties will be actually restored
+			// TODO save more
+
+			// populate array
+			graphicMapArr[i] = map;
+		}
 	}
 
 }
