@@ -82,7 +82,7 @@ public class ActionDelegateWrapper {
 	
 	/**
 	 * Executes the wrapped delegate with a given array of files.
-	 * @param action The outer <pre>Action</pre> instance.
+	 * @param action The outer Action instance.
 	 * @param files List of files to supply to the wrapper.
 	 */
 	public void executeWithFiles(Action action, IFile[] files) {
@@ -95,7 +95,7 @@ public class ActionDelegateWrapper {
 	
 	/**
 	 * Executes the wrapped delegate with a given file.
-	 * @param action The outer <pre>Action</pre> instance.
+	 * @param action The outer Action instance.
 	 * @param file File to supply to the wrapper.
 	 */
 	public void executeWithFile(Action action, IFile file) {
