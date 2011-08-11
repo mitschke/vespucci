@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Versioning
+Bundle-SymbolicName: de.tud.cs.st.vespucci.versioning;singleton:=true
+Bundle-Version: 1.5.1
+Bundle-Activator: de.tud.cs.st.vespucci.versioning.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.m2m.qvt.oml.runtime,
+ org.eclipse.m2m.qvt.oml
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: de.tud.cs.st.vespucci.vespucci_model,
+ de.tud.cs.st.vespucci.vespucci_model.impl
