@@ -44,7 +44,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader;
 
 /**
- * A Changed Copy of AbstractBasicTextPropertySection (org.eclipse.gmf.runtime.diagram
+ * A Changed Copy of AbstractBasicTextPropertySection
+ * (org.eclipse.gmf.runtime.diagram
  * .ui.properties.sections.AbstractBasicTextPropertySection)
  * 
  * 
@@ -58,8 +59,10 @@ import de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader;
  * @author BenjaminL
  * @author DominicS
  * @author Alexander Weitzmann
+ * @author Thomas Schulz
  */
-public abstract class ChangedAbstractBasicTextPropertySection extends AbstractModelerPropertySection {
+public abstract class ChangedAbstractBasicTextPropertySection extends
+		AbstractModelerPropertySection {
 
 	private final int QUERY_TAB_HEIGHT_SHIFT = 35;
 
@@ -76,9 +79,11 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	private final int startHeight = 15;
 
 	/**
-	 * Preference-store of the java source viewer. Used for highlighting and text-settings for query.
+	 * Preference-store of the java source viewer. Used for highlighting and
+	 * text-settings for query.
 	 */
-	private static final IPreferenceStore srcViewerPrefs = PreferenceConstants.getPreferenceStore();
+	private static final IPreferenceStore srcViewerPrefs = PreferenceConstants
+			.getPreferenceStore();
 
 	Listener resizeLinstener = new Listener() {
 		@Override
@@ -88,7 +93,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	};
 
 	/**
-	 * A helper to listen for events that indicate that a text field has been changed.
+	 * A helper to listen for events that indicate that a text field has been
+	 * changed.
 	 */
 	private final TextChangeHelper listener = new TextChangeHelper() {
 		private boolean textModified = false;
@@ -104,7 +110,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		private final String[] keywords = kwReader.getKeywords();
 
 		/**
-		 * Pattern to be used to match strings in query including the single quotes
+		 * Pattern to be used to match strings in query including the single
+		 * quotes
 		 */
 		private static final String STRING_PATTERN = "'.+?'";
 
@@ -133,14 +140,16 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		}
 
 		/**
-		 * Returns a StyleRange that surrounds the character at the given position with a rectangle.
+		 * Returns a StyleRange that surrounds the character at the given
+		 * position with a rectangle.
 		 * 
 		 * @param position
 		 *            The position of the bracket to be highlighted.
 		 * @return A StyleRange that highlights bracket at given position
 		 */
 		private StyleRange getBracketStyle(final int position) {
-			final StyleRange bracketStyle = textWidget.getStyleRangeAtOffset(position);
+			final StyleRange bracketStyle = textWidget
+					.getStyleRangeAtOffset(position);
 
 			// surround with rectangle
 			bracketStyle.borderStyle = SWT.BORDER_SOLID;
@@ -177,56 +186,77 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		}
 
 		/**
-		 * Highlights bracket at caret and corresponding bracket.
+		 * Highlights the corresponding bracket relative to caret position
 		 */
 		private void highlightBrackets() {
 
 			final int offset = textWidget.getCaretOffset();
 			// Check if caret is at first position
-			// => no syntax highlighting
-			if (offset == 0) {
-				// do not highlight anything:
+			// => no bracket highlighting
+			if (offset == 0)
 				return;
-			}
 
 			final int size = textWidget.getCharCount();
+
 			final char currentChar = textWidget.getText().charAt(offset - 1);
 
+			// mark closing or opening bracket
+			handleBracketCases(offset, size, currentChar);
+
+		}
+
+		/**
+		 * Decides whether an opening or a closing bracket should be marked
+		 */
+		private void handleBracketCases(int offset, int size, char currentChar) {
 			if (currentChar == '(' && !textWidget.isPositionMarked(offset - 1)) {
-				int indent = 0;
-				for (int i = offset; i < size; i++) {
-					if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
-						indent++;
-					}
+				markCorrespondingClosingBracket(offset, size);
+			} else if (currentChar == ')' && offset > 1
+					&& !textWidget.isPositionMarked(offset - 1)) {
+				markCorrespondingOpeningBracket(offset);
+			}
+		}
 
-					if (textWidget.getText().charAt(i) == ')' && indent == 0 && !textWidget.isPositionMarked(i)) {
-						// Highlight both brackets
-						textWidget.setStyleRange(getBracketStyle(i));
-						return;
-					}
+		private void markCorrespondingClosingBracket(int offset, int size) {
+			int amountOfFurtherOpeningBrackets = 0;
+			for (int i = offset; i < size; i++) {
+				if (textWidget.getText().charAt(i) == '('
+						&& !textWidget.isPositionMarked(i)) {
+					amountOfFurtherOpeningBrackets++;
+				}
 
-					if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
-						indent--;
-					}
+				if (textWidget.getText().charAt(i) == ')' && amountOfFurtherOpeningBrackets == 0
+						&& !textWidget.isPositionMarked(i)) {
+					// highlight corresponding bracket
+					textWidget.setStyleRange(getBracketStyle(i));
+					return;
+				}
+
+				if (textWidget.getText().charAt(i) == ')'
+						&& !textWidget.isPositionMarked(i)) {
+					amountOfFurtherOpeningBrackets--;
 				}
 			}
+		}
 
-			else if (currentChar == ')' && offset > 1 && !textWidget.isPositionMarked(offset - 1)) {
-				int intend = 0;
-				for (int i = offset - 2; i >= 0; i--) {
-					if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
-						intend++;
-					}
+		private void markCorrespondingOpeningBracket(int offset) {
+			int amountOfFurtherClosingBrackets = 0;
+			for (int i = offset - 2; i >= 0; i--) {
+				if (textWidget.getText().charAt(i) == ')'
+						&& !textWidget.isPositionMarked(i)) {
+					amountOfFurtherClosingBrackets++;
+				}
 
-					if (textWidget.getText().charAt(i) == '(' && intend == 0 && !textWidget.isPositionMarked(i)) {
-						// Highlight both brackets
-						textWidget.setStyleRange(getBracketStyle(i));
-						return;
-					}
+				if (textWidget.getText().charAt(i) == '(' && amountOfFurtherClosingBrackets == 0
+						&& !textWidget.isPositionMarked(i)) {
+					// highlight corresponding bracket
+					textWidget.setStyleRange(getBracketStyle(i));
+					return;
+				}
 
-					if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
-						intend--;
-					}
+				if (textWidget.getText().charAt(i) == '('
+						&& !textWidget.isPositionMarked(i)) {
+					amountOfFurtherClosingBrackets--;
 				}
 			}
 		}
@@ -240,8 +270,10 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 			Matcher keywordMatcher = null;
 
 			// prepare style for keywords
-			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_BOLD);
-			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_ITALIC);
+			final boolean bold = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_BOLD);
+			final boolean italic = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_ITALIC);
 
 			final StyleRange styleRange = new StyleRange();
 			styleRange.fontStyle = SWT.NORMAL;
@@ -251,18 +283,23 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 			if (italic) {
 				styleRange.fontStyle |= SWT.ITALIC;
 			}
-			styleRange.strikeout = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_STRIKETHROUGH);
-			styleRange.underline = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_UNDERLINE);
-			styleRange.foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_JAVA_KEYWORD_COLOR);
+			styleRange.strikeout = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_STRIKETHROUGH);
+			styleRange.underline = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_UNDERLINE);
+			styleRange.foreground = JavaUI.getColorManager().getColor(
+					PreferenceConstants.EDITOR_JAVA_KEYWORD_COLOR);
 
 			// highlight keywords
 			for (final String str : keywords) {
-				keywordPattern = Pattern.compile(String.format("\\b%s\\b", str));
+				keywordPattern = Pattern
+						.compile(String.format("\\b%s\\b", str));
 				keywordMatcher = keywordPattern.matcher(targetText);
 
 				while (keywordMatcher.find()) {
 					styleRange.start = keywordMatcher.start();
-					styleRange.length = keywordMatcher.end() - keywordMatcher.start();
+					styleRange.length = keywordMatcher.end()
+							- keywordMatcher.start();
 
 					textWidget.setStyleRange(styleRange);
 				}
@@ -273,11 +310,14 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		 * Highlights all strings
 		 */
 		private void highlightStrings() {
-			final Matcher stringMatcher = Pattern.compile(STRING_PATTERN, Pattern.DOTALL).matcher(textWidget.getText());
+			final Matcher stringMatcher = Pattern.compile(STRING_PATTERN,
+					Pattern.DOTALL).matcher(textWidget.getText());
 
 			// prepare style for highlighting
-			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_BOLD);
-			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_ITALIC);
+			final boolean bold = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_STRING_BOLD);
+			final boolean italic = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_STRING_ITALIC);
 
 			final StyleRange styleRange = new StyleRange();
 			styleRange.fontStyle = SWT.NORMAL;
@@ -287,9 +327,12 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 			if (italic) {
 				styleRange.fontStyle |= SWT.ITALIC;
 			}
-			styleRange.strikeout = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_STRIKETHROUGH);
-			styleRange.underline = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_UNDERLINE);
-			styleRange.foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_STRING_COLOR);
+			styleRange.strikeout = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_STRING_STRIKETHROUGH);
+			styleRange.underline = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_STRING_UNDERLINE);
+			styleRange.foreground = JavaUI.getColorManager().getColor(
+					PreferenceConstants.EDITOR_STRING_COLOR);
 
 			// remove all string-markings for {@link #highlightBrackets}
 			textWidget.unmarkAllPositions();
@@ -309,15 +352,21 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		}
 
 		/**
-		 * Resets the whole text style in the StyledText component to its "normal" state.
+		 * Resets the whole text style in the StyledText component to its
+		 * "normal" state.
 		 */
 		private void resetStyle() {
-			final Color foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_JAVA_DEFAULT_COLOR);
+			final Color foreground = JavaUI.getColorManager().getColor(
+					PreferenceConstants.EDITOR_JAVA_DEFAULT_COLOR);
 			final Color background = EditorsUI.getSharedTextColors().getColor(
-					PreferenceConverter.getColor(EditorsUI.getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND));
+					PreferenceConverter.getColor(
+							EditorsUI.getPreferenceStore(),
+							AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND));
 
-			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_BOLD);
-			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_ITALIC);
+			final boolean bold = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_BOLD);
+			final boolean italic = srcViewerPrefs
+					.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_ITALIC);
 
 			int fontstyle = SWT.NORMAL;
 			if (bold) {
@@ -327,7 +376,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 				fontstyle |= SWT.ITALIC;
 			}
 
-			final StyleRange normalStyle = new StyleRange(0, textWidget.getCharCount(), foreground, background, fontstyle);
+			final StyleRange normalStyle = new StyleRange(0,
+					textWidget.getCharCount(), foreground, background,
+					fontstyle);
 			textWidget.setStyleRange(normalStyle);
 		}
 
@@ -343,7 +394,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		public void textChanged(final Control control) {
 			if (textModified) {
 				// clear error message
-				final IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
+				final IWorkbenchPart part = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage()
+						.getActivePart();
 				StatusLineUtil.outputErrorMessage(part, StringStatics.BLANK);
 
 				setPropertyValue(control);
@@ -353,8 +406,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	};
 
 	/**
-	 * @return - the default implementation returns contents of the text widget as a new value for the property. Subclasses can
-	 *         could be override.
+	 * @return - the default implementation returns contents of the text widget
+	 *         as a new value for the property. Subclasses can could be
+	 *         override.
 	 */
 	protected final Object computeNewPropertyValue() {
 		return getTextWidget().getText();
@@ -363,11 +417,14 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse .swt.widgets.Composite,
+	 * @see
+	 * org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse
+	 * .swt.widgets.Composite,
 	 * org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
 	@Override
-	public final void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	public final void createControls(final Composite parent,
+			final TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		doCreateControls(parent, aTabbedPropertySheetPage);
 	}
 
@@ -381,9 +438,11 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	protected final MarkableStyledText createTextWidget(final Composite parent) {
 		getSectionComposite().getSize();
 
-		final MarkableStyledText st = new MarkableStyledText(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		final MarkableStyledText st = new MarkableStyledText(parent, SWT.MULTI
+				| SWT.V_SCROLL | SWT.H_SCROLL);
 
-		final Font userFont = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
+		final Font userFont = JFaceResources
+				.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
 		st.setFont(userFont);
 
 		final FormData data = new FormData();
@@ -394,7 +453,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		st.setLayoutData(data);
 
 		st.setBackground(EditorsUI.getSharedTextColors().getColor(
-				PreferenceConverter.getColor(EditorsUI.getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND)));
+				PreferenceConverter.getColor(EditorsUI.getPreferenceStore(),
+						AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND)));
 
 		if (isReadOnly()) {
 			st.setEditable(false);
@@ -424,7 +484,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	 * @see org.eclipse.gmf.runtime.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.gmf.runtime.common.ui.properties.TabbedPropertySheetPage)
 	 */
-	public final void doCreateControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	public final void doCreateControls(final Composite parent,
+			final TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
 		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
 		textWidget = createTextWidget(sectionComposite);
@@ -473,8 +534,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	/**
 	 * returns as an array the property name
 	 * 
-	 * @return - array of strings where each describes a property name one per property. The strings will be used to calculate
-	 *         common indent from the left
+	 * @return - array of strings where each describes a property name one per
+	 *         property. The strings will be used to calculate common indent
+	 *         from the left
 	 */
 	protected final String[] getPropertyNameStringsArray() {
 		return new String[] { getPropertyNameLabel() };
@@ -544,14 +606,15 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		final ArrayList<ICommand> commands = new ArrayList<ICommand>();
 		for (final Iterator<?> it = getEObjectList().iterator(); it.hasNext();) {
 			final EObject next = (EObject) it.next();
-			commands.add(createCommand(getPropertyChangeCommandName(), next, new Runnable() {
+			commands.add(createCommand(getPropertyChangeCommandName(), next,
+					new Runnable() {
 
-				@Override
-				public void run() {
-					setPropertyValue(next, value);
-				}
+						@Override
+						public void run() {
+							setPropertyValue(next, value);
+						}
 
-			}));
+					}));
 		}
 		executeAsCompositeCommand(getPropertyChangeCommandName(), commands);
 		refresh();
