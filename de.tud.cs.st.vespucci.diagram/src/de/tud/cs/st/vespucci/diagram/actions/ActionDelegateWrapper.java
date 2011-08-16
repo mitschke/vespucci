@@ -39,9 +39,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IActionDelegate;
 
 /**
- * This is a convenience wrapper class for IObjectDelegates which
- * enables the user to run the action implemented in the delegate
- * programatically with a given (list of) file(s).
+ * This is a convenience wrapper class for IObjectDelegates which enables the user to run the action implemented in the
+ * delegate programatically with a given (list of) file(s).
  * 
  * @author Dominic Scheurer
  * @version 0.8
@@ -49,23 +48,15 @@ import org.eclipse.ui.IActionDelegate;
 public class ActionDelegateWrapper {
 	/** The wrapped delegate. */
 	private IActionDelegate actionDelegate;
-	
-	/**
-	 * Standard constructor is hidden so that the wrapped object is
-	 * sure to be initialized.
-	 */
-	private ActionDelegateWrapper() {
-		
-	}
 
 	/**
-	 * @param actionDelegate The wrapped delegate object.
+	 * @param actionDelegate
+	 *            The wrapped delegate object.
 	 */
 	public ActionDelegateWrapper(IActionDelegate actionDelegate) {
-		this();
 		this.actionDelegate = actionDelegate;
 	}
-	
+
 	/**
 	 * @return The wrapped delegate object.
 	 */
@@ -74,29 +65,34 @@ public class ActionDelegateWrapper {
 	}
 
 	/**
-	 * @param actionDelegate The wrapped delegate object.
+	 * @param actionDelegate
+	 *            The wrapped delegate object.
 	 */
 	public void setActionDelegate(IActionDelegate actionDelegate) {
 		this.actionDelegate = actionDelegate;
 	}
-	
+
 	/**
 	 * Executes the wrapped delegate with a given array of files.
-	 * @param action The outer Action instance.
-	 * @param files List of files to supply to the wrapper.
+	 * 
+	 * @param action
+	 *            The outer Action instance.
+	 * @param files
+	 *            List of files to supply to the wrapper.
 	 */
 	public void executeWithFiles(Action action, IFile[] files) {
-		StructuredSelection selection = new StructuredSelection(
-				files
-			);
+		StructuredSelection selection = new StructuredSelection(files);
 		actionDelegate.selectionChanged(action, selection);
 		actionDelegate.run(action);
 	}
-	
+
 	/**
 	 * Executes the wrapped delegate with a given file.
-	 * @param action The outer Action instance.
-	 * @param file File to supply to the wrapper.
+	 * 
+	 * @param action
+	 *            The outer Action instance.
+	 * @param file
+	 *            File to supply to the wrapper.
 	 */
 	public void executeWithFile(Action action, IFile file) {
 		executeWithFiles(action, new IFile[] { file });

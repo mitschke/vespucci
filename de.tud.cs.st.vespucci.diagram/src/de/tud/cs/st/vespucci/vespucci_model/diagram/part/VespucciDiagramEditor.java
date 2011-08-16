@@ -353,7 +353,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 
 		DiagramConverter converter = new DiagramConverter();
 		try {
-			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
+			converter.convertDiagramToProlog(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
 		} catch (FileNotFoundException e) {
 			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
