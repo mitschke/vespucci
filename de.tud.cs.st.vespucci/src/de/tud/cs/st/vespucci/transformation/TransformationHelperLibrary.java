@@ -43,7 +43,6 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
-// ESCA-JAVA0014:
 /**
  * @author Dominic Scheurer
  * @version 1.0
@@ -72,7 +71,6 @@ public class TransformationHelperLibrary {
 	 */
 	private static ShapesDiagram shapesDiagram;
 	
-	// ESCA-JAVA0057:
 	/**
 	 * Standard constructor. This is needed by QVTO, although
 	 * this class only contains static members (which is also
@@ -100,8 +98,7 @@ public class TransformationHelperLibrary {
 	 * @param self The original Shape
 	 */
 	@Operation(contextual=true)
-	public static void remember(Shape result, Shape self) 
-	{
+	public static void remember(Shape result, Shape self) {
 		modelShapes.put(self, result);
 	}
 	
@@ -113,12 +110,10 @@ public class TransformationHelperLibrary {
 	 * @param self The original Connection
 	 */
 	@Operation(contextual=true)
-	public static void remember(Connection result, Connection self)
-	{
+	public static void remember(Connection result, Connection self) {
 		connections.put(self, result);
 	}
 	
-	// ESCA-JAVA0173:
 	/**
 	 * Returns the remembered ShapesDiagram (top model element)
 	 * 
@@ -126,8 +121,7 @@ public class TransformationHelperLibrary {
 	 * @return Remembered ShapesDiagram
 	 */
 	@Operation(contextual=true)
-	public static ShapesDiagram getRememberedShapesDiagram(Object self) 
-	{
+	public static ShapesDiagram getRememberedShapesDiagram(Object self) {
 		return shapesDiagram;
 	}
 	
@@ -138,8 +132,7 @@ public class TransformationHelperLibrary {
 	 * @return The remembered transformation result
 	 */
 	@Operation(contextual=true)
-	public static Shape getRememberedShape(Object self) 
-	{
+	public static Shape getRememberedShape(Object self) {
 		return modelShapes.get(self);
 	}
 	
@@ -150,8 +143,7 @@ public class TransformationHelperLibrary {
 	 * @return The remembered transformation result
 	 */
 	@Operation(contextual=true)
-	public static Connection getRememberedConnection(Object self) 
-	{
+	public static Connection getRememberedConnection(Object self) {
 		return connections.get((Connection)self);
 	}
 }
