@@ -128,7 +128,7 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * The cached value of the '{@link #getOriginalSource() <em>Original Source</em>}' reference list. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * begin-user-doc --> Describes the hierarchy of collapsed ensembles. Last element in this list should be the ensemble, where the red line will connect. If this list is not empty, the first element should be real source, i.e. where the connection actually begins. Note: Not sure myself.<!-- end-user-doc -->
 	 * 
 	 * @see #getOriginalSource()
 	 * @generated

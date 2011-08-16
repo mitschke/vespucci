@@ -235,31 +235,29 @@ public class DiagramConverter {
 	/**
 	 * Search the diagram recursive and create all facts.
 	 * 
+	 * @param shapeList
+	 * @return Returns the formatted dependency facts.
 	 * @author Patrick Jahnke
 	 * @throws Exception
 	 */
 	private StringBuilder getDependencyFacts(final List<Shape> shapeList) throws Exception {
 		final StringBuilder dependencyFacts = new StringBuilder();
 		for (final Shape shape : shapeList) {
-			// create Ensemble facts:
-			if (shape == null) {
-				continue;
+			if(shape != null){
+				for (final Connection connection : shape.getTargetConnections()) {
+					dependencyFacts.append(createDependencyFact(connection, fileName));
+				}
 			}
-			// create transaction facts:
-			for (final Connection connection : shape.getTargetConnections()) {
-				dependencyFacts.append(createDependencyFact(connection, fileName));
-			}
-
 		}
 		return dependencyFacts;
 	}
 
 	/**
-	 * returns a static string for the begin of the dependency facts
+	 * The string contains an explanation of the keywords used to describe the dependencies.
 	 * 
-	 * @return
+	 * @return Returns a string for the begin of the dependency facts.
 	 */
-	private String getDependencyHeader() {
+	private static String getDependencyHeader() {
 		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("\n");
 		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
@@ -389,13 +387,13 @@ public class DiagramConverter {
 	}
 
 	/**
-	 * returns the parameter definitions of an ensemble
+	 * Returns the parameter definitions of an ensemble. I.e. the parameter list splitet at ", "
 	 * 
 	 * @param ensemble
-	 * @return
+	 * @return Return an array containing the parameters of given ensemble.
 	 * @author Patrick Jahnke
 	 */
-	private String[] getEnsembleParameterDefinitions(final Ensemble ensemble) {
+	private static String[] splitEnsembleParameterList(final Ensemble ensemble) {
 		if (ensemble.getName() == null) {
 			ensemble.setName("");
 		}
@@ -430,7 +428,7 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private String getEnsembleParameters(final Ensemble ensemble) {
-		final String[] parameters = getEnsembleParameterDefinitions(ensemble);
+		final String[] parameters = splitEnsembleParameterList(ensemble);
 		if (parameters.length == 0) {
 			return "[]";
 		}
@@ -538,7 +536,7 @@ public class DiagramConverter {
 	 * @author Patrick Jahnke
 	 */
 	private boolean isAbstractEnsemble(final Ensemble ensemble) {
-		final String[] parameters = getEnsembleParameterDefinitions(ensemble);
+		final String[] parameters = splitEnsembleParameterList(ensemble);
 		for (final String parameter : parameters) {
 			if (UPPER_CASE.matcher(parameter).matches()) {
 				return true;
@@ -558,20 +556,20 @@ public class DiagramConverter {
 	}
 
 	/**
-	 * create a string with all subensembles of a parent.
+	 * Create a formatted string with all ensembles given.
 	 * 
-	 * @param EList
-	 *            <Shape>
+	 * @param EList<Shape> ensembles
+	 * @return Return formatted string listing the given ensembles.
 	 * @author Patrick Jahnke
 	 */
-	private String listSubEnsembles(final EList<Shape> shapeList) {
+	private String listSubEnsembles(final EList<Shape> ensembles) {
 		final StringBuilder strBuilder = new StringBuilder();
-		if (shapeList == null) {
+		if (ensembles == null) {
 			return strBuilder.toString();
 		}
 
 		String komma = "";
-		for (final Shape shape : shapeList) {
+		for (final Shape shape : ensembles) {
 			if (shape instanceof Dummy) {
 				strBuilder.append(komma + "'empty'");
 			} else if (shape instanceof Ensemble) {
