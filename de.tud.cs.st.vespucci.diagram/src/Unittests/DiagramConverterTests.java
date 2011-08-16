@@ -99,7 +99,7 @@ public class DiagramConverterTests {
 			tempPlFile = changeDiagramFileName(tempPlFile, sadFile, tempSadFile.getName());
 
 			assertTrue(dc.isDiagramFile(tempSadFile));
-			dc.ConvertDiagramToProlog(tempSadFile);
+			dc.convertDiagramToProlog(tempSadFile);
 			File generatedPlFile = new File(tempSadFile.getAbsoluteFile()+".pl");
 			generatedPlFile = deleteComment(generatedPlFile);
 
