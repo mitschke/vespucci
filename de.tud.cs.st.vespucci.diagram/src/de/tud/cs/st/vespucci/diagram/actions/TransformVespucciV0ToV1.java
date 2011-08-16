@@ -35,16 +35,22 @@
 package de.tud.cs.st.vespucci.diagram.actions;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
@@ -74,6 +80,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.osgi.framework.Bundle;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
 
@@ -123,7 +130,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {				
 				for (IFile file : files)
-				{
+				{					
 					URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 					EObject source = getInput(fileURI);
 					if (source == null) {

@@ -44,7 +44,7 @@ import org.eclipse.emf.validation.model.IClientSelector;
 import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
 
-import de.tud.cs.st.vespucci.io.ValidDependenciesReader;
+import de.tud.cs.st.vespucci.io.KeywordReader;
 
 /**
  * @generated
@@ -162,7 +162,8 @@ public class VespucciValidationProvider {
 			/**
 			 * All valid keywords for dependencies.
 			 */
-			String[] validDependencies = new ValidDependenciesReader().getKeywords();
+			String[] validDependencies = KeywordReader.readAndParseResourceFile(
+					"de.tud.cs.st.vespucci.diagram", "resources/validDependencies.txt");
 			
 			String[] dependencies = context.split(", ");
 			boolean valid = false;

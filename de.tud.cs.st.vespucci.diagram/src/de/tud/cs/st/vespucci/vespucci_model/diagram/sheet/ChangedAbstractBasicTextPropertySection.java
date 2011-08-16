@@ -41,7 +41,7 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader;
+import de.tud.cs.st.vespucci.io.KeywordReader;
 
 /**
  * A Changed Copy of AbstractBasicTextPropertySection
@@ -98,14 +98,10 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		private boolean textModified = false;
 
 		/**
-		 * Provides method for accessing the keywords
-		 */
-		private final QueryKeywordReader kwReader = new QueryKeywordReader();
-
-		/**
 		 * Keywords to be marked
 		 */
-		private final String[] keywords = kwReader.getKeywords();
+		private final String[] keywords = KeywordReader.readAndParseResourceFile(
+				"de.tud.cs.st.vespucci.diagram", "resources/queryKeywords.txt"); //TODO export paths to bundle or config file etc.
 
 		/**
 		 * Pattern to be used to match strings in query including the single
