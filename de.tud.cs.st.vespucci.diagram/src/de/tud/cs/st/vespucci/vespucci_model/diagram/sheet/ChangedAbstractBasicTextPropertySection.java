@@ -61,8 +61,7 @@ import de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader;
  * @author Alexander Weitzmann
  * @author Thomas Schulz
  */
-public abstract class ChangedAbstractBasicTextPropertySection extends
-		AbstractModelerPropertySection {
+public abstract class ChangedAbstractBasicTextPropertySection extends AbstractModelerPropertySection {
 
 	private final int QUERY_TAB_HEIGHT_SHIFT = 35;
 
@@ -82,8 +81,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * Preference-store of the java source viewer. Used for highlighting and
 	 * text-settings for query.
 	 */
-	private static final IPreferenceStore srcViewerPrefs = PreferenceConstants
-			.getPreferenceStore();
+	private static final IPreferenceStore srcViewerPrefs = PreferenceConstants.getPreferenceStore();
 
 	Listener resizeLinstener = new Listener() {
 		@Override
@@ -148,8 +146,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 * @return A StyleRange that highlights bracket at given position
 		 */
 		private StyleRange getBracketStyle(final int position) {
-			final StyleRange bracketStyle = textWidget
-					.getStyleRangeAtOffset(position);
+			final StyleRange bracketStyle = textWidget.getStyleRangeAtOffset(position);
 
 			// surround with rectangle
 			bracketStyle.borderStyle = SWT.BORDER_SOLID;
@@ -163,28 +160,38 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		@Override
 		public void handleEvent(final Event event) {
 			switch (event.type) {
-			case SWT.KeyDown:
-				doSyntaxHighlighting();
+				case SWT.KeyDown:
+					doSyntaxHighlighting();
 
-				textModified = true;
-				if (event.character == SWT.CR) {
-					getPropertyValueString();
-				}
-				break;
-			case SWT.FocusOut:
-				textChanged((Control) event.widget);
-				break;
-			case SWT.FocusIn:
-				doSyntaxHighlighting();
-				break;
-			case SWT.MouseDown:
-				doSyntaxHighlighting();
-				break;
-			default:
-				break;
+					textModified = true;
+					if (event.character == SWT.CR) {
+						getPropertyValueString();
+					}
+					break;
+				case SWT.FocusOut:
+					textChanged((Control) event.widget);
+					break;
+				case SWT.FocusIn:
+					doSyntaxHighlighting();
+					break;
+				case SWT.MouseDown:
+					doSyntaxHighlighting();
+					break;
+				default:
+					break;
 			}
 		}
 
+		
+		//16:10 - 17:10 Code Review
+		//- BracketHighlighting (Splitted into functions)
+		//- Updating obsolete comments (highlight BOTH brackets)
+		//- "			   " (no SYNTAX highlighting)
+		//- "			   " (highlightBrackets())
+		//- Deleting redundant comment (offset == 0 return)
+		//- Renaming "indent" to "amountOfFurther..Brackets"
+		
+		
 		/**
 		 * Highlights the corresponding bracket relative to caret position
 		 */
@@ -211,8 +218,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		private void handleBracketCases(int offset, int size, char currentChar) {
 			if (currentChar == '(' && !textWidget.isPositionMarked(offset - 1)) {
 				markCorrespondingClosingBracket(offset, size);
-			} else if (currentChar == ')' && offset > 1
-					&& !textWidget.isPositionMarked(offset - 1)) {
+			} else if (currentChar == ')' && offset > 1 && !textWidget.isPositionMarked(offset - 1)) {
 				markCorrespondingOpeningBracket(offset);
 			}
 		}
@@ -220,8 +226,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		private void markCorrespondingClosingBracket(int offset, int size) {
 			int amountOfFurtherOpeningBrackets = 0;
 			for (int i = offset; i < size; i++) {
-				if (textWidget.getText().charAt(i) == '('
-						&& !textWidget.isPositionMarked(i)) {
+				if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
 					amountOfFurtherOpeningBrackets++;
 				}
 
@@ -232,8 +237,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 					return;
 				}
 
-				if (textWidget.getText().charAt(i) == ')'
-						&& !textWidget.isPositionMarked(i)) {
+				if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
 					amountOfFurtherOpeningBrackets--;
 				}
 			}
@@ -242,8 +246,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		private void markCorrespondingOpeningBracket(int offset) {
 			int amountOfFurtherClosingBrackets = 0;
 			for (int i = offset - 2; i >= 0; i--) {
-				if (textWidget.getText().charAt(i) == ')'
-						&& !textWidget.isPositionMarked(i)) {
+				if (textWidget.getText().charAt(i) == ')' && !textWidget.isPositionMarked(i)) {
 					amountOfFurtherClosingBrackets++;
 				}
 
@@ -254,8 +257,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 					return;
 				}
 
-				if (textWidget.getText().charAt(i) == '('
-						&& !textWidget.isPositionMarked(i)) {
+				if (textWidget.getText().charAt(i) == '(' && !textWidget.isPositionMarked(i)) {
 					amountOfFurtherClosingBrackets--;
 				}
 			}
@@ -270,10 +272,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			Matcher keywordMatcher = null;
 
 			// prepare style for keywords
-			final boolean bold = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_BOLD);
-			final boolean italic = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_ITALIC);
+			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_BOLD);
+			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_ITALIC);
 
 			final StyleRange styleRange = new StyleRange();
 			styleRange.fontStyle = SWT.NORMAL;
@@ -283,23 +283,18 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			if (italic) {
 				styleRange.fontStyle |= SWT.ITALIC;
 			}
-			styleRange.strikeout = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_STRIKETHROUGH);
-			styleRange.underline = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_UNDERLINE);
-			styleRange.foreground = JavaUI.getColorManager().getColor(
-					PreferenceConstants.EDITOR_JAVA_KEYWORD_COLOR);
+			styleRange.strikeout = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_STRIKETHROUGH);
+			styleRange.underline = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_KEYWORD_UNDERLINE);
+			styleRange.foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_JAVA_KEYWORD_COLOR);
 
 			// highlight keywords
 			for (final String str : keywords) {
-				keywordPattern = Pattern
-						.compile(String.format("\\b%s\\b", str));
+				keywordPattern = Pattern.compile(String.format("\\b%s\\b", str));
 				keywordMatcher = keywordPattern.matcher(targetText);
 
 				while (keywordMatcher.find()) {
 					styleRange.start = keywordMatcher.start();
-					styleRange.length = keywordMatcher.end()
-							- keywordMatcher.start();
+					styleRange.length = keywordMatcher.end() - keywordMatcher.start();
 
 					textWidget.setStyleRange(styleRange);
 				}
@@ -310,14 +305,11 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 * Highlights all strings
 		 */
 		private void highlightStrings() {
-			final Matcher stringMatcher = Pattern.compile(STRING_PATTERN,
-					Pattern.DOTALL).matcher(textWidget.getText());
+			final Matcher stringMatcher = Pattern.compile(STRING_PATTERN, Pattern.DOTALL).matcher(textWidget.getText());
 
 			// prepare style for highlighting
-			final boolean bold = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_STRING_BOLD);
-			final boolean italic = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_STRING_ITALIC);
+			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_BOLD);
+			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_ITALIC);
 
 			final StyleRange styleRange = new StyleRange();
 			styleRange.fontStyle = SWT.NORMAL;
@@ -327,12 +319,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 			if (italic) {
 				styleRange.fontStyle |= SWT.ITALIC;
 			}
-			styleRange.strikeout = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_STRING_STRIKETHROUGH);
-			styleRange.underline = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_STRING_UNDERLINE);
-			styleRange.foreground = JavaUI.getColorManager().getColor(
-					PreferenceConstants.EDITOR_STRING_COLOR);
+			styleRange.strikeout = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_STRIKETHROUGH);
+			styleRange.underline = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_STRING_UNDERLINE);
+			styleRange.foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_STRING_COLOR);
 
 			// remove all string-markings for {@link #highlightBrackets}
 			textWidget.unmarkAllPositions();
@@ -356,17 +345,12 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		 * "normal" state.
 		 */
 		private void resetStyle() {
-			final Color foreground = JavaUI.getColorManager().getColor(
-					PreferenceConstants.EDITOR_JAVA_DEFAULT_COLOR);
+			final Color foreground = JavaUI.getColorManager().getColor(PreferenceConstants.EDITOR_JAVA_DEFAULT_COLOR);
 			final Color background = EditorsUI.getSharedTextColors().getColor(
-					PreferenceConverter.getColor(
-							EditorsUI.getPreferenceStore(),
-							AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND));
+					PreferenceConverter.getColor(EditorsUI.getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND));
 
-			final boolean bold = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_BOLD);
-			final boolean italic = srcViewerPrefs
-					.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_ITALIC);
+			final boolean bold = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_BOLD);
+			final boolean italic = srcViewerPrefs.getBoolean(PreferenceConstants.EDITOR_JAVA_DEFAULT_ITALIC);
 
 			int fontstyle = SWT.NORMAL;
 			if (bold) {
@@ -376,9 +360,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 				fontstyle |= SWT.ITALIC;
 			}
 
-			final StyleRange normalStyle = new StyleRange(0,
-					textWidget.getCharCount(), foreground, background,
-					fontstyle);
+			final StyleRange normalStyle = new StyleRange(0, textWidget.getCharCount(), foreground, background, fontstyle);
 			textWidget.setStyleRange(normalStyle);
 		}
 
@@ -394,9 +376,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		public void textChanged(final Control control) {
 			if (textModified) {
 				// clear error message
-				final IWorkbenchPart part = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage()
-						.getActivePart();
+				final IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
 				StatusLineUtil.outputErrorMessage(part, StringStatics.BLANK);
 
 				setPropertyValue(control);
@@ -416,15 +396,13 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse
 	 * .swt.widgets.Composite,
 	 * org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
 	@Override
-	public final void createControls(final Composite parent,
-			final TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	public final void createControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		doCreateControls(parent, aTabbedPropertySheetPage);
 	}
 
@@ -438,11 +416,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	protected final MarkableStyledText createTextWidget(final Composite parent) {
 		getSectionComposite().getSize();
 
-		final MarkableStyledText st = new MarkableStyledText(parent, SWT.MULTI
-				| SWT.V_SCROLL | SWT.H_SCROLL);
+		final MarkableStyledText st = new MarkableStyledText(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 
-		final Font userFont = JFaceResources
-				.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
+		final Font userFont = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
 		st.setFont(userFont);
 
 		final FormData data = new FormData();
@@ -453,8 +429,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		st.setLayoutData(data);
 
 		st.setBackground(EditorsUI.getSharedTextColors().getColor(
-				PreferenceConverter.getColor(EditorsUI.getPreferenceStore(),
-						AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND)));
+				PreferenceConverter.getColor(EditorsUI.getPreferenceStore(), AbstractTextEditor.PREFERENCE_COLOR_BACKGROUND)));
 
 		if (isReadOnly()) {
 			st.setEditable(false);
@@ -465,7 +440,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#dispose()
 	 */
 	@Override
@@ -484,8 +458,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 	 * @see org.eclipse.gmf.runtime.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.gmf.runtime.common.ui.properties.TabbedPropertySheetPage)
 	 */
-	public final void doCreateControls(final Composite parent,
-			final TabbedPropertySheetPage aTabbedPropertySheetPage) {
+	public final void doCreateControls(final Composite parent, final TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
 		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
 		textWidget = createTextWidget(sectionComposite);
@@ -567,7 +540,6 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
 	@Override
@@ -606,15 +578,14 @@ public abstract class ChangedAbstractBasicTextPropertySection extends
 		final ArrayList<ICommand> commands = new ArrayList<ICommand>();
 		for (final Iterator<?> it = getEObjectList().iterator(); it.hasNext();) {
 			final EObject next = (EObject) it.next();
-			commands.add(createCommand(getPropertyChangeCommandName(), next,
-					new Runnable() {
+			commands.add(createCommand(getPropertyChangeCommandName(), next, new Runnable() {
 
-						@Override
-						public void run() {
-							setPropertyValue(next, value);
-						}
+				@Override
+				public void run() {
+					setPropertyValue(next, value);
+				}
 
-					}));
+			}));
 		}
 		executeAsCompositeCommand(getPropertyChangeCommandName(), commands);
 		refresh();
