@@ -51,6 +51,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
+import org.osgi.framework.FrameworkUtil;
 
 import de.tud.cs.st.vespucci.io.KeywordReader;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
@@ -64,12 +65,14 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * @version 0.4
  */
 public class SetDependencyEntries extends CompoundContributionItem {
-
+	private static ResourceBundle pluginProperties = ResourceBundle.getBundle("plugin");
+	
 	/**
 	 * Valid names for dependencies read from the resource-file.
 	 */
 	private static final String[] dependencies = KeywordReader.readAndParseResourceFile(
-			"de.tud.cs.st.vespucci.diagram", "resources/validDependencies.txt"); //TODO export paths to bundle or config file etc.
+			FrameworkUtil.getBundle(SetDependencyEntries.class).getSymbolicName(),
+			pluginProperties.getString("validDependenciesFile"));
 
 	/**
 	 * Descriptors for the check marks. There are two available check marks:

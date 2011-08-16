@@ -86,22 +86,12 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	 */
 	private final TextChangeHelper listener = new TextChangeHelper() {
 		private boolean textModified = false;
-
-		/**
-		 * Keywords to be marked
-		 */
-		private final String[] keywords = KeywordReader.readAndParseResourceFile(
-				"de.tud.cs.st.vespucci.diagram", "resources/queryKeywords.txt"); //TODO export paths to bundle or config file etc.
-
+		
 		/**
 		 * Pattern to be used to match strings in query including the single quotes
 		 */
 		private static final String STRING_PATTERN = "'.+?'";
-
 		
-
-		
-
 		/**
 		 * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
 		 */

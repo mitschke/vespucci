@@ -9,6 +9,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
+import org.osgi.framework.FrameworkUtil;
 
+import de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries;
 import de.tud.cs.st.vespucci.io.KeywordReader;
 
 /**
@@ -63,6 +66,8 @@ import de.tud.cs.st.vespucci.io.KeywordReader;
  */
 public abstract class ChangedAbstractBasicTextPropertySection extends AbstractModelerPropertySection {
 
+	private static ResourceBundle pluginProperties = ResourceBundle.getBundle("plugin");
+	
 	private final int QUERY_TAB_HEIGHT_SHIFT = 35;
 
 	private final int QUERY_TAB_WIDTH_SHIFT = 45;
@@ -96,12 +101,13 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 	 */
 	private final TextChangeHelper listener = new TextChangeHelper() {
 		private boolean textModified = false;
-
+		
 		/**
 		 * Keywords to be marked
 		 */
 		private final String[] keywords = KeywordReader.readAndParseResourceFile(
-				"de.tud.cs.st.vespucci.diagram", "resources/queryKeywords.txt"); //TODO export paths to bundle or config file etc.
+				FrameworkUtil.getBundle(getClass()).getSymbolicName(),
+				pluginProperties.getString("queryKeywordsFile"));
 
 		/**
 		 * Pattern to be used to match strings in query including the single
