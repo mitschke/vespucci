@@ -64,10 +64,31 @@ import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
+// \\p{Upper} matches for words STARTING with an upper case letter
+
+// the double-backslash "\\" is used to protect the RegExp from the
+// javac which would rather be interpreted as a unicode char or an error
+
+// TODO: Update ensemble and dependecy header
+// TODO: Add a comment in headers s.t. "In- and Out" is interpreted as
+// 	     "incoming" && "outgoing"
+// FIXME: there is no translation of dependency if the source is nested
+// TODO: Renaming facts-getter into "create..."
+// TODO: Unicode-Representation of "ä", "ö", "ü" and "ß"
+// Ä =	\u00c4
+// Ö =	\u00d6
+// Ü =	\u00dc
+// ä =	\u00e4
+// ö =	\u00f6
+// ü =	\u00fc
+// ß =  \u00df
+
 /**
  * DiagramConverter converts a *.sad into a *.pl File.
  * 
- * @author PatrickJ
+ * @author Patrick Jahnke
+ * @author Alexander Weitzmann
+ * @author Thomas Schulz
  */
 public class DiagramConverter {
 
@@ -109,7 +130,7 @@ public class DiagramConverter {
 	 * 
 	 * @param fullPathFileName
 	 *            Name and path of the diagram
-	 * @author Patrick Jahnke, MalteV
+	 * @author Malte Viering
 	 * @throws Exception
 	 */
 	public void convertDiagramToProlog(final File sadFile) throws Exception {
@@ -121,7 +142,6 @@ public class DiagramConverter {
 	 * 
 	 * @param fullPathFileName
 	 *            Name and path of the diagram
-	 * @author Patrick Jahnke
 	 * @throws Exception
 	 */
 	public void convertDiagramToProlog(final String path, final String fileName) throws Exception {
@@ -148,9 +168,12 @@ public class DiagramConverter {
 	 * @param connection
 	 * @param fileName
 	 * @return
-	 * @author Patrick Jahnke
 	 * @throws Exception
 	 */
+	
+	
+	// Remove fileName
+	// Split into getOriginalSource and getOriginalTarget
 	private String createDependencyFact(final Connection connection, final String fileName) throws Exception {
 		Shape source = null;
 		Shape target = null;
@@ -203,6 +226,11 @@ public class DiagramConverter {
 			transactionSB.append("not_allowed" + "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], " + getDependencyEnsembleName(target) + ", [], "
 					+ connection.getName() + ").\n");
+			
+			// may be split into methods and incoming and outgoing can be reused
+			// may use a pure selector function which handles each dependency
+			// FIXME: there is no translation of dependency if the source is nested
+			
 		} else if (connection instanceof InAndOut) {
 			transactionSB.append("incoming" + "('" + fileName + "', " + mDependencyCounter + ", "
 					+ getDependencyEnsembleName(source) + ", [], " + getDependencyEnsembleName(target) + ", [], "
@@ -221,7 +249,6 @@ public class DiagramConverter {
 	 * 
 	 * @param Shape
 	 * @return name of the ensemble
-	 * @author Patrick Jahnke
 	 */
 	private String getDependencyEnsembleName(final Shape shape) {
 		if (shape instanceof Ensemble) {
@@ -243,7 +270,7 @@ public class DiagramConverter {
 	private StringBuilder getDependencyFacts(final List<Shape> shapeList) throws Exception {
 		final StringBuilder dependencyFacts = new StringBuilder();
 		for (final Shape shape : shapeList) {
-			if(shape != null){
+			if (shape != null) {
 				for (final Connection connection : shape.getTargetConnections()) {
 					dependencyFacts.append(createDependencyFact(connection, fileName));
 				}
@@ -280,7 +307,6 @@ public class DiagramConverter {
 	 * 
 	 * @param name
 	 * @return
-	 * @author Patrick Jahnke
 	 */
 	private String getEncodedParameter(final String name) {
 		final StringBuilder s = new StringBuilder();
@@ -313,7 +339,6 @@ public class DiagramConverter {
 	 * 
 	 * @param shape
 	 * @return
-	 * @author Patrick Jahnke
 	 */
 	private static String getEnsembleDescriptor(final Shape shape) {
 		String name = "";
@@ -335,7 +360,6 @@ public class DiagramConverter {
 	 * 
 	 * @param shapeList
 	 *            The list of shapes in the diagram.
-	 * @author Patrick Jahnke
 	 * @throws Exception
 	 * @return Returns the formatted ensemble facts.
 	 */
@@ -353,10 +377,10 @@ public class DiagramConverter {
 
 				// fix: inconsistent newline encodings
 				final String query = ensemble.getQuery().replaceAll("\n", " ");
-				
+
 				ensembleFacts.append(String.format("('%s', %s, %s, (%s), [%s]).\n", fileName, getEnsembleDescriptor(ensemble),
 						getEnsembleParameters(ensemble), query, listSubEnsembles(ensemble.getShapes())));
-				
+
 				// do children exist
 				if ((ensemble.getShapes() != null) && (ensemble.getShapes().size() > 0)) {
 					getEnsembleFacts(ensemble.getShapes());
@@ -370,8 +394,6 @@ public class DiagramConverter {
 
 	/**
 	 * returns a static string for the begin of the ensemble facts.
-	 * 
-	 * @author Patrick Jahnke
 	 */
 	private String getEnsembleHeader() {
 		final StringBuilder strBuilder = new StringBuilder();
@@ -391,7 +413,6 @@ public class DiagramConverter {
 	 * 
 	 * @param ensemble
 	 * @return Return an array containing the parameters of given ensemble.
-	 * @author Patrick Jahnke
 	 */
 	private static String[] splitEnsembleParameterList(final Ensemble ensemble) {
 		if (ensemble.getName() == null) {
@@ -425,7 +446,6 @@ public class DiagramConverter {
 
 	/**
 	 * @return a prolog list of the form ['ParamName'=ParamName, ...]
-	 * @author Patrick Jahnke
 	 */
 	private String getEnsembleParameters(final Ensemble ensemble) {
 		final String[] parameters = splitEnsembleParameterList(ensemble);
@@ -444,8 +464,6 @@ public class DiagramConverter {
 
 	/**
 	 * Build and returns a prolog file header.
-	 * 
-	 * @author Patrick Jahnke
 	 */
 	private String getFileHeader(final String fileName) {
 		final StringBuilder strBuilder = new StringBuilder();
@@ -485,7 +503,6 @@ public class DiagramConverter {
 	 * @param fileName
 	 *            the filename of the diagram model
 	 * @return a string with the facts
-	 * @author Patrick Jahnke
 	 * @param fullFileName
 	 * @throws Exception
 	 */
@@ -532,8 +549,8 @@ public class DiagramConverter {
 	 * Check if an ensemble an abstract one.
 	 * 
 	 * @param ensemble
-	 * @return Return true, if the ensemble is abstract, i.e. the ensemble contains at least one parameter, that is
-	 * @author Patrick Jahnke
+	 * @return Return true, if the ensemble is abstract, i.e. the ensemble contains at least one
+	 *         parameter, that is
 	 */
 	private boolean isAbstractEnsemble(final Ensemble ensemble) {
 		final String[] parameters = splitEnsembleParameterList(ensemble);
@@ -547,8 +564,6 @@ public class DiagramConverter {
 
 	/**
 	 * Return true when the given file object is a diagram file.
-	 * 
-	 * @author Patrick Jahnke
 	 */
 	public boolean isDiagramFile(final File file) {
 		final String extension = file.getName().substring((file.getName().length() - 3), file.getName().length());
@@ -558,9 +573,9 @@ public class DiagramConverter {
 	/**
 	 * Create a formatted string with all ensembles given.
 	 * 
-	 * @param EList<Shape> ensembles
+	 * @param EList
+	 *            <Shape> ensembles
 	 * @return Return formatted string listing the given ensembles.
-	 * @author Patrick Jahnke
 	 */
 	private String listSubEnsembles(final EList<Shape> ensembles) {
 		final StringBuilder strBuilder = new StringBuilder();
@@ -587,8 +602,7 @@ public class DiagramConverter {
 	 * @return ShapesDiagramImpl Object
 	 * @throws FileNotFoundException
 	 * @throws IOException
-	 * @author Patrick Jahnke
-	 * @author DominicS
+	 * @author Dominic Scheurer
 	 */
 	public ShapesDiagram loadDiagramFile(final String fullPath) throws FileNotFoundException, IOException {
 		final XMIResourceImpl diagramResource = new XMIResourceImpl();
