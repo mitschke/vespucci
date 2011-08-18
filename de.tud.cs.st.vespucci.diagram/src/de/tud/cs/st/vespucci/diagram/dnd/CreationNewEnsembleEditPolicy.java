@@ -10,6 +10,7 @@
  ****************************************************************************/
 package de.tud.cs.st.vespucci.diagram.dnd;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -18,7 +19,10 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
@@ -30,12 +34,15 @@ import org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy;
 import org.eclipse.gmf.runtime.diagram.ui.commands.SemanticCreateCommand;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest.ViewDescriptor;
 import org.eclipse.gmf.runtime.diagram.ui.requests.EditCommandRequestWrapper;
 import org.eclipse.gmf.runtime.diagram.ui.requests.RefreshConnectionsRequest;
 import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.widgets.Display;
 
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
@@ -112,7 +119,7 @@ public final class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		@SuppressWarnings("unchecked")
 		final SetRequest setQueryRequest = new SetRequest(createElementRequest.getEditingDomain(),
 				createElementRequest.getNewElement(), vesPackage.getShape_Query(),
-				QueryBuilder.createQueryForAMapOfIResource(request.getExtendedData()));
+				QueryBuilder.createQueryFromRequestData(request.getExtendedData()));
 		return new ExtendedSetValueCommand(setQueryRequest, createElementRequest);
 	}
 
@@ -199,9 +206,23 @@ public final class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		cc.compose(createSetQueryCommand(createElementRequest, request));
 		cc.compose(createSetNameCommand(createElementRequest, request));
 
-		cc.compose(new SelectAndEditNameCommand(request, getHost().getRoot().getViewer()));
+		cc.compose(new SelectAndEditNameCommand(getEditPartFromRequest(request, getHost().getRoot().getViewer()), getHost().getRoot().getViewer()));
 
 		return new ICommandProxy(cc);
+	}
+	
+	private EditPart getEditPartFromRequest(CreateViewAndElementRequest request, EditPartViewer viewer) {
+		List<? extends ViewDescriptor> editPartViewDescriptors = request.getViewDescriptors();
+		
+		for (final Object object : editPartViewDescriptors ) {
+			if (object instanceof IAdaptable) {
+				final EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(((IAdaptable) object).getAdapter(View.class));
+				if (editPart != null) {
+					return editPart;
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

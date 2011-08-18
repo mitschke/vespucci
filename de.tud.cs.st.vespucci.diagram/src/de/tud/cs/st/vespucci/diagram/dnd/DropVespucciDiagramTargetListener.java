@@ -47,6 +47,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.dnd.DND;
 
+import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
@@ -89,13 +90,13 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 	/**
 	 * @return Returns true only if the drop is processable.
 	 */
-	private boolean isDropProcessable() {
+	private boolean canBeDropped() {
 		if (getTargetEditPart() == null) {
 
 			// all EditPart for which DnD should work
 		} else if (getTargetEditPart() instanceof EnsembleEditPart || getTargetEditPart() instanceof Ensemble2EditPart
 				|| getTargetEditPart() instanceof ShapesDiagramEditPart) {
-			return QueryBuilder.isProcessable(getTargetRequest().getExtendedData());
+			return Resolver.isProcessable(getTargetRequest().getExtendedData());
 		}
 		return false;
 	}
@@ -113,7 +114,7 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 	}
 
 	private void setEventOperation() {
-		if (isDropProcessable()) {
+		if (canBeDropped()) {
 			getCurrentEvent().detail = DND.DROP_COPY;
 		} else {
 			getCurrentEvent().detail = DND.DROP_NONE;

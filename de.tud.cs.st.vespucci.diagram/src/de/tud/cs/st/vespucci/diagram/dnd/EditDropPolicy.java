@@ -86,7 +86,7 @@ public class EditDropPolicy extends DirectEditPolicy {
 				final Object oldQuery = semanticElement.eGet(vesPackage.getShape_Query());
 				@SuppressWarnings("unchecked")
 				final SetRequest sr = new SetRequest(semanticElement, vesPackage.getShape_Query(),
-						QueryBuilder.createQueryForAMapOfIResource(request.getExtendedData(), (String) oldQuery));
+						QueryBuilder.createQueryFromRequestData(request.getExtendedData(), (String) oldQuery));
 
 				final org.eclipse.gmf.runtime.common.core.command.ICommand com = new SetValueCommand(sr);
 				// return the edit Request in a proxy so it can be handled

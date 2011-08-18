@@ -36,7 +36,7 @@ package de.tud.cs.st.vespucci.diagram.dnd;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -45,103 +45,105 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.tools.CreationTool;
 import org.eclipse.gmf.runtime.common.core.command.AbstractCommand;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest.ViewDescriptor;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * TODO Document...
- * @author Patrick TODO who????
+ * Focus ensemble and select its name field.
+ * 
+ * @author Patrick Jahnke
  */
 public class SelectAndEditNameCommand extends AbstractCommand {
 
-	private static final String COMMANDNAME = "SELECTNAMECOMMAND";
-
-	private CreateViewAndElementRequest createViewAndElementRequest = null;
+	private static final String COMMANDNAME = "Select ensemble name-field";
 
 	private EditPartViewer editPartViewer = null;
 
-	public SelectAndEditNameCommand(CreateViewAndElementRequest createViewAndElementRequest,
-			EditPartViewer editPartViewer) {
+	private EditPart editPart;
+
+	/**
+	 * Initializes fields.
+	 * 
+	 * @param editPart
+	 * @param diagramViewer The graphical viewer of the diagram.
+	 */
+	public SelectAndEditNameCommand(EditPart editPart,
+			final EditPartViewer diagramViewer) {
 		super(COMMANDNAME);
-		this.createViewAndElementRequest = createViewAndElementRequest;
-		this.editPartViewer = editPartViewer;
+		this.editPart = editPart;
+		this.editPartViewer = diagramViewer;
 	}
 
 	@Override
-	protected CommandResult doExecuteWithResult(IProgressMonitor progressMonitor, IAdaptable info) {
+	protected CommandResult doExecuteWithResult(final IProgressMonitor progressMonitor, final IAdaptable info) {
 
-		if (editPartViewer != null && createViewAndElementRequest.getNewObject() != null) {
-			// select the Diagram Editor
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()
-					.setFocus();
+		if (editPartViewer != null && editPart != null) {
+			selectDiagramEditor();
 
 			// set Focus on the added Ensemble and select the Name
-			selectAddedObject(editPartViewer,
-					(Collection) createViewAndElementRequest.getViewDescriptors());
+			selectAddedObject();
 
 			return CommandResult.newOKCommandResult();
 		}
 
-		return CommandResult
-				.newErrorCommandResult("Command was not executeable\n pleas see canExecute in EditNameCommand");
+		return CommandResult.newErrorCommandResult("Command was not executeable.\n Please see canExecute in EditNameCommand.");
 
 	}
 
+	private static void selectDiagramEditor() {
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().setFocus();
+	}
+
 	@Override
-	protected CommandResult doRedoWithResult(IProgressMonitor progressMonitor, IAdaptable info) {
+	protected CommandResult doRedoWithResult(final IProgressMonitor progressMonitor, final IAdaptable info) {
 		return null;
 	}
 
 	@Override
-	protected CommandResult doUndoWithResult(IProgressMonitor progressMonitor, IAdaptable info) {
+	protected CommandResult doUndoWithResult(final IProgressMonitor progressMonitor, final IAdaptable info) {
 		return null;
 	}
 
 	/**
-	 * Select the newly added shape view by default
+	 * Reveals the newly created EditPart.
+	 * @param editPart
 	 */
-	protected void selectAddedObject(EditPartViewer viewer, Collection<?> objects) {
-		final List<Object>  editparts = new ArrayList<Object> ();
-		for (Iterator<?>  i = objects.iterator(); i.hasNext();) {
-			Object object = i.next();
-			if (object instanceof IAdaptable) {
-				Object editPart = viewer.getEditPartRegistry().get(
-						((IAdaptable) object).getAdapter(View.class));
-				if (editPart != null)
-					editparts.add(editPart);
-			}
+	protected void revealEditPart(final EditPart editPart) {
+		if (editPart != null && editPart.getViewer() != null) {
+			editPart.getViewer().reveal(editPart);
 		}
+	}
 
-		if (!editparts.isEmpty()) {
-			viewer.setSelection(new StructuredSelection(editparts));
+	/**
+	 * Select the newly added shape view by default.
+	 * Taken from {@link org.eclipse.gef.tools.CreationTool}.
+	 */
+	protected void selectAddedObject() {
+		if (editPart != null) {
+			EditPart[] editParts = {editPart};
+			editPartViewer.setSelection(new StructuredSelection(editParts));
 
 			// automatically put the first shape into edit-mode
 			Display.getCurrent().asyncExec(new Runnable() {
+				@Override
 				public void run() {
-					EditPart editPart = (EditPart) editparts.get(0);
 					//
 					// add active test since test scripts are failing on this
 					// basically, the editpart has been deleted when this
 					// code is being executed. (see RATLC00527114)
 					if (editPart.isActive()) {
 						editPart.performRequest(new Request(RequestConstants.REQ_DIRECT_EDIT));
-						revealEditPart((EditPart) editparts.get(0));
+						revealEditPart(editPart);
 					}
 				}
 			});
 		}
-	}
-
-	/**
-	 * Reveals the newly created editpart
-	 */
-	protected void revealEditPart(EditPart editPart) {
-		if (editPart != null && editPart.getViewer() != null)
-			editPart.getViewer().reveal(editPart);
 	}
 }
