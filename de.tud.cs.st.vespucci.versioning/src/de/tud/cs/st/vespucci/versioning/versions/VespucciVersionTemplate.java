@@ -34,8 +34,14 @@
 
 package de.tud.cs.st.vespucci.versioning.versions;
 
+import java.io.InputStream;
 import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -47,6 +53,7 @@ import org.eclipse.m2m.internal.qvt.oml.emf.util.ModelContent;
 import org.eclipse.m2m.internal.qvt.oml.library.Context;
 import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner.Out;
 import org.eclipse.m2m.qvt.oml.util.IContext;
+import de.tud.cs.st.vespucci.errors.VespucciFileReadException;
 import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
 
@@ -62,7 +69,7 @@ extends VespucciTransformationHelper {
 	 * <p>Pointer to the current version descriptor.</p>
 	 * <p><strong>Remember to update this when adding newer versions!</strong></p>
 	 */
-	public static final VespucciVersionTemplate CURRENT_VERSION = new VespucciVersion_V0();
+	public static final VespucciVersionTemplate CURRENT_VERSION = new VespucciVersion_20110601();
 	
 	/**
 	 * Number of (single) steps needed to perform the conversion task.
@@ -167,4 +174,35 @@ extends VespucciTransformationHelper {
 		}
 	}
 
+	/**
+	 * @param file The file which namespace to check.
+	 * @return True if the file has the namespace of this Vespucci version, else false.
+	 */
+	public boolean fileIsOfThisVersion(IFile file) {
+		InputStream fileInputStream = null;
+		
+		try {
+			fileInputStream = file.getContents();
+		} catch (CoreException coreException) {
+			throw new VespucciFileReadException(
+					"Error reading file " + file.toString(), coreException);
+		}
+		
+		final Scanner scanner = new Scanner(fileInputStream);
+		Pattern xmlnsPattern = Pattern.compile("^.*xmlns=\"(.*?)\".*$");
+
+		while (scanner.hasNextLine()) {
+			Matcher m = xmlnsPattern.matcher(scanner.nextLine());
+			if (m.find() &&
+				m.group(1).equalsIgnoreCase(getNamespace())) {	
+				
+				scanner.close();				
+				return true;
+				
+			}
+		}
+		
+		scanner.close();		
+		return false;
+	}
 }
