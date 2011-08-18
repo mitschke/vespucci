@@ -34,23 +34,14 @@
 
 package de.tud.cs.st.vespucci.diagram.dnd;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.tools.CreationTool;
 import org.eclipse.gmf.runtime.common.core.command.AbstractCommand;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
-import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
-import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest.ViewDescriptor;
-import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -64,21 +55,25 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 
 	private static final String COMMANDNAME = "Select ensemble name-field";
 
+	private static void selectDiagramEditor() {
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().setFocus();
+	}
+
 	private EditPartViewer editPartViewer = null;
 
-	private EditPart editPart;
+	private final EditPart editPart;
 
 	/**
 	 * Initializes fields.
 	 * 
 	 * @param editPart
-	 * @param diagramViewer The graphical viewer of the diagram.
+	 * @param diagramViewer
+	 *            The graphical viewer of the diagram.
 	 */
-	public SelectAndEditNameCommand(EditPart editPart,
-			final EditPartViewer diagramViewer) {
+	public SelectAndEditNameCommand(final EditPart editPart, final EditPartViewer diagramViewer) {
 		super(COMMANDNAME);
 		this.editPart = editPart;
-		this.editPartViewer = diagramViewer;
+		editPartViewer = diagramViewer;
 	}
 
 	@Override
@@ -97,10 +92,6 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 
 	}
 
-	private static void selectDiagramEditor() {
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().setFocus();
-	}
-
 	@Override
 	protected CommandResult doRedoWithResult(final IProgressMonitor progressMonitor, final IAdaptable info) {
 		return null;
@@ -112,10 +103,10 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 	}
 
 	/**
-	 * Reveals the newly created EditPart.
-	 * @param editPart
+	 * Reveals the newly created EditPart. {@link #editPart} must be initialized before calling this
+	 * method.
 	 */
-	protected void revealEditPart(final EditPart editPart) {
+	private void revealEditPart() {
 		if (editPart != null && editPart.getViewer() != null) {
 			editPart.getViewer().reveal(editPart);
 		}
@@ -127,7 +118,7 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 	 */
 	protected void selectAddedObject() {
 		if (editPart != null) {
-			EditPart[] editParts = {editPart};
+			final EditPart[] editParts = { editPart };
 			editPartViewer.setSelection(new StructuredSelection(editParts));
 
 			// automatically put the first shape into edit-mode
@@ -140,7 +131,7 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 					// code is being executed. (see RATLC00527114)
 					if (editPart.isActive()) {
 						editPart.performRequest(new Request(RequestConstants.REQ_DIRECT_EDIT));
-						revealEditPart(editPart);
+						revealEditPart();
 					}
 				}
 			});

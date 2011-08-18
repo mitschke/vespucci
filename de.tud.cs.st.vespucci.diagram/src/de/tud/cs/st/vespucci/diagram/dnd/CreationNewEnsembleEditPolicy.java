@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -133,7 +134,7 @@ public final class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 
 				if (request instanceof CreateViewAndElementRequest) {
 					request.setType(REQ_CREATE);
-					return getCreateElementAndViewEnsembleCommand((CreateViewAndElementRequest) request);
+					return createElementAndViewEnsembleCommand((CreateViewAndElementRequest) request);
 				}
 			}
 		}
@@ -148,7 +149,7 @@ public final class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 	 * @param request
 	 * @return Command that creates the semantic and the view command for the given CreateViewAndElementRequest
 	 */
-	private Command getCreateElementAndViewEnsembleCommand(final CreateViewAndElementRequest request) {
+	private Command createElementAndViewEnsembleCommand(final CreateViewAndElementRequest request) {
 
 		// copied content
 		// get the element descriptor
@@ -206,21 +207,20 @@ public final class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		cc.compose(createSetQueryCommand(createElementRequest, request));
 		cc.compose(createSetNameCommand(createElementRequest, request));
 
-		cc.compose(new SelectAndEditNameCommand(getEditPartFromRequest(request, getHost().getRoot().getViewer()), getHost().getRoot().getViewer()));
-
+		cc.compose(createSelectAndEditCommand(request));
+		
 		return new ICommandProxy(cc);
 	}
 	
-	private EditPart getEditPartFromRequest(CreateViewAndElementRequest request, EditPartViewer viewer) {
+	private IUndoableOperation createSelectAndEditCommand(CreateViewAndElementRequest request) {
 		List<? extends ViewDescriptor> editPartViewDescriptors = request.getViewDescriptors();
+		EditPartViewer viewer = getHost().getRoot().getViewer();
 		
-		for (final Object object : editPartViewDescriptors ) {
-			if (object instanceof IAdaptable) {
-				final EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(((IAdaptable) object).getAdapter(View.class));
+		for (final ViewDescriptor object : editPartViewDescriptors ) {
+				final EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(object.getAdapter(View.class));
 				if (editPart != null) {
-					return editPart;
+					return new SelectAndEditNameCommand(editPart, viewer);
 				}
-			}
 		}
 		return null;
 	}
