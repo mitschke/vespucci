@@ -33,6 +33,8 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd;
 
+import java.util.ResourceBundle;
+
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
@@ -63,7 +65,7 @@ public class CreateEnsembleDropTargetListener extends DropVespucciDiagramTargetL
 	/**
 	 * URL to the vespucci editor package.
 	 */
-	private static final String VESPUCCI_EDITOR_URL = "http://vespucci.editor";
+	private static final String VESPUCCI_EDITOR_URL = ResourceBundle.getBundle("plugin").getString("vespucci_modelNamespaceURI");
 
 	/**
 	 * @see {@link de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener#DropVespucciDiagramTargetListener(EditPartViewer viewer)}

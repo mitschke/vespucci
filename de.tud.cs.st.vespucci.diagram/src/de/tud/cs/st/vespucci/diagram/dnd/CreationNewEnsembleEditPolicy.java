@@ -11,6 +11,7 @@
 package de.tud.cs.st.vespucci.diagram.dnd;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -90,8 +91,12 @@ public final class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 
 	private static Vespucci_modelPackage vesPackage;
 
+	/**
+	 * Sets vespucci model package.
+	 */
 	public CreationNewEnsembleEditPolicy() {
-		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage("http://vespucci.editor");
+		final String modelNamespace = ResourceBundle.getBundle("plugin").getString("vespucci_modelNamespaceURI");
+		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(modelNamespace);
 		vesPackage = (Vespucci_modelPackage) epackage;
 	}
 
