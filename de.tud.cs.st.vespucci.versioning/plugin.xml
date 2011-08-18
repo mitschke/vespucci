@@ -2,8 +2,7 @@
 <?eclipse version="3.0"?>
 <!--
  License (BSD Style License):
-  Copyright (c) 2010
-  Author Tam-Minh Nguyen
+  Copyright (c) 2011
   Software Engineering
   Department of Computer Science
   Technische Universität Darmstadt
@@ -33,9 +32,6 @@
   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
- 
-
- $Id$
 -->
 <plugin>
 
@@ -45,7 +41,7 @@
             name="TransformationHelperLibrary"
             namespace="VespucciConverter.Utils">
          <library
-               class="de.tud.cs.st.vespucci.transformation.TransformationHelperLibrary"
+               class="de.tud.cs.st.vespucci.versioning.blackboxes.TransformationHelperLibrary"
                name="TransformationHelper">
             <metamodel
                   nsURI="http://www.eclipse.org/emf/2002/Ecore">

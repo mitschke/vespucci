@@ -32,7 +32,7 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tud.cs.st.vespucci.transformation;
+package de.tud.cs.st.vespucci.versioning.blackboxes;
 
 import java.util.HashMap;
 
