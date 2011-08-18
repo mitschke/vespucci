@@ -80,7 +80,7 @@ public class GeneratePrologFacts extends AbstractHandler {
 				DiagramConverter dc = new DiagramConverter();
 				if (dc.isDiagramFile(f)) {
 					try {
-						dc.ConvertDiagramToProlog(f); // generating from the
+						dc.convertDiagramToProlog(f); // generating from the
 														// *.sad a
 														// *.pl
 					} catch (FileNotFoundException e) {

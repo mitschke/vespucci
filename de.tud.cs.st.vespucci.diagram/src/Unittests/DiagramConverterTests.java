@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Patrick Jahnke
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universitiät Darmstadt
@@ -99,7 +98,7 @@ public class DiagramConverterTests {
 			tempPlFile = changeDiagramFileName(tempPlFile, sadFile, tempSadFile.getName());
 
 			assertTrue(dc.isDiagramFile(tempSadFile));
-			dc.ConvertDiagramToProlog(tempSadFile);
+			dc.convertDiagramToProlog(tempSadFile);
 			File generatedPlFile = new File(tempSadFile.getAbsoluteFile()+".pl");
 			generatedPlFile = deleteComment(generatedPlFile);
 

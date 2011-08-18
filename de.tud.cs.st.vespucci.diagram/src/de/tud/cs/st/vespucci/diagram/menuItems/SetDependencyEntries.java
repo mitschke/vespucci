@@ -35,20 +35,25 @@
 
 package de.tud.cs.st.vespucci.diagram.menuItems;
 
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.osgi.framework.internal.core.PackageAdminImpl;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
+import org.osgi.framework.FrameworkUtil;
 
-import de.tud.cs.st.vespucci.io.ValidDependenciesReader;
+import de.tud.cs.st.vespucci.io.KeywordReader;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
@@ -60,11 +65,14 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * @version 0.4
  */
 public class SetDependencyEntries extends CompoundContributionItem {
-
+	private static ResourceBundle pluginProperties = ResourceBundle.getBundle("plugin");
+	
 	/**
 	 * Valid names for dependencies read from the resource-file.
 	 */
-	private static final String[] dependencies = new ValidDependenciesReader().getKeywords();
+	private static final String[] dependencies = KeywordReader.readAndParseResourceFile(
+			FrameworkUtil.getBundle(SetDependencyEntries.class).getSymbolicName(),
+			pluginProperties.getString("validDependenciesFile"));
 
 	/**
 	 * Descriptors for the check marks. There are two available check marks:

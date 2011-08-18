@@ -84,7 +84,6 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
  * Action for transforming serialized Vespucci .sad files of versions
  * prior to 2011-06-01 to the version 2011-06-01.
  */
-@SuppressWarnings("restriction")
 public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	/** The current target part */
 	private IWorkbenchPart targetPart = null;
