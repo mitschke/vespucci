@@ -132,8 +132,13 @@ extends VespucciTransformationHelper {
 	 * @param progressMonitor Monitor used to show the progress.
 	 * @return Conversion result status.
 	 */
-	public IStatus convertFile(IFile inFile, IPath renameToPath, URI outFileUri, IProgressMonitor progressMonitor) {
+	public IStatus upgradeFileToThisVersion(IFile inFile, IPath renameToPath, URI outFileUri, IProgressMonitor progressMonitor) {
 		try {
+			if (getPredecessor() == null ||
+				!getPredecessor().fileIsOfThisVersion(inFile)) {
+				return Status.CANCEL_STATUS;
+			}
+			
 			this.progessMonitor = progressMonitor;
 			
 			URI fileURI = getUriFromFile(inFile);
@@ -150,8 +155,8 @@ extends VespucciTransformationHelper {
 			
 			IContext context = new Context();
 			
-			Out modelTransformationOutput = executeQvtoTransformation(context, shapesDiagramContent);
-			Out diagramTransformationOutput = executeQvtoTransformation(context, notationDiagramContent);
+			Out modelTransformationOutput = executeQvtoTransformation(context, shapesDiagramContent, getModelQvtoUri());
+			Out diagramTransformationOutput = executeQvtoTransformation(context, notationDiagramContent, getDiagramQvtoUri());
 			
 			if (!outputIsCorrect(modelTransformationOutput) ||
 				!outputIsCorrect(diagramTransformationOutput)) {

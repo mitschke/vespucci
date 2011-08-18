@@ -34,6 +34,7 @@
 
 package de.tud.cs.st.vespucci.versioning;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
@@ -66,6 +67,7 @@ import org.eclipse.ui.PlatformUI;
 
 import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
+import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
 /**
  * Template class which supplies various methods for Vespucci file
@@ -110,10 +112,10 @@ public abstract class VespucciTransformationHelper {
 			MessageDialog.openError(getShell(), title,
 					NLS.bind(message, fileURI.toString()));
 
-			return false;
+			return true;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	/**
@@ -170,8 +172,8 @@ public abstract class VespucciTransformationHelper {
 	 * @param modelContent Transformation input.
 	 * @return The transformated input data.
 	 */
-	protected Out executeQvtoTransformation(IContext context, ModelContent modelContent) {
-		QvtInterpretedTransformation modelQvtoTransformation = createQvtoTransformation(getVespucciVersion().getModelQvtoUri());
+	protected Out executeQvtoTransformation(IContext context, ModelContent modelContent, URI qvtoUri) {
+		QvtInterpretedTransformation modelQvtoTransformation = createQvtoTransformation(qvtoUri);
 		In modelTransformationInput = new TransformationRunner.In(
 				new ModelContent[] { modelContent },
 				context
@@ -228,7 +230,7 @@ public abstract class VespucciTransformationHelper {
 	 * @param diagramTransformationResult Transformation result contents for the notation part.
 	 * @param saveToUri Destination URI.
 	 */
-	protected static void saveResults(
+	protected void saveResults(
 			ModelExtentContents modelTransformationResult,
 			ModelExtentContents diagramTransformationResult,
 			URI saveToUri) {
@@ -241,6 +243,12 @@ public abstract class VespucciTransformationHelper {
 			outObjectsModel);
 		outputResource.getContents().addAll(
 			outObjectsDiagram);
+		
+		try {
+			outputResource.save(Collections.EMPTY_MAP);
+		} catch (IOException e) {
+			handleError(e);
+		}
 	}
 	
 	/**

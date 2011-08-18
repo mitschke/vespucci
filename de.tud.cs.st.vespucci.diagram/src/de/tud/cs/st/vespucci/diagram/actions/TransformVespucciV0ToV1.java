@@ -75,6 +75,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.tud.cs.st.vespucci.versioning.versions.VespucciVersion_20110601;
+import de.tud.cs.st.vespucci.versioning.versions.VespucciVersion_V0;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
 
 /**
@@ -97,9 +99,7 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 	}
 
 	@Override
-	public void run(IAction action) {
-		final ResourceSet resourceSet = new ResourceSetImpl();
-		
+	public void run(IAction action) {		
 		// Create the job title string
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < files.size(); i++)
@@ -111,139 +111,17 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		}
 		
 		// Create the conversion job
-		Job job = new Job("Convert Vespucci diagram " + sb.toString()) {
-			/** URI to the QVTO transformation code for the model part */
-			private final URI MODEL_TRANSF_URI = URI.createURI(
-				"platform:/plugin/de.tud.cs.st.vespucci.versioning/transformations/migrate_v0_to_v1.model.qvto");
-			/** URI to the QVTO transformation code for the diagram part */
-			private final URI NOTATION_TRANSF_URI = URI.createURI(
-				"platform:/plugin/de.tud.cs.st.vespucci.versioning/transformations/migrate_v0_to_v1.notation.qvto");
-			
+		Job job = new Job("Convert Vespucci diagram " + sb.toString()) {			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {				
 				for (IFile file : files)
 				{
-					URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-					EObject source = getInput(fileURI);
-					if (source == null) {
-						// No source given => Cancel
-						String title = Messages.VespucciTransformationNoFileTitle;
-						String message = Messages.VespucciTransformationNoFileMessage;
-						MessageDialog.openInformation(getShell(), title,
-								NLS.bind(message, fileURI.toString()));
-	
-						return Status.CANCEL_STATUS;
-					}
-					
-					try {						
-						monitor.beginTask("Converting Vespucci diagram...", 7 * files.size());
-	
-						// INITIALIZING TRANSFORMATION PREREQUISITE...
-						Resource inResource = resourceSet.getResource(fileURI, true);
-
-						List<EObject> inObjects = inResource.getContents();
-						
-						// Determine order of objects (ShapesDiagram / DiagramImpl) in the document
-						int posShapesDiagram, posDiagramImpl;
-						if (inObjects.get(0).getClass().toString().contains("ShapesDiagramImpl")) {
-							posShapesDiagram = 0;
-							posDiagramImpl = 1;
-						} else {
-							posShapesDiagram = 1;
-							posDiagramImpl = 0;
-						}
-						
-						ModelContent shapesDiagram = new ModelContent(inObjects.subList(posShapesDiagram, posShapesDiagram + 1));
-						ModelContent notationDiagram = new ModelContent(inObjects.subList(posDiagramImpl, posDiagramImpl + 1));
-	
-						IContext context = new Context();
-
-						// CREATE TRANFORMATIONS
-						QvtInterpretedTransformation shapesDiagramTransformation = new QvtInterpretedTransformation(
-							TransformationUtil.getQvtModule(MODEL_TRANSF_URI));
-						In shapesDiagramInTransformationRunner = new TransformationRunner.In(
-							new ModelContent[] { shapesDiagram },
-							context
-						);
-						
-						QvtInterpretedTransformation notationDiagramTransformation = new QvtInterpretedTransformation(
-							TransformationUtil.getQvtModule(NOTATION_TRANSF_URI));
-						In notationDiagramInTransformationRunner = new TransformationRunner.In(
-							new ModelContent[] { notationDiagram },
-							context
-						);
-
-						// RUN TRANSFORMATIONS
-						Out shapesDiagramOutTransformationRunner = shapesDiagramTransformation
-							.run(shapesDiagramInTransformationRunner);
-						monitor.worked(2);
-						
-						Out notationDiagramOutTransformationRunner = notationDiagramTransformation
-							.run(notationDiagramInTransformationRunner);					
-						monitor.worked(2);
-
-						List<ModelExtentContents> shapesDiagramTransfOutputs =
-							shapesDiagramOutTransformationRunner.getExtents();
-						List<ModelExtentContents> notationDiagramTransfOutputs =
-							notationDiagramOutTransformationRunner.getExtents();
-	
-						Trace shapesDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
-						Trace notationDiagramTrace = shapesDiagramOutTransformationRunner.getTrace();
-	
-						// POST-PROCESSING
-						if (shapesDiagramTrace != null && shapesDiagramTransfOutputs.size() == 1 &&
-							notationDiagramTrace != null && notationDiagramTransfOutputs.size() == 1) {							
-							URI traceURI = fileURI.trimFileExtension()
-								.appendFileExtension("trace");
-							EList<TraceRecord> shapesDiagramTraceRecords = shapesDiagramTrace
-								.getTraceRecords();
-							EList<TraceRecord> notationDiagramTraceRecords = notationDiagramTrace
-								.getTraceRecords();
-
-							Resource traceResource = resourceSet
-								.createResource(traceURI);
-
-							traceResource.getContents()
-								.addAll(shapesDiagramTraceRecords);
-							traceResource.getContents()
-								.addAll(notationDiagramTraceRecords);
-	
-							// OUTPUT PRE-PROCESSING
-							ModelExtentContents outputNotation = notationDiagramTransfOutputs.get(0);
-							ModelExtentContents outputModel = shapesDiagramTransfOutputs.get(0);
-							monitor.worked(1);
-							
-							// Rename original file, delete old file
-							renameOriginalFile(file, monitor);
-	
-							List<EObject> outObjectsNotation = outputNotation
-								.getAllRootElements();
-							List<EObject> outObjectsModel = outputModel
-								.getAllRootElements();
-	
-							// Create and fill the output resource
-							// Save new file under old name
-							Resource outputResource = resourceSet
-								.createResource(fileURI);
-							outputResource.getContents().addAll(
-								outObjectsModel);
-							outputResource.getContents().addAll(
-								outObjectsNotation);
-	
-							monitor.worked(1);
-	
-							// SAVE
-							outputResource.save(Collections.emptyMap());
-							
-							monitor.worked(1);
-						}
-					} catch (IOException e) {
-						return handleError(e, monitor);
-					} catch (CoreException e) {
-						return handleError(e, monitor);
-					} catch (MdaException e) {
-						return handleError(e, monitor);
-					}
+					VespucciVersion_20110601 ver = new VespucciVersion_20110601();
+					ver.upgradeFileToThisVersion(
+						file,
+						file.getFullPath().addFileExtension("old"),
+						URI.createPlatformResourceURI(file.getFullPath().toString(), true),
+						monitor);
 				}
 				
 				monitor.done();
@@ -255,68 +133,68 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		job.schedule();
 	}
 	
-	/**
-	 * Renames the given file by adding ".old" before the ".sad" file ending
-	 * as long as the resulting file name is unique.
-	 * 
-	 * @param file The file to rename
-	 * @param monitor The progress monitor to use
-	 * @throws CoreException
-	 */
-	private static void renameOriginalFile(IFile file, IProgressMonitor monitor)
-	throws CoreException {
-		IPath newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
-		while (new java.io.File(
-				file.getWorkspace().getRoot().getLocation().toFile(),
-				newPath.toFile().toString()).exists()) {
-			newPath = newPath.removeFileExtension().addFileExtension("old").addFileExtension("sad");
-		}
+//	/**
+//	 * Renames the given file by adding ".old" before the ".sad" file ending
+//	 * as long as the resulting file name is unique.
+//	 * 
+//	 * @param file The file to rename
+//	 * @param monitor The progress monitor to use
+//	 * @throws CoreException
+//	 */
+//	private static void renameOriginalFile(IFile file, IProgressMonitor monitor)
+//	throws CoreException {
+//		IPath newPath = file.getFullPath().removeFileExtension().addFileExtension("old").addFileExtension("sad");
+//		while (new java.io.File(
+//				file.getWorkspace().getRoot().getLocation().toFile(),
+//				newPath.toFile().toString()).exists()) {
+//			newPath = newPath.removeFileExtension().addFileExtension("old").addFileExtension("sad");
+//		}
+//
+//		file.move(newPath, true, new SubProgressMonitor(monitor, 1));
+//	}
 
-		file.move(newPath, true, new SubProgressMonitor(monitor, 1));
-	}
+//	/**
+//	 * Error handling method; shows a message box including the error message.
+//	 * 
+//	 * @param ex The exception to show to the user.
+//	 * @param monitor The current progress monitor (will be canceled)
+//	 * @return Always returns CANCEL_STATUS because of abnormal abort
+//	 */
+//	private IStatus handleError(final Exception ex, IProgressMonitor monitor) {
+//		monitor.done();
+//		
+//		Display.getDefault().asyncExec(new Runnable() {			
+//			@Override
+//			public void run() {
+//				MessageDialog.openError(getShell(), "Transformation failed",
+//						MessageFormat.format(
+//								"{0}: {1}",
+//								ex.getClass().getSimpleName(),
+//								ex.getMessage() == null ? "no message" : ex
+//										.getMessage()));
+//			}
+//		});
+//		
+//		return Status.CANCEL_STATUS;
+//	}
 
-	/**
-	 * Error handling method; shows a message box including the error message.
-	 * 
-	 * @param ex The exception to show to the user.
-	 * @param monitor The current progress monitor (will be canceled)
-	 * @return Always returns CANCEL_STATUS because of abnormal abort
-	 */
-	private IStatus handleError(final Exception ex, IProgressMonitor monitor) {
-		monitor.done();
-		
-		Display.getDefault().asyncExec(new Runnable() {			
-			@Override
-			public void run() {
-				MessageDialog.openError(getShell(), "Transformation failed",
-						MessageFormat.format(
-								"{0}: {1}",
-								ex.getClass().getSimpleName(),
-								ex.getMessage() == null ? "no message" : ex
-										.getMessage()));
-			}
-		});
-		
-		return Status.CANCEL_STATUS;
-	}
+//	/**
+//	 * @return The shell for the current workbench site
+//	 */
+//	private Shell getShell() {
+//		return targetPart.getSite().getShell();
+//	}
 
-	/**
-	 * @return The shell for the current workbench site
-	 */
-	private Shell getShell() {
-		return targetPart.getSite().getShell();
-	}
-
-	/**
-	 * Returns the EObject contents of the file defined by the given URI.
-	 * 
-	 * @param fileURI URI to the file which contents are to be loaded
-	 * @return The EObject contents of the file defined by fileURI
-	 */
-	private static EObject getInput(URI fileURI) {
-		ResourceSetImpl rs = new ResourceSetImpl();
-		return rs.getEObject(fileURI.appendFragment("/"), true);
-	}
+//	/**
+//	 * Returns the EObject contents of the file defined by the given URI.
+//	 * 
+//	 * @param fileURI URI to the file which contents are to be loaded
+//	 * @return The EObject contents of the file defined by fileURI
+//	 */
+//	private static EObject getInput(URI fileURI) {
+//		ResourceSetImpl rs = new ResourceSetImpl();
+//		return rs.getEObject(fileURI.appendFragment("/"), true);
+//	}
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
