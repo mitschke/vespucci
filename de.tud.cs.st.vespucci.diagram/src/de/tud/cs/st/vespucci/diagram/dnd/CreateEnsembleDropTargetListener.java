@@ -1,6 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -53,7 +53,6 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTyp
  * CreationNewEnsembelEditPolicy} to create a new Ensemble.
  * 
  * @author Malte Viering
- * @version 1.0
  */
 public class CreateEnsembleDropTargetListener extends DropVespucciDiagramTargetListener {
 
