@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author BenjaminL
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -36,9 +35,7 @@ package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -64,10 +61,8 @@ import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
- * TODO correct the subsequent documentation (Static class???)
- * static class to get all information about the units supports e.g. type
- * conversion from java binary type to FQN or resolving all packages from a
- * given project folder
+ * TODO correct the subsequent documentation (Static class???) static class to get all information about the units
+ * supports e.g. type conversion from java binary type to FQN or resolving all packages from a given project folder
  * 
  * @author Benjamin Lück
  * @author Alexander Weitzmann
@@ -77,7 +72,7 @@ public class Resolver {
 
 	private static final String CONSTRUCTOR = "<init>";
 
-	private static final String JAVA = ".java";
+	private static final String DOT_JAVA = ".java";
 
 	private static final String JAR_ENDING = ".jar";
 
@@ -99,14 +94,13 @@ public class Resolver {
 	}
 
 	/**
-	 * Getting the package name (FQN) from a IMethod, IPackageFragment,
-	 * ICompilationUnit, IField and IType.
+	 * Getting the package name (FQN) from a IMethod, IPackageFragment, ICompilationUnit, IField and IType.
 	 * 
 	 * @param o
 	 *            The named IJavaElement.
 	 * @return Returns the name of the package.
 	 */
-	public static String getFQPackageName(final Object o) {
+	public static String resolveFullyQualifiedPackageName(final Object o) {
 		// package...
 		if (o instanceof IPackageFragment) {
 			final IPackageFragment pkg = (IPackageFragment) o;
@@ -152,42 +146,42 @@ public class Resolver {
 	}
 
 	/**
-	 * @param objects 
+	 * @param objects
 	 * @return Returns true, only if all given objects are resolvable.
 	 */
 	public static boolean isResolvable(final Collection<Object> objects) {
 
-		for (final Object o : objects) {
+		for (final Object object : objects) {
 
 			try {
 
-				if (o instanceof IPackageFragment) {
+				if (object instanceof IPackageFragment) {
 					continue;
-				} else if (o instanceof IPackageFragmentRoot) {
+				} else if (object instanceof IPackageFragmentRoot) {
 					continue;
-				} else if (o instanceof ICompilationUnit) {
-					final ICompilationUnit cU = (ICompilationUnit) o;
+				} else if (object instanceof ICompilationUnit) {
+					final ICompilationUnit cU = (ICompilationUnit) object;
 					if (cU.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
 						return false;
 					} else {
 						continue;
 					}
-				} else if (o instanceof IMethod) {
-					final IMethod m = (IMethod) o;
+				} else if (object instanceof IMethod) {
+					final IMethod m = (IMethod) object;
 					if (m.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
 						return false;
 					} else {
 						continue;
 					}
-				} else if (o instanceof IField) {
-					final IField f = (IField) o;
+				} else if (object instanceof IField) {
+					final IField f = (IField) object;
 					if (f.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
 						return false;
 					} else {
 						continue;
 					}
-				} else if (o instanceof IType) {
-					final IType t = (IType) o;
+				} else if (object instanceof IType) {
+					final IType t = (IType) object;
 					if (t.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
 						return false;
 					} else {
@@ -203,72 +197,56 @@ public class Resolver {
 				final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "JavaModelException", e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 
-				throw new VespucciIllegalArgumentException((String.format("Given argument [%s] is not supported.", o)), e);
+				throw new VespucciIllegalArgumentException((String.format("Given argument [%s] is not supported.", object)), e);
 
 			} catch (final NullPointerException e) {
-				throw new VespucciUnexpectedException((String.format("No underlying resource for [%s]", o)), e);
+				throw new VespucciUnexpectedException((String.format("No underlying resource for [%s]", object)), e);
 			}
 
 		}
 		return true;
 	}
 
-	/**
-	 * getting the FQN classname
-	 */
-	public static String getFQClassnamefromIxxx(final Object o, final String key) { // TODO Rename
-		// getFQClassNamefromIxxx
-		String classname = "";
-		if (o instanceof IMethod) {
-			return ((IMethod) o).getDeclaringType().getFullyQualifiedName();
-		} else if (o instanceof IField) {
-			return ((IField) o).getDeclaringType().getFullyQualifiedName();
-		} else if (o instanceof ICompilationUnit) {
-			classname = ((ICompilationUnit) o).getElementName();
-		} else if (o instanceof IType) {
-			return ((IType) o).getFullyQualifiedName();
+	private static String resolveFullyQualifiedClassName(final Object javaElement) {
+		String classname;
+
+		if (javaElement instanceof IMethod) {
+			return ((IMethod) javaElement).getDeclaringType().getFullyQualifiedName();
+		} else if (javaElement instanceof IField) {
+			return ((IField) javaElement).getDeclaringType().getFullyQualifiedName();
+		} else if (javaElement instanceof IType) {
+			return ((IType) javaElement).getFullyQualifiedName();
+		} else if (javaElement instanceof ICompilationUnit) {
+			classname = ((ICompilationUnit) javaElement).getElementName();
+		} else {
+			throw new VespucciIllegalArgumentException(String.format("Could not resolve class name for given argument [%s].",
+					javaElement));
 		}
 
-		if (classname.toLowerCase().endsWith(JAVA)) {
-			classname = classname.substring(0, classname.length() - JAVA.length());
+		// trim java file ending
+		if (classname.toLowerCase().endsWith(DOT_JAVA)) {
+			classname = classname.substring(0, classname.length() - DOT_JAVA.length());
 		}
-		if (classname.equals("")) {
-			return "";
+
+		// add package name at beginning
+		final String fqPackageName = resolveFullyQualifiedPackageName(javaElement);
+		if (fqPackageName.equals("")) {
+			return classname;
 		} else {
-			final String FQNpkg = getFQPackageName(o);
-			if (FQNpkg.equals("")) {
-				return classname;
-			} else {
-				return FQNpkg + "." + classname;
-			}
+			return fqPackageName + "." + classname;
 		}
 	}
 
 	/**
-	 * getting the classname
+	 * @param element
+	 *            The java element, whose class name shall be resolved.
+	 * @return Returns the class name without preceding "&#60PACKAGENAME>.". Java file ending will be removed.
 	 */
-	public static String getClassnamefromIxxx(final Object o, final String key) {
-		// TODO fix the code duplication problem!
-		// method is the same as getFQClassnamefromIxxx only the package
-		// name is not resolved - extending getFQClassnamefromIxxx with a
-		// boolean to switch between FQN and N?
-		// little hack: substring FQN without packagename
+	public static String resolveClassName(final Object element) {
+		String classname = resolveFullyQualifiedClassName(element);
+		final String pkg = resolveFullyQualifiedPackageName(element);
 
-		// class, method, field, type
-		String classname = "";
-		final String pkg = getFQPackageName(o);
-
-		if (o instanceof IMethod) {
-			classname = ((IMethod) o).getDeclaringType().getFullyQualifiedName();
-		} else if (o instanceof IField) {
-			classname = ((IField) o).getDeclaringType().getFullyQualifiedName();
-		} else if (o instanceof ICompilationUnit) {
-			classname = ((ICompilationUnit) o).getElementName();
-		} else if (o instanceof IType) {
-			classname = ((IType) o).getFullyQualifiedName();
-		}
-
-		// classname without package name
+		// remove package name
 		if (classname.startsWith(pkg)) {
 			classname = classname.substring(pkg.length());
 		}
@@ -276,41 +254,28 @@ public class Resolver {
 			classname = classname.substring(1);
 		}
 
-		if (classname.toLowerCase().endsWith(JAVA)) {
-			classname = classname.substring(0, classname.length() - JAVA.length());
-		}
-		if (classname.equals("")) {
-			return "";
-		} else {
-			return classname;
-		}
+		return classname;
 	}
 
 	/**
-	 * returns the return type of the given IMethod (in this moment IMethod is
-	 * the only one)
+	 * @param method
+	 * @return The return type of the given IMethod.
 	 */
-	public static String getReturnTypeFromIxxx(final Object o, final String key) {
+	public static String resolveReturnType(final IMethod method) {
 		try {
-			if (o instanceof IMethod) {
-				final IMethod m = (IMethod) o;
-				return getFullyQualifiedName(m.getReturnType(), m.getDeclaringType());
-			}
-			return null;
+			return getFullyQualifiedName(method.getReturnType(), method.getDeclaringType());
 		} catch (final JavaModelException e) {
+			// TODO move to exception
 			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve returntype", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
-			// TODO why does it make sense to return null?
-			return null;
+			throw new VespucciUnexpectedException(String.format("Failed to resolve return type of [%s]", method), e);
 		}
-
 	}
 
 	/**
-	 * getting all parameters from a given IMethod
-	 * 
-	 * @return returns the parameters as an string list
+	 * @param method
+	 * @return Returns the parameters from the given method as a list of strings.
 	 */
 	public static List<String> getParameterTypesFromMethod(final IMethod method) {
 		final List<String> parameters = new ArrayList<String>();
@@ -323,13 +288,10 @@ public class Resolver {
 	}
 
 	/**
-	 * get the name of a method
-	 * 
 	 * @param method
-	 * @return String of the method name
+	 * @return Returns the name of the given method.
 	 */
-	public static String getMethodnameFromMethod(final IMethod method) { // TODO rename
-																			// getMethodName...
+	public static String getMethodName(final IMethod method) {
 		// get method name, set as <init> if it is the constructor of the class
 		try {
 			if (method.isConstructor()) {
@@ -338,108 +300,107 @@ public class Resolver {
 				return method.getElementName();
 			}
 		} catch (final JavaModelException e) {
+			// TODO move to exception
 			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve methodname", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
-			// TODO why does it make sense to return null?
-			return null;
+
+			throw new VespucciUnexpectedException(String.format("Could not determine if method [%s] is a constructor.", method),
+					e);
 		}
 	}
 
 	/**
-	 * get the name of an field
-	 * 
 	 * @param field
-	 * @return String of the field name
+	 * @return Returns the name of the field type.
 	 */
-	public static String getFQFieldTypeName(final IField field) {
+	public static String getFullyQualifiedFieldTypeName(final IField field) {
 		try {
 			return getFullyQualifiedName(field.getTypeSignature(), field.getDeclaringType());
 		} catch (final JavaModelException e) {
+			// TODO move to exception
 			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve field type", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
-			// TODO why does it make sense to return null?
-			return null;
+
+			throw new VespucciUnexpectedException(String.format("Failed to resolve field type of [%s].", field), e);
 		}
 
 	}
 
 	/**
-	 * try to resolve the element name of the given object
-	 * 
-	 * @param the
-	 *            given object
-	 * @return the element name
+	 * @param element
+	 * @return Returns the name for the given element.
 	 */
-	public static String getElementNameFromObject(final Object o) {
-		if (o instanceof IProject) {
-			return ((IProject) o).getName();
-		} else if (o instanceof IPackageFragment) {
-			final IPackageFragment pkg = (IPackageFragment) o;
+	public static String getElementNameFromObject(final Object element) {
+		if (element instanceof IProject) {
+			return ((IProject) element).getName();
+		} else if (element instanceof IPackageFragment) {
+			final IPackageFragment pkg = (IPackageFragment) element;
 			if (pkg.isDefaultPackage()) {
 				return DEFAULT_PACKAGE;
 			} else {
-				return ((IPackageFragment) o).getElementName();
+				return ((IPackageFragment) element).getElementName();
 			}
-		} else if (o instanceof IPackageFragmentRoot) {
-			return ((IPackageFragmentRoot) o).getElementName();
-		} else if (o instanceof ICompilationUnit) {
-			final ICompilationUnit cU = (ICompilationUnit) o;
-			return Resolver.getFQClassnamefromIxxx(cU, "");
-		} else if (o instanceof IType) {
-			final IType type = (IType) o;
+		} else if (element instanceof IPackageFragmentRoot) {
+			return ((IPackageFragmentRoot) element).getElementName();
+		} else if (element instanceof ICompilationUnit) {
+			final ICompilationUnit cU = (ICompilationUnit) element;
+			return Resolver.resolveFullyQualifiedClassName(cU);
+		} else if (element instanceof IType) {
+			final IType type = (IType) element;
 			return type.getFullyQualifiedName();
-		} else if (o instanceof IField) {
-			return Resolver.getFQClassnamefromIxxx(o, "") + "." + ((IField) o).getElementName();
-		} else if (o instanceof IMethod) {
-			return Resolver.getFQClassnamefromIxxx(o, "") + "." + ((IMethod) o).getElementName();
-		} else if (o instanceof ISourceAttribute) {
-			return ((ISourceAttribute) o).getSourceFileName().toString();
-		} else if (o instanceof IClassFile) {
-			return ((IClassFile) o).getElementName();
-		} else if (o instanceof IFile) {
-			return ((IFile) o).getName();
-		} else if (o instanceof IFolder) {
-			return ((IFolder) o).getName();
+		} else if (element instanceof IField) {
+			return Resolver.resolveFullyQualifiedClassName(element) + "." + ((IField) element).getElementName();
+		} else if (element instanceof IMethod) {
+			return Resolver.resolveFullyQualifiedClassName(element) + "." + ((IMethod) element).getElementName();
+		} else if (element instanceof ISourceAttribute) {
+			return ((ISourceAttribute) element).getSourceFileName().toString();
+		} else if (element instanceof IClassFile) {
+			return ((IClassFile) element).getElementName();
+		} else if (element instanceof IFile) {
+			return ((IFile) element).getName();
+		} else if (element instanceof IFolder) {
+			return ((IFolder) element).getName();
 		} else {
-			// nothing
-			return "";
+			throw new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", element));
 		}
 	}
 
 	/**
-	 * getting all packages from a IPackageFragmentRoot; e.g. a src-folder or a
-	 * JAR-file which is in the project referenced libraries
+	 * Gets all packages from a IPackageFragmentRoot; e.g. a src-folder or a JAR-file which is in the project referenced
+	 * libraries.
 	 * 
-	 * @return list<Strings> of the included package names
+	 * @param packageRoot
+	 *            The package root
+	 * @return Returns a list of packages contained in given package root.
 	 */
-	public static List<String> getPackagesFromPFR(final IPackageFragmentRoot pfr) {
+	public static List<String> getPackagesFromPFR(final IPackageFragmentRoot packageRoot) {
 		final List<String> packages = new ArrayList<String>();
 
 		try {
-			final IJavaElement[] children = pfr.getChildren();
+			final IJavaElement[] children = packageRoot.getChildren();
 
-			for (final IJavaElement aPackage : children) {
-				final String packageName = aPackage.getElementName();
-				final String p = getFQPackageName(aPackage).trim();
+			for (final IJavaElement childPackage : children) {
+				final String fqPackageName = resolveFullyQualifiedPackageName(childPackage).trim();
 
-				final IPackageFragment aPKG = (IPackageFragment) aPackage;
-				if (aPKG.isDefaultPackage()) {
+				if (((IPackageFragment) childPackage).isDefaultPackage()) {
 					packages.add("");
 				}
-				if (p.length() > 0) {
-					packages.add(p);
+				if (fqPackageName.length() > 0) {
+					packages.add(fqPackageName);
 				}
 			}
 			return packages;
 
 		} catch (final JavaModelException e) {
+			// TODO move to exception
 			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve packages of src-folder/JAR-file", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
-			// TODO is this behavior meaningfull?
-			return Collections.emptyList();
+
+			throw new VespucciUnexpectedException(String.format("Failed to get child packages from package root [%s].",
+					packageRoot), e);
 		}
 	}
 
