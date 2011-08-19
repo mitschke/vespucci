@@ -34,20 +34,26 @@ package de.tud.cs.st.vespucci.errors;
 
 /**
  * Exception which is thrown if there occurs an error during
- * the attempt to read a file.
+ * input and output operations.
  * 
- * @author @author Theo Kischka, Dominic Scheurer
+ * @author Theo Kischka
+ * @author Dominic Scheurer
  */
 public class VespucciIOException extends VespucciException {
-	public VespucciIOException(String message) {
-		super(message);
-	}
+
+	private static final long serialVersionUID = 3379128373768953812L;
+
+	private static final String PREFIX = "VespucciIOException: ";
 	
-	public VespucciIOException(Throwable cause) {
+	public VespucciIOException(final String message) {
+		super(PREFIX + message);
+	}
+
+	public VespucciIOException(final Throwable cause) {
 		super(cause);
 	}
-	
-	public VespucciIOException(String message, Throwable cause) {
-		super(message, cause);
-	}	
+
+	public VespucciIOException(final String message, final Throwable cause) {
+		super(PREFIX + message, cause);
+	}
 }

@@ -51,7 +51,9 @@ import de.tud.cs.st.vespucci.errors.VespucciIOException;
  * file. The specified file must only contain one keyword
  * per line; empty lines may be added.
  * 
- * @author Alexander Weitzmann, Theo Kischka, Dominic Scheurer
+ * @author Alexander Weitzmann
+ * @author Theo Kischka
+ * @author Dominic Scheurer
  * @version 1.3
  */
 public class KeywordReader {

@@ -1,22 +1,27 @@
 package de.tud.cs.st.vespucci.errors;
 
+/**
+ * Exception which is thrown when different behavior is expected.
+ * 
+ * @author Alexander Weitzmann
+ * @author Thomas Schulz
+ */
 public class VespucciUnexpectedException extends VespucciException {
-	
+
+	private static final long serialVersionUID = 6380086684556093193L;
+
 	private static final String PREFIX = "VespucciUnexpectedException: ";
 
-	public VespucciUnexpectedException(String message) {
+	public VespucciUnexpectedException(final String message) {
 		super(PREFIX + message);
-		// TODO Auto-generated constructor stub
 	}
 
-	public VespucciUnexpectedException(Throwable cause) {
+	public VespucciUnexpectedException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public VespucciUnexpectedException(String message, Throwable cause) {
+	public VespucciUnexpectedException(final String message, final Throwable cause) {
 		super(PREFIX + message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
 }

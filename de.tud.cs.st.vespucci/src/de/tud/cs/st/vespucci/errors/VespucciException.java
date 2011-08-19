@@ -2,7 +2,7 @@
  *  License (BSD Style License):
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitiät Darmstadt
+ *   Technische Universitiï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -14,7 +14,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -35,18 +35,22 @@ package de.tud.cs.st.vespucci.errors;
 /**
  * Base class for all exceptions thrown by the Vespucci project.
  * 
- * @author Theo Kischka, Dominic Scheurer
+ * @author Theo Kischka
+ * @author Dominic Scheurer
  */
 public abstract class VespucciException extends RuntimeException {
-	public VespucciException(String message) {
+
+	private static final long serialVersionUID = 7239173481155328434L;
+	
+	public VespucciException(final String message) {
 		super(message);
 	}
-	
-	public VespucciException(Throwable cause) {
+
+	public VespucciException(final Throwable cause) {
 		super(cause);
 	}
-	
-	public VespucciException(String message, Throwable cause) {
+
+	public VespucciException(final String message, final Throwable cause) {
 		super(message, cause);
-	}	
+	}
 }
