@@ -207,22 +207,9 @@ public final class CreationNewEnsembleEditPolicy extends CreationEditPolicy {
 		cc.compose(createSetQueryCommand(createElementRequest, request));
 		cc.compose(createSetNameCommand(createElementRequest, request));
 
-		cc.compose(createSelectAndEditCommand(request));
+		cc.compose(new SelectAndEditNameCommand(request, getHost().getRoot().getViewer()));
 		
 		return new ICommandProxy(cc);
-	}
-	
-	private IUndoableOperation createSelectAndEditCommand(CreateViewAndElementRequest request) {
-		List<? extends ViewDescriptor> editPartViewDescriptors = request.getViewDescriptors();
-		EditPartViewer viewer = getHost().getRoot().getViewer();
-		
-		for (final ViewDescriptor object : editPartViewDescriptors ) {
-				final EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(object.getAdapter(View.class));
-				if (editPart != null) {
-					return new SelectAndEditNameCommand(editPart, viewer);
-				}
-		}
-		return null;
 	}
 
 	/**

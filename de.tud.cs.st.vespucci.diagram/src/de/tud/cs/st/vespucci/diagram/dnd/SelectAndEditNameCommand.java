@@ -34,6 +34,8 @@
 
 package de.tud.cs.st.vespucci.diagram.dnd;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.EditPart;
@@ -42,6 +44,9 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gmf.runtime.common.core.command.AbstractCommand;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest.ViewDescriptor;
+import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -50,36 +55,52 @@ import org.eclipse.ui.PlatformUI;
  * Focus ensemble and select its name field.
  * 
  * @author Patrick Jahnke
+ * @author Thomas Schulz
+ * @author Alexander Weitzmann
  */
 public class SelectAndEditNameCommand extends AbstractCommand {
 
 	private static final String COMMANDNAME = "Select ensemble name-field";
 
+	/**
+	 * Reveals the newly created EditPart. {@link #request} must be initialized before calling this method.
+	 * 
+	 * @param editPart
+	 */
+	private static void revealEditPart(final EditPart editPart) {
+		if (editPart != null && editPart.getViewer() != null) {
+			editPart.getViewer().reveal(editPart);
+		}
+	}
+
 	private static void selectDiagramEditor() {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().setFocus();
 	}
 
-	private EditPartViewer editPartViewer = null;
+	private final EditPartViewer editPartViewer;
 
-	private final EditPart editPart;
+	private final CreateViewAndElementRequest request;
 
 	/**
 	 * Initializes fields.
 	 * 
-	 * @param editPart
+	 * @param request
+	 *            This request must provide the view descriptors for the EditPart to be selected. If multiple view
+	 *            descriptors exist then the first will be used. See also
+	 *            {@link CreateViewAndElementRequest#getViewDescriptors()}.
 	 * @param diagramViewer
 	 *            The graphical viewer of the diagram.
 	 */
-	public SelectAndEditNameCommand(final EditPart editPart, final EditPartViewer diagramViewer) {
+	public SelectAndEditNameCommand(final CreateViewAndElementRequest request, final EditPartViewer diagramViewer) {
 		super(COMMANDNAME);
-		this.editPart = editPart;
+		this.request = request;
 		editPartViewer = diagramViewer;
 	}
 
 	@Override
 	protected CommandResult doExecuteWithResult(final IProgressMonitor progressMonitor, final IAdaptable info) {
 
-		if (editPartViewer != null && editPart != null) {
+		if (editPartViewer != null && request != null) {
 			selectDiagramEditor();
 
 			// set Focus on the added Ensemble and select the Name
@@ -102,21 +123,23 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 		return null;
 	}
 
-	/**
-	 * Reveals the newly created EditPart. {@link #editPart} must be initialized before calling this
-	 * method.
-	 */
-	private void revealEditPart() {
-		if (editPart != null && editPart.getViewer() != null) {
-			editPart.getViewer().reveal(editPart);
+	private EditPart getFirstEditPartFromRequest() {
+		final List<? extends ViewDescriptor> editPartViewDescriptors = request.getViewDescriptors();
+
+		for (final ViewDescriptor object : editPartViewDescriptors) {
+			final EditPart editPart = (EditPart) editPartViewer.getEditPartRegistry().get(object.getAdapter(View.class));
+			if (editPart != null) {
+				return editPart;
+			}
 		}
+		return null;
 	}
 
 	/**
-	 * Select the newly added shape view by default.
-	 * Taken from {@link org.eclipse.gef.tools.CreationTool}.
+	 * Select the newly added shape view by default. Adapted from {@link org.eclipse.gef.tools.CreationTool}.
 	 */
 	protected void selectAddedObject() {
+		final EditPart editPart = getFirstEditPartFromRequest();
 		if (editPart != null) {
 			final EditPart[] editParts = { editPart };
 			editPartViewer.setSelection(new StructuredSelection(editParts));
@@ -125,13 +148,9 @@ public class SelectAndEditNameCommand extends AbstractCommand {
 			Display.getCurrent().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					//
-					// add active test since test scripts are failing on this
-					// basically, the editpart has been deleted when this
-					// code is being executed. (see RATLC00527114)
 					if (editPart.isActive()) {
 						editPart.performRequest(new Request(RequestConstants.REQ_DIRECT_EDIT));
-						revealEditPart();
+						revealEditPart(editPart);
 					}
 				}
 			});
