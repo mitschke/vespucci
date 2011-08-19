@@ -88,7 +88,7 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 	}
 
 	/**
-	 * @return Returns true only if the drop is processable.
+	 * @return Returns true only if the drop is resolvable.
 	 */
 	private boolean canBeDropped() {
 		if (getTargetEditPart() == null) {
@@ -96,7 +96,7 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 			// all EditPart for which DnD should work
 		} else if (getTargetEditPart() instanceof EnsembleEditPart || getTargetEditPart() instanceof Ensemble2EditPart
 				|| getTargetEditPart() instanceof ShapesDiagramEditPart) {
-			return Resolver.isProcessable(getTargetRequest().getExtendedData());
+			return Resolver.isResolvable(getTargetRequest().getExtendedData());
 		}
 		return false;
 	}

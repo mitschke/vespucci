@@ -101,7 +101,8 @@ public class Resolver {
 	 * Getting the package name (FQN) from a IMethod, IPackageFragment,
 	 * ICompilationUnit, IField and IType.
 	 * 
-	 * @param o The named IJavaElement.
+	 * @param o
+	 *            The named IJavaElement.
 	 * @return Returns the name of the package.
 	 */
 	public static String getFQPackageName(final Object o) {
@@ -143,73 +144,71 @@ public class Resolver {
 						"JavaModelException: Failed to resolve Package", e);
 				StatusManager.getManager().handle(is, StatusManager.SHOW);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
-				
-				throw new VespucciUnexpectedException((String.format("Failed to resolve package of [%s]", cUnit)),e);
+
+				throw new VespucciUnexpectedException((String.format("Failed to resolve package of [%s]", cUnit)), e);
 			}
 		}
 	}
 
 	/**
 	 * @param map
-	 * @return Returns true, only if ALL objects are processable. TODO what does it mean, to be processable?
+	 * @return Returns true, only if ALL objects are resolvable.
 	 */
-	public static boolean isProcessable(final Map<String, Object> map) {
+	public static boolean isResolvable(final Map<String, Object> map) {
 
-		for (final String key : map.keySet()) { // FIXME the loop statement is useless; it is
-												// equivalent
-			// to "getFirst"... either correct the name of the
-			// method and documentation or the implementation!
+		for (final String key : map.keySet()) {
+
 			final Object o = map.get(key);
-			boolean akt = false;
 
 			try {
 
 				if (o instanceof IPackageFragment) {
-					akt = true;
+					continue;
 				} else if (o instanceof IPackageFragmentRoot) {
-					akt = true;
+					continue;
 				} else if (o instanceof ICompilationUnit) {
 					final ICompilationUnit cU = (ICompilationUnit) o;
 					if (cU.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						akt = false;
+						return false;
 					} else {
-						akt = true;
+						continue;
 					}
 				} else if (o instanceof IMethod) {
 					final IMethod m = (IMethod) o;
 					if (m.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						akt = false;
+						return false;
 					} else {
-						akt = true;
+						continue;
 					}
 				} else if (o instanceof IField) {
 					final IField f = (IField) o;
 					if (f.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						akt = false;
+						return false;
 					} else {
-						akt = true;
+						continue;
 					}
 				} else if (o instanceof IType) {
 					final IType t = (IType) o;
 					if (t.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						akt = false;
+						return false;
 					} else {
-						akt = true;
+						continue;
 					}
+				} else {
+					return false;
 				}
 
 			} catch (final JavaModelException e) {
+
+				// TODO Move status handling to Exception superclass.
 				final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "JavaModelException", e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
-			} catch (final NullPointerException e) {
-				// TODO Hack!!! This hack is implemented, to avoid in each type
-				// the check if the underlying resource is null. This approach
-				// is done because files of a jar files should be (in future)
-				// droppable!
-				return false;
-			}
 
-			return akt;
+				throw new VespucciIllegalArgumentException((String.format("Given argument [%s] is not supported.", o)), e);
+
+			} catch (final NullPointerException e) {
+				throw new VespucciUnexpectedException((String.format("No underlying resource for [%s]", o)), e);
+			}
 
 		}
 		return true;
