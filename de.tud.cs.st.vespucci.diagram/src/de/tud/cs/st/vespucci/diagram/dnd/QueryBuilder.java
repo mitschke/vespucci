@@ -66,7 +66,7 @@ public class QueryBuilder {
 
 	private static String createClassQuery(final Object draggedElement, final String key) {
 		String classQuery;
-		final String packagename = Resolver.getFQPackageNameFromIxxx(draggedElement, key);
+		final String packagename = Resolver.getFQPackageName(draggedElement, key);
 		final String classname = Resolver.getClassnamefromIxxx(draggedElement, key);
 		if (packagename.equals("")) {
 			classQuery = CLASS_WITH_MEMBERS + "('','" + classname + "')";
@@ -78,7 +78,7 @@ public class QueryBuilder {
 
 	private static String createFieldQuery(final Object draggedElement, final String key) {
 		final IField iField = (IField) draggedElement;
-		final String packagename = Resolver.getFQPackageNameFromIxxx(draggedElement, key);
+		final String packagename = Resolver.getFQPackageName(draggedElement, key);
 		final String classname = Resolver.getClassnamefromIxxx(draggedElement, key);
 		final String fieldname = iField.getElementName();
 		final String type = Resolver.getFQFieldTypeName(iField);
@@ -98,7 +98,7 @@ public class QueryBuilder {
 
 	private static String createMethodQuery(final Object draggedElement, final String key) {
 		final IMethod iMethod = (IMethod) draggedElement;
-		final String packagename = Resolver.getFQPackageNameFromIxxx(draggedElement, key);
+		final String packagename = Resolver.getFQPackageName(draggedElement, key);
 		final String classname = Resolver.getClassnamefromIxxx(draggedElement, key);
 		final String methodname = Resolver.getMethodnameFromMethod(iMethod);
 		final List<String> para = Resolver.getParameterTypesFromMethod(iMethod);
@@ -142,7 +142,7 @@ public class QueryBuilder {
 	}
 
 	private static String createPackageQuery(final Object draggedElement, final String key) {
-		return String.format("%s('%s')", PACKAGE, Resolver.getFQPackageNameFromIxxx(draggedElement, key));
+		return String.format("%s('%s')", PACKAGE, Resolver.getFQPackageName(draggedElement, key));
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class QueryBuilder {
 	private static String createTypeQuery(final Object draggedElement, final String key) {
 		final IType type = (IType) draggedElement;
 		final ICompilationUnit cU = type.getCompilationUnit();
-		final String packagename = Resolver.getFQPackageNameFromIxxx(cU, key);
+		final String packagename = Resolver.getFQPackageName(cU, key);
 		final String classname = Resolver.getClassnamefromIxxx(type, key);
 		return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
 	}
