@@ -35,7 +35,10 @@
 package de.tud.cs.st.vespucci.versioning.versions;
 
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,9 +56,11 @@ import org.eclipse.m2m.internal.qvt.oml.emf.util.ModelContent;
 import org.eclipse.m2m.internal.qvt.oml.library.Context;
 import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner.Out;
 import org.eclipse.m2m.qvt.oml.util.IContext;
-import de.tud.cs.st.vespucci.errors.VespucciFileReadException;
+import org.eclipse.ui.statushandlers.StatusManager;
+
 import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * Template class for Vespucci version descriptors.
@@ -64,7 +69,8 @@ import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
  */
 @SuppressWarnings("restriction")
 public abstract class VespucciVersionTemplate
-extends VespucciTransformationHelper {
+extends VespucciTransformationHelper
+implements Comparable<VespucciVersionTemplate> {
 	/**
 	 * <p>Pointer to the current version descriptor.</p>
 	 * <p><strong>Remember to update this when adding newer versions!</strong></p>
@@ -74,7 +80,7 @@ extends VespucciTransformationHelper {
 	/**
 	 * Number of (single) steps needed to perform the conversion task.
 	 */
-	private static final int CONVERSION_STEPS = 7;
+	private static final int CONVERSION_STEPS = 9;
 	
 	/**
 	 * Here, the current progress monitor is stored. This is reasonable
@@ -83,9 +89,25 @@ extends VespucciTransformationHelper {
 	private IProgressMonitor progessMonitor = null;
 	
 	/**
+	 * @return The creation date of this version (for the natural order).
+	 */
+	public abstract Date getCreationDate();
+	
+	/**
 	 * @return The namespace string of this version, e.g. "http://vespucci.editor"
 	 */
 	public abstract String getNamespace();
+	
+	/**
+	 * This method returns the default version identifier. May be overridden
+	 * if necessary.
+	 * 
+	 * @return A textual unique identifier for this version.
+	 */
+	public String getIdentifier() {
+		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US);
+		return dateFormat.format(getCreationDate());
+	}
 	
 	/**
 	 * @return The predecessor of this version in the version chain or null if there is none.
@@ -122,6 +144,18 @@ extends VespucciTransformationHelper {
 		return this;
 	}
 	
+	@Override
+	public int compareTo(VespucciVersionTemplate other) {
+		return getCreationDate().compareTo(other.getCreationDate());
+	};
+	
+	/**
+	 * @return True if this version is the current version, else false.
+	 */
+	public boolean isCurrentVersion() {
+		return this.equals(CURRENT_VERSION);
+	}
+	
 	/**
 	 * Template method which converts a Vespucci file to the version indicated
 	 * by the concrete implementation of this abstract class.
@@ -153,10 +187,15 @@ extends VespucciTransformationHelper {
 			ModelContent shapesDiagramContent = new ModelContent(fileModelContents.subList(0, 1));
 			ModelContent notationDiagramContent = new ModelContent(fileModelContents.subList(1, 2));
 			
+			progressMonitor.worked(1);
+			
 			IContext context = new Context();
 			
 			Out modelTransformationOutput = executeQvtoTransformation(context, shapesDiagramContent, getModelQvtoUri());
+			progressMonitor.worked(3);
+			
 			Out diagramTransformationOutput = executeQvtoTransformation(context, notationDiagramContent, getDiagramQvtoUri());
+			progressMonitor.worked(3);
 			
 			if (!outputIsCorrect(modelTransformationOutput) ||
 				!outputIsCorrect(diagramTransformationOutput)) {
@@ -170,8 +209,10 @@ extends VespucciTransformationHelper {
 				getContentOfTransformationResult(diagramTransformationOutput);
 			
 			renameFile(inFile, renameToPath, progressMonitor);
+			progressMonitor.worked(1);
 			
-			saveResults(modelTransformationResult, diagramTransformationResult, outFileUri);	
+			saveResults(modelTransformationResult, diagramTransformationResult, outFileUri);
+			progressMonitor.worked(1);
 			
 			return Status.OK_STATUS;
 		} catch (VespucciTransformationFailedException transfFailedException) {
@@ -189,8 +230,7 @@ extends VespucciTransformationHelper {
 		try {
 			fileInputStream = file.getContents();
 		} catch (CoreException coreException) {
-			throw new VespucciFileReadException(
-					"Error reading file " + file.toString(), coreException);
+			handleError("Error reading file contents", coreException);
 		}
 		
 		final Scanner scanner = new Scanner(fileInputStream);
@@ -209,5 +249,17 @@ extends VespucciTransformationHelper {
 		
 		scanner.close();		
 		return false;
+	}
+	
+	/**
+	 * Simple error handler.
+	 * 
+	 * @param message A custom error message.
+	 * @param cause Source Exception.
+	 */
+	private static void handleError(String message, Exception cause) {
+		IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, message, cause);
+		StatusManager.getManager().handle(is, StatusManager.SHOW);
+		StatusManager.getManager().handle(is, StatusManager.LOG);
 	}
 }

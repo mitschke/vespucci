@@ -75,8 +75,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-import de.tud.cs.st.vespucci.versioning.versions.VespucciVersion_20110601;
-import de.tud.cs.st.vespucci.versioning.versions.VespucciVersion_V0;
+//import de.tud.cs.st.vespucci.versioning.versions.VespucciVersion_20110601;
+//import de.tud.cs.st.vespucci.versioning.versions.VespucciVersion_V0;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages;
 
 /**
@@ -114,15 +114,15 @@ public class TransformVespucciV0ToV1 implements IObjectActionDelegate {
 		Job job = new Job("Convert Vespucci diagram " + sb.toString()) {			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {				
-				for (IFile file : files)
-				{
-					VespucciVersion_20110601 ver = new VespucciVersion_20110601();
-					ver.upgradeFileToThisVersion(
-						file,
-						file.getFullPath().addFileExtension("old"),
-						URI.createPlatformResourceURI(file.getFullPath().toString(), true),
-						monitor);
-				}
+//				for (IFile file : files)
+//				{
+//					VespucciVersion_20110601 ver = new VespucciVersion_20110601();
+//					ver.upgradeFileToThisVersion(
+//						file,
+//						file.getFullPath().addFileExtension("old"),
+//						URI.createPlatformResourceURI(file.getFullPath().toString(), true),
+//						monitor);
+//				}
 				
 				monitor.done();
 				return Status.OK_STATUS;

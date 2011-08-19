@@ -34,6 +34,9 @@
 
 package de.tud.cs.st.vespucci.versioning.versions;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -61,6 +64,18 @@ public class VespucciVersion_V0 extends VespucciVersionTemplate {
 	@Override
 	public URI getDiagramQvtoUri() {
 		return null;
+	}
+
+	@Override
+	public Date getCreationDate() {
+		Calendar creationCalendar = Calendar.getInstance();
+		creationCalendar.set(1970, 1, 1);
+		return creationCalendar.getTime();
+	}
+	
+	@Override
+	public String getIdentifier() {
+		return "v0";
 	}
 
 }

@@ -34,8 +34,8 @@
 
 package de.tud.cs.st.vespucci.versioning;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
 
@@ -51,17 +51,17 @@ public class VespucciVersionChain {
 	/**
 	 * Stores the ordered list of Versions.
 	 */
-	List<VespucciVersionTemplate> versionChain = null;
+	TreeSet<VespucciVersionTemplate> versionChain = null;
 	
 	/**
 	 * Default constructor which initializes the version chain.
 	 */
 	public VespucciVersionChain() {
-		versionChain = new LinkedList<VespucciVersionTemplate>();
+		versionChain = new TreeSet<VespucciVersionTemplate>();
 		
 		versionChain.add(VespucciVersionTemplate.CURRENT_VERSION);
-		while (versionChain.get(0).getPredecessor() != null) {
-			versionChain.add(0, versionChain.get(0).getPredecessor());
+		while (versionChain.first().getPredecessor() != null) {
+			versionChain.add(versionChain.first().getPredecessor());
 		}
 	}
 	
@@ -74,6 +74,23 @@ public class VespucciVersionChain {
 			if (version.fileIsOfThisVersion(file)) {
 				return version;
 			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @param originalVersion The version for which to find the successor.
+	 * @return The successor of the given version of null if there is none.
+	 */
+	public VespucciVersionTemplate getNextVersion(VespucciVersionTemplate originalVersion) {
+		VespucciVersionTemplate[] listChain = new VespucciVersionTemplate[versionChain.size()];
+		listChain = versionChain.toArray(listChain);
+		
+		int versionPosition = Arrays.binarySearch(listChain, originalVersion);
+		if (versionPosition < listChain.length - 1 &&
+			versionPosition >= 0) {
+			return listChain[versionPosition + 1];
 		}
 		
 		return null;

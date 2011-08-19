@@ -65,5 +65,28 @@
             id="transformations.migrate_v0_to_v1">
       </transformation>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="de.tud.cs.st.vespucci.versioning.UpdateVespucciDiagram"
+               label="Vespucci: Update to current version"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="de.tud.cs.st.vespucci.versioning.handler.UpdateSadFileHandler"
+            id="de.tud.cs.st.vespucci.versioning.UpdateVespucciDiagram"
+            name="Update to current version">
+      </command>
+   </extension>
    
 </plugin>
