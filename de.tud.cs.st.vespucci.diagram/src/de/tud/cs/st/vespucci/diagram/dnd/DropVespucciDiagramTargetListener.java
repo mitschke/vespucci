@@ -96,7 +96,7 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 			// all EditPart for which DnD should work
 		} else if (getTargetEditPart() instanceof EnsembleEditPart || getTargetEditPart() instanceof Ensemble2EditPart
 				|| getTargetEditPart() instanceof ShapesDiagramEditPart) {
-			return Resolver.isResolvable(getTargetRequest().getExtendedData());
+			return Resolver.isResolvable(getTargetRequest().getExtendedData().values());
 		}
 		return false;
 	}

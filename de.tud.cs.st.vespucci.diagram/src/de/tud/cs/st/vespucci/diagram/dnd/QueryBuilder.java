@@ -68,11 +68,9 @@ public class QueryBuilder {
 		String classQuery;
 		final String packagename = Resolver.getFQPackageName(draggedElement);
 		final String classname = Resolver.getClassnamefromIxxx(draggedElement, key);
-		if (packagename.equals("")) {
-			classQuery = CLASS_WITH_MEMBERS + "('','" + classname + "')";
-		} else {
-			classQuery = CLASS_WITH_MEMBERS + "('" + packagename + "','" + classname + "')";
-		}
+
+		classQuery = String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+
 		return classQuery;
 	}
 
@@ -90,7 +88,7 @@ public class QueryBuilder {
 		final LinkedList<String> queryList = new LinkedList<String>();
 		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) draggedElement);
 		for (final String s : packages) {
-			final String jarQuery = String.format("('%s')", s);
+			final String jarQuery = String.format("%s('%s')", PACKAGE, s);
 			queryList.add(jarQuery);
 		}
 		return queryList;
@@ -146,7 +144,8 @@ public class QueryBuilder {
 	}
 
 	/**
-	 * Creates a List that contains for all Java Files in map an entry: e.g.: <LI>package: package(&#60PACKAGENAME>) <LI>
+	 * Creates a List that contains for all Java Files in map an entry: e.g.: <LI>package:
+	 * package(&#60PACKAGENAME>) <LI>
 	 * class: class_with_members(&#60PACKAGENAME>,&#60PACKAGENAME>.&#60CLASSNAME>)<LI>method:
 	 * method(&#60PACKAGENAME>,&#60PACKAGENAME>.&#60CLASSNAME>,'&#60init>' OR
 	 * &#60METHODNAME>,&#60RETURNTYPES>,&#60PARAMETERTYPES>) <LI>field:

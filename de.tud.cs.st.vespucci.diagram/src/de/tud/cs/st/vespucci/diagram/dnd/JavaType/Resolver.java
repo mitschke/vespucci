@@ -35,6 +35,7 @@
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -151,14 +152,12 @@ public class Resolver {
 	}
 
 	/**
-	 * @param map
-	 * @return Returns true, only if ALL objects are resolvable.
+	 * @param objects 
+	 * @return Returns true, only if all given objects are resolvable.
 	 */
-	public static boolean isResolvable(final Map<String, Object> map) {
+	public static boolean isResolvable(final Collection<Object> objects) {
 
-		for (final String key : map.keySet()) {
-
-			final Object o = map.get(key);
+		for (final Object o : objects) {
 
 			try {
 
