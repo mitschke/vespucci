@@ -44,7 +44,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-import de.tud.cs.st.vespucci.errors.VespucciFileReadException;
+import de.tud.cs.st.vespucci.errors.VespucciIOException;
 
 /**
  * This class provides a method to read in and parse a Vespucci resource
@@ -92,7 +92,7 @@ public class KeywordReader {
 			IPath path = new Path(filePath);
 			return FileLocator.openStream(bundle, path, false);
 		} catch (IOException e) {
-			throw new VespucciFileReadException("Error reading Vespucci resource file", e);
+			throw new VespucciIOException("Error reading Vespucci resource file", e);
 		}		
 	}
 

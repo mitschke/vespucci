@@ -99,7 +99,7 @@ import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
+import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EPService;
@@ -351,9 +351,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	public void doSave(IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
 
-		DiagramConverter converter = new DiagramConverter();
+		PrologFileCreator converter = new PrologFileCreator();
 		try {
-			converter.convertDiagramToProlog(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
+			converter.createPrologFileFromDiagram(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
 		} catch (FileNotFoundException e) {
 			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);

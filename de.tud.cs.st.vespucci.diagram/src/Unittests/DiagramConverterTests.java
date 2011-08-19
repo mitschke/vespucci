@@ -51,16 +51,16 @@ import java.io.OutputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
+import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 
 
 public class DiagramConverterTests {
 
-	private DiagramConverter dc = null;
+	private PrologFileCreator dc = null;
 
 	public DiagramConverterTests()
 	{
-		dc = new DiagramConverter();
+		dc = new PrologFileCreator();
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class DiagramConverterTests {
 			tempPlFile = changeDiagramFileName(tempPlFile, sadFile, tempSadFile.getName());
 
 			assertTrue(dc.isDiagramFile(tempSadFile));
-			dc.convertDiagramToProlog(tempSadFile);
+			dc.createPrologFileFromDiagram(tempSadFile);
 			File generatedPlFile = new File(tempSadFile.getAbsoluteFile()+".pl");
 			generatedPlFile = deleteComment(generatedPlFile);
 
