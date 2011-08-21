@@ -88,5 +88,16 @@
             name="Update to current version">
       </command>
    </extension>
+   <extension
+         point="de.tud.cs.st.vespucci.proxy.Vespucci_ProxyActionHandler">
+      <ActionHandler
+            handlerClass="de.tud.cs.st.vespucci.versioning.handler.ConversionNeededActionHandler"
+            id="de.tud.cs.st.vespucci.versioning.ConversionNeeded">
+      </ActionHandler>
+      <ActionHandler
+            handlerClass="de.tud.cs.st.vespucci.versioning.handler.FileConversionActionHandler"
+            id="de.tud.cs.st.vespucci.versioning.FileConversion">
+      </ActionHandler>
+   </extension>
    
 </plugin>

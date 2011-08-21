@@ -32,64 +32,42 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tud.cs.st.vespucci.versioning;
+package de.tud.cs.st.vespucci.proxy;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
+import java.util.Map;
 
 /**
- * The activator class controls the plug-in life cycle
+ * Simple template-like implementation of IActionHandler which is
+ * capable of managing the encapsulated id string.
  * 
- * @author Dominic Scheurer
+ * @author Tejash Shah, Dominic Scheurer
+ * @see <a href="http://technical-tejash.blogspot.com/2010/03/eclipse-avoid-cyclic-dependency-between.html">Original Source</a>
  */
-public class Activator extends AbstractUIPlugin {
+public abstract class AbstractActionHandler implements IActionHandler {
 
 	/**
-	 * ID of the Vespucci versioning plugin.
+	 * The ID of this ActionHandler.
 	 */
-	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.versioning"; //$NON-NLS-1$
-
-	/**
-	 * Shared instance of this class.
-	 */
-	private static Activator plugin;
+	private String id = "";
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * @see test.IActionHandler#getId()
 	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
+	@Override
+	public String getId() {
+		return this.id;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * @see test.IActionHandler#setId(java.lang.String)
 	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
+	@Override
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
-
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
+	@Override
+	public abstract Object run(Map<String, ? extends Object> variables);
 }

@@ -32,64 +32,42 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tud.cs.st.vespucci.versioning;
+package de.tud.cs.st.vespucci.versioning.handler;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
+import java.util.Map;
+
+import org.eclipse.core.resources.IFile;
+
+import de.tud.cs.st.vespucci.proxy.AbstractActionHandler;
+import de.tud.cs.st.vespucci.proxy.IActionHandler;
+import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 
 /**
- * The activator class controls the plug-in life cycle
+ * Action handler to determine whether or not an sad file needs
+ * a conversion (i.e. is of an older than the current version).
  * 
  * @author Dominic Scheurer
  */
-public class Activator extends AbstractUIPlugin {
+public class ConversionNeededActionHandler extends AbstractActionHandler implements IActionHandler {
 
 	/**
-	 * ID of the Vespucci versioning plugin.
+	 * @param variables Expects a key "file" with an IFile object, pointing to an sad file.
+	 * @return true if the given file is of an old version.
 	 */
-	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.versioning"; //$NON-NLS-1$
-
-	/**
-	 * Shared instance of this class.
-	 */
-	private static Activator plugin;
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
+	@Override
+	public Object run(Map<String, ? extends Object> variables) {
+		VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
+		
+		if (variables.get("file") != null &&
+			(variables.get("file") instanceof IFile)) {
+			IFile file = (IFile)variables.get("file");
+			return !versionChain.getVersionOfFile(file).isCurrentVersion();
+		} else {
+			throw new IllegalArgumentException(
+					"run method of ConversionNeededActionHandler exptects " +
+					"the given variables Map to contain a key \"file\" pointing " +
+					"to an sad IFile");
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
-
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
-
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
 }

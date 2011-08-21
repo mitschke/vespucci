@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.m2m.qvt.oml.runtime,
  org.eclipse.m2m.qvt.oml.runtime.ui;bundle-version="2.1.1",
  org.eclipse.m2m.qvt.oml,
- de.tud.cs.st.vespucci;visibility:=reexport
+ de.tud.cs.st.vespucci,
+ de.tud.cs.st.vespucci.proxy;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.tud.cs.st.vespucci.vespucci_model,
@@ -29,4 +30,5 @@ Import-Package: de.tud.cs.st.vespucci.vespucci_model,
  org.eclipse.m2m.qvt.oml.util
 Export-Package: de.tud.cs.st.vespucci.versioning,
  de.tud.cs.st.vespucci.versioning.blackboxes,
+ de.tud.cs.st.vespucci.versioning.handler,
  de.tud.cs.st.vespucci.versioning.versions

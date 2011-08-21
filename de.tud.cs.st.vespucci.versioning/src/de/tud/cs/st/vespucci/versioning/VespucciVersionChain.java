@@ -54,15 +54,31 @@ public class VespucciVersionChain {
 	TreeSet<VespucciVersionTemplate> versionChain = null;
 	
 	/**
-	 * Default constructor which initializes the version chain.
+	 * Stores the Singleton instance of this class.
 	 */
-	public VespucciVersionChain() {
+	private static VespucciVersionChain INSTANCE = null;
+	
+	/**
+	 * Initializes the version chain.
+	 */
+	private VespucciVersionChain() {
 		versionChain = new TreeSet<VespucciVersionTemplate>();
 		
 		versionChain.add(VespucciVersionTemplate.CURRENT_VERSION);
 		while (versionChain.first().getPredecessor() != null) {
 			versionChain.add(versionChain.first().getPredecessor());
 		}
+	}
+	
+	/**
+	 * @return The Singleton instance of this class.
+	 */
+	public static VespucciVersionChain getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new VespucciVersionChain();
+		}
+		
+		return INSTANCE;
 	}
 	
 	/**

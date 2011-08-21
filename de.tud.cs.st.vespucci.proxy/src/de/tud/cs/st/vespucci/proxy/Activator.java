@@ -32,23 +32,24 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tud.cs.st.vespucci.versioning;
+package de.tud.cs.st.vespucci.proxy;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  * 
  * @author Dominic Scheurer
+ * @see de.tud.cs.st.vespucci.proxy.ActionManager
+ * 	ActionManager class which provides a deeper insight into this plugin.
  */
 public class Activator extends AbstractUIPlugin {
 
 	/**
-	 * ID of the Vespucci versioning plugin.
+	 * ID of the Vespucci proxy plugin.
 	 */
-	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.versioning"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.proxy"; //$NON-NLS-1$
 
 	/**
 	 * Shared instance of this class.
@@ -82,14 +83,4 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
 }

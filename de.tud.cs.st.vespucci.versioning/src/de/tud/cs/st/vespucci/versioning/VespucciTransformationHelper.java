@@ -67,7 +67,6 @@ import org.eclipse.ui.PlatformUI;
 
 import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
-import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
 /**
  * Template class which supplies various methods for Vespucci file
@@ -170,7 +169,8 @@ public abstract class VespucciTransformationHelper {
 	 * 
 	 * @param context Context in which to execute the transformation.
 	 * @param modelContent Transformation input.
-	 * @return The transformated input data.
+	 * @param qvtoUri URI to the QVTO file to execute.
+	 * @return The transformed input data.
 	 */
 	protected Out executeQvtoTransformation(IContext context, ModelContent modelContent, URI qvtoUri) {
 		QvtInterpretedTransformation modelQvtoTransformation = createQvtoTransformation(qvtoUri);

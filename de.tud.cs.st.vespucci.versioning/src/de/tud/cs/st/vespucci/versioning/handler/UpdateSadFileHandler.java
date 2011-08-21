@@ -34,7 +34,6 @@
 
 package de.tud.cs.st.vespucci.versioning.handler;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -89,7 +88,7 @@ public class UpdateSadFileHandler extends AbstractHandler {
 				if (element instanceof IFile) {
 					IFile file = (IFile)element;
 					if (!file.getFullPath().getFileExtension().equalsIgnoreCase("sad") ||
-						new VespucciVersionChain().getVersionOfFile(file).isCurrentVersion()) {
+						VespucciVersionChain.getInstance().getVersionOfFile(file).isCurrentVersion()) {
 						enabled = false;
 						return;
 					}
@@ -106,15 +105,19 @@ public class UpdateSadFileHandler extends AbstractHandler {
 		enabled = true;
 	}
 	
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
-
+	/**
+	 * Custom execute method with a IStructuredSelection argument which
+	 * is more simple to call programmatically. 
+	 * 
+	 * @param selection The selection on which to execute the transformation.
+	 * @return null
+	 */
+	public Object execute(IStructuredSelection selection) {
 		for (Object o : selection.toArray()) {
 			if (o instanceof IFile) {
 				final IFile file = (IFile) o;
 				
-				VespucciVersionChain versionChain = new VespucciVersionChain();
+				VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
 				VespucciVersionTemplate currentVersion = versionChain.getVersionOfFile(file);
 				
 				while (!currentVersion.isCurrentVersion()) {
@@ -153,6 +156,12 @@ public class UpdateSadFileHandler extends AbstractHandler {
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
+		return execute(selection);
 	}
 	
 	/**

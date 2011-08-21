@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -98,10 +99,13 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
 import de.tud.cs.st.vespucci.diagram.actions.ActionDelegateWrapper;
 import de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1;
+import de.tud.cs.st.vespucci.proxy.ActionManager;
+import de.tud.cs.st.vespucci.proxy.IActionHandler;
 
 /**
  * @generated
@@ -262,68 +266,31 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	}
 
 	/**
-	 * Checks the namespace of a given sad file and starts the conversion
-	 * dialog if an old version is detected.
+	 * Checks the given sad file and starts the conversion dialog if an
+	 * old version is detected.
 	 * 
 	 * @generated NOT
 	 * @author Dominic Scheurer
 	 * @param file The sad file to check
 	 */
 	private static void checkConversionNeeded(final IFile file) {		
-		final Action conversionAction = new Action() {			
-			@Override
-			public void run()
-			{
-				final Action ACTION_INSTANCE = this;
-				final Job job = new Job("Auto-Converting " + file.toString()) {									
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						ActionDelegateWrapper wrapper = new ActionDelegateWrapper(
-								new TransformVespucciV0ToV1());						
-						wrapper.executeWithFile(ACTION_INSTANCE, file);
-						
-						return Status.OK_STATUS;
-					}
-				};
-				
-				job.setUser(true);
-				job.schedule();
-			}
-		};
+		IActionHandler conversionNeededActionHandler =
+			ActionManager.getInstance().getActionHandlerbyId("de.tud.cs.st.vespucci.versioning.ConversionNeeded");
+		Map<String, IFile> variables = new HashMap<String, IFile>();
 		
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(
-					new File(
-							file.getWorkspace().getRoot().getLocation().toFile(),
-							file.getFullPath().toFile().toString())
-						)
-				);
-			String line, namespace = "";
-			while ((line = br.readLine()) != null) {
-				Pattern p = Pattern.compile("^.*xmlns=\"(.*?)\".*$");
-				Matcher m = p.matcher(line);
-				if (m.find()) {
-					// Namespace attribute found...
-					namespace = m.group(1);
-					
-					if (namespace.equalsIgnoreCase("http://vespucci.editor") &&
-						MessageDialog.openQuestion(
-								Display.getDefault().getActiveShell(),
-								"Vespucci sad file conversion",
-								"Shall Vespucci convert the file \"" +
-								file.toString() +
-								"\" to the newest version?")) {
-						// old version detected, conversion requested => start
-						conversionAction.run();
-					}
-					
-					return;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			VespucciDocumentProvider.handleError(e, "File could not be found");
-		} catch (IOException e) {
-			VespucciDocumentProvider.handleError(e, "I/O exception occured");
+		variables.put("file", file);
+		
+		if((Boolean)conversionNeededActionHandler.run(variables) &&
+			MessageDialog.openQuestion(
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+					"Vespucci Upgrade Framework",
+					"The file you are trying to open is of an old version.\n" +
+					"Shall Vespucci upgrade it to the current version (recommended)?\n" +
+					"Vespucci will create backup copies, so you data will be safe.")) {
+			IActionHandler conversionActionHandler =
+				ActionManager.getInstance().getActionHandlerbyId("de.tud.cs.st.vespucci.versioning.FileConversion");
+			
+			conversionActionHandler.run(variables);
 		}
 	}
 	
@@ -337,7 +304,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			IStorage storage = ((FileEditorInput) element).getStorage();
 			
 			// Modified by Dominic Scheurer:
-			// Start conversion to newer sad file version if neccessary
+			// Start conversion to newer sad file version if necessary
 			VespucciDocumentProvider.checkConversionNeeded(
 				((FileEditorInput) element).getFile()
 			);

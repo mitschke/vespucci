@@ -32,64 +32,34 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-package de.tud.cs.st.vespucci.versioning;
+package de.tud.cs.st.vespucci.proxy;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
+import java.util.Map;
 
 /**
- * The activator class controls the plug-in life cycle
- * 
- * @author Dominic Scheurer
+ * @author Tejash Shah
+ * @see <a href="http://technical-tejash.blogspot.com/2010/03/eclipse-avoid-cyclic-dependency-between.html">Original Source</a>
  */
-public class Activator extends AbstractUIPlugin {
+public interface IActionHandler {
+	/**
+	 * This method is used by ActionManager class to set the id when contribution is added in
+	 * plugin.xml
+	 * 
+	 * @param id
+	 */
+	void setId(String id);
 
 	/**
-	 * ID of the Vespucci versioning plugin.
+	 * @return the unique id of the Action Handler
 	 */
-	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.versioning"; //$NON-NLS-1$
+	String getId();
 
 	/**
-	 * Shared instance of this class.
+	 * @param variables
+	 *            Here, you can pass the set of Objects which is required by the Action Handler to
+	 *            run the action. Here
+	 *            key will be name of variable and value can be any Object containing value
+	 * @return the result of the execution, which can be any kind of Object
 	 */
-	private static Activator plugin;
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
-
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
-
-	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
-	 * @return the image descriptor
-	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
-		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
+	Object run(Map<String, ? extends Object> variables);
 }
