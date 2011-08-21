@@ -61,8 +61,10 @@ import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
- * TODO correct the subsequent documentation (Static class???) static class to get all information about the units
- * supports e.g. type conversion from java binary type to FQN or resolving all packages from a given project folder
+ * This class provides static methods to resolve information from Vespucci diagrams mainly used to
+ * create queries in QueryBuilder.java
+ * 
+ * // TODO Move status handling to Exception super class (sections marked with "<please move>").
  * 
  * @author Benjamin Lück
  * @author Alexander Weitzmann
@@ -94,7 +96,8 @@ public class Resolver {
 	}
 
 	/**
-	 * Getting the package name (FQN) from a IMethod, IPackageFragment, ICompilationUnit, IField and IType.
+	 * Getting the package name (FQN) from a IMethod, IPackageFragment, ICompilationUnit, IField and
+	 * IType.
 	 * 
 	 * @param o
 	 *            The named IJavaElement.
@@ -134,7 +137,7 @@ public class Resolver {
 					return "";
 				}
 			} catch (final JavaModelException e) {
-				// TODO Move status handling to Exception superclass.
+				// <please move>
 				final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 						"JavaModelException: Failed to resolve Package", e);
 				StatusManager.getManager().handle(is, StatusManager.SHOW);
@@ -147,7 +150,7 @@ public class Resolver {
 
 	/**
 	 * @param objects
-	 * @return Returns true, only if all given objects are resolvable.
+	 * @return Returns true, only if all given objects can be resolved.
 	 */
 	public static boolean isResolvable(final Collection<Object> objects) {
 
@@ -193,7 +196,7 @@ public class Resolver {
 
 			} catch (final JavaModelException e) {
 
-				// TODO Move status handling to Exception superclass.
+				// <please move>
 				final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "JavaModelException", e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 
@@ -240,7 +243,8 @@ public class Resolver {
 	/**
 	 * @param element
 	 *            The java element, whose class name shall be resolved.
-	 * @return Returns the class name without preceding "&#60PACKAGENAME>.". Java file ending will be removed.
+	 * @return Returns the class name without preceding "&#60PACKAGENAME>.". Java file ending will
+	 *         be removed.
 	 */
 	public static String resolveClassName(final Object element) {
 		String classname = resolveFullyQualifiedClassName(element);
@@ -265,7 +269,7 @@ public class Resolver {
 		try {
 			return getFullyQualifiedName(method.getReturnType(), method.getDeclaringType());
 		} catch (final JavaModelException e) {
-			// TODO move to exception
+			// <please move>
 			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve returntype", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
@@ -300,13 +304,12 @@ public class Resolver {
 				return method.getElementName();
 			}
 		} catch (final JavaModelException e) {
-			// TODO move to exception
+			// <please move>
 			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve methodname", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 
-			throw new VespucciUnexpectedException(String.format("Could not determine if method [%s] is a constructor.", method),
-					e);
+			throw new VespucciUnexpectedException(String.format("Couldn't determine if method [%s] is a constructor.", method), e);
 		}
 	}
 
@@ -318,7 +321,7 @@ public class Resolver {
 		try {
 			return getFullyQualifiedName(field.getTypeSignature(), field.getDeclaringType());
 		} catch (final JavaModelException e) {
-			// TODO move to exception
+			// <please move>
 			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve field type", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
@@ -368,8 +371,8 @@ public class Resolver {
 	}
 
 	/**
-	 * Gets all packages from a IPackageFragmentRoot; e.g. a src-folder or a JAR-file which is in the project referenced
-	 * libraries.
+	 * Gets all packages from a IPackageFragmentRoot; e.g. a src-folder or a JAR-file which is in
+	 * the project referenced libraries.
 	 * 
 	 * @param packageRoot
 	 *            The package root
@@ -394,7 +397,7 @@ public class Resolver {
 			return packages;
 
 		} catch (final JavaModelException e) {
-			// TODO move to exception
+			// <please move>
 			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID,
 					"JavaModelException: Failed to resolve packages of src-folder/JAR-file", e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);

@@ -30,7 +30,7 @@ public class InvariantPrologFacts {
 		// insert common information
 		strBuilder.append("% Prolog based representation of the Vespucci architecture diagram: ");
 		strBuilder.append(fullPath + "\n");
-		strBuilder.append("% Created by Vespucci, Technische Universitiät Darmstadt, Department of Computer Science\n");
+		strBuilder.append("% Created by Vespucci, Technische Universität Darmstadt, Department of Computer Science\n");
 		strBuilder.append("% www.opal-project.de\n\n");
 		strBuilder.append(":- multifile ensemble/5.\n");
 		strBuilder.append(":- multifile abstract_ensemble/5.\n");

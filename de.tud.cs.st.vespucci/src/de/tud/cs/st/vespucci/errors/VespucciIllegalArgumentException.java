@@ -15,17 +15,14 @@ public class VespucciIllegalArgumentException extends VespucciException {
 
 	public VespucciIllegalArgumentException(final String message) {
 		super(PREFIX + message);
-		// TODO Auto-generated constructor stub
 	}
 
 	public VespucciIllegalArgumentException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public VespucciIllegalArgumentException(final String message, final Throwable cause) {
 		super(PREFIX + message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
 }
