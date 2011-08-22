@@ -111,4 +111,12 @@ public class VespucciVersionChain {
 		
 		return null;
 	}
+	
+	/**
+	 * @param file The file for which to return the next version
+	 * @return The successor of the given version of null if there is none.
+	 */
+	public VespucciVersionTemplate getNextVersionOfFile(IFile file) {
+		return getNextVersion(getVersionOfFile(file));
+	}
 }

@@ -48,16 +48,13 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.statushandlers.StatusManager;
-
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * Handler for sad file Upgrade action.
@@ -103,6 +100,27 @@ public class UpdateSadFileHandler extends AbstractHandler {
 		}
 		
 		enabled = true;
+	}
+	
+	/**
+	 * Convenience method which converts a single file.
+	 * 
+	 * @param file File to transform.
+	 * @return null
+	 */
+	public Object execute(IFile file) {
+		return execute(new IFile[] { file });
+	}
+	
+	/**
+	 * Convenience method which converts an array of files.
+	 * 
+	 * @param files Files to transform.
+	 * @return null
+	 */
+	public Object execute(IFile[] files) {
+		IStructuredSelection structuredSelection = new StructuredSelection(files);
+		return execute(structuredSelection);
 	}
 	
 	/**
@@ -234,19 +252,5 @@ public class UpdateSadFileHandler extends AbstractHandler {
 		} catch (NumberFormatException e) {
 			return null;
 		}
-	}
-
-	
-	/**
-	 * Simple error handler.
-	 * 
-	 * @param message A custom error message.
-	 * @param cause Source Exception.
-	 */
-	private static void handleError(String message, Exception cause) {
-		IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, message, cause);
-		StatusManager.getManager().handle(is, StatusManager.SHOW);
-		StatusManager.getManager().handle(is, StatusManager.LOG);
-	}
-	
+	}	
 }

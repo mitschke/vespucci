@@ -1,6 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -33,24 +33,14 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -64,7 +54,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.MultiRule;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -91,21 +80,17 @@ import org.eclipse.gmf.runtime.diagram.ui.resources.editor.internal.util.Diagram
 import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
 import org.eclipse.gmf.runtime.emf.core.resources.GMFResourceFactory;
 import org.eclipse.gmf.runtime.notation.Diagram;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
-import de.tud.cs.st.vespucci.diagram.actions.ActionDelegateWrapper;
-import de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1;
-import de.tud.cs.st.vespucci.proxy.ActionManager;
-import de.tud.cs.st.vespucci.proxy.IActionHandler;
+import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
+import de.tud.cs.st.vespucci.versioning.handler.UpdateSadFileHandler;
+import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
 
 /**
  * @generated
@@ -239,31 +224,6 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 
 		return editingDomain;
 	}
-	
-	/**
-	 * Error handling method; shows a message box including the error message.
-	 * 
-	 * @generated NOT
-	 * @param ex The exception to show to the user.
-	 * @param message The caption of the message box
-	 */
-	private static void handleError(final Exception ex, final String message) {
-		final Display defDisplay = Display.getDefault();
-		
-		defDisplay.asyncExec(new Runnable() {			
-			@Override
-			public void run() {
-				MessageDialog.openError(
-						defDisplay.getActiveShell(),
-						message,
-						MessageFormat.format(
-								"{0}: {1}",
-								ex.getClass().getSimpleName(),
-								ex.getMessage() == null ? "no message" : ex
-										.getMessage()));
-			}
-		});
-	}
 
 	/**
 	 * Checks the given sad file and starts the conversion dialog if an
@@ -271,26 +231,27 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * 
 	 * @generated NOT
 	 * @author Dominic Scheurer
-	 * @param file The sad file to check
+	 * @param file The sad file to check and to update if necessary.
 	 */
-	private static void checkConversionNeeded(final IFile file) {		
-		IActionHandler conversionNeededActionHandler =
-			ActionManager.getInstance().getActionHandlerbyId("de.tud.cs.st.vespucci.versioning.ConversionNeeded");
-		Map<String, IFile> variables = new HashMap<String, IFile>();
+	private static void checkConversionNeeded(final IFile file) {
+		String updateQuestionTitle =
+			"Vespucci Upgrade Framework";
+		String updateQuestionText = 
+			"The file you are trying to open is of an old version.\n" +
+			"Shall Vespucci upgrade it to the current version (recommended)?\n" +
+			"Vespucci will create backup copies, so you data will be safe.";
 		
-		variables.put("file", file);
+		VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
 		
-		if((Boolean)conversionNeededActionHandler.run(variables) &&
+		VespucciVersionTemplate fileVersion = versionChain.getVersionOfFile(file);
+		
+		if (!fileVersion.isCurrentVersion() &&
 			MessageDialog.openQuestion(
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-					"Vespucci Upgrade Framework",
-					"The file you are trying to open is of an old version.\n" +
-					"Shall Vespucci upgrade it to the current version (recommended)?\n" +
-					"Vespucci will create backup copies, so you data will be safe.")) {
-			IActionHandler conversionActionHandler =
-				ActionManager.getInstance().getActionHandlerbyId("de.tud.cs.st.vespucci.versioning.FileConversion");
-			
-			conversionActionHandler.run(variables);
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				updateQuestionTitle,
+				updateQuestionText)) {
+			UpdateSadFileHandler sadUpdater = new UpdateSadFileHandler();
+			sadUpdater.execute(file);
 		}
 	}
 	

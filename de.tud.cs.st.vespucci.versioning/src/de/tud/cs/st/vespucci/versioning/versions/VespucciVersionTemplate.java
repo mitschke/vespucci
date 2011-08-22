@@ -35,10 +35,9 @@
 package de.tud.cs.st.vespucci.versioning.versions;
 
 import java.io.InputStream;
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,8 +58,8 @@ import org.eclipse.m2m.qvt.oml.util.IContext;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
+import de.tud.cs.st.vespucci.proxy.Activator;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * Template class for Vespucci version descriptors.
@@ -94,7 +93,8 @@ implements Comparable<VespucciVersionTemplate> {
 	public abstract Date getCreationDate();
 	
 	/**
-	 * @return The namespace string of this version, e.g. "http://vespucci.editor"
+	 * @return The namespace string of this version, e.g. "http://vespucci.editor".
+	 * 	<strong>NOTE</strong>: namespace of a Vespucci version must always be unique!
 	 */
 	public abstract String getNamespace();
 	
@@ -105,8 +105,8 @@ implements Comparable<VespucciVersionTemplate> {
 	 * @return A textual unique identifier for this version.
 	 */
 	public String getIdentifier() {
-		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US);
-		return dateFormat.format(getCreationDate());
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");		
+		return simpleDateFormat.format(getCreationDate());
 	}
 	
 	/**
@@ -258,7 +258,7 @@ implements Comparable<VespucciVersionTemplate> {
 	 * @param cause Source Exception.
 	 */
 	private static void handleError(String message, Exception cause) {
-		IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, message, cause);
+		IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, cause);
 		StatusManager.getManager().handle(is, StatusManager.SHOW);
 		StatusManager.getManager().handle(is, StatusManager.LOG);
 	}
