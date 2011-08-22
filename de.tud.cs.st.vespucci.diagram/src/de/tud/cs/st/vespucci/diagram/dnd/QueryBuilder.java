@@ -52,6 +52,8 @@ import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
  * 
  * @author Malte Viering
  * @author Benjamin Lück
+ * @author Alexander Weitzmann
+ * @author Thomas Schulz
  */
 public class QueryBuilder {
 	// constants for the querybuilder

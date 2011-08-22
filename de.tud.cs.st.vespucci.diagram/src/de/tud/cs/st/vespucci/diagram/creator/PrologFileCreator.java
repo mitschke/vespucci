@@ -39,9 +39,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,12 +70,8 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 public class PrologFileCreator {
 
 	/**
-	 * Defines a string, that can be used to visually separate text in a file.
-	 */
-	private static final String VERTICAL_SECTION_SEPARATOR = "%------\n";
-
-	/**
-	 * Regular expression to check if argument starts with an upper case letter. E.g. a parameter variable.
+	 * Regular expression to check if argument starts with an upper case letter. E.g. a parameter
+	 * variable.
 	 */
 	private static final Pattern FIRST_LETTER_IS_UPPER_CASE = Pattern.compile("\\p{Upper}.*");
 
@@ -96,27 +89,185 @@ public class PrologFileCreator {
 			"\\)$"); // match the last parenthesis by asserting the string ends here
 
 	/**
-	 * The string contains an explanation of the keywords used to describe the dependencies.
+	 * Read the given diagram and create a prolog file.
 	 * 
-	 * @return Returns a string for the begin of the dependency facts.
+	 * @param sadFile
+	 *            File of the diagram.
+	 * @author Malte Viering
+	 * @throws Exception
 	 */
-	private static String createDependencyHeader() {
+	public void createPrologFileFromDiagram(final File sadFile) throws Exception {
+		this.createPrologFileFromDiagram(sadFile.getParent(), sadFile.getName());
+	}
+
+	/**
+	 * Read the given diagram and create a prolog file.
+	 * 
+	 * @param location
+	 * @param fileName
+	 * @throws Exception
+	 */
+	public void createPrologFileFromDiagram(final String location, final String fileName) throws Exception {
+		diagramFileName = fileName;
+		final String fullFileName = location + "/" + fileName;
+		final ShapesDiagram diagram = loadDiagramFile(fullFileName);
+
+		// create a new Prolog File
+		final File prologFile = new File(fullFileName + ".pl");
+
+		// the file will be overwritten
+		final FileOutputStream fos = new FileOutputStream(prologFile);
+		final BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+		bos.write(createPrologFacts(diagram, fullFileName));
+
+		bos.close();
+		fos.close();
+	}
+
+	/**
+	 * Loads a diagram file.
+	 * 
+	 * @param fullPath
+	 * @return Returns the loaded diagram.
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @author Dominic Scheurer
+	 */
+	private static ShapesDiagram loadDiagramFile(final String fullPath) throws FileNotFoundException, IOException {
+		final XMIResourceImpl diagramResource = new XMIResourceImpl();
+		final FileInputStream diagramStream = new FileInputStream(new File(fullPath));
+
+		diagramResource.load(diagramStream, new HashMap<Object, Object>());
+
+		// Find the ShapesDiagram-EObject
+		for (int i = 0; i < diagramResource.getContents().size(); i++) {
+			if (diagramResource.getContents().get(i) instanceof ShapesDiagram) {
+				final EObject eObject = diagramResource.getContents().get(i);
+				return (ShapesDiagram) eObject;
+			}
+		}
+
+		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
+	}
+
+	/**
+	 * Read the diagram and create the prolog facts of ensembles and dependencies.
+	 * 
+	 * @param diagram
+	 *            The diagram where the ensembles and dependencies are defined.
+	 * @param fullFileName
+	 *            The path to the diagram including its filename.
+	 * @return Returns a string with the prolog facts.
+	 * @throws Exception
+	 */
+	private byte[] createPrologFacts(final ShapesDiagram diagram, final String fullFileName) throws Exception {
 		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("\n");
-		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
-		// insert common information
-		strBuilder.append("%DEPENDENCY(File, ID, SourceE, TargetE, Type) :- Definition of a dependency between two ensembles.\n");
-		strBuilder
-				.append("%\tDEPENDENCY - The type of the dependency. Possible values: outgoing, incoming, expected, not_allowed\n");
-		strBuilder.append("%\tFile - The simple file name in which the dependency is defined. (e.g., 'Flashcards.sad')\n");
-		strBuilder.append("%\tID - An ID identifying the dependency\n");
-		strBuilder.append("%\tSourceE - The source ensemble\n");
-		strBuilder.append("%\tTargetE - The target ensemble\n");
-		strBuilder
-				.append("%\tRelation classifier - " +
-						"Kinds of uses-relation between source and target ensemble (all, field_access, method_call,...)\n");
-		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
-		return strBuilder.toString();
+
+		strBuilder.append(InvariantPrologFacts.createFileHeader(fullFileName));
+
+		// insert ensemble Header
+		strBuilder.append(InvariantPrologFacts.createEnsembleHeader());
+
+		// reset transaction counter
+		dependencyCounter = 1;
+
+		final boolean containsDummy = hasDummy(diagram.getShapes());
+		final StringBuilder ensembleFacts = createEnsembleFacts(diagram.getShapes());
+
+		if (containsDummy) {
+			ensembleFacts.append("ensemble('" + diagramFileName + "',(empty),empty,[]).\n");
+		}
+
+		// insert ensembles
+		strBuilder.append(ensembleFacts);
+
+		// insert dependency header
+		strBuilder.append(InvariantPrologFacts.createDependencyHeader());
+
+		// insert dependencies
+		strBuilder.append(createDependencyFacts(diagram.getShapes()));
+
+		return strBuilder.toString().getBytes();
+	}
+
+	/**
+	 * 
+	 * @param shapeList
+	 * @return Return true only if given shape list contains a dummy.
+	 */
+	private static boolean hasDummy(final List<Shape> shapeList) {
+		for (final Shape shape : shapeList) {
+			if (shape instanceof Dummy) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Search the diagram recursively and create all ensemble facts, except Dummy.
+	 * 
+	 * @param shapeList
+	 *            The list of shapes in the diagram.
+	 * @throws Exception
+	 * @return Returns the formatted ensemble facts.
+	 */
+	private StringBuilder createEnsembleFacts(final List<Shape> shapeList) throws Exception {
+		final StringBuilder ensembleFacts = new StringBuilder();
+		for (final Shape shape : shapeList) {
+			// create Ensemble facts:
+			if (shape instanceof Ensemble && shape != null) {
+				final Ensemble ensemble = (Ensemble) shape;
+				if (isAbstractEnsemble(ensemble)) {
+					ensembleFacts.append("abstract_ensemble");
+				} else {
+					ensembleFacts.append("ensemble");
+				}
+
+				// fix: inconsistent newline encodings
+				final String query = ensemble.getQuery().replaceAll("\n", " ");
+
+				ensembleFacts.append(String.format("('%s', %s, %s, (%s), [%s]).\n", diagramFileName,
+						createEnsembleDescriptor(ensemble), createEnsembleParameters(ensemble), query,
+						listSubEnsembles(ensemble.getShapes())));
+
+				// do children exist
+				if ((ensemble.getShapes() != null) && (ensemble.getShapes().size() > 0)) {
+					ensembleFacts.append(createEnsembleFacts(ensemble.getShapes()));
+				}
+
+			}
+
+		}
+		return ensembleFacts;
+	}
+
+	/**
+	 * Search the diagram recursive and create all facts.
+	 * 
+	 * @param shapeList
+	 * @return Returns the formatted dependency facts.
+	 * @author Patrick Jahnke
+	 */
+	private StringBuilder createDependencyFacts(final List<Shape> shapeList) {
+		final StringBuilder dependencyFacts = new StringBuilder();
+		for (final Shape shape : shapeList) {
+			if (shape instanceof Ensemble) {
+				final Ensemble ensemble = (Ensemble) shape;
+				if (shape != null) {
+					for (final Connection connection : ensemble.getTargetConnections()) {
+						dependencyFacts.append(createSingleDependencyFact(connection));
+					}
+				}
+				if (ensemble.getShapes() != null) {
+					dependencyFacts.append(createDependencyFacts(ensemble.getShapes()));
+				}
+
+			}
+		}
+
+		return dependencyFacts;
 	}
 
 	/**
@@ -170,23 +321,6 @@ public class PrologFileCreator {
 	}
 
 	/**
-	 * @return Returns the ensemble header.
-	 */
-	private static String createEnsembleHeader() {
-		// TODO: Update header. What do parameter in [] do? Extend comment.
-		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
-		// insert common information
-		strBuilder.append("%ensemble(File, Name, Query, SubEnsembles) :- Definition of an ensemble.\n");
-		strBuilder.append("%\tFile - The simple file name in which the ensemble is defined. (e.g., 'Flashcards.sad')\n");
-		strBuilder.append("%\tName - Name of the ensemble\n");
-		strBuilder.append("%\tQuery - Query that determines which source elements belong to the ensemble\n");
-		strBuilder.append("%\tSubEnsembles - List of all sub ensembles of this ensemble.\n");
-		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
-		return strBuilder.toString();
-	}
-
-	/**
 	 * @param ensemble
 	 *            The ensemble whose parameters shall be extracted.
 	 * @return A prolog list of the form ['ParamName'=ParamName, ...]
@@ -207,41 +341,6 @@ public class PrologFileCreator {
 	}
 
 	/**
-	 * @param fullPath
-	 *            The absolute path including filename.
-	 * @return Returns the prolog file header.
-	 */
-	private static String createFileHeader(final String fullPath) {
-		final StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
-		// insert common information
-		strBuilder.append("% Prolog based representation of the Vespucci architecture diagram: ");
-		strBuilder.append(fullPath + "\n");
-		strBuilder.append("% Created by Vespucci, Technische Universitiät Darmstadt, Department of Computer Science\n");
-		strBuilder.append("% www.opal-project.de\n\n");
-		strBuilder.append(":- multifile ensemble/5.\n");
-		strBuilder.append(":- multifile abstract_ensemble/5.\n");
-		strBuilder.append(":- multifile outgoing/7.\n");
-		strBuilder.append(":- multifile incoming/7.\n");
-		strBuilder.append(":- multifile not_allowed/7.\n");
-		strBuilder.append(":- multifile expected/7.\n");
-		strBuilder.append(":- discontiguous ensemble/5.\n");
-		strBuilder.append(":- discontiguous abstract_ensemble/5.\n");
-		strBuilder.append(":- discontiguous outgoing/7.\n");
-		strBuilder.append(":- discontiguous incoming/7.\n");
-		strBuilder.append(":- discontiguous not_allowed/7.\n");
-		strBuilder.append(":- discontiguous expected/7.\n\n");
-		// insert Date
-		final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		final Date date = new Date();
-		strBuilder.append("% Date <" + dateFormat.format(date) + ">.\n");
-		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
-		strBuilder.append("\n");
-
-		return strBuilder.toString();
-	}
-
-	/**
 	 * @param shape
 	 * @return Returns the name of an ensemble (without the parameter).
 	 */
@@ -255,7 +354,8 @@ public class PrologFileCreator {
 	}
 
 	/**
-	 * Note, that {@link Connection#getSource()} does not return the same. That's because the source of the connection
+	 * Note, that {@link Connection#getSource()} does not return the same. That's because the source
+	 * of the connection
 	 * will be set to the parent of the semantic source-ensemble, if a red line is used.
 	 * 
 	 * @param connection
@@ -270,7 +370,8 @@ public class PrologFileCreator {
 	}
 
 	/**
-	 * Note, that {@link Connection#getTarget()} does not return the same. That's because the target of the connection
+	 * Note, that {@link Connection#getTarget()} does not return the same. That's because the target
+	 * of the connection
 	 * will be set to the parent of the semantic target-ensemble, if a red line is used.
 	 * 
 	 * @param connection
@@ -286,22 +387,9 @@ public class PrologFileCreator {
 	}
 
 	/**
-	 * 
-	 * @param shapeList
-	 * @return Return true only if given shape list contains a dummy.
-	 */
-	private static boolean hasDummy(final List<Shape> shapeList) {
-		for (final Shape shape : shapeList) {
-			if (shape instanceof Dummy) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * @param ensemble
-	 * @return Return true, only if the ensemble is abstract, i.e. the ensemble contains at least one parameter
+	 * @return Return true, only if the ensemble is abstract, i.e. the ensemble contains at least
+	 *         one parameter
 	 *         variable.
 	 */
 	private static boolean isAbstractEnsemble(final Ensemble ensemble) {
@@ -345,32 +433,6 @@ public class PrologFileCreator {
 			komma = ", ";
 		}
 		return strBuilder.toString();
-	}
-
-	/**
-	 * Loads a diagram file.
-	 * 
-	 * @param fullPath
-	 * @return Returns the loaded diagram.
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @author Dominic Scheurer
-	 */
-	private static ShapesDiagram loadDiagramFile(final String fullPath) throws FileNotFoundException, IOException {
-		final XMIResourceImpl diagramResource = new XMIResourceImpl();
-		final FileInputStream diagramStream = new FileInputStream(new File(fullPath));
-
-		diagramResource.load(diagramStream, new HashMap<Object, Object>());
-
-		// Find the ShapesDiagram-EObject
-		for (int i = 0; i < diagramResource.getContents().size(); i++) {
-			if (diagramResource.getContents().get(i) instanceof ShapesDiagram) {
-				final EObject eObject = diagramResource.getContents().get(i);
-				return (ShapesDiagram) eObject;
-			}
-		}
-
-		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
 	}
 
 	/**
@@ -418,148 +480,6 @@ public class PrologFileCreator {
 	 * Name of the current diagram file.
 	 */
 	private String diagramFileName;
-
-	/**
-	 * Read the given diagram and create a prolog file.
-	 * 
-	 * @param sadFile
-	 *            File of the diagram.
-	 * @author Malte Viering
-	 * @throws Exception
-	 */
-	public void createPrologFileFromDiagram(final File sadFile) throws Exception {
-		this.createPrologFileFromDiagram(sadFile.getParent(), sadFile.getName());
-	}
-
-	/**
-	 * Read the given diagram and create a prolog file.
-	 * 
-	 * @param location
-	 * @param fileName
-	 * @throws Exception
-	 */
-	public void createPrologFileFromDiagram(final String location, final String fileName) throws Exception {
-		diagramFileName = fileName;
-		final String fullFileName = location + "/" + fileName;
-		final ShapesDiagram diagram = loadDiagramFile(fullFileName);
-
-		// create a new Prolog File
-		final File prologFile = new File(fullFileName + ".pl");
-
-		// the file will be overwritten
-		final FileOutputStream fos = new FileOutputStream(prologFile);
-		final BufferedOutputStream bos = new BufferedOutputStream(fos);
-
-		bos.write(createPrologFacts(diagram, fullFileName));
-
-		bos.close();
-		fos.close();
-	}
-
-	/**
-	 * Search the diagram recursive and create all facts.
-	 * 
-	 * @param shapeList
-	 * @return Returns the formatted dependency facts.
-	 * @author Patrick Jahnke
-	 */
-	private StringBuilder createDependencyFacts(final List<Shape> shapeList) {
-		final StringBuilder dependencyFacts = new StringBuilder();
-		for (final Shape shape : shapeList) {
-			if (shape instanceof Ensemble) {
-				final Ensemble ensemble = (Ensemble) shape;
-				if (shape != null) {
-					for (final Connection connection : ensemble.getTargetConnections()) {
-						dependencyFacts.append(createSingleDependencyFact(connection));
-					}
-				}
-				if (ensemble.getShapes() != null) {
-					dependencyFacts.append(createDependencyFacts(ensemble.getShapes()));
-				}
-
-			}
-		}
-
-		return dependencyFacts;
-	}
-
-	/**
-	 * Search the diagram recursively and create all ensemble facts, except Dummy.
-	 * 
-	 * @param shapeList
-	 *            The list of shapes in the diagram.
-	 * @throws Exception
-	 * @return Returns the formatted ensemble facts.
-	 */
-	private StringBuilder createEnsembleFacts(final List<Shape> shapeList) throws Exception {
-		final StringBuilder ensembleFacts = new StringBuilder();
-		for (final Shape shape : shapeList) {
-			// create Ensemble facts:
-			if (shape instanceof Ensemble && shape != null) {
-				final Ensemble ensemble = (Ensemble) shape;
-				if (isAbstractEnsemble(ensemble)) {
-					ensembleFacts.append("abstract_ensemble");
-				} else {
-					ensembleFacts.append("ensemble");
-				}
-
-				// fix: inconsistent newline encodings
-				final String query = ensemble.getQuery().replaceAll("\n", " ");
-
-				ensembleFacts.append(String.format("('%s', %s, %s, (%s), [%s]).\n", diagramFileName,
-						createEnsembleDescriptor(ensemble), createEnsembleParameters(ensemble), query,
-						listSubEnsembles(ensemble.getShapes())));
-
-				// do children exist
-				if ((ensemble.getShapes() != null) && (ensemble.getShapes().size() > 0)) {
-					ensembleFacts.append(createEnsembleFacts(ensemble.getShapes()));
-				}
-
-			}
-
-		}
-		return ensembleFacts;
-	}
-
-	/**
-	 * Read the diagram and create the prolog facts of ensembles and dependencies.
-	 * 
-	 * @param diagram
-	 *            The diagram where the ensembles and dependencies are defined.
-	 * @param fullFileName
-	 *            The path to the diagram including its filename.
-	 * @return Returns a string with the prolog facts.
-	 * @throws Exception
-	 */
-	private byte[] createPrologFacts(final ShapesDiagram diagram, final String fullFileName) throws Exception {
-		final StringBuilder strBuilder = new StringBuilder();
-
-		strBuilder.append(createFileHeader(fullFileName));
-
-		// insert ensemble Header
-		strBuilder.append(createEnsembleHeader());
-
-		// reset transaction counter
-		dependencyCounter = 1;
-
-		final boolean containsDummy = hasDummy(diagram.getShapes());
-		final StringBuilder ensembleFacts = createEnsembleFacts(diagram.getShapes());
-
-		if (containsDummy) {
-			ensembleFacts.append("ensemble('" + diagramFileName + "',(empty),empty,[]).\n");
-		}
-
-		// insert ensembles
-		strBuilder.append(ensembleFacts);
-
-		// insert dependency header
-		strBuilder.append(createDependencyHeader());
-
-		// insert dependencies
-		strBuilder.append(createDependencyFacts(diagram.getShapes()));
-
-		return strBuilder.toString().getBytes();
-	}
 
 	/**
 	 * @param connection
