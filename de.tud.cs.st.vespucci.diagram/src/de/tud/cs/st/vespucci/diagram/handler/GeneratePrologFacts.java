@@ -49,79 +49,80 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
+import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
+import de.tud.cs.st.vespucci.errors.VespucciIOException;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * A handler for saving a *.sad file to a *.pl Prolog file.
- *
+ * 
  * @author Malte Viering
+ * @author Alexander Weitzmann
+ * @author Thomas Schulz
  */
 public class GeneratePrologFacts extends AbstractHandler {
 
 	/**
-	 * Handels the event, if it is a IStructuredSelection. Should only be used
+	 * Handles the event, if it is a IStructuredSelection. Should only be used
 	 * for Vespucci diagram files. Generates the prolog facts of the given
 	 * SAD-files.
-	 *
+	 * 
 	 * @return null
 	 */
-	public Object execute(ExecutionEvent event) {
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil
-				.getActiveMenuSelection(event); // current Package Explorer
-												// selection
+	@Override
+	public Object execute(final ExecutionEvent event) {
 
-		for (Object o : selection.toArray()) { // 2011-03-28: BenjaminL iterate
-												// over each given file
+		// current Package Explorer selection
+		final IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
+
+		for (final Object o : selection.toArray()) {
+
 			if (o instanceof IFile) {
-				IFile file = (IFile) o;
+				final IFile file = (IFile) o;
 
-				File f = file.getRawLocation().toFile();
-				DiagramConverter dc = new DiagramConverter();
-				if (dc.isDiagramFile(f)) {
-					try {
-						dc.convertDiagramToProlog(f); // generating from the
-														// *.sad a
-														// *.pl
-					} catch (FileNotFoundException e) {
-						IStatus is = new Status(IStatus.ERROR,
-								VespucciDiagramEditorPlugin.ID,
-								"FileNotFoundException", e);
-						StatusManager.getManager().handle(is,
-								StatusManager.SHOW);
-						StatusManager.getManager()
-								.handle(is, StatusManager.LOG);
-					} catch (IOException e) {
-						IStatus is = new Status(IStatus.ERROR,
-								VespucciDiagramEditorPlugin.ID,
-								"Failed to save Prolog file", e);
-						StatusManager.getManager().handle(is,
-								StatusManager.SHOW);
-						StatusManager.getManager()
-								.handle(is, StatusManager.LOG);
-					} catch (Exception e) {
-						IStatus is = new Status(IStatus.ERROR,
-								VespucciDiagramEditorPlugin.ID,
-								"FileNotFoundException", e);
-						StatusManager.getManager().handle(is,
-								StatusManager.SHOW);
-						StatusManager.getManager()
-								.handle(is, StatusManager.LOG);
-					}
+				final File diagramFile = file.getRawLocation().toFile();
 
-					// Refresh Pageview
-					try {
-						file.getProject().refreshLocal(
-								IResource.DEPTH_INFINITE,
-								new NullProgressMonitor());
-					} catch (CoreException e1) {
-						StatusManager.getManager().handle(e1,
-								VespucciDiagramEditorPlugin.ID);
-					}
+				if (PrologFileCreator.isDiagramFile(diagramFile)) {
+
+					createPrologFileFrom(diagramFile);
+
+					refreshPageView(file);
 				}
 			}
 		}
 		return null;
+	}
+
+	private static void createPrologFileFrom(File diagramFile) {
+
+		final PrologFileCreator prologFileCreator = new PrologFileCreator();
+
+		try {
+			prologFileCreator.createPrologFileFromDiagram(diagramFile);
+		} catch (final FileNotFoundException e) {
+			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
+		} catch (final IOException e) {
+			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "Failed to save Prolog file", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+			throw new VespucciIOException(String.format("Failed to save Prolog file from [%s].",diagramFile), e);
+		} catch (final Exception e) {
+			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
+			StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
+		}
+	}
+	
+	private static void refreshPageView(final IFile file) {
+		try {
+			file.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		} catch (final CoreException e1) {
+			StatusManager.getManager().handle(e1, VespucciDiagramEditorPlugin.ID);
+		}
 	}
 
 }
