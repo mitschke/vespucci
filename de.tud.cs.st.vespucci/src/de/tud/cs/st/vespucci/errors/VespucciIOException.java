@@ -2,7 +2,7 @@
  *  License (BSD Style License):
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitiät Darmstadt
+ *   Technische Universitiï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -14,7 +14,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -34,20 +34,26 @@ package de.tud.cs.st.vespucci.errors;
 
 /**
  * Exception which is thrown if there occurs an error during
- * the attempt to read a file.
+ * input and output operations.
  * 
- * @author @author Theo Kischka, Dominic Scheurer
+ * @author Theo Kischka
+ * @author Dominic Scheurer
  */
-public class VespucciFileReadException extends VespucciException {
-	public VespucciFileReadException(String message) {
-		super(message);
-	}
+public class VespucciIOException extends VespucciException {
+
+	private static final long serialVersionUID = 3379128373768953812L;
+
+	private static final String PREFIX = "VespucciIOException: ";
 	
-	public VespucciFileReadException(Throwable cause) {
+	public VespucciIOException(final String message) {
+		super(PREFIX + message);
+	}
+
+	public VespucciIOException(final Throwable cause) {
 		super(cause);
 	}
-	
-	public VespucciFileReadException(String message, Throwable cause) {
-		super(message, cause);
-	}	
+
+	public VespucciIOException(final String message, final Throwable cause) {
+		super(PREFIX + message, cause);
+	}
 }

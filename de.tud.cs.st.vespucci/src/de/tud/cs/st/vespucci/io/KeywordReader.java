@@ -44,14 +44,16 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-import de.tud.cs.st.vespucci.errors.VespucciFileReadException;
+import de.tud.cs.st.vespucci.errors.VespucciIOException;
 
 /**
  * This class provides a method to read in and parse a Vespucci resource
  * file. The specified file must only contain one keyword
  * per line; empty lines may be added.
  * 
- * @author Alexander Weitzmann, Theo Kischka, Dominic Scheurer
+ * @author Alexander Weitzmann
+ * @author Theo Kischka
+ * @author Dominic Scheurer
  * @version 1.3
  */
 public class KeywordReader {
@@ -92,7 +94,7 @@ public class KeywordReader {
 			IPath path = new Path(filePath);
 			return FileLocator.openStream(bundle, path, false);
 		} catch (IOException e) {
-			throw new VespucciFileReadException("Error reading Vespucci resource file", e);
+			throw new VespucciIOException("Error reading Vespucci resource file", e);
 		}		
 	}
 
