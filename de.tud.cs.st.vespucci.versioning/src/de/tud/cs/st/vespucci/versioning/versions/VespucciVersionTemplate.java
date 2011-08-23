@@ -60,6 +60,7 @@ import org.eclipse.m2m.qvt.oml.util.IContext;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.tud.cs.st.vespucci.errors.VespucciIOException;
 import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
 import de.tud.cs.st.vespucci.proxy.Activator;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
@@ -253,7 +254,7 @@ implements Comparable<VespucciVersionTemplate> {
 		try {
 			fileInputStream = file.getContents();
 		} catch (CoreException coreException) {
-			handleError("Error reading file contents", coreException);
+			throw new VespucciIOException(String.format("Error occured while reading file contents of %s.", file), coreException);
 		}
 		
 		final Scanner scanner = new Scanner(fileInputStream);
@@ -272,17 +273,5 @@ implements Comparable<VespucciVersionTemplate> {
 		
 		scanner.close();		
 		return false;
-	}
-	
-	/**
-	 * Simple error handler.
-	 * 
-	 * @param message A custom error message.
-	 * @param cause Source Exception.
-	 */
-	private static void handleError(String message, Exception cause) {
-		IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, cause);
-		StatusManager.getManager().handle(is, StatusManager.SHOW);
-		StatusManager.getManager().handle(is, StatusManager.LOG);
 	}
 }

@@ -32,25 +32,62 @@
  */
 package de.tud.cs.st.vespucci.errors;
 
+import java.util.ResourceBundle;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.statushandlers.StatusManager;
+
 /**
  * Base class for all exceptions thrown by the Vespucci project.
  * 
  * @author Theo Kischka
  * @author Dominic Scheurer
+ * @author Thomas Schulz
+ * @author Alexander Weitzmann
  */
 public abstract class VespucciException extends RuntimeException {
 
 	private static final long serialVersionUID = 7239173481155328434L;
+	private static final String PLUGIN_ID = ResourceBundle.getBundle("plugin").getString("vespucci_pluginID");
+	private static final String DEFAULT_MSG = "No message available.";
 	
 	public VespucciException(final String message) {
 		super(message);
+		handleError(message);
 	}
 
 	public VespucciException(final Throwable cause) {
 		super(cause);
+		handleError(DEFAULT_MSG, cause);
 	}
 
 	public VespucciException(final String message, final Throwable cause) {
 		super(message, cause);
+		handleError(message, cause);
+	}
+	
+	
+	/**
+	 * Simple error handler.
+	 * 
+	 * @param message A custom error message.
+	 * @param cause Source Exception.
+	 */
+	private static void handleError(String message, Throwable cause) {
+		IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, message, cause);
+		StatusManager.getManager().handle(is, StatusManager.SHOW);
+		StatusManager.getManager().handle(is, StatusManager.LOG);
+	}
+	
+	/**
+	 * Simple error handler.
+	 * 
+	 * @param message A custom error message.
+	 */
+	private static void handleError(String message) {
+		IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, message);
+		StatusManager.getManager().handle(is, StatusManager.SHOW);
+		StatusManager.getManager().handle(is, StatusManager.LOG);
 	}
 }
