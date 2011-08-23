@@ -69,10 +69,10 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+            locationURI="popup:VespucciSubmenu">
          <command
                commandId="de.tud.cs.st.vespucci.versioning.UpdateVespucciDiagram"
-               label="Vespucci: Update to current version"
+               label="Update to current version"
                style="push">
             <visibleWhen
                   checkEnabled="true">

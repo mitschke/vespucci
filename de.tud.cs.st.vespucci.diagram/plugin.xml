@@ -733,47 +733,39 @@
    <extension point="org.eclipse.ui.handlers" id="menu-handlers">
       <?gmfgen generated="true"?>
    </extension>
-	<extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1"
-            nameFilter="*.sad"
-            objectClass="org.eclipse.core.resources.IFile">
-         <action
-               class="de.tud.cs.st.vespucci.diagram.actions.TransformVespucciV0ToV1"
-               enablesFor="+"
-               id="de.tud.cs.st.vespucci.diagram.TransformVespucciV0ToV1Action"
-               label="Vespucci: Migrate from v0 to 2011-06-01"
-               menubarPath="additions"
-               style="push">
-         </action>
-      </objectContribution>
-   </extension>
    <extension
          id="context-menus"
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-         <command
-               commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-               label="Vespucci: Generate Architecural Model"
-               style="push">
-            <visibleWhen>
-               <with
-                     variable="selection">
-                  <iterate>
-                     <adapt
-                           type="org.eclipse.core.resources.IResource">
-                        <test
-                              property="org.eclipse.core.resources.name"
-                              value="*.sad">
-                        </test>
-                     </adapt>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=additions">
+         <menu
+               id="VespucciSubmenu"
+               label="Vespucci">
+            <command
+                  commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
+                  label="Generate Architecural Model"
+                  style="push">
+               <visibleWhen>
+                  <with
+                        variable="selection">
+                     <iterate>
+                        <adapt
+                              type="org.eclipse.core.resources.IResource">
+                           <test
+                                 property="org.eclipse.core.resources.name"
+                                 value="*.sad">
+                           </test>
+                        </adapt>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+         </menu>
+         <separator
+               name="de.tud.cs.st.vespucci.diagram.VespucciSubmenuSeparator"
+               visible="true">
+         </separator>
       </menuContribution>
       <menuContribution
             allPopups="false"
