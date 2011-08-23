@@ -1,5 +1,5 @@
 /** License (BSD Style License):
- *  Copyright (c) 2010
+ *  Copyright (c) 2011
  *  Software Engineering
  *  Department of Computer Science
  *  Technische Universität Darmstadt
@@ -55,13 +55,19 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 /**
  * Collapsement supporter for EnsembleEditPart
  *
- * @author a_vovk
+ * @author Artem Vovk
  */
 public class CompartmentEditPartSupporter {
 
 
+	/**
+	 * Color for connection pointing to or from collapsed ensembles.
+	 */
 	public static final Color TMP_CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.red;
 
+	/**
+	 * Default color for connections.
+	 */
 	public static final Color CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.black;
 
 	private ShapeCompartmentEditPart compartmentToSupport;
@@ -71,6 +77,7 @@ public class CompartmentEditPartSupporter {
 	private List<EditPart> compartmentChildren;
 
 
+	
 	public CompartmentEditPartSupporter(
 			ShapeCompartmentEditPart compartmentToSupport) {
 		this.compartmentToSupport = compartmentToSupport;
