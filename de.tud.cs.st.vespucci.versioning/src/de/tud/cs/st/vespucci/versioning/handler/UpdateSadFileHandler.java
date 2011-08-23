@@ -53,6 +53,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
+
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
 
@@ -66,26 +67,25 @@ public class UpdateSadFileHandler extends AbstractHandler {
 	 * Stores the state of the command (whether enabled or not)
 	 */
 	private boolean enabled = true;
-	
+
 	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
-	
+
 	@Override
-	public void setEnabled(Object o) {
+	public void setEnabled(final Object o) {
 		if (!(o instanceof EvaluationContext)) {
 			enabled = false;
 			return;
 		}
-			
-		EvaluationContext evaluationContext = (EvaluationContext) o;
+
+		final EvaluationContext evaluationContext = (EvaluationContext) o;
 		if (evaluationContext.getDefaultVariable() instanceof List) {
-			for (Object element : (List)evaluationContext.getDefaultVariable()) {
+			for (final Object element : (List) evaluationContext.getDefaultVariable()) {
 				if (element instanceof IFile) {
-					IFile file = (IFile)element;
-					if (!file.getFullPath().getFileExtension().equalsIgnoreCase("sad") ||
-						VespucciVersionChain.getInstance().getVersionOfFile(file).isCurrentVersion()) {
+					final IFile file = (IFile) element;
+					if (!isSadFile(file) || isNewestVersion(file)) {
 						enabled = false;
 						return;
 					}
@@ -98,165 +98,169 @@ public class UpdateSadFileHandler extends AbstractHandler {
 			enabled = false;
 			return;
 		}
-		
+
 		enabled = true;
 	}
-	
+
+	private static boolean isNewestVersion(final IFile file) {
+		return VespucciVersionChain.getInstance().getVersionOfFile(file).isNewestVersion();
+	}
+
+	private static boolean isSadFile(final IFile file) {
+		return file.getFullPath().getFileExtension().equalsIgnoreCase("sad");
+	}
+
 	/**
 	 * Convenience method which converts a single file.
 	 * 
-	 * @param file File to transform.
+	 * @param file
+	 *            File to transform.
 	 * @return null
 	 */
-	public Object execute(IFile file) {
+	public Object execute(final IFile file) {
 		return execute(new IFile[] { file });
 	}
-	
+
 	/**
-	 * Convenience method which converts an array of files.
+	 * Convenience method which update an array of files.
 	 * 
-	 * @param files Files to transform.
+	 * @param files
+	 *            Files to transform.
 	 * @return null
 	 */
-	public Object execute(IFile[] files) {
-		IStructuredSelection structuredSelection = new StructuredSelection(files);
+	public Object execute(final IFile[] files) {
+		final IStructuredSelection structuredSelection = new StructuredSelection(files);
 		return execute(structuredSelection);
 	}
-	
+
 	/**
-	 * Custom execute method with a IStructuredSelection argument which
-	 * is more simple to call programmatically. 
+	 * Custom execute method with a IStructuredSelection argument which is more simple to call programmatically.
 	 * 
-	 * @param selection The selection on which to execute the transformation.
-	 * @return null
+	 * @param selection
+	 *            The selection on which to execute the transformation.
+	 * @return null Has to be null.
 	 */
-	public Object execute(IStructuredSelection selection) {
-		for (Object o : selection.toArray()) {
+	public Object execute(final IStructuredSelection selection) {
+		for (final Object o : selection.toArray()) {
 			if (o instanceof IFile) {
 				final IFile file = (IFile) o;
-				
-				VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
+
+				final VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
 				VespucciVersionTemplate currentVersion = versionChain.getVersionOfFile(file);
-				
-				while (!currentVersion.isCurrentVersion()) {
+
+				while (!currentVersion.isNewestVersion()) {
 					final VespucciVersionTemplate nextVersion = versionChain.getNextVersion(currentVersion);
-					
+
 					if (nextVersion == null) {
-						break;
+						return null;
 					}
-					
+
 					final IPath newPath = getUniquePathForVersion(file, currentVersion);
-					
+
 					final URI outputUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-					
-					
-					
-					Job job = new Job(
-							new StringBuilder("Updating Vespucci file ")
-								.append(file.toString())
-								.append(" from version ")
-								.append(currentVersion.getIdentifier())
-								.append(" to ")
-								.append(nextVersion.getIdentifier()).toString()
-					) {
+
+					final Job job = new Job(String.format("Updating Vespucci file %s from version %s to %s.", file,
+							currentVersion.getIdentifier(), nextVersion.getIdentifier())) {
 
 						@Override
-						protected IStatus run(IProgressMonitor monitor) {
+						protected IStatus run(final IProgressMonitor monitor) {
 							return nextVersion.upgradeFileToThisVersion(file, newPath, outputUri, monitor);
 						}
-						
+
 					};
-					
+
 					// Jobs must be blocking in order to prevent conflicts during usage
-					// of the static methods in TransformationHelperLibrary 
+					// of the static methods in TransformationHelperLibrary
 					job.setRule(ResourcesPlugin.getWorkspace().getRoot());
 					job.setPriority(Job.SHORT);
 					job.setUser(true);
 					job.schedule();
-					
+
 					currentVersion = nextVersion;
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+		final IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
 		return execute(selection);
 	}
-	
+
 	/**
-	 * @param file The original file.
-	 * @param version The version to take the identifier from.
-	 * @return A path to a non-existing file which extends the original file path
-	 * 		   and contains the version identifier and, if necessary, the current timestamp.
+	 * @param file
+	 *            The original file.
+	 * @param version
+	 *            The version to take the identifier from.
+	 * @return A path to a non-existing file which extends the original file path and contains the version identifier
+	 *         and, if necessary, the current time stamp.
 	 */
-	private static IPath getUniquePathForVersion(IFile file, VespucciVersionTemplate version) {
-		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-		
-		IPath absOrigPath = file.getRawLocation();
-		
+	private static IPath getUniquePathForVersion(final IFile file, final VespucciVersionTemplate version) {
+		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+
+		final IPath absOrigPath = file.getRawLocation();
+
 		IPath newPath = absOrigPath;
-		if (absOrigPath.segment(absOrigPath.segmentCount() - 1).indexOf("." + version.getIdentifier() + ".") < 0) {
+		if (fileNameHasNoVersionID(absOrigPath, version)) {
 			newPath = insertSubExtension(absOrigPath, version.getIdentifier());
 		}
-		
+
 		newPath = removeTimestamp(newPath);
-		
+
 		while (workspaceRoot.findFilesForLocationURI(URIUtil.toURI(newPath))[0].exists()) {
+			newPath = removeTimestamp(newPath);
 			newPath = insertSubExtension(newPath, new Long(new Date().getTime()).toString());
 		}
-		
+
 		newPath = newPath.makeRelativeTo(workspaceRoot.getRawLocation());
 		newPath = newPath.makeAbsolute();
-		
+
 		return newPath;
 	}
-	
+
+	private static boolean fileNameHasNoVersionID(final IPath path, final VespucciVersionTemplate version) {
+		return !path.lastSegment().contains("." + version.getIdentifier() + ".");
+	}
+
 	/**
 	 * Inserts a file extension before the actual (last) extension segment.
 	 * 
-	 * @param originalPath The path in which to insert the sub extension.
-	 * @param subExtension The sub extension to insert into the path.
+	 * @param originalPath
+	 *            The path in which to insert the sub extension.
+	 * @param subExtension
+	 *            The sub extension to insert into the path.
 	 * @return The new path with subExtension inserted before the last segment.
 	 */
-	private static IPath insertSubExtension(IPath originalPath, String subExtension) {
-		return originalPath.removeFileExtension()
-			.addFileExtension(subExtension)
-			.addFileExtension(originalPath.getFileExtension());
+	private static IPath insertSubExtension(final IPath originalPath, final String subExtension) {
+		return originalPath.removeFileExtension().addFileExtension(subExtension)
+				.addFileExtension(originalPath.getFileExtension());
 	}
-	
+
 	/**
-	 * Checks if the second-last file extension could be timestamp; if so,
-	 * it is removed.
+	 * Checks if the second-last file extension could be a time stamp; if so, it is removed.
 	 * 
-	 * @param originalPath The path to remove the timestamp from.
-	 * @return The original path without timestamp extension.
+	 * @param originalPath
+	 *            The path to remove the time stamp from.
+	 * @return The original path without time stamp extension.
 	 */
-	private static IPath removeTimestamp(IPath originalPath) {
-		String possibleTimestamp = originalPath.removeFileExtension().getFileExtension();
-		
-		if (possibleTimestamp.isEmpty()) {
-			return originalPath;
-		} else if (tryParse(possibleTimestamp) != null) {
+	private static IPath removeTimestamp(final IPath originalPath) {
+		final String possibleTimestamp = originalPath.removeFileExtension().getFileExtension();
+
+		if (isTimestamp(possibleTimestamp)) {
 			return originalPath.removeFileExtension().removeFileExtension().addFileExtension("sad");
-		} else {
-			return originalPath;
+		}
+		return originalPath;
+	}
+
+	private static boolean isTimestamp(final String text) {
+		try {
+			Long.parseLong(text);
+			return true;
+		} catch (final NumberFormatException e) {
+			return false;
 		}
 	}
-	
-	/**
-	 * @param text Possible Long value
-	 * @return The parsed string or null if it cannot be parsed.
-	 */
-	private static Long tryParse(String text) {
-		try {
-			return Long.parseLong(text);
-		} catch (NumberFormatException e) {
-			return null;
-		}
-	}	
 }

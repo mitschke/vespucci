@@ -64,7 +64,7 @@ public class VespucciVersionChain {
 	private VespucciVersionChain() {
 		versionChain = new TreeSet<VespucciVersionTemplate>();
 		
-		versionChain.add(VespucciVersionTemplate.CURRENT_VERSION);
+		versionChain.add(VespucciVersionTemplate.NEWEST_VERSION);
 		while (versionChain.first().getPredecessor() != null) {
 			versionChain.add(versionChain.first().getPredecessor());
 		}

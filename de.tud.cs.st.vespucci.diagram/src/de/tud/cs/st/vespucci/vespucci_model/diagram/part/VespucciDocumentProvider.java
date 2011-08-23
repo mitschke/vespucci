@@ -245,7 +245,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		
 		VespucciVersionTemplate fileVersion = versionChain.getVersionOfFile(file);
 		
-		if (!fileVersion.isCurrentVersion() &&
+		if (!fileVersion.isNewestVersion() &&
 			MessageDialog.openQuestion(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 				updateQuestionTitle,

@@ -71,10 +71,10 @@ public abstract class VespucciVersionTemplate
 extends VespucciTransformationHelper
 implements Comparable<VespucciVersionTemplate> {
 	/**
-	 * <p>Pointer to the current version descriptor.</p>
+	 * <p>Pointer to the newest version descriptor.</p>
 	 * <p><strong>Remember to update this when adding newer versions!</strong></p>
 	 */
-	public static final VespucciVersionTemplate CURRENT_VERSION = new VespucciVersion_20110601();
+	public static final VespucciVersionTemplate NEWEST_VERSION = new VespucciVersion_20110601();
 	
 	/**
 	 * Number of (single) steps needed to perform the conversion task.
@@ -105,6 +105,7 @@ implements Comparable<VespucciVersionTemplate> {
 	 * @return A textual unique identifier for this version.
 	 */
 	public String getIdentifier() {
+		// TODO consistent renaming of old version; version or time stamp?
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");		
 		return simpleDateFormat.format(getCreationDate());
 	}
@@ -150,10 +151,10 @@ implements Comparable<VespucciVersionTemplate> {
 	};
 	
 	/**
-	 * @return True if this version is the current version, else false.
+	 * @return True if this version is the newest version, else false.
 	 */
-	public boolean isCurrentVersion() {
-		return this.equals(CURRENT_VERSION);
+	public boolean isNewestVersion() {
+		return this.equals(NEWEST_VERSION);
 	}
 	
 	/**

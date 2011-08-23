@@ -61,7 +61,7 @@ public class ConversionNeededActionHandler extends AbstractActionHandler impleme
 		if (variables.get("file") != null &&
 			(variables.get("file") instanceof IFile)) {
 			IFile file = (IFile)variables.get("file");
-			return !versionChain.getVersionOfFile(file).isCurrentVersion();
+			return !versionChain.getVersionOfFile(file).isNewestVersion();
 		} else {
 			throw new IllegalArgumentException(
 					"run method of ConversionNeededActionHandler exptects " +

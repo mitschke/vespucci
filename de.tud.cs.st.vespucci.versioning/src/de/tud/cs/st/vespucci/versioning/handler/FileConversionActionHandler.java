@@ -62,11 +62,8 @@ public class FileConversionActionHandler extends AbstractActionHandler implement
 		if (variables.get("file") != null &&
 			(variables.get("file") instanceof IFile)) {
 			IFile file = (IFile)variables.get("file");
-			
-			StructuredSelection strucSel = new StructuredSelection(new IFile[] { file });
 			UpdateSadFileHandler updateHandler = new UpdateSadFileHandler();
-			updateHandler.execute(strucSel);
-			
+			updateHandler.execute(file);
 			return null;
 		} else {
 			throw new IllegalArgumentException(
