@@ -51,6 +51,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.errors.VespucciIOException;
+import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
@@ -100,19 +101,10 @@ public class GeneratePrologFacts extends AbstractHandler {
 		try {
 			prologFileCreator.createPrologFileFromDiagram(diagramFile);
 		} catch (final FileNotFoundException e) {
-			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
 			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
 		} catch (final IOException e) {
-			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "Failed to save Prolog file", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
 			throw new VespucciIOException(String.format("Failed to save Prolog file from [%s].",diagramFile), e);
 		} catch (final Exception e) {
-			final IStatus is = new Status(IStatus.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
 			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
 		}
 	}
@@ -121,7 +113,7 @@ public class GeneratePrologFacts extends AbstractHandler {
 		try {
 			file.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (final CoreException e1) {
-			StatusManager.getManager().handle(e1, VespucciDiagramEditorPlugin.ID);
+			throw new VespucciUnexpectedException(e1);
 		}
 	}
 
