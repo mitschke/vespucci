@@ -119,6 +119,14 @@ implements Comparable<VespucciVersionTemplate> {
 	public abstract VespucciVersionTemplate getPredecessor();
 	
 	/**
+	 * 
+	 * @return Returns true only if a predecessor exists.
+	 */
+	public boolean hasPredecessor(){
+		return getPredecessor() != null;
+	}
+	
+	/**
 	 * <p>Example for file path:</p>
 	 * <pre>
 	 * platform:/plugin/de.tud.cs.st.vespucci.versioning/transformations/migrate_v0_to_v1.model.qvto

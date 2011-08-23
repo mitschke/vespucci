@@ -77,5 +77,4 @@ public class VespucciVersion_V0 extends VespucciVersionTemplate {
 	public String getIdentifier() {
 		return "v0";
 	}
-
 }
