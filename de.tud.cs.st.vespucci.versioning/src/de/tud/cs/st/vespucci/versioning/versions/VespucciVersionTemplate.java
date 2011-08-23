@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,11 +51,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.ModelExtentContents;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.ModelContent;
 import org.eclipse.m2m.internal.qvt.oml.library.Context;
 import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner.Out;
 import org.eclipse.m2m.qvt.oml.util.IContext;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
@@ -178,7 +181,8 @@ implements Comparable<VespucciVersionTemplate> {
 			
 			URI fileURI = getUriFromFile(inFile);
 	
-			if (resourceIsEmpty(fileURI)) {
+			if (!resourceExists(fileURI)) {
+				showErrorMessage(fileURI);
 				return Status.CANCEL_STATUS;
 			}
 			
@@ -219,6 +223,19 @@ implements Comparable<VespucciVersionTemplate> {
 		} catch (VespucciTransformationFailedException transfFailedException) {
 			return Status.CANCEL_STATUS;
 		}
+	}
+	
+	/**
+	 * @param fileURI File URI for which the error occurred.
+	 */
+	private static void showErrorMessage(URI fileURI) {
+		ResourceBundle messagesBundle = ResourceBundle.getBundle("messages");
+		
+		// No source given => Show error message
+		String title = messagesBundle.getString("VespucciTransformationNoFileTitle");
+		String message = messagesBundle.getString("VespucciTransformationNoFileMessage");
+		MessageDialog.openError(getShell(), title,
+				NLS.bind(message, fileURI.toString()));
 	}
 
 	/**
