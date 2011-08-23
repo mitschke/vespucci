@@ -52,7 +52,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
@@ -168,6 +167,8 @@ public class UpdateSadFileHandler extends AbstractHandler {
 						
 					};
 					
+					// Jobs must be blocking in order to prevent conflicts during usage
+					// of the static methods in TransformationHelperLibrary 
 					job.setRule(ResourcesPlugin.getWorkspace().getRoot());
 					job.setPriority(Job.SHORT);
 					job.setUser(true);
