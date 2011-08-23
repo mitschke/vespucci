@@ -52,6 +52,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
@@ -149,6 +150,8 @@ public class UpdateSadFileHandler extends AbstractHandler {
 					
 					final URI outputUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 					
+					
+					
 					Job job = new Job(
 							new StringBuilder("Updating Vespucci file ")
 								.append(file.toString())
@@ -165,6 +168,8 @@ public class UpdateSadFileHandler extends AbstractHandler {
 						
 					};
 					
+					job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+					job.setPriority(Job.SHORT);
 					job.setUser(true);
 					job.schedule();
 					

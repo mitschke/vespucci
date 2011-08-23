@@ -77,7 +77,7 @@ public class TransformationHelperLibrary {
 	 * mandatory according to QVTO limitations).
 	 */
 	public TransformationHelperLibrary() {
-		// This class shall not be instantiated
+		//NOTE: This class shall not be instantiated
 	}
 	
 	/**
