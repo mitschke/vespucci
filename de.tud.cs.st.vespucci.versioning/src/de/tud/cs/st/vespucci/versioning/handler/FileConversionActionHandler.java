@@ -37,14 +37,13 @@ package de.tud.cs.st.vespucci.versioning.handler;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.viewers.StructuredSelection;
 
+import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.proxy.AbstractActionHandler;
 import de.tud.cs.st.vespucci.proxy.IActionHandler;
 
 /**
- * Action handler which converts an sad file to the current
- * version. 
+ * Action handler which converts an sad file to the current version.
  * 
  * @author Dominic Scheurer
  */
@@ -53,23 +52,20 @@ public class FileConversionActionHandler extends AbstractActionHandler implement
 	/**
 	 * Converts a given sad file to the current version.
 	 * 
-	 * @param variables Expects a key "file" with a value of type
-	 * 	"IFile" which points to an sad file.
+	 * @param variables
+	 *            Expects a key "file" with a value of type "IFile" which points to an sad file.
 	 * @return null
 	 */
 	@Override
-	public Object run(Map<String, ? extends Object> variables) {
-		if (variables.get("file") != null &&
-			(variables.get("file") instanceof IFile)) {
-			IFile file = (IFile)variables.get("file");
-			UpdateSadFileHandler updateHandler = new UpdateSadFileHandler();
+	public Object run(final Map<String, ? extends Object> variables) {
+		if (variables.get("file") != null && (variables.get("file") instanceof IFile)) {
+			final IFile file = (IFile) variables.get("file");
+			final UpdateSadFileHandler updateHandler = new UpdateSadFileHandler();
 			updateHandler.execute(file);
 			return null;
 		} else {
-			throw new IllegalArgumentException(
-					"run method of ConversionNeededActionHandler exptects " +
-					"the given variables Map to contain a key \"file\" pointing " +
-					"to an sad IFile");
+			throw new VespucciIllegalArgumentException("run method of ConversionNeededActionHandler exptects "
+					+ "the given variables Map to contain a key \"file\" pointing " + "to an sad IFile");
 		}
 	}
 

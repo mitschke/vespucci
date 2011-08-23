@@ -74,10 +74,10 @@ public class TransformationHelperLibrary {
 	/**
 	 * Standard constructor. This is needed by QVTO, although
 	 * this class only contains static members (which is also
-	 * mandatory according to QVTO limitations).
+	 * mandatory according to QVTO limitations).<br>
+	 * Must not be used!
 	 */
 	public TransformationHelperLibrary() {
-		//NOTE: This class shall not be instantiated
 	}
 	
 	/**

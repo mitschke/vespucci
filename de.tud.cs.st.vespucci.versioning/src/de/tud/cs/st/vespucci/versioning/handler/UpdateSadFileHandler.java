@@ -164,7 +164,7 @@ public class UpdateSadFileHandler extends AbstractHandler {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							return nextVersion.upgradeFileToThisVersion(file, newPath, outputUri, monitor);
+							return nextVersion.updateFromDirectPredecessorVersion(file, newPath, outputUri, monitor);
 						}
 
 					};
@@ -203,22 +203,23 @@ public class UpdateSadFileHandler extends AbstractHandler {
 
 		final IPath absOrigPath = file.getRawLocation();
 
-		IPath newPath = absOrigPath;
+		IPath backupPath = absOrigPath;
 		if (fileNameHasNoVersionID(absOrigPath, version)) {
-			newPath = insertSubExtension(absOrigPath, version.getIdentifier());
+			backupPath = insertSubExtension(absOrigPath, version.getIdentifier());
 		}
 
-		newPath = removeTimestamp(newPath);
+		// prevents stacking of time stamps
+		backupPath = removeTimestamp(backupPath);
 
-		while (workspaceRoot.findFilesForLocationURI(URIUtil.toURI(newPath))[0].exists()) {
-			newPath = removeTimestamp(newPath);
-			newPath = insertSubExtension(newPath, new Long(new Date().getTime()).toString());
+		while (workspaceRoot.findFilesForLocationURI(URIUtil.toURI(backupPath))[0].exists()) {
+			backupPath = removeTimestamp(backupPath);
+			backupPath = insertSubExtension(backupPath, new Long(new Date().getTime()).toString());
 		}
 
-		newPath = newPath.makeRelativeTo(workspaceRoot.getRawLocation());
-		newPath = newPath.makeAbsolute();
+		backupPath = backupPath.makeRelativeTo(workspaceRoot.getRawLocation());
+		backupPath = backupPath.makeAbsolute();
 
-		return newPath;
+		return backupPath;
 	}
 
 	private static boolean fileNameHasNoVersionID(final IPath path, final VespucciVersionTemplate version) {

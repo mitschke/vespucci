@@ -108,7 +108,6 @@ implements Comparable<VespucciVersionTemplate> {
 	 * @return A textual unique identifier for this version.
 	 */
 	public String getIdentifier() {
-		// TODO consistent renaming of old version; version or time stamp?
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");		
 		return simpleDateFormat.format(getCreationDate());
 	}
@@ -169,32 +168,32 @@ implements Comparable<VespucciVersionTemplate> {
 	}
 	
 	/**
-	 * Template method which converts a Vespucci file to the version indicated
+	 * Template method which converts a diagram to the version indicated
 	 * by the concrete implementation of this abstract class.
 	 * 
-	 * @param inFile File to convert.
-	 * @param renameToPath New Path of the original file.
-	 * @param outFileUri URI to write to.
+	 * @param inputDiagram File to convert. Must be a direct predecessor of this version.
+	 * @param backupPath New Path of the original file.
+	 * @param outputURI URI to write to.
 	 * @param progressMonitor Monitor used to show the progress.
 	 * @return Conversion result status.
 	 */
-	public IStatus upgradeFileToThisVersion(IFile inFile, IPath renameToPath, URI outFileUri, IProgressMonitor progressMonitor) {
+	public IStatus updateFromDirectPredecessorVersion(IFile inputDiagram, IPath backupPath, URI outputURI, IProgressMonitor progressMonitor) {
 		try {
-			if (getPredecessor() == null ||
-				!getPredecessor().fileIsOfThisVersion(inFile)) {
+			if (!hasPredecessor() ||
+				!getPredecessor().fileIsOfThisVersion(inputDiagram)) {
 				return Status.CANCEL_STATUS;
 			}
 			
 			this.progessMonitor = progressMonitor;
 			
-			URI fileURI = getUriFromFile(inFile);
+			URI fileURI = getUriFromFile(inputDiagram);
 	
 			if (!resourceExists(fileURI)) {
-				showErrorMessage(fileURI);
+				noResourceErrorMessage(fileURI);
 				return Status.CANCEL_STATUS;
 			}
 			
-			progressMonitor.beginTask(getTransformationMessage(inFile), CONVERSION_STEPS);
+			progressMonitor.beginTask(getTransformationMessage(inputDiagram), CONVERSION_STEPS);
 			
 			List<EObject> fileModelContents = getOrderedResourceContents(fileURI);
 			ModelContent shapesDiagramContent = new ModelContent(fileModelContents.subList(0, 1));
@@ -221,10 +220,10 @@ implements Comparable<VespucciVersionTemplate> {
 			ModelExtentContents diagramTransformationResult =
 				getContentOfTransformationResult(diagramTransformationOutput);
 			
-			renameFile(inFile, renameToPath, progressMonitor);
+			renameFile(inputDiagram, backupPath, progressMonitor);
 			progressMonitor.worked(1);
 			
-			saveResults(modelTransformationResult, diagramTransformationResult, outFileUri);
+			saveResults(modelTransformationResult, diagramTransformationResult, outputURI);
 			progressMonitor.worked(1);
 			
 			return Status.OK_STATUS;
@@ -234,12 +233,10 @@ implements Comparable<VespucciVersionTemplate> {
 	}
 	
 	/**
-	 * @param fileURI File URI for which the error occurred.
+	 * @param fileURI File URI for which no resource could be found.
 	 */
-	private static void showErrorMessage(URI fileURI) {
+	private static void noResourceErrorMessage(URI fileURI) {
 		ResourceBundle messagesBundle = ResourceBundle.getBundle("messages");
-		
-		// No source given => Show error message
 		String title = messagesBundle.getString("VespucciTransformationNoFileTitle");
 		String message = messagesBundle.getString("VespucciTransformationNoFileMessage");
 		MessageDialog.openError(getShell(), title,

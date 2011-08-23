@@ -38,35 +38,34 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 
+import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.proxy.AbstractActionHandler;
 import de.tud.cs.st.vespucci.proxy.IActionHandler;
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 
 /**
- * Action handler to determine whether or not an sad file needs
- * a conversion (i.e. is of an older than the current version).
+ * Action handler to determine whether or not an sad file needs a conversion (i.e. is of an older than the newest
+ * version).
  * 
  * @author Dominic Scheurer
  */
 public class ConversionNeededActionHandler extends AbstractActionHandler implements IActionHandler {
 
 	/**
-	 * @param variables Expects a key "file" with an IFile object, pointing to an sad file.
+	 * @param variables
+	 *            Expects a key "file" with an IFile object, pointing to an sad file.
 	 * @return true if the given file is of an old version.
 	 */
 	@Override
-	public Object run(Map<String, ? extends Object> variables) {
-		VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
-		
-		if (variables.get("file") != null &&
-			(variables.get("file") instanceof IFile)) {
-			IFile file = (IFile)variables.get("file");
+	public Object run(final Map<String, ? extends Object> variables) {
+		final VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
+
+		if (variables.get("file") != null && (variables.get("file") instanceof IFile)) {
+			final IFile file = (IFile) variables.get("file");
 			return !versionChain.getVersionOfFile(file).isNewestVersion();
 		} else {
-			throw new IllegalArgumentException(
-					"run method of ConversionNeededActionHandler exptects " +
-					"the given variables Map to contain a key \"file\" pointing " +
-					"to an sad IFile");
+			throw new VespucciIllegalArgumentException("run method of ConversionNeededActionHandler exptects "
+					+ "the given variables Map to contain a key \"file\" pointing " + "to an sad IFile");
 		}
 	}
 
