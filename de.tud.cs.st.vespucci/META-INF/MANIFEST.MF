@@ -2,7 +2,7 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tud.cs.st.vespucci;singleton:=true
-Bundle-Version: 1.5.1
+Bundle-Version: 1.5.2
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
