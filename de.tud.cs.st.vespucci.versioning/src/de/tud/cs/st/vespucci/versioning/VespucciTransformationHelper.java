@@ -44,14 +44,22 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.m2m.qvt.oml.BasicModelExtent;
+import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
+import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
+import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -210,6 +218,45 @@ public abstract class VespucciTransformationHelper {
 						inputObjects.get(1))
 		};
 	}
+	
+	/**
+	 * Executes the QVT transformations defined by the given transformation
+	 * input objects.
+	 * 
+	 * @param transformationInputs The input objects for the transformations.
+	 * @return
+	 * 	A transformation result object containing status information
+	 * 	and, if existing, the transformation result.
+	 */
+	protected VespucciTransformationOutput executeQvtTransformations(
+			VespucciTransformationInput[] transformationInputs) {
+		ArrayList<ModelExtent> transformationOutputs = new ArrayList<ModelExtent>(2);
+		
+		for (VespucciTransformationInput transformationInput : transformationInputs) {
+			TransformationExecutor executor =
+				new TransformationExecutor(transformationInput.getQvtoUri());
+
+			ModelExtent input = new BasicModelExtent(transformationInput.getModelContentAsList());		
+			ModelExtent output = new BasicModelExtent();
+			
+			ExecutionContextImpl context = new ExecutionContextImpl();
+			//TODO Look up what the following line is for - @see{http://wiki.eclipse.org/QVTOML/Examples/InvokeInJava}
+			context.setConfigProperty("keepModeling", true);
+
+			ExecutionDiagnostic transformationOutput = executor.execute(context, input, output);
+
+			if(transformationOutput.getSeverity() == Diagnostic.OK) {
+				transformationOutputs.add(output);
+			} else {		
+				IStatus status = BasicDiagnostic.toIStatus(transformationOutput);
+				Activator.getDefault().getLog().log(status);
+				
+				return new VespucciTransformationOutput(null, status);
+			}
+		}
+		
+		return new VespucciTransformationOutput(transformationOutputs, Status.OK_STATUS);
+	}
 
 	/**
 	 * Simple struct-like class to encapsulate transformation input
@@ -247,6 +294,42 @@ public abstract class VespucciTransformationHelper {
 			final List<EObject> result = new ArrayList<EObject>();
 			result.add(modelContent);
 			return result;
+		}
+	}
+	
+	/**
+	 * Simple struct-like class to encapsulate transformation output
+	 * information.
+	 * 
+	 * @author Dominic Scheurer
+	 */
+	protected static class VespucciTransformationOutput {
+		/** List of transformation result objects */
+		private ArrayList<ModelExtent> transformationResults = null;
+		/** Status code supplying information about possible errors */
+		private IStatus returnCode = null;
+
+		/**
+		 * @param transformationResults List of transformation result objects.
+		 * @param returnCode Status code supplying information about possible errors.
+		 */
+		protected VespucciTransformationOutput(ArrayList<ModelExtent> transformationResults, IStatus returnCode) {
+			this.transformationResults = new ArrayList<ModelExtent>(transformationResults);
+			this.returnCode = returnCode;
+		}
+		
+		/**
+		 * @return List of transformation result objects.
+		 */
+		public ArrayList<ModelExtent> getTransformationResults() {
+			return new ArrayList<ModelExtent>(transformationResults);
+		}
+		
+		/**
+		 * @return Status code supplying information about possible errors.
+		 */
+		public IStatus getReturnCode() {
+			return returnCode;
 		}
 	}
 }

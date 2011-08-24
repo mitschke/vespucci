@@ -48,11 +48,11 @@ public class VespucciVersion_20110601 extends VespucciVersionTemplate {
 	
 	/** URI to the QVTO transformation code for the model part */
 	private final URI MODEL_TRANSF_URI = URI.createURI(
-		"platform:/plugin/de.tud.cs.st.vespucci.versioning/transformations/migrate_v0_to_v1.model.qvto");
+		"platform:/plugin/de.tud.cs.st.vespucci.versioning/transformations/migrate_v0_to_v1_model.qvto");
 	
 	/** URI to the QVTO transformation code for the diagram part */
 	private final URI NOTATION_TRANSF_URI = URI.createURI(
-		"platform:/plugin/de.tud.cs.st.vespucci.versioning/transformations/migrate_v0_to_v1.notation.qvto");
+		"platform:/plugin/de.tud.cs.st.vespucci.versioning/transformations/migrate_v0_to_v1_notation.qvto");
 	
 	@Override
 	public String getNamespace() {

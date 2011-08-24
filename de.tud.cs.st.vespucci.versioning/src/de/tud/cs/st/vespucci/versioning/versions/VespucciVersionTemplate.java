@@ -49,8 +49,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.BasicDiagnostic;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -58,15 +56,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.m2m.qvt.oml.BasicModelExtent;
-import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
-import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
-import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.eclipse.osgi.util.NLS;
 import de.tud.cs.st.vespucci.errors.VespucciIOException;
-import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
-import de.tud.cs.st.vespucci.versioning.Activator;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
 
 /**
@@ -206,34 +198,17 @@ implements Comparable<VespucciVersionTemplate> {
 		
 		VespucciTransformationInput[] transformationInputs = getModelTransformationInputs(inObjects);
 		
-		ArrayList<ModelExtent> transformationOutputs = new ArrayList<ModelExtent>(2);
+		VespucciTransformationOutput transformationOutput = executeQvtTransformations(transformationInputs);
 		
-		for (VespucciTransformationInput transformationInput : transformationInputs) {
-			TransformationExecutor executor =
-				new TransformationExecutor(transformationInput.getQvtoUri());
-
-			ModelExtent input = new BasicModelExtent(transformationInput.getModelContentAsList());		
-			ModelExtent output = new BasicModelExtent();
-			
-			ExecutionContextImpl context = new ExecutionContextImpl();
-			context.setConfigProperty("keepModeling", true);
-
-			ExecutionDiagnostic result = executor.execute(context, input, output);
-
-			if(result.getSeverity() == Diagnostic.OK) {
-				transformationOutputs.add(output);
-			} else {		
-				IStatus status = BasicDiagnostic.toIStatus(result);
-				Activator.getDefault().getLog().log(status);
-				
-				return status;
-			}
+		if (!transformationOutput.getReturnCode().equals(Status.OK_STATUS)) {
+			return transformationOutput.getReturnCode();
 		}
 		
-
+		ArrayList<ModelExtent> transformationResults = transformationOutput.getTransformationResults();
+		
 		renameFile(inputDiagram, backupPath, progressMonitor);
 		
-		saveResults(transformationOutputs.get(0), transformationOutputs.get(1), outputURI);
+		saveResults(transformationResults.get(0), transformationResults.get(1), outputURI);
 		
 		return Status.OK_STATUS;
 	}
