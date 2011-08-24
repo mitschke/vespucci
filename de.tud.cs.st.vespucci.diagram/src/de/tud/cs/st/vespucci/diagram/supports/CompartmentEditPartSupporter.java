@@ -94,7 +94,7 @@ public class CompartmentEditPartSupporter {
 
 		editPartOfCompartment = (ShapeNodeEditPart) compartmentToSupport.getParent();
 
-		compartmentChildren = EPService.getAllShapesInSideCompartment(compartmentToSupport);
+		compartmentChildren = EditPartService.getAllShapesInSideCompartment(compartmentToSupport);
 
 		if (collapseEvent.getNewBooleanValue()) {
 			collapseEditPart();
@@ -151,7 +151,7 @@ public class CompartmentEditPartSupporter {
 	 *            Model shape of the view to be searched and returned.
 	 */
 	private static NodeImpl getViewFromModel(final EditPart containerEditPart, final Shape shapeOfNode) {
-		final List<EditPart> editParts = EPService.getAllShapesInSideCompartment(containerEditPart);
+		final List<EditPart> editParts = EditPartService.getAllShapesInSideCompartment(containerEditPart);
 		for (final EditPart i : editParts) {
 			if (i.getModel() instanceof NodeImpl) {
 				final NodeImpl shapeImpl = (NodeImpl) i.getModel();
@@ -211,7 +211,7 @@ public class CompartmentEditPartSupporter {
 	 */
 	@SuppressWarnings("unchecked")
 	private Set<ConnectionEditPart> getChildrenConnections() {
-		final List<EditPart> children = EPService.getAllShapesInSideCompartment(compartmentToSupport);
+		final List<EditPart> children = EditPartService.getAllShapesInSideCompartment(compartmentToSupport);
 
 		final Set<ConnectionEditPart> childrenConnections = new HashSet<ConnectionEditPart>();
 
@@ -232,7 +232,7 @@ public class CompartmentEditPartSupporter {
 	 *         between child and parent.
 	 */
 	private Set<ConnectionEditPart> excludeInternConnections(final Set<ConnectionEditPart> connections) {
-		final List<EditPart> internalParts = EPService.getAllShapesInSideCompartment(compartmentToSupport);
+		final List<EditPart> internalParts = EditPartService.getAllShapesInSideCompartment(compartmentToSupport);
 
 		// connections from children to its parent are also internal
 		internalParts.add(editPartOfCompartment);

@@ -102,7 +102,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
-import de.tud.cs.st.vespucci.diagram.supports.EPService;
+import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
@@ -586,8 +586,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		VespucciMouseListener vml = new VespucciMouseListener();
 		(((DiagramEditPart) root).getFigure()).addMouseListener(vml);
 
-		List<EditPart> shapeList = EPService.getAllShapesInSideCompartment(root);
-		Set<ConnectionEditPart> conSet = EPService.getAllConnectionsToAndFromShapeList(shapeList);
+		List<EditPart> shapeList = EditPartService.getAllShapesInSideCompartment(root);
+		Set<ConnectionEditPart> conSet = EditPartService.getAllConnectionsToAndFromShapeList(shapeList);
 
 		// int idx = 1;
 		for (Object ee : conSet) {

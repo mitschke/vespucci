@@ -30,7 +30,7 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.supports;
+package de.tud.cs.st.vespucci.diagram.actions;
 
 import java.util.List;
 
@@ -52,29 +52,30 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes;
 
 /**
- * Responsibility: create new dummy object called from context menu.
+ * Creates a new ensemble object called from context menu.
  * 
  * @author Tam-Minh Nguyen
  */
-public class CreateDummyAction implements IObjectActionDelegate {
+public class CreateEnsembleAction implements IObjectActionDelegate {
 
 	private DiagramEditPart selectedElement;
 
 	@Override
 	public void run(final IAction action) {
-		final CreateViewRequest dummyRequest = CreateViewRequestFactory.getCreateShapeRequest(VespucciElementTypes.Dummy_2002,
-				selectedElement.getDiagramPreferencesHint());
-		dummyRequest.setLocation(EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION);
+		final CreateViewRequest ensembleRequest = CreateViewRequestFactory.getCreateShapeRequest(
+				VespucciElementTypes.Ensemble_2001, selectedElement.getDiagramPreferencesHint());
+		ensembleRequest.setLocation(EditPartService.getRecentRightClickPos());
 
-		final Command createCommand = selectedElement.getCommand(dummyRequest);
+		final Command createCommand = selectedElement.getCommand(ensembleRequest);
 		selectedElement.getDiagramEditDomain().getDiagramCommandStack().execute(createCommand);
 
 		// put the new topic in edit mode
 		final EditPartViewer viewer = selectedElement.getViewer();
-		final IAdaptable viewAdapter = (IAdaptable) ((List<?>) dummyRequest.getNewObject()).get(0);
+		final IAdaptable viewAdapter = (IAdaptable) ((List<?>) ensembleRequest.getNewObject()).get(0);
 		final EditPart elementPart = (EditPart) viewer.getEditPartRegistry().get(viewAdapter.getAdapter(View.class));
 		if (elementPart != null) {
 			Display.getCurrent().asyncExec(new Runnable() {

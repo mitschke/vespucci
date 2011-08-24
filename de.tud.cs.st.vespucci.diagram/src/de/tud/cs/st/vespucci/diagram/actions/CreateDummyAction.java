@@ -1,5 +1,5 @@
 /** License (BSD Style License):
- *  Copyright (c) 2010
+ *  Copyright (c) 2011
  *  Software Engineering
  *  Department of Computer Science
  *  Technische Universität Darmstadt
@@ -30,7 +30,7 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.supports;
+package de.tud.cs.st.vespucci.diagram.actions;
 
 import java.util.List;
 
@@ -38,12 +38,12 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequestFactory;
 import org.eclipse.gmf.runtime.notation.View;
-import org.eclipse.gef.RequestConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -52,58 +52,64 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes;
 
 /**
- * Responsibility: create new package object called from context menu.
- *
+ * Responsibility: create new dummy object called from context menu.
+ * 
  * @author Tam-Minh Nguyen
  */
-public class CreatePackageAction implements IObjectActionDelegate {
-
-	public final static String ID = "addPackageActionID";
+public class CreateDummyAction implements IObjectActionDelegate {
 
 	private DiagramEditPart selectedElement;
 
-	public void run(IAction action) {
-		CreateViewRequest packageRequest = CreateViewRequestFactory.getCreateShapeRequest(
-				VespucciElementTypes.Ensemble_2001, selectedElement.getDiagramPreferencesHint());
+	@Override
+	public void run(final IAction action) {
+		final CreateViewRequest dummyRequest = CreateViewRequestFactory.getCreateShapeRequest(VespucciElementTypes.Dummy_2002,
+				selectedElement.getDiagramPreferencesHint());
+		dummyRequest.setLocation(EditPartService.getRecentRightClickPos());
 
-		packageRequest.setLocation(EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION);
-
-		Command createCommand = selectedElement.getCommand(packageRequest);
-		IAdaptable viewAdapter = (IAdaptable) ((List<?>) packageRequest.getNewObject()).get(0);
-
+		final Command createCommand = selectedElement.getCommand(dummyRequest);
 		selectedElement.getDiagramEditDomain().getDiagramCommandStack().execute(createCommand);
 
 		// put the new topic in edit mode
 		final EditPartViewer viewer = selectedElement.getViewer();
-		final EditPart elementPart = (EditPart) viewer.getEditPartRegistry().get(
-				viewAdapter.getAdapter(View.class));
+		final IAdaptable viewAdapter = (IAdaptable) ((List<?>) dummyRequest.getNewObject()).get(0);
+		final EditPart elementPart = (EditPart) viewer.getEditPartRegistry().get(viewAdapter.getAdapter(View.class));
 		if (elementPart != null) {
 			Display.getCurrent().asyncExec(new Runnable() {
 
+				@Override
 				public void run() {
 					viewer.setSelection(new StructuredSelection(elementPart));
-					Request der = new Request(RequestConstants.REQ_DIRECT_EDIT);
+					final Request der = new Request(RequestConstants.REQ_DIRECT_EDIT);
 					elementPart.performRequest(der);
 				}
 			});
 		}
 	}
 
-	public void selectionChanged(IAction action, ISelection selection) {
+	@Override
+	public void selectionChanged(final IAction action, final ISelection selection) {
 		selectedElement = null;
 		if (selection instanceof IStructuredSelection) {
-			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+			final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 			if (structuredSelection.getFirstElement() instanceof DiagramEditPart) {
 				selectedElement = (DiagramEditPart) structuredSelection.getFirstElement();
 			}
 		}
 	}
 
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		// nothing to to
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
+	 * org.eclipse.ui.IWorkbenchPart)
+	 */
+	@Override
+	public void setActivePart(final IAction action, final IWorkbenchPart targetPart) {
+		// nothing to do
 	}
 
 }

@@ -57,9 +57,9 @@ public class VespucciMouseListener implements MouseListener {
 
 		if (me.button == 3) {
 			// right click
-			EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION = me.getLocation();
-			System.err.println("3:" + EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION.x + ","
-					+ EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION.y);
+			EditPartService.setRecentRightClickPos(me.getLocation());
+			System.err.println("3:" + EditPartService.getRecentRightClickPos().x + ","
+					+ EditPartService.getRecentRightClickPos().y);
 		}
 
 	}

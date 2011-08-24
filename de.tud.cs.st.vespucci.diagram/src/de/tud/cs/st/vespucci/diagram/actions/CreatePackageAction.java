@@ -30,7 +30,7 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.supports;
+package de.tud.cs.st.vespucci.diagram.actions;
 
 import java.util.List;
 
@@ -52,29 +52,30 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes;
 
 /**
- * Creates a new ensemble object called from context menu.
+ * Responsibility: create new package object called from context menu.
  * 
  * @author Tam-Minh Nguyen
  */
-public class CreateEnsembleAction implements IObjectActionDelegate {
+public class CreatePackageAction implements IObjectActionDelegate {
 
 	private DiagramEditPart selectedElement;
 
 	@Override
 	public void run(final IAction action) {
-		final CreateViewRequest ensembleRequest = CreateViewRequestFactory.getCreateShapeRequest(
+		final CreateViewRequest packageRequest = CreateViewRequestFactory.getCreateShapeRequest(
 				VespucciElementTypes.Ensemble_2001, selectedElement.getDiagramPreferencesHint());
-		ensembleRequest.setLocation(EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION);
+		packageRequest.setLocation(EditPartService.getRecentRightClickPos());
 
-		final Command createCommand = selectedElement.getCommand(ensembleRequest);
+		final Command createCommand = selectedElement.getCommand(packageRequest);
 		selectedElement.getDiagramEditDomain().getDiagramCommandStack().execute(createCommand);
 
 		// put the new topic in edit mode
 		final EditPartViewer viewer = selectedElement.getViewer();
-		final IAdaptable viewAdapter = (IAdaptable) ((List<?>) ensembleRequest.getNewObject()).get(0);
+		final IAdaptable viewAdapter = (IAdaptable) ((List<?>) packageRequest.getNewObject()).get(0);
 		final EditPart elementPart = (EditPart) viewer.getEditPartRegistry().get(viewAdapter.getAdapter(View.class));
 		if (elementPart != null) {
 			Display.getCurrent().asyncExec(new Runnable() {
@@ -100,15 +101,9 @@ public class CreateEnsembleAction implements IObjectActionDelegate {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-	 * org.eclipse.ui.IWorkbenchPart)
-	 */
 	@Override
 	public void setActivePart(final IAction action, final IWorkbenchPart targetPart) {
-		// nothing to do
+		// nothing to to
 	}
 
 }
