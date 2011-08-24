@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.emf.type.core.commands.EditElementCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
+import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRequest;
 
 /**
  * @generated
@@ -65,7 +66,7 @@ public class IncomingReorientCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	public IncomingReorientCommand(ReorientRelationshipRequest request) {
+	public IncomingReorientCommand(final ReorientRelationshipRequest request) {
 		super(request.getLabel(), request.getRelationship(), request);
 		reorientDirection = request.getDirection();
 		oldEnd = request.getOldRelationshipEnd();
@@ -75,14 +76,15 @@ public class IncomingReorientCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
+	@Override
 	public boolean canExecute() {
 		if (false == getElementToEdit() instanceof de.tud.cs.st.vespucci.vespucci_model.Incoming) {
 			return false;
 		}
-		if (reorientDirection == ReorientRelationshipRequest.REORIENT_SOURCE) {
+		if (reorientDirection == ReorientRequest.REORIENT_SOURCE) {
 			return canReorientSource();
 		}
-		if (reorientDirection == ReorientRelationshipRequest.REORIENT_TARGET) {
+		if (reorientDirection == ReorientRequest.REORIENT_TARGET) {
 			return canReorientTarget();
 		}
 		return false;
@@ -95,11 +97,11 @@ public class IncomingReorientCommand extends EditElementCommand {
 		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink().getTarget();
+		final de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink().getTarget();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
+		final de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
 				.canExistIncoming_4005(container, getLink(), getNewSource(), target);
@@ -112,11 +114,11 @@ public class IncomingReorientCommand extends EditElementCommand {
 		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink().getSource();
+		final de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink().getSource();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
+		final de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
 				.canExistIncoming_4005(container, getLink(), source, getNewTarget());
@@ -125,14 +127,15 @@ public class IncomingReorientCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	@Override
+	protected CommandResult doExecuteWithResult(final IProgressMonitor monitor, final IAdaptable info) throws ExecutionException {
 		if (!canExecute()) {
 			throw new ExecutionException("Invalid arguments in reorient link command"); //$NON-NLS-1$
 		}
-		if (reorientDirection == ReorientRelationshipRequest.REORIENT_SOURCE) {
+		if (reorientDirection == ReorientRequest.REORIENT_SOURCE) {
 			return reorientSource();
 		}
-		if (reorientDirection == ReorientRelationshipRequest.REORIENT_TARGET) {
+		if (reorientDirection == ReorientRequest.REORIENT_TARGET) {
 			return reorientTarget();
 		}
 		throw new IllegalStateException();
@@ -141,13 +144,14 @@ public class IncomingReorientCommand extends EditElementCommand {
 	/**
 	 * @author Artem Vovk
 	 * @generated NOT
+	 * @return Returns result of execution.
 	 */
-	protected CommandResult reorientSource() throws ExecutionException {
-		if (!getLink().getOriginalSource().isEmpty()
-				&& oldEnd != getLink().getOriginalSource().get(getLink().getOriginalSource().size() - 1)) {
+	protected CommandResult reorientSource() {
+		if (lastSourceIsNotOldEnd()) {
 			getLink().getOriginalSource().clear();
-			if (getLink().getOriginalTarget().isEmpty())
+			if (getLink().getOriginalTarget().isEmpty()) {
 				getLink().setTemp(false);
+			}
 		}
 		getLink().setSource(getNewSource());
 		return CommandResult.newOKCommandResult(getLink());
@@ -156,16 +160,37 @@ public class IncomingReorientCommand extends EditElementCommand {
 	/**
 	 * @author Artem Vovk
 	 * @generated NOT
+	 * @return
 	 */
-	protected CommandResult reorientTarget() throws ExecutionException {
-		if (!getLink().getOriginalTarget().isEmpty()
-				&& oldEnd != getLink().getOriginalTarget().get(getLink().getOriginalTarget().size() - 1)) {
+	private boolean lastSourceIsNotOldEnd() {
+		return !getLink().getOriginalSource().isEmpty()
+				&& oldEnd != getLink().getOriginalSource().get(getLink().getOriginalSource().size() - 1);
+	}
+
+	/**
+	 * @author Artem Vovk
+	 * @generated NOT
+	 * @return Returns result of execution.
+	 */
+	protected CommandResult reorientTarget() {
+		if (lastTargetIsNotOldEnd()) {
 			getLink().getOriginalTarget().clear();
-			if (getLink().getOriginalSource().isEmpty())
+			if (getLink().getOriginalSource().isEmpty()) {
 				getLink().setTemp(false);
+			}
 		}
 		getLink().setTarget(getNewTarget());
 		return CommandResult.newOKCommandResult(getLink());
+	}
+
+	/**
+	 * @author Artem Vovk
+	 * @generated NOT
+	 * @return
+	 */
+	private boolean lastTargetIsNotOldEnd() {
+		return !getLink().getOriginalTarget().isEmpty()
+				&& oldEnd != getLink().getOriginalTarget().get(getLink().getOriginalTarget().size() - 1);
 	}
 
 	/**
