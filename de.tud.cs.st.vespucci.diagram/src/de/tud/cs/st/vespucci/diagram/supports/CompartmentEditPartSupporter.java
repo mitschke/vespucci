@@ -53,12 +53,11 @@ import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
- * Collapsement supporter for EnsembleEditPart
- *
+ * Collapsement supporter for EnsembleEditPart.
+ * 
  * @author Artem Vovk
  */
 public class CompartmentEditPartSupporter {
-
 
 	/**
 	 * Color for connection pointing to or from collapsed ensembles.
@@ -70,35 +69,34 @@ public class CompartmentEditPartSupporter {
 	 */
 	public static final Color CONNECTION_COLOR = org.eclipse.draw2d.ColorConstants.black;
 
-	private ShapeCompartmentEditPart compartmentToSupport;
+	private final ShapeCompartmentEditPart compartmentToSupport;
 
 	private ShapeNodeEditPart editPartOfCompartment;
 
 	private List<EditPart> compartmentChildren;
 
-
-	
-	public CompartmentEditPartSupporter(
-			ShapeCompartmentEditPart compartmentToSupport) {
+	/**
+	 * 
+	 * @param compartmentToSupport
+	 *            The ensemble for which collapsement support will be provided.
+	 */
+	public CompartmentEditPartSupporter(final ShapeCompartmentEditPart compartmentToSupport) {
 		this.compartmentToSupport = compartmentToSupport;
 
 	}
 
 	/**
-	 * Update connections after EditPart was collapsed/opened
-	 *
-	 * @param event
-	 *            collapsement event
+	 * Update connections after EditPart was collapsed/opened.
+	 * 
+	 * @param collapseEvent
 	 */
-	public void updateConnections(Notification event) {
+	public void updateConnections(final Notification collapseEvent) {
 
-		this.editPartOfCompartment = (ShapeNodeEditPart) this.compartmentToSupport
-				.getParent();
+		editPartOfCompartment = (ShapeNodeEditPart) compartmentToSupport.getParent();
 
-		this.compartmentChildren = EPService
-				.getAllShapesInSideCompartment(this.compartmentToSupport);
+		compartmentChildren = EPService.getAllShapesInSideCompartment(compartmentToSupport);
 
-		if (event.getNewBooleanValue() == true) {
+		if (collapseEvent.getNewBooleanValue()) {
 			collapseEditPart();
 		} else {
 			openEditPart();
@@ -110,52 +108,55 @@ public class CompartmentEditPartSupporter {
 	 * Collapse edit part
 	 */
 	private void collapseEditPart() {
-		Set<ConnectionEditPart> outisdeConnections = getConnections(this.compartmentToSupport);
-		for (ConnectionEditPart i : outisdeConnections) {
-			EdgeImpl edge = (EdgeImpl) i.getModel();
+		final Set<ConnectionEditPart> childrenConnections = getChildrenConnections();
+		final Set<ConnectionEditPart> outsideConnections = excludeInternConnections(childrenConnections);
+		final Set<ConnectionEditPart> edges = excludeConnectorImpl(outsideConnections);
+
+		for (final ConnectionEditPart outConnection : edges) {
+			final EdgeImpl edge = (EdgeImpl) outConnection.getModel();
 
 			// it's for undo/redo operations
-			if (i.getSource().getModel() != edge.getSource()
-					|| i.getTarget().getModel() != edge.getTarget())
+			if (outConnection.getSource().getModel() != edge.getSource()
+					|| outConnection.getTarget().getModel() != edge.getTarget()) {
 				return;
+			}
 
-			if (compartmentChildren.contains(i.getSource())) {
-				edge.setSource((ShapeImpl) this.editPartOfCompartment
-						.getModel());
-				Connection con = (Connection) edge.getElement();
+			if (compartmentChildren.contains(outConnection.getSource())) {
+				// readjust connection and update original source history
+				// readjust at source
+				edge.setSource((ShapeImpl) editPartOfCompartment.getModel());
+				final Connection con = (Connection) edge.getElement();
 				con.setTemp(true);
-				EList<Shape> oSources = con.getOriginalSource();
+				final EList<Shape> oSources = con.getOriginalSource();
 				oSources.add(con.getSource());
-				con.setSource((Shape) ((ShapeImpl) this.editPartOfCompartment
-						.getModel()).getElement());
-
+				con.setSource((Shape) ((ShapeImpl) editPartOfCompartment.getModel()).getElement());
 			} else {
-				edge.setTarget((ShapeImpl) this.editPartOfCompartment
-						.getModel());
-				Connection con = (Connection) edge.getElement();
+				// readjust at target
+				edge.setTarget((ShapeImpl) editPartOfCompartment.getModel());
+				final Connection con = (Connection) edge.getElement();
 				con.setTemp(true);
-				EList<Shape> oTargets = con.getOriginalTarget();
+				final EList<Shape> oTargets = con.getOriginalTarget();
 				oTargets.add(con.getTarget());
-				con.setTarget((Shape) ((ShapeImpl) this.editPartOfCompartment
-						.getModel()).getElement());
+				con.setTarget((Shape) ((ShapeImpl) editPartOfCompartment.getModel()).getElement());
 			}
 		}
 	}
 
 	/**
-	 * Get view for corresponding model element
-	 *
-	 * @param editPart search in this editPart
-	 * @param shapeToFind model element
+	 * @return Returns view for corresponding model element.
+	 * 
+	 * @param containerEditPart
+	 *            Edit part containing the given shape.
+	 * @param shapeOfNode
+	 *            Model shape of the view to be searched and returned.
 	 */
-	private NodeImpl getViewFromModel(EditPart editPart, Shape shapeToFind) {
-		List<EditPart> editParts = EPService
-				.getAllShapesInSideCompartment(editPart);
-		for (EditPart i : editParts) {
+	private static NodeImpl getViewFromModel(final EditPart containerEditPart, final Shape shapeOfNode) {
+		final List<EditPart> editParts = EPService.getAllShapesInSideCompartment(containerEditPart);
+		for (final EditPart i : editParts) {
 			if (i.getModel() instanceof NodeImpl) {
-				NodeImpl shapeImpl = (NodeImpl) i.getModel();
-				Shape element = (Shape) shapeImpl.getElement();
-				if (element.equals(shapeToFind)) {
+				final NodeImpl shapeImpl = (NodeImpl) i.getModel();
+				final Shape element = (Shape) shapeImpl.getElement();
+				if (element.equals(shapeOfNode)) {
 					return shapeImpl;
 				}
 			}
@@ -164,43 +165,41 @@ public class CompartmentEditPartSupporter {
 	}
 
 	/**
-	 * Open edit part and restore the connections
+	 * Opens the edit part and restores the connections.
 	 */
 	private void openEditPart() {
 
-		Set<ConnectionEditPart> connections = this.getAllConnections();
+		final Set<ConnectionEditPart> connections = getAllConnections();
 
-		for (ConnectionEditPart i : connections) {
-			EdgeImpl edgeToRestore = (EdgeImpl) i.getModel();
-			Connection con = (Connection) edgeToRestore.getElement();
+		for (final ConnectionEditPart i : connections) {
+			final EdgeImpl edgeToRestore = (EdgeImpl) i.getModel();
+			final Connection con = (Connection) edgeToRestore.getElement();
 
 			if (con.isTemp()) {
-				if (edgeToRestore.getSource() == this.editPartOfCompartment
-						.getModel() && (!con.getOriginalSource().isEmpty())) {
-					EList<Shape> oSources = con.getOriginalSource();
-					Shape source = oSources.remove(oSources.size() - 1);
+				if (edgeToRestore.getSource() == editPartOfCompartment.getModel() && (!con.getOriginalSource().isEmpty())) {
+					// readjust source
+					final EList<Shape> oSources = con.getOriginalSource();
+					final Shape source = oSources.remove(oSources.size() - 1);
 
-					NodeImpl shapeImpl = getViewFromModel(
-							this.compartmentToSupport, source);
+					final NodeImpl shapeImpl = getViewFromModel(compartmentToSupport, source);
 
 					edgeToRestore.setSource(shapeImpl);
 
 					con.setSource(source);
-				} else if (edgeToRestore.getTarget() == this.editPartOfCompartment
-						.getModel() && (!con.getOriginalTarget().isEmpty())) {
+				} else if (edgeToRestore.getTarget() == editPartOfCompartment.getModel() && (!con.getOriginalTarget().isEmpty())) {
+					// readjust target
+					final EList<Shape> oTargets = con.getOriginalTarget();
+					final Shape target = oTargets.remove(oTargets.size() - 1);
 
-					EList<Shape> oTargets = con.getOriginalTarget();
-					Shape target = oTargets.remove(oTargets.size() - 1);
-
-					NodeImpl shapeImpl = getViewFromModel(
-							this.compartmentToSupport, target);
+					final NodeImpl shapeImpl = getViewFromModel(compartmentToSupport, target);
 					edgeToRestore.setTarget(shapeImpl);
 
 					con.setTarget(target);
 
 				}
-				if (con.getOriginalSource().isEmpty()
-						&& con.getOriginalTarget().isEmpty()) {
+				if (con.getOriginalSource().isEmpty() && con.getOriginalTarget().isEmpty()) {
+					// connection is points direct from original source to original target, thus it's not temporal
+					// anymore.
 					con.setTemp(false);
 				}
 			}
@@ -208,62 +207,67 @@ public class CompartmentEditPartSupporter {
 	}
 
 	/**
-	 * Get all connections that goes in/out from ePart editPart(all
-	 * children connections from this editPart)
+	 * @return Returns all connections from the children.
 	 */
 	@SuppressWarnings("unchecked")
-	private Set<ConnectionEditPart> getConnections(
-			ShapeCompartmentEditPart ePart) {
-		List<EditPart> children = EPService
-				.getAllShapesInSideCompartment(ePart);
+	private Set<ConnectionEditPart> getChildrenConnections() {
+		final List<EditPart> children = EPService.getAllShapesInSideCompartment(compartmentToSupport);
 
-		Set<ConnectionEditPart> tmpConnections = new HashSet<ConnectionEditPart>();
-		Set<ConnectionEditPart> connections = new HashSet<ConnectionEditPart>();
+		final Set<ConnectionEditPart> childrenConnections = new HashSet<ConnectionEditPart>();
 
 		// all connections from inside
-		for (EditPart o : children) {
+		for (final EditPart o : children) {
 			if (o instanceof GraphicalEditPart) {
-				tmpConnections.addAll(((GraphicalEditPart) o)
-						.getSourceConnections());
-				tmpConnections.addAll(((GraphicalEditPart) o)
-						.getTargetConnections());
+				childrenConnections.addAll(((GraphicalEditPart) o).getSourceConnections());
+				childrenConnections.addAll(((GraphicalEditPart) o).getTargetConnections());
 			}
 		}
+		return childrenConnections;
+	}
 
-		children.add(editPartOfCompartment);
-		for (ConnectionEditPart c : tmpConnections) {
+	/**
+	 * 
+	 * @param connections
+	 * @return Returns the given connections without intra-connections, i.e. connections between children or connections
+	 *         between child and parent.
+	 */
+	private Set<ConnectionEditPart> excludeInternConnections(final Set<ConnectionEditPart> connections) {
+		final List<EditPart> internalParts = EPService.getAllShapesInSideCompartment(compartmentToSupport);
+
+		// connections from children to its parent are also internal
+		internalParts.add(editPartOfCompartment);
+
+		for (final ConnectionEditPart c : connections) {
 			// check if connection has one end outside of compartment
-			if (children.contains(c.getSource())
-					^ children.contains(c.getTarget())) {
+			if (internalParts.contains(c.getSource()) ^ internalParts.contains(c.getTarget())) {
 				connections.add(c);
 			}
 		}
 
-		return filterConnectionsFromConnectorImpl(connections);
+		return connections;
 	}
 
 	/**
-	 * Get all connections that belong to this editPart.
+	 * @return Returns all connections that belong to this editPart. Connections of children are not included.
 	 */
 	@SuppressWarnings("unchecked")
 	private Set<ConnectionEditPart> getAllConnections() {
-		Set<ConnectionEditPart> connections = new HashSet<ConnectionEditPart>();
+		final Set<ConnectionEditPart> connections = new HashSet<ConnectionEditPart>();
 		connections.addAll(this.editPartOfCompartment.getSourceConnections());
 		connections.addAll(this.editPartOfCompartment.getTargetConnections());
-		return filterConnectionsFromConnectorImpl(connections);
+		return excludeConnectorImpl(connections);
 	}
 
 	/**
-	 * Filter connections for EdgeImpl: delete ConnectorImpl
-	 *
+	 * Filter connections for EdgeImpl; Subclass ConnectorImpl will be left out.
+	 * 
 	 * @param connections
-	 *            connections to filter
-	 * @return filtered connections
+	 *            Connections to be filtered.
+	 * @return Returns filtered connections.
 	 */
-	private Set<ConnectionEditPart> filterConnectionsFromConnectorImpl(
-			Set<ConnectionEditPart> connections) {
-		Set<ConnectionEditPart> out = new HashSet<ConnectionEditPart>();
-		for (ConnectionEditPart i : connections) {
+	private static Set<ConnectionEditPart> excludeConnectorImpl(final Set<ConnectionEditPart> connections) {
+		final Set<ConnectionEditPart> out = new HashSet<ConnectionEditPart>();
+		for (final ConnectionEditPart i : connections) {
 			if (!(i.getModel() instanceof ConnectorImpl)) {
 				out.add(i);
 			}
