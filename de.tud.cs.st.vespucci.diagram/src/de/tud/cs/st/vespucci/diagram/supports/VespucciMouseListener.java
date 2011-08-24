@@ -1,5 +1,5 @@
 /** License (BSD Style License):
- *  Copyright (c) 2010
+ *  Copyright (c) 2011
  *  Software Engineering
  *  Department of Computer Science
  *  Technische Universität Darmstadt
@@ -37,34 +37,35 @@ import org.eclipse.draw2d.MouseListener;
 
 /**
  * Stores the mouse's position on each right click.
- *
+ * 
  * @author Tam-Minh Nguyen
  */
 public class VespucciMouseListener implements MouseListener {
 
-	public void mouseDoubleClicked(MouseEvent me) {
+	@Override
+	public void mouseDoubleClicked(final MouseEvent mouseEvent) {
 		// not used
 	}
 
-	public void mousePressed(MouseEvent me) {
-		if (me.button == 1) {
+	@Override
+	public void mousePressed(final MouseEvent mouseEvent) {
+		if (mouseEvent.button == 1) {
 			// left click
 		}
 
-		if (me.button == 2) {
+		if (mouseEvent.button == 2) {
 			// middle click
 		}
 
-		if (me.button == 3) {
+		if (mouseEvent.button == 3) {
 			// right click
-			EditPartService.setRecentRightClickPos(me.getLocation());
-			System.err.println("3:" + EditPartService.getRecentRightClickPos().x + ","
-					+ EditPartService.getRecentRightClickPos().y);
+			EditPartService.setRecentRightClickPos(mouseEvent.getLocation());
 		}
 
 	}
 
-	public void mouseReleased(MouseEvent me) {
+	@Override
+	public void mouseReleased(final MouseEvent mouseEvent) {
 		// not used
 	}
 }
