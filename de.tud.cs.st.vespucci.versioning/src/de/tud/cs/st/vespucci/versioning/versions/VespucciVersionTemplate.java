@@ -58,11 +58,8 @@ import org.eclipse.m2m.internal.qvt.oml.library.Context;
 import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner.Out;
 import org.eclipse.m2m.qvt.oml.util.IContext;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.ui.statushandlers.StatusManager;
-
 import de.tud.cs.st.vespucci.errors.VespucciIOException;
 import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
-import de.tud.cs.st.vespucci.proxy.Activator;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
 
 /**
@@ -178,7 +175,8 @@ implements Comparable<VespucciVersionTemplate> {
 	 * @param progressMonitor Monitor used to show the progress.
 	 * @return Conversion result status.
 	 */
-	public IStatus updateFromDirectPredecessorVersion(IFile inputDiagram, IPath backupPath, URI outputURI, IProgressMonitor progressMonitor) {
+	public IStatus updateFromDirectPredecessorVersion(
+			IFile inputDiagram, IPath backupPath, URI outputURI, IProgressMonitor progressMonitor) {
 		try {
 			if (!hasPredecessor() ||
 				!getPredecessor().fileIsOfThisVersion(inputDiagram)) {
