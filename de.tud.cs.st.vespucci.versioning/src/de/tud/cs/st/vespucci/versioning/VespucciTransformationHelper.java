@@ -196,7 +196,7 @@ public abstract class VespucciTransformationHelper {
 	 * @return The default transformation error string for the specific Vespucci version.
 	 */
 	protected String getDefaultErrorString() {
-		return String.format("Conversion of Vespucci diagram to version %s failed", getVespucciVersion().getNamespace());
+		return String.format("Conversion of Vespucci diagram to version %s failed.", getVespucciVersion().getNamespace());
 	}
 	
 	/**
