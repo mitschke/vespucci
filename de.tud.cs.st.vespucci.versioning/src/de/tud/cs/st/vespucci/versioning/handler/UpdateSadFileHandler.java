@@ -50,12 +50,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.gmf.runtime.notation.impl.DiagramImpl;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
+import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
 /**
  * Handler for sad file Upgrade action.
@@ -107,7 +111,17 @@ public class UpdateSadFileHandler extends AbstractHandler {
 	}
 
 	private static boolean isSadFile(final IFile file) {
-		return file.getFullPath().getFileExtension().equalsIgnoreCase("sad");
+		final URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+		final List<EObject> fileModelContents =
+			new ResourceSetImpl().getResource(fileURI, true).getContents();
+		
+		return file.getFullPath().getFileExtension().equalsIgnoreCase("sad") &&
+			fileModelContents != null &&
+			fileModelContents.size() == 2 &&
+			((fileModelContents.get(0) instanceof ShapesDiagramImpl &&
+			  fileModelContents.get(1) instanceof DiagramImpl) ||
+			 (fileModelContents.get(0) instanceof DiagramImpl &&
+			  fileModelContents.get(1) instanceof ShapesDiagramImpl));
 	}
 
 	/**

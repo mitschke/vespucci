@@ -36,8 +36,8 @@ package de.tud.cs.st.vespucci.versioning.versions;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -49,20 +49,16 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.m2m.internal.qvt.oml.ast.env.ModelExtentContents;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.ModelContent;
-import org.eclipse.m2m.internal.qvt.oml.library.Context;
-import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner.Out;
-import org.eclipse.m2m.qvt.oml.util.IContext;
+import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.ui.statushandlers.StatusManager;
-
 import de.tud.cs.st.vespucci.errors.VespucciIOException;
-import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
-import de.tud.cs.st.vespucci.proxy.Activator;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
 
 /**
@@ -70,7 +66,6 @@ import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
  * 
  * @author Dominic Scheurer
  */
-@SuppressWarnings("restriction")
 public abstract class VespucciVersionTemplate
 extends VespucciTransformationHelper
 implements Comparable<VespucciVersionTemplate> {
@@ -178,59 +173,44 @@ implements Comparable<VespucciVersionTemplate> {
 	 * @param progressMonitor Monitor used to show the progress.
 	 * @return Conversion result status.
 	 */
-	public IStatus updateFromDirectPredecessorVersion(IFile inputDiagram, IPath backupPath, URI outputURI, IProgressMonitor progressMonitor) {
-		try {
-			if (!hasPredecessor() ||
-				!getPredecessor().fileIsOfThisVersion(inputDiagram)) {
-				return Status.CANCEL_STATUS;
-			}
-			
-			this.progessMonitor = progressMonitor;
-			
-			URI fileURI = getUriFromFile(inputDiagram);
-	
-			if (!resourceExists(fileURI)) {
-				noResourceErrorMessage(fileURI);
-				return Status.CANCEL_STATUS;
-			}
-			
-			progressMonitor.beginTask(getTransformationMessage(inputDiagram), CONVERSION_STEPS);
-			
-			List<EObject> fileModelContents = getOrderedResourceContents(fileURI);
-			ModelContent shapesDiagramContent = new ModelContent(fileModelContents.subList(0, 1));
-			ModelContent notationDiagramContent = new ModelContent(fileModelContents.subList(1, 2));
-			
-			progressMonitor.worked(1);
-			
-			IContext context = new Context();
-			
-			Out modelTransformationOutput = executeQvtoTransformation(context, shapesDiagramContent, getModelQvtoUri());
-			progressMonitor.worked(3);
-			
-			Out diagramTransformationOutput = executeQvtoTransformation(context, notationDiagramContent, getDiagramQvtoUri());
-			progressMonitor.worked(3);
-			
-			if (!outputIsCorrect(modelTransformationOutput) ||
-				!outputIsCorrect(diagramTransformationOutput)) {
-				throw new VespucciTransformationFailedException(getDefaultErrorString());
-			}
-			
-			ModelExtentContents modelTransformationResult =
-				getContentOfTransformationResult(modelTransformationOutput);
-			
-			ModelExtentContents diagramTransformationResult =
-				getContentOfTransformationResult(diagramTransformationOutput);
-			
-			renameFile(inputDiagram, backupPath, progressMonitor);
-			progressMonitor.worked(1);
-			
-			saveResults(modelTransformationResult, diagramTransformationResult, outputURI);
-			progressMonitor.worked(1);
-			
-			return Status.OK_STATUS;
-		} catch (VespucciTransformationFailedException transfFailedException) {
+	public IStatus updateFromDirectPredecessorVersion(
+			IFile inputDiagram, IPath backupPath, URI outputURI, IProgressMonitor progressMonitor) {
+
+		if (!hasPredecessor() ||
+			!getPredecessor().fileIsOfThisVersion(inputDiagram)) {
 			return Status.CANCEL_STATUS;
 		}
+		
+		this.progessMonitor = progressMonitor;
+		progressMonitor.beginTask(getTransformationMessage(inputDiagram), CONVERSION_STEPS);
+		
+		URI fileURI = getUriFromFile(inputDiagram);
+
+		if (!resourceExists(fileURI)) {
+			noResourceErrorMessage(fileURI);
+			return Status.CANCEL_STATUS;
+		}
+		
+		final ResourceSet resourceSet = new ResourceSetImpl();
+		
+		Resource inResource = resourceSet.getResource(fileURI, true);		
+		EList<EObject> inObjects = inResource.getContents();
+		
+		VespucciTransformationInput[] transformationInputs = getModelTransformationInputs(inObjects);
+		
+		VespucciTransformationOutput transformationOutput = executeQvtTransformations(transformationInputs);
+		
+		if (!transformationOutput.getReturnCode().equals(Status.OK_STATUS)) {
+			return transformationOutput.getReturnCode();
+		}
+		
+		ArrayList<ModelExtent> transformationResults = transformationOutput.getTransformationResults();
+		
+		renameFile(inputDiagram, backupPath, progressMonitor);
+		
+		saveResults(transformationResults.get(0), transformationResults.get(1), outputURI);
+		
+		return Status.OK_STATUS;
 	}
 	
 	/**
