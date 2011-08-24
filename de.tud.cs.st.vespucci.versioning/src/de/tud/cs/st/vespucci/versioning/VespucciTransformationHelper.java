@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.versioning;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,21 +45,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.m2m.internal.qvt.oml.ast.env.ModelExtentContents;
-import org.eclipse.m2m.internal.qvt.oml.common.MdaException;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.ModelContent;
-import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner;
-import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner.In;
-import org.eclipse.m2m.internal.qvt.oml.runtime.generator.TransformationRunner.Out;
-import org.eclipse.m2m.internal.qvt.oml.runtime.project.QvtInterpretedTransformation;
-import org.eclipse.m2m.internal.qvt.oml.runtime.project.TransformationUtil;
-import org.eclipse.m2m.internal.qvt.oml.trace.Trace;
-import org.eclipse.m2m.qvt.oml.util.IContext;
+import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -72,7 +65,6 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
  * 
  * @author Dominic Scheurer
  */
-@SuppressWarnings("restriction")
 public abstract class VespucciTransformationHelper {
 	/**
 	 * @return The progress monitor stored in the specific converter class.
@@ -121,83 +113,7 @@ public abstract class VespucciTransformationHelper {
 		return String.format("Converting Vespucci diagram \"%s\" from version %s to version %s.", file, getVespucciVersion()
 				.getPredecessor().getNamespace(), getVespucciVersion().getNamespace());
 	}
-
-	/**
-	 * @param fileURI
-	 *            File which contains the contents to extract.
-	 * @return The EObject contents of the file, whereas the model part is at the first position in the list.
-	 */
-	protected static List<EObject> getOrderedResourceContents(final URI fileURI) {
-		final Resource resource = new ResourceSetImpl().getResource(fileURI, true);
-
-		final List<EObject> contents = resource.getContents();
-
-		if (!(contents.get(0) instanceof ShapesDiagramImpl)) {
-			Collections.swap(contents, 0, 1);
-		}
-
-		return contents;
-	}
-
-	/**
-	 * Executes a QVTO transformation, returns outputs.
-	 * 
-	 * @param context
-	 *            Context in which to execute the transformation.
-	 * @param modelContent
-	 *            Transformation input.
-	 * @param qvtoUri
-	 *            URI to the QVTO file to execute.
-	 * @return The transformed input data.
-	 */
-	protected Out executeQvtoTransformation(final IContext context, final ModelContent modelContent, final URI qvtoUri) {
-		final QvtInterpretedTransformation modelQvtoTransformation = createQvtoTransformation(qvtoUri);
-		final In modelTransformationInput = new TransformationRunner.In(new ModelContent[] { modelContent }, context);
-		try {
-			return modelQvtoTransformation.run(modelTransformationInput);
-		} catch (final MdaException qvtoTransformationException) {
-			handleError(qvtoTransformationException);
-			return null;
-		}
-	}
-
-	/**
-	 * @param qvtoUri
-	 *            URI to the transformation module.
-	 * @return The transformation object for the given module.
-	 */
-	private QvtInterpretedTransformation createQvtoTransformation(final URI qvtoUri) {
-		try {
-			return new QvtInterpretedTransformation(TransformationUtil.getQvtModule(qvtoUri));
-		} catch (final MdaException qvtoTransformationException) {
-			handleError(qvtoTransformationException);
-			return null;
-		}
-	}
-
-	/**
-	 * Checks whether a transformation worked, looking at the output.
-	 * 
-	 * @param transformationOutput
-	 *            Output of a transformation.
-	 * @return True if transformation produced no visible errors, else false.
-	 */
-	protected static boolean outputIsCorrect(final Out transformationOutput) {
-		final List<ModelExtentContents> outputExtends = transformationOutput.getExtents();
-		final Trace outputTrace = transformationOutput.getTrace();
-
-		return outputExtends.size() > 0 && outputTrace != null;
-	}
-
-	/**
-	 * @param transformationResult
-	 *            Output of a transformation.
-	 * @return Retrieves the contents of a transformation output object.
-	 */
-	protected static ModelExtentContents getContentOfTransformationResult(final Out transformationResult) {
-		return transformationResult.getExtents().get(0);
-	}
-
+	
 	/**
 	 * Saves transformation result contents to a given URI.
 	 * 
@@ -208,10 +124,12 @@ public abstract class VespucciTransformationHelper {
 	 * @param saveToUri
 	 *            Destination URI.
 	 */
-	protected void saveResults(final ModelExtentContents modelTransformationResult,
-			final ModelExtentContents diagramTransformationResult, final URI saveToUri) {
-		final List<EObject> outObjectsModel = modelTransformationResult.getAllRootElements();
-		final List<EObject> outObjectsDiagram = diagramTransformationResult.getAllRootElements();
+	protected void saveResults(
+			final ModelExtent modelTransformationResult,
+			final ModelExtent diagramTransformationResult,
+			final URI saveToUri) {
+		final List<EObject> outObjectsModel = modelTransformationResult.getContents();
+		final List<EObject> outObjectsDiagram = diagramTransformationResult.getContents();
 
 		final Resource outputResource = new ResourceSetImpl().createResource(saveToUri);
 		outputResource.getContents().addAll(outObjectsModel);
@@ -272,5 +190,63 @@ public abstract class VespucciTransformationHelper {
 	protected String getDefaultErrorString() {
 		return String.format("Conversion of Vespucci diagram to version %s failed", getVespucciVersion().getNamespace());
 	}
+	
+	/**
+	 * @param inputObjects The list of model contents of the file to transform.
+	 * @return
+	 * 	Input objects for the transformation: Vespucci model part first, diagram part at the end.
+	 */
+	protected VespucciTransformationInput[] getModelTransformationInputs(EList<EObject> inputObjects) {
+		if (!(inputObjects.get(0) instanceof ShapesDiagramImpl)) {
+			Collections.swap(inputObjects, 0, 1);
+		}
+		
+		return new VespucciTransformationInput[] {
+				new VespucciTransformationInput(
+						getVespucciVersion().getModelQvtoUri(),
+						inputObjects.get(0)),
+				new VespucciTransformationInput(
+						getVespucciVersion().getDiagramQvtoUri(),
+						inputObjects.get(1))
+		};
+	}
 
+	/**
+	 * Simple struct-like class to encapsulate transformation input
+	 * information.
+	 * 
+	 * @author Dominic Scheurer
+	 */
+	protected static class VespucciTransformationInput {
+		/** The URI to the QVTO transformation code */
+		private URI qvtoUri = null;
+		/** The model content to transform */
+		private EObject modelContent = null;
+		
+		/**
+		 * @param qvtoUri The URI to the QVTO transformation code.
+		 * @param modelContent The model content to transform.
+		 */
+		protected VespucciTransformationInput(
+				URI qvtoUri, EObject modelContent) {
+			this.qvtoUri = qvtoUri;
+			this.modelContent = modelContent;
+		}
+		
+		/**
+		 * @return The URI to the QVTO transformation code.
+		 */
+		public URI getQvtoUri() {
+			return qvtoUri;
+		}
+		
+		/**
+		 * @return The model content to transform.
+		 */
+		public List<EObject> getModelContentAsList() {
+			final List<EObject> result = new ArrayList<EObject>();
+			result.add(modelContent);
+			return result;
+		}
+	}
 }
