@@ -33,6 +33,8 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -194,7 +196,7 @@ public class Resolver {
 		return true;
 	}
 
-	private static String resolveFullyQualifiedClassName(final Object javaElement) {
+	static String resolveFullyQualifiedClassName(final Object javaElement) {
 		String classname;
 
 		if (javaElement instanceof IMethod) {
@@ -306,38 +308,9 @@ public class Resolver {
 	 * @return Returns the name for the given element.
 	 */
 	public static String getElementNameFromObject(final Object element) {
-		if (element instanceof IProject) {
-			return ((IProject) element).getName();
-		} else if (element instanceof IPackageFragment) {
-			final IPackageFragment pkg = (IPackageFragment) element;
-			if (pkg.isDefaultPackage()) {
-				return DEFAULT_PACKAGE;
-			} else {
-				return ((IPackageFragment) element).getElementName();
-			}
-		} else if (element instanceof IPackageFragmentRoot) {
-			return ((IPackageFragmentRoot) element).getElementName();
-		} else if (element instanceof ICompilationUnit) {
-			final ICompilationUnit cU = (ICompilationUnit) element;
-			return Resolver.resolveFullyQualifiedClassName(cU);
-		} else if (element instanceof IType) {
-			final IType type = (IType) element;
-			return type.getFullyQualifiedName();
-		} else if (element instanceof IField) {
-			return Resolver.resolveFullyQualifiedClassName(element) + "." + ((IField) element).getElementName();
-		} else if (element instanceof IMethod) {
-			return Resolver.resolveFullyQualifiedClassName(element) + "." + ((IMethod) element).getElementName();
-		} else if (element instanceof ISourceAttribute) {
-			return ((ISourceAttribute) element).getSourceFileName().toString();
-		} else if (element instanceof IClassFile) {
-			return ((IClassFile) element).getElementName();
-		} else if (element instanceof IFile) {
-			return ((IFile) element).getName();
-		} else if (element instanceof IFolder) {
-			return ((IFolder) element).getName();
-		} else {
-			throw new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", element));
-		}
+		IVisitable visitable = VisitableCaster.toVisitable(element);
+		
+		return new ElementNameVisitor().getElementName(visitable);
 	}
 
 	/**
