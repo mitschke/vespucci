@@ -500,7 +500,7 @@ public class PrologFileCreator {
 			return "";
 		}
 
-		final String dependencySuffix = String.format("('%s', %s, %s, [], %s, [], %s).\n", diagramFileName, dependencyCounter,
+		final String dependencySuffix = String.format("('%s', %s, %s, [], %s, [], [%s]).\n", diagramFileName, dependencyCounter,
 				getEnsembleName(source), getEnsembleName(target), connection.getName());
 		if (connection instanceof Outgoing) {
 			transactionSB.append("outgoing").append(dependencySuffix);

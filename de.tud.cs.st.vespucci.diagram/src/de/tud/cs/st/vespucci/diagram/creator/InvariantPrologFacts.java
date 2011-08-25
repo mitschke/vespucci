@@ -66,11 +66,12 @@ public class InvariantPrologFacts {
 
 		// TODO What does the third parameter mean (The one between 'Name' and 'Query')? Please
 		// document and extend pl-comment...
-		strBuilder.append("%ensemble(File, Name, Query, SubEnsembles) :- Definition of an ensemble.\n");
-		strBuilder.append("%\tFile - The simple file name in which the ensemble is defined. (e.g., 'Flashcards.sad')\n");
+		strBuilder.append("%ensemble(File, Name, Ensemble Parameter, Query, SubEnsembles) :- Definition of an ensemble\n");
+		strBuilder.append("%\tFile - The simple file name in which the ensemble is defined (e.g., 'Flashcards.sad')\n");
 		strBuilder.append("%\tName - Name of the ensemble\n");
+		strBuilder.append("%\tEnsemble Parameter - Parameter of the ensemble\n");
 		strBuilder.append("%\tQuery - Query that determines which source elements belong to the ensemble\n");
-		strBuilder.append("%\tSubEnsembles - List of all sub ensembles of this ensemble.\n");
+		strBuilder.append("%\tSubEnsembles - List of all sub ensembles of this ensemble\n");
 		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
 		return strBuilder.toString();
 	}
@@ -86,13 +87,15 @@ public class InvariantPrologFacts {
 		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
 
 		// TODO What does the 4th and 6th parameter mean? Please document and extend pl-comment...
-		strBuilder.append("%DEPENDENCY(File, ID, SourceE, TargetE, Type) :- Definition of a dependency between two ensembles.\n");
+		strBuilder.append("%DEPENDENCY(File, ID, SourceE, SourceE Parameter, TargetE, TargetE Parameter, Type) :- Definition of a dependency between two ensembles.\n");
 		strBuilder
 				.append("%\tDEPENDENCY - The type of the dependency. Possible values: outgoing, incoming, expected, not_allowed\n");
-		strBuilder.append("%\tFile - The simple file name in which the dependency is defined. (e.g., 'Flashcards.sad')\n");
+		strBuilder.append("%\tFile - The simple file name in which the dependency is defined (e.g., 'Flashcards.sad')\n");
 		strBuilder.append("%\tID - An ID identifying the dependency\n");
 		strBuilder.append("%\tSourceE - The source ensemble\n");
+		strBuilder.append("%\tSourceE Parameter - Parameter of the source ensemble\n");
 		strBuilder.append("%\tTargetE - The target ensemble\n");
+		strBuilder.append("%\tTargetE Parameter - Parameter of the target ensemble\n");
 		strBuilder.append("%\tRelation classifier - "
 				+ "Kinds of uses-relation between source and target ensemble (all, field_access, method_call,...)\n");
 		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
