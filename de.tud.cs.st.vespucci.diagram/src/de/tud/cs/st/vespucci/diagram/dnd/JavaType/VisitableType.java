@@ -5,8 +5,8 @@ import org.eclipse.jdt.core.IType;
 public class VisitableType implements IVisitable {
 	private IType project;
 
-	public VisitableType(IType project) {
-		this.project = project;
+	public VisitableType(Object project) {
+		this.project = (IType)project;
 	}
 
 	@Override

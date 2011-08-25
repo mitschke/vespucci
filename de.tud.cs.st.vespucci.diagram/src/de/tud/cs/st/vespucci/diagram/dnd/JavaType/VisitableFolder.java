@@ -5,8 +5,8 @@ import org.eclipse.core.resources.IFolder;
 public class VisitableFolder implements IVisitable {
 	private IFolder project;
 
-	public VisitableFolder(IFolder project) {
-		this.project = project;
+	public VisitableFolder(Object project) {
+		this.project = (IFolder)project;
 	}
 
 	@Override

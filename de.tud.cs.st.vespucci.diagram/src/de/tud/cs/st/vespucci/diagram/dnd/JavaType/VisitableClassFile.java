@@ -5,8 +5,8 @@ import org.eclipse.jdt.core.IClassFile;
 public class VisitableClassFile implements IVisitable {
 	private IClassFile project;
 
-	public VisitableClassFile(IClassFile project) {
-		this.project = project;
+	public VisitableClassFile(Object project) {
+		this.project = (IClassFile)project;
 	}
 
 	@Override

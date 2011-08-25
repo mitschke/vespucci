@@ -5,8 +5,8 @@ import org.eclipse.core.resources.IFile;
 public class VisitableFile implements IVisitable {
 	private IFile project;
 
-	public VisitableFile(IFile project) {
-		this.project = project;
+	public VisitableFile(Object project) {
+		this.project = (IFile)project;
 	}
 
 	@Override

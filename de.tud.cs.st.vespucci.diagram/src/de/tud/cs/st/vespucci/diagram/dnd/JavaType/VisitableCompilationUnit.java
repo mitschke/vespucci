@@ -5,8 +5,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 public class VisitableCompilationUnit implements IVisitable {
 	private ICompilationUnit project;
 
-	public VisitableCompilationUnit(ICompilationUnit project) {
-		this.project = project;
+	public VisitableCompilationUnit(Object project) {
+		this.project = (ICompilationUnit)project;
 	}
 
 	@Override

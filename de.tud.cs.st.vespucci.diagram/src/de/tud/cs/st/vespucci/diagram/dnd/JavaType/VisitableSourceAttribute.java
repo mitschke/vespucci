@@ -5,8 +5,8 @@ import org.eclipse.jdt.core.util.ISourceAttribute;
 public class VisitableSourceAttribute implements IVisitable {
 	private ISourceAttribute project;
 
-	public VisitableSourceAttribute(ISourceAttribute project) {
-		this.project = project;
+	public VisitableSourceAttribute(Object project) {
+		this.project = (ISourceAttribute)project;
 	}
 
 	@Override

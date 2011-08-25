@@ -10,8 +10,10 @@ import org.eclipse.jdt.core.JavaModelException;
 import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
-public class PackageNameVisitor extends AbstractVisitor {
-	public String getFullyQualifiedPackageName(Object object) {
+public class ClassNameVisitor extends AbstractVisitor {
+	private static final String JAVA_FILE_ENDING = ".java";
+	
+	public String getFullyQualifiedClassName(Object object) {
 		if (object instanceof IVisitable) {
 			return (String)((IVisitable)object).accept(this);
 		} else {
@@ -20,36 +22,38 @@ public class PackageNameVisitor extends AbstractVisitor {
 	}
 	
 	@Override
-	public Object visit(IPackageFragment packageFragment) {
-		return packageFragment.isDefaultPackage() ?  "" : packageFragment.getElementName();
-	}
-	
-	@Override
 	public Object visit(IMethod method) {
-		return visit(method.getCompilationUnit());
+		return method.getDeclaringType().getFullyQualifiedName();
 	}
 	
 	@Override
 	public Object visit(IField field) {
-		return visit(field.getCompilationUnit());
+		return field.getDeclaringType().getFullyQualifiedName();
 	}
 	
 	@Override
 	public Object visit(IType type) {
-		return visit(type.getCompilationUnit());
+		return type.getFullyQualifiedName();
 	}
 	
 	@Override
 	public Object visit(ICompilationUnit compilationUnit) {
-		IPackageDeclaration[] declarations;
-		try {
-			declarations = compilationUnit.getPackageDeclarations();
-			
-			return declarations.length > 0 ?
-					declarations[0].getElementName().trim() :
-					"";
-		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException((String.format("Failed to resolve package of [%s]", compilationUnit)), e);
+		return
+			prependPackageName(
+					removeJavaFileEnding(compilationUnit.getElementName()),
+					compilationUnit);
+	}
+	
+	private String removeJavaFileEnding(String className) {
+		if (className.toLowerCase().endsWith(JAVA_FILE_ENDING)) {
+			return className.substring(0, className.length() - JAVA_FILE_ENDING.length());
+		} else {
+			return className;
 		}
+	}
+	
+	private String prependPackageName(final String className, final Object javaElement) {
+		final String fqPackageName = Resolver.resolveFullyQualifiedPackageName(javaElement);
+		return fqPackageName.equals("") ? className : fqPackageName + "." + className;
 	}
 }

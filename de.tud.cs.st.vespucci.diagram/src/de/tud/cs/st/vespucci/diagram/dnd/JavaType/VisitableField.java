@@ -5,8 +5,8 @@ import org.eclipse.jdt.core.IField;
 public class VisitableField implements IVisitable {
 	private IField project;
 
-	public VisitableField(IField project) {
-		this.project = project;
+	public VisitableField(Object project) {
+		this.project = (IField)project;
 	}
 
 	@Override

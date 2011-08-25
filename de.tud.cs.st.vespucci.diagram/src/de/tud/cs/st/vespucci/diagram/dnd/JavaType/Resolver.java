@@ -164,33 +164,9 @@ public class Resolver {
 	}
 
 	static String resolveFullyQualifiedClassName(final Object javaElement) {
-		String classname;
-
-		if (javaElement instanceof IMethod) {
-			return ((IMethod) javaElement).getDeclaringType().getFullyQualifiedName();
-		} else if (javaElement instanceof IField) {
-			return ((IField) javaElement).getDeclaringType().getFullyQualifiedName();
-		} else if (javaElement instanceof IType) {
-			return ((IType) javaElement).getFullyQualifiedName();
-		} else if (javaElement instanceof ICompilationUnit) {
-			classname = ((ICompilationUnit) javaElement).getElementName();
-		} else {
-			throw new VespucciIllegalArgumentException(String.format("Could not resolve class name for given argument [%s].",
-					javaElement));
-		}
-
-		// trim java file ending
-		if (classname.toLowerCase().endsWith(DOT_JAVA)) {
-			classname = classname.substring(0, classname.length() - DOT_JAVA.length());
-		}
-
-		// add package name at beginning
-		final String fqPackageName = resolveFullyQualifiedPackageName(javaElement);
-		if (fqPackageName.equals("")) {
-			return classname;
-		} else {
-			return fqPackageName + "." + classname;
-		}
+		IVisitable visitable = VisitableCaster.toVisitable(javaElement);
+		
+		return new ClassNameVisitor().getFullyQualifiedClassName(visitable);
 	}
 
 	/**

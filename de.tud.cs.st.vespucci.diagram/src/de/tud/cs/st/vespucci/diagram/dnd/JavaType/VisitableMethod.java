@@ -5,8 +5,8 @@ import org.eclipse.jdt.core.IMethod;
 public class VisitableMethod implements IVisitable {
 	private IMethod project;
 
-	public VisitableMethod(IMethod project) {
-		this.project = project;
+	public VisitableMethod(Object project) {
+		this.project = (IMethod)project;
 	}
 
 	@Override

@@ -5,8 +5,8 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 public class VisitablePackageFragmentRoot implements IVisitable {
 	private IPackageFragmentRoot project;
 
-	public VisitablePackageFragmentRoot(IPackageFragmentRoot project) {
-		this.project = project;
+	public VisitablePackageFragmentRoot(Object project) {
+		this.project = (IPackageFragmentRoot)project;
 	}
 
 	@Override
