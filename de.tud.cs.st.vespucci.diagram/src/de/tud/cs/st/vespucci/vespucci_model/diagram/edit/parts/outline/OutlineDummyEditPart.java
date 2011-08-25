@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Artem Vovk
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -38,13 +37,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
 import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.Style;
 import org.eclipse.gmf.runtime.notation.View;
-import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
 import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -54,21 +51,20 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
 /**
  * OutlineEditPart for dummy object
  * 
- * @author a_vovk
+ * @author Artem Vovk
  * 
  */
 public class OutlineDummyEditPart extends TreeEditPart {
 
 	private static final String ENSEMBLE_IMAGE = "icons/outline/Dummy.gif";
 
-	public OutlineDummyEditPart(Object model) {
+	public OutlineDummyEditPart(final Object model) {
 		super(model);
 	}
 
 	@Override
 	protected Image getImage() {
-		ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin
-				.getBundledImageDescriptor(ENSEMBLE_IMAGE);
+		final ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin.getBundledImageDescriptor(ENSEMBLE_IMAGE);
 
 		return imageDescriptor.createImage();
 	}
@@ -76,12 +72,11 @@ public class OutlineDummyEditPart extends TreeEditPart {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<?> getModelChildren() {
-		Object model = getModel();
+		final Object model = getModel();
 
 		if (model instanceof NodeImpl) {
-			NodeImpl node = (NodeImpl) getModel();
-			EList<View> out = filterConnectionsFromConnectorImpl(node
-					.getSourceEdges());
+			final NodeImpl node = (NodeImpl) getModel();
+			final EList<View> out = node.getSourceEdges();
 			out.addAll(node.getTargetEdges());
 			return out;
 		}
@@ -89,35 +84,15 @@ public class OutlineDummyEditPart extends TreeEditPart {
 		return Collections.EMPTY_LIST;
 	}
 
-	/**
-	 * Filter connections for EdgeImpl: delete ConnectorImpl
-	 * 
-	 * @param connections
-	 *            connections to filter
-	 * @return filtered connections
-	 */
-	private EList<View> filterConnectionsFromConnectorImpl(
-			EList<View> connections) {
-		EList<View> out = new BasicEList<View>();
-		for (View i : connections) {
-			if (!(i instanceof ConnectorImpl)) {
-				out.add(i);
-			}
-		}
-		return out;
-	}
-
 	@Override
-	protected void handleNotificationEvent(Notification event) {
-		Object notifier = event.getNotifier();
-		if (NotationPackage.Literals.VIEW__ELEMENT == event.getFeature() ||
-				((NotationPackage.Literals.VIEW__TARGET_EDGES == event.getFeature() ||
-				NotationPackage.Literals.VIEW__SOURCE_EDGES == event.getFeature()) &&
-				event.getEventType() != Notification.REMOVE)) {
-			
+	protected void handleNotificationEvent(final Notification event) {
+		final Object notifier = event.getNotifier();
+		if (NotationPackage.Literals.VIEW__ELEMENT == event.getFeature()
+				|| ((NotationPackage.Literals.VIEW__TARGET_EDGES == event.getFeature() || NotationPackage.Literals.VIEW__SOURCE_EDGES == event
+						.getFeature()) && event.getEventType() != Notification.REMOVE)) {
+
 			reactivateSemanticElement();
-		}else if (event.getNotifier() == getSemanticElement()
-				|| notifier instanceof Style) {
+		} else if (event.getNotifier() == getSemanticElement() || notifier instanceof Style) {
 			refresh();
 		}
 	}

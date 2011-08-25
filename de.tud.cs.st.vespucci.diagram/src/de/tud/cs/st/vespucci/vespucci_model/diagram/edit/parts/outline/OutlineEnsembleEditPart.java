@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Artem Vovk
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -49,7 +48,6 @@ import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.Style;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.impl.BasicCompartmentImpl;
-import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -59,37 +57,36 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
 /**
  * OutlineEditPart for Ensemble Object
  * 
- * @author a_vovk
+ * @author Artem Vovk
  * 
  */
 public class OutlineEnsembleEditPart extends TreeEditPart {
 
 	private static final String IMAGE = "icons/outline/Ensemble.gif";
 
-	private Set<EObject> objectListenningTo = new HashSet<EObject>();
+	private final Set<EObject> objectListenningTo = new HashSet<EObject>();
 
-	public OutlineEnsembleEditPart(Object model) {
+	public OutlineEnsembleEditPart(final Object model) {
 		super(model);
 	}
 
 	@Override
 	protected Image getImage() {
-		ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin
-				.getBundledImageDescriptor(IMAGE);
+		final ImageDescriptor imageDescriptor = VespucciDiagramEditorPlugin.getBundledImageDescriptor(IMAGE);
 		return imageDescriptor.createImage();
 	}
 
 	@Override
 	public void activate() {
-		if (isActive())
+		if (isActive()) {
 			return;
+		}
 		super.activate();
-		View view = (View) getModel();
+		final View view = (View) getModel();
 		// update Compartments
-		for (Object i : view.getPersistedChildren()) {
+		for (final Object i : view.getPersistedChildren()) {
 			if (i instanceof BasicCompartmentImpl) {
-				getDiagramEventBroker().addNotificationListener(
-						(BasicCompartmentImpl) i, this);
+				getDiagramEventBroker().addNotificationListener((BasicCompartmentImpl) i, this);
 				objectListenningTo.add((BasicCompartmentImpl) i);
 			}
 		}
@@ -97,11 +94,12 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 
 	@Override
 	public void deactivate() {
-		if (!isActive())
+		if (!isActive()) {
 			return;
-		Iterator<EObject> itr = objectListenningTo.iterator();
+		}
+		final Iterator<EObject> itr = objectListenningTo.iterator();
 		while (itr.hasNext()) {
-			EObject eObj = itr.next();
+			final EObject eObj = itr.next();
 			getDiagramEventBroker().removeNotificationListener(eObj, this);
 			itr.remove();
 		}
@@ -111,22 +109,20 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<?> getModelChildren() {
-		Object model = getModel();
+		final Object model = getModel();
 
 		if (model instanceof ShapeImpl) {
-			ShapeImpl shape = (ShapeImpl) getModel();
+			final ShapeImpl shape = (ShapeImpl) getModel();
 
-			EList<?> shapes = shape.getPersistedChildren();
-			EList<View> out = new BasicEList<View>();
+			final EList<?> shapes = shape.getPersistedChildren();
+			final EList<View> out = new BasicEList<View>();
 
-			out.addAll(filterConnectionsFromConnectorImpl(shape
-					.getSourceEdges()));
-			out.addAll(filterConnectionsFromConnectorImpl(shape
-					.getTargetEdges()));
+			out.addAll(shape.getSourceEdges());
+			out.addAll(shape.getTargetEdges());
 
-			for (Object i : shapes) {
+			for (final Object i : shapes) {
 				if (i instanceof BasicCompartmentImpl) {
-					BasicCompartmentImpl bci = (BasicCompartmentImpl) i;
+					final BasicCompartmentImpl bci = (BasicCompartmentImpl) i;
 					out.addAll(bci.getPersistedChildren());
 					return out;
 				}
@@ -138,31 +134,12 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 		return Collections.EMPTY_LIST;
 	}
 
-	/**
-	 * Filter connections for EdgeImpl: delete ConnectorImpl
-	 * 
-	 * @param connections
-	 *            connections to filter
-	 * @return filtered connections
-	 */
-	private EList<View> filterConnectionsFromConnectorImpl(
-			EList<View> connections) {
-		EList<View> out = new BasicEList<View>();
-		for (View i : connections) {
-			if (!(i instanceof ConnectorImpl)) {
-				out.add(i);
-			}
-		}
-		return out;
-	}
-
 	@Override
-	protected void handleNotificationEvent(Notification event) {
-		Object notifier = event.getNotifier();
+	protected void handleNotificationEvent(final Notification event) {
+		final Object notifier = event.getNotifier();
 		if (NotationPackage.Literals.VIEW__ELEMENT == event.getFeature()) {
 			reactivateSemanticElement();
-		} else if (event.getNotifier() == getSemanticElement()
-				|| notifier instanceof Style) {
+		} else if (event.getNotifier() == getSemanticElement() || notifier instanceof Style) {
 			refresh();
 		}
 	}
