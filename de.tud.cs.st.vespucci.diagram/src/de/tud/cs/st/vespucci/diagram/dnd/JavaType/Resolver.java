@@ -37,28 +37,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClassFile;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
-import org.eclipse.ui.statushandlers.StatusManager;
-
-import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * This class provides static methods to resolve information from Vespucci diagrams mainly used to
@@ -68,6 +55,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
  * @author Benjamin Lück
  * @author Alexander Weitzmann
  * @author Thomas Schulz
+ * @author Dominic Scheurer
  */
 public class Resolver {
 
@@ -94,47 +82,12 @@ public class Resolver {
 	 * Getting the package name (FQN) from a IMethod, IPackageFragment, ICompilationUnit, IField and
 	 * IType.
 	 * 
-	 * @param o
+	 * @param element
 	 *            The named IJavaElement.
 	 * @return Returns the name of the package.
 	 */
-	public static String resolveFullyQualifiedPackageName(final Object o) {
-		// package...
-		if (o instanceof IPackageFragment) {
-			final IPackageFragment pkg = (IPackageFragment) o;
-			if (pkg.isDefaultPackage()) {
-				return "";
-			} else {
-				return ((IPackageFragment) o).getElementName();
-			}
-		} else {
-			// class, method, field, type
-			ICompilationUnit cUnit;
-
-			if (o instanceof IMethod) {
-				cUnit = ((IMethod) o).getCompilationUnit();
-			} else if (o instanceof IField) {
-				cUnit = ((IField) o).getCompilationUnit();
-			} else if (o instanceof ICompilationUnit) {
-				cUnit = (ICompilationUnit) o;
-			} else if (o instanceof IType) {
-				cUnit = ((IType) o).getCompilationUnit();
-			} else {
-				throw new VespucciIllegalArgumentException(String.format("Given argument [%s] is not supported.", o));
-			}
-
-			IPackageDeclaration[] declarations;
-			try {
-				declarations = cUnit.getPackageDeclarations();
-				if (declarations.length > 0) {
-					return declarations[0].getElementName().trim();
-				} else {
-					return "";
-				}
-			} catch (final JavaModelException e) {
-				throw new VespucciUnexpectedException((String.format("Failed to resolve package of [%s]", cUnit)), e);
-			}
-		}
+	public static String resolveFullyQualifiedPackageName(final Object element) {		
+		return new PackageNameVisitor().getFullyQualifiedPackageName(element);
 	}
 
 	/**
@@ -142,86 +95,19 @@ public class Resolver {
 	 * @return Returns true, only if all given objects can be resolved.
 	 */
 	public static boolean isResolvable(final Collection<Object> objects) {
-
+		final ResolvableVisitor resolvableVisitor = new ResolvableVisitor();
+		
 		for (final Object object : objects) {
-
-			try {
-
-				if (object instanceof IPackageFragment) {
-					continue;
-				} else if (object instanceof IPackageFragmentRoot) {
-					continue;
-				} else if (object instanceof ICompilationUnit) {
-					final ICompilationUnit cU = (ICompilationUnit) object;
-					if (cU.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						return false;
-					} else {
-						continue;
-					}
-				} else if (object instanceof IMethod) {
-					final IMethod m = (IMethod) object;
-					if (m.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						return false;
-					} else {
-						continue;
-					}
-				} else if (object instanceof IField) {
-					final IField f = (IField) object;
-					if (f.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						return false;
-					} else {
-						continue;
-					}
-				} else if (object instanceof IType) {
-					final IType t = (IType) object;
-					if (t.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						return false;
-					} else {
-						continue;
-					}
-				} else {
-					return false;
-				}
-
-			} catch (final JavaModelException e) {
-				throw new VespucciIllegalArgumentException((String.format("Given argument [%s] is not supported.", object)), e);
-
-			} catch (final NullPointerException e) {
-				throw new VespucciUnexpectedException((String.format("No underlying resource for [%s]", object)), e);
+			if (!resolvableVisitor.isResolvable(object)) {
+				return false;
 			}
-
 		}
+		
 		return true;
 	}
 
-	private static String resolveFullyQualifiedClassName(final Object javaElement) {
-		String classname;
-
-		if (javaElement instanceof IMethod) {
-			return ((IMethod) javaElement).getDeclaringType().getFullyQualifiedName();
-		} else if (javaElement instanceof IField) {
-			return ((IField) javaElement).getDeclaringType().getFullyQualifiedName();
-		} else if (javaElement instanceof IType) {
-			return ((IType) javaElement).getFullyQualifiedName();
-		} else if (javaElement instanceof ICompilationUnit) {
-			classname = ((ICompilationUnit) javaElement).getElementName();
-		} else {
-			throw new VespucciIllegalArgumentException(String.format("Could not resolve class name for given argument [%s].",
-					javaElement));
-		}
-
-		// trim java file ending
-		if (classname.toLowerCase().endsWith(DOT_JAVA)) {
-			classname = classname.substring(0, classname.length() - DOT_JAVA.length());
-		}
-
-		// add package name at beginning
-		final String fqPackageName = resolveFullyQualifiedPackageName(javaElement);
-		if (fqPackageName.equals("")) {
-			return classname;
-		} else {
-			return fqPackageName + "." + classname;
-		}
+	static String resolveFullyQualifiedClassName(final Object javaElement) {		
+		return new ClassNameVisitor().getFullyQualifiedClassName(javaElement);
 	}
 
 	/**
@@ -305,39 +191,8 @@ public class Resolver {
 	 * @param element
 	 * @return Returns the name for the given element.
 	 */
-	public static String getElementNameFromObject(final Object element) {
-		if (element instanceof IProject) {
-			return ((IProject) element).getName();
-		} else if (element instanceof IPackageFragment) {
-			final IPackageFragment pkg = (IPackageFragment) element;
-			if (pkg.isDefaultPackage()) {
-				return DEFAULT_PACKAGE;
-			} else {
-				return ((IPackageFragment) element).getElementName();
-			}
-		} else if (element instanceof IPackageFragmentRoot) {
-			return ((IPackageFragmentRoot) element).getElementName();
-		} else if (element instanceof ICompilationUnit) {
-			final ICompilationUnit cU = (ICompilationUnit) element;
-			return Resolver.resolveFullyQualifiedClassName(cU);
-		} else if (element instanceof IType) {
-			final IType type = (IType) element;
-			return type.getFullyQualifiedName();
-		} else if (element instanceof IField) {
-			return Resolver.resolveFullyQualifiedClassName(element) + "." + ((IField) element).getElementName();
-		} else if (element instanceof IMethod) {
-			return Resolver.resolveFullyQualifiedClassName(element) + "." + ((IMethod) element).getElementName();
-		} else if (element instanceof ISourceAttribute) {
-			return ((ISourceAttribute) element).getSourceFileName().toString();
-		} else if (element instanceof IClassFile) {
-			return ((IClassFile) element).getElementName();
-		} else if (element instanceof IFile) {
-			return ((IFile) element).getName();
-		} else if (element instanceof IFolder) {
-			return ((IFolder) element).getName();
-		} else {
-			throw new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", element));
-		}
+	public static String getElementNameFromObject(final Object element) {		
+		return new ElementNameVisitor().getElementName(element);
 	}
 
 	/**
