@@ -47,4 +47,9 @@ public class ClassNameVisitor extends AbstractVisitor {
 		final String fqPackageName = Resolver.resolveFullyQualifiedPackageName(javaElement);
 		return fqPackageName.equals("") ? className : fqPackageName + "." + className;
 	}
+
+	@Override
+	public Object getDefaultResultObject() {
+		return null;
+	}
 }

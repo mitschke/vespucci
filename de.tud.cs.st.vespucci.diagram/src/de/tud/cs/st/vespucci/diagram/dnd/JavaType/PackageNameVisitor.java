@@ -47,4 +47,9 @@ public class PackageNameVisitor extends AbstractVisitor {
 			throw new VespucciUnexpectedException((String.format("Failed to resolve package of [%s]", compilationUnit)), e);
 		}
 	}
+
+	@Override
+	public Object getDefaultResultObject() {
+		return null;
+	}
 }

@@ -13,6 +13,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.util.ISourceAttribute;
 
 public class ElementNameVisitor extends AbstractVisitor {
+	private static final String DEFAULT_PACKAGE = "Default Package";
+	
 	public String getElementName(Object object) {
 		return (String)super.visit(object);
 	}
@@ -23,7 +25,7 @@ public class ElementNameVisitor extends AbstractVisitor {
 	}
 	@Override
 	public Object visit(IPackageFragment packageFragment) {
-		return packageFragment.isDefaultPackage() ? "" : packageFragment.getElementName();
+		return packageFragment.isDefaultPackage() ? DEFAULT_PACKAGE : packageFragment.getElementName();
 	}
 	@Override
 	public Object visit(IPackageFragmentRoot packageFragmentRoot) {
@@ -60,5 +62,10 @@ public class ElementNameVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(IFolder folder) {
 		return folder.getName();
+	}
+
+	@Override
+	public Object getDefaultResultObject() {
+		return null;
 	}		
 }

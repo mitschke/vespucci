@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
@@ -46,7 +45,6 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
-import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
 /**
@@ -97,55 +95,14 @@ public class Resolver {
 	 * @return Returns true, only if all given objects can be resolved.
 	 */
 	public static boolean isResolvable(final Collection<Object> objects) {
-
+		final ResolvableVisitor resolvableVisitor = new ResolvableVisitor();
+		
 		for (final Object object : objects) {
-
-			try {
-
-				if (object instanceof IPackageFragment) {
-					continue;
-				} else if (object instanceof IPackageFragmentRoot) {
-					continue;
-				} else if (object instanceof ICompilationUnit) {
-					final ICompilationUnit cU = (ICompilationUnit) object;
-					if (cU.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						return false;
-					} else {
-						continue;
-					}
-				} else if (object instanceof IMethod) {
-					final IMethod m = (IMethod) object;
-					if (m.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						return false;
-					} else {
-						continue;
-					}
-				} else if (object instanceof IField) {
-					final IField f = (IField) object;
-					if (f.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						return false;
-					} else {
-						continue;
-					}
-				} else if (object instanceof IType) {
-					final IType t = (IType) object;
-					if (t.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
-						return false;
-					} else {
-						continue;
-					}
-				} else {
-					return false;
-				}
-
-			} catch (final JavaModelException e) {
-				throw new VespucciIllegalArgumentException((String.format("Given argument [%s] is not supported.", object)), e);
-
-			} catch (final NullPointerException e) {
-				throw new VespucciUnexpectedException((String.format("No underlying resource for [%s]", object)), e);
+			if (!resolvableVisitor.isResolvable(object)) {
+				return false;
 			}
-
 		}
+		
 		return true;
 	}
 

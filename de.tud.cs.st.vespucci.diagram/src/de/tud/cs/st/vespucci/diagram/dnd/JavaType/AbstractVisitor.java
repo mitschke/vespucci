@@ -17,7 +17,9 @@ import org.eclipse.jdt.core.util.ISourceAttribute;
 
 import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 
-public class AbstractVisitor implements IEclipseObjectVisitor {
+public abstract class AbstractVisitor implements IEclipseObjectVisitor {
+	
+	public abstract Object getDefaultResultObject();
 	
 	public Object visit(Object element) {
 		try {
@@ -48,57 +50,65 @@ public class AbstractVisitor implements IEclipseObjectVisitor {
 	
 	@Override
 	public Object visit(IProject project) {
-		throw getIllegalArgumentException(project);
+		return doDefaultAction(project);
 	}
 
 	@Override
 	public Object visit(IPackageFragment packageFragment) {
-		throw getIllegalArgumentException(packageFragment);
+		return doDefaultAction(packageFragment);
 	}
 
 	@Override
 	public Object visit(IPackageFragmentRoot packageFragmentRoot) {
-		throw getIllegalArgumentException(packageFragmentRoot);
+		return doDefaultAction(packageFragmentRoot);
 	}
 
 	@Override
 	public Object visit(ICompilationUnit compilationUnit) {
-		throw getIllegalArgumentException(compilationUnit);
+		return doDefaultAction(compilationUnit);
 	}
 
 	@Override
 	public Object visit(IType type) {
-		throw getIllegalArgumentException(type);
+		return doDefaultAction(type);
 	}
 
 	@Override
 	public Object visit(IField field) {
-		throw getIllegalArgumentException(field);
+		return doDefaultAction(field);
 	}
 
 	@Override
 	public Object visit(IMethod method) {
-		throw getIllegalArgumentException(method);
+		return doDefaultAction(method);
 	}
 
 	@Override
 	public Object visit(ISourceAttribute sourceAttribute) {
-		throw getIllegalArgumentException(sourceAttribute);
+		return doDefaultAction(sourceAttribute);
 	}
 
 	@Override
 	public Object visit(IClassFile classFile) {
-		throw getIllegalArgumentException(classFile);
+		return doDefaultAction(classFile);
 	}
 
 	@Override
 	public Object visit(IFile file) {
-		throw getIllegalArgumentException(file);
+		return doDefaultAction(file);
 	}
 
 	@Override
 	public Object visit(IFolder folder) {
-		throw getIllegalArgumentException(folder);
+		return doDefaultAction(folder);
+	}
+	
+	private Object doDefaultAction(Object inputObject) {
+		if (getDefaultResultObject() != null) {
+			return getDefaultResultObject();
+		} else {
+			throw getIllegalArgumentException(inputObject);
+		}
 	}
 	
 	private RuntimeException getIllegalArgumentException(Object argument) {
