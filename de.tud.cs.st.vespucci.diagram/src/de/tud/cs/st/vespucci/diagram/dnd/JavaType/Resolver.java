@@ -96,47 +96,14 @@ public class Resolver {
 	 * Getting the package name (FQN) from a IMethod, IPackageFragment, ICompilationUnit, IField and
 	 * IType.
 	 * 
-	 * @param o
+	 * @param element
 	 *            The named IJavaElement.
 	 * @return Returns the name of the package.
 	 */
-	public static String resolveFullyQualifiedPackageName(final Object o) {
-		// package...
-		if (o instanceof IPackageFragment) {
-			final IPackageFragment pkg = (IPackageFragment) o;
-			if (pkg.isDefaultPackage()) {
-				return "";
-			} else {
-				return ((IPackageFragment) o).getElementName();
-			}
-		} else {
-			// class, method, field, type
-			ICompilationUnit cUnit;
-
-			if (o instanceof IMethod) {
-				cUnit = ((IMethod) o).getCompilationUnit();
-			} else if (o instanceof IField) {
-				cUnit = ((IField) o).getCompilationUnit();
-			} else if (o instanceof ICompilationUnit) {
-				cUnit = (ICompilationUnit) o;
-			} else if (o instanceof IType) {
-				cUnit = ((IType) o).getCompilationUnit();
-			} else {
-				throw new VespucciIllegalArgumentException(String.format("Given argument [%s] is not supported.", o));
-			}
-
-			IPackageDeclaration[] declarations;
-			try {
-				declarations = cUnit.getPackageDeclarations();
-				if (declarations.length > 0) {
-					return declarations[0].getElementName().trim();
-				} else {
-					return "";
-				}
-			} catch (final JavaModelException e) {
-				throw new VespucciUnexpectedException((String.format("Failed to resolve package of [%s]", cUnit)), e);
-			}
-		}
+	public static String resolveFullyQualifiedPackageName(final Object element) {
+		IVisitable visitable = VisitableCaster.toVisitable(element);
+		
+		return new PackageNameVisitor().getFullyQualifiedPackageName(visitable);
 	}
 
 	/**
