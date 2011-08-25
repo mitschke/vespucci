@@ -3,22 +3,13 @@ package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageDeclaration;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
-import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
-import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
 public class ClassNameVisitor extends AbstractVisitor {
 	private static final String JAVA_FILE_ENDING = ".java";
 	
 	public String getFullyQualifiedClassName(Object object) {
-		if (object instanceof IVisitable) {
-			return (String)((IVisitable)object).accept(this);
-		} else {
-			throw new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", object));
-		}
+		return (String)super.visit(object);
 	}
 	
 	@Override

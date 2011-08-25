@@ -12,15 +12,9 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.util.ISourceAttribute;
 
-import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
-
-public class ElementNameVisitor implements IEclipseObjectVisitor {
+public class ElementNameVisitor extends AbstractVisitor {
 	public String getElementName(Object object) {
-		if (object instanceof IVisitable) {
-			return (String)((IVisitable)object).accept(this);
-		} else {
-			throw new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", object));
-		}
+		return (String)super.visit(object);
 	}
 	
 	@Override

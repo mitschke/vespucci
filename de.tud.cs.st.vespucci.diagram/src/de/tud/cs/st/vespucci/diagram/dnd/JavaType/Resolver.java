@@ -33,34 +33,21 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
-import org.eclipse.ui.statushandlers.StatusManager;
-
 import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
  * This class provides static methods to resolve information from Vespucci diagrams mainly used to
@@ -70,6 +57,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
  * @author Benjamin Lück
  * @author Alexander Weitzmann
  * @author Thomas Schulz
+ * @author Dominic Scheurer
  */
 public class Resolver {
 
@@ -100,10 +88,8 @@ public class Resolver {
 	 *            The named IJavaElement.
 	 * @return Returns the name of the package.
 	 */
-	public static String resolveFullyQualifiedPackageName(final Object element) {
-		IVisitable visitable = VisitableCaster.toVisitable(element);
-		
-		return new PackageNameVisitor().getFullyQualifiedPackageName(visitable);
+	public static String resolveFullyQualifiedPackageName(final Object element) {		
+		return new PackageNameVisitor().getFullyQualifiedPackageName(element);
 	}
 
 	/**
@@ -163,10 +149,8 @@ public class Resolver {
 		return true;
 	}
 
-	static String resolveFullyQualifiedClassName(final Object javaElement) {
-		IVisitable visitable = VisitableCaster.toVisitable(javaElement);
-		
-		return new ClassNameVisitor().getFullyQualifiedClassName(visitable);
+	static String resolveFullyQualifiedClassName(final Object javaElement) {		
+		return new ClassNameVisitor().getFullyQualifiedClassName(javaElement);
 	}
 
 	/**
@@ -250,10 +234,8 @@ public class Resolver {
 	 * @param element
 	 * @return Returns the name for the given element.
 	 */
-	public static String getElementNameFromObject(final Object element) {
-		IVisitable visitable = VisitableCaster.toVisitable(element);
-		
-		return new ElementNameVisitor().getElementName(visitable);
+	public static String getElementNameFromObject(final Object element) {		
+		return new ElementNameVisitor().getElementName(element);
 	}
 
 	/**
