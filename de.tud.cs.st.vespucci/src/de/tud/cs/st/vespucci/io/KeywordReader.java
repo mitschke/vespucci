@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  License (BSD Style License):
  *   Software Engineering
  *   Department of Computer Science

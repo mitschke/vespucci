@@ -1,4 +1,4 @@
-﻿/** License (BSD Style License):
+/** License (BSD Style License):
  *  Copyright (c) 2011
  *  Software Engineering
  *  Department of Computer Science
