@@ -77,7 +77,7 @@ public class VespucciVersion_20110601 extends VespucciVersionTemplate {
 	@Override
 	public Date getCreationDate() {
 		Calendar creationCalendar = Calendar.getInstance();
-		creationCalendar.set(2011, 6, 1);
+		creationCalendar.set(2011, 5, 1);
 		return creationCalendar.getTime();
 	}
 
