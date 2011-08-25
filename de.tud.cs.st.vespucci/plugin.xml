@@ -47,12 +47,5 @@
             class="de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage"
             genModel="model/vespucci.genmodel"/>
    </extension>
-   <extension
-         point="org.eclipse.m2m.qvt.oml.runtime.qvtTransformation">
-      <transformation
-            file="transformations/migrate_v0_to_v1.qvto"
-            id="transformations.migrate_v0_to_v1">
-      </transformation>
-   </extension>
 
 </plugin>

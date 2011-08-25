@@ -173,8 +173,7 @@ public interface Connection extends EObject {
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Original Source</em>' reference isn't clear,
-	 * there really should be more of a description here...
+	 * Seems to be more of an history of previous targets. Used for collapse.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Original Source</em>' reference list.
@@ -189,8 +188,7 @@ public interface Connection extends EObject {
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Original Target</em>' reference isn't clear,
-	 * there really should be more of a description here...
+	 * Seems to be more of an history of previous targets. Used for collapse.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Original Target</em>' reference list.

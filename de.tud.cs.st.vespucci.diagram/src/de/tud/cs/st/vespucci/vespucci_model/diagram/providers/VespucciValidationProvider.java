@@ -34,6 +34,8 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.providers;
 
+import java.util.ResourceBundle;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
@@ -43,8 +45,10 @@ import org.eclipse.emf.validation.IValidationContext;
 import org.eclipse.emf.validation.model.IClientSelector;
 import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
+import org.osgi.framework.FrameworkUtil;
 
-import de.tud.cs.st.vespucci.io.ValidDependenciesReader;
+import de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries;
+import de.tud.cs.st.vespucci.io.KeywordReader;
 
 /**
  * @generated
@@ -144,6 +148,7 @@ public class VespucciValidationProvider {
 	 * @generated
 	 */
 	public static class Adapter5 extends AbstractModelConstraint {
+		private static ResourceBundle pluginProperties = ResourceBundle.getBundle("plugin");
 
 		/**
 		 * Checks if given dependency kind for constrain is valid.
@@ -162,7 +167,13 @@ public class VespucciValidationProvider {
 			/**
 			 * All valid keywords for dependencies.
 			 */
-			String[] validDependencies = new ValidDependenciesReader().getKeywords();
+			
+			/**
+			 * Valid names for dependencies read from the resource-file.
+			 */
+			String[] validDependencies = KeywordReader.readAndParseResourceFile(
+					FrameworkUtil.getBundle(Adapter5.class).getSymbolicName(),
+					pluginProperties.getString("validDependenciesFile"));
 			
 			String[] dependencies = context.split(", ");
 			boolean valid = false;

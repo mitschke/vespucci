@@ -99,10 +99,10 @@ import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.diagram.converter.DiagramConverter;
+import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
-import de.tud.cs.st.vespucci.diagram.supports.EPService;
+import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
@@ -351,9 +351,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	public void doSave(IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
 
-		DiagramConverter converter = new DiagramConverter();
+		PrologFileCreator converter = new PrologFileCreator();
 		try {
-			converter.ConvertDiagramToProlog(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
+			converter.createPrologFileFromDiagram(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
 		} catch (FileNotFoundException e) {
 			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
 			StatusManager.getManager().handle(is, StatusManager.SHOW);
@@ -586,8 +586,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		VespucciMouseListener vml = new VespucciMouseListener();
 		(((DiagramEditPart) root).getFigure()).addMouseListener(vml);
 
-		List<EditPart> shapeList = EPService.getAllShapesInSideCompartment(root);
-		Set<ConnectionEditPart> conSet = EPService.getAllConnectionsToAndFromShapeList(shapeList);
+		List<EditPart> shapeList = EditPartService.getAllShapesInSideCompartment(root);
+		Set<ConnectionEditPart> conSet = EditPartService.getAllConnectionsToAndFromShapeList(shapeList);
 
 		// int idx = 1;
 		for (Object ee : conSet) {

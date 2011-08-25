@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uriMap:MappingContainer xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:uriMap="http:///www.eclipse.org/m2m/qvt/oml/MModelUriMap/1.0.0">
+  <mapping sourceURI="http://vespucci.editor" targetURI="platform:/resource/de.tud.cs.st.vespucci.versioning/model/vespucci-origin.ecore"/>
+  <mapping sourceURI="http://vespucci.editor/2011-06-01" targetURI="platform:/resource/de.tud.cs.st.vespucci.versioning/model/vespucci-2011-06-01.ecore"/>
+</uriMap:MappingContainer>

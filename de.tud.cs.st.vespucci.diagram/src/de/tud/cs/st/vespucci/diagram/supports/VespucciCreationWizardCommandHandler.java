@@ -1,7 +1,6 @@
-/*
+﻿/*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -48,18 +47,19 @@ import org.eclipse.ui.PlatformUI;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizard;
 
 /**
- * Command handler is used to call up wizard creating new Vespucci diagram.
- *
+ * Command handler is used to call up a wizard creating a new Vespucci diagram.
+ * 
  * @author Tam-Minh Nguyen
  */
 public class VespucciCreationWizardCommandHandler implements IHandler {
 
-	public Object execute(ExecutionEvent event) /* throws ExecutionException */{
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+	@Override
+	public Object execute(final ExecutionEvent event) {
+		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 
-		VespucciCreationWizard wizard = new VespucciCreationWizard();
+		final VespucciCreationWizard wizard = new VespucciCreationWizard();
 
-		ISelection selection = window.getSelectionService().getSelection();
+		final ISelection selection = window.getSelectionService().getSelection();
 
 		if (selection instanceof IStructuredSelection) {
 			wizard.init(window.getWorkbench(), (IStructuredSelection) selection);
@@ -67,8 +67,8 @@ public class VespucciCreationWizardCommandHandler implements IHandler {
 			wizard.init(window.getWorkbench(), StructuredSelection.EMPTY);
 		}
 
-		Shell parent = window.getShell();
-		WizardDialog dialog = new WizardDialog(parent, wizard);
+		final Shell parent = window.getShell();
+		final WizardDialog dialog = new WizardDialog(parent, wizard);
 		dialog.create();
 		dialog.open();
 
@@ -78,6 +78,7 @@ public class VespucciCreationWizardCommandHandler implements IHandler {
 	/**
 	 * Always enabled each time the plug-in started up.
 	 */
+	@Override
 	public boolean isEnabled() {
 		return true;
 	}
@@ -85,18 +86,22 @@ public class VespucciCreationWizardCommandHandler implements IHandler {
 	/**
 	 * Always handled each time the plug-in started up.
 	 */
+	@Override
 	public boolean isHandled() {
 		return true;
 	}
 
-	public void removeHandlerListener(IHandlerListener handlerListener) {
+	@Override
+	public void removeHandlerListener(final IHandlerListener handlerListener) {
 		// nothing to do
 	}
 
-	public void addHandlerListener(IHandlerListener handlerListener) {
+	@Override
+	public void addHandlerListener(final IHandlerListener handlerListener) {
 		// nothing to do
 	}
 
+	@Override
 	public void dispose() {
 		// nothing to do
 	}
