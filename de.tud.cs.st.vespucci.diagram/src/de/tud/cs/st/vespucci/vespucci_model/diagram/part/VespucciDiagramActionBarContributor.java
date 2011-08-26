@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -43,6 +42,8 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 
+import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
+
 /**
  * @generated
  */
@@ -51,6 +52,7 @@ public class VespucciDiagramActionBarContributor extends DiagramActionBarContrib
 	/**
 	 * @generated
 	 */
+	@Override
 	protected Class getEditorClass() {
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditor.class;
 	}
@@ -58,6 +60,7 @@ public class VespucciDiagramActionBarContributor extends DiagramActionBarContrib
 	/**
 	 * @generated
 	 */
+	@Override
 	protected String getEditorId() {
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditor.ID;
 	}
@@ -66,24 +69,31 @@ public class VespucciDiagramActionBarContributor extends DiagramActionBarContrib
 	 * remove the compartment icon from the menu-bar
 	 * 
 	 * @generated NOT
-	 * @author a_vovk
+	 * @author Artem Vovk
+	 * @author Alexander Weitzmann
+	 * @author Thomas Schulz
 	 */
-	public void init(IActionBars bars, IWorkbenchPage page) {
+	@Override
+	public void init(final IActionBars bars, final IWorkbenchPage page) {
 		super.init(bars, page);
 		// print preview
-		IMenuManager fileMenu = bars.getMenuManager().findMenuUsingPath(IWorkbenchActionConstants.M_FILE);
-		assert fileMenu != null;
-		fileMenu.remove("pageSetupAction"); //$NON-NLS-1$
-		IMenuManager editMenu = bars.getMenuManager().findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
-		assert editMenu != null;
-		if (editMenu.find("validationGroup") == null) { //$NON-NLS-1$
-			editMenu.add(new GroupMarker("validationGroup")); //$NON-NLS-1$
+		final IMenuManager fileMenu = bars.getMenuManager().findMenuUsingPath(IWorkbenchActionConstants.M_FILE);
+		if (fileMenu == null) {
+			throw new VespucciUnexpectedException(String.format("FileMenu [%s] must not be null.", fileMenu));
 		}
-		IAction validateAction = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.ValidateAction(page);
-		editMenu.appendToGroup("validationGroup", validateAction); //$NON-NLS-1$
+		fileMenu.remove("pageSetupAction");
+		final IMenuManager editMenu = bars.getMenuManager().findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
+		if (editMenu == null) {
+			throw new VespucciUnexpectedException(String.format("EditMenu [%s] must not be null.", editMenu));
+		}
+		if (editMenu.find("validationGroup") == null) {
+			editMenu.add(new GroupMarker("validationGroup"));
+		}
+		final IAction validateAction = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.ValidateAction(page);
+		editMenu.appendToGroup("validationGroup", validateAction);
 
 		// remove compartmentMenu
-		IToolBarManager toolBarManager = bars.getToolBarManager();
+		final IToolBarManager toolBarManager = bars.getToolBarManager();
 		toolBarManager.remove("compartmentMenu");
 		toolBarManager.remove("diagramFilterActionMenu");
 	}
