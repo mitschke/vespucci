@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Artem Vovk
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -43,7 +42,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
 
 /**
  * Abstract EditPart that represents a connection in outlineview
- * @author a_vovk
+ * @author Artem Vovk
  *
  */
 public abstract class OutlineConnectionEditPart extends TreeEditPart {

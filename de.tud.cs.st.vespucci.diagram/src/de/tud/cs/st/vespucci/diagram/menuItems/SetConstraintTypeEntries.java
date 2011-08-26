@@ -56,7 +56,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/grayed.gif"));
+						"/icons/checkboxes/grayed.gif"));
 				return img.getImageData();
 			}
 		};
@@ -66,7 +66,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checked.gif"));
+						"/icons/checkboxes/checked.gif"));
 				return img.getImageData();
 			}
 		};
@@ -76,7 +76,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/unchecked.gif"));
+						"/icons/checkboxes/unchecked.gif"));
 				return img.getImageData();
 			}
 		};

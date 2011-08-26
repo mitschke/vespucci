@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Artem Vovk
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -37,7 +36,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 /**
  * OutlineInAndOutSourceConnectionEditPart
  * 
- * @author a_vovk
+ * @author Artem Vovk
  * 
  */
 public class OutlineInAndOutSourceConnectionEditPart extends
