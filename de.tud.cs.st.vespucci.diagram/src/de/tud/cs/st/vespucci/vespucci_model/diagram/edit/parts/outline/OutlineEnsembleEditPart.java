@@ -48,6 +48,7 @@ import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.Style;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.impl.BasicCompartmentImpl;
+import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -117,8 +118,8 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 			final EList<?> shapes = shape.getPersistedChildren();
 			final EList<View> out = new BasicEList<View>();
 
-			out.addAll(shape.getSourceEdges());
-			out.addAll(shape.getTargetEdges());
+			out.addAll(excludeConnectorImpl(shape.getSourceEdges()));
+			out.addAll(excludeConnectorImpl(shape.getTargetEdges()));
 
 			for (final Object i : shapes) {
 				if (i instanceof BasicCompartmentImpl) {
@@ -142,6 +143,16 @@ public class OutlineEnsembleEditPart extends TreeEditPart {
 		} else if (event.getNotifier() == getSemanticElement() || notifier instanceof Style) {
 			refresh();
 		}
+	}
+	
+	private static EList<View> excludeConnectorImpl(EList<View> connections) {
+		EList<View> result = new BasicEList<View>();
+		for (View conn : connections) {
+			if (!(conn instanceof ConnectorImpl)) {
+				result.add(conn);
+			}
+		}
+		return result;
 	}
 
 }

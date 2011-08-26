@@ -37,11 +37,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
 import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.Style;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.gmf.runtime.notation.impl.ConnectorImpl;
 import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -76,8 +78,8 @@ public class OutlineDummyEditPart extends TreeEditPart {
 
 		if (model instanceof NodeImpl) {
 			final NodeImpl node = (NodeImpl) getModel();
-			final EList<View> out = node.getSourceEdges();
-			out.addAll(node.getTargetEdges());
+			final EList<View> out = excludeConnectorImpl(node.getSourceEdges());
+			out.addAll(excludeConnectorImpl(node.getTargetEdges()));
 			return out;
 		}
 
@@ -95,6 +97,16 @@ public class OutlineDummyEditPart extends TreeEditPart {
 		} else if (event.getNotifier() == getSemanticElement() || notifier instanceof Style) {
 			refresh();
 		}
+	}
+
+	private static EList<View> excludeConnectorImpl(EList<View> connections) {
+		EList<View> result = new BasicEList<View>();
+		for (View conn : connections) {
+			if (!(conn instanceof ConnectorImpl)) {
+				result.add(conn);
+			}
+		}
+		return result;
 	}
 
 }
