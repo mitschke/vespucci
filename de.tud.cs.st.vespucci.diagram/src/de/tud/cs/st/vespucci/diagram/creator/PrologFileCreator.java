@@ -225,8 +225,8 @@ public class PrologFileCreator {
 					ensembleFacts.append("ensemble");
 				}
 
-				// fix: inconsistent newline encodings
-				final String query = ensemble.getQuery().replaceAll("\n", " ");
+				//TODO: This is a workaround - invent a platform independent solution
+				final String query = ensemble.getQuery().replaceAll("\\p{Space}", " ");
 
 				ensembleFacts.append(String.format("('%s', %s, %s, (%s), [%s]).\n", diagramFileName,
 						createEnsembleDescriptor(ensemble), createEnsembleParameters(ensemble), query,
@@ -500,7 +500,7 @@ public class PrologFileCreator {
 			return "";
 		}
 
-		final String dependencySuffix = String.format("('%s', %s, %s, [], %s, [], %s).\n", diagramFileName, dependencyCounter,
+		final String dependencySuffix = String.format("('%s', %s, %s, [], %s, [], [%s]).\n", diagramFileName, dependencyCounter,
 				getEnsembleName(source), getEnsembleName(target), connection.getName());
 		if (connection instanceof Outgoing) {
 			transactionSB.append("outgoing").append(dependencySuffix);
