@@ -93,13 +93,6 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	}
 
 	/**
-	 * @generated NOT
-	 */
-	protected IPropertySourceProvider getPropertySourceProvider() {
-		return null;
-	}
-
-	/**
 	 * Modify/unwrap selection.
 	 * 
 	 * @generated

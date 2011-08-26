@@ -283,13 +283,13 @@
          <propertySection
             id="property.section.query" 
             tab="property.tab.query"
-            filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
+            filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleFilter"
             class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection">
          </propertySection>
          <propertySection
             id="property.section.description" 
             tab="property.tab.description"
-            filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"
+            filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleFilter"
             class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleDescriptionPropertySection">
          </propertySection>
       </propertySections>
