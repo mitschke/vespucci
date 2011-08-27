@@ -45,7 +45,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 
-import de.tud.cs.st.vespucci.diagram.dnd.JavaType.ResolverNEW;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
 /**
  * A Class which provides static tools for supporting DnD.
@@ -68,8 +68,8 @@ public class QueryBuilder {
 
 	private static String createClassQuery(final Object draggedElement, final String key) {
 		String classQuery;
-		final String packagename = ResolverNEW.resolveFullyQualifiedPackageName(draggedElement);
-		final String classname = ResolverNEW.resolveClassName(draggedElement);
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
+		final String classname = Resolver.resolveClassName(draggedElement);
 
 		classQuery = String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
 
@@ -78,17 +78,17 @@ public class QueryBuilder {
 
 	private static String createFieldQuery(final Object draggedElement) {
 		final IField iField = (IField) draggedElement;
-		final String packagename = ResolverNEW.resolveFullyQualifiedPackageName(draggedElement);
-		final String classname = ResolverNEW.resolveClassName(draggedElement);
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
+		final String classname = Resolver.resolveClassName(draggedElement);
 		final String fieldname = iField.getElementName();
-		final String type = ResolverNEW.getFullyQualifiedFieldTypeName(iField);
+		final String type = Resolver.getFullyQualifiedFieldTypeName(iField);
 
 		return String.format("%s('%s','%s','%s','%s')", FIELD, packagename, classname, fieldname, type);
 	}
 
 	private static List<String> createJARQuery(final Object draggedElement) {
 		final LinkedList<String> queryList = new LinkedList<String>();
-		final List<String> packages = ResolverNEW.getPackagesFromPFR((IPackageFragmentRoot) draggedElement);
+		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) draggedElement);
 		for (final String s : packages) {
 			final String jarQuery = String.format("%s('%s')", PACKAGE, s);
 			queryList.add(jarQuery);
@@ -98,11 +98,11 @@ public class QueryBuilder {
 
 	private static String createMethodQuery(final Object draggedElement) {
 		final IMethod iMethod = (IMethod) draggedElement;
-		final String packagename = ResolverNEW.resolveFullyQualifiedPackageName(draggedElement);
-		final String classname = ResolverNEW.resolveClassName(draggedElement);
-		final String methodname = ResolverNEW.getMethodName(iMethod);
-		final List<String> para = ResolverNEW.getParameterTypesFromMethod(iMethod);
-		final String returntype = ResolverNEW.resolveReturnType(iMethod);
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
+		final String classname = Resolver.resolveClassName(draggedElement);
+		final String methodname = Resolver.getMethodName(iMethod);
+		final List<String> para = Resolver.getParameterTypesFromMethod(iMethod);
+		final String returntype = Resolver.resolveReturnType(iMethod);
 
 		final StringBuffer sbPara = new StringBuffer();
 		sbPara.append("[");
@@ -133,7 +133,7 @@ public class QueryBuilder {
 		for (final Object key : extendedData.keySet()) {
 			final Object o = extendedData.get(key);
 
-			final String name = ResolverNEW.getElementNameFromObject(o);
+			final String name = Resolver.getElementNameFromObject(o);
 			if (!name.equals("")) {
 				return name;
 			}
@@ -142,7 +142,7 @@ public class QueryBuilder {
 	}
 
 	private static String createPackageQuery(final Object draggedElement) {
-		return String.format("%s('%s')", PACKAGE, ResolverNEW.resolveFullyQualifiedPackageName(draggedElement));
+		return String.format("%s('%s')", PACKAGE, Resolver.resolveFullyQualifiedPackageName(draggedElement));
 	}
 
 	/**
@@ -234,8 +234,8 @@ public class QueryBuilder {
 	private static String createTypeQuery(final Object draggedElement, final String key) {
 		final IType type = (IType) draggedElement;
 		final ICompilationUnit cU = type.getCompilationUnit();
-		final String packagename = ResolverNEW.resolveFullyQualifiedPackageName(cU);
-		final String classname = ResolverNEW.resolveClassName(type);
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(cU);
+		final String classname = Resolver.resolveClassName(type);
 		return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
 	}
 

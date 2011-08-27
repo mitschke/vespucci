@@ -57,7 +57,7 @@ import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
  * @author Thomas Schulz
  * @author Dominic Scheurer
  */
-public class ResolverNEW {
+public class Resolver {
 
 	private static final String CONSTRUCTOR = "<init>";
 
@@ -67,7 +67,7 @@ public class ResolverNEW {
 
 	private static final String DEFAULT_PACKAGE = "Default Package";
 
-	private ResolverNEW() {
+	private Resolver() {
 	}
 
 	private static String getFullyQualifiedName(final String type, final IType jdtDeclaringType) {
