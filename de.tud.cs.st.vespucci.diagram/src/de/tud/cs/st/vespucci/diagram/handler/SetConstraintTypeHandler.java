@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.diagram.handler;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -54,6 +55,8 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.SetConnectionT
  * @version 0.5
  */
 public final class SetConstraintTypeHandler extends AbstractHandler {
+	private static final String COMMAND_LABEL = "Change dependency constraint";
+	
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final SetConstraintTypeParameter typeParams = new SetConstraintTypeParameter();
@@ -81,9 +84,12 @@ public final class SetConstraintTypeHandler extends AbstractHandler {
 			}
 		}
 
-		final SetConnectionTypeCommand cmd = new SetConnectionTypeCommand(selectedConnections, setType);
+		CompoundCommand cmd = new CompoundCommand(COMMAND_LABEL);
+		for(ConnectionEditPart conn : selectedConnections){
+			cmd.append(new SetConnectionTypeCommand(conn, setType));
+		}
+		
 		selectedConnections[0].getEditingDomain().getCommandStack().execute(cmd);
-
 		return null;
 	}
 }
