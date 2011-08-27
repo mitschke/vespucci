@@ -16,13 +16,15 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.util.ISourceAttribute;
 
 import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
+import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
 public abstract class AbstractVisitor implements IEclipseObjectVisitor {
-	
+
 	public abstract Object getDefaultResultObject();
-	
+
 	public Object visit(Object element) {
 		try {
+			
 			final Class[] elementInterfaces = element.getClass().getInterfaces();
 			
 			if (elementInterfaces.length == 0) {
@@ -45,9 +47,11 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 			throw getIllegalArgumentException(element);
 		} catch (InvocationTargetException exception) {
 			throw getIllegalArgumentException(element);
+		} catch (NullPointerException exception) {
+			throw new VespucciUnexpectedException("Method name must not be null.", exception);
 		}
 	}
-	
+
 	@Override
 	public Object visit(IProject project) {
 		return doDefaultAction(project);
@@ -102,7 +106,7 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 	public Object visit(IFolder folder) {
 		return doDefaultAction(folder);
 	}
-	
+
 	private Object doDefaultAction(Object inputObject) {
 		if (getDefaultResultObject() != null) {
 			return getDefaultResultObject();
@@ -110,7 +114,7 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 			throw getIllegalArgumentException(inputObject);
 		}
 	}
-	
+
 	private RuntimeException getIllegalArgumentException(Object argument) {
 		return new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", argument));
 	}

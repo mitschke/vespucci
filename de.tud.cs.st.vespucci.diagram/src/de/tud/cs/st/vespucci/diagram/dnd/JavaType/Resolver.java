@@ -45,6 +45,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
+
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
 /**
@@ -61,11 +62,11 @@ public class Resolver {
 
 	private static final String CONSTRUCTOR = "<init>";
 
-	private static final String DOT_JAVA = ".java";
-
-	private static final String JAR_ENDING = ".jar";
-
-	private static final String DEFAULT_PACKAGE = "Default Package";
+	/**
+	 * This flag is needed in order to handle resolving packages from JAR-files individually
+	 * TODO Find a nicer way to handle JAR-files with reflections and the visitor pattern
+	 */
+	private static boolean resolvingJARFile = false;
 
 	private Resolver() {
 	}
@@ -86,8 +87,15 @@ public class Resolver {
 	 *            The named IJavaElement.
 	 * @return Returns the name of the package.
 	 */
-	public static String resolveFullyQualifiedPackageName(final Object element) {		
-		return new PackageNameVisitor().getFullyQualifiedPackageName(element);
+	public static String resolveFullyQualifiedPackageName(final Object element) {
+		final PackageNameVisitor pnv = new PackageNameVisitor();
+
+		if (element instanceof IPackageFragmentRoot) {
+			// XXX: hack to support content of JAR-files
+			return (String) pnv.visit((IPackageFragmentRoot) element);
+		}
+
+		return pnv.getFullyQualifiedPackageName(element);
 	}
 
 	/**
@@ -96,17 +104,26 @@ public class Resolver {
 	 */
 	public static boolean isResolvable(final Collection<Object> objects) {
 		final ResolvableVisitor resolvableVisitor = new ResolvableVisitor();
-		
+
 		for (final Object object : objects) {
-			if (!resolvableVisitor.isResolvable(object)) {
+
+			if (object instanceof IPackageFragmentRoot) {
+				// XXX: hack to support content of JAR-files
+				// Because this method is always called when one drags a JAR-file
+				// from the Project-Explorer to the Vespucci-Workspace, the flag
+				// can safely be alternated here.
+				resolvingJARFile = true;
+				continue;
+			} else if (!resolvableVisitor.isResolvable(object)) {
+				resolvingJARFile = false;
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
-	static String resolveFullyQualifiedClassName(final Object javaElement) {		
+	static String resolveFullyQualifiedClassName(final Object javaElement) {
 		return new ClassNameVisitor().getFullyQualifiedClassName(javaElement);
 	}
 
@@ -191,8 +208,15 @@ public class Resolver {
 	 * @param element
 	 * @return Returns the name for the given element.
 	 */
-	public static String getElementNameFromObject(final Object element) {		
-		return new ElementNameVisitor().getElementName(element);
+	public static String getElementNameFromObject(final Object element) {
+		final ElementNameVisitor env = new ElementNameVisitor();
+
+		if (element instanceof IPackageFragmentRoot) {
+			// XXX: hack to support content of JAR-files
+			return (String) env.visit((IPackageFragmentRoot) element);
+		}
+
+		return env.getElementName(element);
 	}
 
 	/**
@@ -210,11 +234,16 @@ public class Resolver {
 			final IJavaElement[] children = packageRoot.getChildren();
 
 			for (final IJavaElement childPackage : children) {
-				final String fqPackageName = resolveFullyQualifiedPackageName(childPackage).trim();
 
-				if (((IPackageFragment) childPackage).isDefaultPackage()) {
-					packages.add("");
+				final String fqPackageName;
+
+				if (resolvingJARFile) {
+					// XXX: hack to support content of JAR-files
+					fqPackageName = getFQPackageNameforJARFiles(childPackage);
+				} else {
+					fqPackageName = resolveFullyQualifiedPackageName(childPackage).trim();
 				}
+
 				if (fqPackageName.length() > 0) {
 					packages.add(fqPackageName);
 				}
@@ -224,6 +253,25 @@ public class Resolver {
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Failed to get child packages from package root [%s].",
 					packageRoot), e);
+		}
+	}
+
+	/**
+	 * This is the same source code as in the PackageNameVisitor class.
+	 * 
+	 * @param childPackage
+	 * @return the fully qualified package name
+	 */
+	private static String getFQPackageNameforJARFiles(IJavaElement childPackage) {
+		if (childPackage instanceof IPackageFragment) {
+			final IPackageFragment pkg = (IPackageFragment) childPackage;
+			if (pkg.isDefaultPackage()) {
+				return "";
+			} else {
+				return ((IPackageFragment) childPackage).getElementName();
+			}
+		} else {
+			throw new VespucciUnexpectedException("CRAP");
 		}
 	}
 
