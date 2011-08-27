@@ -33,7 +33,7 @@ public class ElementNameVisitor extends AbstractVisitor {
 	}
 	@Override
 	public Object visit(ICompilationUnit compilationUnit) {
-		return Resolver.resolveFullyQualifiedClassName(compilationUnit);
+		return ResolverNEW.resolveFullyQualifiedClassName(compilationUnit);
 	}
 	@Override
 	public Object visit(IType type) {
@@ -41,11 +41,11 @@ public class ElementNameVisitor extends AbstractVisitor {
 	}
 	@Override
 	public Object visit(IField field) {
-		return Resolver.resolveFullyQualifiedClassName(field) + "." + field.getElementName();
+		return ResolverNEW.resolveFullyQualifiedClassName(field) + "." + field.getElementName();
 	}
 	@Override
 	public Object visit(IMethod method) {
-		return Resolver.resolveFullyQualifiedClassName(method) + "." + method.getElementName();
+		return ResolverNEW.resolveFullyQualifiedClassName(method) + "." + method.getElementName();
 	}
 	@Override
 	public Object visit(ISourceAttribute sourceAttribute) {

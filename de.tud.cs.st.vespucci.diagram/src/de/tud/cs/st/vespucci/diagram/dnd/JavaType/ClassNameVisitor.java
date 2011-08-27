@@ -44,7 +44,7 @@ public class ClassNameVisitor extends AbstractVisitor {
 	}
 	
 	private String prependPackageName(final String className, final Object javaElement) {
-		final String fqPackageName = Resolver.resolveFullyQualifiedPackageName(javaElement);
+		final String fqPackageName = ResolverNEW.resolveFullyQualifiedPackageName(javaElement);
 		return fqPackageName.equals("") ? className : fqPackageName + "." + className;
 	}
 
