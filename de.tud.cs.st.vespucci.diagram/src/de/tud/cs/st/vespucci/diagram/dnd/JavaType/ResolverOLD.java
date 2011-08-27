@@ -75,7 +75,7 @@ public class ResolverOLD {
 
 	private static final String DOT_JAVA = ".java";
 
-	private static final String JAR_ENDING = ".jar";
+	private static final String DOT_JAR = ".jar";
 
 	private static final String DEFAULT_PACKAGE = "Default Package";
 
@@ -153,28 +153,28 @@ public class ResolverOLD {
 					continue;
 				} else if (object instanceof ICompilationUnit) {
 					final ICompilationUnit cU = (ICompilationUnit) object;
-					if (cU.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
+					if (cU.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR)) {
 						return false;
 					} else {
 						continue;
 					}
 				} else if (object instanceof IMethod) {
 					final IMethod m = (IMethod) object;
-					if (m.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
+					if (m.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR)) {
 						return false;
 					} else {
 						continue;
 					}
 				} else if (object instanceof IField) {
 					final IField f = (IField) object;
-					if (f.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
+					if (f.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR)) {
 						return false;
 					} else {
 						continue;
 					}
 				} else if (object instanceof IType) {
 					final IType t = (IType) object;
-					if (t.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING)) {
+					if (t.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR)) {
 						return false;
 					} else {
 						continue;
