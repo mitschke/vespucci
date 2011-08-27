@@ -35,7 +35,7 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import de.tud.cs.st.vespucci.diagram.io.QueryKeywordReader;
+import de.tud.cs.st.vespucci.io.KeywordReader;
 
 /**
  * A Changed Copy of AbstractBasicTextPropertySection (org.eclipse.gmf.runtime.diagram
@@ -86,26 +86,12 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	 */
 	private final TextChangeHelper listener = new TextChangeHelper() {
 		private boolean textModified = false;
-
-		/**
-		 * Provides method for accessing the keywords
-		 */
-		private final QueryKeywordReader kwReader = new QueryKeywordReader();
-
-		/**
-		 * Keywords to be marked
-		 */
-		private final String[] keywords = kwReader.getKeywords();
-
+		
 		/**
 		 * Pattern to be used to match strings in query including the single quotes
 		 */
 		private static final String STRING_PATTERN = "'.+?'";
-
 		
-
-		
-
 		/**
 		 * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
 		 */

@@ -103,17 +103,18 @@ public class OutgoingCreateCommand extends EditElementCommand {
 	/**
 	 * @generated NOT
 	 * @author Artem Vovk
+	 * @return Returns result of execution.
+	 * @throws ExecutionException 
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		if (!canExecute()) {
-			throw new ExecutionException("Invalid arguments in create link command"); //$NON-NLS-1$
+			throw new ExecutionException("Invalid arguments in create link command");
 		}
 
 		de.tud.cs.st.vespucci.vespucci_model.Outgoing newElement = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
 				.createOutgoing();
 		getContainer().getTargetConnections().add(newElement);
-		// store source connections in Ensemble		
-		//getTarget().getSourceConnections().add(newElement);
+		
 		newElement.setSource(getSource());
 		newElement.setTarget(getTarget());
 		doConfigure(newElement, monitor, info);

@@ -5,14 +5,14 @@
     xmlns:gmfgen="http://www.eclipse.org/gmf/2009/GenModel" sameFileForDiagramAndModel="true"
     diagramFileExtension="sad"
     domainFileExtension="sam"
-    copyrightText=" License (BSD Style License):&#xD;&#xA;  Copyright (c) 2010&#xD;&#xA;  Author Tam-Minh Nguyen&#xD;&#xA;  Software Engineering&#xD;&#xA;  Department of Computer Science&#xD;&#xA;  Technische Universität Darmstadt&#xD;&#xA;  All rights reserved.&#xD;&#xA;&#xD;&#xA;  Redistribution and use in source and binary forms, with or without&#xD;&#xA;  modification, are permitted provided that the following conditions are met:&#xD;&#xA;&#xD;&#xA;  - Redistributions of source code must retain the above copyright notice,&#xD;&#xA;    this list of conditions and the following disclaimer.&#xD;&#xA;  - Redistributions in binary form must reproduce the above copyright notice,&#xD;&#xA;    this list of conditions and the following disclaimer in the documentation&#xD;&#xA;    and/or other materials provided with the distribution.&#xD;&#xA;  - Neither the name of the Software Engineering Group or Technische &#xD;&#xA;    Universität Darmstadt nor the names of its contributors may be used to &#xD;&#xA;    endorse or promote products derived from this software without specific &#xD;&#xA;    prior written permission.&#xD;&#xA;&#xD;&#xA;  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;&#xD;&#xA;  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&#xD;&#xA;  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&#xD;&#xA;  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE&#xD;&#xA;  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR&#xD;&#xA;  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF&#xD;&#xA;  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS&#xD;&#xA;  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN&#xD;&#xA;  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&#xD;&#xA;  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&#xD;&#xA;  POSSIBILITY OF SUCH DAMAGE.">
+    templateDirectory=""
+    copyrightText=" License (BSD Style License):&#xD;&#xA;  Copyright (c) 2011&#xD;&#xA;  Software Engineering&#xD;&#xA;  Department of Computer Science&#xD;&#xA;  Technische Universität Darmstadt&#xD;&#xA;  All rights reserved.&#xD;&#xA;&#xD;&#xA;  Redistribution and use in source and binary forms, with or without&#xD;&#xA;  modification, are permitted provided that the following conditions are met:&#xD;&#xA;&#xD;&#xA;  - Redistributions of source code must retain the above copyright notice,&#xD;&#xA;    this list of conditions and the following disclaimer.&#xD;&#xA;  - Redistributions in binary form must reproduce the above copyright notice,&#xD;&#xA;    this list of conditions and the following disclaimer in the documentation&#xD;&#xA;    and/or other materials provided with the distribution.&#xD;&#xA;  - Neither the name of the Software Engineering Group or Technische &#xD;&#xA;    Universität Darmstadt nor the names of its contributors may be used to &#xD;&#xA;    endorse or promote products derived from this software without specific &#xD;&#xA;    prior written permission.&#xD;&#xA;&#xD;&#xA;  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;&#xD;&#xA;  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&#xD;&#xA;  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&#xD;&#xA;  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE&#xD;&#xA;  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR&#xD;&#xA;  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF&#xD;&#xA;  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS&#xD;&#xA;  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN&#xD;&#xA;  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&#xD;&#xA;  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&#xD;&#xA;  POSSIBILITY OF SUCH DAMAGE.">
   <audits>
     <categories
         id="VespucciDiagramConstraintsID"
         name="Vespucci Diagram Constraints"
         description="All diagram related constraints for Vespucci Editor."
-        path="//@audits/@categories.0"
-        audits="//@audits/@rules.4"/>
+        path="//@audits/@categories.0"/>
     <categories
         id="EnsembleConstraintsID"
         name="All constraints about Ensemble."
@@ -21,7 +21,8 @@
     <categories
         id="ConnectionsConstraintsID"
         name="All constraints about Connections."
-        path="//@audits/@categories.0 //@audits/@categories.2"/>
+        path="//@audits/@categories.0 //@audits/@categories.2"
+        audits="//@audits/@rules.4"/>
     <rules
         name="ERROR if Ensemble name not NULL"
         id="EnsembleNameNotNullID"
@@ -29,7 +30,8 @@
         message="Ensemble name must be set!"
         category="//@audits/@categories.1">
       <target
-          xsi:type="gmfgen:GenDomainElementTarget">
+          xsi:type="gmfgen:GenDomainElementTarget"
+          contextSelector="//@audits/@clientContexts.0">
         <element
             href="vespucci.genmodel#//vespucci_model/Ensemble"/>
       </target>
@@ -80,17 +82,17 @@
         description="Dependencies must be derived from a set of valid keywords."
         id="DependencyInvalidID"
         rule="//@expressionProviders/@providers.1/@expressions.1"
-        message="Dependency is invalid."
-        category="//@audits/@categories.0">
+        message="Dependency kind is invalid."
+        category="//@audits/@categories.2">
       <target
-          xsi:type="gmfgen:GenDomainElementTarget"
+          xsi:type="gmfgen:GenDomainAttributeTarget"
           contextSelector="//@audits/@clientContexts.0">
-        <element
-            href="vespucci.genmodel#//vespucci_model/Connection"/>
+        <attribute
+            href="vespucci.genmodel#//vespucci_model/Connection/name"/>
       </target>
     </rules>
     <clientContexts
-        ruleTargets="//@audits/@rules.1/@target //@audits/@rules.2/@target //@audits/@rules.3/@target //@audits/@rules.4/@target"/>
+        ruleTargets="//@audits/@rules.0/@target //@audits/@rules.1/@target //@audits/@rules.2/@target //@audits/@rules.3/@target //@audits/@rules.4/@target"/>
   </audits>
   <diagram
       visualID="1000"
@@ -113,6 +115,7 @@
         visualID="3001"
         editPartClassName="Ensemble2EditPart"
         itemSemanticEditPolicyClassName="Ensemble2ItemSemanticEditPolicy"
+        notationViewFactoryClassName="EnsembleViewFactory"
         canonicalEditPolicyClassName="Ensemble2CanonicalEditPolicy"
         compartments="//@diagram/@compartments.2 //@diagram/@compartments.3"
         graphicalNodeEditPolicyClassName="Ensemble2GraphicalNodeEditPolicy"
@@ -139,6 +142,7 @@
           visualID="5006"
           editPartClassName="EnsembleName2EditPart"
           itemSemanticEditPolicyClassName="EnsembleName2ItemSemanticEditPolicy"
+          notationViewFactoryClassName="EnsembleNameViewFactory"
           elementIcon="true">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
@@ -156,7 +160,8 @@
       <labels
           visualID="5007"
           editPartClassName="EnsembleDescription2EditPart"
-          itemSemanticEditPolicyClassName="EnsembleDescription2ItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="EnsembleDescription2ItemSemanticEditPolicy"
+          notationViewFactoryClassName="EnsembleDescriptionViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -178,6 +183,7 @@
         visualID="3003"
         editPartClassName="Dummy2EditPart"
         itemSemanticEditPolicyClassName="Dummy2ItemSemanticEditPolicy"
+        notationViewFactoryClassName="DummyViewFactory"
         canonicalEditPolicyClassName="Dummy2CanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="Dummy2GraphicalNodeEditPolicy"
         createCommandClassName="Dummy2CreateCommand"
@@ -210,7 +216,8 @@
       <labels
           visualID="5005"
           editPartClassName="DummyName2EditPart"
-          itemSemanticEditPolicyClassName="DummyName2ItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="DummyName2ItemSemanticEditPolicy"
+          notationViewFactoryClassName="DummyNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -229,6 +236,7 @@
         visualID="2001"
         editPartClassName="EnsembleEditPart"
         itemSemanticEditPolicyClassName="EnsembleItemSemanticEditPolicy"
+        notationViewFactoryClassName="EnsembleViewFactory"
         canonicalEditPolicyClassName="EnsembleCanonicalEditPolicy"
         compartments="//@diagram/@compartments.0 //@diagram/@compartments.1"
         graphicalNodeEditPolicyClassName="EnsembleGraphicalNodeEditPolicy"
@@ -254,6 +262,7 @@
           visualID="5001"
           editPartClassName="EnsembleNameEditPart"
           itemSemanticEditPolicyClassName="EnsembleNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="EnsembleNameViewFactory"
           elementIcon="true">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
@@ -271,7 +280,8 @@
       <labels
           visualID="5008"
           editPartClassName="EnsembleDescriptionEditPart"
-          itemSemanticEditPolicyClassName="EnsembleDescriptionItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="EnsembleDescriptionItemSemanticEditPolicy"
+          notationViewFactoryClassName="EnsembleDescriptionViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -293,6 +303,7 @@
         visualID="2002"
         editPartClassName="DummyEditPart"
         itemSemanticEditPolicyClassName="DummyItemSemanticEditPolicy"
+        notationViewFactoryClassName="DummyViewFactory"
         canonicalEditPolicyClassName="DummyCanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="DummyGraphicalNodeEditPolicy"
         createCommandClassName="DummyCreateCommand">
@@ -324,7 +335,8 @@
       <labels
           visualID="5002"
           editPartClassName="DummyNameEditPart"
-          itemSemanticEditPolicyClassName="DummyNameItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="DummyNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="DummyNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -343,6 +355,7 @@
         visualID="4005"
         editPartClassName="IncomingEditPart"
         itemSemanticEditPolicyClassName="IncomingItemSemanticEditPolicy"
+        notationViewFactoryClassName="IncomingViewFactory"
         createCommandClassName="IncomingCreateCommand"
         reorientCommandClassName="IncomingReorientCommand">
       <diagramRunTimeClass
@@ -374,7 +387,8 @@
       <labels
           visualID="6005"
           editPartClassName="IncomingNameEditPart"
-          itemSemanticEditPolicyClassName="IncomingNameItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="IncomingNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="IncomingNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -403,6 +417,7 @@
         visualID="4003"
         editPartClassName="OutgoingEditPart"
         itemSemanticEditPolicyClassName="OutgoingItemSemanticEditPolicy"
+        notationViewFactoryClassName="OutgoingViewFactory"
         createCommandClassName="OutgoingCreateCommand"
         reorientCommandClassName="OutgoingReorientCommand">
       <diagramRunTimeClass
@@ -434,7 +449,8 @@
       <labels
           visualID="6003"
           editPartClassName="OutgoingNameEditPart"
-          itemSemanticEditPolicyClassName="OutgoingNameItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="OutgoingNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="OutgoingNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -464,6 +480,7 @@
         visualID="4001"
         editPartClassName="InAndOutEditPart"
         itemSemanticEditPolicyClassName="InAndOutItemSemanticEditPolicy"
+        notationViewFactoryClassName="InAndOutViewFactory"
         createCommandClassName="InAndOutCreateCommand"
         reorientCommandClassName="InAndOutReorientCommand">
       <diagramRunTimeClass
@@ -495,7 +512,8 @@
       <labels
           visualID="6001"
           editPartClassName="InAndOutNameEditPart"
-          itemSemanticEditPolicyClassName="InAndOutNameItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="InAndOutNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="InAndOutNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -524,6 +542,7 @@
         visualID="4004"
         editPartClassName="NotAllowedEditPart"
         itemSemanticEditPolicyClassName="NotAllowedItemSemanticEditPolicy"
+        notationViewFactoryClassName="NotAllowedViewFactory"
         createCommandClassName="NotAllowedCreateCommand"
         reorientCommandClassName="NotAllowedReorientCommand">
       <diagramRunTimeClass
@@ -555,7 +574,8 @@
       <labels
           visualID="6004"
           editPartClassName="NotAllowedNameEditPart"
-          itemSemanticEditPolicyClassName="NotAllowedNameItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="NotAllowedNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="NotAllowedNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -584,6 +604,7 @@
         visualID="4002"
         editPartClassName="ExpectedEditPart"
         itemSemanticEditPolicyClassName="ExpectedItemSemanticEditPolicy"
+        notationViewFactoryClassName="ExpectedViewFactory"
         createCommandClassName="ExpectedCreateCommand"
         reorientCommandClassName="ExpectedReorientCommand">
       <diagramRunTimeClass
@@ -615,7 +636,8 @@
       <labels
           visualID="6002"
           editPartClassName="ExpectedNameEditPart"
-          itemSemanticEditPolicyClassName="ExpectedNameItemSemanticEditPolicy">
+          itemSemanticEditPolicyClassName="ExpectedNameItemSemanticEditPolicy"
+          notationViewFactoryClassName="ExpectedNameViewFactory">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -644,6 +666,7 @@
         visualID="7001"
         editPartClassName="EnsembleEnsembleCompartmentEditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleCompartmentItemSemanticEditPolicy"
+        notationViewFactoryClassName="EnsembleEnsembleCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleCompartmentCanonicalEditPolicy"
         childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.1"
         title="EnsembleCompartment"
@@ -665,6 +688,7 @@
         visualID="7003"
         editPartClassName="EnsembleEnsembleDescriptionCompartmentEditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleDescriptionCompartmentItemSemanticEditPolicy"
+        notationViewFactoryClassName="EnsembleEnsembleDescriptionCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleDescriptionCompartmentCanonicalEditPolicy"
         title="EnsembleDescriptionCompartment"
         needsTitle="false"
@@ -680,6 +704,7 @@
         visualID="7002"
         editPartClassName="EnsembleEnsembleCompartment2EditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleCompartment2ItemSemanticEditPolicy"
+        notationViewFactoryClassName="EnsembleEnsembleCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleCompartment2CanonicalEditPolicy"
         childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.1"
         title="EnsembleCompartment"
@@ -701,6 +726,7 @@
         visualID="7004"
         editPartClassName="EnsembleEnsembleDescriptionCompartment2EditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleDescriptionCompartment2ItemSemanticEditPolicy"
+        notationViewFactoryClassName="EnsembleEnsembleDescriptionCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleDescriptionCompartment2CanonicalEditPolicy"
         title="EnsembleDescriptionCompartment"
         needsTitle="false"
@@ -787,7 +813,8 @@
     </preferencePages>
   </diagram>
   <plugin
-      provider="Technischen Universität Darmstadt / Department of Computer Science">
+      provider="Technischen Universität Darmstadt / Department of Computer Science"
+      version="1.5.1">
     <requiredPlugins>org.eclipse.draw2d</requiredPlugins>
     <requiredPlugins>org.eclipse.gmf.runtime.draw2d.ui</requiredPlugins>
   </plugin>

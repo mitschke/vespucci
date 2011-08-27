@@ -41,6 +41,7 @@ package de.tud.cs.st.vespucci.vespucci_model;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Dummy</b></em>'.
+ * TODO get rid of "Dummy"
  * <!-- end-user-doc -->
  *
  *

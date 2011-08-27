@@ -1,0 +1,203 @@
+/*
+ *  License (BSD Style License):
+ *   Copyright (c) 2011
+ *   Software Engineering
+ *   Department of Computer Science
+ *   Technische Universität Darmstadt
+ *   All rights reserved.
+ * 
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions are met:
+ * 
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   - Neither the name of the Software Engineering Group or Technische 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     endorse or promote products derived from this software without specific 
+ *     prior written permission.
+ * 
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *   POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+/**
+ * @file
+ *
+ * @author Dominic Scheurer
+ *
+ * This file transforms a Vespucci model of version 1 (prior to 2011-06-01) to
+ * the newer version 2011-06-01.
+ *
+ * It adds a new attribute "description" to the Shape class.
+ *
+ * --- MODEL part ---
+ */
+
+import VespucciVisualIDs;
+import VespucciConverter.Utils.TransformationHelperLibrary;
+
+modeltype notation 'strict' uses 'http://www.eclipse.org/gmf/runtime/1.0.2/notation';
+modeltype ecore uses 'http://www.eclipse.org/emf/2002/Ecore';
+
+modeltype model 'strict' uses 'http://vespucci.editor/2011-06-01';
+
+transformation migrate_v0_to_v1_notation(in oldDiagram : notation, out newDiagram : notation);
+
+main() {
+	oldDiagram.rootObjects()[Diagram]->map toDiagram();
+}
+
+/**
+ * Produces the top level notation tag:
+ * <code>
+ *   &lt;notation:Diagram xmi:id="_NjIzPZ5AEeCsCZmlAUqFjw" type="Vespucci"
+ *                        name="Copy1.sad" measurementUnit="Pixel"&gt;
+ * </code>
+ */
+mapping notation::Diagram::toDiagram() : notation::Diagram {
+	// ATTRIBUTES
+	
+	type := self.type;
+	name := self.name;
+	measurementUnit := self.measurementUnit;
+	element := self.getRememberedShapesDiagram().oclAsType(EObject);
+		
+	// CHILDREN
+	children += self.children->map toEnsemble();
+	children += self.children->map toOuterDummy();
+	
+	children += self.children->select(child | child.type = 'Note' or child.type = 'Text');
+	styles += self.styles;
+	edges += self.edges;
+	
+	edges->forEach(e | e.type != 'NoteAttachment') {
+		e.source := e.source.late resolveone(notation::View);
+		e.target := e.target.late resolveone(notation::View);
+
+		e.element := e.element.getRememberedConnection().oclAsType(EObject);
+	};
+	
+	edges->forEach(e | e.type = 'NoteAttachment') {
+		if (e.source.type = VID_Dummy_Outer or
+		    e.source.type = VID_Dummy_Inner or
+		    e.source.type = VID_Ensemble_Outer or
+		    e.source.type = VID_Ensemble_Inner) then {
+			e.source := e.source.late resolveone(notation::View);
+		} endif;
+		
+		if (e.target.type = VID_Dummy_Outer or
+		    e.target.type = VID_Dummy_Inner or
+		    e.target.type = VID_Ensemble_Outer or
+		    e.target.type = VID_Ensemble_Inner) then {
+			e.target := e.target.late resolveone(notation::View);
+		} endif;		
+	};
+}
+
+mapping notation::Node::toOuterDummy() : notation::Node
+inherits notation::Node::toDummy
+when { self.type = VID_Dummy_Outer } {
+}
+
+mapping notation::Node::toInnerDummy() : notation::Node
+inherits notation::Node::toDummy
+when { self.type = VID_Dummy_Inner } {
+}
+
+mapping notation::Node::toDummy() : notation::Node {
+	type := self.type;
+	styles := self.styles;
+	layoutConstraint := self.layoutConstraint;
+	children := self.children;
+	
+	element := self.element.getRememberedShape().oclAsType(EObject);
+}
+
+mapping notation::Node::toEnsemble() : notation::Shape
+inherits notation::Node::toShape
+when { self.type = VID_Ensemble_Outer } {	
+	// New decoration node
+	children += object DecorationNode {
+		type := VID_Ensemble_Outer_Description_DNode;
+	};
+	
+	// Add Ensemble compartment
+	children += object BasicCompartment {
+		type := VID_Ensemble_Outer_Ensemble_Compartment;
+
+		children += self.children![BasicCompartment].children->map toInnerEnsemble();
+		children += self.children![BasicCompartment].children->map toInnerDummy();
+		children += self.children![BasicCompartment].children->select(child | child.type = 'Note' or child.type = 'Text');
+		
+		// The following lines are only included because there exist some old
+		// sad files where the inner Ensembles have the same VisualID as the
+		// outer ones. For "normal" files they're just not executed.
+		children += self.children![BasicCompartment].children->map toEnsemble();
+		children += self.children![BasicCompartment].children->map toOuterDummy();
+	};
+	
+	// Add Description Compartment
+	children += object BasicCompartment {
+		type := VID_Ensemble_Outer_Description_Compartment;
+	}
+}
+
+mapping notation::Node::toInnerEnsemble() : notation::Shape
+inherits notation::Node::toShape
+when { self.type = VID_Ensemble_Inner } {	
+	// New decoration node
+	children += object DecorationNode {
+		type := VID_Ensemble_Inner_Description_DNode;
+	};
+	
+	// Add Ensemble compartment
+	children += object BasicCompartment {
+		type := VID_Ensemble_Inner_Ensemble_Compartment;
+		
+		children += self.children![BasicCompartment].children->map toInnerEnsemble();
+		children += self.children![BasicCompartment].children->map toInnerDummy();
+		children += self.children![BasicCompartment].children->select(child | child.type = 'Note' or child.type = 'Text');
+		
+		// The following lines are only included because there exist some old		
+		// sad files where the inner Ensembles have the same VisualID as the
+		// outer ones. For "normal" files they're just not executed.
+		children += self.children![BasicCompartment].children->map toEnsemble();
+		children += self.children![BasicCompartment].children->map toOuterDummy();
+	};
+	
+	// Add Description Compartment
+	children += object BasicCompartment {
+		type := VID_Ensemble_Inner_Description_Compartment;
+	}
+}
+
+mapping notation::Node::toShape() : notation::Shape {
+	// Type and previous existing decoration nodes
+	type := self.type;
+	children += self.children![DecorationNode];
+	
+	layoutConstraint := self.layoutConstraint;
+	
+	// Font styles
+	fontName := self.oclAsType(notation::Shape).fontName;
+	fontColor := self.oclAsType(notation::Shape).fontColor;
+	fontHeight := self.oclAsType(notation::Shape).fontHeight;
+	
+	// Other style properties
+	fillColor := self.oclAsType(notation::Shape).fillColor;
+	
+	// Referred model element
+	element := self.element.getRememberedShape().oclAsType(EObject);
+}

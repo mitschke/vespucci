@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="de.tud.cs.st.Lyrebird.recorder.StartUp"></startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.tud.cs.st.Lyrebird.recorder.preferences.PreferencePage"
+            id="de.tud.cs.st.bytecodeTracker.preferences.PreferencePage"
+            name="Lyrebird Recorder">
+      </page>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.tud.cs.st.Lyrebird.recorder.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         id="LyrebirdBuilderID"
+         name="Lyrebird Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.LyrebirdNature">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="LyrebirdNatureID"
+         name="Lyrebird Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.LyrebirdNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="Lyrebird.RemoveNature"
+            nameFilter="*"
+            objectClass="org.eclipse.core.resources.IProject">
+         <action
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.ToggleNatureAction"
+               enablesFor="+"
+               id="Lyrebird.addNatureAction"
+               label="Remove Lyrebird Nature"
+               menubarPath="additions">
+         </action>
+         <visibility>
+            <and>
+               <objectState
+                     name="open"
+                     value="true">
+               </objectState>
+               <objectState
+                     name="nature"
+                     value="Lyrebird.LyrebirdNatureID">
+               </objectState>
+            </and>
+         </visibility>
+      </objectContribution>
+   </extension>
+    <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="Lyrebird.AddNature"
+            nameFilter="*"
+            objectClass="org.eclipse.core.resources.IProject">
+         <action
+               class="de.tud.cs.st.Lyrebird.recorder.lyrebirdnature.ToggleNatureAction"
+               enablesFor="+"
+               id="Lyrebird.RemoveNatureAction"
+               label="Add Lyrebird Nature"
+               menubarPath="additions">
+         </action>
+         <visibility>
+            <and>
+               <objectState
+                     name="open"
+                     value="true">
+               </objectState>
+               <not>
+                  <objectState
+                        name="nature"
+                        value="Lyrebird.LyrebirdNatureID">
+                  </objectState>
+               </not>
+            </and>
+         </visibility>
+      </objectContribution>
+   </extension>
+   
+  
+
+</plugin>

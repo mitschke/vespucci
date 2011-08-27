@@ -1,0 +1,138 @@
+/*
+ *  License (BSD Style License):
+ *   Copyright (c) 2011
+ *   Software Engineering
+ *   Department of Computer Science
+ *   Technische Universität Darmstadt
+ *   All rights reserved.
+ * 
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions are met:
+ * 
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   - Neither the name of the Software Engineering Group or Technische 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     endorse or promote products derived from this software without specific 
+ *     prior written permission.
+ * 
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *   POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+/**
+ * @author Dominic Scheurer
+ *
+ * This file transforms a Vespucci model of version 1 (prior to 2011-06-01) to
+ * the newer version 2011-06-01.
+ *
+ * It adds a new attribute "description" to the Shape class.
+ * 
+ * --- DIAGRAM part ---
+ */
+
+import VespucciConverter.Utils.TransformationHelperLibrary;
+
+modeltype OldModel 'strict' uses 'http://vespucci.editor';
+modeltype NewModel 'strict' uses 'http://vespucci.editor/2011-06-01';
+
+transformation migrate_v0_to_v1(in oldModel : OldModel, out newModel : NewModel);
+
+main() {
+	oldModel.rootObjects()[ShapesDiagram]->map toNew();
+}
+
+mapping OldModel::ShapesDiagram::toNew() : NewModel::ShapesDiagram {
+	shapes += self.shapes.map toEnsemble();
+	shapes += self.shapes.map toDummy();
+	
+	result.remember();
+}
+
+mapping OldModel::Shape::toEnsemble() : NewModel::Ensemble
+inherits OldModel::Shape::toShape
+when {self.metaClassName() = 'Ensemble'} {
+	shapes += self->oclAsType(OldModel::Ensemble).shapes.map toEnsemble();
+	shapes += self->oclAsType(OldModel::Ensemble).shapes.map toDummy();
+}
+
+mapping OldModel::Shape::toDummy() : NewModel::Dummy
+inherits OldModel::Shape::toShape
+when {self.metaClassName() = 'Dummy'} {
+}
+
+mapping OldModel::Shape::toShape() : NewModel::Shape {	
+	name := self.name;
+	_query := self._query;
+	description := '<description>'; // NEW ATTRIBUTE
+	
+	sourceConnections += self.sourceConnections.map toExpected();
+	sourceConnections += self.sourceConnections.map toInAndOut();
+	sourceConnections += self.sourceConnections.map toIncoming();
+	sourceConnections += self.sourceConnections.map toNotAllowed();
+	sourceConnections += self.sourceConnections.map toOutgoing();
+	
+	targetConnections += self.targetConnections.map toExpected();
+	targetConnections += self.targetConnections.map toInAndOut();
+	targetConnections += self.targetConnections.map toIncoming();
+	targetConnections += self.targetConnections.map toNotAllowed();
+	targetConnections += self.targetConnections.map toOutgoing();
+	
+	result.remember(self);
+}
+
+mapping OldModel::Connection::toExpected() : NewModel::Expected
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'Expected'} {
+}
+
+mapping OldModel::Connection::toInAndOut() : NewModel::InAndOut
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'InAndOut'} {
+}
+
+mapping OldModel::Connection::toIncoming() : NewModel::Incoming
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'Incoming'} {
+}
+
+mapping OldModel::Connection::toNotAllowed() : NewModel::NotAllowed
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'NotAllowed'} {
+}
+
+mapping OldModel::Connection::toOutgoing() : NewModel::Outgoing
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'Outgoing'} {
+}
+
+mapping OldModel::Connection::toConnection() : NewModel::Connection {
+	name := self.name;
+	
+	self.originalSource->forEach(os) {
+		originalSource += os.late resolveone(NewModel::Shape);
+	};
+	
+	self.originalTarget->forEach(os) {
+		originalTarget += os.late resolveone(NewModel::Shape);
+	};
+	
+	source := self.source.late resolveone(NewModel::Shape);
+	target := self.target.late resolveone(NewModel::Shape);
+	
+	temp := self.temp;
+	
+	result.remember(self);
+}

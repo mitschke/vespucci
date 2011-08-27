@@ -34,7 +34,10 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.providers;
 
+import java.util.ResourceBundle;
+
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.validation.AbstractModelConstraint;
@@ -42,8 +45,10 @@ import org.eclipse.emf.validation.IValidationContext;
 import org.eclipse.emf.validation.model.IClientSelector;
 import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
+import org.osgi.framework.FrameworkUtil;
 
-import de.tud.cs.st.vespucci.io.ValidDependenciesReader;
+import de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries;
+import de.tud.cs.st.vespucci.io.KeywordReader;
 
 /**
  * @generated
@@ -143,24 +148,34 @@ public class VespucciValidationProvider {
 	 * @generated
 	 */
 	public static class Adapter5 extends AbstractModelConstraint {
+		private static ResourceBundle pluginProperties = ResourceBundle.getBundle("plugin");
 
 		/**
-		 * All valid keywords for dependencies.
-		 */
-		String[] validDependencies = new ValidDependenciesReader().getKeywords();
-		
-		/**
-		 * Checks if given dependency for constrain is valid.
+		 * Checks if given dependency kind for constrain is valid.
 		 * 
 		 * @author Alexander Weitzmann
 		 * @generated not
 		 * @return Success-Status, if validation successful; Failure otherwise.
 		 */
 		public IStatus validate(IValidationContext ctx) {
-			de.tud.cs.st.vespucci.vespucci_model.Connection context = (de.tud.cs.st.vespucci.vespucci_model.Connection) ctx
-					.getTarget();
-
-			String[] dependencies = context.getName().split(", ");
+			final String context = (String) ctx.getTarget().eGet(
+					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getConnection_Name());
+			if (context == null) {
+				return Status.OK_STATUS;
+			}
+			
+			/**
+			 * All valid keywords for dependencies.
+			 */
+			
+			/**
+			 * Valid names for dependencies read from the resource-file.
+			 */
+			String[] validDependencies = KeywordReader.readAndParseResourceFile(
+					FrameworkUtil.getBundle(Adapter5.class).getSymbolicName(),
+					pluginProperties.getString("validDependenciesFile"));
+			
+			String[] dependencies = context.split(", ");
 			boolean valid = false;
 
 			// check all dependencies
@@ -174,7 +189,7 @@ public class VespucciValidationProvider {
 					}
 				}
 				if (!valid) {
-					return ctx.createFailureStatus(String.format("Depdendency %s is invalid", context.getName()));
+					return ctx.createFailureStatus(String.format("Depdendency kind %s is invalid", context));
 				}
 			}
 			return ctx.createSuccessStatus();

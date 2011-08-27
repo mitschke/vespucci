@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -36,14 +35,12 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -83,11 +80,17 @@ import org.eclipse.gmf.runtime.diagram.ui.resources.editor.internal.util.Diagram
 import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
 import org.eclipse.gmf.runtime.emf.core.resources.GMFResourceFactory;
 import org.eclipse.gmf.runtime.notation.Diagram;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
+
+import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
+import de.tud.cs.st.vespucci.versioning.handler.UpdateSadFileHandler;
+import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
 
 /**
  * @generated
@@ -223,13 +226,50 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	}
 
 	/**
-	 * @generated
+	 * Checks the given sad file and starts the conversion dialog if an
+	 * old version is detected.
+	 * 
+	 * @generated NOT
+	 * @author Dominic Scheurer
+	 * @param file The sad file to check and to update if necessary.
+	 */
+	private static void checkConversionNeeded(final IFile file) {
+		String updateQuestionTitle =
+			"Vespucci Upgrade Framework";
+		String updateQuestionText = 
+			"The file you are trying to open is of an old version.\n" +
+			"Shall Vespucci upgrade it to the current version (recommended)?\n" +
+			"Vespucci will create backup copies, so you data will be safe.";
+		
+		VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
+		
+		VespucciVersionTemplate fileVersion = versionChain.getVersionOfFile(file);
+		
+		if (!fileVersion.isNewestVersion() &&
+			MessageDialog.openQuestion(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				updateQuestionTitle,
+				updateQuestionText)) {
+			UpdateSadFileHandler sadUpdater = new UpdateSadFileHandler();
+			sadUpdater.execute(file);
+		}
+	}
+	
+	/**
+	 * @generated NOT
 	 */
 	protected void setDocumentContent(IDocument document, IEditorInput element) throws CoreException {
 		IDiagramDocument diagramDocument = (IDiagramDocument) document;
 		TransactionalEditingDomain domain = diagramDocument.getEditingDomain();
-		if (element instanceof FileEditorInput) {
+		if (element instanceof FileEditorInput) {			
 			IStorage storage = ((FileEditorInput) element).getStorage();
+			
+			// Modified by Dominic Scheurer:
+			// Start conversion to newer sad file version if necessary
+			VespucciDocumentProvider.checkConversionNeeded(
+				((FileEditorInput) element).getFile()
+			);
+			
 			Diagram diagram = DiagramIOUtil.load(domain, storage, true, getProgressMonitor());
 			document.setContent(diagram);
 		} else if (element instanceof URIEditorInput) {

@@ -5,20 +5,20 @@
  *   Department of Computer Science
  *   Technische Universität Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -34,12 +34,8 @@
 
 package de.tud.cs.st.vespucci.diagram.dnd;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.EditPart;
@@ -49,111 +45,115 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gmf.runtime.common.core.command.AbstractCommand;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest.ViewDescriptor;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 /**
+ * Focus ensemble and select its name field.
  * 
- * @author Patrick
- * 
+ * @author Patrick Jahnke
+ * @author Thomas Schulz
+ * @author Alexander Weitzmann
  */
 public class SelectAndEditNameCommand extends AbstractCommand {
-	private static final String COMMANDNAME = "SELECTNAMECOMMAND";
-	private CreateViewAndElementRequest createViewAndElementRequest = null;
-	private EditPartViewer editPartViewer = null;
 
-	public SelectAndEditNameCommand(
-			CreateViewAndElementRequest createViewAndElementRequest,
-			EditPartViewer editPartViewer) {
+	private static final String COMMANDNAME = "Select ensemble name-field";
+
+	/**
+	 * Reveals the newly created EditPart. {@link #request} must be initialized before calling this method.
+	 * 
+	 * @param editPart
+	 */
+	private static void revealEditPart(final EditPart editPart) {
+		if (editPart != null && editPart.getViewer() != null) {
+			editPart.getViewer().reveal(editPart);
+		}
+	}
+
+	private static void selectDiagramEditor() {
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor().setFocus();
+	}
+
+	private final EditPartViewer editPartViewer;
+
+	private final CreateViewAndElementRequest request;
+
+	/**
+	 * Initializes fields.
+	 * 
+	 * @param request
+	 *            This request must provide the view descriptors for the EditPart to be selected. If multiple view
+	 *            descriptors exist then the first will be used. See also
+	 *            {@link CreateViewAndElementRequest#getViewDescriptors()}.
+	 * @param diagramViewer
+	 *            The graphical viewer of the diagram.
+	 */
+	public SelectAndEditNameCommand(final CreateViewAndElementRequest request, final EditPartViewer diagramViewer) {
 		super(COMMANDNAME);
-		this.createViewAndElementRequest = createViewAndElementRequest;
-		this.editPartViewer = editPartViewer;
+		this.request = request;
+		editPartViewer = diagramViewer;
 	}
 
 	@Override
-	protected CommandResult doExecuteWithResult(
-			IProgressMonitor progressMonitor, IAdaptable info)
-			throws ExecutionException {
+	protected CommandResult doExecuteWithResult(final IProgressMonitor progressMonitor, final IAdaptable info) {
 
-		if ((editPartViewer != null)
-				&& ((Collection) createViewAndElementRequest.getNewObject() != null)) {
-			// select the Diagram Editor
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().getActiveEditor().setFocus();
+		if (editPartViewer != null && request != null) {
+			selectDiagramEditor();
 
 			// set Focus on the added Ensemble and select the Name
-			selectAddedObject(editPartViewer,
-					(Collection) createViewAndElementRequest
-							.getViewDescriptors());
+			selectAddedObject();
 
 			return CommandResult.newOKCommandResult();
 		}
 
-		return CommandResult
-				.newErrorCommandResult("Command was not executeable\n pleas see canExecute in EditNameCommand");
+		return CommandResult.newErrorCommandResult("Command was not executeable.\n Please see canExecute in EditNameCommand.");
 
 	}
 
 	@Override
-	protected CommandResult doRedoWithResult(IProgressMonitor progressMonitor,
-			IAdaptable info) throws ExecutionException {
+	protected CommandResult doRedoWithResult(final IProgressMonitor progressMonitor, final IAdaptable info) {
 		return null;
 	}
 
 	@Override
-	protected CommandResult doUndoWithResult(IProgressMonitor progressMonitor,
-			IAdaptable info) throws ExecutionException {
+	protected CommandResult doUndoWithResult(final IProgressMonitor progressMonitor, final IAdaptable info) {
+		return null;
+	}
+
+	private EditPart getFirstEditPartFromRequest() {
+		final List<? extends ViewDescriptor> editPartViewDescriptors = request.getViewDescriptors();
+
+		for (final ViewDescriptor object : editPartViewDescriptors) {
+			final EditPart editPart = (EditPart) editPartViewer.getEditPartRegistry().get(object.getAdapter(View.class));
+			if (editPart != null) {
+				return editPart;
+			}
+		}
 		return null;
 	}
 
 	/**
-	 * Select the newly added shape view by default
-	 * 
-	 * @param viewer
-	 * @param objects
+	 * Select the newly added shape view by default. Adapted from {@link org.eclipse.gef.tools.CreationTool}.
 	 */
-	protected void selectAddedObject(EditPartViewer viewer, Collection objects) {
-		final List editparts = new ArrayList();
-		for (Iterator i = objects.iterator(); i.hasNext();) {
-			Object object = i.next();
-			if (object instanceof IAdaptable) {
-				Object editPart = viewer.getEditPartRegistry().get(
-						((IAdaptable) object).getAdapter(View.class));
-				if (editPart != null)
-					editparts.add(editPart);
-			}
-		}
-
-		if (!editparts.isEmpty()) {
-			viewer.setSelection(new StructuredSelection(editparts));
+	protected void selectAddedObject() {
+		final EditPart editPart = getFirstEditPartFromRequest();
+		if (editPart != null) {
+			final EditPart[] editParts = { editPart };
+			editPartViewer.setSelection(new StructuredSelection(editParts));
 
 			// automatically put the first shape into edit-mode
 			Display.getCurrent().asyncExec(new Runnable() {
+				@Override
 				public void run() {
-					EditPart editPart = (EditPart) editparts.get(0);
-					//
-					// add active test since test scripts are failing on this
-					// basically, the editpart has been deleted when this
-					// code is being executed. (see RATLC00527114)
 					if (editPart.isActive()) {
-						editPart.performRequest(new Request(
-								RequestConstants.REQ_DIRECT_EDIT));
-						revealEditPart((EditPart) editparts.get(0));
+						editPart.performRequest(new Request(RequestConstants.REQ_DIRECT_EDIT));
+						revealEditPart(editPart);
 					}
 				}
 			});
 		}
-	}
-
-	/**
-	 * Reveals the newly created editpart
-	 * 
-	 * @param editPart
-	 */
-	protected void revealEditPart(EditPart editPart) {
-		if ((editPart != null) && (editPart.getViewer() != null))
-			editPart.getViewer().reveal(editPart);
 	}
 }

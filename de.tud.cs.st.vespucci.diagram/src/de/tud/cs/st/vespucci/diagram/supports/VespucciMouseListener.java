@@ -1,5 +1,5 @@
 /** License (BSD Style License):
- *  Copyright (c) 2010
+ *  Copyright (c) 2011
  *  Software Engineering
  *  Department of Computer Science
  *  Technische Universität Darmstadt
@@ -13,9 +13,9 @@
  *  - Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *  - Neither the name of the Software Engineering Group or Technische 
- *    Universität Darmstadt nor the names of its contributors may be used to 
- *    endorse or promote products derived from this software without specific 
+ *  - Neither the name of the Software Engineering Group or Technische
+ *    Universität Darmstadt nor the names of its contributors may be used to
+ *    endorse or promote products derived from this software without specific
  *    prior written permission.
  *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -36,48 +36,36 @@ import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
 
 /**
- * Responsibility: Store mouse position on each right click.
+ * Stores the mouse's position on each right click.
  * 
  * @author Tam-Minh Nguyen
- * 
  */
 public class VespucciMouseListener implements MouseListener {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.draw2d.MouseListener#mouseDoubleClicked(org.eclipse.draw2d.MouseEvent)
-     */
-    public void mouseDoubleClicked(MouseEvent me) {
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.draw2d.MouseListener#mousePressed(org.eclipse.draw2d.MouseEvent)
-     */
-    public void mousePressed(MouseEvent me) {
-	if (me.button == 1) {
-	    // left click
+	@Override
+	public void mouseDoubleClicked(final MouseEvent mouseEvent) {
+		// not used
 	}
 
-	if (me.button == 2) {
-	    // middle click
+	@Override
+	public void mousePressed(final MouseEvent mouseEvent) {
+		if (mouseEvent.button == 1) {
+			// left click
+		}
+
+		if (mouseEvent.button == 2) {
+			// middle click
+		}
+
+		if (mouseEvent.button == 3) {
+			// right click
+			EditPartService.setRecentRightClickPos(mouseEvent.getLocation());
+		}
+
 	}
 
-	if (me.button == 3) {
-	    // right click
-	    EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION = me.getLocation();
-	    System.err.println("3:" + EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION.x + ","
-		    + EPService.RECENT_MOUSE_RIGHT_CLICK_POSITION.y);
+	@Override
+	public void mouseReleased(final MouseEvent mouseEvent) {
+		// not used
 	}
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.draw2d.MouseListener#mouseReleased(org.eclipse.draw2d.MouseEvent)
-     */
-    public void mouseReleased(MouseEvent me) {
-    }
 }

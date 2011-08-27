@@ -5,20 +5,20 @@
  *   Department of Computer Science
  *   Technische Universität Darmstadt
  *   All rights reserved.
- * 
+ *
  *   Redistribution and use in source and binary forms, with or without
  *   modification, are permitted provided that the following conditions are met:
- * 
+ *
  *   - Redistributions of source code must retain the above copyright notice,
  *     this list of conditions and the following disclaimer.
  *   - Redistributions in binary form must reproduce the above copyright notice,
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
- * 
+ *
  *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -48,192 +48,199 @@ import org.eclipse.jdt.core.IType;
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 
 /**
- * A Class which provides static tools for supporting DnD
+ * A Class which provides static tools for supporting DnD.
  * 
- * @author MalteV
- * @author BenjaminL
+ * @author Malte Viering
+ * @author Benjamin Lück
+ * @author Alexander Weitzmann
+ * @author Thomas Schulz
  */
 public class QueryBuilder {
 	// constants for the querybuilder
-	public final static String PACKAGE = "package";
-	public final static String CLASS_WITH_MEMBERS = "class_with_members";
-	public final static String CLASS = "class";
-	public final static String METHOD = "method";
-	public final static String FIELD = "field";
+	private static final String PACKAGE = "package";
+	private static final String CLASS_WITH_MEMBERS = "class_with_members";
+	private static final String METHOD = "method";
+	private static final String FIELD = "field";
 	private static final String QUERY_DELIMITER = " or ";
 	private static final String DERIVED = "derived";
 	private static final String STANDARD_SHAPENAME = "A dynamic name";
+	private static final Object EMPTY = "empty";
 
-	/**
-	 * creates a new Query from the data of a drop event
-	 * 
-	 * @param map
-	 *            data of the drop event
-	 * @return new query
-	 * @author BenjaminL
-	 */
-	//TODO rename from createQueryForAMapOfIResource to createQueryForAMapOfISelection
-	public static String createQueryForAMapOfIResource(Map<String, Object> map) {
-		return createQueryForAMapOfIResource(map, "");
+	private static String createClassQuery(final Object draggedElement, final String key) {
+		String classQuery;
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
+		final String classname = Resolver.resolveClassName(draggedElement);
+
+		classQuery = String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+
+		return classQuery;
 	}
 
-	/**
-	 * creates a new Query from the data of the drop event under consideration
-	 * of the old Query
-	 * 
-	 * @param map
-	 *            data of the drop event
-	 * @param oldQuery
-	 *            old Query of the model element
-	 * @return new query
-	 * @author BenjaminL
-	 */
-	//TODO rename from createQueryForAMapOfIResource to createQueryForAMapOfISelection
-	public static String createQueryForAMapOfIResource(Map<String, Object> map,
-			String oldQuery) {
+	private static String createFieldQuery(final Object draggedElement) {
+		final IField iField = (IField) draggedElement;
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
+		final String classname = Resolver.resolveClassName(draggedElement);
+		final String fieldname = iField.getElementName();
+		final String type = Resolver.getFullyQualifiedFieldTypeName(iField);
 
-		if (oldQuery == null || (oldQuery.equals("empty") && map.size() > 0))
-			oldQuery = "";
-		else if (oldQuery.trim().toLowerCase().equals(DERIVED))
-			return oldQuery;
-		else if (oldQuery.trim().length() > 0)
-			oldQuery += QUERY_DELIMITER;
+		return String.format("%s('%s','%s','%s','%s')", FIELD, packagename, classname, fieldname, type);
+	}
 
-		String res = oldQuery;
-
-		// translate all DND objects to query
-		List<String> queries = createQueryFromDNDobjects(map);
-
-		// extending the old Query
-		if (queries != null) {
-			for (String s : queries) {
-				res = res + s + "\n" + QUERY_DELIMITER;
-			}
-		} else {
+	private static List<String> createJARQuery(final Object draggedElement) {
+		final LinkedList<String> queryList = new LinkedList<String>();
+		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) draggedElement);
+		for (final String s : packages) {
+			final String jarQuery = String.format("%s('%s')", PACKAGE, s);
+			queryList.add(jarQuery);
 		}
-		if (res.endsWith(QUERY_DELIMITER))
-			
-			res = res.substring(0, res.length() - QUERY_DELIMITER.length() - 1);
+		return queryList;
+	}
 
-		if (res.equals(""))
-			return res;
-		else
-			return res + "\n";
+	private static String createMethodQuery(final Object draggedElement) {
+		final IMethod iMethod = (IMethod) draggedElement;
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
+		final String classname = Resolver.resolveClassName(draggedElement);
+		final String methodname = Resolver.getMethodName(iMethod);
+		final List<String> para = Resolver.getParameterTypesFromMethod(iMethod);
+		final String returntype = Resolver.resolveReturnType(iMethod);
+
+		final StringBuffer sbPara = new StringBuffer();
+		sbPara.append("[");
+		final Iterator<String> it = para.iterator();
+		while (it.hasNext()) {
+			final String s = it.next();
+			if (it.hasNext()) {
+				sbPara.append("'" + s + "'" + ",");
+			} else {
+				sbPara.append("'" + s + "'");
+			}
+		}
+		sbPara.append("]");
+
+		return String.format("%s('%s','%s','%s','%s',%s)", METHOD, packagename, classname, methodname, returntype,
+				sbPara.toString());
 	}
 
 	/**
-	 * Creates a List that contains for all Java Files in map an entry: e.g.:
-	 * package: package(<PACKAGENAME>) class:
-	 * class_with_members(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>) method:
-	 * method(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,'<init>' OR
-	 * <METHODNAME>,<RETURNTYPES>,<PARAMETERTYPES>) field:
-	 * field(<PACKAGENAME>,<PACKAGENAME>.<CLASSNAME>,<FIELDNAME>,<FIELDTYPE>)
+	 * Getting the first known object name, else return {@link #STANDARD_SHAPENAME}.
 	 * 
-	 * @param map
-	 * @return query list
+	 * @param extendedData
+	 * @return name as string
 	 * @author BenjaminL
 	 */
-	private static List<String> createQueryFromDNDobjects(
-			Map<String, Object> map) {
-		LinkedList<String> list = new LinkedList<String>();
+	public static String createNameforNewEnsemble(final Map<?, ?> extendedData) {
+		// getting the first known object name
+		for (final Object key : extendedData.keySet()) {
+			final Object o = extendedData.get(key);
 
-		for (String key : map.keySet()) {
-			Object o = map.get(key);
+			final String name = Resolver.getElementNameFromObject(o);
+			if (!name.equals("")) {
+				return name;
+			}
+		}
+		return STANDARD_SHAPENAME;
+	}
 
-			// package...
-			if (o instanceof IPackageFragment) {
-				key = PACKAGE + "('"
-						+ Resolver.getFQPackageNameFromIxxx(o, key) + "')";
-				list.add(key);
-			} else if (o instanceof ICompilationUnit) {
-				// CLASS
-				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
-				String classname = Resolver.getClassnamefromIxxx(o, key);
-				if (packagename.equals(""))
-					key = CLASS_WITH_MEMBERS + "('','" + classname + "')";
-				else
-					key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
-							+ classname + "')";
-				list.add(key);
-			} else if (o instanceof IMethod) {
-				// METHOD
-				IMethod method = (IMethod) o;
-				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
-				String classname = Resolver.getClassnamefromIxxx(o, key);
-				String methodname = Resolver.getMethodnameFromMethod(method);
-				List<String> para = Resolver
-						.getParameterTypesFromMethod(method);
-				StringBuffer sbPara = new StringBuffer();
-				String returntype = Resolver.getReturnTypeFromIxxx(method, key);
+	private static String createPackageQuery(final Object draggedElement) {
+		return String.format("%s('%s')", PACKAGE, Resolver.resolveFullyQualifiedPackageName(draggedElement));
+	}
 
-				sbPara.append("[");
-				Iterator<String> it = para.iterator();
-				while (it.hasNext()) {
-					String s = it.next();
-					if (it.hasNext())
-						sbPara.append("'" + s + "'" + ",");
-					else
-						sbPara.append("'" + s + "'");
-				}
-				sbPara.append("]");
+	/**
+	 * Creates a List that contains for all Java Files in map an entry: e.g.: <LI>package:
+	 * package(&#60PACKAGENAME>) <LI>
+	 * class: class_with_members(&#60PACKAGENAME>,&#60PACKAGENAME>.&#60CLASSNAME>)<LI>method:
+	 * method(&#60PACKAGENAME>,&#60PACKAGENAME>.&#60CLASSNAME>,'&#60init>' OR
+	 * &#60METHODNAME>,&#60RETURNTYPES>,&#60PARAMETERTYPES>) <LI>field:
+	 * field(&#60PACKAGENAME>,&#60PACKAGENAME>.&#60CLASSNAME>,&#60FIELDNAME>,&#60FIELDTYPE>)
+	 * 
+	 * @param eventData
+	 *            Extended data from the DnD event request.
+	 * @return query Returns the query for the dropped files.
+	 * @author Benjamin Lück
+	 */
+	private static List<String> createQueryFromDNDobjects(final Map<String, Object> eventData) {
+		final LinkedList<String> list = new LinkedList<String>();
+		for (final String key : eventData.keySet()) {
+			final Object draggedElement = eventData.get(key);
 
-				key = METHOD + "('" + packagename + "','" + classname + "','"
-						+ methodname + "','" + returntype + "',"
-						+ sbPara.toString() + ")";
-				list.add(key);
-			} else if (o instanceof IType) {
-				// IType
-				IType type = (IType) o;
-				ICompilationUnit cU = type.getCompilationUnit();
-				String packagename = Resolver.getFQPackageNameFromIxxx(cU, key);
-				String classname = Resolver.getClassnamefromIxxx(type, key);
-				key = CLASS_WITH_MEMBERS + "('" + packagename + "','"
-						+ classname + "')";
-				list.add(key);
-			} else if (o instanceof IField) {
-				// FIELD
-				IField field = (IField) o;
-				String packagename = Resolver.getFQPackageNameFromIxxx(o, key);
-				String classname = Resolver.getClassnamefromIxxx(o, key);
-				String fieldname = field.getElementName();
-				String type = Resolver.getFQFieldTypeName(field);
-
-				key = FIELD + "('" + packagename + "','" + classname + "','"
-						+ fieldname + "','" + type + "')";
-				list.add(key);
-			} else if (o instanceof IPackageFragmentRoot) {
-				List<String> packages = Resolver
-						.getPackagesFromPFR((IPackageFragmentRoot) o);
-				for (String s : packages) {
-					key = PACKAGE + "('" + s + "')";
-					list.add(key);
-				}
+			if (draggedElement instanceof IPackageFragment) {
+				list.add(createPackageQuery(draggedElement));
+			} else if (draggedElement instanceof ICompilationUnit) {
+				list.add(createClassQuery(draggedElement, key));
+			} else if (draggedElement instanceof IMethod) {
+				list.add(createMethodQuery(draggedElement));
+			} else if (draggedElement instanceof IType) {
+				list.add(createTypeQuery(draggedElement, key));
+			} else if (draggedElement instanceof IField) {
+				list.add(createFieldQuery(draggedElement));
+			} else if (draggedElement instanceof IPackageFragmentRoot) {
+				list.addAll(createJARQuery(draggedElement));
 			}
 		}
 		return list;
 	}
 
 	/**
-	 * getting the first known object name - else return "A dynamic name"
 	 * 
-	 * @param extendedData
-	 * @return name as string
+	 * @param data
+	 * @return Returns the Query created from the data of a drop event.
 	 * @author BenjaminL
 	 */
-	public static Object createNameforNewEnsemble(Map<?, ?> extendedData) {
-		// getting the first known object name
-		for (Object key : extendedData.keySet()) {
-			Object o = extendedData.get(key);
-
-			String tmp = Resolver.getElementNameFromObject(o);
-			if (!tmp.equals(""))
-				return tmp;
-		}
-		return STANDARD_SHAPENAME;
+	public static String createQueryFromRequestData(final Map<String, Object> data) {
+		return createQueryFromRequestData(data, "");
 	}
 
-	public static boolean isProcessable(Map<String, Object> extendedData) {
-		return Resolver.isProcessable(extendedData);
+	/**
+	 * Creates a new Query from the data of the drop event under consideration of the old Query.
+	 * 
+	 * @param data
+	 * @param oldQuery
+	 *            Old Query of the model element.
+	 * @return Returns the created query.
+	 * @author BenjaminL
+	 */
+	public static String createQueryFromRequestData(final Map<String, Object> data, final String oldQuery) {
+		String newQuery = oldQuery;
+
+		if (newQuery == null || (newQuery.equals(EMPTY) && data.size() > 0)) {
+			newQuery = "";
+		} else if (newQuery.trim().toLowerCase().equals(DERIVED)) {
+			return newQuery;
+		} else if (newQuery.trim().length() > 0) {
+			newQuery += QUERY_DELIMITER;
+		}
+
+		final List<String> queries = createQueryFromDNDobjects(data);
+
+		// extending the old Query
+		if (queries != null) {
+			for (final String query : queries) {
+				newQuery += String.format("%s\n%s", query, QUERY_DELIMITER);
+			}
+		}
+
+		// delete last query delimiter
+		if (newQuery.endsWith(QUERY_DELIMITER)) {
+			newQuery = newQuery.substring(0, newQuery.length() - QUERY_DELIMITER.length() - 1);
+		}
+
+		if (newQuery.equals("")) {
+			return newQuery;
+		} else {
+			return newQuery + "\n";
+		}
+	}
+
+	private static String createTypeQuery(final Object draggedElement, final String key) {
+		final IType type = (IType) draggedElement;
+		final ICompilationUnit cU = type.getCompilationUnit();
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(cU);
+		final String classname = Resolver.resolveClassName(type);
+		return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+	}
+
+	private QueryBuilder() {
+
 	}
 
 }
