@@ -34,6 +34,8 @@
 
 package de.tud.cs.st.vespucci.diagram.handler;
 
+import java.util.Arrays;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -124,7 +126,12 @@ public abstract class ToggleDependenciesSuperHandler extends AbstractHandler {
 					Vespucci_modelPackage.CONNECTION__NAME);
 
 			// get current dependencies
-			final String[] currentDependencies = ((String) semanticConnection.eGet(toggleFeature, true)).split(", ");
+			String[] currentDependencies = ((String) semanticConnection.eGet(toggleFeature, true)).split(", ");
+			
+			// only one empty string should be empty array
+			if(Arrays.equals(currentDependencies, new String[]{""})){
+				currentDependencies = new String[0];
+			}
 
 			// toggle dependency
 			final String[] newDependencies = transformedCopy(currentDependencies, toggleValue);
