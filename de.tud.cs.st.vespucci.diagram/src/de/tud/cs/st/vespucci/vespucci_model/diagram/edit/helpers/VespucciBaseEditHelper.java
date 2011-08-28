@@ -121,16 +121,15 @@ public class VespucciBaseEditHelper extends AbstractEditHelper {
 	protected ICommand getDestroyReferenceCommand(DestroyReferenceRequest req) {
 		return null;
 	}
-	
+
 	/**
 	 * @author Theo
 	 * @generated NOT
 	 */
-	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request){
-		if(!(request.getNewRelationshipEnd() instanceof Ensemble)){
+	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
+		if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
 			return UnexecutableCommand.INSTANCE;
-		}
-		else{
+		} else {
 			return super.getReorientRelationshipCommand(request);
 		}
 	}

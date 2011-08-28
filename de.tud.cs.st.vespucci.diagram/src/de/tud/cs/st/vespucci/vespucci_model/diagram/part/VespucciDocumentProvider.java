@@ -234,42 +234,36 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @param file The sad file to check and to update if necessary.
 	 */
 	private static void checkConversionNeeded(final IFile file) {
-		String updateQuestionTitle =
-			"Vespucci Upgrade Framework";
-		String updateQuestionText = 
-			"The file you are trying to open is of an old version.\n" +
-			"Shall Vespucci upgrade it to the current version (recommended)?\n" +
-			"Vespucci will create backup copies, so you data will be safe.";
-		
+		String updateQuestionTitle = "Vespucci Upgrade Framework";
+		String updateQuestionText = "The file you are trying to open is of an old version.\n"
+				+ "Shall Vespucci upgrade it to the current version (recommended)?\n"
+				+ "Vespucci will create backup copies, so you data will be safe.";
+
 		VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
-		
+
 		VespucciVersionTemplate fileVersion = versionChain.getVersionOfFile(file);
-		
-		if (!fileVersion.isNewestVersion() &&
-			MessageDialog.openQuestion(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				updateQuestionTitle,
-				updateQuestionText)) {
+
+		if (!fileVersion.isNewestVersion()
+				&& MessageDialog.openQuestion(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+						updateQuestionTitle, updateQuestionText)) {
 			UpdateSadFileHandler sadUpdater = new UpdateSadFileHandler();
 			sadUpdater.execute(file);
 		}
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
 	protected void setDocumentContent(IDocument document, IEditorInput element) throws CoreException {
 		IDiagramDocument diagramDocument = (IDiagramDocument) document;
 		TransactionalEditingDomain domain = diagramDocument.getEditingDomain();
-		if (element instanceof FileEditorInput) {			
+		if (element instanceof FileEditorInput) {
 			IStorage storage = ((FileEditorInput) element).getStorage();
-			
+
 			// Modified by Dominic Scheurer:
 			// Start conversion to newer sad file version if necessary
-			VespucciDocumentProvider.checkConversionNeeded(
-				((FileEditorInput) element).getFile()
-			);
-			
+			VespucciDocumentProvider.checkConversionNeeded(((FileEditorInput) element).getFile());
+
 			Diagram diagram = DiagramIOUtil.load(domain, storage, true, getProgressMonitor());
 			document.setContent(diagram);
 		} else if (element instanceof URIEditorInput) {

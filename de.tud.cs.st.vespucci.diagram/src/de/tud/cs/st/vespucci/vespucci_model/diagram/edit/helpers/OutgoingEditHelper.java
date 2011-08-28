@@ -50,15 +50,13 @@ public class OutgoingEditHelper extends de.tud.cs.st.vespucci.vespucci_model.dia
 	 * @author Theo
 	 * @generated NOT
 	 */
-	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request){
+	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
 		// TODO: Change this function after removal of Dummies from the model.
-		if(!(request.getNewRelationshipEnd() instanceof Ensemble ||
-			(request.getNewRelationshipEnd() instanceof Dummy))){
+		if (!(request.getNewRelationshipEnd() instanceof Ensemble || (request.getNewRelationshipEnd() instanceof Dummy))) {
 			return UnexecutableCommand.INSTANCE;
-		}
-		else{
+		} else {
 			return super.getReorientRelationshipCommand(request);
 		}
 	}
-	
+
 }
