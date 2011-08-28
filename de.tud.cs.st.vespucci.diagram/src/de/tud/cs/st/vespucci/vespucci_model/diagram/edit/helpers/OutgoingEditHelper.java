@@ -34,8 +34,31 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
 
+import org.eclipse.gmf.runtime.common.core.command.ICommand;
+import org.eclipse.gmf.runtime.common.core.command.UnexecutableCommand;
+import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
+
+import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+
 /**
  * @generated
  */
 public class OutgoingEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
+
+	/**
+	 * @author Theo
+	 * @generated NOT
+	 */
+	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request){
+		// TODO: Change this function after removal of Dummies from the model.
+		if(!(request.getNewRelationshipEnd() instanceof Ensemble ||
+			(request.getNewRelationshipEnd() instanceof Dummy))){
+			return UnexecutableCommand.INSTANCE;
+		}
+		else{
+			return super.getReorientRelationshipCommand(request);
+		}
+	}
+	
 }

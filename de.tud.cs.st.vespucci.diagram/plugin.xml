@@ -912,7 +912,10 @@
                    name="Lowest">
              </Priority>
                    <contribution>
-     					<predefinedEntry id="standardGroup/zoomTool" remove="true"/>
+     					<predefinedEntry id="standardGroup/zoomTool"/>
+     					<predefinedEntry id="standardGroup/noteStack/noteTool"/> 
+						<predefinedEntry id="standardGroup/noteStack/textTool"/> 
+						<predefinedEntry id="standardGroup/noteStack/noteattachmentTool"/>
       				</contribution>
              
           </paletteProvider>
