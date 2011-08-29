@@ -69,7 +69,7 @@ public class ExpectedCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	public ExpectedCreateCommand(CreateRelationshipRequest request, EObject source, EObject target) {
+	public ExpectedCreateCommand(final CreateRelationshipRequest request, final EObject source, final EObject target) {
 		super(request.getLabel(), null, request);
 		this.source = source;
 		this.target = target;
@@ -113,8 +113,8 @@ public class ExpectedCreateCommand extends EditElementCommand {
 			throw new ExecutionException("Invalid arguments in create link command.");
 		}
 
-		final de.tud.cs.st.vespucci.vespucci_model.Expected newElement = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
-				.createExpected();
+		final de.tud.cs.st.vespucci.vespucci_model.Expected newElement =
+			de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createExpected();
 		getContainer().getTargetConnections().add(newElement);
 
 		newElement.setSource(getSource());
@@ -128,15 +128,15 @@ public class ExpectedCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	protected void doConfigure(de.tud.cs.st.vespucci.vespucci_model.Expected newElement, IProgressMonitor monitor, IAdaptable info)
-			throws ExecutionException {
-		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
-		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);
+	protected void doConfigure(final de.tud.cs.st.vespucci.vespucci_model.Expected newElement, final IProgressMonitor monitor,
+			final IAdaptable info) throws ExecutionException {
+		final IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
+		final ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);
 		configureRequest.setClientContext(((CreateElementRequest) getRequest()).getClientContext());
 		configureRequest.addParameters(getRequest().getParameters());
 		configureRequest.setParameter(CreateRelationshipRequest.SOURCE, getSource());
 		configureRequest.setParameter(CreateRelationshipRequest.TARGET, getTarget());
-		ICommand configureCommand = elementType.getEditCommand(configureRequest);
+		final ICommand configureCommand = elementType.getEditCommand(configureRequest);
 		if (configureCommand != null && configureCommand.canExecute()) {
 			configureCommand.execute(monitor, info);
 		}
@@ -146,7 +146,7 @@ public class ExpectedCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	@Override
-	protected void setElementToEdit(EObject element) {
+	protected void setElementToEdit(final EObject element) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -177,7 +177,7 @@ public class ExpectedCreateCommand extends EditElementCommand {
 	 * 
 	 * @generated
 	 */
-	private static de.tud.cs.st.vespucci.vespucci_model.Shape deduceContainer(EObject source, EObject target) {
+	private static de.tud.cs.st.vespucci.vespucci_model.Shape deduceContainer(final EObject source, final EObject target) {
 		// Find container element for the new link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.

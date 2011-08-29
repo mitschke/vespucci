@@ -66,7 +66,7 @@ public class ExpectedReorientCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	public ExpectedReorientCommand(ReorientRelationshipRequest request) {
+	public ExpectedReorientCommand(final ReorientRelationshipRequest request) {
 		super(request.getLabel(), request.getRelationship(), request);
 		reorientDirection = request.getDirection();
 		oldEnd = request.getOldRelationshipEnd();
@@ -81,10 +81,10 @@ public class ExpectedReorientCommand extends EditElementCommand {
 		if (false == getElementToEdit() instanceof de.tud.cs.st.vespucci.vespucci_model.Expected) {
 			return false;
 		}
-		if (reorientDirection == ReorientRelationshipRequest.REORIENT_SOURCE) {
+		if (reorientDirection == ReorientRequest.REORIENT_SOURCE) {
 			return canReorientSource();
 		}
-		if (reorientDirection == ReorientRelationshipRequest.REORIENT_TARGET) {
+		if (reorientDirection == ReorientRequest.REORIENT_TARGET) {
 			return canReorientTarget();
 		}
 		return false;
@@ -97,11 +97,11 @@ public class ExpectedReorientCommand extends EditElementCommand {
 		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink().getTarget();
+		final de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink().getTarget();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
+		final de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
 				.canExistExpected_4002(container, getLink(), getNewSource(), target);
@@ -114,11 +114,11 @@ public class ExpectedReorientCommand extends EditElementCommand {
 		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink().getSource();
+		final de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink().getSource();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
+		final de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
 				.canExistExpected_4002(container, getLink(), source, getNewTarget());
@@ -128,14 +128,14 @@ public class ExpectedReorientCommand extends EditElementCommand {
 	 * @generated
 	 */
 	@Override
-	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	protected CommandResult doExecuteWithResult(final IProgressMonitor monitor, final IAdaptable info) throws ExecutionException {
 		if (!canExecute()) {
 			throw new ExecutionException("Invalid arguments in reorient link command"); //$NON-NLS-1$
 		}
-		if (reorientDirection == ReorientRelationshipRequest.REORIENT_SOURCE) {
+		if (reorientDirection == ReorientRequest.REORIENT_SOURCE) {
 			return reorientSource();
 		}
-		if (reorientDirection == ReorientRelationshipRequest.REORIENT_TARGET) {
+		if (reorientDirection == ReorientRequest.REORIENT_TARGET) {
 			return reorientTarget();
 		}
 		throw new IllegalStateException();
@@ -156,7 +156,7 @@ public class ExpectedReorientCommand extends EditElementCommand {
 		getLink().setSource(getNewSource());
 		return CommandResult.newOKCommandResult(getLink());
 	}
-
+	
 	/**
 	 * @author Artem Vovk
 	 * @generated NOT
@@ -164,7 +164,7 @@ public class ExpectedReorientCommand extends EditElementCommand {
 	 */
 	private boolean lastSourceIsNotOldEnd() {
 		return !getLink().getOriginalSource().isEmpty()
-				&& oldEnd != getLink().getOriginalSource().get(getLink().getOriginalSource().size() - 1);
+		&& oldEnd != getLink().getOriginalSource().get(getLink().getOriginalSource().size() - 1);
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class ExpectedReorientCommand extends EditElementCommand {
 		getLink().setTarget(getNewTarget());
 		return CommandResult.newOKCommandResult(getLink());
 	}
-
+	
 	/**
 	 * @author Artem Vovk
 	 * @generated NOT
@@ -190,7 +190,7 @@ public class ExpectedReorientCommand extends EditElementCommand {
 	 */
 	private boolean lastTargetIsNotOldEnd() {
 		return !getLink().getOriginalTarget().isEmpty()
-				&& oldEnd != getLink().getOriginalTarget().get(getLink().getOriginalTarget().size() - 1);
+		&& oldEnd != getLink().getOriginalTarget().get(getLink().getOriginalTarget().size() - 1);
 	}
 
 	/**

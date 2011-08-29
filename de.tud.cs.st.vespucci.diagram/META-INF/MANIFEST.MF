@@ -2,7 +2,7 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tud.cs.st.vespucci.diagram; singleton:=true
-Bundle-Version: 1.5.1
+Bundle-Version: 1.5.2
 Bundle-ClassPath: .
 Bundle-Activator: de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 Bundle-Vendor: %providerName
@@ -63,4 +63,3 @@ Import-Package: org.eclipse.debug.core,
  org.eclipse.m2m.internal.qvt.oml.emf.util.ui.choosers,
  org.eclipse.m2m.internal.qvt.oml.runtime.ui,
  org.eclipse.m2m.qvt.oml.util
-Manifest-Version: 1.0
