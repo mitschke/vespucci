@@ -11,8 +11,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
 public class ResolvableVisitor extends AbstractVisitor {
-	private static final String JAVA_FILE_ENDING = ".java";
-	private static final String JAR_ENDING = ".jar";
+	
+	private static final String DOT_JAVA = ".java";
+	private static final String DOT_JAR = ".jar";
 
 	public boolean isResolvable(final Object object) {
 		return (Boolean) super.visit(object);
@@ -31,7 +32,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(final ICompilationUnit icu) {
 		try {
-			return !icu.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING);
+			return !icu.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method %s", icu), e);
 		}
@@ -40,7 +41,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(final IMethod method) {
 		try {
-			return !method.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING);
+			return !method.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method %s", method), e);
 		}
@@ -49,7 +50,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(final IField field) {
 		try {
-			return !field.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING);
+			return !field.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of field %s", field), e);
 		}
@@ -58,7 +59,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(final IType type) {
 		try {
-			return !type.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING);
+			return !type.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of type %s", type), e);
 		}

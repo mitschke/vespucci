@@ -61,6 +61,10 @@ import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
+ * OBSOLETE !!!
+ * ---
+ * This class was formerly used as a reference to apply the visitor pattern.
+ * ---
  * This class provides static methods to resolve information from Vespucci diagrams mainly used to
  * create queries in QueryBuilder.java
  * 
