@@ -79,7 +79,7 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends ListCompartm
 
 	/**
 	 * @generated NOT
-//	 * @author Dominic Scheurer
+	//	 * @author Dominic Scheurer
 	 * 
 	 * Overridden to restore the saved collapse state of the
 	 * description label.

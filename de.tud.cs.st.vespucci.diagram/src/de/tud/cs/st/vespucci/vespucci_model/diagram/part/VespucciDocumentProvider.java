@@ -102,7 +102,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected ElementInfo createElementInfo(final Object element) throws CoreException {
+	protected ElementInfo createElementInfo(Object element) throws CoreException {
 		if (false == element instanceof FileEditorInput && false == element instanceof URIEditorInput) {
 			throw new CoreException(
 					new Status(
@@ -115,10 +115,10 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 											"org.eclipse.ui.part.FileEditorInput", "org.eclipse.emf.common.ui.URIEditorInput" }), //$NON-NLS-1$ //$NON-NLS-2$ 
 							null));
 		}
-		final IEditorInput editorInput = (IEditorInput) element;
-		final IDiagramDocument document = (IDiagramDocument) createDocument(editorInput);
+		IEditorInput editorInput = (IEditorInput) element;
+		IDiagramDocument document = (IDiagramDocument) createDocument(editorInput);
 
-		final ResourceSetInfo info = new ResourceSetInfo(document, editorInput);
+		ResourceSetInfo info = new ResourceSetInfo(document, editorInput);
 		info.setModificationStamp(computeModificationStamp(info));
 		info.fStatus = null;
 		return info;
@@ -128,7 +128,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected IDocument createDocument(final Object element) throws CoreException {
+	protected IDocument createDocument(Object element) throws CoreException {
 		if (false == element instanceof FileEditorInput && false == element instanceof URIEditorInput) {
 			throw new CoreException(
 					new Status(
@@ -141,7 +141,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 											"org.eclipse.ui.part.FileEditorInput", "org.eclipse.emf.common.ui.URIEditorInput" }), //$NON-NLS-1$ //$NON-NLS-2$ 
 							null));
 		}
-		final IDocument document = createEmptyDocument();
+		IDocument document = createEmptyDocument();
 		setDocumentContent(document, (IEditorInput) element);
 		setupDocument(element, document);
 		return document;
@@ -158,18 +158,18 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 *            the document to set up
 	 * @generated
 	 */
-	protected void setupDocument(final Object element, final IDocument document) {
+	protected void setupDocument(Object element, IDocument document) {
 		// for subclasses
 	}
 
 	/**
 	 * @generated
 	 */
-	private long computeModificationStamp(final ResourceSetInfo info) {
+	private long computeModificationStamp(ResourceSetInfo info) {
 		int result = 0;
-		for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-			final Resource nextResource = it.next();
-			final IFile file = WorkspaceSynchronizer.getFile(nextResource);
+		for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+			Resource nextResource = it.next();
+			IFile file = WorkspaceSynchronizer.getFile(nextResource);
 			if (file != null) {
 				if (file.getLocation() != null) {
 					result += file.getLocation().toFile().lastModified();
@@ -186,7 +186,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 */
 	@Override
 	protected IDocument createEmptyDocument() {
-		final DiagramDocument document = new DiagramDocument();
+		DiagramDocument document = new DiagramDocument();
 		document.setEditingDomain(createEditingDomain());
 		return document;
 	}
@@ -195,7 +195,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	private TransactionalEditingDomain createEditingDomain() {
-		final TransactionalEditingDomain editingDomain = DiagramEditingDomainFactory.getInstance().createEditingDomain();
+		TransactionalEditingDomain editingDomain = DiagramEditingDomainFactory.getInstance().createEditingDomain();
 		editingDomain.setID("de.tud.cs.st.vespucci.diagram.EditingDomain"); //$NON-NLS-1$
 		final NotificationFilter diagramResourceModifiedFilter = NotificationFilter
 				.createNotifierFilter(editingDomain.getResourceSet())
@@ -205,28 +205,24 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 
 			private Notifier myTarger;
 
-			@Override
 			public Notifier getTarget() {
 				return myTarger;
 			}
 
-			@Override
-			public boolean isAdapterForType(final Object type) {
+			public boolean isAdapterForType(Object type) {
 				return false;
 			}
 
-			@Override
-			public void notifyChanged(final Notification notification) {
+			public void notifyChanged(Notification notification) {
 				if (diagramResourceModifiedFilter.matches(notification)) {
-					final Object value = notification.getNewValue();
+					Object value = notification.getNewValue();
 					if (value instanceof Resource) {
 						((Resource) value).setTrackingModification(true);
 					}
 				}
 			}
 
-			@Override
-			public void setTarget(final Notifier newTarget) {
+			public void setTarget(Notifier newTarget) {
 				myTarger = newTarget;
 			}
 
@@ -349,8 +345,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	public long getModificationStamp(final Object element) {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	public long getModificationStamp(Object element) {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
 			return computeModificationStamp(info);
 		}
@@ -361,12 +357,12 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	public boolean isDeleted(final Object element) {
-		final IDiagramDocument document = getDiagramDocument(element);
+	public boolean isDeleted(Object element) {
+		IDiagramDocument document = getDiagramDocument(element);
 		if (document != null) {
-			final Resource diagramResource = document.getDiagram().eResource();
+			Resource diagramResource = document.getDiagram().eResource();
 			if (diagramResource != null) {
-				final IFile file = WorkspaceSynchronizer.getFile(diagramResource);
+				IFile file = WorkspaceSynchronizer.getFile(diagramResource);
 				return file == null || file.getLocation() == null || !file.getLocation().toFile().exists();
 			}
 		}
@@ -376,7 +372,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
-	public ResourceSetInfo getResourceSetInfo(final Object editorInput) {
+	public ResourceSetInfo getResourceSetInfo(Object editorInput) {
 		return (ResourceSetInfo) super.getElementInfo(editorInput);
 	}
 
@@ -384,9 +380,9 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected void disposeElementInfo(final Object element, final ElementInfo info) {
+	protected void disposeElementInfo(Object element, ElementInfo info) {
 		if (info instanceof ResourceSetInfo) {
-			final ResourceSetInfo resourceSetInfo = (ResourceSetInfo) info;
+			ResourceSetInfo resourceSetInfo = (ResourceSetInfo) info;
 			resourceSetInfo.dispose();
 		}
 		super.disposeElementInfo(element, info);
@@ -396,18 +392,18 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected void doValidateState(final Object element, final Object computationContext) throws CoreException {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected void doValidateState(Object element, Object computationContext) throws CoreException {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
-			final LinkedList<IFile> files2Validate = new LinkedList<IFile>();
-			for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-				final Resource nextResource = it.next();
-				final IFile file = WorkspaceSynchronizer.getFile(nextResource);
+			LinkedList<IFile> files2Validate = new LinkedList<IFile>();
+			for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+				Resource nextResource = it.next();
+				IFile file = WorkspaceSynchronizer.getFile(nextResource);
 				if (file != null && file.isReadOnly()) {
 					files2Validate.add(file);
 				}
 			}
-			ResourcesPlugin.getWorkspace().validateEdit(files2Validate.toArray(new IFile[files2Validate.size()]),
+			ResourcesPlugin.getWorkspace().validateEdit((IFile[]) files2Validate.toArray(new IFile[files2Validate.size()]),
 					computationContext);
 		}
 
@@ -418,17 +414,16 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	public boolean isReadOnly(final Object element) {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	public boolean isReadOnly(Object element) {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
 			if (info.isUpdateCache()) {
 				try {
 					updateCache(element);
-				} catch (final CoreException ex) {
+				} catch (CoreException ex) {
 					de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
 							de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDocumentProvider_isModifiable, ex);
-					// Error message to log was initially taken from
-					// org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide.internal.l10n.EditorMessages.StorageDocumentProvider_isModifiable
+					// Error message to log was initially taken from org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide.internal.l10n.EditorMessages.StorageDocumentProvider_isModifiable
 				}
 			}
 			return info.isReadOnly();
@@ -440,22 +435,21 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	public boolean isModifiable(final Object element) {
+	public boolean isModifiable(Object element) {
 		if (!isStateValidated(element)) {
 			if (element instanceof FileEditorInput || element instanceof URIEditorInput) {
 				return true;
 			}
 		}
-		final ResourceSetInfo info = getResourceSetInfo(element);
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
 			if (info.isUpdateCache()) {
 				try {
 					updateCache(element);
-				} catch (final CoreException ex) {
+				} catch (CoreException ex) {
 					de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
 							de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDocumentProvider_isModifiable, ex);
-					// Error message to log was initially taken from
-					// org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide.internal.l10n.EditorMessages.StorageDocumentProvider_isModifiable
+					// Error message to log was initially taken from org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide.internal.l10n.EditorMessages.StorageDocumentProvider_isModifiable
 				}
 			}
 			return info.isModifiable();
@@ -466,12 +460,12 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
-	protected void updateCache(final Object element) throws CoreException {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected void updateCache(Object element) throws CoreException {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
-			for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-				final Resource nextResource = it.next();
-				final IFile file = WorkspaceSynchronizer.getFile(nextResource);
+			for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+				Resource nextResource = it.next();
+				IFile file = WorkspaceSynchronizer.getFile(nextResource);
 				if (file != null && file.isReadOnly()) {
 					info.setReadOnly(true);
 					info.setModifiable(false);
@@ -488,8 +482,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected void doUpdateStateCache(final Object element) throws CoreException {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected void doUpdateStateCache(Object element) throws CoreException {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
 			info.setUpdateCache(true);
 		}
@@ -500,8 +494,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	public boolean isSynchronized(final Object element) {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	public boolean isSynchronized(Object element) {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
 			return info.isSynchronized();
 		}
@@ -512,18 +506,18 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected ISchedulingRule getResetRule(final Object element) {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected ISchedulingRule getResetRule(Object element) {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
-			final LinkedList<ISchedulingRule> rules = new LinkedList<ISchedulingRule>();
-			for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-				final Resource nextResource = it.next();
-				final IFile file = WorkspaceSynchronizer.getFile(nextResource);
+			LinkedList<ISchedulingRule> rules = new LinkedList<ISchedulingRule>();
+			for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+				Resource nextResource = it.next();
+				IFile file = WorkspaceSynchronizer.getFile(nextResource);
 				if (file != null) {
 					rules.add(ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(file));
 				}
 			}
-			return new MultiRule(rules.toArray(new ISchedulingRule[rules.size()]));
+			return new MultiRule((ISchedulingRule[]) rules.toArray(new ISchedulingRule[rules.size()]));
 		}
 		return null;
 	}
@@ -532,18 +526,18 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected ISchedulingRule getSaveRule(final Object element) {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected ISchedulingRule getSaveRule(Object element) {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
-			final LinkedList<ISchedulingRule> rules = new LinkedList<ISchedulingRule>();
-			for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-				final Resource nextResource = it.next();
-				final IFile file = WorkspaceSynchronizer.getFile(nextResource);
+			LinkedList<ISchedulingRule> rules = new LinkedList<ISchedulingRule>();
+			for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+				Resource nextResource = it.next();
+				IFile file = WorkspaceSynchronizer.getFile(nextResource);
 				if (file != null) {
 					rules.add(computeSchedulingRule(file));
 				}
 			}
-			return new MultiRule(rules.toArray(new ISchedulingRule[rules.size()]));
+			return new MultiRule((ISchedulingRule[]) rules.toArray(new ISchedulingRule[rules.size()]));
 		}
 		return null;
 	}
@@ -552,18 +546,18 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected ISchedulingRule getSynchronizeRule(final Object element) {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected ISchedulingRule getSynchronizeRule(Object element) {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
-			final LinkedList<ISchedulingRule> rules = new LinkedList<ISchedulingRule>();
-			for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-				final Resource nextResource = it.next();
-				final IFile file = WorkspaceSynchronizer.getFile(nextResource);
+			LinkedList<ISchedulingRule> rules = new LinkedList<ISchedulingRule>();
+			for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+				Resource nextResource = it.next();
+				IFile file = WorkspaceSynchronizer.getFile(nextResource);
 				if (file != null) {
 					rules.add(ResourcesPlugin.getWorkspace().getRuleFactory().refreshRule(file));
 				}
 			}
-			return new MultiRule(rules.toArray(new ISchedulingRule[rules.size()]));
+			return new MultiRule((ISchedulingRule[]) rules.toArray(new ISchedulingRule[rules.size()]));
 		}
 		return null;
 	}
@@ -572,18 +566,19 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected ISchedulingRule getValidateStateRule(final Object element) {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected ISchedulingRule getValidateStateRule(Object element) {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
-			final LinkedList<ISchedulingRule> files = new LinkedList<ISchedulingRule>();
-			for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-				final Resource nextResource = it.next();
-				final IFile file = WorkspaceSynchronizer.getFile(nextResource);
+			LinkedList<ISchedulingRule> files = new LinkedList<ISchedulingRule>();
+			for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+				Resource nextResource = it.next();
+				IFile file = WorkspaceSynchronizer.getFile(nextResource);
 				if (file != null) {
 					files.add(file);
 				}
 			}
-			return ResourcesPlugin.getWorkspace().getRuleFactory().validateEditRule(files.toArray(new IFile[files.size()]));
+			return ResourcesPlugin.getWorkspace().getRuleFactory()
+					.validateEditRule((IFile[]) files.toArray(new IFile[files.size()]));
 		}
 		return null;
 	}
@@ -592,9 +587,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	private ISchedulingRule computeSchedulingRule(IResource toCreateOrModify) {
-		if (toCreateOrModify.exists()) {
+		if (toCreateOrModify.exists())
 			return ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(toCreateOrModify);
-		}
 
 		IResource parent = toCreateOrModify;
 		do {
@@ -615,11 +609,11 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected void doSynchronize(final Object element, final IProgressMonitor monitor) throws CoreException {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected void doSynchronize(Object element, IProgressMonitor monitor) throws CoreException {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
-			for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-				final Resource nextResource = it.next();
+			for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+				Resource nextResource = it.next();
 				handleElementChanged(info, nextResource, monitor);
 			}
 			return;
@@ -631,9 +625,9 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected void doSaveDocument(final IProgressMonitor monitor, final Object element, final IDocument document,
-			final boolean overwrite) throws CoreException {
-		final ResourceSetInfo info = getResourceSetInfo(element);
+	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite)
+			throws CoreException {
+		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
 			if (!overwrite && !info.isSynchronized()) {
 				throw new CoreException(
@@ -649,9 +643,9 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			try {
 				monitor.beginTask(
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDocumentProvider_SaveDiagramTask, info
-								.getResourceSet().getResources().size() + 1); // "Saving diagram"
-				for (final Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
-					final Resource nextResource = it.next();
+								.getResourceSet().getResources().size() + 1); //"Saving diagram"
+				for (Iterator<Resource> it = info.getLoadedResourcesIterator(); it.hasNext();) {
+					Resource nextResource = it.next();
 					monitor.setTaskName(NLS
 							.bind(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDocumentProvider_SaveNextResourceTask,
 									nextResource.getURI()));
@@ -659,7 +653,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 						try {
 							nextResource.save(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
 									.getSaveOptions());
-						} catch (final IOException e) {
+						} catch (IOException e) {
 							fireElementStateChangeFailed(element);
 							throw new CoreException(new Status(IStatus.ERROR,
 									de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.ID,
@@ -670,7 +664,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 				}
 				monitor.done();
 				info.setModificationStamp(computeModificationStamp(info));
-			} catch (final RuntimeException x) {
+			} catch (RuntimeException x) {
 				fireElementStateChangeFailed(element);
 				throw x;
 			} finally {
@@ -680,7 +674,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			URI newResoruceURI;
 			List<IFile> affectedFiles = null;
 			if (element instanceof FileEditorInput) {
-				final IFile newFile = ((FileEditorInput) element).getFile();
+				IFile newFile = ((FileEditorInput) element).getFile();
 				affectedFiles = Collections.singletonList(newFile);
 				newResoruceURI = URI.createPlatformResourceURI(newFile.getFullPath().toString(), true);
 			} else if (element instanceof URIEditorInput) {
@@ -707,27 +701,26 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 								0,
 								"Incorrect document used: " + document + " instead of org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument", null)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			final IDiagramDocument diagramDocument = (IDiagramDocument) document;
+			IDiagramDocument diagramDocument = (IDiagramDocument) document;
 			final Resource newResource = diagramDocument.getEditingDomain().getResourceSet().createResource(newResoruceURI);
-			final Diagram diagramCopy = EcoreUtil.copy(diagramDocument.getDiagram());
+			final Diagram diagramCopy = (Diagram) EcoreUtil.copy(diagramDocument.getDiagram());
 			try {
 				new AbstractTransactionalCommand(diagramDocument.getEditingDomain(), NLS.bind(
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDocumentProvider_SaveAsOperation,
 						diagramCopy.getName()), affectedFiles) {
-					@Override
-					protected CommandResult doExecuteWithResult(final IProgressMonitor monitor, final IAdaptable info)
+					protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info)
 							throws ExecutionException {
 						newResource.getContents().add(diagramCopy);
 						return CommandResult.newOKCommandResult();
 					}
 				}.execute(monitor, null);
 				newResource.save(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil.getSaveOptions());
-			} catch (final ExecutionException e) {
+			} catch (ExecutionException e) {
 				fireElementStateChangeFailed(element);
 				throw new CoreException(new Status(IStatus.ERROR,
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.ID, 0,
 						e.getLocalizedMessage(), null));
-			} catch (final IOException e) {
+			} catch (IOException e) {
 				fireElementStateChangeFailed(element);
 				throw new CoreException(new Status(IStatus.ERROR,
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.ID, 0,
@@ -740,19 +733,18 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
-	protected void handleElementChanged(final ResourceSetInfo info, final Resource changedResource, final IProgressMonitor monitor) {
-		final IFile file = WorkspaceSynchronizer.getFile(changedResource);
+	protected void handleElementChanged(ResourceSetInfo info, Resource changedResource, IProgressMonitor monitor) {
+		IFile file = WorkspaceSynchronizer.getFile(changedResource);
 		if (file != null) {
 			try {
 				file.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-			} catch (final CoreException ex) {
+			} catch (CoreException ex) {
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 						.getInstance()
 						.logError(
 								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDocumentProvider_handleElementContentChanged,
 								ex);
-				// Error message to log was initially taken from
-				// org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide.internal.l10n.EditorMessages.FileDocumentProvider_handleElementContentChanged
+				// Error message to log was initially taken from org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide.internal.l10n.EditorMessages.FileDocumentProvider_handleElementContentChanged
 			}
 		}
 		changedResource.unload();
@@ -762,7 +754,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		info.fStatus = null;
 		try {
 			setDocumentContent(info.fDocument, info.getEditorInput());
-		} catch (final CoreException e) {
+		} catch (CoreException e) {
 			info.fStatus = e.getStatus();
 		}
 		if (!info.fCanBeSaved) {
@@ -775,9 +767,9 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
-	protected void handleElementMoved(final IEditorInput input, final URI uri) {
+	protected void handleElementMoved(IEditorInput input, URI uri) {
 		if (input instanceof FileEditorInput) {
-			final IFile newFile = ResourcesPlugin.getWorkspace().getRoot()
+			IFile newFile = ResourcesPlugin.getWorkspace().getRoot()
 					.getFile(new Path(URI.decode(uri.path())).removeFirstSegments(1));
 			fireElementMoved(input, newFile == null ? null : new FileEditorInput(newFile));
 			return;
@@ -790,7 +782,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	public IEditorInput createInputWithEditingDomain(final IEditorInput editorInput, final TransactionalEditingDomain domain) {
+	public IEditorInput createInputWithEditingDomain(IEditorInput editorInput, TransactionalEditingDomain domain) {
 		return editorInput;
 	}
 
@@ -798,8 +790,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	public IDiagramDocument getDiagramDocument(final Object element) {
-		final IDocument doc = getDocument(element);
+	public IDiagramDocument getDiagramDocument(Object element) {
+		IDocument doc = getDocument(element);
 		if (doc instanceof IDiagramDocument) {
 			return (IDiagramDocument) doc;
 		}
@@ -810,7 +802,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * @generated
 	 */
 	@Override
-	protected IRunnableContext getOperationRunner(final IProgressMonitor monitor) {
+	protected IRunnableContext getOperationRunner(IProgressMonitor monitor) {
 		return null;
 	}
 
@@ -832,17 +824,17 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
-		private final LinkedList<Resource> myUnSynchronizedResources = new LinkedList<Resource>();
+		private LinkedList<Resource> myUnSynchronizedResources = new LinkedList<Resource>();
 
 		/**
 		 * @generated
 		 */
-		private final IDiagramDocument myDocument;
+		private IDiagramDocument myDocument;
 
 		/**
 		 * @generated
 		 */
-		private final IEditorInput myEditorInput;
+		private IEditorInput myEditorInput;
 
 		/**
 		 * @generated
@@ -862,12 +854,12 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
-		private final ResourceSetModificationListener myResourceSetListener;
+		private ResourceSetModificationListener myResourceSetListener;
 
 		/**
 		 * @generated
 		 */
-		public ResourceSetInfo(final IDiagramDocument document, final IEditorInput editorInput) {
+		public ResourceSetInfo(IDiagramDocument document, IEditorInput editorInput) {
 			super(document);
 			myDocument = document;
 			myEditorInput = editorInput;
@@ -886,7 +878,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
-		public void setModificationStamp(final long modificationStamp) {
+		public void setModificationStamp(long modificationStamp) {
 			myModificationStamp = modificationStamp;
 		}
 
@@ -924,8 +916,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		public void dispose() {
 			stopResourceListening();
 			getResourceSet().eAdapters().remove(myResourceSetListener);
-			for (final Iterator<Resource> it = getLoadedResourcesIterator(); it.hasNext();) {
-				final Resource resource = it.next();
+			for (Iterator<Resource> it = getLoadedResourcesIterator(); it.hasNext();) {
+				Resource resource = it.next();
 				resource.unload();
 			}
 			getEditingDomain().dispose();
@@ -941,14 +933,14 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
-		public void setUnSynchronized(final Resource resource) {
+		public void setUnSynchronized(Resource resource) {
 			myUnSynchronizedResources.add(resource);
 		}
 
 		/**
 		 * @generated
 		 */
-		public void setSynchronized(final Resource resource) {
+		public void setSynchronized(Resource resource) {
 			myUnSynchronizedResources.remove(resource);
 		}
 
@@ -977,7 +969,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
-		public void setUpdateCache(final boolean update) {
+		public void setUpdateCache(boolean update) {
 			myUpdateCache = update;
 		}
 
@@ -991,7 +983,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
-		public void setModifiable(final boolean modifiable) {
+		public void setModifiable(boolean modifiable) {
 			myModifiable = modifiable;
 		}
 
@@ -1005,7 +997,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
-		public void setReadOnly(final boolean readOnly) {
+		public void setReadOnly(boolean readOnly) {
 			myReadOnly = readOnly;
 		}
 
@@ -1028,12 +1020,11 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			public boolean handleResourceChanged(final Resource resource) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
-						setUnSynchronized(resource);
+						ResourceSetInfo.this.setUnSynchronized(resource);
 						return true;
 					}
 				}
 				Display.getDefault().asyncExec(new Runnable() {
-					@Override
 					public void run() {
 						handleElementChanged(ResourceSetInfo.this, resource, null);
 					}
@@ -1045,17 +1036,16 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			 * @generated
 			 */
 			@Override
-			public boolean handleResourceDeleted(final Resource resource) {
+			public boolean handleResourceDeleted(Resource resource) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
-						setUnSynchronized(resource);
+						ResourceSetInfo.this.setUnSynchronized(resource);
 						return true;
 					}
 				}
 				Display.getDefault().asyncExec(new Runnable() {
-					@Override
 					public void run() {
-						fireElementDeleted(getEditorInput());
+						fireElementDeleted(ResourceSetInfo.this.getEditorInput());
 					}
 				});
 				return true;
@@ -1065,18 +1055,17 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			 * @generated
 			 */
 			@Override
-			public boolean handleResourceMoved(final Resource resource, final URI newURI) {
+			public boolean handleResourceMoved(Resource resource, final URI newURI) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
-						setUnSynchronized(resource);
+						ResourceSetInfo.this.setUnSynchronized(resource);
 						return true;
 					}
 				}
 				if (myDocument.getDiagram().eResource() == resource) {
 					Display.getDefault().asyncExec(new Runnable() {
-						@Override
 						public void run() {
-							handleElementMoved(getEditorInput(), newURI);
+							handleElementMoved(ResourceSetInfo.this.getEditorInput(), newURI);
 						}
 					});
 				} else {
@@ -1097,17 +1086,17 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
-		private final NotificationFilter myModifiedFilter;
+		private NotificationFilter myModifiedFilter;
 
 		/**
 		 * @generated
 		 */
-		private final ResourceSetInfo myInfo;
+		private ResourceSetInfo myInfo;
 
 		/**
 		 * @generated
 		 */
-		public ResourceSetModificationListener(final ResourceSetInfo info) {
+		public ResourceSetModificationListener(ResourceSetInfo info) {
 			myInfo = info;
 			myModifiedFilter = NotificationFilter.createEventTypeFilter(Notification.SET)
 					.or(NotificationFilter.createEventTypeFilter(Notification.UNSET))
@@ -1118,18 +1107,18 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		 * @generated
 		 */
 		@Override
-		public void notifyChanged(final Notification notification) {
+		public void notifyChanged(Notification notification) {
 			if (notification.getNotifier() instanceof ResourceSet) {
 				super.notifyChanged(notification);
 			}
 			if (!notification.isTouch() && myModifiedFilter.matches(notification)) {
 				if (notification.getNotifier() instanceof Resource) {
-					final Resource resource = (Resource) notification.getNotifier();
+					Resource resource = (Resource) notification.getNotifier();
 					if (resource.isLoaded()) {
 						boolean modified = false;
-						for (final Iterator/* <org.eclipse.emf.ecore.resource.Resource> */it = myInfo
-								.getLoadedResourcesIterator(); it.hasNext() && !modified;) {
-							final Resource nextResource = (Resource) it.next();
+						for (Iterator/*<org.eclipse.emf.ecore.resource.Resource>*/it = myInfo.getLoadedResourcesIterator(); it
+								.hasNext() && !modified;) {
+							Resource nextResource = (Resource) it.next();
 							if (nextResource.isLoaded()) {
 								modified = nextResource.isModified();
 							}

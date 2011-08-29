@@ -69,10 +69,9 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static void runWithConstraints(final TransactionalEditingDomain editingDomain, final Runnable operation) {
+	public static void runWithConstraints(TransactionalEditingDomain editingDomain, Runnable operation) {
 		final Runnable op = operation;
-		final Runnable task = new Runnable() {
-			@Override
+		Runnable task = new Runnable() {
 			public void run() {
 				try {
 					constraintsActive = true;
@@ -85,7 +84,7 @@ public class VespucciValidationProvider {
 		if (editingDomain != null) {
 			try {
 				editingDomain.runExclusive(task);
-			} catch (final Exception e) {
+			} catch (Exception e) {
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
 						"Validation failed", e); //$NON-NLS-1$
 			}
@@ -97,7 +96,7 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	static boolean isInDefaultEditorContext(final Object object) {
+	static boolean isInDefaultEditorContext(Object object) {
 		if (shouldConstraintsBePrivate() && !constraintsActive) {
 			return false;
 		}
@@ -119,7 +118,7 @@ public class VespucciValidationProvider {
 		 * @generated
 		 */
 		@Override
-		public boolean selects(final Object object) {
+		public boolean selects(Object object) {
 			return isInDefaultEditorContext(object);
 		}
 	}
@@ -203,7 +202,7 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	static String formatElement(final EObject object) {
+	static String formatElement(EObject object) {
 		return EMFCoreUtil.getQualifiedName(object, true);
 	}
 

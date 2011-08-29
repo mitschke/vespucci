@@ -114,7 +114,7 @@ public class IncomingCreateCommand extends EditElementCommand {
 		de.tud.cs.st.vespucci.vespucci_model.Incoming newElement = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
 				.createIncoming();
 		getContainer().getTargetConnections().add(newElement);
-		
+
 		newElement.setSource(getSource());
 		newElement.setTarget(getTarget());
 		doConfigure(newElement, monitor, info);

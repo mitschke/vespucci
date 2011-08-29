@@ -68,15 +68,15 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILa
 	 * @generated
 	 */
 	@Override
-	public Image getImage(final Object element) {
-		final IElementType etype = getElementType(getView(unwrap(element)));
+	public Image getImage(Object element) {
+		IElementType etype = getElementType(getView(unwrap(element)));
 		return etype == null ? null : de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getImage(etype);
 	}
 
 	/**
 	 * @generated
 	 */
-	private Object unwrap(final Object element) {
+	private Object unwrap(Object element) {
 		if (element instanceof IStructuredSelection) {
 			return ((IStructuredSelection) element).getFirstElement();
 		}
@@ -86,7 +86,7 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILa
 	/**
 	 * @generated
 	 */
-	private View getView(final Object element) {
+	private View getView(Object element) {
 		if (element instanceof View) {
 			return (View) element;
 		}
@@ -100,12 +100,10 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILa
 	 * @generated
 	 */
 	private IElementType getElementType(View view) {
-		// For intermediate views climb up the containment hierarchy to find the one associated with
-		// an element type.
+		// For intermediate views climb up the containment hierarchy to find the one associated with an element type.
 		while (view != null) {
-			final int vid = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view);
-			final IElementType etype = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-					.getElementType(vid);
+			int vid = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view);
+			IElementType etype = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getElementType(vid);
 			if (etype != null) {
 				return etype;
 			}

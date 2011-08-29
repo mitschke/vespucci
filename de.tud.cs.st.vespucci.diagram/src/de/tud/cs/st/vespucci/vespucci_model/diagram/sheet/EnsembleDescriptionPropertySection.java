@@ -71,7 +71,7 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	 * URL to the vespucci editor package.
 	 */
 	private static final String VESPUCCI_EDITOR_URL = "http://vespucci.editor";
-	
+
 	/**
 	 * @generated
 	 */
@@ -180,7 +180,7 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 			return (String) eObject.eGet(vesPackage.getShape_Description());
 		} else {
 			getSectionComposite().setVisible(false);
-			throw new VespucciUnexpectedException(String.format("[%s] is not an ensemble.",eObject));
+			throw new VespucciUnexpectedException(String.format("[%s] is not an ensemble.", eObject));
 		}
 
 	}

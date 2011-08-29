@@ -166,8 +166,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * @generated
 	 */
 	@Override
-	protected PaletteRoot createPaletteRoot(final PaletteRoot existingPaletteRoot) {
-		final PaletteRoot root = super.createPaletteRoot(existingPaletteRoot);
+	protected PaletteRoot createPaletteRoot(PaletteRoot existingPaletteRoot) {
+		PaletteRoot root = super.createPaletteRoot(existingPaletteRoot);
 		new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciPaletteFactory().fillPalette(root);
 		return root;
 	}
@@ -193,10 +193,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 */
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Object getAdapter(final Class type) {
+	public Object getAdapter(Class type) {
 		if (type == IShowInTargetList.class) {
 			return new IShowInTargetList() {
-				@Override
 				public String[] getShowInTargetIds() {
 					return new String[] { ProjectExplorer.VIEW_ID };
 				}
@@ -209,7 +208,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * @generated
 	 */
 	@Override
-	protected IDocumentProvider getDocumentProvider(final IEditorInput input) {
+	protected IDocumentProvider getDocumentProvider(IEditorInput input) {
 		if (input instanceof IFileEditorInput || input instanceof URIEditorInput) {
 			return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
 					.getDocumentProvider();
@@ -222,7 +221,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 */
 	@Override
 	public TransactionalEditingDomain getEditingDomain() {
-		final IDocument document = getEditorInput() != null ? getDocumentProvider().getDocument(getEditorInput()) : null;
+		IDocument document = getEditorInput() != null ? getDocumentProvider().getDocument(getEditorInput()) : null;
 		if (document instanceof IDiagramDocument) {
 			return ((IDiagramDocument) document).getEditingDomain();
 		}
@@ -233,7 +232,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * @generated
 	 */
 	@Override
-	protected void setDocumentProvider(final IEditorInput input) {
+	protected void setDocumentProvider(IEditorInput input) {
 		if (input instanceof IFileEditorInput || input instanceof URIEditorInput) {
 			setDocumentProvider(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
 					.getDocumentProvider());
@@ -334,7 +333,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * @generated
 	 */
 	@Override
-	public void gotoMarker(final IMarker marker) {
+	public void gotoMarker(IMarker marker) {
 		MarkerNavigationService.getInstance().gotoMarker(this, marker);
 	}
 
@@ -399,22 +398,22 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * @generated
 	 */
 	@Override
-	protected void performSaveAs(final IProgressMonitor progressMonitor) {
-		final Shell shell = getSite().getShell();
-		final IEditorInput input = getEditorInput();
-		final SaveAsDialog dialog = new SaveAsDialog(shell);
-		final IFile original = input instanceof IFileEditorInput ? ((IFileEditorInput) input).getFile() : null;
+	protected void performSaveAs(IProgressMonitor progressMonitor) {
+		Shell shell = getSite().getShell();
+		IEditorInput input = getEditorInput();
+		SaveAsDialog dialog = new SaveAsDialog(shell);
+		IFile original = input instanceof IFileEditorInput ? ((IFileEditorInput) input).getFile() : null;
 		if (original != null) {
 			dialog.setOriginalFile(original);
 		}
 		dialog.create();
-		final IDocumentProvider provider = getDocumentProvider();
+		IDocumentProvider provider = getDocumentProvider();
 		if (provider == null) {
 			// editor has been programmatically closed while the dialog was open
 			return;
 		}
 		if (provider.isDeleted(input) && original != null) {
-			final String message = NLS.bind(
+			String message = NLS.bind(
 					de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SavingDeletedFile,
 					original.getName());
 			dialog.setErrorMessage(null);
@@ -426,22 +425,22 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 			}
 			return;
 		}
-		final IPath filePath = dialog.getResult();
+		IPath filePath = dialog.getResult();
 		if (filePath == null) {
 			if (progressMonitor != null) {
 				progressMonitor.setCanceled(true);
 			}
 			return;
 		}
-		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-		final IFile file = workspaceRoot.getFile(filePath);
+		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+		IFile file = workspaceRoot.getFile(filePath);
 		final IEditorInput newInput = new FileEditorInput(file);
 		// Check if the editor is already open
-		final IEditorMatchingStrategy matchingStrategy = getEditorDescriptor().getEditorMatchingStrategy();
-		final IEditorReference[] editorRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+		IEditorMatchingStrategy matchingStrategy = getEditorDescriptor().getEditorMatchingStrategy();
+		IEditorReference[] editorRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getEditorReferences();
-		for (final IEditorReference editorRef : editorRefs) {
-			if (matchingStrategy.matches(editorRef, newInput)) {
+		for (int i = 0; i < editorRefs.length; i++) {
+			if (matchingStrategy.matches(editorRefs[i], newInput)) {
 				MessageDialog.openWarning(shell,
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveAsErrorTitle,
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveAsErrorMessage);
@@ -454,8 +453,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 			getDocumentProvider(newInput).saveDocument(progressMonitor, newInput,
 					getDocumentProvider().getDocument(getEditorInput()), true);
 			success = true;
-		} catch (final CoreException x) {
-			final IStatus status = x.getStatus();
+		} catch (CoreException x) {
+			IStatus status = x.getStatus();
 			if (status == null || status.getSeverity() != IStatus.CANCEL) {
 				ErrorDialog.openError(shell,
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditor_SaveErrorTitle,
@@ -485,17 +484,17 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * @generated
 	 */
 	private ISelection getNavigatorSelection() {
-		final IDiagramDocument document = getDiagramDocument();
+		IDiagramDocument document = getDiagramDocument();
 		if (document == null) {
 			return StructuredSelection.EMPTY;
 		}
-		final Diagram diagram = document.getDiagram();
+		Diagram diagram = document.getDiagram();
 		if (diagram == null || diagram.eResource() == null) {
 			return StructuredSelection.EMPTY;
 		}
-		final IFile file = WorkspaceSynchronizer.getFile(diagram.eResource());
+		IFile file = WorkspaceSynchronizer.getFile(diagram.eResource());
 		if (file != null) {
-			final de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem item = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem(
+			de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem item = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem(
 					diagram, file, false);
 			return new StructuredSelection(item);
 		}
@@ -508,7 +507,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	@Override
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
-		final de.tud.cs.st.vespucci.vespucci_model.diagram.part.DiagramEditorContextMenuProvider provider = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.DiagramEditorContextMenuProvider(
+		de.tud.cs.st.vespucci.vespucci_model.diagram.part.DiagramEditorContextMenuProvider provider = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.DiagramEditorContextMenuProvider(
 				this, getDiagramGraphicalViewer());
 		getDiagramGraphicalViewer().setContextMenu(provider);
 		getSite().registerContextMenu(ActionIds.DIAGRAM_EDITOR_CONTEXT_MENU, provider, getDiagramGraphicalViewer());
