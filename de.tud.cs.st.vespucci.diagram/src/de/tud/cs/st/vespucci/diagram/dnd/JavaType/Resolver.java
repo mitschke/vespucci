@@ -62,12 +62,6 @@ public class Resolver {
 
 	private static final String CONSTRUCTOR = "<init>";
 
-	/**
-	 * This flag is needed in order to handle resolving packages from JAR-files individually
-	 * TODO Find a nicer way to handle JAR-files with reflections and the visitor pattern
-	 */
-	private static boolean resolvingJARFile = false;
-
 	private Resolver() {
 	}
 
@@ -88,14 +82,7 @@ public class Resolver {
 	 * @return Returns the name of the package.
 	 */
 	public static String resolveFullyQualifiedPackageName(final Object element) {
-		final PackageNameVisitor pnv = new PackageNameVisitor();
-
-		if (element instanceof IPackageFragmentRoot) {
-			// XXX: hack to support content of JAR-files
-			return (String) pnv.visit((IPackageFragmentRoot) element);
-		}
-
-		return pnv.getFullyQualifiedPackageName(element);
+		return new PackageNameVisitor().getFullyQualifiedPackageName(element);
 	}
 
 	/**
@@ -106,16 +93,7 @@ public class Resolver {
 		final ResolvableVisitor resolvableVisitor = new ResolvableVisitor();
 
 		for (final Object object : objects) {
-
-			if (object instanceof IPackageFragmentRoot) {
-				// XXX: hack to support content of JAR-files
-				// Because this method is always called when one drags a JAR-file
-				// from the Project-Explorer to the Vespucci-Workspace, the flag
-				// can safely be alternated here.
-				resolvingJARFile = true;
-				continue;
-			} else if (!resolvableVisitor.isResolvable(object)) {
-				resolvingJARFile = false;
+			if (!resolvableVisitor.isResolvable(object)) {
 				return false;
 			}
 		}
@@ -209,14 +187,7 @@ public class Resolver {
 	 * @return Returns the name for the given element.
 	 */
 	public static String getElementNameFromObject(final Object element) {
-		final ElementNameVisitor env = new ElementNameVisitor();
-
-		if (element instanceof IPackageFragmentRoot) {
-			// XXX: hack to support content of JAR-files
-			return (String) env.visit((IPackageFragmentRoot) element);
-		}
-
-		return env.getElementName(element);
+		return new ElementNameVisitor().getElementName(element);
 	}
 
 	/**
@@ -237,12 +208,7 @@ public class Resolver {
 
 				final String fqPackageName;
 
-				if (resolvingJARFile) {
-					// XXX: hack to support content of JAR-files
-					fqPackageName = getFQPackageNameforJARFiles(childPackage);
-				} else {
-					fqPackageName = resolveFullyQualifiedPackageName(childPackage).trim();
-				}
+				fqPackageName = resolveFullyQualifiedPackageName(childPackage).trim();
 
 				if (fqPackageName.length() > 0) {
 					packages.add(fqPackageName);
@@ -253,25 +219,6 @@ public class Resolver {
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Failed to get child packages from package root [%s].",
 					packageRoot), e);
-		}
-	}
-
-	/**
-	 * This is the same source code as in the PackageNameVisitor class.
-	 * 
-	 * @param childPackage
-	 * @return the fully qualified package name
-	 */
-	private static String getFQPackageNameforJARFiles(IJavaElement childPackage) {
-		if (childPackage instanceof IPackageFragment) {
-			final IPackageFragment pkg = (IPackageFragment) childPackage;
-			if (pkg.isDefaultPackage()) {
-				return "";
-			} else {
-				return ((IPackageFragment) childPackage).getElementName();
-			}
-		} else {
-			throw new VespucciUnexpectedException("CRAP");
 		}
 	}
 

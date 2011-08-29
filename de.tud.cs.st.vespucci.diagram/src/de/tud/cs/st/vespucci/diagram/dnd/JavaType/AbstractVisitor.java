@@ -9,34 +9,62 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.util.ISourceAttribute;
+import org.eclipse.jdt.internal.core.ClassFile;
+import org.eclipse.jdt.internal.core.CompilationUnit;
+import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
+import org.eclipse.jdt.internal.core.PackageFragment;
+import org.eclipse.jdt.internal.core.PackageFragmentRoot;
+import org.eclipse.jdt.internal.core.SourceField;
+import org.eclipse.jdt.internal.core.SourceMethod;
+import org.eclipse.jdt.internal.core.SourceType;
 
 import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
+/**
+ * This abstract class provides the methods for all its subclasses and uses the reflection API to
+ * determine the kind of visitor which is currently calling the visit method.
+ * 
+ * @author Dominic Scheurer
+ * @author Thomas Schulz
+ * 
+ */
 public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 
 	public abstract Object getDefaultResultObject();
 
 	public Object visit(Object element) {
 		try {
-			
+
+			Class current = element.getClass();
+
+			if (element instanceof IJavaElement && isLocatedInJarFile((IJavaElement) element)) {
+				// getClass().getInterfaces doesn't work when "element" lies in JAR-file
+				
+			}
+
+			boolean place = true;
+
 			final Class[] elementInterfaces = element.getClass().getInterfaces();
-			
+
 			if (elementInterfaces.length == 0) {
 				throw getIllegalArgumentException(element);
 			}
-			
+
 			// For the considered classes, the first interface is the public interface
 			// of interest. Thus, it is avoided to depend on eclipse internal packages.
-			final Class firstPublicInterface = elementInterfaces[0];			
-			final Method correctVisitMethod = getClass().getMethod("visit", new Class[] { firstPublicInterface });
-
-			return correctVisitMethod.invoke(this, new Object[] { element });
+			final Class firstPublicInterface = elementInterfaces[0];
+			final Class[] correctClass = new Class[] { firstPublicInterface };
+			final Method correctVisitMethod = getClass().getMethod("visit", correctClass);
+			final Object invocation = correctVisitMethod.invoke(this, new Object[] { element });
+			
+			return invocation;
 		} catch (SecurityException exception) {
 			throw getIllegalArgumentException(element);
 		} catch (NoSuchMethodException exception) {
@@ -50,6 +78,31 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 		} catch (NullPointerException exception) {
 			throw new VespucciUnexpectedException("Method name must not be null.", exception);
 		}
+	}
+
+	private static boolean isLocatedInJarFile(IJavaElement element) {
+		IJavaElement parent = element.getParent();
+		while (parent != null) {
+			if (element.getParent() instanceof JarPackageFragmentRoot) {
+				return true;
+			}
+			parent = parent.getParent();
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param o
+	 * @return Returns the specific class of the element.
+	 */
+	private Class getCorrectClass(Object o) {
+
+		return null;
+	}
+
+	boolean hasJARParent(Object o) {
+		return false;
 	}
 
 	@Override
