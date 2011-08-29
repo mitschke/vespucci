@@ -1372,7 +1372,7 @@
         className="ModelDescriptionPropertySection">
       <filter
           xsi:type="gmfgen:CustomTabFilter"
-          className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"/>
+          className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleFilter"/>
     </tabs>
     <tabs
         xsi:type="gmfgen:GenCustomPropertyTab"
@@ -1381,7 +1381,7 @@
         className="EnsembleDescriptionPropertySection">
       <filter
           xsi:type="gmfgen:CustomTabFilter"
-          className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.TabQueryFilter"/>
+          className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleFilter"/>
     </tabs>
   </propertySheet>
   <domainGenModel
