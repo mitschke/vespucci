@@ -832,34 +832,21 @@
           </category>
           <command
                 categoryId="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                description="Sets the type of the constraint to Expected"
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintTypeExpectedEditPart"
-                name="Set Constraint Type Expected">
+                description="Sets the type of the constraint to the type specified by SetConstraintTypeParam."
+                id="de.tud.cs.st.vespucci.diagram.SetConstraintType"
+                name="Set Constraint Type">
+             <commandParameter
+                   id="de.tud.cs.st.vespucci.diagram.SetConstraintTypeParam"
+                   name="type"
+                   optional="false"
+                   typeId="de.tud.cs.st.vespucci.diagram.SetTypeParamType"
+                   values="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeParameter">
+             </commandParameter>
           </command>
-          <command
-                categoryId="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                description="Sets the type of the constraint to InAndOut"
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintTypeInAndOutEditPart"
-                name="Set Constraint Type InAndOut">
-          </command>
-          <command
-                categoryId="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                description="Sets the type of the constraint to Incoming"
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintTypeIncomingEditPart"
-                name="Set Constraint Type Incoming">
-          </command>
-          <command
-                categoryId="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                description="Sets the type of the constraint to NotAllowed"
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintTypeNotAllowedEditPart"
-                name="Set Constraint Type NotAllowed">
-          </command>
-          <command
-                categoryId="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                description="Sets the type of the constraint to Outgoing"
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintTypeOutgoingEditPart"
-                name="Set Constraint Type Outgoing">
-          </command>
+          <commandParameterType
+                id="de.tud.cs.st.vespucci.diagram.SetTypeParamType"
+                type="org.eclipse.gmf.runtime.emf.type.core.IElementType">
+          </commandParameterType>
  
    </extension>
    
@@ -876,23 +863,7 @@
          </handler>
          <handler
                class="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeHandler"
-               commandId="de.tud.cs.st.vespucci.diagram.SetConstraintTypeExpectedEditPart">
-         </handler>
-         <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeHandler"
-               commandId="de.tud.cs.st.vespucci.diagram.SetConstraintTypeInAndOutEditPart">
-         </handler>
-         <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeHandler"
-               commandId="de.tud.cs.st.vespucci.diagram.SetConstraintTypeIncomingEditPart">
-         </handler>
-         <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeHandler"
-               commandId="de.tud.cs.st.vespucci.diagram.SetConstraintTypeNotAllowedEditPart">
-         </handler>
-         <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeHandler"
-               commandId="de.tud.cs.st.vespucci.diagram.SetConstraintTypeOutgoingEditPart">
+               commandId="de.tud.cs.st.vespucci.diagram.SetConstraintType">
          </handler>
       </extension>
        <extension
