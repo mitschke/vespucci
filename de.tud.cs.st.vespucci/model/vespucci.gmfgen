@@ -814,7 +814,7 @@
   </diagram>
   <plugin
       provider="Technischen Universität Darmstadt / Department of Computer Science"
-      version="1.5.1">
+      version="1.5.2">
     <requiredPlugins>org.eclipse.draw2d</requiredPlugins>
     <requiredPlugins>org.eclipse.gmf.runtime.draw2d.ui</requiredPlugins>
   </plugin>
