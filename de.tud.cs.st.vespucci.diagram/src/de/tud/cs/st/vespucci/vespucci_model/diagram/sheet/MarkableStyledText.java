@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @see org.eclipse.swt.custom.StyledText
  * @author Alexander Weitzmann
- * @version 1.0
  */
 public class MarkableStyledText extends StyledText{
 
@@ -91,7 +90,7 @@ public class MarkableStyledText extends StyledText{
 	/**
 	 * Checks if given position is marked.
 	 * @param position Position of interest.
-	 * @return True, if given position is marked, false otherwise.
+	 * @return Returns true only if given position is marked.
 	 */
 	public boolean isPositionMarked(int position){
 		return markedPositions.contains(Integer.valueOf(position));

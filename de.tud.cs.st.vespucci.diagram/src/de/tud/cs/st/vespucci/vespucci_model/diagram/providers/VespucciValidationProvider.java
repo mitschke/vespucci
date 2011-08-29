@@ -47,7 +47,6 @@ import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
 import org.osgi.framework.FrameworkUtil;
 
-import de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries;
 import de.tud.cs.st.vespucci.io.KeywordReader;
 
 /**
@@ -70,9 +69,10 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static void runWithConstraints(TransactionalEditingDomain editingDomain, Runnable operation) {
+	public static void runWithConstraints(final TransactionalEditingDomain editingDomain, final Runnable operation) {
 		final Runnable op = operation;
-		Runnable task = new Runnable() {
+		final Runnable task = new Runnable() {
+			@Override
 			public void run() {
 				try {
 					constraintsActive = true;
@@ -85,7 +85,7 @@ public class VespucciValidationProvider {
 		if (editingDomain != null) {
 			try {
 				editingDomain.runExclusive(task);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
 						"Validation failed", e); //$NON-NLS-1$
 			}
@@ -97,7 +97,7 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	static boolean isInDefaultEditorContext(Object object) {
+	static boolean isInDefaultEditorContext(final Object object) {
 		if (shouldConstraintsBePrivate() && !constraintsActive) {
 			return false;
 		}
@@ -118,29 +118,36 @@ public class VespucciValidationProvider {
 		/**
 		 * @generated
 		 */
-		public boolean selects(Object object) {
+		@Override
+		public boolean selects(final Object object) {
 			return isInDefaultEditorContext(object);
 		}
 	}
 
 	/**
-	 * @generated NOT
+	 * @generated
 	 */
 	public static class Adapter4 extends AbstractModelConstraint {
-		//TODO change the name Adapter4 to a more expressive name
+		// TODO change the name Adapter4 to a more expressive name (CAUTION: Refactoring may affect code generator!)
 		/**
-		 * Java implementation for the constraint NonLeafEnsembleMustBeDerived in All constraints about Ensemble
-		 * @author MalteV
+		 * Java implementation for the constraint NonLeafEnsembleMustBeDerived in All constraints
+		 * about Ensemble
+		 * 
+		 * @author Malte Viering
 		 * @generated NOT
+		 * @return Success-Status, if validation successful; Failure otherwise.
 		 */
-		public IStatus validate(IValidationContext ctx) {
-			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
+		@Override
+		public IStatus validate(final IValidationContext ctx) {
+			final de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
 					.getTarget();
-			if (context.getShapes().size() == 0) //size()==0 => ensemble is a leaf
+			if (context.getShapes().size() == 0) {
 				return ctx.createSuccessStatus();
-			if (context.getQuery().equals("derived")) //the ensemble is not a leaf so it must be derived
+			}
+			if (context.getQuery().equals("derived")) {
 				return ctx.createSuccessStatus();
-			return ctx.createFailureStatus("Queries of non leaf ensemble must be derived");
+			}
+			return ctx.createFailureStatus("Queries of non leaf ensemble must be derived.");
 		}
 	}
 
@@ -148,16 +155,18 @@ public class VespucciValidationProvider {
 	 * @generated
 	 */
 	public static class Adapter5 extends AbstractModelConstraint {
+		// TODO change the name Adapter5 to a more expressive name (CAUTION: Refactoring may affect code generator!)
 		private static ResourceBundle pluginProperties = ResourceBundle.getBundle("plugin");
 
 		/**
 		 * Checks if given dependency kind for constrain is valid.
 		 * 
 		 * @author Alexander Weitzmann
-		 * @generated not
+		 * @generated NOT
 		 * @return Success-Status, if validation successful; Failure otherwise.
 		 */
-		public IStatus validate(IValidationContext ctx) {
+		@Override
+		public IStatus validate(final IValidationContext ctx) {
 			final String context = (String) ctx.getTarget().eGet(
 					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getConnection_Name());
 			if (context == null) {
@@ -165,16 +174,12 @@ public class VespucciValidationProvider {
 			}
 
 			/**
-			 * All valid keywords for dependencies.
-			 */
-
-			/**
 			 * Valid names for dependencies read from the resource-file.
 			 */
-			String[] validDependencies = KeywordReader.readAndParseResourceFile(FrameworkUtil.getBundle(Adapter5.class)
+			final String[] validDependencies = KeywordReader.readAndParseResourceFile(FrameworkUtil.getBundle(Adapter5.class)
 					.getSymbolicName(), pluginProperties.getString("validDependenciesFile"));
 
-			String[] dependencies = context.split(", ");
+			final String[] dependencies = context.split(", ");
 			boolean valid = false;
 
 			// check all dependencies
@@ -198,7 +203,7 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	static String formatElement(EObject object) {
+	static String formatElement(final EObject object) {
 		return EMFCoreUtil.getQualifiedName(object, true);
 	}
 

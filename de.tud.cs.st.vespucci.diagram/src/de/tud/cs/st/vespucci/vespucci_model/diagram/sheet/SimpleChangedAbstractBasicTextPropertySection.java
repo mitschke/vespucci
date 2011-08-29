@@ -9,6 +9,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.common.core.command.ICommand;
 import org.eclipse.gmf.runtime.common.core.util.StringStatics;
@@ -16,7 +17,6 @@ import org.eclipse.gmf.runtime.common.ui.util.StatusLineUtil;
 import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPropertySection;
 import org.eclipse.gmf.runtime.diagram.ui.properties.views.TextChangeHelper;
 import org.eclipse.jdt.ui.PreferenceConstants;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
@@ -35,8 +35,6 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
-import de.tud.cs.st.vespucci.io.KeywordReader;
-
 /**
  * A Changed Copy of AbstractBasicTextPropertySection (org.eclipse.gmf.runtime.diagram
  * .ui.properties.sections.AbstractBasicTextPropertySection)
@@ -48,9 +46,9 @@ import de.tud.cs.st.vespucci.io.KeywordReader;
  * @author natalia balaba
  * 
  *         Changed by:
- * @author MalteV
- * @author BenjaminL
- * @author DominicS
+ * @author Malte Viering
+ * @author Benjamin Lück
+ * @author Dominic Scheurer
  * @author Alexander Weitzmann
  */
 public abstract class SimpleChangedAbstractBasicTextPropertySection extends AbstractModelerPropertySection {
@@ -60,7 +58,7 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	private final int QUERY_TAB_WIDTH_SHIFT = 45;
 
 	// styled text widget to display and set value of the property
-	private MarkableStyledText textWidget;
+	private StyledText textWidget;
 
 	// parent parent ... parent composite for the size of the textfield
 	private Composite scrolledParent;
@@ -68,11 +66,6 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	private Composite sectionComposite;
 
 	private final int startHeight = 15;
-
-	/**
-	 * Preference-store of the java source viewer. Used for highlighting and text-settings for query.
-	 */
-	private static final IPreferenceStore srcViewerPrefs = PreferenceConstants.getPreferenceStore();
 
 	Listener resizeLinstener = new Listener() {
 		@Override
@@ -86,35 +79,35 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	 */
 	private final TextChangeHelper listener = new TextChangeHelper() {
 		private boolean textModified = false;
-		
+
 		/**
 		 * Pattern to be used to match strings in query including the single quotes
 		 */
 		private static final String STRING_PATTERN = "'.+?'";
-		
+
 		/**
 		 * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
 		 */
 		@Override
 		public void handleEvent(final Event event) {
 			switch (event.type) {
-			case SWT.KeyDown:
-				textModified = true;
-				if (event.character == SWT.CR) {
-					getPropertyValueString();
-				}
-				break;
-			case SWT.FocusOut:
-				textChanged((Control) event.widget);
-				break;
-			case SWT.FocusIn:
-				textChanged((Control) event.widget);
-				break;
-			case SWT.MouseDown:
-				
-				break;
-			default:
-				break;
+				case SWT.KeyDown:
+					textModified = true;
+					if (event.character == SWT.CR) {
+						getPropertyValueString();
+					}
+					break;
+				case SWT.FocusOut:
+					textChanged((Control) event.widget);
+					break;
+				case SWT.FocusIn:
+					textChanged((Control) event.widget);
+					break;
+				case SWT.MouseDown:
+
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -140,7 +133,8 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	};
 
 	/**
-	 * @return - the default implementation returns contents of the text widget as a new value for the property. Subclasses can
+	 * @return - the default implementation returns contents of the text widget as a new value for
+	 *         the property. Subclasses can
 	 *         could be override.
 	 */
 	protected final Object computeNewPropertyValue() {
@@ -149,8 +143,8 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse .swt.widgets.Composite,
+	 * @see org.eclipse.ui.views.properties.tabbed.ISection#createControls(org.eclipse
+	 * .swt.widgets.Composite,
 	 * org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage)
 	 */
 	@Override
@@ -165,10 +159,10 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	 *            - parent composite
 	 * @return - a text widget to display and edit the property
 	 */
-	protected final MarkableStyledText createTextWidget(final Composite parent) {
+	protected final StyledText createTextWidget(final Composite parent) {
 		getSectionComposite().getSize();
 
-		final MarkableStyledText st = new MarkableStyledText(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		final StyledText st = new StyledText(parent, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 
 		final Font userFont = JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
 		st.setFont(userFont);
@@ -192,7 +186,6 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#dispose()
 	 */
 	@Override
@@ -260,7 +253,8 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	/**
 	 * returns as an array the property name
 	 * 
-	 * @return - array of strings where each describes a property name one per property. The strings will be used to calculate
+	 * @return - array of strings where each describes a property name one per property. The strings
+	 *         will be used to calculate
 	 *         common indent from the left
 	 */
 	protected final String[] getPropertyNameStringsArray() {
@@ -292,7 +286,6 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.ui.views.properties.tabbed.ISection#refresh()
 	 */
 	@Override

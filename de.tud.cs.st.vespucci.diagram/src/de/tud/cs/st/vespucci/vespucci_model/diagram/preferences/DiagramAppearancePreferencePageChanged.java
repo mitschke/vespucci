@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -51,8 +50,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.AbstractEnumerator;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -80,17 +77,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
+import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
 /**
  * @author dlander, nbalaba
  * 
  *         Appearance properties
  */
-public class DiagramAppearancePreferencePageChanged extends
-		ColoursAndFontsAndLineStylesPropertySection {
+public class DiagramAppearancePreferencePageChanged extends ColoursAndFontsAndLineStylesPropertySection {
 
 	protected static final String REVERSE_JUMP_LINKS_NAME_LABEL = DiagramUIPropertiesMessages.ConnectionAppearanceDetails_ReverseJumpLinksLabel_Text;
 
@@ -123,29 +118,29 @@ public class DiagramAppearancePreferencePageChanged extends
 	/**
 	 * Transfer data to model
 	 */
-	private void updateModel(final String szCmd, final String szID,
-			final Object val) {
+	private void updateModel(final String szCmd, final String szID, final Object val) {
 		if (isReadOnly()) {
 			refresh();
 			return;
 		}
 
-		ArrayList commands = new ArrayList();
+		final ArrayList commands = new ArrayList();
 
-		Iterator it = getInput().iterator();
+		final Iterator it = getInput().iterator();
 
 		while (it.hasNext()) {
 			final ConnectionEditPart ep = (ConnectionEditPart) it.next();
 
-			Resource res = ((View) ep.getModel()).eResource();
+			final Resource res = ((View) ep.getModel()).eResource();
 
 			commands.add(createCommand(szCmd, res, new Runnable() {
 
+				@Override
 				public void run() {
-					ENamedElement element = PackageUtil.getElement(szID);
-					if (element instanceof EStructuralFeature)
-						ep.setStructuralFeatureValue(
-								(EStructuralFeature) element, val);
+					final ENamedElement element = PackageUtil.getElement(szID);
+					if (element instanceof EStructuralFeature) {
+						ep.setStructuralFeatureValue((EStructuralFeature) element, val);
+					}
 				}
 			}));
 		}
@@ -155,21 +150,20 @@ public class DiagramAppearancePreferencePageChanged extends
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.gmf.runtime.diagram.ui.properties.sections.
 	 * AbstractNotationPropertiesSection
 	 * #initializeControls(org.eclipse.swt.widgets.Composite)
 	 */
-	protected void initializeControls(Composite parent) {
+	@Override
+	protected void initializeControls(final Composite parent) {
 		composite = getWidgetFactory().createFlatFormComposite(parent);
-		FormLayout layout = (FormLayout) composite.getLayout();
+		final FormLayout layout = (FormLayout) composite.getLayout();
 		layout.spacing = 3;
 
-		Composite groups = getWidgetFactory().createComposite(composite);
+		final Composite groups = getWidgetFactory().createComposite(composite);
 		groups.setLayout(new GridLayout(2, false));
 		createFontsAndColorsGroups(groups);
-		colorsAndFontsGroup.setLayoutData(new GridData(
-				GridData.VERTICAL_ALIGN_BEGINNING));
+		colorsAndFontsGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
 		createConnectionPropertyGroups(groups);
 	}
 
@@ -177,22 +171,17 @@ public class DiagramAppearancePreferencePageChanged extends
 	 * @see org.eclipse.gmf.runtime.common.ui.properties.ISection#createControls(org.eclipse.swt.widgets.Composite,
 	 *      org.eclipse.gmf.runtime.common.ui.properties.TabbedPropertySheetPage)
 	 */
-	public void createConnectionPropertyGroups(Composite groups) {
+	public void createConnectionPropertyGroups(final Composite groups) {
 
 		// routing
-		Group routing = getWidgetFactory().createGroup(groups,
-				ROUTER_OPTIONS_LABEL);
+		final Group routing = getWidgetFactory().createGroup(groups, ROUTER_OPTIONS_LABEL);
 		routing.setLayout(new GridLayout(1, false));
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		final GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		routing.setLayoutData(data);
 
 		// line router
-		createRadioGroup(
-				routing,
-				Routing.VALUES.iterator(),
-				Properties.ID_ROUTING,
-				DiagramUIPropertiesMessages.AppearanceDetails_LineRouterCommand_Text,
-				LINE_ROUTER_NAME_LABEL, 3);
+		createRadioGroup(routing, Routing.VALUES.iterator(), Properties.ID_ROUTING,
+				DiagramUIPropertiesMessages.AppearanceDetails_LineRouterCommand_Text, LINE_ROUTER_NAME_LABEL, 3);
 
 		// router options
 		createRouterOptionsGroup(routing);
@@ -202,38 +191,33 @@ public class DiagramAppearancePreferencePageChanged extends
 	 * Create router options group
 	 * 
 	 * @param groups
-	 *            - aprent composite
+	 *            - parent composite
 	 */
-	protected void createRouterOptionsGroup(Composite groups) {
+	protected void createRouterOptionsGroup(final Composite groups) {
 
-		Composite routerOptionsGroup = getWidgetFactory().createComposite(
-				groups);
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		final Composite routerOptionsGroup = getWidgetFactory().createComposite(groups);
+		final GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		routerOptionsGroup.setLayoutData(data);
 		routerOptionsGroup.setLayout(new GridLayout(2, false));
 
-		avoidObstaclesButton = getWidgetFactory().createButton(
-				routerOptionsGroup, AVOID_OBSTACLES_NAME_LABEL, SWT.CHECK);
+		avoidObstaclesButton = getWidgetFactory().createButton(routerOptionsGroup, AVOID_OBSTACLES_NAME_LABEL, SWT.CHECK);
 		avoidObstaclesButton.addSelectionListener(new SelectionAdapter() {
 
-			public void widgetSelected(SelectionEvent event) {
-				updateModel(
-						DiagramUIPropertiesMessages.AppearanceDetails_AvoidObstaclesCommand_Text,
-						Properties.ID_AVOIDOBSTRUCTIONS,
-						Boolean.valueOf(avoidObstaclesButton.getSelection()));
+			@Override
+			public void widgetSelected(final SelectionEvent event) {
+				updateModel(DiagramUIPropertiesMessages.AppearanceDetails_AvoidObstaclesCommand_Text,
+						Properties.ID_AVOIDOBSTRUCTIONS, Boolean.valueOf(avoidObstaclesButton.getSelection()));
 			}
 		});
 
-		closestDistanceButton = getWidgetFactory().createButton(
-				routerOptionsGroup, CLOSEST_DISTANCE_NAME_LABEL, SWT.CHECK);
+		closestDistanceButton = getWidgetFactory().createButton(routerOptionsGroup, CLOSEST_DISTANCE_NAME_LABEL, SWT.CHECK);
 
 		closestDistanceButton.addSelectionListener(new SelectionAdapter() {
 
-			public void widgetSelected(SelectionEvent event) {
-				updateModel(
-						DiagramUIPropertiesMessages.AppearanceDetails_ClosestDistanceCommand_Text,
-						Properties.ID_CLOSESTDISTANCE,
-						Boolean.valueOf(closestDistanceButton.getSelection()));
+			@Override
+			public void widgetSelected(final SelectionEvent event) {
+				updateModel(DiagramUIPropertiesMessages.AppearanceDetails_ClosestDistanceCommand_Text,
+						Properties.ID_CLOSESTDISTANCE, Boolean.valueOf(closestDistanceButton.getSelection()));
 			}
 		});
 	}
@@ -242,37 +226,37 @@ public class DiagramAppearancePreferencePageChanged extends
 	 * Create and return a group of radio buttons representing a property
 	 * 
 	 * @param parent
-	 *            - patrent compopsite
+	 *            - parent compopsite
 	 * @return - a last control created for this group
 	 */
-	protected void createRadioGroup(Composite parent, Iterator iterator,
-			final Object propertyId, final String commandName,
-			String propertyName, int rows) {
+	protected void createRadioGroup(final Composite parent, final Iterator iterator, final Object propertyId,
+			final String commandName, final String propertyName, final int rows) {
 
-		Group group = getWidgetFactory().createGroup(parent, propertyName);
+		final Group group = getWidgetFactory().createGroup(parent, propertyName);
 		group.setLayout(new GridLayout(rows, true));
-		GridData data = new GridData(GridData.FILL_BOTH);// GridData.FILL_HORIZONTAL
-															// |
+		final GridData data = new GridData(GridData.FILL_BOTH);// GridData.FILL_HORIZONTAL
+																// |
 		group.setLayoutData(data);
 
 		Button radioButton = null;
-		for (Iterator e = iterator; e.hasNext();) {
-			AbstractEnumerator literal = (AbstractEnumerator) e.next();
-			String propertyValueName = translate(literal);
+		for (final Iterator e = iterator; e.hasNext();) {
+			final AbstractEnumerator literal = (AbstractEnumerator) e.next();
+			final String propertyValueName = translate(literal);
 
-			radioButton = getWidgetFactory().createButton(group,
-					propertyValueName, SWT.RADIO);
+			radioButton = getWidgetFactory().createButton(group, propertyValueName, SWT.RADIO);
 			radioButton.setData(literal);
 			buttons.put(literal, radioButton);
 			radioButton.addSelectionListener(new SelectionAdapter() {
 
-				public void widgetSelected(SelectionEvent event) {
+				@Override
+				public void widgetSelected(final SelectionEvent event) {
 					setPropertyValue(event, propertyId, commandName);
 				}
 			});
 
-			if (isReadOnly())
+			if (isReadOnly()) {
 				radioButton.setEnabled(false);
+			}
 		}
 
 	}
@@ -286,7 +270,7 @@ public class DiagramAppearancePreferencePageChanged extends
 	 *            the enumerator of literals
 	 * @return the translated string
 	 */
-	private String translate(AbstractEnumerator literal) {
+	private String translate(final AbstractEnumerator literal) {
 
 		if (JumpLinkType.SEMICIRCLE_LITERAL.equals(literal)) {
 			return DiagramUIMessages.PropertyDescriptorFactory_JumplinksType_SemiCircle;
@@ -326,111 +310,100 @@ public class DiagramAppearancePreferencePageChanged extends
 	/**
 	 * @param event
 	 */
-	protected void setPropertyValue(SelectionEvent event,
-			final Object propertyId, String commandName) {
+	protected void setPropertyValue(final SelectionEvent event, final Object propertyId, final String commandName) {
 
-		ArrayList commands = new ArrayList();
-		Iterator it = getInput().iterator();
+		final ArrayList commands = new ArrayList();
+		final Iterator it = getInput().iterator();
 		final Button button = (Button) event.getSource();
 
 		while (it.hasNext()) {
 			final IGraphicalEditPart ep = (IGraphicalEditPart) it.next();
 
-			commands.add(createCommand(commandName,
-					((View) ep.getModel()).eResource(), new Runnable() {
+			commands.add(createCommand(commandName, ((View) ep.getModel()).eResource(), new Runnable() {
 
-						public void run() {
-							if (propertyId instanceof String) {
-								ENamedElement element = PackageUtil
-										.getElement((String) propertyId);
-								if (element instanceof EStructuralFeature)
-									ep.setStructuralFeatureValue(
-											(EStructuralFeature) element,
-											button.getData());
-							}
-
+				@Override
+				public void run() {
+					if (propertyId instanceof String) {
+						final ENamedElement element = PackageUtil.getElement((String) propertyId);
+						if (element instanceof EStructuralFeature) {
+							ep.setStructuralFeatureValue((EStructuralFeature) element, button.getData());
 						}
-					}));
+					}
+
+				}
+			}));
 		}
 
 		executeAsCompositeCommand(commandName, commands);
 
 	}
 
+	@Override
 	public void refresh() {
 		if (!isDisposed()) {
 			try {
 				executeAsReadAction(new Runnable() {
 
+					@Override
 					public void run() {
 
 						// Deselect all the radio buttons;
 						// the appropriate radio buttons will be properly
 						// selected below
-						for (Iterator i = buttons.keySet().iterator(); i
-								.hasNext();) {
-							Button radioButton = (Button) buttons.get(i.next());
+						for (final Iterator i = buttons.keySet().iterator(); i.hasNext();) {
+							final Button radioButton = (Button) buttons.get(i.next());
 							radioButton.setSelection(false);
 						}
 
 						// Update display from model
-						ConnectionEditPart obj = (ConnectionEditPart) getSingleInput();
+						final ConnectionEditPart obj = (ConnectionEditPart) getSingleInput();
 
 						if (!avoidObstaclesButton.isDisposed()) {
-							Boolean val = (Boolean) obj
-									.getStructuralFeatureValue(NotationPackage.eINSTANCE
-											.getRoutingStyle_AvoidObstructions());
-							avoidObstaclesButton.setSelection(val
-									.booleanValue());
+							final Boolean val = (Boolean) obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
+									.getRoutingStyle_AvoidObstructions());
+							avoidObstaclesButton.setSelection(val.booleanValue());
 						}
 
 						if (!closestDistanceButton.isDisposed()) {
-							Boolean val = (Boolean) obj
-									.getStructuralFeatureValue(NotationPackage.eINSTANCE
-											.getRoutingStyle_ClosestDistance());
-							closestDistanceButton.setSelection(val
-									.booleanValue());
+							final Boolean val = (Boolean) obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
+									.getRoutingStyle_ClosestDistance());
+							closestDistanceButton.setSelection(val.booleanValue());
 						}
 
-						Button button = (Button) buttons
-								.get(obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
-										.getRoutingStyle_JumpLinkStatus()));
-						if (button != null)
+						Button button = (Button) buttons.get(obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
+								.getRoutingStyle_JumpLinkStatus()));
+						if (button != null) {
 							button.setSelection(true);
+						}
 
-						button = (Button) buttons
-								.get(obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
-										.getRoutingStyle_JumpLinkType()));
-						if (button != null)
+						button = (Button) buttons.get(obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
+								.getRoutingStyle_JumpLinkType()));
+						if (button != null) {
 							button.setSelection(true);
+						}
 
 						// determine if tree routing is supported
-						Button treeRoutingButton = (Button) buttons
-								.get(Routing.TREE_LITERAL);
-						if (treeRoutingButton != null)
-							treeRoutingButton
-									.setEnabled(obj instanceof ITreeBranchEditPart);
+						final Button treeRoutingButton = (Button) buttons.get(Routing.TREE_LITERAL);
+						if (treeRoutingButton != null) {
+							treeRoutingButton.setEnabled(obj instanceof ITreeBranchEditPart);
+						}
 
-						button = (Button) buttons
-								.get(obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
-										.getRoutingStyle_Routing()));
-						if (button != null)
+						button = (Button) buttons.get(obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
+								.getRoutingStyle_Routing()));
+						if (button != null) {
 							button.setSelection(true);
+						}
 
-						button = (Button) buttons
-								.get(obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
-										.getRoutingStyle_Smoothness()));
-						if (button != null)
+						button = (Button) buttons.get(obj.getStructuralFeatureValue(NotationPackage.eINSTANCE
+								.getRoutingStyle_Smoothness()));
+						if (button != null) {
 							button.setSelection(true);
+						}
 
 					}
 				});
-			} catch (Exception e) {
-				IStatus iStat = new Status(Status.ERROR,
-						VespucciDiagramEditorPlugin.ID,
-						"Couldn't refresh diagram (appearance)");
-				StatusManager.getManager().handle(iStat, StatusManager.SHOW);
-				StatusManager.getManager().handle(iStat, StatusManager.LOG);
+			} catch (final Exception e) {
+				throw new VespucciUnexpectedException("Couldn't refresh diagram (appearance).", e);
 			}
 		}
 	}

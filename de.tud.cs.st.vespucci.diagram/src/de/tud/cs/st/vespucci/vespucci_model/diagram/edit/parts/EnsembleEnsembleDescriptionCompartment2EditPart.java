@@ -77,7 +77,7 @@ public class EnsembleEnsembleDescriptionCompartment2EditPart extends ListCompart
 
 	/**
 	 * @generated NOT
-	 * @author DominicS
+	 * @author Dominic Scheurer
 	 * 
 	 * Overridden to restore the saved collapse state of the
 	 * description label.
@@ -134,7 +134,7 @@ public class EnsembleEnsembleDescriptionCompartment2EditPart extends ListCompart
 
 	/**
 	 * @generated NOT
-	 * @author DominicS
+	 * @author Dominic Scheurer
 	 * 
 	 * Introduces label collapse behavior.
 	 */

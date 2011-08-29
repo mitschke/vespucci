@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -52,6 +53,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 
+import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
@@ -59,22 +61,27 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 /**
  * Query Tab
  * 
- * @author Benni
+ * @author Benjamin Lück
  * @generated NOT
  * 
  */
 public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBasicTextPropertySection {
 
 	/**
+	 * URL to the vespucci editor package.
+	 */
+	private static final String VESPUCCI_EDITOR_URL = "http://vespucci.editor";
+	
+	/**
 	 * @generated
 	 */
-	public IPropertySource getPropertySource(Object object) {
+	public IPropertySource getPropertySource(final Object object) {
 		if (object instanceof IPropertySource) {
 			return (IPropertySource) object;
 		}
-		AdapterFactory af = getAdapterFactory(object);
+		final AdapterFactory af = getAdapterFactory(object);
 		if (af != null) {
-			IItemPropertySource ips = (IItemPropertySource) af.adapt(object, IItemPropertySource.class);
+			final IItemPropertySource ips = (IItemPropertySource) af.adapt(object, IItemPropertySource.class);
 			if (ips != null) {
 				return new PropertySource(object, ips);
 			}
@@ -86,33 +93,27 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	}
 
 	/**
-	 * @generated not
-	 */
-	protected IPropertySourceProvider getPropertySourceProvider() {
-		return null;
-	}
-
-	/**
 	 * Modify/unwrap selection.
 	 * 
 	 * @generated
 	 */
-	protected Object transformSelection(Object selected) {
+	protected Object transformSelection(final Object selected) {
 		return selected;
 	}
 
 	/**
 	 * @generated
 	 */
-	public void setInput(IWorkbenchPart part, ISelection selection) {
+	@Override
+	public void setInput(final IWorkbenchPart part, final ISelection selection) {
 		if (selection.isEmpty() || false == selection instanceof StructuredSelection) {
 			super.setInput(part, selection);
 			return;
 		}
 		final StructuredSelection structuredSelection = ((StructuredSelection) selection);
-		ArrayList<Object> transformedSelection = new ArrayList<Object>(structuredSelection.size());
-		for (Iterator<?> it = structuredSelection.iterator(); it.hasNext();) {
-			Object r = transformSelection(it.next());
+		final ArrayList<Object> transformedSelection = new ArrayList<Object>(structuredSelection.size());
+		for (final Iterator<?> it = structuredSelection.iterator(); it.hasNext();) {
+			final Object r = transformSelection(it.next());
 			if (r != null) {
 				transformedSelection.add(r);
 			}
@@ -123,48 +124,63 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	/**
 	 * @generated
 	 */
-	protected AdapterFactory getAdapterFactory(Object object) {
+	protected AdapterFactory getAdapterFactory(final Object object) {
 		if (getEditingDomain() instanceof AdapterFactoryEditingDomain) {
 			return ((AdapterFactoryEditingDomain) getEditingDomain()).getAdapterFactory();
 		}
-		TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(object);
+		final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(object);
 		if (editingDomain != null) {
 			return ((AdapterFactoryEditingDomain) editingDomain).getAdapterFactory();
 		}
 		return null;
 	}
 
+	/**
+	 * @generated NOT
+	 * @return ""
+	 */
 	@Override
 	protected String getPropertyNameLabel() {
 		return "";
 	}
 
+	/**
+	 * @generated NOT
+	 * @return "ApplicationDescriptionChangeCommand"
+	 */
 	@Override
 	protected String getPropertyChangeCommandName() {
 		return "ApplicationDescriptionChangeCommand";
 	}
 
+	/**
+	 * @generated NOT
+	 */
 	@Override
-	protected void setPropertyValue(EObject object, Object value) {
+	protected void setPropertyValue(final EObject object, final Object value) {
 		if (object instanceof Shape) {
-			EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage("http://vespucci.editor");
-			Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
+			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_EDITOR_URL);
+			final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
 			object.eSet(vesPackage.getShape_Description(), value);
 		}
 	}
 
+	/**
+	 * @generated NOT
+	 * @return Returns the property value string.
+	 */
 	@Override
 	protected String getPropertyValueString() {
-		EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage("http://vespucci.editor");
-		Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
+		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_EDITOR_URL);
+		final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
 		if (eObject instanceof EnsembleImpl) {
-			this.getSectionComposite().setVisible(true);
+			getSectionComposite().setVisible(true);
 			return (String) eObject.eGet(vesPackage.getShape_Description());
 		} else {
-			this.getSectionComposite().setVisible(false);
-			return "<NO ENSEMBLE>";
+			getSectionComposite().setVisible(false);
+			throw new VespucciUnexpectedException(String.format("[%s] is not an ensemble.",eObject));
 		}
 
 	}

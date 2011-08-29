@@ -48,32 +48,35 @@ import org.eclipse.swt.graphics.Image;
  */
 public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILabelProvider {
 	/**
-	 * @generated not
+	 * @generated NOT
 	 */
+	@Override
 	public String getText(Object element) {
 		element = unwrap(element);
 		if (element instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) element).getGroupName();
 		}
-		//TODO quick fix
-		if (getView(element) instanceof Diagram)
+		// quick fix
+		if (getView(element) instanceof Diagram) {
 			return ((Diagram) getView(element)).getName();
-		IElementType etype = getElementType(getView(element));
+		}
+		final IElementType etype = getElementType(getView(element));
 		return etype == null ? "" : etype.getDisplayName();
 	}
 
 	/**
 	 * @generated
 	 */
-	public Image getImage(Object element) {
-		IElementType etype = getElementType(getView(unwrap(element)));
+	@Override
+	public Image getImage(final Object element) {
+		final IElementType etype = getElementType(getView(unwrap(element)));
 		return etype == null ? null : de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getImage(etype);
 	}
 
 	/**
 	 * @generated
 	 */
-	private Object unwrap(Object element) {
+	private Object unwrap(final Object element) {
 		if (element instanceof IStructuredSelection) {
 			return ((IStructuredSelection) element).getFirstElement();
 		}
@@ -83,7 +86,7 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILa
 	/**
 	 * @generated
 	 */
-	private View getView(Object element) {
+	private View getView(final Object element) {
 		if (element instanceof View) {
 			return (View) element;
 		}
@@ -97,10 +100,12 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILa
 	 * @generated
 	 */
 	private IElementType getElementType(View view) {
-		// For intermediate views climb up the containment hierarchy to find the one associated with an element type.
+		// For intermediate views climb up the containment hierarchy to find the one associated with
+		// an element type.
 		while (view != null) {
-			int vid = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view);
-			IElementType etype = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getElementType(vid);
+			final int vid = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view);
+			final IElementType etype = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+					.getElementType(vid);
 			if (etype != null) {
 				return etype;
 			}
