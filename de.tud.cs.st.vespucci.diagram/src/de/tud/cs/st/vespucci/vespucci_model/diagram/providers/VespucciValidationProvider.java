@@ -163,18 +163,17 @@ public class VespucciValidationProvider {
 			if (context == null) {
 				return Status.OK_STATUS;
 			}
-			
+
 			/**
 			 * All valid keywords for dependencies.
 			 */
-			
+
 			/**
 			 * Valid names for dependencies read from the resource-file.
 			 */
-			String[] validDependencies = KeywordReader.readAndParseResourceFile(
-					FrameworkUtil.getBundle(Adapter5.class).getSymbolicName(),
-					pluginProperties.getString("validDependenciesFile"));
-			
+			String[] validDependencies = KeywordReader.readAndParseResourceFile(FrameworkUtil.getBundle(Adapter5.class)
+					.getSymbolicName(), pluginProperties.getString("validDependenciesFile"));
+
 			String[] dependencies = context.split(", ");
 			boolean valid = false;
 

@@ -326,11 +326,9 @@ public class EnsembleDescriptionEditPart extends CompartmentEditPart implements 
 	 */
 	protected DirectEditManager getManager() {
 		if (manager == null) {
-			setManager(new TextDirectEditManager(
-					this, 
-					WrapTextCellEditor.class, 
-					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.
-					VespucciEditPartFactory.getTextCellEditorLocator(this)));	
+			setManager(new TextDirectEditManager(this, WrapTextCellEditor.class,
+					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.VespucciEditPartFactory
+							.getTextCellEditorLocator(this)));
 		}
 		return manager;
 	}
