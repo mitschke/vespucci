@@ -1,7 +1,10 @@
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
+import java.util.ArrayList;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -10,11 +13,24 @@ import org.eclipse.jdt.core.JavaModelException;
 
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
+/**
+ * This class provides methods to decide whether an object can be resolved.
+ * 
+ * @author Dominic Scheurer
+ * @author Thomas Schulz
+ *
+ */
 public class ResolvableVisitor extends AbstractVisitor {
-	
-	private static final String DOT_JAVA = ".java";
+
 	private static final String DOT_JAR = ".jar";
 
+	
+	/**
+	 * This method invokes the correct method to retrieve a resolving decision.
+	 * 
+	 * @param object
+	 * @return Returns true only if the given argument can be resolved.
+	 */
 	public boolean isResolvable(final Object object) {
 		return (Boolean) super.visit(object);
 	}
@@ -63,6 +79,11 @@ public class ResolvableVisitor extends AbstractVisitor {
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of type %s", type), e);
 		}
+	}
+
+	@Override
+	public Object visit(final ArrayList<IJavaElement> listOfJavaElements) {
+		return isLocatedInJarFile(listOfJavaElements.get(0));
 	}
 
 	@Override

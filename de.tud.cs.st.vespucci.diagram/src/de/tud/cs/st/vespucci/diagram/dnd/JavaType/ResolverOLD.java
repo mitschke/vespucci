@@ -40,8 +40,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -54,17 +52,13 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
- * OBSOLETE !!!
- * ---
- * This class was formerly used as a reference to apply the visitor pattern.
- * ---
+ * OBSOLETE CLASS used as reference -> Can be deleted after 2011-09-30
+ * 
  * This class provides static methods to resolve information from Vespucci diagrams mainly used to
  * create queries in QueryBuilder.java
  * 
