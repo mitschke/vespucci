@@ -40,7 +40,6 @@ import java.util.List;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -50,7 +49,7 @@ import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
 /**
  * This class provides static methods to resolve information from Vespucci diagrams mainly used to
- * create queries in QueryBuilder.java
+ * create queries and names of ensembles.
  * 
  * 
  * @author Benjamin Lück

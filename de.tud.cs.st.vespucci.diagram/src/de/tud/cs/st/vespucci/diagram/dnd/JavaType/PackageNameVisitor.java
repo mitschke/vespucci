@@ -1,7 +1,6 @@
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -12,13 +11,24 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.core.ClassFile;
-import org.eclipse.jdt.internal.core.JavaElement;
-import org.eclipse.jdt.internal.core.PackageFragment;
 
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
+/**
+ * This class provides methods to resolve package names.
+ * 
+ * @author Dominic Scheurer
+ * @author Thomas Schulz
+ *
+ */
 public class PackageNameVisitor extends AbstractVisitor {
+	
+	/**
+	 * This method invokes the correct method to retrieve the particular package name.
+	 * 
+	 * @param object
+	 * @return Returns the fully qualified package name.
+	 */
 	public String getFullyQualifiedPackageName(final Object object) {
 		return (String) super.visit(object);
 	}
@@ -37,7 +47,7 @@ public class PackageNameVisitor extends AbstractVisitor {
 	public Object visit(final IClassFile classFile) {
 		return visit(classFile.getParent());
 	}
-	
+
 	@Override
 	public Object visit(final IField field) {
 		return visit(field.getCompilationUnit());
@@ -62,9 +72,9 @@ public class PackageNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final ArrayList<IJavaElement> listOfJavaElements) {
-		
+
 		final IJavaElement firstElement = listOfJavaElements.get(0);
-		
+
 		if (firstElement instanceof IPackageFragment) {
 			return visit((IPackageFragment) firstElement);
 		} else if (firstElement instanceof IClassFile) {

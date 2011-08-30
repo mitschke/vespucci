@@ -1,7 +1,6 @@
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -11,15 +10,27 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.core.JavaElement;
-import org.eclipse.jdt.internal.core.PackageFragment;
 
 import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
 
+/**
+ * This class provides methods to decide whether an object can be resolved.
+ * 
+ * @author Dominic Scheurer
+ * @author Thomas Schulz
+ *
+ */
 public class ResolvableVisitor extends AbstractVisitor {
-	private static final String JAVA_FILE_ENDING = ".java";
-	private static final String JAR_ENDING = ".jar";
 
+	private static final String DOT_JAR = ".jar";
+
+	
+	/**
+	 * This method invokes the correct method to retrieve a resolving decision.
+	 * 
+	 * @param object
+	 * @return Returns true only if the given argument can be resolved.
+	 */
 	public boolean isResolvable(final Object object) {
 		return (Boolean) super.visit(object);
 	}
@@ -37,7 +48,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(final ICompilationUnit icu) {
 		try {
-			return !icu.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING);
+			return !icu.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method %s", icu), e);
 		}
@@ -46,7 +57,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(final IMethod method) {
 		try {
-			return !method.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING);
+			return !method.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method %s", method), e);
 		}
@@ -55,7 +66,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(final IField field) {
 		try {
-			return !field.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING);
+			return !field.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of field %s", field), e);
 		}
@@ -64,14 +75,14 @@ public class ResolvableVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(final IType type) {
 		try {
-			return !type.getUnderlyingResource().toString().toLowerCase().endsWith(JAR_ENDING);
+			return !type.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of type %s", type), e);
 		}
 	}
-	
+
 	@Override
-	public Object visit(ArrayList<IJavaElement> listOfJavaElements) {
+	public Object visit(final ArrayList<IJavaElement> listOfJavaElements) {
 		return isLocatedInJarFile(listOfJavaElements.get(0));
 	}
 
