@@ -1,16 +1,22 @@
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.util.ISourceAttribute;
+import org.eclipse.jdt.internal.core.JavaElement;
+import org.eclipse.jdt.internal.core.PackageFragment;
 
 public interface IEclipseObjectVisitor {
 	Object visit(IProject project);
@@ -24,4 +30,5 @@ public interface IEclipseObjectVisitor {
 	Object visit(IClassFile classFile);
 	Object visit(IFile file);
 	Object visit(IFolder folder);
+	Object visit(ArrayList<IJavaElement> listOfJavaElements);
 }

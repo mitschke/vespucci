@@ -2,6 +2,9 @@ package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -18,6 +21,7 @@ import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.core.ClassFile;
 import org.eclipse.jdt.internal.core.CompilationUnit;
 import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
+import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jdt.internal.core.SourceField;
@@ -42,16 +46,20 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 	public Object visit(Object element) {
 		try {
 
-			Class current = element.getClass();
-
 			if (element instanceof IJavaElement && isLocatedInJarFile((IJavaElement) element)) {
-				// getClass().getInterfaces doesn't work when "element" lies in JAR-file
+				// getClass().getInterfaces doesn't return any interfaces when element lies in JAR
+				IJavaElement elementInJar = (IJavaElement) element;
+				ArrayList listOfJavaElements = new ArrayList<IJavaElement>();
+				listOfJavaElements.add(elementInJar);
+				final Class currentClass = listOfJavaElements.getClass();
+				final Method correctVisitMethod = getClass().getMethod("visit", currentClass);
+				final Object invocation = correctVisitMethod.invoke(this, new Object[] { listOfJavaElements });
 				
+				return invocation;
 			}
 
-			boolean place = true;
-
-			final Class[] elementInterfaces = element.getClass().getInterfaces();
+			final Class currentClass = element.getClass();
+			final Class[] elementInterfaces = currentClass.getInterfaces();
 
 			if (elementInterfaces.length == 0) {
 				throw getIllegalArgumentException(element);
@@ -80,28 +88,14 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 		}
 	}
 
-	private static boolean isLocatedInJarFile(IJavaElement element) {
-		IJavaElement parent = element.getParent();
+	protected static boolean isLocatedInJarFile(IJavaElement element) {
+		IJavaElement parent = element;
 		while (parent != null) {
-			if (element.getParent() instanceof JarPackageFragmentRoot) {
+			if (parent instanceof JarPackageFragmentRoot) {
 				return true;
 			}
 			parent = parent.getParent();
 		}
-		return false;
-	}
-
-	/**
-	 * 
-	 * @param o
-	 * @return Returns the specific class of the element.
-	 */
-	private Class getCorrectClass(Object o) {
-
-		return null;
-	}
-
-	boolean hasJARParent(Object o) {
 		return false;
 	}
 
@@ -159,6 +153,11 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 	public Object visit(IFolder folder) {
 		return doDefaultAction(folder);
 	}
+	
+	@Override
+	public Object visit(ArrayList<IJavaElement> listOfJavaElements) {
+		return doDefaultAction(listOfJavaElements.get(0));
+	}
 
 	private Object doDefaultAction(Object inputObject) {
 		if (getDefaultResultObject() != null) {
@@ -168,7 +167,7 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 		}
 	}
 
-	private RuntimeException getIllegalArgumentException(Object argument) {
+	protected RuntimeException getIllegalArgumentException(Object argument) {
 		return new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", argument));
 	}
 }
