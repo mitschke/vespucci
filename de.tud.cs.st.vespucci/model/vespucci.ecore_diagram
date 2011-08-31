@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_T_HFEKlAEd-Mlt9QeSKOYw" type="Ecore" measurementUnit="Pixel">
   <children xmi:type="notation:Shape" xmi:id="_UukzIKlAEd-Mlt9QeSKOYw" type="2001" fontName="DejaVu Sans Mono">
     <children xmi:type="notation:DecorationNode" xmi:id="_Uu8mkKlAEd-Mlt9QeSKOYw" type="5001"/>

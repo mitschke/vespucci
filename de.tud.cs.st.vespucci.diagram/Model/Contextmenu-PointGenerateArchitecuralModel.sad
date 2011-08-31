@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_Jg_-wCc0EeC-LqTJQDUVwQ">
     <shapes xmi:type="Ensemble" xmi:id="_MTuioFO2EeCFAqVbT4yc4A" name="Contextmenu-Point: Generate Architecural Model" query="class_with_members('de.tud.cs.st.vespucci.diagram.handler','GeneratePrologFacts')&#xA;"/>

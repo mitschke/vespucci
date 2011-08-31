@@ -1,4 +1,4 @@
-﻿%------
+%------
 % Prolog based representation of the Vespucci architecture diagram: C:/files/uni/kurse/Bachelorpraktikum/ChecklistenProjekt/RedLine.sad
 % Created by Vespucci, Technische Universitiät Darmstadt, Department of Computer Science
 % www.opal-project.de
