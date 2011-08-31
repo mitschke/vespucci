@@ -176,7 +176,8 @@ public class ModelDescriptionPropertySection extends ChangedAbstractBasicTextPro
 
 		if (eObject instanceof EnsembleImpl) {
 			getSectionComposite().setVisible(true);
-			return (String) eObject.eGet(vesPackage.getShape_Query());
+			String trimmedQuery = ((String) eObject.eGet(vesPackage.getShape_Query())).trim();
+			return trimmedQuery;
 		} else {
 			getSectionComposite().setVisible(false);
 			throw new VespucciUnexpectedException(String.format("[%s] is not an ensemble.", eObject));
