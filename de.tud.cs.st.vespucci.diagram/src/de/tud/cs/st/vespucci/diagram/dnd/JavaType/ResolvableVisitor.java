@@ -2,6 +2,7 @@ package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
 
+import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
@@ -18,13 +19,12 @@ import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
  * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
- *
+ * 
  */
 public class ResolvableVisitor extends AbstractVisitor {
 
 	private static final String DOT_JAR = ".jar";
 
-	
 	/**
 	 * This method invokes the correct method to retrieve a resolving decision.
 	 * 
@@ -83,7 +83,9 @@ public class ResolvableVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final ArrayList<IJavaElement> listOfJavaElements) {
-		return isLocatedInJarFile(listOfJavaElements.get(0));
+		final IJavaElement firstElement = listOfJavaElements.get(0);
+		return isLocatedInJarFile(firstElement)
+				&& ((firstElement instanceof IPackageFragment) || (firstElement instanceof IPackageFragmentRoot) || (firstElement instanceof IClassFile));
 	}
 
 	@Override
