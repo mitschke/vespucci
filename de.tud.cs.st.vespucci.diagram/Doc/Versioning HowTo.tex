@@ -10,7 +10,7 @@
 \maketitle
 
 \section*{Purpose}
-The vespucci project is evolving quickly and its save format changes from time to time. In order to support older files, we have written a version update framework. It can support new versions with a few simple steps, which are described in this how-to.
+The vespucci project is evolving quickly and its save format changes from time to time. In order to support older files, we\footnote{In fact it was written by Dominic Scheurer and refined by our lab team.} have written a version update framework. It can support new versions with a few simple steps, which are described in this how-to.
 
 \section*{Overview}
 Creating a new version consists of the following steps:\\
@@ -29,7 +29,7 @@ After following these steps you're done and older diagram files should be update
 \newpage
 
 \section*{Transformation specification}
-The transformation specification describes how to update from one version to another. For every new  version a new transformation must be specified; if that is not the case a new version is not needed at all. The transformation is realized with QVT (Query/View/Transformation). It consists of the following two parts:\\
+The transformation specification describes how to update from one version to another. For every new version a new transformation must be specified; if that is not the case a new version is not needed at all. The transformation is realized with QVT (Query/View/Transformation). It consists of the following two parts:\\
 
 The \textbf{model transformation} updates the semantic model of the diagram. E.g. setting new relationships between semantic element or adding new ones.\\
 
