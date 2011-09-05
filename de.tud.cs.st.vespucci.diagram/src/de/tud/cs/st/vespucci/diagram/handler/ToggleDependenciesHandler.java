@@ -48,9 +48,10 @@ public class ToggleDependenciesHandler extends ToggleDependenciesSuperHandler {
 
 	/**
 	 * Creates a new string-array, with same strings as given original, but the "transform-string". If
-	 * given transform-string is present, it will be removed, otherwise it will be added.<br>
-	 * Note that only the first found instance of given toggleString will be toggled, even if there
-	 * are more!
+	 * given transform-string is present, it will be removed, otherwise it will be added.<br><br>
+	 * <b>NOTE:</b> Only the first found instance of given toggleString will be toggled, even if there
+	 * are more - e.g. if the dependency is named "all, create, all" and "all" needs to be toggled
+	 * (or removed in this case), then only the first "all" will be deleted!
 	 * 
 	 * @param original
 	 *            The original array to be copied.
