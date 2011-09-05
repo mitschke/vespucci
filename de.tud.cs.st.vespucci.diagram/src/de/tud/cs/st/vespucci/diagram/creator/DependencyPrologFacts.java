@@ -27,17 +27,27 @@ public class DependencyPrologFacts {
 	private static int dependencyCounter;
 	
 	/**
+	 * A convenience method to retrieve the dependency prolog facts.
+	 * 
+	 * @param shapeList
+	 * @param diagramFileName
+	 * @return Returns the formatted dependency facts.
+	 */
+	static StringBuilder getFacts(final List<Shape> shapeList, String diagramFileName) {
+		DependencyPrologFacts.diagramFileName = diagramFileName;
+		return createDependencyFacts(shapeList);
+	}
+	
+	/**
 	 * Search the diagram recursive and create all facts.
 	 * 
 	 * @param shapeList
 	 * @return Returns the formatted dependency facts.
 	 * @author Patrick Jahnke
 	 */
-	static StringBuilder createDependencyFacts(final List<Shape> shapeList, String fileName) {
+	static StringBuilder createDependencyFacts(final List<Shape> shapeList) {
 		// reset transaction counter
 		dependencyCounter = 1;
-		
-		diagramFileName = fileName;
 		
 		final StringBuilder dependencyFacts = new StringBuilder();
 		for (final Shape shape : shapeList) {
@@ -49,7 +59,7 @@ public class DependencyPrologFacts {
 					}
 				}
 				if (ensemble.getShapes() != null) {
-					dependencyFacts.append(createDependencyFacts(ensemble.getShapes(), diagramFileName));
+					dependencyFacts.append(createDependencyFacts(ensemble.getShapes()));
 				}
 
 			}

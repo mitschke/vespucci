@@ -55,9 +55,15 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
  * @author Patrick Jahnke
  * @author Alexander Weitzmann
  * @author Thomas Schulz
+ * @author Theo Kischka
  */
 public class PrologFileCreator {
 
+	/**
+	 * Name of the current diagram file.
+	 */
+	private String diagramFileName;
+	
 	/**
 	 * Read the given diagram and create a prolog file.
 	 * 
@@ -139,8 +145,7 @@ public class PrologFileCreator {
 		// insert ensemble Header
 		strBuilder.append(InvariantPrologFacts.createEnsembleHeader());
 
-		// final StringBuilder ensembleFacts = createEnsembleFacts(diagram.getShapes());
-		final StringBuilder ensembleFacts = EnsemblePrologFacts.createEnsembleFacts(diagram.getShapes(), diagramFileName);
+		final StringBuilder ensembleFacts = EnsemblePrologFacts.getFacts(diagram.getShapes(), diagramFileName);
 
 		if (hasDummy(diagram.getShapes())) {
 			ensembleFacts.append("ensemble('" + diagramFileName + "',(empty),empty,[]).\n");
@@ -153,7 +158,7 @@ public class PrologFileCreator {
 		strBuilder.append(InvariantPrologFacts.createDependencyHeader());
 
 		// insert dependencies
-		strBuilder.append(DependencyPrologFacts.createDependencyFacts(diagram.getShapes(), diagramFileName));
+		strBuilder.append(DependencyPrologFacts.getFacts(diagram.getShapes(), diagramFileName));
 
 		return strBuilder.toString().getBytes();
 	}
@@ -180,10 +185,5 @@ public class PrologFileCreator {
 		final String extension = file.getName().substring((file.getName().length() - 3), file.getName().length());
 		return (extension.equals("sad"));
 	}
-
-	/**
-	 * Name of the current diagram file.
-	 */
-	private String diagramFileName;
 
 }

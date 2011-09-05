@@ -14,11 +14,11 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 public class EnsemblePrologFacts {
 
 	/**
-	 * Regular expression to split parameter names of ensembles.
+	 * Regular expression to check if argument starts with an upper case letter. E.g. a parameter
+	 * variable.
 	 */
-	private static final Pattern PARAMETER_NAMES = Pattern.compile("(.*?)=(.*)");
+	private static final Pattern FIRST_LETTER_IS_UPPER_CASE = Pattern.compile("\\p{Upper}.*");
 
-	
 	/**
 	 * Regular expression to match a name of an ensemble that contains parameter.
 	 */
@@ -26,19 +26,28 @@ public class EnsemblePrologFacts {
 			"\\(" + // match the first bracket
 			"(.*)" + // match anything in between as group
 			"\\)$"); // match the last parenthesis by asserting the string ends here
-
-	
 	/**
-	 * Regular expression to check if argument starts with an upper case letter. E.g. a parameter
-	 * variable.
+	 * Regular expression to split parameter names of ensembles.
 	 */
-	private static final Pattern FIRST_LETTER_IS_UPPER_CASE = Pattern.compile("\\p{Upper}.*");
-	
+	private static final Pattern PARAMETER_NAMES = Pattern.compile("(.*?)=(.*)");
+
 	/**
 	 * Name of the current diagram file.
 	 */
-	private String diagramFileName;
-	
+	private static String diagramFileName;
+
+	/**
+	 * A convenience method to retrieve the ensemble prolog facts.
+	 * 
+	 * @param shapeList
+	 * @param diagramFileName
+	 * @return Returns the formatted ensemble facts.
+	 */
+	static StringBuilder getFacts(final List<Shape> shapeList, final String diagramFileName) throws Exception {
+		EnsemblePrologFacts.diagramFileName = diagramFileName;
+		return createEnsembleFacts(shapeList);
+	}
+
 	/**
 	 * Search the diagram recursively and create all ensemble facts, except Dummy.
 	 * 
@@ -47,7 +56,7 @@ public class EnsemblePrologFacts {
 	 * @throws Exception
 	 * @return Returns the formatted ensemble facts.
 	 */
-	static StringBuilder createEnsembleFacts(final List<Shape> shapeList, String diagramFileName) throws Exception {
+	static StringBuilder createEnsembleFacts(final List<Shape> shapeList) throws Exception {
 		final StringBuilder ensembleFacts = new StringBuilder();
 		for (final Shape shape : shapeList) {
 			// create Ensemble facts:
@@ -59,7 +68,7 @@ public class EnsemblePrologFacts {
 					ensembleFacts.append("ensemble");
 				}
 
-				//TODO: This is a workaround - invent a platform independent solution
+				// TODO: This is a workaround - invent a platform independent solution
 				final String query = ensemble.getQuery().replaceAll("\\p{Space}", " ");
 
 				ensembleFacts.append(String.format("('%s', %s, %s, (%s), [%s]).\n", diagramFileName,
@@ -68,7 +77,7 @@ public class EnsemblePrologFacts {
 
 				// do children exist
 				if ((ensemble.getShapes() != null) && (ensemble.getShapes().size() > 0)) {
-					ensembleFacts.append(createEnsembleFacts(ensemble.getShapes(), diagramFileName));
+					ensembleFacts.append(createEnsembleFacts(ensemble.getShapes()));
 				}
 
 			}
@@ -76,7 +85,7 @@ public class EnsemblePrologFacts {
 		}
 		return ensembleFacts;
 	}
-	
+
 	/**
 	 * @param ensemble
 	 * @return Return true, only if the ensemble is abstract, i.e. the ensemble contains at least
@@ -92,7 +101,7 @@ public class EnsemblePrologFacts {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param shape
@@ -112,7 +121,7 @@ public class EnsemblePrologFacts {
 		s.append("'");
 		return s.toString();
 	}
-	
+
 	/**
 	 * @param ensemble
 	 *            The ensemble whose parameters shall be extracted.
@@ -132,7 +141,7 @@ public class EnsemblePrologFacts {
 		s.append("]");
 		return s.toString();
 	}
-	
+
 	/**
 	 * Create a formatted string with all given ensembles.
 	 * 
@@ -156,7 +165,7 @@ public class EnsemblePrologFacts {
 		}
 		return strBuilder.toString();
 	}
-	
+
 	/**
 	 * Returns the parameter definitions of an ensemble. I.e. the parameter list split at ", ".
 	 * 
@@ -192,7 +201,7 @@ public class EnsemblePrologFacts {
 		final String[] result = new String[parameterDefinitions.size()];
 		return parameterDefinitions.toArray(result);
 	}
-	
+
 	/**
 	 * @param parameter
 	 * @return Return the encoded parameter.
