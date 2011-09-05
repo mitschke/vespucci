@@ -78,7 +78,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
  * @author dlander, nbalaba

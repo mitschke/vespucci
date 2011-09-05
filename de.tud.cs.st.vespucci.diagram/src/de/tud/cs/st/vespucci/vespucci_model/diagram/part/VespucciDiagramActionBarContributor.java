@@ -42,7 +42,7 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 
-import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
  * @generated

@@ -18,8 +18,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 
-import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
-import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
  * This abstract class provides the methods for all its subclasses and uses the reflection API to
@@ -34,6 +34,9 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 	public abstract Object getDefaultResultObject();
 
 	public Object visit(final Object element) {
+		
+		String className = this.getClass().getName();
+		
 		try {
 
 			if (element instanceof IJavaElement && isLocatedInJarFile((IJavaElement) element)) {

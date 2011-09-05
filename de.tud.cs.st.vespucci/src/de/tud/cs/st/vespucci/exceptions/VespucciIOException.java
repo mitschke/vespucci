@@ -30,24 +30,28 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.errors;
+package de.tud.cs.st.vespucci.exceptions;
 
 /**
  * Exception which is thrown if there occurs an error during
- * the transformation of a Vespucci file.
+ * input and output operations.
  * 
+ * @author Theo Kischka
  * @author Dominic Scheurer
  */
-public class VespucciTransformationFailedException extends VespucciException {
-	public VespucciTransformationFailedException(String message) {
-		super(message);
-	}
+public class VespucciIOException extends VespucciException {
+
+	private static final String MESAGGE_PREFIX = "VespucciIOException: ";
 	
-	public VespucciTransformationFailedException(Throwable cause) {
+	public VespucciIOException(final String message) {
+		super(MESAGGE_PREFIX + message);
+	}
+
+	public VespucciIOException(final Throwable cause) {
 		super(cause);
 	}
-	
-	public VespucciTransformationFailedException(String message, Throwable cause) {
-		super(message, cause);
-	}	
+
+	public VespucciIOException(final String message, final Throwable cause) {
+		super(MESAGGE_PREFIX + message, cause);
+	}
 }

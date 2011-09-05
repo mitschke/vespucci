@@ -58,7 +58,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.osgi.util.NLS;
-import de.tud.cs.st.vespucci.errors.VespucciIOException;
+
+import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
 
 /**

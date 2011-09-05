@@ -53,8 +53,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 
-import de.tud.cs.st.vespucci.errors.VespucciIllegalArgumentException;
-import de.tud.cs.st.vespucci.errors.VespucciUnexpectedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
  * OBSOLETE CLASS used as reference -> Can be deleted after 2011-09-30

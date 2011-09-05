@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciTransformationFailedException;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
 import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 

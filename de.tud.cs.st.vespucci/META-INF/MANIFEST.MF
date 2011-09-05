@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: de.tud.cs.st.vespucci.errors,
+Export-Package: de.tud.cs.st.vespucci.exceptions,
  de.tud.cs.st.vespucci.io,
  de.tud.cs.st.vespucci.vespucci_model,
  de.tud.cs.st.vespucci.vespucci_model.impl,
