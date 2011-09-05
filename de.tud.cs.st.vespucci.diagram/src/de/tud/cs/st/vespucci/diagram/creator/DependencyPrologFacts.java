@@ -1,8 +1,39 @@
+/*
+ *  License (BSD Style License):
+ *   Copyright (c) 2011
+ *   Software Engineering
+ *   Department of Computer Science
+ *   Technische Universitiät Darmstadt
+ *   All rights reserved.
+ *
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions are met:
+ *
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   - Neither the name of the Software Engineering Group or Technische
+ *     Universität Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
+ *     prior written permission.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *   POSSIBILITY OF SUCH DAMAGE.
+ */
 package de.tud.cs.st.vespucci.diagram.creator;
 
 import java.util.List;
-
-import org.eclipse.jdt.core.dom.ThisExpression;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
@@ -14,18 +45,27 @@ import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
+/**
+ * This class encapsulates the dependency prolog facts.
+ * 
+ * @author Patrick Jahnke
+ * @author Thomas Schulz
+ * @author Alexander Weitzmann
+ * @author Theo Kischka
+ * 
+ */
 public class DependencyPrologFacts {
-	
+
 	/**
 	 * Name of the current diagram file.
 	 */
 	private static String diagramFileName;
-	
+
 	/**
 	 * Counter for dependencies in given diagram.
 	 */
 	private static int dependencyCounter;
-	
+
 	/**
 	 * A convenience method to retrieve the dependency prolog facts.
 	 * 
@@ -33,22 +73,24 @@ public class DependencyPrologFacts {
 	 * @param diagramFileName
 	 * @return Returns the formatted dependency facts.
 	 */
-	static StringBuilder getFacts(final List<Shape> shapeList, String diagramFileName) {
+	static StringBuilder getFacts(final List<Shape> shapeList, final String diagramFileName) {
 		DependencyPrologFacts.diagramFileName = diagramFileName;
+		
+		// reset transaction counter
+		dependencyCounter = 1;
+		
 		return createDependencyFacts(shapeList);
 	}
-	
+
 	/**
-	 * Search the diagram recursive and create all facts.
+	 * Search the diagram recursively and create all facts.
 	 * 
 	 * @param shapeList
 	 * @return Returns the formatted dependency facts.
 	 * @author Patrick Jahnke
 	 */
 	static StringBuilder createDependencyFacts(final List<Shape> shapeList) {
-		// reset transaction counter
-		dependencyCounter = 1;
-		
+
 		final StringBuilder dependencyFacts = new StringBuilder();
 		for (final Shape shape : shapeList) {
 			if (shape instanceof Ensemble) {
@@ -67,7 +109,7 @@ public class DependencyPrologFacts {
 
 		return dependencyFacts;
 	}
-	
+
 	/**
 	 * @param connection
 	 * @return Return a fact for a single dependency.
@@ -105,7 +147,7 @@ public class DependencyPrologFacts {
 		dependencyCounter++;
 		return transactionSB.toString();
 	}
-	
+
 	/**
 	 * Note, that {@link Connection#getSource()} does not return the same. That's because the source
 	 * of the connection
@@ -138,7 +180,7 @@ public class DependencyPrologFacts {
 			return connection.getOriginalTarget().get(0);
 		}
 	}
-	
+
 	/**
 	 * @param shape
 	 * @return Returns the name of an ensemble (without the parameter).

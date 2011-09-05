@@ -54,24 +54,6 @@ import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
  */
 public class EnsembleEnsembleCompartmentEditPart extends ShapeCompartmentEditPart {
 
-	// /**
-	// * Turn off messes POP-UP BAR
-	// * @generated NOT
-	// * @author Tam-Minh Nguyen
-	// */
-	// protected void createDefaultEditPolicies() {
-	// super.createDefaultEditPolicies();
-	// installEditPolicy(
-	// EditPolicyRoles.SEMANTIC_ROLE,
-	// new
-	// de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramItemSemanticEditPolicy());
-	// installEditPolicy(
-	// EditPolicyRoles.CANONICAL_ROLE,
-	// new
-	// de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramCanonicalEditPolicy());
-	// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
-	// }
-
 	/**
 	 * @generated
 	 */

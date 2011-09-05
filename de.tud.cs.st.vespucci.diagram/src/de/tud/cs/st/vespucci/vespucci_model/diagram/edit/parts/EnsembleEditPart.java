@@ -596,7 +596,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 
 		/**
 		 * @generated NOT
-		 * @author DominicS
+		 * @author Dominic Scheurer
 		 * 
 		 * Changed to support multiline descriptions
 		 */

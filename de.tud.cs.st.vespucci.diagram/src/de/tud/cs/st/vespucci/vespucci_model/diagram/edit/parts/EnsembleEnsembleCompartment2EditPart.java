@@ -63,7 +63,7 @@ public class EnsembleEnsembleCompartment2EditPart extends ShapeCompartmentEditPa
 
 	/**
 	 * @generated NOT
-	 * @author Artem
+	 * @author Artem Vovk
 	 */
 	public EnsembleEnsembleCompartment2EditPart(View view) {
 		super(view);
@@ -113,7 +113,7 @@ public class EnsembleEnsembleCompartment2EditPart extends ShapeCompartmentEditPa
 	/**
 	 * US 48: Fix Issue 3
 	 * @generated NOT
-	 * @author Artem
+	 * @author Artem Vovk
 	 */
 	@Override
 	protected void handleNotificationEvent(Notification event) {
