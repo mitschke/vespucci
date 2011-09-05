@@ -5,7 +5,7 @@
     <shapes xmi:type="Ensemble" xmi:id="_OjKOoFO2EeCFAqVbT4yc4A" name="plugin.xml"/>
   </ShapesDiagram>
   <notation:Diagram xmi:id="_Jg_-wSc0EeC-LqTJQDUVwQ" type="Vespucci" element="_Jg_-wCc0EeC-LqTJQDUVwQ" name="GenerateArchitecuralModelHandler.sad" measurementUnit="Pixel">
-    <children xmi:type="notation:Shape" xmi:id="_fhEmUCk6EeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm fÃ¼r den Kontextmenupunkt &quot;Generate Architecural Model&quot;." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_fhEmUCk6EeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur-Diagramm für den Kontextmenupunkt &quot;Generate Architecural Model&quot;." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_fhI3wCk6EeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
@@ -15,17 +15,17 @@
       <styles xmi:type="notation:TextStyle" xmi:id="_fhEmUSk6EeC7g5S-XZYxhw"/>
       <styles xmi:type="notation:LineTypeStyle" xmi:id="_fhEmUik6EeC7g5S-XZYxhw"/>
       <element xsi:nil="true"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fhEmUyk6EeC7g5S-XZYxhw" x="100" y="40" width="191" height="66"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fhEmUyk6EeC7g5S-XZYxhw" x="10" y="40" width="191" height="66"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_MTw-4FO2EeCFAqVbT4yc4A" type="2001" element="_MTuioFO2EeCFAqVbT4yc4A" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_MTw-4lO2EeCFAqVbT4yc4A" type="5001"/>
       <children xmi:type="notation:BasicCompartment" xmi:id="_MTxl8FO2EeCFAqVbT4yc4A" type="7001"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MTw-4VO2EeCFAqVbT4yc4A" x="100" y="120" width="306" height="221"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MTw-4VO2EeCFAqVbT4yc4A" x="10" y="125" width="306" height="221"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_OjN5AFO2EeCFAqVbT4yc4A" type="2001" element="_OjKOoFO2EeCFAqVbT4yc4A" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_OjOgEFO2EeCFAqVbT4yc4A" type="5001"/>
       <children xmi:type="notation:BasicCompartment" xmi:id="_OjOgEVO2EeCFAqVbT4yc4A" type="7001"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OjN5AVO2EeCFAqVbT4yc4A" x="420" y="120" width="226" height="221"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OjN5AVO2EeCFAqVbT4yc4A" x="335" y="125" width="111" height="221"/>
     </children>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_Jg_-wic0EeC-LqTJQDUVwQ"/>
   </notation:Diagram>

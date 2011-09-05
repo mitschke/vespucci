@@ -64,9 +64,9 @@
         <children xmi:type="notation:Shape" xmi:id="_aa70MCOuEeCOo6bch11Byg" type="3001" element="_aa5X8COuEeCOo6bch11Byg" fontName="Segoe UI">
           <children xmi:type="notation:DecorationNode" xmi:id="_aa8bQCOuEeCOo6bch11Byg" type="5006"/>
           <children xmi:type="notation:BasicCompartment" xmi:id="_aa8bQSOuEeCOo6bch11Byg" type="7002"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aa70MSOuEeCOo6bch11Byg" x="5" y="216" width="266" height="226"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aa70MSOuEeCOo6bch11Byg" x="5" y="196" width="266" height="226"/>
         </children>
-        <children xmi:type="notation:Shape" xmi:id="_XJPBsFO4EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="fÃ¼r die Plugin ID" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+        <children xmi:type="notation:Shape" xmi:id="_XJPBsFO4EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="für die Plugin ID" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
           <children xmi:type="notation:BasicDecorationNode" xmi:id="_XJUhQFO4EeCFAqVbT4yc4A" type="DiagramName">
             <element xsi:nil="true"/>
           </children>
@@ -79,7 +79,7 @@
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XJPBs1O4EeCFAqVbT4yc4A" x="295" y="281"/>
         </children>
       </children>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kkez4COqEeCkc7phH_OITw" x="25" y="140" width="436" height="476"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kkez4COqEeCkc7phH_OITw" x="25" y="125" width="436" height="456"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_mMTGQCOqEeCkc7phH_OITw" type="2001" element="_mMQqACOqEeCkc7phH_OITw" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_mMTtUCOqEeCkc7phH_OITw" type="5001"/>
@@ -102,7 +102,7 @@
       </children>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mMTGQSOqEeCkc7phH_OITw" x="495" y="120" width="286" height="226"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_IoqT4CkpEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm welches einen groben Ãœberblick Ã¼ber das Vespucci-Plug-In gibt." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_IoqT4CkpEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur-Diagramm welches einen groben Überblick über das Vespucci-Plug-In gibt." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_IovzcCkpEeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
@@ -114,7 +114,7 @@
       <element xsi:nil="true"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IoqT4ykpEeC7g5S-XZYxhw" x="30" y="15" width="146" height="91"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_R5M-QClBEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Unter Services befindet sich ein GroÃŸteil der FunktionalitÃ¤t die nicht von GMF erzeugt wurde sondern nachtrÃ¤glich hinzugefÃ¼gt wurde." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_R5M-QClBEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Unter Services befindet sich ein Großteil der Funktionalität die nicht&#xD;&#xA;von GMF erzeugt wurde sondern nachträglich hinzugefügt wurde." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_R5NlUClBEeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
@@ -124,7 +124,7 @@
       <styles xmi:type="notation:TextStyle" xmi:id="_R5M-QSlBEeC7g5S-XZYxhw"/>
       <styles xmi:type="notation:LineTypeStyle" xmi:id="_R5M-QilBEeC7g5S-XZYxhw"/>
       <element xsi:nil="true"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R5M-QylBEeC7g5S-XZYxhw" x="525" y="435"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R5M-QylBEeC7g5S-XZYxhw" x="480" y="395"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_DnjVUFO5EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="siehe DiagramConverter.sad" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_DnoN0FO5EeCFAqVbT4yc4A" type="DiagramName">
@@ -136,9 +136,9 @@
       <styles xmi:type="notation:TextStyle" xmi:id="_DnjVUVO5EeCFAqVbT4yc4A"/>
       <styles xmi:type="notation:LineTypeStyle" xmi:id="_DnjVUlO5EeCFAqVbT4yc4A"/>
       <element xsi:nil="true"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DnjVU1O5EeCFAqVbT4yc4A" x="220" y="75"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DnjVU1O5EeCFAqVbT4yc4A" x="220" y="55"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_s_xrYFu0EeC4taN3dMI1CQ" type="Note" fontName="Segoe UI" description="Die outlineview benutzt die ModelImpl aber die restlichen Klassen sollte nur die Interfaces benutzen" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_s_xrYFu0EeC4taN3dMI1CQ" type="Note" fontName="Segoe UI" description="Die Outlineview benutzt die ModelImpl aber die restlichen Klassen sollte nur die Interfaces benutzen" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_s_yScFu0EeC4taN3dMI1CQ" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
@@ -148,7 +148,7 @@
       <styles xmi:type="notation:TextStyle" xmi:id="_s_xrYVu0EeC4taN3dMI1CQ"/>
       <styles xmi:type="notation:LineTypeStyle" xmi:id="_s_xrYlu0EeC4taN3dMI1CQ"/>
       <element xsi:nil="true"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_s_xrY1u0EeC4taN3dMI1CQ" x="505" y="55"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_s_xrY1u0EeC4taN3dMI1CQ" x="415" y="15"/>
     </children>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_iKv8YSOqEeCkc7phH_OITw"/>
     <edges xmi:type="notation:Edge" xmi:id="_9xQ1ECk_EeC7g5S-XZYxhw" type="4003" element="_9xOY0Ck_EeC7g5S-XZYxhw" source="_J0OrMCOvEeCOo6bch11Byg" target="_aa70MCOuEeCOo6bch11Byg">

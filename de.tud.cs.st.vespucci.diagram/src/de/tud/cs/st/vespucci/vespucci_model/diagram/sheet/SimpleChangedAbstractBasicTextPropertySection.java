@@ -50,12 +50,13 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  * @author Benjamin Lück
  * @author Dominic Scheurer
  * @author Alexander Weitzmann
+ * @author Theo Kischka
  */
 public abstract class SimpleChangedAbstractBasicTextPropertySection extends AbstractModelerPropertySection {
 
-	private final int QUERY_TAB_HEIGHT_SHIFT = 35;
+	private final int DESCRIPTION_TAB_HEIGHT_SHIFT = 35;
 
-	private final int QUERY_TAB_WIDTH_SHIFT = 45;
+	private final int DESCRIPTION_TAB_WIDTH_SHIFT = 45;
 
 	// styled text widget to display and set value of the property
 	private StyledText textWidget;
@@ -230,7 +231,7 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	}
 
 	private int getHeight() {
-		return scrolledParent.getSize().y - QUERY_TAB_HEIGHT_SHIFT;
+		return scrolledParent.getSize().y - DESCRIPTION_TAB_HEIGHT_SHIFT;
 	}
 
 	/**
@@ -281,7 +282,7 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 	}
 
 	private int getWidth() {
-		return scrolledParent.getSize().x - QUERY_TAB_WIDTH_SHIFT;
+		return scrolledParent.getSize().x - DESCRIPTION_TAB_WIDTH_SHIFT;
 	}
 
 	/*
