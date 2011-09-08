@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -100,6 +101,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected ElementInfo createElementInfo(Object element) throws CoreException {
 		if (false == element instanceof FileEditorInput && false == element instanceof URIEditorInput) {
 			throw new CoreException(
@@ -125,6 +127,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected IDocument createDocument(Object element) throws CoreException {
 		if (false == element instanceof FileEditorInput && false == element instanceof URIEditorInput) {
 			throw new CoreException(
@@ -149,8 +152,10 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * content of the document is not changed. This default implementation is empty.
 	 * Subclasses may reimplement.
 	 * 
-	 * @param element the blue-print element
-	 * @param document the document to set up
+	 * @param element
+	 *            the blue-print element
+	 * @param document
+	 *            the document to set up
 	 * @generated
 	 */
 	protected void setupDocument(Object element, IDocument document) {
@@ -179,6 +184,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected IDocument createEmptyDocument() {
 		DiagramDocument document = new DiagramDocument();
 		document.setEditingDomain(createEditingDomain());
@@ -231,49 +237,45 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 * 
 	 * @generated NOT
 	 * @author Dominic Scheurer
-	 * @param file The sad file to check and to update if necessary.
+	 * @param file
+	 *            The sad file to check and to update if necessary.
 	 */
 	private static void checkConversionNeeded(final IFile file) {
-		String updateQuestionTitle =
-			"Vespucci Upgrade Framework";
-		String updateQuestionText = 
-			"The file you are trying to open is of an old version.\n" +
-			"Shall Vespucci upgrade it to the current version (recommended)?\n" +
-			"Vespucci will create backup copies, so you data will be safe.";
-		
-		VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
-		
-		VespucciVersionTemplate fileVersion = versionChain.getVersionOfFile(file);
-		
-		if (!fileVersion.isNewestVersion() &&
-			MessageDialog.openQuestion(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				updateQuestionTitle,
-				updateQuestionText)) {
-			UpdateSadFileHandler sadUpdater = new UpdateSadFileHandler();
+		final String updateQuestionTitle = "Vespucci Upgrade Framework";
+		final String updateQuestionText = "The file you are trying to open is of an old version.\n"
+				+ "Shall Vespucci upgrade it to the current version? (recommended)\n"
+				+ "Vespucci will create a backup of your old file.";
+
+		final VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
+
+		final VespucciVersionTemplate fileVersion = versionChain.getVersionOfFile(file);
+
+		if (!fileVersion.isNewestVersion()
+				&& MessageDialog.openQuestion(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+						updateQuestionTitle, updateQuestionText)) {
+			final UpdateSadFileHandler sadUpdater = new UpdateSadFileHandler();
 			sadUpdater.execute(file);
 		}
 	}
-	
+
 	/**
 	 * @generated NOT
+	 * @author Dominic Scheurer - one modification
 	 */
-	protected void setDocumentContent(IDocument document, IEditorInput element) throws CoreException {
-		IDiagramDocument diagramDocument = (IDiagramDocument) document;
-		TransactionalEditingDomain domain = diagramDocument.getEditingDomain();
-		if (element instanceof FileEditorInput) {			
-			IStorage storage = ((FileEditorInput) element).getStorage();
-			
+	protected void setDocumentContent(final IDocument document, final IEditorInput element) throws CoreException {
+		final IDiagramDocument diagramDocument = (IDiagramDocument) document;
+		final TransactionalEditingDomain domain = diagramDocument.getEditingDomain();
+		if (element instanceof FileEditorInput) {
+			final IStorage storage = ((FileEditorInput) element).getStorage();
+
 			// Modified by Dominic Scheurer:
 			// Start conversion to newer sad file version if necessary
-			VespucciDocumentProvider.checkConversionNeeded(
-				((FileEditorInput) element).getFile()
-			);
-			
-			Diagram diagram = DiagramIOUtil.load(domain, storage, true, getProgressMonitor());
+			VespucciDocumentProvider.checkConversionNeeded(((FileEditorInput) element).getFile());
+
+			final Diagram diagram = DiagramIOUtil.load(domain, storage, true, getProgressMonitor());
 			document.setContent(diagram);
 		} else if (element instanceof URIEditorInput) {
-			URI uri = ((URIEditorInput) element).getURI();
+			final URI uri = ((URIEditorInput) element).getURI();
 			Resource resource = null;
 			try {
 				resource = domain.getResourceSet().getResource(uri.trimFragment(), false);
@@ -282,38 +284,38 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 				}
 				if (!resource.isLoaded()) {
 					try {
-						Map options = new HashMap(GMFResourceFactory.getDefaultLoadOptions());
-						// @see 171060 
-						// options.put(org.eclipse.emf.ecore.xmi.XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
+						final Map options = new HashMap(GMFResourceFactory.getDefaultLoadOptions());
+						// @see 171060
+						// options.put(org.eclipse.emf.ecore.xmi.XMLResource.OPTION_RECORD_UNKNOWN_FEATURE,
+						// Boolean.TRUE);
 						resource.load(options);
-					} catch (IOException e) {
+					} catch (final IOException e) {
 						resource.unload();
 						throw e;
 					}
 				}
 				if (uri.fragment() != null) {
-					EObject rootElement = resource.getEObject(uri.fragment());
+					final EObject rootElement = resource.getEObject(uri.fragment());
 					if (rootElement instanceof Diagram) {
-						document.setContent((Diagram) rootElement);
+						document.setContent(rootElement);
 						return;
 					}
 				} else {
-					for (Iterator it = resource.getContents().iterator(); it.hasNext();) {
-						Object rootElement = it.next();
+					for (final Object rootElement : resource.getContents()) {
 						if (rootElement instanceof Diagram) {
-							document.setContent((Diagram) rootElement);
+							document.setContent(rootElement);
 							return;
 						}
 					}
 				}
 				throw new RuntimeException(
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDocumentProvider_NoDiagramInResourceError);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				CoreException thrownExcp = null;
 				if (e instanceof CoreException) {
 					thrownExcp = (CoreException) e;
 				} else {
-					String msg = e.getLocalizedMessage();
+					final String msg = e.getLocalizedMessage();
 					thrownExcp = new CoreException(
 							new Status(
 									IStatus.ERROR,
@@ -342,6 +344,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	public long getModificationStamp(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -353,6 +356,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	public boolean isDeleted(Object element) {
 		IDiagramDocument document = getDiagramDocument(element);
 		if (document != null) {
@@ -375,6 +379,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected void disposeElementInfo(Object element, ElementInfo info) {
 		if (info instanceof ResourceSetInfo) {
 			ResourceSetInfo resourceSetInfo = (ResourceSetInfo) info;
@@ -386,6 +391,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected void doValidateState(Object element, Object computationContext) throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -407,6 +413,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	public boolean isReadOnly(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -427,6 +434,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	public boolean isModifiable(Object element) {
 		if (!isStateValidated(element)) {
 			if (element instanceof FileEditorInput || element instanceof URIEditorInput) {
@@ -473,6 +481,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected void doUpdateStateCache(Object element) throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -484,6 +493,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	public boolean isSynchronized(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -495,6 +505,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected ISchedulingRule getResetRule(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -514,6 +525,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected ISchedulingRule getSaveRule(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -533,6 +545,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected ISchedulingRule getSynchronizeRule(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -552,6 +565,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected ISchedulingRule getValidateStateRule(Object element) {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -594,6 +608,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected void doSynchronize(Object element, IProgressMonitor monitor) throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
 		if (info != null) {
@@ -609,6 +624,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite)
 			throws CoreException {
 		ResourceSetInfo info = getResourceSetInfo(element);
@@ -765,6 +781,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	public IEditorInput createInputWithEditingDomain(IEditorInput editorInput, TransactionalEditingDomain domain) {
 		return editorInput;
 	}
@@ -772,6 +789,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	public IDiagramDocument getDiagramDocument(Object element) {
 		IDocument doc = getDocument(element);
 		if (doc instanceof IDiagramDocument) {
@@ -783,6 +801,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	/**
 	 * @generated
 	 */
+	@Override
 	protected IRunnableContext getOperationRunner(IProgressMonitor monitor) {
 		return null;
 	}
@@ -990,12 +1009,14 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			/**
 			 * @generated
 			 */
+			@Override
 			public void dispose() {
 			}
 
 			/**
 			 * @generated
 			 */
+			@Override
 			public boolean handleResourceChanged(final Resource resource) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
@@ -1014,6 +1035,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			/**
 			 * @generated
 			 */
+			@Override
 			public boolean handleResourceDeleted(Resource resource) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
@@ -1032,6 +1054,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 			/**
 			 * @generated
 			 */
+			@Override
 			public boolean handleResourceMoved(Resource resource, final URI newURI) {
 				synchronized (ResourceSetInfo.this) {
 					if (ResourceSetInfo.this.fCanBeSaved) {
@@ -1083,6 +1106,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 		/**
 		 * @generated
 		 */
+		@Override
 		public void notifyChanged(Notification notification) {
 			if (notification.getNotifier() instanceof ResourceSet) {
 				super.notifyChanged(notification);

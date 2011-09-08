@@ -1,6 +1,6 @@
 /**
  *  License (BSD Style License):
- *   Copyright (c) 2010
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -33,6 +33,8 @@
  */
 
 package de.tud.cs.st.vespucci.diagram.handler;
+
+import java.util.Arrays;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -110,8 +112,9 @@ public abstract class ToggleDependenciesSuperHandler extends AbstractHandler {
 		}
 
 		final Event trigger = (Event) event.getTrigger();
-		// Value to be set or unset.
-		final String toggleValue = ((MenuItem) trigger.widget).getText();
+		
+		// Dependency kind to be toggled (added or removed).
+		final String dependencyKind = ((MenuItem) trigger.widget).getText();
 
 		for (final ConnectionEditPart connection : selectedConnections) {
 			// Editing domain. Must be used to keep consistency.
@@ -124,10 +127,15 @@ public abstract class ToggleDependenciesSuperHandler extends AbstractHandler {
 					Vespucci_modelPackage.CONNECTION__NAME);
 
 			// get current dependencies
-			final String[] currentDependencies = ((String) semanticConnection.eGet(toggleFeature, true)).split(", ");
+			String[] currentDependencies = ((String) semanticConnection.eGet(toggleFeature, true)).split(", ");
+
+			// only one empty string should be empty array
+			if (Arrays.equals(currentDependencies, new String[] { "" })) {
+				currentDependencies = new String[0];
+			}
 
 			// toggle dependency
-			final String[] newDependencies = transformedCopy(currentDependencies, toggleValue);
+			final String[] newDependencies = transformedCopy(currentDependencies, dependencyKind);
 
 			// Command that will update the connection
 			final SetCommand setCommand = new SetCommand(editDomain, semanticConnection, toggleFeature,

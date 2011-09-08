@@ -1,10 +1,9 @@
 /**
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Patrick Jahnke
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universitiät Darmstadt
+ *   Technische Universität Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -32,7 +31,6 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-
 package de.tud.cs.st.vespucci.diagram.menuItems;
 
 import java.util.PropertyResourceBundle;
@@ -97,7 +95,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/grayed.gif"));
+						"/icons/checkboxes/grayed.gif"));
 				return img.getImageData();
 			}
 		};
@@ -107,7 +105,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/checked.gif"));
+						"/icons/checkboxes/checked.gif"));
 				return img.getImageData();
 			}
 		};
@@ -117,7 +115,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			@Override
 			public ImageData getImageData() {
 				final Image img = new Image(PlatformUI.getWorkbench().getDisplay(), this.getClass().getResourceAsStream(
-						"/resources/unchecked.gif"));
+						"/icons/checkboxes/unchecked.gif"));
 				return img.getImageData();
 			}
 		};
@@ -145,6 +143,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 
 		boolean selectionContainsDep = false;
 		boolean firstConstraint = true;
+		
 		for (final ConnectionEditPart connection : selectedConnections) {
 			// Get dependencies of constraint a.k.a. name of connection
 			final EObject semanticConnection = connection.resolveSemanticElement();

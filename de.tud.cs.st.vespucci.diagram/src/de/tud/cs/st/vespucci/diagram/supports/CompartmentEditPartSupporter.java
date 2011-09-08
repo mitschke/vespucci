@@ -110,7 +110,7 @@ public class CompartmentEditPartSupporter {
 	private void collapseEditPart() {
 		final Set<ConnectionEditPart> childrenConnections = getChildrenConnections();
 		final Set<ConnectionEditPart> outsideConnections = excludeInternConnections(childrenConnections);
-		final Set<ConnectionEditPart> edges = excludeConnectorImpl(outsideConnections);
+		final Set<ConnectionEditPart> edges = filterForDependencyConstraints(outsideConnections);
 
 		for (final ConnectionEditPart outConnection : edges) {
 			final EdgeImpl edge = (EdgeImpl) outConnection.getModel();
@@ -255,7 +255,7 @@ public class CompartmentEditPartSupporter {
 		final Set<ConnectionEditPart> connections = new HashSet<ConnectionEditPart>();
 		connections.addAll(this.editPartOfCompartment.getSourceConnections());
 		connections.addAll(this.editPartOfCompartment.getTargetConnections());
-		return excludeConnectorImpl(connections);
+		return filterForDependencyConstraints(connections);
 	}
 
 	/**
@@ -265,14 +265,15 @@ public class CompartmentEditPartSupporter {
 	 *            Connections to be filtered.
 	 * @return Returns filtered connections.
 	 */
-	private static Set<ConnectionEditPart> excludeConnectorImpl(final Set<ConnectionEditPart> connections) {
-		final Set<ConnectionEditPart> out = new HashSet<ConnectionEditPart>();
-		for (final ConnectionEditPart i : connections) {
-			if (!(i.getModel() instanceof ConnectorImpl)) {
-				out.add(i);
-			}
+	private static Set<ConnectionEditPart> filterForDependencyConstraints(final Set<ConnectionEditPart> connections) {
+		final Set<ConnectionEditPart> result = new HashSet<ConnectionEditPart>();
+		for (final ConnectionEditPart conn : connections) {
+			final EdgeImpl edge = (EdgeImpl) conn.getModel();
+			if (edge.getElement() != null && edge.getElement() instanceof Connection) {
+				result.add(conn);
+			}	
 		}
-		return out;
+		return result;
 	}
 
 }

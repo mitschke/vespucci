@@ -34,6 +34,7 @@
 
 package de.tud.cs.st.vespucci.versioning.handler;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -41,9 +42,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.EvaluationContext;
-import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -169,7 +168,7 @@ public class UpdateSadFileHandler extends AbstractHandler {
 						return null;
 					}
 
-					final IPath newPath = getUniquePathForVersion(file, currentVersion);
+					final File backupFile = getUniqueFilePointerForVersion(file, currentVersion);
 
 					final URI outputUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 
@@ -178,7 +177,7 @@ public class UpdateSadFileHandler extends AbstractHandler {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							return nextVersion.updateFromDirectPredecessorVersion(file, newPath, outputUri, monitor);
+							return nextVersion.updateFromDirectPredecessorVersion(file, backupFile, outputUri, monitor);
 						}
 
 					};
@@ -209,13 +208,11 @@ public class UpdateSadFileHandler extends AbstractHandler {
 	 *            The original file.
 	 * @param version
 	 *            The version to take the identifier from.
-	 * @return A path to a non-existing file which extends the original file path and contains the version identifier
-	 *         and, if necessary, the current time stamp.
+	 * @return A file handle to a non-existing file which extends the original file path and
+	 * 		   contains the version identifier and, if necessary, the current time stamp.
 	 */
-	private static IPath getUniquePathForVersion(final IFile file, final VespucciVersionTemplate version) {
-		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-
-		final IPath absOrigPath = file.getRawLocation();
+	private static java.io.File getUniqueFilePointerForVersion(final IFile file, final VespucciVersionTemplate version) {
+		final IPath absOrigPath = file.getRawLocation();		
 
 		IPath backupPath = absOrigPath;
 		if (fileNameHasNoVersionID(absOrigPath, version)) {
@@ -225,15 +222,12 @@ public class UpdateSadFileHandler extends AbstractHandler {
 		// prevents stacking of time stamps
 		backupPath = removeTimestamp(backupPath);
 
-		while (workspaceRoot.findFilesForLocationURI(URIUtil.toURI(backupPath))[0].exists()) {
+		while (backupPath.toFile().exists()) {
 			backupPath = removeTimestamp(backupPath);
 			backupPath = insertSubExtension(backupPath, new Long(new Date().getTime()).toString());
 		}
 
-		backupPath = backupPath.makeRelativeTo(workspaceRoot.getRawLocation());
-		backupPath = backupPath.makeAbsolute();
-
-		return backupPath;
+		return backupPath.toFile();
 	}
 
 	private static boolean fileNameHasNoVersionID(final IPath path, final VespucciVersionTemplate version) {

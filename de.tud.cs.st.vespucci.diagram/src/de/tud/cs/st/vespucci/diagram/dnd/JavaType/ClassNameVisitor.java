@@ -1,6 +1,6 @@
-/*
+/**
  *  License (BSD Style License):
- *   Copyright (c) 2010
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -31,28 +31,68 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
+package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
-import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
-import org.eclipse.jface.viewers.IFilter;
-
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 
 /**
- * Filter for Ensembles
+ * This class provides methods to resolve class names.
  * 
- * @author Malte
- * 
+ * @author Dominic Scheurer
+ * @author Thomas Schulz
+ *
  */
-public class TabQueryFilter implements IFilter {
+public class ClassNameVisitor extends AbstractVisitor {
+	private static final String DOT_JAVA = ".java";
 
-	@Override
-	public boolean select(Object toTest) {
-		if (toTest instanceof GraphicalEditPart
-				&& ((GraphicalEditPart) toTest).resolveSemanticElement() instanceof Ensemble) {
-			return true;
-		}
-		return false;
+	/**
+	 * This method invokes the correct method to retrieve the particular class name.
+	 * 
+	 * @param object
+	 * @return Returns the fully qualified class name.
+	 */
+	public String getFullyQualifiedClassName(final Object object) {
+		return (String) super.visit(object);
 	}
 
+	@Override
+	public Object visit(final IMethod method) {
+		return method.getDeclaringType().getFullyQualifiedName();
+	}
+
+	@Override
+	public Object visit(final IField field) {
+		return field.getDeclaringType().getFullyQualifiedName();
+	}
+
+	@Override
+	public Object visit(final IType type) {
+		return type.getFullyQualifiedName();
+	}
+
+	@Override
+	public Object visit(final ICompilationUnit compilationUnit) {
+		return prependPackageName(removeJavaFileEnding(compilationUnit.getElementName()), compilationUnit);
+	}
+
+	private String removeJavaFileEnding(final String className) {
+		if (className.toLowerCase().endsWith(DOT_JAVA)) {
+			return className.substring(0, className.length() - DOT_JAVA.length());
+		} else {
+			return className;
+		}
+	}
+
+	private String prependPackageName(final String className, final Object javaElement) {
+		final String fqPackageName = Resolver.resolveFullyQualifiedPackageName(javaElement);
+		return fqPackageName.equals("") ? className : fqPackageName + "." + className;
+	}
+
+	@Override
+	public Object getDefaultResultObject() {
+		return null;
+	}
 }

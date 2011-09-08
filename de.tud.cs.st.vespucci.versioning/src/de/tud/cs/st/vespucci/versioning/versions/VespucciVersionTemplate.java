@@ -34,6 +34,7 @@
 
 package de.tud.cs.st.vespucci.versioning.versions;
 
+import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +46,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -58,7 +58,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.osgi.util.NLS;
-import de.tud.cs.st.vespucci.errors.VespucciIOException;
+
+import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.versioning.VespucciTransformationHelper;
 
 /**
@@ -168,13 +169,13 @@ implements Comparable<VespucciVersionTemplate> {
 	 * by the concrete implementation of this abstract class.
 	 * 
 	 * @param inputDiagram File to convert. Must be a direct predecessor of this version.
-	 * @param backupPath New Path of the original file.
+	 * @param backupFile File pointer where the backup of the original file shall be stored.
 	 * @param outputURI URI to write to.
 	 * @param progressMonitor Monitor used to show the progress.
 	 * @return Conversion result status.
 	 */
 	public IStatus updateFromDirectPredecessorVersion(
-			IFile inputDiagram, IPath backupPath, URI outputURI, IProgressMonitor progressMonitor) {
+			IFile inputDiagram, File backupFile, URI outputURI, IProgressMonitor progressMonitor) {
 
 		if (!hasPredecessor() ||
 			!getPredecessor().fileIsOfThisVersion(inputDiagram)) {
@@ -206,7 +207,7 @@ implements Comparable<VespucciVersionTemplate> {
 		
 		ArrayList<ModelExtent> transformationResults = transformationOutput.getTransformationResults();
 		
-		renameFile(inputDiagram, backupPath, progressMonitor);
+		createBackup(inputDiagram, backupFile, progressMonitor);
 		
 		saveResults(transformationResults.get(0), transformationResults.get(1), outputURI);
 		

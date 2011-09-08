@@ -1,8 +1,9 @@
 /*
  *  License (BSD Style License):
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universiti�t Darmstadt
+ *   Technische Universitiät Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -14,7 +15,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universit�t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -30,24 +31,29 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.errors;
+package de.tud.cs.st.vespucci.exceptions;
 
 /**
- * Exception which is thrown if there occurs an error during
- * the transformation of a Vespucci file.
+ * Exception which is thrown if there occurs an error during the evaluation of an argument.
  * 
- * @author Dominic Scheurer
+ * @author Alexander Weitzmann
+ * @author Thomas Schulz
+ * 
  */
-public class VespucciTransformationFailedException extends VespucciException {
-	public VespucciTransformationFailedException(String message) {
-		super(message);
-	}
+public class VespucciIllegalArgumentException extends VespucciException {
 	
-	public VespucciTransformationFailedException(Throwable cause) {
+	private static final String MESSAGE_PREFIX = "VespucciIllegalArgumentException: ";
+
+	public VespucciIllegalArgumentException(final String message) {
+		super(MESSAGE_PREFIX + message);
+	}
+
+	public VespucciIllegalArgumentException(final Throwable cause) {
 		super(cause);
 	}
-	
-	public VespucciTransformationFailedException(String message, Throwable cause) {
-		super(message, cause);
-	}	
+
+	public VespucciIllegalArgumentException(final String message, final Throwable cause) {
+		super(MESSAGE_PREFIX + message, cause);
+	}
+
 }

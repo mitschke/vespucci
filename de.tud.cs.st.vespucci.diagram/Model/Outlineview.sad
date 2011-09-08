@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_3Ic6ICczEeC-LqTJQDUVwQ">
     <shapes xmi:type="Ensemble" xmi:id="_YEf6oFO5EeCFAqVbT4yc4A" name="&quot;GUI&quot;-Vespucci " query="derived">
@@ -72,7 +72,7 @@
           <children xmi:type="notation:BasicCompartment" xmi:id="_vovxoVPFEeC3v84xT_hxyw" type="7002"/>
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_voujgVPFEeC3v84xT_hxyw" x="70" y="211" width="155" height="60"/>
         </children>
-        <children xmi:type="notation:Shape" xmi:id="_33kC4CczEeC-LqTJQDUVwQ" type="Note" fontName="Segoe UI" description="Architektur Diagramm fÃ¼r die Outline-View. " fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+        <children xmi:type="notation:Shape" xmi:id="_33kC4CczEeC-LqTJQDUVwQ" type="Note" fontName="Segoe UI" description="Architektur-Diagramm für die Outline-View. " fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
           <children xmi:type="notation:BasicDecorationNode" xmi:id="_33picCczEeC-LqTJQDUVwQ" type="DiagramName">
             <element xsi:nil="true"/>
           </children>
@@ -82,7 +82,7 @@
           <styles xmi:type="notation:TextStyle" xmi:id="_33kC4SczEeC-LqTJQDUVwQ"/>
           <styles xmi:type="notation:LineTypeStyle" xmi:id="_33kC4iczEeC-LqTJQDUVwQ"/>
           <element xsi:nil="true"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_33kC4yczEeC-LqTJQDUVwQ" x="75" y="437" width="121" height="86"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_33kC4yczEeC-LqTJQDUVwQ" x="75" y="437" width="151" height="45"/>
         </children>
         <children xmi:type="notation:Shape" xmi:id="_KNjH0VhtEeCPR-J2XBB0JQ" type="2001" element="_KNjH0FhtEeCPR-J2XBB0JQ" fontName="Segoe UI">
           <children xmi:type="notation:DecorationNode" xmi:id="_KNjH01htEeCPR-J2XBB0JQ" type="5001"/>

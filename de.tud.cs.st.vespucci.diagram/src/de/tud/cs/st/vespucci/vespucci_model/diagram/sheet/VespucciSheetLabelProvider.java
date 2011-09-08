@@ -48,23 +48,26 @@ import org.eclipse.swt.graphics.Image;
  */
 public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILabelProvider {
 	/**
-	 * @generated not
+	 * @generated NOT
 	 */
+	@Override
 	public String getText(Object element) {
 		element = unwrap(element);
 		if (element instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) element).getGroupName();
 		}
-		//TODO quick fix
-		if (getView(element) instanceof Diagram)
+		// quick fix
+		if (getView(element) instanceof Diagram) {
 			return ((Diagram) getView(element)).getName();
-		IElementType etype = getElementType(getView(element));
+		}
+		final IElementType etype = getElementType(getView(element));
 		return etype == null ? "" : etype.getDisplayName();
 	}
 
 	/**
 	 * @generated
 	 */
+	@Override
 	public Image getImage(Object element) {
 		IElementType etype = getElementType(getView(unwrap(element)));
 		return etype == null ? null : de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getImage(etype);

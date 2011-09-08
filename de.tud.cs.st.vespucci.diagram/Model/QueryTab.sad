@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_Ftha8FPHEeC3v84xT_hxyw">
     <shapes xmi:type="Ensemble" xmi:id="_vsQdAVPjEeCJz47zSw89uQ" name="QueryTab" query="class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','ModelDescriptionPropertySection')&#xA; or class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','TabQueryFilter')&#xA; or class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','ChangedAbstractBasicTextPropertySection')&#xA;"/>

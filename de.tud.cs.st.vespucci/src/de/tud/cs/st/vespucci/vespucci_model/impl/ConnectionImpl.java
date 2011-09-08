@@ -55,15 +55,15 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getSource <em>Source</em>}</li>
- * <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getTarget <em>Target</em>}</li>
- * <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getName <em>Name</em>}</li>
- * <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#isTemp <em>Temp</em>}</li>
- * <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalSource <em>Original Source</em>}</li>
- * <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalTarget <em>Original Target</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getSource <em>Source</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#isTemp <em>Temp</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalSource <em>Original Source</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalTarget <em>Original Target</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class ConnectionImpl extends EObjectImpl implements Connection {
@@ -157,7 +157,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Shape basicGetSource() {
@@ -166,7 +165,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public Shape basicGetTarget() {
@@ -175,54 +173,48 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
-	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case Vespucci_modelPackage.CONNECTION__SOURCE:
-			if (resolve) {
-				return getSource();
-			}
-			return basicGetSource();
-		case Vespucci_modelPackage.CONNECTION__TARGET:
-			if (resolve) {
-				return getTarget();
-			}
-			return basicGetTarget();
-		case Vespucci_modelPackage.CONNECTION__NAME:
-			return getName();
-		case Vespucci_modelPackage.CONNECTION__TEMP:
-			return isTemp();
-		case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
-			return getOriginalSource();
-		case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
-			return getOriginalTarget();
+			case Vespucci_modelPackage.CONNECTION__SOURCE:
+				if (resolve) return getSource();
+				return basicGetSource();
+			case Vespucci_modelPackage.CONNECTION__TARGET:
+				if (resolve) return getTarget();
+				return basicGetTarget();
+			case Vespucci_modelPackage.CONNECTION__NAME:
+				return getName();
+			case Vespucci_modelPackage.CONNECTION__TEMP:
+				return isTemp();
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
+				return getOriginalSource();
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
+				return getOriginalTarget();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
-	public boolean eIsSet(final int featureID) {
+	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case Vespucci_modelPackage.CONNECTION__SOURCE:
-			return source != null;
-		case Vespucci_modelPackage.CONNECTION__TARGET:
-			return target != null;
-		case Vespucci_modelPackage.CONNECTION__NAME:
-			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-		case Vespucci_modelPackage.CONNECTION__TEMP:
-			return temp != TEMP_EDEFAULT;
-		case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
-			return originalSource != null && !originalSource.isEmpty();
-		case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
-			return originalTarget != null && !originalTarget.isEmpty();
+			case Vespucci_modelPackage.CONNECTION__SOURCE:
+				return source != null;
+			case Vespucci_modelPackage.CONNECTION__TARGET:
+				return target != null;
+			case Vespucci_modelPackage.CONNECTION__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case Vespucci_modelPackage.CONNECTION__TEMP:
+				return temp != TEMP_EDEFAULT;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
+				return originalSource != null && !originalSource.isEmpty();
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
+				return originalTarget != null && !originalTarget.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -233,35 +225,34 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void eSet(final int featureID, final Object newValue) {
+	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case Vespucci_modelPackage.CONNECTION__SOURCE:
-			setSource((Shape) newValue);
-			return;
-		case Vespucci_modelPackage.CONNECTION__TARGET:
-			setTarget((Shape) newValue);
-			return;
-		case Vespucci_modelPackage.CONNECTION__NAME:
-			setName((String) newValue);
-			return;
-		case Vespucci_modelPackage.CONNECTION__TEMP:
-			setTemp((Boolean) newValue);
-			return;
-		case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
-			getOriginalSource().clear();
-			getOriginalSource().addAll((Collection<? extends Shape>) newValue);
-			return;
-		case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
-			getOriginalTarget().clear();
-			getOriginalTarget().addAll((Collection<? extends Shape>) newValue);
-			return;
+			case Vespucci_modelPackage.CONNECTION__SOURCE:
+				setSource((Shape)newValue);
+				return;
+			case Vespucci_modelPackage.CONNECTION__TARGET:
+				setTarget((Shape)newValue);
+				return;
+			case Vespucci_modelPackage.CONNECTION__NAME:
+				setName((String)newValue);
+				return;
+			case Vespucci_modelPackage.CONNECTION__TEMP:
+				setTemp((Boolean)newValue);
+				return;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
+				getOriginalSource().clear();
+				getOriginalSource().addAll((Collection<? extends Shape>)newValue);
+				return;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
+				getOriginalTarget().clear();
+				getOriginalTarget().addAll((Collection<? extends Shape>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -271,37 +262,35 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
-	public void eUnset(final int featureID) {
+	public void eUnset(int featureID) {
 		switch (featureID) {
-		case Vespucci_modelPackage.CONNECTION__SOURCE:
-			setSource((Shape) null);
-			return;
-		case Vespucci_modelPackage.CONNECTION__TARGET:
-			setTarget((Shape) null);
-			return;
-		case Vespucci_modelPackage.CONNECTION__NAME:
-			setName(NAME_EDEFAULT);
-			return;
-		case Vespucci_modelPackage.CONNECTION__TEMP:
-			setTemp(TEMP_EDEFAULT);
-			return;
-		case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
-			getOriginalSource().clear();
-			return;
-		case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
-			getOriginalTarget().clear();
-			return;
+			case Vespucci_modelPackage.CONNECTION__SOURCE:
+				setSource((Shape)null);
+				return;
+			case Vespucci_modelPackage.CONNECTION__TARGET:
+				setTarget((Shape)null);
+				return;
+			case Vespucci_modelPackage.CONNECTION__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case Vespucci_modelPackage.CONNECTION__TEMP:
+				setTemp(TEMP_EDEFAULT);
+				return;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
+				getOriginalSource().clear();
+				return;
+			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
+				getOriginalTarget().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -311,47 +300,40 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public EList<Shape> getOriginalSource() {
 		if (originalSource == null) {
-			originalSource = new EObjectResolvingEList<Shape>(Shape.class, this,
-					Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE);
+			originalSource = new EObjectResolvingEList<Shape>(Shape.class, this, Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE);
 		}
 		return originalSource;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public EList<Shape> getOriginalTarget() {
 		if (originalTarget == null) {
-			originalTarget = new EObjectResolvingEList<Shape>(Shape.class, this,
-					Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET);
+			originalTarget = new EObjectResolvingEList<Shape>(Shape.class, this, Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET);
 		}
 		return originalTarget;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Shape getSource() {
 		if (source != null && source.eIsProxy()) {
-			final InternalEObject oldSource = (InternalEObject) source;
-			source = (Shape) eResolveProxy(oldSource);
+			InternalEObject oldSource = (InternalEObject)source;
+			source = (Shape)eResolveProxy(oldSource);
 			if (source != oldSource) {
-				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Vespucci_modelPackage.CONNECTION__SOURCE,
-							oldSource, source));
-				}
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Vespucci_modelPackage.CONNECTION__SOURCE, oldSource, source));
 			}
 		}
 		return source;
@@ -359,19 +341,16 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Shape getTarget() {
 		if (target != null && target.eIsProxy()) {
-			final InternalEObject oldTarget = (InternalEObject) target;
-			target = (Shape) eResolveProxy(oldTarget);
+			InternalEObject oldTarget = (InternalEObject)target;
+			target = (Shape)eResolveProxy(oldTarget);
 			if (target != oldTarget) {
-				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Vespucci_modelPackage.CONNECTION__TARGET,
-							oldTarget, target));
-				}
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Vespucci_modelPackage.CONNECTION__TARGET, oldTarget, target));
 			}
 		}
 		return target;
@@ -379,7 +358,6 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -393,69 +371,58 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 */
 	@Override
-	public void setName(final String newName) {
-		// set new name
-		final String oldName = name;
+	public void setName(String newName) {
+		String oldName = name;
 		name = newName;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__NAME, oldName, name));
-		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
-	public void setSource(final Shape newSource) {
-		final Shape oldSource = source;
+	public void setSource(Shape newSource) {
+		Shape oldSource = source;
 		source = newSource;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__SOURCE, oldSource, source));
-		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
-	public void setTarget(final Shape newTarget) {
-		final Shape oldTarget = target;
+	public void setTarget(Shape newTarget) {
+		Shape oldTarget = target;
 		target = newTarget;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__TARGET, oldTarget, target));
-		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
-	public void setTemp(final boolean newTemp) {
-		final boolean oldTemp = temp;
+	public void setTemp(boolean newTemp) {
+		boolean oldTemp = temp;
 		temp = newTemp;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__TEMP, oldTemp, temp));
-		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
-			return super.toString();
-		}
+		if (eIsProxy()) return super.toString();
 
-		final StringBuffer result = new StringBuffer(super.toString());
+		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(", temp: ");

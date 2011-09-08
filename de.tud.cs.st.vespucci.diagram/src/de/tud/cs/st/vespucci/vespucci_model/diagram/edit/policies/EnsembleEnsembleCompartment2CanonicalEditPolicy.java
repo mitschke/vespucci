@@ -36,11 +36,9 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.ecore.EObject;
@@ -65,6 +63,7 @@ public class EnsembleEnsembleCompartment2CanonicalEditPolicy extends CanonicalEd
 	/**
 	 * @generated
 	 */
+	@Override
 	protected void refreshOnActivate() {
 		// Need to activate editpart children before invoking the canonical refresh for EditParts to add event listeners
 		List<?> c = getHost().getChildren();
@@ -77,6 +76,7 @@ public class EnsembleEnsembleCompartment2CanonicalEditPolicy extends CanonicalEd
 	/**
 	 * @generated
 	 */
+	@Override
 	protected EStructuralFeature getFeatureToSynchronize() {
 		return de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getEnsemble_Shapes();
 	}
@@ -84,6 +84,7 @@ public class EnsembleEnsembleCompartment2CanonicalEditPolicy extends CanonicalEd
 	/**
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	protected List getSemanticChildrenList() {
 		View viewObject = (View) getHost().getModel();
@@ -99,6 +100,7 @@ public class EnsembleEnsembleCompartment2CanonicalEditPolicy extends CanonicalEd
 	/**
 	 * @generated
 	 */
+	@Override
 	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
 		return isMyDiagramElement(view) && !semanticChildren.contains(view.getElement());
 	}
@@ -113,9 +115,8 @@ public class EnsembleEnsembleCompartment2CanonicalEditPolicy extends CanonicalEd
 	}
 
 	/**
-	 * US 48: Fix Issue 3
-	 * @generated NOT
-	 * @author Artem
+	 * @generated not
+	 * @author Artem Vovk
 	 */
 	protected void refreshSemantic() {
 		super.refreshSemantic();

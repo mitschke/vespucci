@@ -88,7 +88,7 @@ public class QueryBuilder {
 
 	private static List<String> createJARQuery(final Object draggedElement) {
 		final LinkedList<String> queryList = new LinkedList<String>();
-		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) draggedElement);
+		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot)draggedElement);
 		for (final String s : packages) {
 			final String jarQuery = String.format("%s('%s')", PACKAGE, s);
 			queryList.add(jarQuery);

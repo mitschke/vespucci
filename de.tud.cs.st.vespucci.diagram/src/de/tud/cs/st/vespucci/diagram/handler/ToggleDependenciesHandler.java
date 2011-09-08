@@ -1,6 +1,6 @@
 /**
  *  License (BSD Style License):
- *   Copyright (c) 2010
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -47,10 +47,14 @@ import java.util.Arrays;
 public class ToggleDependenciesHandler extends ToggleDependenciesSuperHandler {
 
 	/**
-	 * Creates a new string-array, with same strings as given original, but the "transform-string". If
+	 * Creates a new string-array, with same strings as given original, but the "transform-string".
+	 * If
 	 * given transform-string is present, it will be removed, otherwise it will be added.<br>
-	 * Note that only the first found instance of given toggleString will be toggled, even if there
-	 * are more!
+	 * <br>
+	 * <b>NOTE:</b> Only the first found instance of given toggleString will be toggled, even if
+	 * there
+	 * are more - e.g. if the dependency is named "all, create, all" and "all" needs to be toggled
+	 * (or removed in this case), then only the first "all" will be deleted!
 	 * 
 	 * @param original
 	 *            The original array to be copied.
@@ -60,7 +64,7 @@ public class ToggleDependenciesHandler extends ToggleDependenciesSuperHandler {
 	 *         added.
 	 */
 	@Override
-	String[] transformedCopy(String[] original, String transformString) {
+	String[] transformedCopy(final String[] original, final String transformString) {
 		boolean stringAbsent = true;
 
 		// Determine if string is present. If so, 'toggleIndex' will be corresponding index.

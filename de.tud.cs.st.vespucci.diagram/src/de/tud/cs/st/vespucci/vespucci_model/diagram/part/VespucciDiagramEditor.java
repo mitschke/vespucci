@@ -50,10 +50,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
@@ -97,20 +95,24 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
+import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
+import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
+import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineDummyEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineExpectedSourceConnectionEditPart;
@@ -124,7 +126,6 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineNo
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingTargetConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineRootEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl;
 
 /**
  * @generated
@@ -243,20 +244,23 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	/**
 	 * Custom SelectionSynchronizer
 	 * 
-	 * @author a_vovk
+	 * @author Artem Vovk
 	 * @generated NOT
 	 */
 	@Override
 	protected SelectionSynchronizer getSelectionSynchronizer() {
-		if (synchronizer == null)
+		if (synchronizer == null) {
 			synchronizer = new VespucciSelectionSynchronizer();
+		}
 		return synchronizer;
 	}
 
 	/**
 	 * EditPartFactory for OutlineView
 	 * 
-	 * @author a_vovk
+	 * @author Artem Vovk
+	 * @author Alexander Weitzmann
+	 * @author Thomas Schulz
 	 * @generated NOT
 	 */
 	@Override
@@ -266,53 +270,61 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 			/**
 			 * Creates EditParts for OutlineView
 			 */
-			public EditPart createEditPart(EditPart context, Object model) {
+			@Override
+			public EditPart createEditPart(final EditPart context, final Object model) {
 				if (model instanceof View) {
 					// Diagram is a root edit part
 					if (model instanceof Diagram) {
 						return new OutlineRootEditPart(model);
 					}
-					View view = (View) model;
-					EObject element = view.getElement();
+					final View view = (View) model;
+					final EObject element = view.getElement();
 
 					if (element instanceof Ensemble) {
 						return new OutlineEnsembleEditPart(model);
 					} else if (element instanceof Dummy) {
 						return new OutlineDummyEditPart(model);
 					} else if (element instanceof Connection) {
-						Connection conn = (Connection) element;
-						NodeImpl shape = (NodeImpl) context.getModel();
-						if (shape.getElement() == conn.getSource()) {
-							if (conn instanceof Incoming) {
-								return new OutlineIncomingSourceConnectionEditPart(model);
-							} else if (conn instanceof Outgoing) {
-								return new OutlineOutgoingSourceConnectionEditPart(model);
-							} else if (conn instanceof Expected) {
-								return new OutlineExpectedSourceConnectionEditPart(model);
-							} else if (conn instanceof InAndOut) {
-								return new OutlineInAndOutSourceConnectionEditPart(model);
-							} else {
-								return new OutlineNotAllowedSourceConnectionEditPart(model);
-							}
-
-						} else {
-							if (conn instanceof Incoming) {
-								return new OutlineIncomingTargetConnectionEditPart(model);
-							} else if (conn instanceof Outgoing) {
-								return new OutlineOutgoingTargetConnectionEditPart(model);
-							} else if (conn instanceof Expected) {
-								return new OutlineExpectedTargetConnectionEditPart(model);
-							} else if (conn instanceof InAndOut) {
-								return new OutlineInAndOutTargetConnectionEditPart(model);
-							} else {
-								return new OutlineNotAllowedTargetConnectionEditPart(model);
-							}
-						}
-
+						return getOutlineConnectionEditPart(model, element, context);
 					}
 				}
 				return new TreeEditPart(model);
 
+			}
+
+			private OutlineConnectionEditPart getOutlineConnectionEditPart(final Object model, final EObject element,
+					final EditPart context) {
+				final Connection conn = (Connection) element;
+				final NodeImpl shape = (NodeImpl) context.getModel();
+				if (shape.getElement() == conn.getSource()) {
+					if (conn instanceof Incoming) {
+						return new OutlineIncomingSourceConnectionEditPart(model);
+					} else if (conn instanceof Outgoing) {
+						return new OutlineOutgoingSourceConnectionEditPart(model);
+					} else if (conn instanceof Expected) {
+						return new OutlineExpectedSourceConnectionEditPart(model);
+					} else if (conn instanceof InAndOut) {
+						return new OutlineInAndOutSourceConnectionEditPart(model);
+					} else if (conn instanceof NotAllowed) {
+						return new OutlineNotAllowedSourceConnectionEditPart(model);
+					} else {
+						throw new VespucciIllegalArgumentException(String.format("Unsupported connection [%s].", conn));
+					}
+				} else {
+					if (conn instanceof Incoming) {
+						return new OutlineIncomingTargetConnectionEditPart(model);
+					} else if (conn instanceof Outgoing) {
+						return new OutlineOutgoingTargetConnectionEditPart(model);
+					} else if (conn instanceof Expected) {
+						return new OutlineExpectedTargetConnectionEditPart(model);
+					} else if (conn instanceof InAndOut) {
+						return new OutlineInAndOutTargetConnectionEditPart(model);
+					} else if (conn instanceof NotAllowed) {
+						return new OutlineNotAllowedTargetConnectionEditPart(model);
+					} else {
+						throw new VespucciIllegalArgumentException(String.format("Unsupported connection [%s].", conn));
+					}
+				}
 			}
 		};
 	}
@@ -320,6 +332,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	/**
 	 * @generated
 	 */
+	@Override
 	public void gotoMarker(IMarker marker) {
 		MarkerNavigationService.getInstance().gotoMarker(this, marker);
 	}
@@ -344,41 +357,40 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * New methods added to translate diagram to prolog facts.
 	 * New methods added to delete obsolete IMarker. -2011-07-15
 	 * 
-	 * @author Patrick Jahnke, MalteV
+	 * @author Patrick Jahnke
+	 * @author Malte Viering
+	 * @author Alexander Weitzmann
+	 * @author Thomas Schulz
 	 * @generated NOT
 	 */
 	@Override
-	public void doSave(IProgressMonitor progressMonitor) {
+	public void doSave(final IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
 
-		PrologFileCreator converter = new PrologFileCreator();
+		final PrologFileCreator pfc = new PrologFileCreator();
+
+		final String filePath = getCurrentSelectedFilePath();
+		final String fileName = getCurrentSelectedFileName();
+
 		try {
-			converter.createPrologFileFromDiagram(this.getCurrentSelectedFilePath(), this.getCurrentSelectedFileName());
-		} catch (FileNotFoundException e) {
-			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		} catch (IOException e) {
-			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "Failed to save Prolog file", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		} catch (Exception e) {
-			IStatus is = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "FileNotFoundException", e);
-			StatusManager.getManager().handle(is, StatusManager.SHOW);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
+			pfc.createPrologFileFromDiagram(filePath, fileName);
+		} catch (final FileNotFoundException e) {
+			throw new VespucciIOException(String.format("File [%s%s] not found.", filePath, fileName), e);
+		} catch (final IOException e) {
+			throw new VespucciIOException(String.format("Failed to save Prolog file from [%s%s].", filePath, fileName), e);
+		} catch (final Exception e) {
+			throw new VespucciIOException(String.format("File [%s%s] not found.", filePath, fileName), e);
 		}
 
 		// refresh Package View
-		IProject activeProject = this.getSelectedFile().getFile().getProject();
+		final IProject activeProject = getSelectedFile().getFile().getProject();
 		try {
 			activeProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
-		} catch (CoreException e) {
-			IStatus iStat = new Status(Status.ERROR, VespucciDiagramEditorPlugin.ID, "Failed to refresh package view");
-			StatusManager.getManager().handle(iStat, StatusManager.SHOW);
-			StatusManager.getManager().handle(iStat, StatusManager.LOG);
+		} catch (final CoreException e) {
+			throw new VespucciUnexpectedException("Failed to refresh page view.", e);
 		}
-		// this.saveDiagramInTextNonRecursive(progressMonitor);
-		this.validateDiagramConstraints();
+
+		validateDiagramConstraints();
 
 	}
 
@@ -504,36 +516,35 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	/**
 	 * @return selected file from editor.
 	 * @author Tam-Minh Nguyen
+	 * @generated NOT
 	 */
 	private IFileEditorInput getSelectedFile() {
-		// get project PATH
-		IFileEditorInput fileInput = null;
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
-			IWorkbenchPage page = window.getActivePage();
+			final IWorkbenchPage page = window.getActivePage();
 			if (page != null) {
-				IEditorPart editor = page.getActiveEditor();
+				final IEditorPart editor = page.getActiveEditor();
 				if (editor != null) {
-					IEditorInput input = editor.getEditorInput();
+					final IEditorInput input = editor.getEditorInput();
 					if (input instanceof IFileEditorInput) {
 						// GET PATH
-						fileInput = (IFileEditorInput) input;
+						return (IFileEditorInput) input;
 					}
 				}
 			}
 		}
-		return fileInput;
+		throw new VespucciUnexpectedException("Could not resolve selected file.");
 	}
 
 	/**
 	 * @return name of selected file.
 	 * @author Tam-Minh Nguyen
+	 * @generated NOT
 	 */
 	private String getCurrentSelectedFileName() {
-		IFileEditorInput fileInput = this.getSelectedFile();
+		final IFileEditorInput fileInput = getSelectedFile();
 		if (fileInput == null) {
-			// TODO Error handling
-			return "";
+			throw new VespucciUnexpectedException(String.format("FileInput [%s] must not be null.", fileInput));
 		} else {
 			return fileInput.getFile().getName();
 		}
@@ -542,12 +553,12 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	/**
 	 * @return path of selected file, without file name.
 	 * @author Tam-Minh Nguyen
+	 * @generated NOT
 	 */
 	private String getCurrentSelectedFilePath() {
-		IFileEditorInput fileInput = this.getSelectedFile();
+		final IFileEditorInput fileInput = getSelectedFile();
 		if (fileInput == null) {
-			// TODO Error handling
-			return "";
+			throw new VespucciUnexpectedException(String.format("FileInput [%s] must not be null.", fileInput));
 		} else {
 			return fileInput.getFile().getParent().getLocation().toString();
 		}
@@ -556,7 +567,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	/**
 	 * put a drop listener to the Vespucci diagram view
 	 * 
-	 * @author MalteV
+	 * @author Malte Viering
+	 * @generated NOT
 	 */
 	@Override
 	protected void initializeGraphicalViewer() {
@@ -577,52 +589,41 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	protected void initializeGraphicalViewerContents() {
 		super.initializeGraphicalViewerContents();
 
-		// get all list of connections
-		EditPart root = this.getDiagramGraphicalViewer().getRootEditPart();
+		EditPart root = getDiagramGraphicalViewer().getRootEditPart();
 		root = (EditPart) root.getChildren().get(0);
 
-		// DiagramEditPart r; r.getFigure();
-		// help to get postion of right mouse click
-		VespucciMouseListener vml = new VespucciMouseListener();
+		final VespucciMouseListener vml = new VespucciMouseListener();
 		(((DiagramEditPart) root).getFigure()).addMouseListener(vml);
 
-		List<EditPart> shapeList = EditPartService.getAllShapesInSideCompartment(root);
-		Set<ConnectionEditPart> conSet = EditPartService.getAllConnectionsToAndFromShapeList(shapeList);
+		final List<EditPart> shapeList = EditPartService.getAllShapesInSideCompartment(root);
+		final Set<ConnectionEditPart> connectionSet = EditPartService.getAllConnectionsToAndFromShapeList(shapeList);
 
-		// int idx = 1;
-		for (Object ee : conSet) {
+		for (final ConnectionEditPart conn : connectionSet) {
 			//
-			if (ee instanceof ConnectionEditPart) {
-				ConnectionEditPart con = (ConnectionEditPart) ee;
-				Connection ci = (Connection) con.resolveSemanticElement();
+			final Connection semanticConn = (Connection) conn.resolveSemanticElement();
 
-				//ci can be null if the connection belong to a note attachment.
-				//so we need to handle it  
-				if (ci == null)
-					continue;
+			// semanticConn can be null if the connection belongs to a note attachment
 
-				if (ci.isTemp()) {
-					// draw with RED
-					con.getFigure().setForegroundColor(org.eclipse.draw2d.ColorConstants.red);
-					con.getFigure().repaint();
-
-				}
+			if (semanticConn != null && semanticConn.isTemp()) {
+				// draw with RED
+				conn.getFigure().setForegroundColor(org.eclipse.draw2d.ColorConstants.red);
+				conn.getFigure().repaint();
 			}
 		}
 	}
 
 	/**
-	 * Call validation on Diagram constraints (unique ID, connection allowed or
-	 * not).
+	 * Call validation on Diagram constraints.
 	 * 
 	 * @author Tam-Minh Nguyen
+	 * @generated NOT
 	 */
-	private void validateDiagramConstraints() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+	private static void validateDiagramConstraints() {
+		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
-			IWorkbenchPage page = window.getActivePage();
+			final IWorkbenchPage page = window.getActivePage();
 			if (page != null) {
-				IWorkbenchPart workbenchPart = page.getActivePart();
+				final IWorkbenchPart workbenchPart = page.getActivePart();
 				if (workbenchPart instanceof IDiagramWorkbenchPart) {
 					final IDiagramWorkbenchPart part = (IDiagramWorkbenchPart) workbenchPart;
 					ValidateAction.runValidation(part.getDiagramEditPart(), part.getDiagram());

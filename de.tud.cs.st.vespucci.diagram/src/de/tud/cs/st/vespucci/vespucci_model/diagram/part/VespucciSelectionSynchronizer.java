@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author ArtemVovk
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -50,12 +49,12 @@ import org.eclipse.jface.viewers.StructuredSelection;
 /**
  * SelectionSynchronizer for view components
  * 
- * @author a_vovk
+ * @author Artem Vovk
  * 
  */
 public class VespucciSelectionSynchronizer extends SelectionSynchronizer {
 
-	private List<EditPartViewer> viewers = new ArrayList<EditPartViewer>();
+	private final List<EditPartViewer> viewers = new ArrayList<EditPartViewer>();
 	private boolean isDispatching = false;
 	private int disabled = 0;
 	private EditPartViewer pendingSelection;
@@ -66,38 +65,36 @@ public class VespucciSelectionSynchronizer extends SelectionSynchronizer {
 	 * @param viewer
 	 *            the viewer
 	 */
-	public void addViewer(EditPartViewer viewer) {
+	@Override
+	public void addViewer(final EditPartViewer viewer) {
 		viewer.addSelectionChangedListener(this);
 		viewers.add(viewer);
 	}
 
 	/**
-	 * Maps the given editpart from one viewer to an editpart in another viewer.
-	 * It returns <code>null</code> if there is no corresponding part. This
-	 * method can be overridden to provide custom mapping.
-	 * 
 	 * @param viewer
-	 *            the viewer being mapped to
+	 *            the viewer to search in
 	 * @param part
-	 *            a part from another viewer
-	 * @return <code>null</code> or a corresponding editpart
+	 *            a part from different viewer
+	 * @return Returns EditPart associated with given EditPart in given viewer.
 	 */
-	protected List<EditPart> converter(EditPartViewer viewer, EditPart part) {
-		List<EditPart> parts = new ArrayList<EditPart>();
+	protected List<EditPart> getAssociatedParts(final EditPartViewer viewer, final EditPart part) {
+		final List<EditPart> parts = new ArrayList<EditPart>();
 
-		EditPart temp = (EditPart) viewer.getEditPartRegistry().get(
-				part.getModel());
+		final EditPart temp = (EditPart) viewer.getEditPartRegistry().get(part.getModel());
 		if (temp != null) {
 			int selectionCounter = 0;
 			if (viewer instanceof TreeViewer) {
-				List<?> editParts = viewer.getSelectedEditParts();
-				for (Object i : editParts) {
-					EditPart pp = (EditPart) i;
-					if (pp.getModel() == temp.getModel()) {
+				final List<?> editParts = viewer.getSelectedEditParts();
+				for (final Object o : editParts) {
+					final EditPart editPart = (EditPart) o;
+					if (editPart.getModel() == temp.getModel()) {
 						selectionCounter++;
-						parts.add(pp);
+						parts.add(editPart);
 					}
 				}
+				
+				// TODO: Why does adding temp depend on selectionCounter?
 				if (selectionCounter == 1) {
 					return parts;
 				} else if (selectionCounter > 1) {
@@ -107,7 +104,7 @@ public class VespucciSelectionSynchronizer extends SelectionSynchronizer {
 			}
 			EditPart newPart = null;
 
-			newPart = (EditPart) temp;
+			newPart = temp;
 			parts.add(newPart);
 		}
 		return parts;
@@ -119,11 +116,13 @@ public class VespucciSelectionSynchronizer extends SelectionSynchronizer {
 	 * @param viewer
 	 *            the viewer to remove
 	 */
-	public void removeViewer(EditPartViewer viewer) {
+	@Override
+	public void removeViewer(final EditPartViewer viewer) {
 		viewer.removeSelectionChangedListener(this);
 		viewers.remove(viewer);
-		if (pendingSelection == viewer)
+		if (pendingSelection == viewer) {
 			pendingSelection = null;
+		}
 	}
 
 	/**
@@ -133,23 +132,25 @@ public class VespucciSelectionSynchronizer extends SelectionSynchronizer {
 	 * @param event
 	 *            the selection event
 	 */
-	public void selectionChanged(SelectionChangedEvent event) {
-		if (isDispatching)
+	@Override
+	public void selectionChanged(final SelectionChangedEvent event) {
+		if (isDispatching) {
 			return;
-		EditPartViewer source = (EditPartViewer) event.getSelectionProvider();
+		}
+		final EditPartViewer source = (EditPartViewer) event.getSelectionProvider();
 		if (disabled > 0) {
 			pendingSelection = source;
 		} else {
-			ISelection selection = event.getSelection();
+			final ISelection selection = event.getSelection();
 			syncSelection(source, selection);
 		}
 	}
 
-	private void syncSelection(EditPartViewer source, ISelection selection) {
+	private void syncSelection(final EditPartViewer source, final ISelection selection) {
 		isDispatching = true;
 		for (int i = 0; i < viewers.size(); i++) {
 			if (viewers.get(i) != source) {
-				EditPartViewer viewer = (EditPartViewer) viewers.get(i);
+				final EditPartViewer viewer = viewers.get(i);
 				setViewerSelection(viewer, selection);
 			}
 		}
@@ -163,26 +164,29 @@ public class VespucciSelectionSynchronizer extends SelectionSynchronizer {
 	 * @param value
 	 *            <code>true</code> if synchronization should occur
 	 */
-	public void setEnabled(boolean value) {
-		if (!value)
+	@Override
+	public void setEnabled(final boolean value) {
+		if (!value) {
 			disabled++;
-		else if (--disabled == 0 && pendingSelection != null) {
+		} else if (--disabled == 0 && pendingSelection != null) {
 			syncSelection(pendingSelection, pendingSelection.getSelection());
 			pendingSelection = null;
 		}
 	}
 
-	private void setViewerSelection(EditPartViewer viewer, ISelection selection) {
-		ArrayList<EditPart> result = new ArrayList<EditPart>();
+	private void setViewerSelection(final EditPartViewer viewer, final ISelection selection) {
+		final ArrayList<EditPart> result = new ArrayList<EditPart>();
 		@SuppressWarnings("unchecked")
-		Iterator<EditPart> iter = ((IStructuredSelection) selection).iterator();
+		final Iterator<EditPart> iter = ((IStructuredSelection) selection).iterator();
 		while (iter.hasNext()) {
-			List<EditPart> parts = converter(viewer, (EditPart) iter.next());
-			if (parts != null)
+			final List<EditPart> parts = getAssociatedParts(viewer, iter.next());
+			if (parts != null) {
 				result.addAll(parts);
+			}
 		}
 		viewer.setSelection(new StructuredSelection(result));
-		if (result.size() > 0)
-			viewer.reveal((EditPart) result.get(result.size() - 1));
+		if (result.size() > 0) {
+			viewer.reveal(result.get(result.size() - 1));
+		}
 	}
 }

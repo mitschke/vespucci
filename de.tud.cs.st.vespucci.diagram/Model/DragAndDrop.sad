@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_wtiWwCOyEeCOo6bch11Byg">
     <shapes xmi:type="Ensemble" xmi:id="_GLU-sCk9EeC7g5S-XZYxhw" name="GUI-Vespucci / VespucciDiagram" query="derived">
@@ -24,7 +24,7 @@
     </shapes>
   </ShapesDiagram>
   <notation:Diagram xmi:id="_wtiWwSOyEeCOo6bch11Byg" type="Vespucci" element="_wtiWwCOyEeCOo6bch11Byg" name="DropQuery.sad" measurementUnit="Pixel">
-    <children xmi:type="notation:Shape" xmi:id="_8LFfQCkwEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm fÃ¼r die â€žDrag and Dropâ€œ FunktionalitÃ¤t aus dem Package Explorer in das Vespucci-Plug-In. " fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_8LFfQCkwEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur Diagramm für die &quot;Drag and Drop&quot;-Funktionalität aus dem Package Explorer in das Vespucci-Plug-In. " fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_8LJwsCkwEeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>

@@ -1,4 +1,4 @@
-﻿Manifest-Version: 1.0
+Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tud.cs.st.vespucci.diagram; singleton:=true
@@ -55,11 +55,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.jdt.internal.corext.util,
- org.eclipse.m2m.internal.qvt.oml.ast.env,
- org.eclipse.m2m.internal.qvt.oml.common,
- org.eclipse.m2m.internal.qvt.oml.common.launch,
- org.eclipse.m2m.internal.qvt.oml.common.ui,
- org.eclipse.m2m.internal.qvt.oml.emf.util,
- org.eclipse.m2m.internal.qvt.oml.emf.util.ui.choosers,
- org.eclipse.m2m.internal.qvt.oml.runtime.ui,
  org.eclipse.m2m.qvt.oml.util
+Manifest-Version: 1.0

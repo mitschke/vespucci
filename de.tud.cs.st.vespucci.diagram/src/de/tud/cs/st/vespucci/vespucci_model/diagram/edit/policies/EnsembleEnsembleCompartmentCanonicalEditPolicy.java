@@ -63,6 +63,7 @@ public class EnsembleEnsembleCompartmentCanonicalEditPolicy extends CanonicalEdi
 	/**
 	 * @generated
 	 */
+	@Override
 	protected void refreshOnActivate() {
 		// Need to activate editpart children before invoking the canonical refresh for EditParts to add event listeners
 		List<?> c = getHost().getChildren();
@@ -75,6 +76,7 @@ public class EnsembleEnsembleCompartmentCanonicalEditPolicy extends CanonicalEdi
 	/**
 	 * @generated
 	 */
+	@Override
 	protected EStructuralFeature getFeatureToSynchronize() {
 		return de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getEnsemble_Shapes();
 	}
@@ -82,6 +84,7 @@ public class EnsembleEnsembleCompartmentCanonicalEditPolicy extends CanonicalEdi
 	/**
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	protected List getSemanticChildrenList() {
 		View viewObject = (View) getHost().getModel();
@@ -97,6 +100,7 @@ public class EnsembleEnsembleCompartmentCanonicalEditPolicy extends CanonicalEdi
 	/**
 	 * @generated
 	 */
+	@Override
 	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
 		return isMyDiagramElement(view) && !semanticChildren.contains(view.getElement());
 	}

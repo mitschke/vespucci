@@ -1,8 +1,9 @@
 /*
  *  License (BSD Style License):
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universiti�t Darmstadt
+ *   Technische Universitiät Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -14,7 +15,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universit�t Darmstadt nor the names of its contributors may be used to 
+ *     Universität Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -30,7 +31,7 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.errors;
+package de.tud.cs.st.vespucci.exceptions;
 
 import java.util.ResourceBundle;
 
@@ -47,46 +48,59 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * @author Alexander Weitzmann
  */
 public abstract class VespucciException extends RuntimeException {
-
-	private static final long serialVersionUID = 7239173481155328434L;
+	
 	private static final String PLUGIN_ID = ResourceBundle.getBundle("plugin").getString("vespucci_pluginID");
-	private static final String DEFAULT_MSG = "No message available.";
-	
-	public VespucciException(final String message) {
+	private static final String DEFAULT_MESSAGE = "No message available.";
+
+	/**
+	 * Constructor also logs and shows given message.
+	 * 
+	 * @param message
+	 */
+	protected VespucciException(final String message) {
 		super(message);
-		handleError(message);
+		logException(message);
 	}
 
-	public VespucciException(final Throwable cause) {
+	/**
+	 * Constructor also logs and shows given cause.
+	 * 
+	 * @param cause
+	 */
+	protected VespucciException(final Throwable cause) {
 		super(cause);
-		handleError(DEFAULT_MSG, cause);
+		logException(DEFAULT_MESSAGE, cause);
 	}
 
-	public VespucciException(final String message, final Throwable cause) {
+	/**
+	 * Constructor also logs and shows given message and cause.
+	 * 
+	 * @param message
+	 * @param cause
+	 */
+	protected VespucciException(final String message, final Throwable cause) {
 		super(message, cause);
-		handleError(message, cause);
+		logException(message, cause);
 	}
-	
 	
 	/**
-	 * Simple error handler.
-	 * 
-	 * @param message A custom error message.
-	 * @param cause Source Exception.
+	 * @param message
+	 *            A custom error message.
+	 * @param cause
+	 *            Source Exception.
 	 */
-	private static void handleError(String message, Throwable cause) {
-		IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, message, cause);
+	private static void logException(final String message, final Throwable cause) {
+		final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, message, cause);
 		StatusManager.getManager().handle(is, StatusManager.SHOW);
 		StatusManager.getManager().handle(is, StatusManager.LOG);
 	}
-	
+
 	/**
-	 * Simple error handler.
-	 * 
-	 * @param message A custom error message.
+	 * @param message
+	 *            A custom error message.
 	 */
-	private static void handleError(String message) {
-		IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, message);
+	private static void logException(final String message) {
+		final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, message);
 		StatusManager.getManager().handle(is, StatusManager.SHOW);
 		StatusManager.getManager().handle(is, StatusManager.LOG);
 	}

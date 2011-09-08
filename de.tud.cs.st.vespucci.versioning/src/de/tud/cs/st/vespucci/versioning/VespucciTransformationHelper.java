@@ -34,6 +34,9 @@
 
 package de.tud.cs.st.vespucci.versioning;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -41,12 +44,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
@@ -64,7 +66,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-import de.tud.cs.st.vespucci.errors.VespucciTransformationFailedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
+import de.tud.cs.st.vespucci.exceptions.VespucciTransformationFailedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
 import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
@@ -151,23 +155,39 @@ public abstract class VespucciTransformationHelper {
 	}
 
 	/**
-	 * Renames the given file to the new path.
+	 * Creates a backup of the given file.
 	 * 
-	 * @param fileToRename
+	 * @param originalFile
 	 *            The file to rename.
-	 * @param newPath
-	 *            The new path to the file.
+	 * @param backupFile
+	 *            Pointer to the new file location.
 	 * @param monitor
 	 *            The progress monitor to use to illustrate the renaming progress.
 	 */
-	protected void renameFile(final IFile fileToRename, final IPath newPath, final IProgressMonitor monitor) {
+	protected void createBackup(final IFile originalFile, final File backupFile, final IProgressMonitor monitor) {
+		File inputFile = originalFile.getRawLocation().toFile();
+	    File outputFile = backupFile;
+	    
+	    try {
+		    FileReader in = new FileReader(inputFile);
+		    FileWriter out = new FileWriter(outputFile);
+		    int c;
+
+	   
+			while ((c = in.read()) != -1) {
+			  out.write(c);
+			}
+
+		    in.close();
+		    out.close();
+		} catch (IOException ieException) {
+			throw new VespucciIOException("Could not backup the original File", ieException);
+		}
+	    
 		try {
-			// copy-delete avoids opening of old file
-			final SubProgressMonitor copyDeleteMonitor = new SubProgressMonitor(monitor, 2);
-			fileToRename.copy(newPath, true, copyDeleteMonitor);
-			fileToRename.delete(true, copyDeleteMonitor);
-		} catch (final CoreException coreException) {
-			handleError(coreException);
+			originalFile.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
+		} catch (CoreException coreException) {
+			throw new VespucciUnexpectedException("Could not refresh current folder", coreException);
 		}
 	}
 
