@@ -170,7 +170,7 @@ public class UpdateSadFileHandler extends AbstractHandler {
 						return null;
 					}
 
-					final File newPath = getUniquePathForVersion(file, currentVersion);
+					final File backupFile = getUniqueFilePointerForVersion(file, currentVersion);
 
 					final URI outputUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 
@@ -179,7 +179,7 @@ public class UpdateSadFileHandler extends AbstractHandler {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							return nextVersion.updateFromDirectPredecessorVersion(file, newPath, outputUri, monitor);
+							return nextVersion.updateFromDirectPredecessorVersion(file, backupFile, outputUri, monitor);
 						}
 
 					};
@@ -210,10 +210,10 @@ public class UpdateSadFileHandler extends AbstractHandler {
 	 *            The original file.
 	 * @param version
 	 *            The version to take the identifier from.
-	 * @return A path to a non-existing file which extends the original file path and contains the version identifier
-	 *         and, if necessary, the current time stamp.
+	 * @return A file handle to a non-existing file which extends the original file path and
+	 * 		   contains the version identifier and, if necessary, the current time stamp.
 	 */
-	private static java.io.File getUniquePathForVersion(final IFile file, final VespucciVersionTemplate version) {
+	private static java.io.File getUniqueFilePointerForVersion(final IFile file, final VespucciVersionTemplate version) {
 		final IPath absOrigPath = file.getRawLocation();		
 
 		IPath backupPath = absOrigPath;

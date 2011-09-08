@@ -170,13 +170,13 @@ implements Comparable<VespucciVersionTemplate> {
 	 * by the concrete implementation of this abstract class.
 	 * 
 	 * @param inputDiagram File to convert. Must be a direct predecessor of this version.
-	 * @param backupPath New Path of the original file.
+	 * @param backupFile File pointer where the backup of the original file shall be stored.
 	 * @param outputURI URI to write to.
 	 * @param progressMonitor Monitor used to show the progress.
 	 * @return Conversion result status.
 	 */
 	public IStatus updateFromDirectPredecessorVersion(
-			IFile inputDiagram, File backupPath, URI outputURI, IProgressMonitor progressMonitor) {
+			IFile inputDiagram, File backupFile, URI outputURI, IProgressMonitor progressMonitor) {
 
 		if (!hasPredecessor() ||
 			!getPredecessor().fileIsOfThisVersion(inputDiagram)) {
@@ -208,7 +208,7 @@ implements Comparable<VespucciVersionTemplate> {
 		
 		ArrayList<ModelExtent> transformationResults = transformationOutput.getTransformationResults();
 		
-		renameFile(inputDiagram, backupPath, progressMonitor);
+		renameFile(inputDiagram, backupFile, progressMonitor);
 		
 		saveResults(transformationResults.get(0), transformationResults.get(1), outputURI);
 		

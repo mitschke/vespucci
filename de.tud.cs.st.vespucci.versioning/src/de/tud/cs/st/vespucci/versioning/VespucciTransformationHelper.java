@@ -68,6 +68,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciTransformationFailedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
 import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
@@ -158,18 +159,17 @@ public abstract class VespucciTransformationHelper {
 	 * 
 	 * @param fileToRename
 	 *            The file to rename.
-	 * @param newPath
-	 *            The new path to the file.
+	 * @param newFile
+	 *            Pointer to the new file location.
 	 * @param monitor
 	 *            The progress monitor to use to illustrate the renaming progress.
 	 */
-	protected void renameFile(final IFile fileToRename, final File newPath, final IProgressMonitor monitor) {
-		fileToRename.getRawLocation().toFile().renameTo(newPath);
+	protected void renameFile(final IFile fileToRename, final File newFile, final IProgressMonitor monitor) {
+		fileToRename.getRawLocation().toFile().renameTo(newFile);
 		try {
 			fileToRename.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new VespucciUnexpectedException("Could not refresh current folder", e);
 		}
 	}
 
