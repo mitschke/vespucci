@@ -122,15 +122,4 @@ public class VespucciBaseEditHelper extends AbstractEditHelper {
 		return null;
 	}
 
-	/**
-	 * @author Theo
-	 * @generated NOT
-	 */
-	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
-		if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
-			return UnexecutableCommand.INSTANCE;
-		} else {
-			return super.getReorientRelationshipCommand(request);
-		}
-	}
 }

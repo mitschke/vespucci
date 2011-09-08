@@ -52,11 +52,18 @@ public class IncomingEditHelper extends de.tud.cs.st.vespucci.vespucci_model.dia
 	 */
 	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
 		// TODO: Change this function after removal of Dummies from the model.
-		if (!(request.getNewRelationshipEnd() instanceof Ensemble || (request.getNewRelationshipEnd() instanceof Dummy))) {
-			return UnexecutableCommand.INSTANCE;
-		} else {
-			return super.getReorientRelationshipCommand(request);
+		if(request.getDirection() == ReorientRelationshipRequest.REORIENT_SOURCE){
+			if (!(request.getNewRelationshipEnd() instanceof Ensemble ||
+			     (request.getNewRelationshipEnd() instanceof Dummy))) {
+					return UnexecutableCommand.INSTANCE;
+				}
 		}
+		else if(request.getDirection() == ReorientRelationshipRequest.REORIENT_TARGET){
+			if (!(request.getNewRelationshipEnd() instanceof Ensemble)){
+				return UnexecutableCommand.INSTANCE;
+			}
+		}
+		return super.getReorientRelationshipCommand(request);
 	}
 
 }
