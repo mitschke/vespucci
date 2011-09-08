@@ -34,6 +34,7 @@
 
 package de.tud.cs.st.vespucci.versioning.versions;
 
+import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -175,7 +176,7 @@ implements Comparable<VespucciVersionTemplate> {
 	 * @return Conversion result status.
 	 */
 	public IStatus updateFromDirectPredecessorVersion(
-			IFile inputDiagram, IPath backupPath, URI outputURI, IProgressMonitor progressMonitor) {
+			IFile inputDiagram, File backupPath, URI outputURI, IProgressMonitor progressMonitor) {
 
 		if (!hasPredecessor() ||
 			!getPredecessor().fileIsOfThisVersion(inputDiagram)) {

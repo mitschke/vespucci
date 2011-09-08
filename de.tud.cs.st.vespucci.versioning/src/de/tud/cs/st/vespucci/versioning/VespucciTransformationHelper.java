@@ -34,6 +34,7 @@
 
 package de.tud.cs.st.vespucci.versioning;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -160,14 +163,13 @@ public abstract class VespucciTransformationHelper {
 	 * @param monitor
 	 *            The progress monitor to use to illustrate the renaming progress.
 	 */
-	protected void renameFile(final IFile fileToRename, final IPath newPath, final IProgressMonitor monitor) {
+	protected void renameFile(final IFile fileToRename, final File newPath, final IProgressMonitor monitor) {
+		fileToRename.getRawLocation().toFile().renameTo(newPath);
 		try {
-			// copy-delete avoids opening of old file
-			final SubProgressMonitor copyDeleteMonitor = new SubProgressMonitor(monitor, 2);
-			fileToRename.copy(newPath, true, copyDeleteMonitor);
-			fileToRename.delete(true, copyDeleteMonitor);
-		} catch (final CoreException coreException) {
-			handleError(coreException);
+			fileToRename.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

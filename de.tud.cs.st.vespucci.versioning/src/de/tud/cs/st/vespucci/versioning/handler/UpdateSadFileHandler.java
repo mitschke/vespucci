@@ -34,6 +34,7 @@
 
 package de.tud.cs.st.vespucci.versioning.handler;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -169,7 +170,7 @@ public class UpdateSadFileHandler extends AbstractHandler {
 						return null;
 					}
 
-					final IPath newPath = getUniquePathForVersion(file, currentVersion);
+					final File newPath = getUniquePathForVersion(file, currentVersion);
 
 					final URI outputUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 
@@ -212,10 +213,8 @@ public class UpdateSadFileHandler extends AbstractHandler {
 	 * @return A path to a non-existing file which extends the original file path and contains the version identifier
 	 *         and, if necessary, the current time stamp.
 	 */
-	private static IPath getUniquePathForVersion(final IFile file, final VespucciVersionTemplate version) {
-		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-
-		final IPath absOrigPath = file.getRawLocation();
+	private static java.io.File getUniquePathForVersion(final IFile file, final VespucciVersionTemplate version) {
+		final IPath absOrigPath = file.getRawLocation();		
 
 		IPath backupPath = absOrigPath;
 		if (fileNameHasNoVersionID(absOrigPath, version)) {
@@ -225,15 +224,12 @@ public class UpdateSadFileHandler extends AbstractHandler {
 		// prevents stacking of time stamps
 		backupPath = removeTimestamp(backupPath);
 
-		while (workspaceRoot.findFilesForLocationURI(URIUtil.toURI(backupPath))[0].exists()) {
+		while (backupPath.toFile().exists()) {
 			backupPath = removeTimestamp(backupPath);
 			backupPath = insertSubExtension(backupPath, new Long(new Date().getTime()).toString());
 		}
 
-		backupPath = backupPath.makeRelativeTo(workspaceRoot.getRawLocation());
-		backupPath = backupPath.makeAbsolute();
-
-		return backupPath;
+		return backupPath.toFile();
 	}
 
 	private static boolean fileNameHasNoVersionID(final IPath path, final VespucciVersionTemplate version) {
