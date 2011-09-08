@@ -64,8 +64,6 @@ public class InvariantPrologFacts {
 		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
 
-		// TODO What does the third parameter mean (The one between 'Name' and 'Query')? Please
-		// document and extend pl-comment...
 		strBuilder.append("%ensemble(File, Name, Ensemble Parameter, Query, SubEnsembles) :- Definition of an ensemble\n");
 		strBuilder.append("%\tFile - The simple file name in which the ensemble is defined (e.g., 'Flashcards.sad')\n");
 		strBuilder.append("%\tName - Name of the ensemble\n");
@@ -86,7 +84,6 @@ public class InvariantPrologFacts {
 		strBuilder.append("\n");
 		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
 
-		// TODO What does the 4th and 6th parameter mean? Please document and extend pl-comment...
 		strBuilder.append("%DEPENDENCY(File, ID, SourceE, SourceE Parameter, TargetE, TargetE Parameter, Type) :- Definition of a dependency between two ensembles.\n");
 		strBuilder
 				.append("%\tDEPENDENCY - The type of the dependency. Possible values: outgoing, incoming, expected, not_allowed\n");
