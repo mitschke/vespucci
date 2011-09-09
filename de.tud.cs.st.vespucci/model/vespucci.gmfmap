@@ -306,7 +306,7 @@
     <labelMappings
         xsi:type="gmfmap:FeatureLabelMapping">
       <diagramLabel
-          href="vespucci.gmfgraph#Warning"/>
+          href="vespucci.gmfgraph#WarningName"/>
       <features
           href="vespucci.ecore#//Connection/name"/>
       <editableFeatures
