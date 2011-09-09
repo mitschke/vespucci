@@ -138,6 +138,24 @@ public class VespucciEditPartFactory implements EditPartFactory {
 				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart.VISUAL_ID:
 					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart(view);
 
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart(view);
+
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingNameEditPart(view);
+
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart(view);
+
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingNameEditPart(view);
+
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart(view);
+
+				case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart.VISUAL_ID:
+					return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart(view);
+
 			}
 		}
 		return createUnrecognizedEditPart(context, model);

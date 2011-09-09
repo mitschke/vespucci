@@ -135,6 +135,33 @@
           x="1"
           y="4"/>
     </figures>
+    <figures
+        xsi:type="gmfgraph:PolygonDecoration"
+        name="OpaqueCircleTopArrow">
+      <backgroundColor
+          xsi:type="gmfgraph:ConstantColor"/>
+          
+      <template x="-10" y="0" />
+	  <template x="-10" y="-1" />
+	  <template x="-11" y="-3" />
+	  <template x="-13" y="-4" />
+	  <template x="-15" y="-4" />
+	  <template x="-17" y="-3" />
+	  <template x="-18" y="-1" />
+	  <template x="-18" y="1" />
+	  <template x="-17" y="3" />
+	  <template x="-15" y="4" />
+	  <template x="-13" y="4" />
+	  <template x="-11" y="3" />
+	  <template x="-10" y="1" />
+	  <template x="-10" y="0" />
+	  
+	  <template x="0" y="0" />
+	  <template x="-7" y="3" />
+	  <template x="0" y="0" />
+	  <template x="-7" y="-3" />
+	  <template x="0" y="0" />	  
+    </figures>
     <descriptors
         name="EnsembleFigure">
       <actualFigure
@@ -336,7 +363,7 @@
       <actualFigure
           xsi:type="gmfgraph:PolylineConnection"
           name="GlobalIncomingFigure"
-          targetDecoration="//@figures.0/@figures.0">
+          targetDecoration="//@figures.0/@figures.6">
         <foregroundColor
             xsi:type="gmfgraph:ConstantColor"
             value="black"/>

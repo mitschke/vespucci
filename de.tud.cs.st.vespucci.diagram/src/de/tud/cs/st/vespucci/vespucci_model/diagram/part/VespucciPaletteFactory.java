@@ -87,6 +87,9 @@ public class VespucciPaletteFactory {
 		paletteContainer.add(createInandOut3CreationTool());
 		paletteContainer.add(createExpected4CreationTool());
 		paletteContainer.add(createNotAllowed5CreationTool());
+		paletteContainer.add(createGlobalIncoming6CreationTool());
+		paletteContainer.add(createGlobalOutgoing7CreationTool());
+		paletteContainer.add(createWarning8CreationTool());
 		return paletteContainer;
 	}
 
@@ -200,6 +203,54 @@ public class VespucciPaletteFactory {
 		entry.setId("createNotAllowed5CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
 				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	 * @generated
+	 */
+	private ToolEntry createGlobalIncoming6CreationTool() {
+		LinkToolEntry entry = new LinkToolEntry(
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.GlobalIncoming6CreationTool_title,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.GlobalIncoming6CreationTool_desc,
+				Collections
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalIncoming_4006));
+		entry.setId("createGlobalIncoming6CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalIncoming_4006));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	 * @generated
+	 */
+	private ToolEntry createGlobalOutgoing7CreationTool() {
+		LinkToolEntry entry = new LinkToolEntry(
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.GlobalOutgoing7CreationTool_title,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.GlobalOutgoing7CreationTool_desc,
+				Collections
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalOutgoing_4007));
+		entry.setId("createGlobalOutgoing7CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalOutgoing_4007));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	 * @generated
+	 */
+	private ToolEntry createWarning8CreationTool() {
+		LinkToolEntry entry = new LinkToolEntry(
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Warning8CreationTool_title,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Warning8CreationTool_desc,
+				Collections
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008));
+		entry.setId("createWarning8CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
