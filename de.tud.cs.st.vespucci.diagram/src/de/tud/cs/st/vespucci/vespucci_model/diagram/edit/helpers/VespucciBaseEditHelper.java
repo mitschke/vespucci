@@ -121,5 +121,4 @@ public class VespucciBaseEditHelper extends AbstractEditHelper {
 	protected ICommand getDestroyReferenceCommand(DestroyReferenceRequest req) {
 		return null;
 	}
-
 }

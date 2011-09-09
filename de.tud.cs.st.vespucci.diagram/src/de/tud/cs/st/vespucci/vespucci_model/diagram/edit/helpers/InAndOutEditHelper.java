@@ -49,6 +49,7 @@ public class InAndOutEditHelper extends de.tud.cs.st.vespucci.vespucci_model.dia
 	 * @author Theo
 	 * @generated NOT
 	 */
+	@Override
 	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
 		if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
 			return UnexecutableCommand.INSTANCE;

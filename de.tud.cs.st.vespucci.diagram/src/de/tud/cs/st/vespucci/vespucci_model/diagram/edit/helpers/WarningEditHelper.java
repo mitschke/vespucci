@@ -33,8 +33,28 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
 
+import org.eclipse.gmf.runtime.common.core.command.ICommand;
+import org.eclipse.gmf.runtime.common.core.command.UnexecutableCommand;
+import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
+
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+
 /**
  * @generated
  */
 public class WarningEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
+
+	/**
+	 * @author Theo
+	 * @generated NOT
+	 */
+	@Override
+	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
+		if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
+			return UnexecutableCommand.INSTANCE;
+		} else {
+			return super.getReorientRelationshipCommand(request);
+		}
+	}
+
 }
