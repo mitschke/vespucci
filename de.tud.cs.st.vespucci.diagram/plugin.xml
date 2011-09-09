@@ -300,7 +300,7 @@
          <Priority name="Lowest"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Vespucci"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,3001,3003"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4005,4003,4001,4004,4002,4006,4007,4008"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4005,4003,4001,4004,4002"/>
       </viewProvider>
    </extension>
 
@@ -315,7 +315,7 @@
             <method name="getType()" value="2001,2002,3001,3003"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
-            <method name="getType()" value="4005,4003,4001,4004,4002,4006,4007,4008"/>
+            <method name="getType()" value="4005,4003,4001,4004,4002"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
             <method name="getType()" value="5001,5008,5002,5006,5007,5005"/>
@@ -455,36 +455,6 @@
             <param name="semanticHint" value="4002"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
-         <metamodelType
-               id="de.tud.cs.st.vespucci.diagram.GlobalIncoming_4006"
-               name="%metatype.name.GlobalIncoming_4006"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="GlobalIncoming"
-               edithelper="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.GlobalIncomingEditHelper">
-            <param name="semanticHint" value="4006"/>
-         </metamodelType>
-      </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
-         <metamodelType
-               id="de.tud.cs.st.vespucci.diagram.GlobalOutgoing_4007"
-               name="%metatype.name.GlobalOutgoing_4007"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="GlobalOutgoing"
-               edithelper="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.GlobalOutgoingEditHelper">
-            <param name="semanticHint" value="4007"/>
-         </metamodelType>
-      </metamodel>
-      <metamodel nsURI="http://vespucci.editor/2011-06-01">
-         <metamodelType
-               id="de.tud.cs.st.vespucci.diagram.Warning_4008"
-               name="%metatype.name.Warning_4008"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="Warning"
-               edithelper="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.WarningEditHelper">
-            <param name="semanticHint" value="4008"/>
-         </metamodelType>
-      </metamodel>
    </extension>
 
    <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypeBindings" id="element-types-bindings">
@@ -507,9 +477,6 @@
          <elementType ref="de.tud.cs.st.vespucci.diagram.InAndOut_4001"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.NotAllowed_4004"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.Expected_4002"/>
-         <elementType ref="de.tud.cs.st.vespucci.diagram.GlobalIncoming_4006"/>
-         <elementType ref="de.tud.cs.st.vespucci.diagram.GlobalOutgoing_4007"/>
-         <elementType ref="de.tud.cs.st.vespucci.diagram.Warning_4008"/>
          <advice ref="org.eclipse.gmf.runtime.diagram.core.advice.notationDepdendents"/>
       </binding>
    </extension>

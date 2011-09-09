@@ -274,69 +274,6 @@ public class VespucciParserProvider extends AbstractProvider implements IParserP
 	/**
 	 * @generated
 	 */
-	private IParser globalIncomingName_6006Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getGlobalIncomingName_6006Parser() {
-		if (globalIncomingName_6006Parser == null) {
-			EAttribute[] features = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getConnection_Name() };
-			EAttribute[] editableFeatures = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getConnection_Name() };
-			de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser parser = new de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser(
-					features, editableFeatures);
-			globalIncomingName_6006Parser = parser;
-		}
-		return globalIncomingName_6006Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser globalOutgoingName_6007Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getGlobalOutgoingName_6007Parser() {
-		if (globalOutgoingName_6007Parser == null) {
-			EAttribute[] features = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getConnection_Name() };
-			EAttribute[] editableFeatures = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getConnection_Name() };
-			de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser parser = new de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser(
-					features, editableFeatures);
-			globalOutgoingName_6007Parser = parser;
-		}
-		return globalOutgoingName_6007Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser warningName_6008Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getWarningName_6008Parser() {
-		if (warningName_6008Parser == null) {
-			EAttribute[] features = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getConnection_Name() };
-			EAttribute[] editableFeatures = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-					.getConnection_Name() };
-			de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser parser = new de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser(
-					features, editableFeatures);
-			warningName_6008Parser = parser;
-		}
-		return warningName_6008Parser;
-	}
-
-	/**
-	 * @generated
-	 */
 	protected IParser getParser(int visualID) {
 		switch (visualID) {
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID:
@@ -361,12 +298,6 @@ public class VespucciParserProvider extends AbstractProvider implements IParserP
 				return getNotAllowedName_6004Parser();
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedNameEditPart.VISUAL_ID:
 				return getExpectedName_6002Parser();
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingNameEditPart.VISUAL_ID:
-				return getGlobalIncomingName_6006Parser();
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingNameEditPart.VISUAL_ID:
-				return getGlobalOutgoingName_6007Parser();
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart.VISUAL_ID:
-				return getWarningName_6008Parser();
 		}
 		return null;
 	}

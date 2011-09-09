@@ -71,7 +71,7 @@ public class VespucciOCLFactory {
 	 * @generated
 	 */
 	protected VespucciOCLFactory() {
-		this.expressions = new de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression[18];
+		this.expressions = new de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression[12];
 	}
 
 	/**
@@ -92,12 +92,6 @@ public class VespucciOCLFactory {
 			final String[] exprBodies = new String[] { "self <> oppositeEnd", //$NON-NLS-1$
 					"not self.oclIsTypeOf(Dummy)", //$NON-NLS-1$
 					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Dummy))", //$NON-NLS-1$
-					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Dummy))", //$NON-NLS-1$
-					"not self.oclIsTypeOf(Dummy)", //$NON-NLS-1$
-					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Dummy))", //$NON-NLS-1$
-					"not self.oclIsTypeOf(Dummy)", //$NON-NLS-1$
-					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Dummy))", //$NON-NLS-1$
-					"not self.oclIsTypeOf(Dummy)", //$NON-NLS-1$
 					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Dummy))", //$NON-NLS-1$
 					"not self.oclIsTypeOf(Dummy)", //$NON-NLS-1$
 					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Dummy))", //$NON-NLS-1$

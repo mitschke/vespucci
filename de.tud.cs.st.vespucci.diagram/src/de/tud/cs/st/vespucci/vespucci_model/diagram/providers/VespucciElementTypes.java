@@ -128,21 +128,6 @@ public class VespucciElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType GlobalIncoming_4006 = getElementType("de.tud.cs.st.vespucci.diagram.GlobalIncoming_4006"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType GlobalOutgoing_4007 = getElementType("de.tud.cs.st.vespucci.diagram.GlobalOutgoing_4007"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType Warning_4008 = getElementType("de.tud.cs.st.vespucci.diagram.Warning_4008"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
 	private static ImageRegistry getImageRegistry() {
 		if (imageRegistry == null) {
 			imageRegistry = new ImageRegistry();
@@ -267,14 +252,6 @@ public class VespucciElementTypes {
 			elements.put(NotAllowed_4004, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getNotAllowed());
 
 			elements.put(Expected_4002, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getExpected());
-
-			elements.put(GlobalIncoming_4006,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getGlobalIncoming());
-
-			elements.put(GlobalOutgoing_4007,
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getGlobalOutgoing());
-
-			elements.put(Warning_4008, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getWarning());
 		}
 		return (ENamedElement) elements.get(type);
 	}
@@ -302,9 +279,6 @@ public class VespucciElementTypes {
 			KNOWN_ELEMENT_TYPES.add(InAndOut_4001);
 			KNOWN_ELEMENT_TYPES.add(NotAllowed_4004);
 			KNOWN_ELEMENT_TYPES.add(Expected_4002);
-			KNOWN_ELEMENT_TYPES.add(GlobalIncoming_4006);
-			KNOWN_ELEMENT_TYPES.add(GlobalOutgoing_4007);
-			KNOWN_ELEMENT_TYPES.add(Warning_4008);
 		}
 		return KNOWN_ELEMENT_TYPES.contains(elementType);
 	}
@@ -334,12 +308,6 @@ public class VespucciElementTypes {
 				return NotAllowed_4004;
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
 				return Expected_4002;
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
-				return GlobalIncoming_4006;
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
-				return GlobalOutgoing_4007;
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
-				return Warning_4008;
 		}
 		return null;
 	}

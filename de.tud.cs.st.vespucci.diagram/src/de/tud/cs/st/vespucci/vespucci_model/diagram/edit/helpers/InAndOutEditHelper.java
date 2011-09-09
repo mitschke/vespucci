@@ -56,5 +56,5 @@ public class InAndOutEditHelper extends de.tud.cs.st.vespucci.vespucci_model.dia
 			return super.getReorientRelationshipCommand(request);
 		}
 	}
-
+	
 }
