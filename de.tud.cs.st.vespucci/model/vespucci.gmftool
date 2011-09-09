@@ -82,7 +82,7 @@
       </tools>
       <tools
           xsi:type="gmftool:CreationTool"
-          title="GlobalIncoming"
+          title="Global Incoming"
           description="Create new global Incoming Dependency">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
@@ -91,7 +91,7 @@
       </tools>
       <tools
           xsi:type="gmftool:CreationTool"
-          title="GlobalOutgoing"
+          title="Global Outgoing"
           description="Create new global Outgoing Dependency">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
