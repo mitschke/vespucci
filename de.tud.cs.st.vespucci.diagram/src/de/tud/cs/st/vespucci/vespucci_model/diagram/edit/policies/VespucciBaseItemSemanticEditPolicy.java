@@ -385,6 +385,30 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		/**
 		 * @generated
 		 */
+		public boolean canCreateGlobalIncoming_4006(de.tud.cs.st.vespucci.vespucci_model.Shape container,
+				de.tud.cs.st.vespucci.vespucci_model.Shape source, de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+			return canExistGlobalIncoming_4006(container, null, source, target);
+		}
+
+		/**
+		 * @generated
+		 */
+		public boolean canCreateGlobalOutgoing_4007(de.tud.cs.st.vespucci.vespucci_model.Shape container,
+				de.tud.cs.st.vespucci.vespucci_model.Shape source, de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+			return canExistGlobalOutgoing_4007(container, null, source, target);
+		}
+
+		/**
+		 * @generated
+		 */
+		public boolean canCreateWarning_4008(de.tud.cs.st.vespucci.vespucci_model.Shape container,
+				de.tud.cs.st.vespucci.vespucci_model.Shape source, de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+			return canExistWarning_4008(container, null, source, target);
+		}
+
+		/**
+		 * @generated
+		 */
 		public boolean canExistIncoming_4005(de.tud.cs.st.vespucci.vespucci_model.Shape container,
 				de.tud.cs.st.vespucci.vespucci_model.Incoming linkInstance, de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
@@ -552,6 +576,123 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 							"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
 					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory.getExpression(
 							8, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape(), env).evaluate(
+							target, Collections.singletonMap("oppositeEnd", source)); //$NON-NLS-1$
+					if (false == targetVal instanceof Boolean || !((Boolean) targetVal).booleanValue()) {
+						return false;
+					} // else fall-through
+				}
+				return true;
+			} catch (Exception e) {
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
+						"Link constraint evaluation error", e); //$NON-NLS-1$
+				return false;
+			}
+		}
+
+		/**
+		 * @generated
+		 */
+		public boolean canExistGlobalIncoming_4006(de.tud.cs.st.vespucci.vespucci_model.Shape container,
+				de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming linkInstance,
+				de.tud.cs.st.vespucci.vespucci_model.Shape source, de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+			try {
+				if (source == null) {
+					return true;
+				} else {
+					Map<String, EClassifier> env = Collections.<String, EClassifier> singletonMap(
+							"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory.getExpression(
+							9, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape(), env).evaluate(
+							source, Collections.singletonMap("oppositeEnd", target)); //$NON-NLS-1$
+					if (false == sourceVal instanceof Boolean || !((Boolean) sourceVal).booleanValue()) {
+						return false;
+					} // else fall-through
+				}
+				if (target == null) {
+					return true;
+				} else {
+					Map<String, EClassifier> env = Collections.<String, EClassifier> singletonMap(
+							"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory.getExpression(
+							10, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape(), env).evaluate(
+							target, Collections.singletonMap("oppositeEnd", source)); //$NON-NLS-1$
+					if (false == targetVal instanceof Boolean || !((Boolean) targetVal).booleanValue()) {
+						return false;
+					} // else fall-through
+				}
+				return true;
+			} catch (Exception e) {
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
+						"Link constraint evaluation error", e); //$NON-NLS-1$
+				return false;
+			}
+		}
+
+		/**
+		 * @generated
+		 */
+		public boolean canExistGlobalOutgoing_4007(de.tud.cs.st.vespucci.vespucci_model.Shape container,
+				de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing linkInstance,
+				de.tud.cs.st.vespucci.vespucci_model.Shape source, de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+			try {
+				if (source == null) {
+					return true;
+				} else {
+					Map<String, EClassifier> env = Collections.<String, EClassifier> singletonMap(
+							"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory.getExpression(
+							11, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape(), env).evaluate(
+							source, Collections.singletonMap("oppositeEnd", target)); //$NON-NLS-1$
+					if (false == sourceVal instanceof Boolean || !((Boolean) sourceVal).booleanValue()) {
+						return false;
+					} // else fall-through
+				}
+				if (target == null) {
+					return true;
+				} else {
+					Map<String, EClassifier> env = Collections.<String, EClassifier> singletonMap(
+							"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory.getExpression(
+							12, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape(), env).evaluate(
+							target, Collections.singletonMap("oppositeEnd", source)); //$NON-NLS-1$
+					if (false == targetVal instanceof Boolean || !((Boolean) targetVal).booleanValue()) {
+						return false;
+					} // else fall-through
+				}
+				return true;
+			} catch (Exception e) {
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
+						"Link constraint evaluation error", e); //$NON-NLS-1$
+				return false;
+			}
+		}
+
+		/**
+		 * @generated
+		 */
+		public boolean canExistWarning_4008(de.tud.cs.st.vespucci.vespucci_model.Shape container,
+				de.tud.cs.st.vespucci.vespucci_model.Warning linkInstance, de.tud.cs.st.vespucci.vespucci_model.Shape source,
+				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+			try {
+				if (source == null) {
+					return true;
+				} else {
+					Map<String, EClassifier> env = Collections.<String, EClassifier> singletonMap(
+							"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory.getExpression(
+							13, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape(), env).evaluate(
+							source, Collections.singletonMap("oppositeEnd", target)); //$NON-NLS-1$
+					if (false == sourceVal instanceof Boolean || !((Boolean) sourceVal).booleanValue()) {
+						return false;
+					} // else fall-through
+				}
+				if (target == null) {
+					return true;
+				} else {
+					Map<String, EClassifier> env = Collections.<String, EClassifier> singletonMap(
+							"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory.getExpression(
+							14, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape(), env).evaluate(
 							target, Collections.singletonMap("oppositeEnd", source)); //$NON-NLS-1$
 					if (false == targetVal instanceof Boolean || !((Boolean) targetVal).booleanValue()) {
 						return false;

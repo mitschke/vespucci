@@ -286,6 +286,21 @@ public class VespucciVisualIDRegistry {
 					return true;
 				}
 				break;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
+				if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingNameEditPart.VISUAL_ID == nodeVisualID) {
+					return true;
+				}
+				break;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
+				if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingNameEditPart.VISUAL_ID == nodeVisualID) {
+					return true;
+				}
+				break;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
+				if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart.VISUAL_ID == nodeVisualID) {
+					return true;
+				}
+				break;
 		}
 		return false;
 	}
@@ -316,6 +331,18 @@ public class VespucciVisualIDRegistry {
 		if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getExpected().isSuperTypeOf(
 				domainElement.eClass())) {
 			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID;
+		}
+		if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getGlobalIncoming().isSuperTypeOf(
+				domainElement.eClass())) {
+			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID;
+		}
+		if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getGlobalOutgoing().isSuperTypeOf(
+				domainElement.eClass())) {
+			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID;
+		}
+		if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getWarning().isSuperTypeOf(
+				domainElement.eClass())) {
+			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID;
 		}
 		return -1;
 	}

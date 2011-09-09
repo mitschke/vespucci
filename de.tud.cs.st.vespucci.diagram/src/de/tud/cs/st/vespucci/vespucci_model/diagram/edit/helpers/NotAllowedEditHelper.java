@@ -44,7 +44,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
  * @generated
  */
 public class NotAllowedEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
-	
+
 	/**
 	 * @author Theo
 	 * @generated NOT
