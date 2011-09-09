@@ -759,6 +759,226 @@ public interface Vespucci_modelPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.GlobalOutgoingImpl <em>Global Outgoing</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.GlobalOutgoingImpl
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getGlobalOutgoing()
+	 * @generated
+	 */
+	int GLOBAL_OUTGOING = 10;
+
+	/**
+	 * The feature id for the '<em><b>Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OUTGOING__SOURCE = CONNECTION__SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OUTGOING__TARGET = CONNECTION__TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OUTGOING__NAME = CONNECTION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Temp</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OUTGOING__TEMP = CONNECTION__TEMP;
+
+	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OUTGOING__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OUTGOING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
+	 * The number of structural features of the '<em>Global Outgoing</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OUTGOING_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.GlobalIncomingImpl <em>Global Incoming</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.GlobalIncomingImpl
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getGlobalIncoming()
+	 * @generated
+	 */
+	int GLOBAL_INCOMING = 11;
+
+	/**
+	 * The feature id for the '<em><b>Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_INCOMING__SOURCE = CONNECTION__SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_INCOMING__TARGET = CONNECTION__TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_INCOMING__NAME = CONNECTION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Temp</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_INCOMING__TEMP = CONNECTION__TEMP;
+
+	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_INCOMING__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_INCOMING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
+	 * The number of structural features of the '<em>Global Incoming</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_INCOMING_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.WarningImpl <em>Warning</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.WarningImpl
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getWarning()
+	 * @generated
+	 */
+	int WARNING = 12;
+
+	/**
+	 * The feature id for the '<em><b>Source</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WARNING__SOURCE = CONNECTION__SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WARNING__TARGET = CONNECTION__TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WARNING__NAME = CONNECTION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Temp</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WARNING__TEMP = CONNECTION__TEMP;
+
+	/**
+	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WARNING__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WARNING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
+	 * The number of structural features of the '<em>Warning</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WARNING_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram <em>Shapes Diagram</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1002,6 +1222,36 @@ public interface Vespucci_modelPackage extends EPackage {
 	EClass getExpected();
 
 	/**
+	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing <em>Global Outgoing</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Global Outgoing</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing
+	 * @generated
+	 */
+	EClass getGlobalOutgoing();
+
+	/**
+	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming <em>Global Incoming</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Global Incoming</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming
+	 * @generated
+	 */
+	EClass getGlobalIncoming();
+
+	/**
+	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Warning <em>Warning</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Warning</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Warning
+	 * @generated
+	 */
+	EClass getWarning();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1226,6 +1476,36 @@ public interface Vespucci_modelPackage extends EPackage {
 		 * @generated
 		 */
 		EClass EXPECTED = eINSTANCE.getExpected();
+
+		/**
+		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.GlobalOutgoingImpl <em>Global Outgoing</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.GlobalOutgoingImpl
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getGlobalOutgoing()
+		 * @generated
+		 */
+		EClass GLOBAL_OUTGOING = eINSTANCE.getGlobalOutgoing();
+
+		/**
+		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.GlobalIncomingImpl <em>Global Incoming</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.GlobalIncomingImpl
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getGlobalIncoming()
+		 * @generated
+		 */
+		EClass GLOBAL_INCOMING = eINSTANCE.getGlobalIncoming();
+
+		/**
+		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.WarningImpl <em>Warning</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.WarningImpl
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getWarning()
+		 * @generated
+		 */
+		EClass WARNING = eINSTANCE.getWarning();
 
 	}
 

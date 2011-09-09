@@ -337,6 +337,75 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GlobalOutgoingItemProvider globalOutgoingItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGlobalOutgoingAdapter() {
+		if (globalOutgoingItemProvider == null) {
+			globalOutgoingItemProvider = new GlobalOutgoingItemProvider(this);
+		}
+
+		return globalOutgoingItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GlobalIncomingItemProvider globalIncomingItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGlobalIncomingAdapter() {
+		if (globalIncomingItemProvider == null) {
+			globalIncomingItemProvider = new GlobalIncomingItemProvider(this);
+		}
+
+		return globalIncomingItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.Warning} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected WarningItemProvider warningItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Warning}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createWarningAdapter() {
+		if (warningItemProvider == null) {
+			warningItemProvider = new WarningItemProvider(this);
+		}
+
+		return warningItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -445,6 +514,9 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 		if (incomingItemProvider != null) incomingItemProvider.dispose();
 		if (inAndOutItemProvider != null) inAndOutItemProvider.dispose();
 		if (expectedItemProvider != null) expectedItemProvider.dispose();
+		if (globalOutgoingItemProvider != null) globalOutgoingItemProvider.dispose();
+		if (globalIncomingItemProvider != null) globalIncomingItemProvider.dispose();
+		if (warningItemProvider != null) warningItemProvider.dispose();
 	}
 
 }

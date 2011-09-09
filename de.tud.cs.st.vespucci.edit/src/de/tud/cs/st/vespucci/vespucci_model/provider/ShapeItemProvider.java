@@ -295,6 +295,21 @@ public class ShapeItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
+				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
+				 Vespucci_modelFactory.eINSTANCE.createGlobalOutgoing()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
+				 Vespucci_modelFactory.eINSTANCE.createGlobalIncoming()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
+				 Vespucci_modelFactory.eINSTANCE.createWarning()));
+
+		newChildDescriptors.add
+			(createChildParameter
 				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
 				 Vespucci_modelFactory.eINSTANCE.createConnection()));
 
@@ -322,6 +337,21 @@ public class ShapeItemProvider
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
 				 Vespucci_modelFactory.eINSTANCE.createExpected()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
+				 Vespucci_modelFactory.eINSTANCE.createGlobalOutgoing()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
+				 Vespucci_modelFactory.eINSTANCE.createGlobalIncoming()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
+				 Vespucci_modelFactory.eINSTANCE.createWarning()));
 	}
 
 	/**

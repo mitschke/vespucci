@@ -41,6 +41,8 @@ import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
@@ -50,6 +52,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
+import de.tud.cs.st.vespucci.vespucci_model.Warning;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -133,6 +136,27 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * @generated
 	 */
 	private EClass expectedEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass globalOutgoingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass globalIncomingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass warningEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -407,6 +431,33 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getGlobalOutgoing() {
+		return globalOutgoingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGlobalIncoming() {
+		return globalIncomingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getWarning() {
+		return warningEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Vespucci_modelFactory getVespucci_modelFactory() {
 		return (Vespucci_modelFactory)getEFactoryInstance();
 	}
@@ -462,6 +513,12 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		inAndOutEClass = createEClass(IN_AND_OUT);
 
 		expectedEClass = createEClass(EXPECTED);
+
+		globalOutgoingEClass = createEClass(GLOBAL_OUTGOING);
+
+		globalIncomingEClass = createEClass(GLOBAL_INCOMING);
+
+		warningEClass = createEClass(WARNING);
 	}
 
 	/**
@@ -499,6 +556,9 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		incomingEClass.getESuperTypes().add(this.getConnection());
 		inAndOutEClass.getESuperTypes().add(this.getConnection());
 		expectedEClass.getESuperTypes().add(this.getConnection());
+		globalOutgoingEClass.getESuperTypes().add(this.getConnection());
+		globalIncomingEClass.getESuperTypes().add(this.getConnection());
+		warningEClass.getESuperTypes().add(this.getConnection());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(shapesDiagramEClass, ShapesDiagram.class, "ShapesDiagram", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -533,6 +593,12 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		initEClass(inAndOutEClass, InAndOut.class, "InAndOut", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(expectedEClass, Expected.class, "Expected", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(globalOutgoingEClass, GlobalOutgoing.class, "GlobalOutgoing", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(globalIncomingEClass, GlobalIncoming.class, "GlobalIncoming", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(warningEClass, Warning.class, "Warning", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

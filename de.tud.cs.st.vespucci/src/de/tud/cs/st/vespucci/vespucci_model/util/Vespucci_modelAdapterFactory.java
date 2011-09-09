@@ -154,6 +154,18 @@ public class Vespucci_modelAdapterFactory extends AdapterFactoryImpl {
 				return createExpectedAdapter();
 			}
 			@Override
+			public Adapter caseGlobalOutgoing(GlobalOutgoing object) {
+				return createGlobalOutgoingAdapter();
+			}
+			@Override
+			public Adapter caseGlobalIncoming(GlobalIncoming object) {
+				return createGlobalIncomingAdapter();
+			}
+			@Override
+			public Adapter caseWarning(Warning object) {
+				return createWarningAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -310,6 +322,48 @@ public class Vespucci_modelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createExpectedAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing <em>Global Outgoing</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing
+	 * @generated
+	 */
+	public Adapter createGlobalOutgoingAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming <em>Global Incoming</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming
+	 * @generated
+	 */
+	public Adapter createGlobalIncomingAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.Warning <em>Warning</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Warning
+	 * @generated
+	 */
+	public Adapter createWarningAdapter() {
 		return null;
 	}
 

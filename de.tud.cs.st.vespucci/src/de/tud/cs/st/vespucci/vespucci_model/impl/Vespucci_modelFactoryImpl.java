@@ -113,6 +113,9 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 			case Vespucci_modelPackage.INCOMING: return createIncoming();
 			case Vespucci_modelPackage.IN_AND_OUT: return createInAndOut();
 			case Vespucci_modelPackage.EXPECTED: return createExpected();
+			case Vespucci_modelPackage.GLOBAL_OUTGOING: return createGlobalOutgoing();
+			case Vespucci_modelPackage.GLOBAL_INCOMING: return createGlobalIncoming();
+			case Vespucci_modelPackage.WARNING: return createWarning();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -216,6 +219,36 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 	public Expected createExpected() {
 		ExpectedImpl expected = new ExpectedImpl();
 		return expected;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GlobalOutgoing createGlobalOutgoing() {
+		GlobalOutgoingImpl globalOutgoing = new GlobalOutgoingImpl();
+		return globalOutgoing;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GlobalIncoming createGlobalIncoming() {
+		GlobalIncomingImpl globalIncoming = new GlobalIncomingImpl();
+		return globalIncoming;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Warning createWarning() {
+		WarningImpl warning = new WarningImpl();
+		return warning;
 	}
 
 	/**

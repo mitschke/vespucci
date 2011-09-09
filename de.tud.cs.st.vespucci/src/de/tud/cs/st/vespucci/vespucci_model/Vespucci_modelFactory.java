@@ -147,6 +147,33 @@ public interface Vespucci_modelFactory extends EFactory {
 	Expected createExpected();
 
 	/**
+	 * Returns a new object of class '<em>Global Outgoing</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Global Outgoing</em>'.
+	 * @generated
+	 */
+	GlobalOutgoing createGlobalOutgoing();
+
+	/**
+	 * Returns a new object of class '<em>Global Incoming</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Global Incoming</em>'.
+	 * @generated
+	 */
+	GlobalIncoming createGlobalIncoming();
+
+	/**
+	 * Returns a new object of class '<em>Warning</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Warning</em>'.
+	 * @generated
+	 */
+	Warning createWarning();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

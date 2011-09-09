@@ -196,6 +196,27 @@ public class Vespucci_modelSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case Vespucci_modelPackage.GLOBAL_OUTGOING: {
+				GlobalOutgoing globalOutgoing = (GlobalOutgoing)theEObject;
+				T result = caseGlobalOutgoing(globalOutgoing);
+				if (result == null) result = caseConnection(globalOutgoing);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Vespucci_modelPackage.GLOBAL_INCOMING: {
+				GlobalIncoming globalIncoming = (GlobalIncoming)theEObject;
+				T result = caseGlobalIncoming(globalIncoming);
+				if (result == null) result = caseConnection(globalIncoming);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Vespucci_modelPackage.WARNING: {
+				Warning warning = (Warning)theEObject;
+				T result = caseWarning(warning);
+				if (result == null) result = caseConnection(warning);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -347,6 +368,51 @@ public class Vespucci_modelSwitch<T> {
 	 * @generated
 	 */
 	public T caseExpected(Expected object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Global Outgoing</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Global Outgoing</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGlobalOutgoing(GlobalOutgoing object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Global Incoming</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Global Incoming</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGlobalIncoming(GlobalIncoming object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Warning</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Warning</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseWarning(Warning object) {
 		return null;
 	}
 

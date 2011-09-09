@@ -286,6 +286,60 @@
       <accessors
           figure="//@figures.0/@descriptors.6/@actualFigure/@children.0"/>
     </descriptors>
+    <descriptors
+        name="GlobalIncomingFigure">
+      <actualFigure
+          xsi:type="gmfgraph:PolylineConnection"
+          name="GlobalIncomingFigure"
+          targetDecoration="//@figures.0/@figures.0">
+        <foregroundColor
+            xsi:type="gmfgraph:ConstantColor"
+            value="black"/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="GlobalIncomingNameFigure"
+            text="all"/>
+      </actualFigure>
+      <accessors
+          accessor="getFigureGlobalIncomingNameFigure"
+          figure="//@figures.0/@descriptors.7/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors
+        name="GlobalOutgoingFigure">
+      <actualFigure
+          xsi:type="gmfgraph:PolylineConnection"
+          name="GlobalOutgoingFigure"
+          targetDecoration="//@figures.0/@figures.0">
+        <foregroundColor
+            xsi:type="gmfgraph:ConstantColor"
+            value="black"/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="GlobalOutgoingNameFigure"
+            text="all"/>
+      </actualFigure>
+      <accessors
+          accessor="getFigureGlobalOutgoingNameFigure"
+          figure="//@figures.0/@descriptors.8/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors
+        name="WarningFigure">
+      <actualFigure
+          xsi:type="gmfgraph:PolylineConnection"
+          name="WarningFigure"
+          targetDecoration="//@figures.0/@figures.0">
+        <foregroundColor
+            xsi:type="gmfgraph:ConstantColor"
+            value="black"/>
+        <children
+            xsi:type="gmfgraph:Label"
+            name="WarningNameFigure"
+            text="all"/>
+      </actualFigure>
+      <accessors
+          accessor="getFigureWarningNameFigure"
+          figure="//@figures.0/@descriptors.9/@actualFigure/@children.0"/>
+    </descriptors>
   </figures>
   <nodes
       name="Ensemble"
@@ -308,6 +362,15 @@
   <connections
       name="Expected"
       figure="ExpectedFigure"/>
+  <connections
+      name="GlobalIncoming"
+      figure="GlobalIncomingFigure"/>
+  <connections
+      name="GlobalOutgoing"
+      figure="GlobalOutgoingFigure"/>
+  <connections
+      name="Warning"
+      figure="WarningFigure"/>
   <compartments
       name="EnsembleCompartment"
       figure="EnsembleFigure"
@@ -382,6 +445,36 @@
       figure="NotAllowedFigure"
       elementIcon="false"
       accessor="//@figures.0/@descriptors.6/@accessors.0">
+    <facets
+        xsi:type="gmfgraph:LabelOffsetFacet"
+        x="-7"
+        y="-7"/>
+  </labels>
+  <labels
+      name="GlobalIncomingName"
+      figure="GlobalIncomingFigure"
+      elementIcon="false"
+      accessor="//@figures.0/@descriptors.7/@accessors.0">
+    <facets
+        xsi:type="gmfgraph:LabelOffsetFacet"
+        x="-7"
+        y="-7"/>
+  </labels>
+  <labels
+      name="GlobalOutgoingName"
+      figure="GlobalOutgoingFigure"
+      elementIcon="false"
+      accessor="//@figures.0/@descriptors.8/@accessors.0">
+    <facets
+        xsi:type="gmfgraph:LabelOffsetFacet"
+        x="-7"
+        y="-7"/>
+  </labels>
+  <labels
+      name="Warning"
+      figure="WarningFigure"
+      elementIcon="false"
+      accessor="//@figures.0/@descriptors.9/@accessors.0">
     <facets
         xsi:type="gmfgraph:LabelOffsetFacet"
         x="-7"
