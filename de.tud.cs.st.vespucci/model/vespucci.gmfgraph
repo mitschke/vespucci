@@ -90,6 +90,25 @@
           x="-4"
           y="1"/>
     </figures>
+    <figures
+        xsi:type="gmfgraph:PolygonDecoration"
+        name="OpaqueCircle">
+      <template
+          x="1"
+          y="4"/>    
+      <template x="3" y="3" />
+	  <template x="4" y="1" />
+	  <template x="4" y="-1" />
+	  <template x="3" y="-3" />
+	  <template x="1" y="-4" />
+	  <template x="-1" y="-4" />
+	  <template x="-3" y="-3" />
+	  <template x="-4" y="-1" />
+	  <template x="-4" y="1" />
+	  <template x="-3" y="3" />
+	  <template x="-1" y="4" />
+	  <template x="1" y="4" />
+    </figures>
     <descriptors
         name="EnsembleFigure">
       <actualFigure
@@ -327,6 +346,7 @@
       <actualFigure
           xsi:type="gmfgraph:PolylineConnection"
           name="WarningFigure"
+          lineKind="LINE_DASH"
           targetDecoration="//@figures.0/@figures.0">
         <foregroundColor
             xsi:type="gmfgraph:ConstantColor"
