@@ -236,6 +236,102 @@
           body="not self.oclIsTypeOf(Dummy)"/>
     </creationConstraints>
   </links>
+  <links>
+    <domainMetaElement
+        href="vespucci.ecore#//GlobalIncoming"/>
+    <labelMappings
+        xsi:type="gmfmap:FeatureLabelMapping">
+      <diagramLabel
+          href="vespucci.gmfgraph#GlobalIncomingName"/>
+      <features
+          href="vespucci.ecore#//Connection/name"/>
+      <editableFeatures
+          href="vespucci.ecore#//Connection/name"/>
+    </labelMappings>
+    <containmentFeature
+        href="vespucci.ecore#//Shape/targetConnections"/>
+    <tool
+        xsi:type="gmftool:CreationTool"
+        href="vespucci.gmftool#//@palette/@tools.1/@tools.5"/>
+    <diagramLink
+        href="vespucci.gmfgraph#GlobalIncoming"/>
+    <sourceMetaFeature
+        xsi:type="ecore:EReference"
+        href="vespucci.ecore#//Connection/source"/>
+    <linkMetaFeature
+        xsi:type="ecore:EReference"
+        href="vespucci.ecore#//Connection/target"/>
+    <creationConstraints>
+      <sourceEnd
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+      <targetEnd
+          body="not self.oclIsTypeOf(Dummy)"/>
+    </creationConstraints>
+  </links>
+  <links>
+    <domainMetaElement
+        href="vespucci.ecore#//GlobalOutgoing"/>
+    <labelMappings
+        xsi:type="gmfmap:FeatureLabelMapping">
+      <diagramLabel
+          href="vespucci.gmfgraph#GlobalOutgoingName"/>
+      <features
+          href="vespucci.ecore#//Connection/name"/>
+      <editableFeatures
+          href="vespucci.ecore#//Connection/name"/>
+    </labelMappings>
+    <containmentFeature
+        href="vespucci.ecore#//Shape/targetConnections"/>
+    <tool
+        xsi:type="gmftool:CreationTool"
+        href="vespucci.gmftool#//@palette/@tools.1/@tools.6"/>
+    <diagramLink
+        href="vespucci.gmfgraph#GlobalOutgoing"/>
+    <sourceMetaFeature
+        xsi:type="ecore:EReference"
+        href="vespucci.ecore#//Connection/source"/>
+    <linkMetaFeature
+        xsi:type="ecore:EReference"
+        href="vespucci.ecore#//Connection/target"/>
+    <creationConstraints>
+      <sourceEnd
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+      <targetEnd
+          body="not self.oclIsTypeOf(Dummy)"/>
+    </creationConstraints>
+  </links>
+  <links>
+    <domainMetaElement
+        href="vespucci.ecore#//Warning"/>
+    <labelMappings
+        xsi:type="gmfmap:FeatureLabelMapping">
+      <diagramLabel
+          href="vespucci.gmfgraph#GlobalIncomingName"/>
+      <features
+          href="vespucci.ecore#//Connection/name"/>
+      <editableFeatures
+          href="vespucci.ecore#//Connection/name"/>
+    </labelMappings>
+    <containmentFeature
+        href="vespucci.ecore#//Shape/targetConnections"/>
+    <tool
+        xsi:type="gmftool:CreationTool"
+        href="vespucci.gmftool#//@palette/@tools.1/@tools.7"/>
+    <diagramLink
+        href="vespucci.gmfgraph#Warning"/>
+    <sourceMetaFeature
+        xsi:type="ecore:EReference"
+        href="vespucci.ecore#//Connection/source"/>
+    <linkMetaFeature
+        xsi:type="ecore:EReference"
+        href="vespucci.ecore#//Connection/target"/>
+    <creationConstraints>
+      <sourceEnd
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+      <targetEnd
+          body="not self.oclIsTypeOf(Dummy)"/>
+    </creationConstraints>
+  </links>
   <diagram>
     <diagramCanvas
         href="vespucci.gmfgraph#vespucci_model"/>
