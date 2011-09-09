@@ -93,21 +93,47 @@
     <figures
         xsi:type="gmfgraph:PolygonDecoration"
         name="OpaqueCircle">
+      <backgroundColor
+          xsi:type="gmfgraph:ConstantColor"/>
       <template
           x="1"
-          y="4"/>    
-      <template x="3" y="3" />
-	  <template x="4" y="1" />
-	  <template x="4" y="-1" />
-	  <template x="3" y="-3" />
-	  <template x="1" y="-4" />
-	  <template x="-1" y="-4" />
-	  <template x="-3" y="-3" />
-	  <template x="-4" y="-1" />
-	  <template x="-4" y="1" />
-	  <template x="-3" y="3" />
-	  <template x="-1" y="4" />
-	  <template x="1" y="4" />
+          y="4"/>
+      <template
+          x="3"
+          y="3"/>
+      <template
+          x="4"
+          y="1"/>
+      <template
+          x="4"
+          y="-1"/>
+      <template
+          x="3"
+          y="-3"/>
+      <template
+          x="1"
+          y="-4"/>
+      <template
+          x="-1"
+          y="-4"/>
+      <template
+          x="-3"
+          y="-3"/>
+      <template
+          x="-4"
+          y="-1"/>
+      <template
+          x="-4"
+          y="1"/>
+      <template
+          x="-3"
+          y="3"/>
+      <template
+          x="-1"
+          y="4"/>
+      <template
+          x="1"
+          y="4"/>
     </figures>
     <descriptors
         name="EnsembleFigure">
