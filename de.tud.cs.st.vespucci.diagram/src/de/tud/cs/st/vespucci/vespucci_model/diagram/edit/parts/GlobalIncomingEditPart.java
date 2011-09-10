@@ -188,6 +188,7 @@ public class GlobalIncomingEditPart extends ConnectionNodeEditPart implements IT
 			pl.addPoint(getMapMode().DPtoLP(-11), getMapMode().DPtoLP(3));
 			pl.addPoint(getMapMode().DPtoLP(-10), getMapMode().DPtoLP(1));
 			pl.addPoint(getMapMode().DPtoLP(-10), getMapMode().DPtoLP(0));
+
 			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
 			pl.addPoint(getMapMode().DPtoLP(-7), getMapMode().DPtoLP(3));
 			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));

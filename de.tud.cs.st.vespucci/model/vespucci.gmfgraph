@@ -160,46 +160,47 @@
           y="-3"/>
       <template
           x="-7"/>
-      <template
-          x="-18"/>
-      <template
-          x="-18"
-          y="-1"/>
-      <template
-          x="-17"
-          y="-3"/>
-      <template
-          x="-15"
-          y="-4"/>
-      <template
-          x="-14"
-          y="-4"/>
-      <template
-          x="-11"
-          y="-3"/>
+
+	  <template
+          x="-10"/>
       <template
           x="-10"
           y="-1"/>
       <template
-          x="-10"
-          y="1"/>
-      <template
           x="-11"
-          y="3"/>
+          y="-3"/>
       <template
-          x="-14"
-          y="4"/>
+          x="-13"
+          y="-4"/>
       <template
           x="-15"
-          y="4"/>
+          y="-4"/>
       <template
           x="-17"
-          y="3"/>
+          y="-3"/>
+      <template
+          x="-18"
+          y="-1"/>
       <template
           x="-18"
           y="1"/>
       <template
-          x="-18"/>
+          x="-17"
+          y="3"/>
+      <template
+          x="-15"
+          y="4"/>
+      <template
+          x="-13"
+          y="4"/>
+      <template
+          x="-11"
+          y="3"/>
+      <template
+          x="-10"
+          y="1"/>
+      <template
+          x="-10"/>
     </figures>
     <descriptors
         name="EnsembleFigure">

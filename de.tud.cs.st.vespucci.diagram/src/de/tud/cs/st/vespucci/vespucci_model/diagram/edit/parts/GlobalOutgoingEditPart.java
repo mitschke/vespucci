@@ -168,7 +168,7 @@ public class GlobalOutgoingEditPart extends ConnectionNodeEditPart implements IT
 		}
 
 		/**
-		 * @generated
+		 * @generated NOT
 		 */
 		private RotatableDecoration createSourceDecoration() {
 			PolygonDecoration df = new PolygonDecoration();
@@ -180,21 +180,22 @@ public class GlobalOutgoingEditPart extends ConnectionNodeEditPart implements IT
 			pl.addPoint(getMapMode().DPtoLP(-7), getMapMode().DPtoLP(0));
 			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(-3));
 			pl.addPoint(getMapMode().DPtoLP(-7), getMapMode().DPtoLP(0));
-			pl.addPoint(getMapMode().DPtoLP(-18), getMapMode().DPtoLP(0));
-			pl.addPoint(getMapMode().DPtoLP(-18), getMapMode().DPtoLP(-1));
-			pl.addPoint(getMapMode().DPtoLP(-17), getMapMode().DPtoLP(-3));
-			pl.addPoint(getMapMode().DPtoLP(-15), getMapMode().DPtoLP(-4));
-			pl.addPoint(getMapMode().DPtoLP(-14), getMapMode().DPtoLP(-4));
-			pl.addPoint(getMapMode().DPtoLP(-11), getMapMode().DPtoLP(-3));
+			pl.addPoint(getMapMode().DPtoLP(-10), getMapMode().DPtoLP(0));
 			pl.addPoint(getMapMode().DPtoLP(-10), getMapMode().DPtoLP(-1));
-			pl.addPoint(getMapMode().DPtoLP(-10), getMapMode().DPtoLP(1));
-			pl.addPoint(getMapMode().DPtoLP(-11), getMapMode().DPtoLP(3));
-			pl.addPoint(getMapMode().DPtoLP(-14), getMapMode().DPtoLP(4));
-			pl.addPoint(getMapMode().DPtoLP(-15), getMapMode().DPtoLP(4));
-			pl.addPoint(getMapMode().DPtoLP(-17), getMapMode().DPtoLP(3));
+			pl.addPoint(getMapMode().DPtoLP(-11), getMapMode().DPtoLP(-3));
+			pl.addPoint(getMapMode().DPtoLP(-13), getMapMode().DPtoLP(-4));
+			pl.addPoint(getMapMode().DPtoLP(-15), getMapMode().DPtoLP(-4));
+			pl.addPoint(getMapMode().DPtoLP(-17), getMapMode().DPtoLP(-3));
+			pl.addPoint(getMapMode().DPtoLP(-18), getMapMode().DPtoLP(-1));
 			pl.addPoint(getMapMode().DPtoLP(-18), getMapMode().DPtoLP(1));
-			pl.addPoint(getMapMode().DPtoLP(-18), getMapMode().DPtoLP(0));
+			pl.addPoint(getMapMode().DPtoLP(-17), getMapMode().DPtoLP(3));
+			pl.addPoint(getMapMode().DPtoLP(-15), getMapMode().DPtoLP(4));
+			pl.addPoint(getMapMode().DPtoLP(-13), getMapMode().DPtoLP(4));
+			pl.addPoint(getMapMode().DPtoLP(-11), getMapMode().DPtoLP(3));
+			pl.addPoint(getMapMode().DPtoLP(-10), getMapMode().DPtoLP(1));
+			pl.addPoint(getMapMode().DPtoLP(-10), getMapMode().DPtoLP(0));
 			df.setTemplate(pl);
+			// Changed by Dominic Scheurer: Scale from 7/3 to 1/1
 			df.setScale(getMapMode().DPtoLP(1), getMapMode().DPtoLP(1));
 			return df;
 		}
