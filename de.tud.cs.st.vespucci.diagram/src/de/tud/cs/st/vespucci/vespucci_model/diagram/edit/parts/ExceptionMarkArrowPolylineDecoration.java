@@ -85,13 +85,27 @@ public class ExceptionMarkArrowPolylineDecoration extends PolygonDecoration {
 	
 	@Override
 	public Rectangle getBounds() {
-		final Rectangle boundsWithoutTriangle = super.getBounds();
+		final Rectangle boundsWithoutArrowAndQM = super.getBounds();
+		
+		int heightDiff = 0;
+		int yDiff = 0;
+		
+		if (!boundsWithoutArrowAndQM.contains(location)) {
+			// Arrow not visible => correct that
+			
+			if (location.y < boundsWithoutArrowAndQM.y) {
+				heightDiff += boundsWithoutArrowAndQM.y - location.y;				
+				yDiff = -heightDiff;
+			} else {
+				heightDiff += location.y - boundsWithoutArrowAndQM.getBottom().y;
+			}
+		}
 		
 		return new Rectangle(
-				boundsWithoutTriangle.x,
-				boundsWithoutTriangle.y,
-				boundsWithoutTriangle.width + ARROW_WIDTH + ARROW_MARGIN_RIGHT,
-				boundsWithoutTriangle.height);
+				boundsWithoutArrowAndQM.x,
+				boundsWithoutArrowAndQM.y + yDiff,
+				boundsWithoutArrowAndQM.width + ARROW_WIDTH + ARROW_MARGIN_RIGHT,
+				boundsWithoutArrowAndQM.height + heightDiff);
 	}
 	
 	@Override
