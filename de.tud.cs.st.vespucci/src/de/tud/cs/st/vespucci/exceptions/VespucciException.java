@@ -49,7 +49,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
  */
 public abstract class VespucciException extends RuntimeException {
 	
-	private static final String PLUGIN_ID = ResourceBundle.getBundle("plugin").getString("vespucci_pluginID");
+	private static final String PLUGIN_ID = ResourceBundle.getBundle("plugin").getString("pluginID");
 	private static final String DEFAULT_MESSAGE = "No message available.";
 
 	/**

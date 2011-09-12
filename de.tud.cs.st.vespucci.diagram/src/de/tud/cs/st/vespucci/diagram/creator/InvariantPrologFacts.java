@@ -38,12 +38,18 @@ public class InvariantPrologFacts {
 		strBuilder.append(":- multifile incoming/7.\n");
 		strBuilder.append(":- multifile not_allowed/7.\n");
 		strBuilder.append(":- multifile expected/7.\n");
+		strBuilder.append(":- multifile global_incoming/7.\n");
+		strBuilder.append(":- multifile global_outgoing/7.\n");
+		strBuilder.append(":- multifile warning/7.\n");
 		strBuilder.append(":- discontiguous ensemble/5.\n");
 		strBuilder.append(":- discontiguous abstract_ensemble/5.\n");
 		strBuilder.append(":- discontiguous outgoing/7.\n");
 		strBuilder.append(":- discontiguous incoming/7.\n");
 		strBuilder.append(":- discontiguous not_allowed/7.\n");
 		strBuilder.append(":- discontiguous expected/7.\n\n");
+		strBuilder.append(":- discontiguous global_incoming/7.\n");
+		strBuilder.append(":- discontiguous global_outgoing/7.\n");
+		strBuilder.append(":- discontiguous warning/7.\n\n");
 		// insert Date
 		final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		final Date date = new Date();
@@ -84,9 +90,11 @@ public class InvariantPrologFacts {
 		strBuilder.append("\n");
 		strBuilder.append(VERTICAL_SECTION_SEPARATOR);
 
-		strBuilder.append("%DEPENDENCY(File, ID, SourceE, SourceE Parameter, TargetE, TargetE Parameter, Type) :- Definition of a dependency between two ensembles.\n");
-		strBuilder
-				.append("%\tDEPENDENCY - The type of the dependency. Possible values: outgoing, incoming, expected, not_allowed\n");
+		strBuilder.append("%DEPENDENCY(File, ID, SourceE, SourceE Parameter, TargetE, TargetE Parameter, Type) :-")
+		          .append("Definition of a dependency between two ensembles.\n");
+		strBuilder.append("%\tDEPENDENCY - The type of the dependency. ")
+		          .append("Possible values: outgoing, incoming, expected, not_allowed, ")
+		          .append("global_incoming, global_outgoing, warning\n");
 		strBuilder.append("%\tFile - The simple file name in which the dependency is defined (e.g., 'Flashcards.sad')\n");
 		strBuilder.append("%\tID - An ID identifying the dependency\n");
 		strBuilder.append("%\tSourceE - The source ensemble\n");

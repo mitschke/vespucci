@@ -35,15 +35,19 @@ package de.tud.cs.st.vespucci.diagram.creator;
 
 import java.util.List;
 
+import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.Warning;
 
 /**
  * This class encapsulates the dependency prolog facts.
@@ -52,10 +56,11 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
  * @author Thomas Schulz
  * @author Alexander Weitzmann
  * @author Theo Kischka
- * 
+ * @author Dominic Scheurer
  */
 public class DependencyPrologFacts {
-
+	private DependencyPrologFacts() {}
+	
 	/**
 	 * Name of the current diagram file.
 	 */
@@ -119,33 +124,64 @@ public class DependencyPrologFacts {
 		final Shape target = getTarget(connection);
 
 		final StringBuilder transactionSB = new StringBuilder();
+		
 		// TODO: delete next 2 lines if saved sad file doesn't
-		// contains copy/paste artifact references. Problem: if one copy from one sad file
-		// an Ensemble with dependency in another sad file than the copy of
-		// the Ensemble will contains a reference to original Ensemble in first sad file.
-		// This reference has no influence on working process but it has problem here,
-		// by converting to prolog facts
+		// contain copy/paste artifact references.
+		// Problem: if, from one sad file, an ensemble with a dependency is copied
+		// to another sad file than the copy of the Ensemble will contain a reference
+		// to the original Ensemble in the first sad file.
+		// This reference has no influence to working process but it is a problem
+		// for prolog fact conversion.
+		
 		if (connection.getSource().eIsProxy() || connection.getTarget().eIsProxy()) {
 			return "";
 		}
 
 		final String dependencySuffix = String.format("('%s', %s, %s, [], %s, [], [%s]).\n", diagramFileName, dependencyCounter,
 				getEnsembleName(source), getEnsembleName(target), connection.getName());
-		if (connection instanceof Outgoing) {
-			transactionSB.append("outgoing").append(dependencySuffix);
-		} else if (connection instanceof Incoming) {
-			transactionSB.append("incoming").append(dependencySuffix);
-		} else if (connection instanceof Expected) {
-			transactionSB.append("expected").append(dependencySuffix);
-		} else if (connection instanceof NotAllowed) {
-			transactionSB.append("not_allowed").append(dependencySuffix);
-		} else if (connection instanceof InAndOut) {
+		
+		if (connection instanceof InAndOut) {
 			transactionSB.append("incoming").append(dependencySuffix);
 			transactionSB.append("outgoing").append(dependencySuffix);
+		} else {
+			final String connectionName = getDependencyTypeIdentifier(connection);			
+			transactionSB.append(connectionName).append(dependencySuffix);
 		}
 
 		dependencyCounter++;
 		return transactionSB.toString();
+	}
+
+	/**
+	 * Do not use this method for InAndOut connection, for there are two
+	 * types connected with this.
+	 * 
+	 * @param connection Connection to get the type name from.
+	 * @return Type identifier for the given Connection.
+	 */
+	private static String getDependencyTypeIdentifier(final Connection connection) {
+		String connectionName = "";
+		
+		if (connection instanceof Outgoing) {
+			connectionName = "outgoing";
+		} else if (connection instanceof Incoming) {
+			connectionName = "incoming";
+		} else if (connection instanceof Expected) {
+			connectionName = "expected";
+		} else if (connection instanceof NotAllowed) {
+			connectionName = "not_allowed";
+		} else if (connection instanceof GlobalIncoming) {
+			connectionName = "global_incoming";
+		} else if (connection instanceof GlobalOutgoing) {
+			connectionName = "global_outgoing";
+		} else if (connection instanceof Warning) {
+			connectionName = "warning";
+		} else {
+			throw new VespucciIllegalArgumentException(
+					String.format("Unsupported dependency type: %s", connection));
+		}
+		
+		return connectionName;
 	}
 
 	/**

@@ -31,30 +31,27 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
-
-import org.eclipse.gmf.runtime.common.core.command.ICommand;
-import org.eclipse.gmf.runtime.common.core.command.UnexecutableCommand;
-import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
-
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
 /**
- * @generated
+ * OutlineInAndOutSourceConnectionEditPart
+ * 
+ * @author Artem Vovk
+ * 
  */
-public class WarningEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
+public class OutlineGlobalIncomingSourceConnectionEditPart extends
+		OutlineSourceConnectionEditPart {
 
-	/**
-	 * @author Theo Kischka, Dominic Scheurer
-	 * @generated NOT
-	 */
+	private static final String IMAGE = "icons/outline/globalIncoming_s.gif";
+
+	public OutlineGlobalIncomingSourceConnectionEditPart(Object model) {
+		super(model);
+
+	}
+
 	@Override
-	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
-		if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
-			return UnexecutableCommand.INSTANCE;
-		} else {
-			return super.getReorientRelationshipCommand(request);
-		}
+	protected String getImagePath() {
+		return IMAGE;
 	}
 
 }

@@ -14,6 +14,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTyp
  * for more context.
  * 
  * @author Alexander Weitzmann
+ * @author Dominic Scheurer
  * @version 0.1
  * 
  */
@@ -33,6 +34,12 @@ public class SetConstraintTypeParameter implements IParameterValues {
 				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID));
 		values.put("Expected", VespucciElementTypes
 				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID));
+		values.put("Global Incoming", VespucciElementTypes
+				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID));
+		values.put("Global Outgoing", VespucciElementTypes
+				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID));
+		values.put("Warning", VespucciElementTypes
+				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID));
 		return values;
 	}
 

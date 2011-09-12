@@ -108,15 +108,22 @@ import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
+import de.tud.cs.st.vespucci.vespucci_model.Warning;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineDummyEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineExpectedSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineExpectedTargetConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineGlobalIncomingSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineGlobalIncomingTargetConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineGlobalOutgoingSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineGlobalOutgoingTargetConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineInAndOutSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineInAndOutTargetConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineIncomingSourceConnectionEditPart;
@@ -126,6 +133,8 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineNo
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingTargetConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineRootEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineWarningSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineWarningTargetConnectionEditPart;
 
 /**
  * @generated
@@ -307,6 +316,12 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 						return new OutlineInAndOutSourceConnectionEditPart(model);
 					} else if (conn instanceof NotAllowed) {
 						return new OutlineNotAllowedSourceConnectionEditPart(model);
+					} else if (conn instanceof GlobalIncoming) {
+						return new OutlineGlobalIncomingSourceConnectionEditPart(model);
+					} else if (conn instanceof GlobalOutgoing) {
+						return new OutlineGlobalOutgoingSourceConnectionEditPart(model);
+					} else if (conn instanceof Warning) {
+						return new OutlineWarningSourceConnectionEditPart(model);
 					} else {
 						throw new VespucciIllegalArgumentException(String.format("Unsupported connection [%s].", conn));
 					}
@@ -321,6 +336,12 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 						return new OutlineInAndOutTargetConnectionEditPart(model);
 					} else if (conn instanceof NotAllowed) {
 						return new OutlineNotAllowedTargetConnectionEditPart(model);
+					} else if (conn instanceof GlobalIncoming) {
+						return new OutlineGlobalIncomingTargetConnectionEditPart(model);
+					} else if (conn instanceof GlobalOutgoing) {
+						return new OutlineGlobalOutgoingTargetConnectionEditPart(model);
+					} else if (conn instanceof Warning) {
+						return new OutlineWarningTargetConnectionEditPart(model);
 					} else {
 						throw new VespucciIllegalArgumentException(String.format("Unsupported connection [%s].", conn));
 					}
