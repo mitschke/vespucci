@@ -87,6 +87,11 @@ public class ExceptionMarkArrowPolylineDecoration extends PolygonDecoration {
 	public Rectangle getBounds() {
 		final Rectangle boundsWithoutArrowAndQM = super.getBounds();
 		
+		// location may be null at application startup
+		if (location == null) {
+			return boundsWithoutArrowAndQM;
+		}
+		
 		int heightDiff = 0;
 		int yDiff = 0;
 		
