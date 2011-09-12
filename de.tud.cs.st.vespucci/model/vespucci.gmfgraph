@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <gmfgraph:Canvas xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -201,10 +201,6 @@
       <template
           x="-10"/>
     </figures>
-    <figures
-        xsi:type="gmfgraph:CustomDecoration"
-        name="TriangleArrowDecoration"
-        qualifiedClassName="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExclamationMarkArrowPolylineDecoration"/>
     <descriptors
         name="EnsembleFigure">
       <actualFigure
@@ -443,7 +439,7 @@
           xsi:type="gmfgraph:PolylineConnection"
           name="WarningFigure"
           lineKind="LINE_DASH"
-          targetDecoration="//@figures.0/@figures.7">
+          targetDecoration="//@figures.0/@figures.0">
         <foregroundColor
             xsi:type="gmfgraph:ConstantColor"
             value="black"/>

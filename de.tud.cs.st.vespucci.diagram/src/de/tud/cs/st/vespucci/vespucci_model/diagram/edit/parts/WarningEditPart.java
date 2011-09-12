@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -33,9 +33,12 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts;
 
+import org.eclipse.draw2d.ArrowLocator;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PolylineDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.gef.EditPart;
@@ -135,6 +138,24 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 	}
 
 	/**
+	 * @generated NOT
+	 */
+	public class MiddleDecorationLocator extends ArrowLocator {
+		public MiddleDecorationLocator(Connection connection) {
+			super(connection, MIDDLE); // always put it as the middle
+		}
+
+		public void relocate(IFigure target) {
+			PointList points = getConnection().getPoints();
+			RotatableDecoration decoration = (RotatableDecoration) target;
+			decoration.setLocation(getLocation(points));
+
+			// always set the rotation reference point to the target anchor point
+			decoration.setReferencePoint(points.getPoint(points.size() - 2));
+		}
+	}
+
+	/**
 	 * @generated
 	 */
 	public class WarningFigure extends PolylineConnectionEx {
@@ -156,7 +177,7 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 		}
 
 		/**
-		 * @generated
+		 * @generated NOT
 		 */
 		private void createContents() {
 
@@ -164,30 +185,22 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 			fFigureWarningNameFigure.setText("all");
 
 			this.add(fFigureWarningNameFigure);
-
+			
+			// Add warning triangle in the middle of the connection
+			this.add(new WarningDecoration(), new MiddleDecorationLocator(this));
 		}
 
 		/**
-		 * @generated NOT
-		 * @author Dominic Scheurer
-		 * @return Custom decoration with a warning triangle and an arrow
+		 * @generated
 		 */
 		private RotatableDecoration createTargetDecoration() {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExclamationMarkArrowPolylineDecoration df = new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExclamationMarkArrowPolylineDecoration();
-
-			df.setFill(true);
-			df.setBackgroundColor(ColorConstants.white);
+			PolylineDecoration df = new PolylineDecoration();
 			PointList pl = new PointList();
-
-			// Paint triangle
-			pl.addPoint(getMapMode().DPtoLP(-27), getMapMode().DPtoLP(-9));
-			pl.addPoint(getMapMode().DPtoLP(-37), getMapMode().DPtoLP(8));
-			pl.addPoint(getMapMode().DPtoLP(-17), getMapMode().DPtoLP(8));
-			pl.addPoint(getMapMode().DPtoLP(-27), getMapMode().DPtoLP(-9));
-
+			pl.addPoint(getMapMode().DPtoLP(-1), getMapMode().DPtoLP(1));
+			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
+			pl.addPoint(getMapMode().DPtoLP(-1), getMapMode().DPtoLP(-1));
 			df.setTemplate(pl);
-
-			df.setScale(getMapMode().DPtoLP(1), getMapMode().DPtoLP(1));
+			df.setScale(getMapMode().DPtoLP(7), getMapMode().DPtoLP(3));
 			return df;
 		}
 
