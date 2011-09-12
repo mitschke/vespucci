@@ -38,6 +38,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PolylineDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.gef.EditPart;
@@ -135,20 +136,22 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 	public WarningFigure getPrimaryShape() {
 		return (WarningFigure) getFigure();
 	}
-	
 
-	public class MiddleArrowLocator extends ArrowLocator {
-		public MiddleArrowLocator(Connection connection) {
+	/**
+	 * @generated NOT
+	 */
+	public class MiddleDecorationLocator extends ArrowLocator {
+		public MiddleDecorationLocator(Connection connection) {
 			super(connection, MIDDLE); // always put it as the middle
 		}
 
 		public void relocate(IFigure target) {
 			PointList points = getConnection().getPoints();
-			RotatableDecoration arrow = (RotatableDecoration) target;
-			arrow.setLocation(getLocation(points));
+			RotatableDecoration decoration = (RotatableDecoration) target;
+			decoration.setLocation(getLocation(points));
 
 			// always set the rotation reference point to the target anchor point
-			arrow.setReferencePoint(points.getPoint(points.size() - 2));
+			decoration.setReferencePoint(points.getPoint(points.size() - 2));
 		}
 	}
 
@@ -174,7 +177,7 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 		}
 
 		/**
-		 * @generated
+		 * @generated NOT
 		 */
 		private void createContents() {
 
@@ -182,32 +185,22 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 			fFigureWarningNameFigure.setText("all");
 
 			this.add(fFigureWarningNameFigure);
-
-			RotatableDecoration qm = new ExceptionMarkArrowPolylineDecoration();
-			this.add(qm, new MiddleArrowLocator(this));
+			
+			// Add warning triangle in the middle of the connection
+			this.add(new WarningDecoration(), new MiddleDecorationLocator(this));
 		}
 
 		/**
-		 * @generated NOT
-		 * @author Dominic Scheurer
-		 * @return Custom decoration with a warning triangle and an arrow
+		 * @generated
 		 */
 		private RotatableDecoration createTargetDecoration() {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExceptionMarkArrowPolylineDecoration df = new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExceptionMarkArrowPolylineDecoration();
-
-			df.setFill(true);
-			df.setBackgroundColor(ColorConstants.white);
+			PolylineDecoration df = new PolylineDecoration();
 			PointList pl = new PointList();
-
-			// Paint triangle
-			pl.addPoint(getMapMode().DPtoLP(-27), getMapMode().DPtoLP(-9));
-			pl.addPoint(getMapMode().DPtoLP(-37), getMapMode().DPtoLP(8));
-			pl.addPoint(getMapMode().DPtoLP(-17), getMapMode().DPtoLP(8));
-			pl.addPoint(getMapMode().DPtoLP(-27), getMapMode().DPtoLP(-9));
-
+			pl.addPoint(getMapMode().DPtoLP(-1), getMapMode().DPtoLP(1));
+			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
+			pl.addPoint(getMapMode().DPtoLP(-1), getMapMode().DPtoLP(-1));
 			df.setTemplate(pl);
-
-			df.setScale(getMapMode().DPtoLP(1), getMapMode().DPtoLP(1));
+			df.setScale(getMapMode().DPtoLP(7), getMapMode().DPtoLP(3));
 			return df;
 		}
 
