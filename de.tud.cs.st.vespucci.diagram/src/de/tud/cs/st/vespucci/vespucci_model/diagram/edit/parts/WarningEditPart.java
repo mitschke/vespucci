@@ -173,7 +173,7 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 		 * @return Custom decoration with a warning triangle and an arrow
 		 */
 		private RotatableDecoration createTargetDecoration() {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExceptionMarkArrowPolylineDecoration df = new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExceptionMarkArrowPolylineDecoration();
+			de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExclamationMarkArrowPolylineDecoration df = new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExclamationMarkArrowPolylineDecoration();
 
 			df.setFill(true);
 			df.setBackgroundColor(ColorConstants.white);

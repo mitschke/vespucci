@@ -204,7 +204,7 @@
     <figures
         xsi:type="gmfgraph:CustomDecoration"
         name="TriangleArrowDecoration"
-        qualifiedClassName="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExceptionMarkArrowPolylineDecoration"/>
+        qualifiedClassName="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExclamationMarkArrowPolylineDecoration"/>
     <descriptors
         name="EnsembleFigure">
       <actualFigure

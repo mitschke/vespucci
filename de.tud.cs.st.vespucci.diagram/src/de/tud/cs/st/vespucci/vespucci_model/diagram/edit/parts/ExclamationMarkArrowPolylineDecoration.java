@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Dominic Scheurer
  */
-public class ExceptionMarkArrowPolylineDecoration extends PolygonDecoration {
+public class ExclamationMarkArrowPolylineDecoration extends PolygonDecoration {
 	
 	private static final int ARROW_WIDTH = 7;
 	private static final int ARROW_HEIGHT = 6;
@@ -67,7 +67,7 @@ public class ExceptionMarkArrowPolylineDecoration extends PolygonDecoration {
 	private Transform transform = new Transform();
 	private Point location = new Point();
 
-	public ExceptionMarkArrowPolylineDecoration() {
+	public ExclamationMarkArrowPolylineDecoration() {
 		transform.setScale(1.0);
 	}
 	
@@ -78,39 +78,39 @@ public class ExceptionMarkArrowPolylineDecoration extends PolygonDecoration {
 		graphics.setLineWidth(1);		
 		graphics.setBackgroundColor(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 		
-		paintQuestionMark(graphics);
+		paintExclamationMark(graphics);
 		
 		paintArrow(graphics);
 	}
 	
 	@Override
 	public Rectangle getBounds() {
-		final Rectangle boundsWithoutArrowAndQM = super.getBounds();
+		final Rectangle boundsWithoutArrowAndEM = super.getBounds();
 		
 		// location may be null at application startup
 		if (location == null) {
-			return boundsWithoutArrowAndQM;
+			return boundsWithoutArrowAndEM;
 		}
 		
 		int heightDiff = 0;
 		int yDiff = 0;
 		
-		if (!boundsWithoutArrowAndQM.contains(location)) {
+		if (!boundsWithoutArrowAndEM.contains(location)) {
 			// Arrow not visible => correct that
 			
-			if (location.y < boundsWithoutArrowAndQM.y) {
-				heightDiff += boundsWithoutArrowAndQM.y - location.y;				
+			if (location.y < boundsWithoutArrowAndEM.y) {
+				heightDiff += boundsWithoutArrowAndEM.y - location.y;				
 				yDiff = -heightDiff;
 			} else {
-				heightDiff += location.y - boundsWithoutArrowAndQM.getBottom().y;
+				heightDiff += location.y - boundsWithoutArrowAndEM.getBottom().y;
 			}
 		}
 		
 		return new Rectangle(
-				boundsWithoutArrowAndQM.x,
-				boundsWithoutArrowAndQM.y + yDiff,
-				boundsWithoutArrowAndQM.width + ARROW_WIDTH + ARROW_MARGIN_RIGHT,
-				boundsWithoutArrowAndQM.height + heightDiff);
+				boundsWithoutArrowAndEM.x,
+				boundsWithoutArrowAndEM.y + yDiff,
+				boundsWithoutArrowAndEM.width + ARROW_WIDTH + ARROW_MARGIN_RIGHT,
+				boundsWithoutArrowAndEM.height + heightDiff);
 	}
 	
 	@Override
@@ -138,7 +138,7 @@ public class ExceptionMarkArrowPolylineDecoration extends PolygonDecoration {
 		transform.setRotation(angle);
 	}
 	
-	private void paintQuestionMark(Graphics graphics) {
+	private void paintExclamationMark(Graphics graphics) {
 		Point lineStartPoint = new Point(LINE_XPOS, LINE_Y1);
 		Point lineEndPoint = new Point(LINE_XPOS, LINE_Y2);
 
