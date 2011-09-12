@@ -64,6 +64,8 @@ public class ExceptionMarkArrowPolylineDecoration extends PolygonDecoration {
 	private static final int DOT_POS_Y = 5;
 	private static final int DOT_RADIUS = 2;
 	
+	private static final int DECORATION_MIN_HEIGHT = 20;
+	
 	private Transform transform = new Transform();
 	private Point location = new Point();
 
@@ -110,7 +112,7 @@ public class ExceptionMarkArrowPolylineDecoration extends PolygonDecoration {
 				boundsWithoutArrowAndQM.x,
 				boundsWithoutArrowAndQM.y + yDiff,
 				boundsWithoutArrowAndQM.width + ARROW_WIDTH + ARROW_MARGIN_RIGHT,
-				boundsWithoutArrowAndQM.height + heightDiff);
+				boundsWithoutArrowAndQM.height + heightDiff <= DECORATION_MIN_HEIGHT ? DECORATION_MIN_HEIGHT : boundsWithoutArrowAndQM.height + heightDiff);
 	}
 	
 	@Override

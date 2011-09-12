@@ -33,9 +33,11 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts;
 
+import org.eclipse.draw2d.ArrowLocator;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.gef.EditPart;
@@ -133,6 +135,22 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 	public WarningFigure getPrimaryShape() {
 		return (WarningFigure) getFigure();
 	}
+	
+
+	public class MiddleArrowLocator extends ArrowLocator {
+		public MiddleArrowLocator(Connection connection) {
+			super(connection, MIDDLE); // always put it as the middle
+		}
+
+		public void relocate(IFigure target) {
+			PointList points = getConnection().getPoints();
+			RotatableDecoration arrow = (RotatableDecoration) target;
+			arrow.setLocation(getLocation(points));
+
+			// always set the rotation reference point to the target anchor point
+			arrow.setReferencePoint(points.getPoint(points.size() - 2));
+		}
+	}
 
 	/**
 	 * @generated
@@ -165,6 +183,8 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 
 			this.add(fFigureWarningNameFigure);
 
+			RotatableDecoration qm = new ExceptionMarkArrowPolylineDecoration();
+			this.add(qm, new MiddleArrowLocator(this));
 		}
 
 		/**
