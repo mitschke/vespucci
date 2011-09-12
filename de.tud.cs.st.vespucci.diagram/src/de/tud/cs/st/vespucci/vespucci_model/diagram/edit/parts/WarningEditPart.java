@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.PointList;
@@ -169,16 +170,31 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 		}
 
 		/**
-		 * @generated
+		 * @generated NOT
 		 */
 		private RotatableDecoration createTargetDecoration() {
-			PolylineDecoration df = new PolylineDecoration();
+			de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.TriangleArrowDecoration df = new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.TriangleArrowDecoration();
+
+			df.setFill(true);
+			df.setBackgroundColor(ColorConstants.white);
 			PointList pl = new PointList();
-			pl.addPoint(getMapMode().DPtoLP(-1), getMapMode().DPtoLP(1));
-			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
-			pl.addPoint(getMapMode().DPtoLP(-1), getMapMode().DPtoLP(-1));
+//			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
+//			pl.addPoint(getMapMode().DPtoLP(-7), getMapMode().DPtoLP(3));
+//			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
+//			pl.addPoint(getMapMode().DPtoLP(-7), getMapMode().DPtoLP(-3));
+//			pl.addPoint(getMapMode().DPtoLP(0), getMapMode().DPtoLP(0));
+//			
+//			pl.addPoint(getMapMode().DPtoLP(-22), getMapMode().DPtoLP(0));
+			
+			// Paint triangle
+			pl.addPoint(getMapMode().DPtoLP(-27), getMapMode().DPtoLP(-9));
+			pl.addPoint(getMapMode().DPtoLP(-37), getMapMode().DPtoLP(8));
+			pl.addPoint(getMapMode().DPtoLP(-17), getMapMode().DPtoLP(8));
+			pl.addPoint(getMapMode().DPtoLP(-27), getMapMode().DPtoLP(-9));
+			
 			df.setTemplate(pl);
-			df.setScale(getMapMode().DPtoLP(7), getMapMode().DPtoLP(3));
+			
+			df.setScale(getMapMode().DPtoLP(1), getMapMode().DPtoLP(1));
 			return df;
 		}
 
