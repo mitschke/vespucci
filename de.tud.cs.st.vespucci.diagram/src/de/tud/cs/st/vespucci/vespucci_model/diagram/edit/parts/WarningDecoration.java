@@ -79,6 +79,16 @@ public class WarningDecoration extends PolygonDecoration {
 
 		paintExclamationMark(graphics);
 	}
+	
+	@Override
+	public boolean isOpaque() {
+		return true;
+	}
+	
+	@Override
+	protected boolean shapeContainsPoint(int x, int y) {
+		return getBounds().contains(x, y);
+	}
 
 	@Override
 	public Rectangle getBounds() {
