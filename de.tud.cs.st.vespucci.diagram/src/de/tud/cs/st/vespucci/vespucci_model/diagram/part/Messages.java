@@ -376,12 +376,12 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String Warning8CreationTool_title;
+	public static String Violation8CreationTool_title;
 
 	/**
 	 * @generated
 	 */
-	public static String Warning8CreationTool_desc;
+	public static String Violation8CreationTool_desc;
 
 	/**
 	 * @generated
@@ -461,16 +461,6 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Warning_4008_target;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Warning_4008_source;
-
-	/**
-	 * @generated
-	 */
 	public static String NavigatorGroupName_GlobalIncoming_4006_target;
 
 	/**
@@ -532,6 +522,16 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String NavigatorGroupName_Outgoing_4003_source;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Violation_4009_target;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Violation_4009_source;
 
 	/**
 	 * @generated

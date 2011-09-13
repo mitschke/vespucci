@@ -52,7 +52,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
-import de.tud.cs.st.vespucci.vespucci_model.Warning;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -156,7 +156,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass warningEClass = null;
+	private EClass violationEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -449,8 +449,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getWarning() {
-		return warningEClass;
+	public EClass getViolation() {
+		return violationEClass;
 	}
 
 	/**
@@ -518,7 +518,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 
 		globalIncomingEClass = createEClass(GLOBAL_INCOMING);
 
-		warningEClass = createEClass(WARNING);
+		violationEClass = createEClass(VIOLATION);
 	}
 
 	/**
@@ -558,7 +558,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		expectedEClass.getESuperTypes().add(this.getConnection());
 		globalOutgoingEClass.getESuperTypes().add(this.getConnection());
 		globalIncomingEClass.getESuperTypes().add(this.getConnection());
-		warningEClass.getESuperTypes().add(this.getConnection());
+		violationEClass.getESuperTypes().add(this.getConnection());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(shapesDiagramEClass, ShapesDiagram.class, "ShapesDiagram", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -598,7 +598,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 
 		initEClass(globalIncomingEClass, GlobalIncoming.class, "GlobalIncoming", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(warningEClass, Warning.class, "Warning", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(violationEClass, Violation.class, "Violation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

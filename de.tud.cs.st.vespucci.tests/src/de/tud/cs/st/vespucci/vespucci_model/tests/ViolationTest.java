@@ -1,6 +1,7 @@
-/*
+/**
  *  License (BSD Style License):
- *   Copyright (c) 2011
+ *   Copyright (c) 2010
+ *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -31,30 +32,71 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
+package de.tud.cs.st.vespucci.vespucci_model.tests;
 
-import org.eclipse.gmf.runtime.common.core.command.ICommand;
-import org.eclipse.gmf.runtime.common.core.command.UnexecutableCommand;
-import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import junit.textui.TestRunner;
 
 /**
+ * <!-- begin-user-doc -->
+ * A test case for the model object '<em><b>Violation</b></em>'.
+ * <!-- end-user-doc -->
  * @generated
  */
-public class WarningEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
+public class ViolationTest extends ConnectionTest {
 
 	/**
-	 * @author Theo Kischka, Dominic Scheurer
-	 * @generated NOT
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
 	 */
-	@Override
-	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
-		if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
-			return UnexecutableCommand.INSTANCE;
-		} else {
-			return super.getReorientRelationshipCommand(request);
-		}
+	public static void main(String[] args) {
+		TestRunner.run(ViolationTest.class);
 	}
 
-}
+	/**
+	 * Constructs a new Violation test case with the given name.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ViolationTest(String name) {
+		super(name);
+	}
+
+	/**
+	 * Returns the fixture for this Violation test case.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected Violation getFixture() {
+		return (Violation)fixture;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		setFixture(Vespucci_modelFactory.eINSTANCE.createViolation());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		setFixture(null);
+	}
+
+} //ViolationTest

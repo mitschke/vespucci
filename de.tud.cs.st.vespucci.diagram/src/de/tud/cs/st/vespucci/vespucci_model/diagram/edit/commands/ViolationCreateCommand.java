@@ -48,7 +48,7 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateRelationshipRequest;
 /**
  * @generated
  */
-public class WarningCreateCommand extends EditElementCommand {
+public class ViolationCreateCommand extends EditElementCommand {
 
 	/**
 	 * @generated
@@ -68,7 +68,7 @@ public class WarningCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	public WarningCreateCommand(CreateRelationshipRequest request, EObject source, EObject target) {
+	public ViolationCreateCommand(CreateRelationshipRequest request, EObject source, EObject target) {
 		super(request.getLabel(), null, request);
 		this.source = source;
 		this.target = target;
@@ -96,7 +96,7 @@ public class WarningCreateCommand extends EditElementCommand {
 			return false;
 		}
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canCreateWarning_4008(getContainer(), getSource(), getTarget());
+				.canCreateViolation_4009(getContainer(), getSource(), getTarget());
 	}
 
 	/**
@@ -107,8 +107,8 @@ public class WarningCreateCommand extends EditElementCommand {
 			throw new ExecutionException("Invalid arguments in create link command"); //$NON-NLS-1$
 		}
 
-		de.tud.cs.st.vespucci.vespucci_model.Warning newElement = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
-				.createWarning();
+		de.tud.cs.st.vespucci.vespucci_model.Violation newElement = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
+				.createViolation();
 		getContainer().getTargetConnections().add(newElement);
 		newElement.setSource(getSource());
 		newElement.setTarget(getTarget());
@@ -121,8 +121,8 @@ public class WarningCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	protected void doConfigure(de.tud.cs.st.vespucci.vespucci_model.Warning newElement, IProgressMonitor monitor, IAdaptable info)
-			throws ExecutionException {
+	protected void doConfigure(de.tud.cs.st.vespucci.vespucci_model.Violation newElement, IProgressMonitor monitor,
+			IAdaptable info) throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);
 		configureRequest.setClientContext(((CreateElementRequest) getRequest()).getClientContext());

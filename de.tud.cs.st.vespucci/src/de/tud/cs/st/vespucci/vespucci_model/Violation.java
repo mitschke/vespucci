@@ -37,13 +37,13 @@ package de.tud.cs.st.vespucci.vespucci_model;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Warning</b></em>'.
+ * A representation of the model object '<em><b>Violation</b></em>'.
  * <!-- end-user-doc -->
  *
  *
- * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getWarning()
+ * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getViolation()
  * @model
  * @generated
  */
-public interface Warning extends Connection {
-} // Warning
+public interface Violation extends Connection {
+} // Violation

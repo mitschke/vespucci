@@ -42,5 +42,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="Expected" eSuperTypes="#//Connection"/>
   <eClassifiers xsi:type="ecore:EClass" name="GlobalOutgoing" eSuperTypes="#//Connection"/>
   <eClassifiers xsi:type="ecore:EClass" name="GlobalIncoming" eSuperTypes="#//Connection"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Warning" eSuperTypes="#//Connection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Violation" eSuperTypes="#//Connection"/>
 </ecore:EPackage>

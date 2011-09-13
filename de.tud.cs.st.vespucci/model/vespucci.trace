@@ -98,10 +98,10 @@
         queryText="true"/>
   </linkTraces>
   <linkTraces
-      visualID="4008"
-      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-06-01' and _eClass_.name = 'Warning')">
+      visualID="4009"
+      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-06-01' and _eClass_.name = 'Violation')">
     <linkLabelTraces
-        visualID="6008"
+        visualID="6009"
         queryText="true"/>
   </linkTraces>
 </trace:TraceModel>

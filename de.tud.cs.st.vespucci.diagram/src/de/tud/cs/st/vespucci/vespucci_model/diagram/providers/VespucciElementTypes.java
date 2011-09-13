@@ -138,7 +138,7 @@ public class VespucciElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType Warning_4008 = getElementType("de.tud.cs.st.vespucci.diagram.Warning_4008"); //$NON-NLS-1$
+	public static final IElementType Violation_4009 = getElementType("de.tud.cs.st.vespucci.diagram.Violation_4009"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -274,7 +274,7 @@ public class VespucciElementTypes {
 			elements.put(GlobalOutgoing_4007,
 					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getGlobalOutgoing());
 
-			elements.put(Warning_4008, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getWarning());
+			elements.put(Violation_4009, de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getViolation());
 		}
 		return (ENamedElement) elements.get(type);
 	}
@@ -304,7 +304,7 @@ public class VespucciElementTypes {
 			KNOWN_ELEMENT_TYPES.add(Expected_4002);
 			KNOWN_ELEMENT_TYPES.add(GlobalIncoming_4006);
 			KNOWN_ELEMENT_TYPES.add(GlobalOutgoing_4007);
-			KNOWN_ELEMENT_TYPES.add(Warning_4008);
+			KNOWN_ELEMENT_TYPES.add(Violation_4009);
 		}
 		return KNOWN_ELEMENT_TYPES.contains(elementType);
 	}
@@ -338,8 +338,8 @@ public class VespucciElementTypes {
 				return GlobalIncoming_4006;
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
 				return GlobalOutgoing_4007;
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
-				return Warning_4008;
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+				return Violation_4009;
 		}
 		return null;
 	}

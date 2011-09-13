@@ -273,8 +273,8 @@ public class VespucciViewProvider extends AbstractProvider implements IViewProvi
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
 				return createGlobalOutgoing_4007(getSemanticElement(semanticAdapter), containerView, index, persisted,
 						preferencesHint);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
-				return createWarning_4008(getSemanticElement(semanticAdapter), containerView, index, persisted, preferencesHint);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+				return createViolation_4009(getSemanticElement(semanticAdapter), containerView, index, persisted, preferencesHint);
 		}
 		// can never happen, provided #provides(CreateEdgeViewOperation) is correct
 		return null;
@@ -763,7 +763,7 @@ public class VespucciViewProvider extends AbstractProvider implements IViewProvi
 	/**
 	 * @generated
 	 */
-	public Edge createWarning_4008(EObject domainElement, View containerView, int index, boolean persisted,
+	public Edge createViolation_4009(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Edge edge = NotationFactory.eINSTANCE.createEdge();
 		edge.getStyles().add(NotationFactory.eINSTANCE.createRoutingStyle());
@@ -776,7 +776,7 @@ public class VespucciViewProvider extends AbstractProvider implements IViewProvi
 		edge.setBendpoints(bendpoints);
 		ViewUtil.insertChildView(containerView, edge, index, persisted);
 		edge.setType(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-				.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID));
+				.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
 		edge.setElement(domainElement);
 		// initializePreferences
 		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
@@ -794,13 +794,13 @@ public class VespucciViewProvider extends AbstractProvider implements IViewProvi
 		if (routing != null) {
 			ViewUtil.setStructuralFeatureValue(edge, NotationPackage.eINSTANCE.getRoutingStyle_Routing(), routing);
 		}
-		Node label6008 = createLabel(edge,
+		Node label6009 = createLabel(edge,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart.VISUAL_ID));
-		label6008.setLayoutConstraint(NotationFactory.eINSTANCE.createLocation());
-		Location location6008 = (Location) label6008.getLayoutConstraint();
-		location6008.setX(-7);
-		location6008.setY(-7);
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationNameEditPart.VISUAL_ID));
+		label6009.setLayoutConstraint(NotationFactory.eINSTANCE.createLocation());
+		Location location6009 = (Location) label6009.getLayoutConstraint();
+		location6009.setX(-7);
+		location6009.setY(-7);
 		return edge;
 	}
 

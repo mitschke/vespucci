@@ -111,7 +111,7 @@ public class DummyItemSemanticEditPolicy extends
 				cmd.add(new DeleteCommand(getEditingDomain(), incomingLink));
 				continue;
 			}
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(incomingLink) == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID) {
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(incomingLink) == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID) {
 				DestroyElementRequest r = new DestroyElementRequest(incomingLink.getElement(), false);
 				cmd.add(new DestroyElementCommand(r));
 				cmd.add(new DeleteCommand(getEditingDomain(), incomingLink));
@@ -162,7 +162,7 @@ public class DummyItemSemanticEditPolicy extends
 				cmd.add(new DeleteCommand(getEditingDomain(), outgoingLink));
 				continue;
 			}
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(outgoingLink) == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID) {
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(outgoingLink) == de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID) {
 				DestroyElementRequest r = new DestroyElementRequest(outgoingLink.getElement(), false);
 				cmd.add(new DestroyElementCommand(r));
 				cmd.add(new DeleteCommand(getEditingDomain(), outgoingLink));
@@ -224,8 +224,8 @@ public class DummyItemSemanticEditPolicy extends
 			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.GlobalOutgoingCreateCommand(req,
 					req.getSource(), req.getTarget()));
 		}
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008 == req.getElementType()) {
-			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.WarningCreateCommand(req,
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009 == req.getElementType()) {
+			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.ViolationCreateCommand(req,
 					req.getSource(), req.getTarget()));
 		}
 		return null;
@@ -265,8 +265,8 @@ public class DummyItemSemanticEditPolicy extends
 			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.GlobalOutgoingCreateCommand(req,
 					req.getSource(), req.getTarget()));
 		}
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008 == req.getElementType()) {
-			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.WarningCreateCommand(req,
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009 == req.getElementType()) {
+			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.ViolationCreateCommand(req,
 					req.getSource(), req.getTarget()));
 		}
 		return null;
@@ -296,8 +296,8 @@ public class DummyItemSemanticEditPolicy extends
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
 				return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.GlobalOutgoingReorientCommand(
 						req));
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
-				return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.WarningReorientCommand(req));
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+				return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.ViolationReorientCommand(req));
 		}
 		return super.getReorientRelationshipCommand(req);
 	}

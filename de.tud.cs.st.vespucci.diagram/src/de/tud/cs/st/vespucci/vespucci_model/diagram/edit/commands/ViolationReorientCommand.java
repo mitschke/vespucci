@@ -44,7 +44,7 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipReques
 /**
  * @generated
  */
-public class WarningReorientCommand extends EditElementCommand {
+public class ViolationReorientCommand extends EditElementCommand {
 
 	/**
 	 * @generated
@@ -64,7 +64,7 @@ public class WarningReorientCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	public WarningReorientCommand(ReorientRelationshipRequest request) {
+	public ViolationReorientCommand(ReorientRelationshipRequest request) {
 		super(request.getLabel(), request.getRelationship(), request);
 		reorientDirection = request.getDirection();
 		oldEnd = request.getOldRelationshipEnd();
@@ -75,7 +75,7 @@ public class WarningReorientCommand extends EditElementCommand {
 	 * @generated
 	 */
 	public boolean canExecute() {
-		if (false == getElementToEdit() instanceof de.tud.cs.st.vespucci.vespucci_model.Warning) {
+		if (false == getElementToEdit() instanceof de.tud.cs.st.vespucci.vespucci_model.Violation) {
 			return false;
 		}
 		if (reorientDirection == ReorientRelationshipRequest.REORIENT_SOURCE) {
@@ -101,7 +101,7 @@ public class WarningReorientCommand extends EditElementCommand {
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canExistWarning_4008(container, getLink(), getNewSource(), target);
+				.canExistViolation_4009(container, getLink(), getNewSource(), target);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class WarningReorientCommand extends EditElementCommand {
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canExistWarning_4008(container, getLink(), source, getNewTarget());
+				.canExistViolation_4009(container, getLink(), source, getNewTarget());
 	}
 
 	/**
@@ -156,8 +156,8 @@ public class WarningReorientCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	protected de.tud.cs.st.vespucci.vespucci_model.Warning getLink() {
-		return (de.tud.cs.st.vespucci.vespucci_model.Warning) getElementToEdit();
+	protected de.tud.cs.st.vespucci.vespucci_model.Violation getLink() {
+		return (de.tud.cs.st.vespucci.vespucci_model.Violation) getElementToEdit();
 	}
 
 	/**

@@ -316,22 +316,22 @@ public class VespucciParserProvider extends AbstractProvider implements IParserP
 	/**
 	 * @generated
 	 */
-	private IParser warningName_6008Parser;
+	private IParser violationName_6009Parser;
 
 	/**
 	 * @generated
 	 */
-	private IParser getWarningName_6008Parser() {
-		if (warningName_6008Parser == null) {
+	private IParser getViolationName_6009Parser() {
+		if (violationName_6009Parser == null) {
 			EAttribute[] features = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 					.getConnection_Name() };
 			EAttribute[] editableFeatures = new EAttribute[] { de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 					.getConnection_Name() };
 			de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser parser = new de.tud.cs.st.vespucci.vespucci_model.diagram.parsers.MessageFormatParser(
 					features, editableFeatures);
-			warningName_6008Parser = parser;
+			violationName_6009Parser = parser;
 		}
-		return warningName_6008Parser;
+		return violationName_6009Parser;
 	}
 
 	/**
@@ -365,8 +365,8 @@ public class VespucciParserProvider extends AbstractProvider implements IParserP
 				return getGlobalIncomingName_6006Parser();
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingNameEditPart.VISUAL_ID:
 				return getGlobalOutgoingName_6007Parser();
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart.VISUAL_ID:
-				return getWarningName_6008Parser();
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationNameEditPart.VISUAL_ID:
+				return getViolationName_6009Parser();
 		}
 		return null;
 	}

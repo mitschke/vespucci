@@ -165,13 +165,13 @@ public interface Vespucci_modelFactory extends EFactory {
 	GlobalIncoming createGlobalIncoming();
 
 	/**
-	 * Returns a new object of class '<em>Warning</em>'.
+	 * Returns a new object of class '<em>Violation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Warning</em>'.
+	 * @return a new object of class '<em>Violation</em>'.
 	 * @generated
 	 */
-	Warning createWarning();
+	Violation createViolation();
 
 	/**
 	 * Returns the package supported by this factory.

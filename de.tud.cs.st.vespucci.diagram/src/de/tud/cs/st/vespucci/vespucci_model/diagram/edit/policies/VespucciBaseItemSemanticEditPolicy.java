@@ -401,9 +401,9 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		/**
 		 * @generated
 		 */
-		public boolean canCreateWarning_4008(de.tud.cs.st.vespucci.vespucci_model.Shape container,
+		public boolean canCreateViolation_4009(de.tud.cs.st.vespucci.vespucci_model.Shape container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source, de.tud.cs.st.vespucci.vespucci_model.Shape target) {
-			return canExistWarning_4008(container, null, source, target);
+			return canExistViolation_4009(container, null, source, target);
 		}
 
 		/**
@@ -670,8 +670,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		/**
 		 * @generated
 		 */
-		public boolean canExistWarning_4008(de.tud.cs.st.vespucci.vespucci_model.Shape container,
-				de.tud.cs.st.vespucci.vespucci_model.Warning linkInstance, de.tud.cs.st.vespucci.vespucci_model.Shape source,
+		public boolean canExistViolation_4009(de.tud.cs.st.vespucci.vespucci_model.Shape container,
+				de.tud.cs.st.vespucci.vespucci_model.Violation linkInstance, de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			try {
 				if (source == null) {

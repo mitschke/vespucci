@@ -76,12 +76,12 @@ import org.eclipse.swt.graphics.Image;
 /**
  * @generated
  */
-public class WarningNameEditPart extends LabelEditPart implements ITextAwareEditPart {
+public class ViolationNameEditPart extends LabelEditPart implements ITextAwareEditPart {
 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 6008;
+	public static final int VISUAL_ID = 6009;
 
 	/**
 	 * @generated
@@ -109,14 +109,14 @@ public class WarningNameEditPart extends LabelEditPart implements ITextAwareEdit
 	static {
 		registerSnapBackPosition(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart.VISUAL_ID),
+						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationNameEditPart.VISUAL_ID),
 				new Point(-7, -7));
 	}
 
 	/**
 	 * @generated
 	 */
-	public WarningNameEditPart(View view) {
+	public ViolationNameEditPart(View view) {
 		super(view);
 	}
 
@@ -325,9 +325,9 @@ public class WarningNameEditPart extends LabelEditPart implements ITextAwareEdit
 	public IParser getParser() {
 		if (parser == null) {
 			parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider.getParser(
-					de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008, getParserElement(),
-					de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-							.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart.VISUAL_ID));
+					de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009,
+					getParserElement(), de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+							.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationNameEditPart.VISUAL_ID));
 		}
 		return parser;
 	}

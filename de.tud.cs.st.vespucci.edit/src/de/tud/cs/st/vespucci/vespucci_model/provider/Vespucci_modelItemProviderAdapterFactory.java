@@ -383,26 +383,26 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.Warning} instances.
+	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.Violation} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected WarningItemProvider warningItemProvider;
+	protected ViolationItemProvider violationItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Warning}.
+	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Violation}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createWarningAdapter() {
-		if (warningItemProvider == null) {
-			warningItemProvider = new WarningItemProvider(this);
+	public Adapter createViolationAdapter() {
+		if (violationItemProvider == null) {
+			violationItemProvider = new ViolationItemProvider(this);
 		}
 
-		return warningItemProvider;
+		return violationItemProvider;
 	}
 
 	/**
@@ -516,7 +516,7 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 		if (expectedItemProvider != null) expectedItemProvider.dispose();
 		if (globalOutgoingItemProvider != null) globalOutgoingItemProvider.dispose();
 		if (globalIncomingItemProvider != null) globalIncomingItemProvider.dispose();
-		if (warningItemProvider != null) warningItemProvider.dispose();
+		if (violationItemProvider != null) violationItemProvider.dispose();
 	}
 
 }

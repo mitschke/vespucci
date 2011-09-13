@@ -905,14 +905,14 @@ public interface Vespucci_modelPackage extends EPackage {
 	int GLOBAL_INCOMING_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.WarningImpl <em>Warning</em>}' class.
+	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ViolationImpl <em>Violation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.WarningImpl
-	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getWarning()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.ViolationImpl
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getViolation()
 	 * @generated
 	 */
-	int WARNING = 12;
+	int VIOLATION = 12;
 
 	/**
 	 * The feature id for the '<em><b>Source</b></em>' reference.
@@ -921,7 +921,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WARNING__SOURCE = CONNECTION__SOURCE;
+	int VIOLATION__SOURCE = CONNECTION__SOURCE;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' reference.
@@ -930,7 +930,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WARNING__TARGET = CONNECTION__TARGET;
+	int VIOLATION__TARGET = CONNECTION__TARGET;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -939,7 +939,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WARNING__NAME = CONNECTION__NAME;
+	int VIOLATION__NAME = CONNECTION__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Temp</b></em>' attribute.
@@ -948,7 +948,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WARNING__TEMP = CONNECTION__TEMP;
+	int VIOLATION__TEMP = CONNECTION__TEMP;
 
 	/**
 	 * The feature id for the '<em><b>Original Source</b></em>' reference list.
@@ -957,7 +957,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WARNING__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
+	int VIOLATION__ORIGINAL_SOURCE = CONNECTION__ORIGINAL_SOURCE;
 
 	/**
 	 * The feature id for the '<em><b>Original Target</b></em>' reference list.
@@ -966,17 +966,16 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WARNING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+	int VIOLATION__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
 
 	/**
-	 * The number of structural features of the '<em>Warning</em>' class.
+	 * The number of structural features of the '<em>Violation</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WARNING_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 0;
-
+	int VIOLATION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 0;
 
 	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram <em>Shapes Diagram</em>}'.
@@ -1242,14 +1241,14 @@ public interface Vespucci_modelPackage extends EPackage {
 	EClass getGlobalIncoming();
 
 	/**
-	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Warning <em>Warning</em>}'.
+	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Violation <em>Violation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Warning</em>'.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Warning
+	 * @return the meta object for class '<em>Violation</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Violation
 	 * @generated
 	 */
-	EClass getWarning();
+	EClass getViolation();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1498,14 +1497,14 @@ public interface Vespucci_modelPackage extends EPackage {
 		EClass GLOBAL_INCOMING = eINSTANCE.getGlobalIncoming();
 
 		/**
-		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.WarningImpl <em>Warning</em>}' class.
+		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ViolationImpl <em>Violation</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.WarningImpl
-		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getWarning()
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.ViolationImpl
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getViolation()
 		 * @generated
 		 */
-		EClass WARNING = eINSTANCE.getWarning();
+		EClass VIOLATION = eINSTANCE.getViolation();
 
 	}
 
