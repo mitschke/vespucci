@@ -1,7 +1,6 @@
-/**
+/*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -32,71 +31,26 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.tests;
-
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
-import de.tud.cs.st.vespucci.vespucci_model.Warning;
-
-import junit.textui.TestRunner;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
 /**
- * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Warning</b></em>'.
- * <!-- end-user-doc -->
- * @generated
+ * OutlineOutgoingTargetConnectionEditPart
+ * 
+ * @author Artem Vovk
+ * 
  */
-public class WarningTest extends ConnectionTest {
+public class OutlineViolationTargetConnectionEditPart extends
+		OutlineTargetConnectionEditPart {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(WarningTest.class);
+	private static final String IMAGE = "icons/outline/violation_t.gif";
+
+	public OutlineViolationTargetConnectionEditPart(Object model) {
+		super(model);
 	}
 
-	/**
-	 * Constructs a new Warning test case with the given name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public WarningTest(String name) {
-		super(name);
-	}
-
-	/**
-	 * Returns the fixture for this Warning test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
-	protected Warning getFixture() {
-		return (Warning)fixture;
+	protected String getImagePath() {
+		return IMAGE;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		setFixture(Vespucci_modelFactory.eINSTANCE.createWarning());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
-
-} //WarningTest
+}

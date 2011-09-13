@@ -89,7 +89,7 @@ public class VespucciPaletteFactory {
 		paletteContainer.add(createNotAllowed5CreationTool());
 		paletteContainer.add(createGlobalIncoming6CreationTool());
 		paletteContainer.add(createGlobalOutgoing7CreationTool());
-		paletteContainer.add(createWarning8CreationTool());
+		paletteContainer.add(createViolation8CreationTool());
 		return paletteContainer;
 	}
 
@@ -242,15 +242,15 @@ public class VespucciPaletteFactory {
 	/**
 	 * @generated
 	 */
-	private ToolEntry createWarning8CreationTool() {
+	private ToolEntry createViolation8CreationTool() {
 		LinkToolEntry entry = new LinkToolEntry(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Warning8CreationTool_title,
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Warning8CreationTool_desc,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Violation8CreationTool_title,
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Violation8CreationTool_desc,
 				Collections
-						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008));
-		entry.setId("createWarning8CreationTool"); //$NON-NLS-1$
+						.singletonList(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009));
+		entry.setId("createViolation8CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008));
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

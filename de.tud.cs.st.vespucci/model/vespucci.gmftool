@@ -100,8 +100,8 @@
       </tools>
       <tools
           xsi:type="gmftool:CreationTool"
-          title="Warning"
-          description="Create new Warning Dependency">
+          title="Violation"
+          description="Create new Violation Dependency">
         <smallIcon
             xsi:type="gmftool:DefaultImage"/>
         <largeIcon

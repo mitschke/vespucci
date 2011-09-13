@@ -296,8 +296,8 @@ public class VespucciVisualIDRegistry {
 					return true;
 				}
 				break;
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
-				if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart.VISUAL_ID == nodeVisualID) {
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+				if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationNameEditPart.VISUAL_ID == nodeVisualID) {
 					return true;
 				}
 				break;
@@ -340,9 +340,9 @@ public class VespucciVisualIDRegistry {
 				domainElement.eClass())) {
 			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID;
 		}
-		if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getWarning().isSuperTypeOf(
+		if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getViolation().isSuperTypeOf(
 				domainElement.eClass())) {
-			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID;
+			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID;
 		}
 		return -1;
 	}

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <gmfgraph:Canvas xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -434,10 +434,10 @@
           figure="//@figures.0/@descriptors.8/@actualFigure/@children.0"/>
     </descriptors>
     <descriptors
-        name="WarningFigure">
+        name="ViolationFigure">
       <actualFigure
           xsi:type="gmfgraph:PolylineConnection"
-          name="WarningFigure"
+          name="ViolationFigure"
           lineKind="LINE_DASH"
           targetDecoration="//@figures.0/@figures.0">
         <foregroundColor
@@ -445,11 +445,11 @@
             value="black"/>
         <children
             xsi:type="gmfgraph:Label"
-            name="WarningNameFigure"
+            name="ViolationNameFigure"
             text="all"/>
       </actualFigure>
       <accessors
-          accessor="getFigureWarningNameFigure"
+          accessor="getFigureViolationNameFigure"
           figure="//@figures.0/@descriptors.9/@actualFigure/@children.0"/>
     </descriptors>
   </figures>
@@ -481,8 +481,8 @@
       name="GlobalOutgoing"
       figure="GlobalOutgoingFigure"/>
   <connections
-      name="Warning"
-      figure="WarningFigure"/>
+      name="Violation"
+      figure="ViolationFigure"/>
   <compartments
       name="EnsembleCompartment"
       figure="EnsembleFigure"
@@ -583,8 +583,8 @@
         y="-7"/>
   </labels>
   <labels
-      name="WarningName"
-      figure="WarningFigure"
+      name="ViolationName"
+      figure="ViolationFigure"
       elementIcon="false"
       accessor="//@figures.0/@descriptors.9/@accessors.0">
     <facets

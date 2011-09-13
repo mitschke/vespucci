@@ -35,7 +35,7 @@
 package de.tud.cs.st.vespucci.vespucci_model.provider;
 
 
-import de.tud.cs.st.vespucci.vespucci_model.Warning;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
 import java.util.Collection;
 import java.util.List;
@@ -51,12 +51,12 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 
 /**
- * This is the item provider adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Warning} object.
+ * This is the item provider adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Violation} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class WarningItemProvider
+public class ViolationItemProvider
 	extends ConnectionItemProvider
 	implements
 		IEditingDomainItemProvider,
@@ -70,7 +70,7 @@ public class WarningItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public WarningItemProvider(AdapterFactory adapterFactory) {
+	public ViolationItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -90,14 +90,14 @@ public class WarningItemProvider
 	}
 
 	/**
-	 * This returns Warning.gif.
+	 * This returns Violation.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Warning"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Violation"));
 	}
 
 	/**
@@ -108,10 +108,10 @@ public class WarningItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Warning)object).getName();
+		String label = ((Violation)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Warning_type") :
-			getString("_UI_Warning_type") + " " + label;
+			getString("_UI_Violation_type") :
+			getString("_UI_Violation_type") + " " + label;
 	}
 
 	/**

@@ -47,7 +47,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.Warning;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
 /**
  * This class encapsulates the dependency prolog facts.
@@ -174,8 +174,8 @@ public class DependencyPrologFacts {
 			connectionName = "global_incoming";
 		} else if (connection instanceof GlobalOutgoing) {
 			connectionName = "global_outgoing";
-		} else if (connection instanceof Warning) {
-			connectionName = "warning";
+		} else if (connection instanceof Violation) {
+			connectionName = "violation";
 		} else {
 			throw new VespucciIllegalArgumentException(
 					String.format("Unsupported dependency type: %s", connection));

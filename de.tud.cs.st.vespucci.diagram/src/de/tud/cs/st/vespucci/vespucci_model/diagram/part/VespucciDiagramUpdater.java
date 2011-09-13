@@ -184,8 +184,8 @@ public class VespucciDiagramUpdater {
 				return getGlobalIncoming_4006ContainedLinks(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
 				return getGlobalOutgoing_4007ContainedLinks(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
-				return getWarning_4008ContainedLinks(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+				return getViolation_4009ContainedLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -217,8 +217,8 @@ public class VespucciDiagramUpdater {
 				return getGlobalIncoming_4006IncomingLinks(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
 				return getGlobalOutgoing_4007IncomingLinks(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
-				return getWarning_4008IncomingLinks(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+				return getViolation_4009IncomingLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -250,8 +250,8 @@ public class VespucciDiagramUpdater {
 				return getGlobalIncoming_4006OutgoingLinks(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
 				return getGlobalOutgoing_4007OutgoingLinks(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID:
-				return getWarning_4008OutgoingLinks(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+				return getViolation_4009OutgoingLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -279,7 +279,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getContainedTypeModelFacetLinks_Expected_4002(modelElement));
 		result.addAll(getContainedTypeModelFacetLinks_GlobalIncoming_4006(modelElement));
 		result.addAll(getContainedTypeModelFacetLinks_GlobalOutgoing_4007(modelElement));
-		result.addAll(getContainedTypeModelFacetLinks_Warning_4008(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_Violation_4009(modelElement));
 		return result;
 	}
 
@@ -297,7 +297,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getContainedTypeModelFacetLinks_Expected_4002(modelElement));
 		result.addAll(getContainedTypeModelFacetLinks_GlobalIncoming_4006(modelElement));
 		result.addAll(getContainedTypeModelFacetLinks_GlobalOutgoing_4007(modelElement));
-		result.addAll(getContainedTypeModelFacetLinks_Warning_4008(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_Violation_4009(modelElement));
 		return result;
 	}
 
@@ -316,7 +316,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getContainedTypeModelFacetLinks_Expected_4002(modelElement));
 		result.addAll(getContainedTypeModelFacetLinks_GlobalIncoming_4006(modelElement));
 		result.addAll(getContainedTypeModelFacetLinks_GlobalOutgoing_4007(modelElement));
-		result.addAll(getContainedTypeModelFacetLinks_Warning_4008(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_Violation_4009(modelElement));
 		return result;
 	}
 
@@ -334,7 +334,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getContainedTypeModelFacetLinks_Expected_4002(modelElement));
 		result.addAll(getContainedTypeModelFacetLinks_GlobalIncoming_4006(modelElement));
 		result.addAll(getContainedTypeModelFacetLinks_GlobalOutgoing_4007(modelElement));
-		result.addAll(getContainedTypeModelFacetLinks_Warning_4008(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_Violation_4009(modelElement));
 		return result;
 	}
 
@@ -397,7 +397,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getWarning_4008ContainedLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getViolation_4009ContainedLinks(
 			View view) {
 		return Collections.emptyList();
 	}
@@ -419,7 +419,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getIncomingTypeModelFacetLinks_Expected_4002(modelElement, crossReferences));
 		result.addAll(getIncomingTypeModelFacetLinks_GlobalIncoming_4006(modelElement, crossReferences));
 		result.addAll(getIncomingTypeModelFacetLinks_GlobalOutgoing_4007(modelElement, crossReferences));
-		result.addAll(getIncomingTypeModelFacetLinks_Warning_4008(modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_Violation_4009(modelElement, crossReferences));
 		return result;
 	}
 
@@ -439,7 +439,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getIncomingTypeModelFacetLinks_Expected_4002(modelElement, crossReferences));
 		result.addAll(getIncomingTypeModelFacetLinks_GlobalIncoming_4006(modelElement, crossReferences));
 		result.addAll(getIncomingTypeModelFacetLinks_GlobalOutgoing_4007(modelElement, crossReferences));
-		result.addAll(getIncomingTypeModelFacetLinks_Warning_4008(modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_Violation_4009(modelElement, crossReferences));
 		return result;
 	}
 
@@ -460,7 +460,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getIncomingTypeModelFacetLinks_Expected_4002(modelElement, crossReferences));
 		result.addAll(getIncomingTypeModelFacetLinks_GlobalIncoming_4006(modelElement, crossReferences));
 		result.addAll(getIncomingTypeModelFacetLinks_GlobalOutgoing_4007(modelElement, crossReferences));
-		result.addAll(getIncomingTypeModelFacetLinks_Warning_4008(modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_Violation_4009(modelElement, crossReferences));
 		return result;
 	}
 
@@ -480,7 +480,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getIncomingTypeModelFacetLinks_Expected_4002(modelElement, crossReferences));
 		result.addAll(getIncomingTypeModelFacetLinks_GlobalIncoming_4006(modelElement, crossReferences));
 		result.addAll(getIncomingTypeModelFacetLinks_GlobalOutgoing_4007(modelElement, crossReferences));
-		result.addAll(getIncomingTypeModelFacetLinks_Warning_4008(modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_Violation_4009(modelElement, crossReferences));
 		return result;
 	}
 
@@ -543,7 +543,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getWarning_4008IncomingLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getViolation_4009IncomingLinks(
 			View view) {
 		return Collections.emptyList();
 	}
@@ -563,7 +563,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getOutgoingTypeModelFacetLinks_Expected_4002(modelElement));
 		result.addAll(getOutgoingTypeModelFacetLinks_GlobalIncoming_4006(modelElement));
 		result.addAll(getOutgoingTypeModelFacetLinks_GlobalOutgoing_4007(modelElement));
-		result.addAll(getOutgoingTypeModelFacetLinks_Warning_4008(modelElement));
+		result.addAll(getOutgoingTypeModelFacetLinks_Violation_4009(modelElement));
 		return result;
 	}
 
@@ -581,7 +581,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getOutgoingTypeModelFacetLinks_Expected_4002(modelElement));
 		result.addAll(getOutgoingTypeModelFacetLinks_GlobalIncoming_4006(modelElement));
 		result.addAll(getOutgoingTypeModelFacetLinks_GlobalOutgoing_4007(modelElement));
-		result.addAll(getOutgoingTypeModelFacetLinks_Warning_4008(modelElement));
+		result.addAll(getOutgoingTypeModelFacetLinks_Violation_4009(modelElement));
 		return result;
 	}
 
@@ -600,7 +600,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getOutgoingTypeModelFacetLinks_Expected_4002(modelElement));
 		result.addAll(getOutgoingTypeModelFacetLinks_GlobalIncoming_4006(modelElement));
 		result.addAll(getOutgoingTypeModelFacetLinks_GlobalOutgoing_4007(modelElement));
-		result.addAll(getOutgoingTypeModelFacetLinks_Warning_4008(modelElement));
+		result.addAll(getOutgoingTypeModelFacetLinks_Violation_4009(modelElement));
 		return result;
 	}
 
@@ -618,7 +618,7 @@ public class VespucciDiagramUpdater {
 		result.addAll(getOutgoingTypeModelFacetLinks_Expected_4002(modelElement));
 		result.addAll(getOutgoingTypeModelFacetLinks_GlobalIncoming_4006(modelElement));
 		result.addAll(getOutgoingTypeModelFacetLinks_GlobalOutgoing_4007(modelElement));
-		result.addAll(getOutgoingTypeModelFacetLinks_Warning_4008(modelElement));
+		result.addAll(getOutgoingTypeModelFacetLinks_Violation_4009(modelElement));
 		return result;
 	}
 
@@ -681,7 +681,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getWarning_4008OutgoingLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getViolation_4009OutgoingLinks(
 			View view) {
 		return Collections.emptyList();
 	}
@@ -864,24 +864,24 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_Warning_4008(
+	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_Violation_4009(
 			de.tud.cs.st.vespucci.vespucci_model.Shape container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getTargetConnections().iterator(); links.hasNext();) {
 			EObject linkObject = (EObject) links.next();
-			if (false == linkObject instanceof de.tud.cs.st.vespucci.vespucci_model.Warning) {
+			if (false == linkObject instanceof de.tud.cs.st.vespucci.vespucci_model.Violation) {
 				continue;
 			}
-			de.tud.cs.st.vespucci.vespucci_model.Warning link = (de.tud.cs.st.vespucci.vespucci_model.Warning) linkObject;
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID != de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+			de.tud.cs.st.vespucci.vespucci_model.Violation link = (de.tud.cs.st.vespucci.vespucci_model.Violation) linkObject;
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID != de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 					.getLinkWithClassVisualID(link)) {
 				continue;
 			}
 			de.tud.cs.st.vespucci.vespucci_model.Shape dst = link.getTarget();
 			de.tud.cs.st.vespucci.vespucci_model.Shape src = link.getSource();
 			result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor(src, dst, link,
-					de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008,
-					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID));
+					de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009,
+					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
 		}
 		return result;
 	}
@@ -1085,7 +1085,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getIncomingTypeModelFacetLinks_Warning_4008(
+	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getIncomingTypeModelFacetLinks_Violation_4009(
 			de.tud.cs.st.vespucci.vespucci_model.Shape target,
 			Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
@@ -1093,19 +1093,19 @@ public class VespucciDiagramUpdater {
 		for (EStructuralFeature.Setting setting : settings) {
 			if (setting.getEStructuralFeature() != de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 					.getConnection_Target()
-					|| false == setting.getEObject() instanceof de.tud.cs.st.vespucci.vespucci_model.Warning) {
+					|| false == setting.getEObject() instanceof de.tud.cs.st.vespucci.vespucci_model.Violation) {
 				continue;
 			}
-			de.tud.cs.st.vespucci.vespucci_model.Warning link = (de.tud.cs.st.vespucci.vespucci_model.Warning) setting
+			de.tud.cs.st.vespucci.vespucci_model.Violation link = (de.tud.cs.st.vespucci.vespucci_model.Violation) setting
 					.getEObject();
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID != de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID != de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 					.getLinkWithClassVisualID(link)) {
 				continue;
 			}
 			de.tud.cs.st.vespucci.vespucci_model.Shape src = link.getSource();
 			result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor(src, target, link,
-					de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008,
-					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID));
+					de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009,
+					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
 		}
 		return result;
 	}
@@ -1393,7 +1393,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_Warning_4008(
+	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_Violation_4009(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = null;
 		// Find container element for the link.
@@ -1410,11 +1410,11 @@ public class VespucciDiagramUpdater {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getTargetConnections().iterator(); links.hasNext();) {
 			EObject linkObject = (EObject) links.next();
-			if (false == linkObject instanceof de.tud.cs.st.vespucci.vespucci_model.Warning) {
+			if (false == linkObject instanceof de.tud.cs.st.vespucci.vespucci_model.Violation) {
 				continue;
 			}
-			de.tud.cs.st.vespucci.vespucci_model.Warning link = (de.tud.cs.st.vespucci.vespucci_model.Warning) linkObject;
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID != de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+			de.tud.cs.st.vespucci.vespucci_model.Violation link = (de.tud.cs.st.vespucci.vespucci_model.Violation) linkObject;
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID != de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 					.getLinkWithClassVisualID(link)) {
 				continue;
 			}
@@ -1424,8 +1424,8 @@ public class VespucciDiagramUpdater {
 				continue;
 			}
 			result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor(src, dst, link,
-					de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Warning_4008,
-					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID));
+					de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009,
+					de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
 		}
 		return result;
 	}

@@ -210,10 +210,10 @@ public class Vespucci_modelSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Vespucci_modelPackage.WARNING: {
-				Warning warning = (Warning)theEObject;
-				T result = caseWarning(warning);
-				if (result == null) result = caseConnection(warning);
+			case Vespucci_modelPackage.VIOLATION: {
+				Violation violation = (Violation)theEObject;
+				T result = caseViolation(violation);
+				if (result == null) result = caseConnection(violation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -402,17 +402,17 @@ public class Vespucci_modelSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Warning</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Violation</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Warning</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Violation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseWarning(Warning object) {
+	public T caseViolation(Violation object) {
 		return null;
 	}
 

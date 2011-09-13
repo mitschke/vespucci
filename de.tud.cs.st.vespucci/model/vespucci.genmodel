@@ -41,6 +41,6 @@
     <genClasses ecoreClass="vespucci.ecore#//Expected"/>
     <genClasses ecoreClass="vespucci.ecore#//GlobalOutgoing"/>
     <genClasses ecoreClass="vespucci.ecore#//GlobalIncoming"/>
-    <genClasses ecoreClass="vespucci.ecore#//Warning"/>
+    <genClasses ecoreClass="vespucci.ecore#//Violation"/>
   </genPackages>
 </genmodel:GenModel>

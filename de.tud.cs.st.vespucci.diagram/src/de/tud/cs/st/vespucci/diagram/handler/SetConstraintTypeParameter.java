@@ -38,8 +38,8 @@ public class SetConstraintTypeParameter implements IParameterValues {
 				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID));
 		values.put("Global Outgoing", VespucciElementTypes
 				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID));
-		values.put("Warning", VespucciElementTypes
-				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart.VISUAL_ID));
+		values.put("Violation", VespucciElementTypes
+				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
 		return values;
 	}
 

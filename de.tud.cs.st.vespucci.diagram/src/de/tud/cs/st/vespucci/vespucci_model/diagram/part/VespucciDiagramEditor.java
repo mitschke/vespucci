@@ -114,7 +114,7 @@ import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
-import de.tud.cs.st.vespucci.vespucci_model.Warning;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineDummyEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEnsembleEditPart;
@@ -133,8 +133,8 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineNo
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineOutgoingTargetConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineRootEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineWarningSourceConnectionEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineWarningTargetConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineViolationSourceConnectionEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineViolationTargetConnectionEditPart;
 
 /**
  * @generated
@@ -320,8 +320,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 						return new OutlineGlobalIncomingSourceConnectionEditPart(model);
 					} else if (conn instanceof GlobalOutgoing) {
 						return new OutlineGlobalOutgoingSourceConnectionEditPart(model);
-					} else if (conn instanceof Warning) {
-						return new OutlineWarningSourceConnectionEditPart(model);
+					} else if (conn instanceof Violation) {
+						return new OutlineViolationSourceConnectionEditPart(model);
 					} else {
 						throw new VespucciIllegalArgumentException(String.format("Unsupported connection [%s].", conn));
 					}
@@ -340,8 +340,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 						return new OutlineGlobalIncomingTargetConnectionEditPart(model);
 					} else if (conn instanceof GlobalOutgoing) {
 						return new OutlineGlobalOutgoingTargetConnectionEditPart(model);
-					} else if (conn instanceof Warning) {
-						return new OutlineWarningTargetConnectionEditPart(model);
+					} else if (conn instanceof Violation) {
+						return new OutlineViolationTargetConnectionEditPart(model);
 					} else {
 						throw new VespucciIllegalArgumentException(String.format("Unsupported connection [%s].", conn));
 					}

@@ -306,7 +306,7 @@ public class ShapeItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createWarning()));
+				 Vespucci_modelFactory.eINSTANCE.createViolation()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -351,7 +351,7 @@ public class ShapeItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createWarning()));
+				 Vespucci_modelFactory.eINSTANCE.createViolation()));
 	}
 
 	/**

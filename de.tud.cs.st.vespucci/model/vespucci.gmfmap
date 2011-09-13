@@ -302,11 +302,11 @@
   </links>
   <links>
     <domainMetaElement
-        href="vespucci.ecore#//Warning"/>
+        href="vespucci.ecore#//Violation"/>
     <labelMappings
         xsi:type="gmfmap:FeatureLabelMapping">
       <diagramLabel
-          href="vespucci.gmfgraph#WarningName"/>
+          href="vespucci.gmfgraph#ViolationName"/>
       <features
           href="vespucci.ecore#//Connection/name"/>
       <editableFeatures
@@ -318,7 +318,7 @@
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.7"/>
     <diagramLink
-        href="vespucci.gmfgraph#Warning"/>
+        href="vespucci.gmfgraph#Violation"/>
     <sourceMetaFeature
         xsi:type="ecore:EReference"
         href="vespucci.ecore#//Connection/source"/>

@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -52,17 +52,17 @@ import org.eclipse.gmf.runtime.notation.View;
 /**
  * @generated
  */
-public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBranchEditPart {
+public class ViolationEditPart extends ConnectionNodeEditPart implements ITreeBranchEditPart {
 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 4008;
+	public static final int VISUAL_ID = 4009;
 
 	/**
 	 * @generated
 	 */
-	public WarningEditPart(View view) {
+	public ViolationEditPart(View view) {
 		super(view);
 	}
 
@@ -72,16 +72,16 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.WarningItemSemanticEditPolicy());
+				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ViolationItemSemanticEditPolicy());
 	}
 
 	/**
 	 * @generated
 	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart) {
-			((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart) childEditPart)
-					.setLabel(getPrimaryShape().getFigureWarningNameFigure());
+		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationNameEditPart) {
+			((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationNameEditPart) childEditPart)
+					.setLabel(getPrimaryShape().getFigureViolationNameFigure());
 			return true;
 		}
 		return false;
@@ -101,7 +101,7 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 	 * @generated
 	 */
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningNameEditPart) {
+		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationNameEditPart) {
 			return true;
 		}
 		return false;
@@ -127,16 +127,16 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 	 */
 
 	protected Connection createConnectionFigure() {
-		return new WarningFigure();
+		return new ViolationFigure();
 	}
 
 	/**
 	 * @generated
 	 */
-	public WarningFigure getPrimaryShape() {
-		return (WarningFigure) getFigure();
+	public ViolationFigure getPrimaryShape() {
+		return (ViolationFigure) getFigure();
 	}
-
+	
 	/**
 	 * @generated NOT
 	 */
@@ -158,17 +158,17 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 	/**
 	 * @generated
 	 */
-	public class WarningFigure extends PolylineConnectionEx {
+	public class ViolationFigure extends PolylineConnectionEx {
 
 		/**
 		 * @generated
 		 */
-		private WrappingLabel fFigureWarningNameFigure;
+		private WrappingLabel fFigureViolationNameFigure;
 
 		/**
 		 * @generated
 		 */
-		public WarningFigure() {
+		public ViolationFigure() {
 			this.setLineStyle(Graphics.LINE_DASH);
 			this.setForegroundColor(ColorConstants.black);
 
@@ -181,13 +181,14 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 		 */
 		private void createContents() {
 
-			fFigureWarningNameFigure = new WrappingLabel();
-			fFigureWarningNameFigure.setText("all");
+			fFigureViolationNameFigure = new WrappingLabel();
+			fFigureViolationNameFigure.setText("all");
 
-			this.add(fFigureWarningNameFigure);
+			this.add(fFigureViolationNameFigure);
 			
 			// Add warning triangle in the middle of the connection
 			this.add(new WarningDecoration(), new MiddleDecorationLocator(this));
+
 		}
 
 		/**
@@ -207,8 +208,8 @@ public class WarningEditPart extends ConnectionNodeEditPart implements ITreeBran
 		/**
 		 * @generated
 		 */
-		public WrappingLabel getFigureWarningNameFigure() {
-			return fFigureWarningNameFigure;
+		public WrappingLabel getFigureViolationNameFigure() {
+			return fFigureViolationNameFigure;
 		}
 
 	}

@@ -1,6 +1,7 @@
-/*
+/**
  *  License (BSD Style License):
- *   Copyright (c) 2011
+ *   Copyright (c) 2010
+ *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -31,26 +32,40 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
+package de.tud.cs.st.vespucci.vespucci_model.impl;
+
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
+
+import org.eclipse.emf.ecore.EClass;
 
 /**
- * OutlineOutgoingSourceConnectionEditPart
- * 
- * @author Artem Vovk
- * 
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Violation</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * </p>
+ *
+ * @generated
  */
-public class OutlineWarningSourceConnectionEditPart extends
-		OutlineSourceConnectionEditPart {
-
-	private static final String IMAGE = "icons/outline/warning_s.gif";
-
-	public OutlineWarningSourceConnectionEditPart(Object model) {
-		super(model);
+public class ViolationImpl extends ConnectionImpl implements Violation {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ViolationImpl() {
+		super();
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
-	protected String getImagePath() {
-		return IMAGE;
+	protected EClass eStaticClass() {
+		return Vespucci_modelPackage.Literals.VIOLATION;
 	}
 
-}
+} //ViolationImpl

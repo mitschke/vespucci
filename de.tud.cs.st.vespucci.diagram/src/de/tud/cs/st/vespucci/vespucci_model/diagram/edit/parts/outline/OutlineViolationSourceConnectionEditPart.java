@@ -34,17 +34,17 @@
 package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline;
 
 /**
- * OutlineOutgoingTargetConnectionEditPart
+ * OutlineOutgoingSourceConnectionEditPart
  * 
  * @author Artem Vovk
  * 
  */
-public class OutlineWarningTargetConnectionEditPart extends
-		OutlineTargetConnectionEditPart {
+public class OutlineViolationSourceConnectionEditPart extends
+		OutlineSourceConnectionEditPart {
 
-	private static final String IMAGE = "icons/outline/warning_t.gif";
+	private static final String IMAGE = "icons/outline/violation_s.gif";
 
-	public OutlineWarningTargetConnectionEditPart(Object model) {
+	public OutlineViolationSourceConnectionEditPart(Object model) {
 		super(model);
 	}
 

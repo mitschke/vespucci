@@ -1,7 +1,6 @@
-/**
+/*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -32,40 +31,30 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.impl;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
 
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-import de.tud.cs.st.vespucci.vespucci_model.Warning;
+import org.eclipse.gmf.runtime.common.core.command.ICommand;
+import org.eclipse.gmf.runtime.common.core.command.UnexecutableCommand;
+import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
 
-import org.eclipse.emf.ecore.EClass;
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Warning</b></em>'.
- * <!-- end-user-doc -->
- * <p>
- * </p>
- *
  * @generated
  */
-public class WarningImpl extends ConnectionImpl implements Warning {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected WarningImpl() {
-		super();
-	}
+public class ViolationEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
+	 * @author Theo Kischka, Dominic Scheurer
+	 * @generated NOT
 	 */
 	@Override
-	protected EClass eStaticClass() {
-		return Vespucci_modelPackage.Literals.WARNING;
+	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
+		if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
+			return UnexecutableCommand.INSTANCE;
+		} else {
+			return super.getReorientRelationshipCommand(request);
+		}
 	}
 
-} //WarningImpl
+}
