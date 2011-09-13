@@ -1,4 +1,4 @@
-/**
+/*
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -49,6 +49,8 @@ import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 import de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeParameter;
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 
 /**
  * This class provides the entries for the "Edit Constraint"/"Set Type"-menu.
@@ -116,17 +118,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 	 * @return The index for the correct check mark in {@link #checkmark}.
 	 */
 	private static ImageDescriptor getCheckMark(final IElementType type) {
-		final IStructuredSelection selection = (IStructuredSelection) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getSelectionService().getSelection();
-
-		final Object[] selectionArr = selection.toArray();
-
-		// This array will contain the casted selection-objects.
-		final ConnectionEditPart[] selectedConnections = new ConnectionEditPart[selectionArr.length];
-
-		for (int i = 0; i < selectionArr.length; ++i) {
-			selectedConnections[i] = (ConnectionEditPart) selectionArr[i];
-		}
+		final ConnectionEditPart[] selectedConnections = getSelectedConnectionEditParts();
 
 		boolean selectionContainsType = false;
 
@@ -158,6 +150,25 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 		return checkmark[2];
 	}
 
+	/**
+	 * @return The connections currently selected in the active window.
+	 */
+	private static ConnectionEditPart[] getSelectedConnectionEditParts() {
+		final IStructuredSelection selection = (IStructuredSelection) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getSelectionService().getSelection();
+
+		final Object[] selectionArr = selection.toArray();
+
+		// This array will contain the casted selection-objects.
+		final ConnectionEditPart[] selectedConnections = new ConnectionEditPart[selectionArr.length];
+
+		for (int i = 0; i < selectionArr.length; ++i) {
+			selectedConnections[i] = (ConnectionEditPart) selectionArr[i];
+		}
+		
+		return selectedConnections;
+	}
+
 	private static boolean isConnectionOfGivenType(final ConnectionEditPart connection, final IElementType type) {
 		return type.getEClass().isSuperTypeOf(connection.resolveSemanticElement().eClass());
 	}
@@ -169,11 +180,11 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 		final Map<String, IElementType> typeParams = new SetConstraintTypeParameter().getParameterValues();
 
 		// entries to be generated
-		final IContributionItem[] entries = new CommandContributionItem[typeParams.size()];
-
+		final IContributionItem[] entries = new CommandContributionItem[typeParams.size()];		
+		
 		// generate entries
 		int i = 0;
-		for (final String typeName : typeParams.keySet()) {
+		for (final String typeName : typeParams.keySet()) {			
 			final IElementType type = typeParams.get(typeName);
 
 			// Create parameter for menu item
@@ -191,7 +202,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 
 			// Set icon
 			contributionParameter.icon = getCheckMark(type);
-
+			
 			// set menu-entry
 			entries[i] = new CommandContributionItem(contributionParameter);
 
@@ -200,5 +211,4 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 
 		return entries;
 	}
-
 }
