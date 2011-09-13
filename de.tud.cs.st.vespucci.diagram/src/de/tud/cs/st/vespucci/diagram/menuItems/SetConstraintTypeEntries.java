@@ -1,4 +1,4 @@
-/**
+/*
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -205,25 +205,10 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			
 			// set menu-entry
 			entries[i] = new CommandContributionItem(contributionParameter);
-			
-			if (allConnectionsPointToEmptyEnsembles()) {
-				entries[i].setVisible(false);
-			}
 
 			++i;
 		}
 
 		return entries;
-	}
-
-	private static boolean allConnectionsPointToEmptyEnsembles() {
-		boolean result = true;
-		
-		for (ConnectionEditPart connectionEditPart : getSelectedConnectionEditParts()) {
-			result &= (((Connection)connectionEditPart.resolveSemanticElement()).getSource() instanceof Dummy) ||
-					  (((Connection)connectionEditPart.resolveSemanticElement()).getTarget() instanceof Dummy);
-		}
-
-		return result;
 	}
 }

@@ -317,5 +317,4 @@ public class SetConnectionTypeCommand implements Command {
 
 		return featureMap;
 	}
-
 }

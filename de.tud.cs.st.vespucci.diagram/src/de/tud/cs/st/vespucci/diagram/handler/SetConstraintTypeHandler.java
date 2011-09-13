@@ -1,4 +1,4 @@
-/**
+/*
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -85,11 +85,19 @@ public final class SetConstraintTypeHandler extends AbstractHandler {
 		}
 
 		CompoundCommand cmd = new CompoundCommand(COMMAND_LABEL);
+		int numOfConnectionsToChange = 0;
 		for(ConnectionEditPart conn : selectedConnections){
-			cmd.append(new SetConnectionTypeCommand(conn, setType));
+			if (!new ConnectionPointsToDummyTester().test(conn, null, null, null)) {
+				// Only add command if connection does not point to Dummy
+				cmd.append(new SetConnectionTypeCommand(conn, setType));
+				numOfConnectionsToChange++;
+			}
 		}
 		
-		selectedConnections[0].getEditingDomain().getCommandStack().execute(cmd);
+		if (numOfConnectionsToChange > 0) {
+			selectedConnections[0].getEditingDomain().getCommandStack().execute(cmd);
+		}
+		
 		return null;
 	}
 }

@@ -820,6 +820,18 @@
                      class="de.tud.cs.st.vespucci.diagram.menuItems.SetConstraintTypeEntries"
                      id="de.tud.cs.st.vespucci.diagram.SetConstraintType">
                </dynamic>
+               <visibleWhen
+                     checkEnabled="false">
+                  <not>
+                     <iterate
+                           ifEmpty="true"
+                           operator="and">
+                        <test
+                              property="de.tud.cs.st.vespucci.diagram.pointsToDummy">
+                        </test>
+                     </iterate>
+                  </not>
+               </visibleWhen>
             </menu>
             <visibleWhen
                   checkEnabled="false">
@@ -960,6 +972,16 @@
           <super
                 type="de.tud.cs.st.vespucci.diagram.diagnostic">
           </super>
+       </extension>
+       <extension
+             point="org.eclipse.core.expressions.propertyTesters">
+          <propertyTester
+                class="de.tud.cs.st.vespucci.diagram.handler.ConnectionPointsToDummyTester"
+                id="de.tud.cs.st.vespucci.diagram.ConnectionPointsToDummyTester"
+                namespace="de.tud.cs.st.vespucci.diagram"
+                properties="pointsToDummy"
+                type="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
+          </propertyTester>
        </extension>
         <!-- gmf generator persistent region end -->
           
