@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Display;
  * Decoration which paints an arrow pointing outwards and a question
  * mark which was originally meant to be painted into a triangle having been
  * manually constructed using the setTemplate method as in
- * {@link de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart#createTargetDecoration}
+ * {@link de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.WarningEditPart#createTargetDecoration()}
  * 
  * @author Dominic Scheurer
  */

@@ -28,7 +28,7 @@ public class SetConstraintTypeParameter implements IParameterValues {
 				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID));
 		values.put("Outgoing", VespucciElementTypes
 				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID));
-		values.put("In and Out", VespucciElementTypes
+		values.put("In- and Out", VespucciElementTypes
 				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID));
 		values.put("Not allowed", VespucciElementTypes
 				.getElementType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID));
