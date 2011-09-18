@@ -57,8 +57,8 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
  * <p>Properties tab showing the Ensemble description property.</p>
- * <p><i>Reviewed by Thomas Schulz (Aug. 26 - Sept. 5, 2011)</i></p>
- * <p><i>Reviewed by Dominic Scheurer (Sept. 18, 2011)</i></p>
+ * <p><i>Reviewed by Thomas Schulz (Aug. 26 - Sept. 5, 2011)</i><br/>
+ * <i>Reviewed by Dominic Scheurer (Sept. 18, 2011)</i></p>
  * 
  * @author Theo Kischka
  * @generated NOT

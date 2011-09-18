@@ -33,7 +33,6 @@
  */
 package de.tud.cs.st.vespucci.diagram.menuItems;
 
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.eclipse.emf.ecore.EObject;
@@ -42,7 +41,6 @@ import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.osgi.framework.internal.core.PackageAdminImpl;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.PlatformUI;
@@ -59,18 +57,26 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * "Edit Constraint"/"Set Dependency"-menu. For each entry in the validDependencies-textfile
  * ({@link de.tud.cs.st.vespucci/resources/validDependencies.txt}) one menu-entry will be generated.
  * 
+ * <p><i>Reviewed by Dominic Scheurer (Sept. 18, 2011)</i></p>
+ * 
  * @author Alexander Weitzmann
  * @version 0.4
  */
 public class SetDependencyEntries extends CompoundContributionItem {
-	private static ResourceBundle pluginProperties = ResourceBundle.getBundle("plugin");
+	/** set command to toggle dependency for all constraints */
+	private static final String TOGGLE_DEPENDENCIES_CMD = "de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand";
+
+	/** set command to set dependency for all constraints */
+	private static final String SET_DEPENDENCIES_CMD = "de.tud.cs.st.vespucci.diagram.setDependenciesCommand";
+	
+	private static final ResourceBundle PLUGIN_RES_BUNDLE = ResourceBundle.getBundle("plugin");
 	
 	/**
 	 * Valid names for dependencies read from the resource-file.
 	 */
 	private static final String[] dependencies = KeywordReader.readAndParseResourceFile(
 			FrameworkUtil.getBundle(SetDependencyEntries.class).getSymbolicName(),
-			pluginProperties.getString("validDependenciesFile"));
+			PLUGIN_RES_BUNDLE.getString("validDependenciesFile"));
 
 	/**
 	 * Descriptors for the check marks. There are two available check marks:
@@ -191,11 +197,9 @@ public class SetDependencyEntries extends CompoundContributionItem {
 			final int checkMarkIndex = getCheckMarkIndex(dependency);
 			final String command;
 			if (checkMarkIndex == 0) {
-				// set command to set dependency for all constraints
-				command = "de.tud.cs.st.vespucci.diagram.setDependenciesCommand";
+				command = SET_DEPENDENCIES_CMD;
 			} else {
-				// set command to toggle dependency for all constraints
-				command = "de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand";
+				command = TOGGLE_DEPENDENCIES_CMD;
 			}
 
 			final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(PlatformUI
