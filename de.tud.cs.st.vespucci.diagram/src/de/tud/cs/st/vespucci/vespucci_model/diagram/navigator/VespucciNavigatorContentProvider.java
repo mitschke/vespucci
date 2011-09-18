@@ -239,6 +239,57 @@ public class VespucciNavigatorContentProvider implements ICommonContentProvider 
 	private Object[] getViewChildren(View view, Object parentElement) {
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view)) {
 
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID: {
+				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
+				Edge sv = (Edge) view;
+				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup target = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Violation_4009_target,
+						"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup source = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Violation_4009_source,
+						"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+				Collection<View> connectedViews;
+				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
+				target.addChildren(createNavigatorItems(connectedViews, target, true));
+				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
+				target.addChildren(createNavigatorItems(connectedViews, target, true));
+				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID));
+				target.addChildren(createNavigatorItems(connectedViews, target, true));
+				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID));
+				target.addChildren(createNavigatorItems(connectedViews, target, true));
+				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
+				source.addChildren(createNavigatorItems(connectedViews, source, true));
+				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
+				source.addChildren(createNavigatorItems(connectedViews, source, true));
+				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID));
+				source.addChildren(createNavigatorItems(connectedViews, source, true));
+				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID));
+				source.addChildren(createNavigatorItems(connectedViews, source, true));
+				if (!target.isEmpty()) {
+					result.add(target);
+				}
+				if (!source.isEmpty()) {
+					result.add(source);
+				}
+				return result.toArray();
+			}
+
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID: {
 				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
 				Node sv = (Node) view;
@@ -342,53 +393,57 @@ public class VespucciNavigatorContentProvider implements ICommonContentProvider 
 				return result.toArray();
 			}
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID: {
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID: {
 				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
-				Edge sv = (Edge) view;
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup target = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Incoming_4005_target,
-						"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup source = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Incoming_4005_source,
-						"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+				Diagram sv = (Diagram) view;
+				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup links = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_ShapesDiagram_1000_links,
+						"icons/linksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 				Collection<View> connectedViews;
-				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+				connectedViews = getChildrenByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
-				target.addChildren(createNavigatorItems(connectedViews, target, true));
-				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+				result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+				connectedViews = getChildrenByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
-				target.addChildren(createNavigatorItems(connectedViews, target, true));
-				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+				result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID));
-				target.addChildren(createNavigatorItems(connectedViews, target, true));
-				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID));
+				links.addChildren(createNavigatorItems(connectedViews, links, false));
+				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID));
-				target.addChildren(createNavigatorItems(connectedViews, target, true));
-				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID));
+				links.addChildren(createNavigatorItems(connectedViews, links, false));
+				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
-				source.addChildren(createNavigatorItems(connectedViews, source, true));
-				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID));
+				links.addChildren(createNavigatorItems(connectedViews, links, false));
+				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
-				source.addChildren(createNavigatorItems(connectedViews, source, true));
-				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID));
+				links.addChildren(createNavigatorItems(connectedViews, links, false));
+				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID));
-				source.addChildren(createNavigatorItems(connectedViews, source, true));
-				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID));
+				links.addChildren(createNavigatorItems(connectedViews, links, false));
+				connectedViews = getDiagramLinksByType(
+						Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID));
-				source.addChildren(createNavigatorItems(connectedViews, source, true));
-				if (!target.isEmpty()) {
-					result.add(target);
-				}
-				if (!source.isEmpty()) {
-					result.add(source);
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID));
+				links.addChildren(createNavigatorItems(connectedViews, links, false));
+				connectedViews = getDiagramLinksByType(
+						Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID));
+				links.addChildren(createNavigatorItems(connectedViews, links, false));
+				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
+				links.addChildren(createNavigatorItems(connectedViews, links, false));
+				if (!links.isEmpty()) {
+					result.add(links);
 				}
 				return result.toArray();
 			}
@@ -480,14 +535,14 @@ public class VespucciNavigatorContentProvider implements ICommonContentProvider 
 				return result.toArray();
 			}
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID: {
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID: {
 				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
 				Edge sv = (Edge) view;
 				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup target = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Outgoing_4003_target,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_GlobalIncoming_4006_target,
 						"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup source = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Outgoing_4003_source,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_GlobalIncoming_4006_source,
 						"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 				Collection<View> connectedViews;
 				connectedViews = getLinksTargetByType(Collections.singleton(sv),
@@ -531,53 +586,89 @@ public class VespucciNavigatorContentProvider implements ICommonContentProvider 
 				return result.toArray();
 			}
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID: {
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID: {
 				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
-				Edge sv = (Edge) view;
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup target = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Violation_4009_target,
-						"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup source = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Violation_4009_source,
-						"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+				Node sv = (Node) view;
+				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup incominglinks = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Dummy_3003_incominglinks,
+						"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup outgoinglinks = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Dummy_3003_outgoinglinks,
+						"icons/outgoingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 				Collection<View> connectedViews;
-				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
-				target.addChildren(createNavigatorItems(connectedViews, target, true));
-				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID));
+				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
-				target.addChildren(createNavigatorItems(connectedViews, target, true));
-				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID));
+				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID));
-				target.addChildren(createNavigatorItems(connectedViews, target, true));
-				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID));
+				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID));
-				target.addChildren(createNavigatorItems(connectedViews, target, true));
-				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID));
+				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
-				source.addChildren(createNavigatorItems(connectedViews, source, true));
-				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID));
+				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
-				source.addChildren(createNavigatorItems(connectedViews, source, true));
-				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID));
+				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID));
-				source.addChildren(createNavigatorItems(connectedViews, source, true));
-				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID));
+				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID));
-				source.addChildren(createNavigatorItems(connectedViews, source, true));
-				if (!target.isEmpty()) {
-					result.add(target);
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID));
+				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID));
+				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID));
+				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+				connectedViews = getIncomingLinksByType(
+						Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID));
+				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+				connectedViews = getOutgoingLinksByType(
+						Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID));
+				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+				connectedViews = getIncomingLinksByType(
+						Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID));
+				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+				connectedViews = getOutgoingLinksByType(
+						Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID));
+				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
+				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
+				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+				if (!incominglinks.isEmpty()) {
+					result.add(incominglinks);
 				}
-				if (!source.isEmpty()) {
-					result.add(source);
+				if (!outgoinglinks.isEmpty()) {
+					result.add(outgoinglinks);
 				}
 				return result.toArray();
 			}
@@ -736,156 +827,65 @@ public class VespucciNavigatorContentProvider implements ICommonContentProvider 
 				return result.toArray();
 			}
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID: {
-				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
-				Diagram sv = (Diagram) view;
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup links = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_ShapesDiagram_1000_links,
-						"icons/linksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
-				Collection<View> connectedViews;
-				connectedViews = getChildrenByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
-				result.addAll(createNavigatorItems(connectedViews, parentElement, false));
-				connectedViews = getChildrenByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
-				result.addAll(createNavigatorItems(connectedViews, parentElement, false));
-				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID));
-				links.addChildren(createNavigatorItems(connectedViews, links, false));
-				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID));
-				links.addChildren(createNavigatorItems(connectedViews, links, false));
-				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID));
-				links.addChildren(createNavigatorItems(connectedViews, links, false));
-				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID));
-				links.addChildren(createNavigatorItems(connectedViews, links, false));
-				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID));
-				links.addChildren(createNavigatorItems(connectedViews, links, false));
-				connectedViews = getDiagramLinksByType(
-						Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID));
-				links.addChildren(createNavigatorItems(connectedViews, links, false));
-				connectedViews = getDiagramLinksByType(
-						Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID));
-				links.addChildren(createNavigatorItems(connectedViews, links, false));
-				connectedViews = getDiagramLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
-				links.addChildren(createNavigatorItems(connectedViews, links, false));
-				if (!links.isEmpty()) {
-					result.add(links);
-				}
-				return result.toArray();
-			}
-
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID: {
-				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
-				Node sv = (Node) view;
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup incominglinks = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Dummy_3003_incominglinks,
-						"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
-				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup outgoinglinks = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Dummy_3003_outgoinglinks,
-						"icons/outgoingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
-				Collection<View> connectedViews;
-				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID));
-				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
-				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID));
-				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
-				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID));
-				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
-				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID));
-				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
-				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID));
-				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
-				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID));
-				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
-				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID));
-				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
-				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID));
-				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
-				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID));
-				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
-				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID));
-				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
-				connectedViews = getIncomingLinksByType(
-						Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID));
-				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
-				connectedViews = getOutgoingLinksByType(
-						Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID));
-				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
-				connectedViews = getIncomingLinksByType(
-						Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID));
-				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
-				connectedViews = getOutgoingLinksByType(
-						Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID));
-				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
-				connectedViews = getIncomingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
-				incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
-				connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID));
-				outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
-				if (!incominglinks.isEmpty()) {
-					result.add(incominglinks);
-				}
-				if (!outgoinglinks.isEmpty()) {
-					result.add(outgoinglinks);
-				}
-				return result.toArray();
-			}
-
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID: {
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID: {
 				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
 				Edge sv = (Edge) view;
 				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup target = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Expected_4002_target,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Incoming_4005_target,
 						"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup source = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Expected_4002_source,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Incoming_4005_source,
+						"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+				Collection<View> connectedViews;
+				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
+				target.addChildren(createNavigatorItems(connectedViews, target, true));
+				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
+				target.addChildren(createNavigatorItems(connectedViews, target, true));
+				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID));
+				target.addChildren(createNavigatorItems(connectedViews, target, true));
+				connectedViews = getLinksTargetByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID));
+				target.addChildren(createNavigatorItems(connectedViews, target, true));
+				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID));
+				source.addChildren(createNavigatorItems(connectedViews, source, true));
+				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID));
+				source.addChildren(createNavigatorItems(connectedViews, source, true));
+				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID));
+				source.addChildren(createNavigatorItems(connectedViews, source, true));
+				connectedViews = getLinksSourceByType(Collections.singleton(sv),
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID));
+				source.addChildren(createNavigatorItems(connectedViews, source, true));
+				if (!target.isEmpty()) {
+					result.add(target);
+				}
+				if (!source.isEmpty()) {
+					result.add(source);
+				}
+				return result.toArray();
+			}
+
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID: {
+				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
+				Edge sv = (Edge) view;
+				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup target = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Outgoing_4003_target,
+						"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup source = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Outgoing_4003_source,
 						"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 				Collection<View> connectedViews;
 				connectedViews = getLinksTargetByType(Collections.singleton(sv),
@@ -1031,14 +1031,14 @@ public class VespucciNavigatorContentProvider implements ICommonContentProvider 
 				return result.toArray();
 			}
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID: {
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID: {
 				LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciAbstractNavigatorItem>();
 				Edge sv = (Edge) view;
 				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup target = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_GlobalIncoming_4006_target,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Expected_4002_target,
 						"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 				de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup source = new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_GlobalIncoming_4006_source,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorGroupName_Expected_4002_source,
 						"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 				Collection<View> connectedViews;
 				connectedViews = getLinksTargetByType(Collections.singleton(sv),

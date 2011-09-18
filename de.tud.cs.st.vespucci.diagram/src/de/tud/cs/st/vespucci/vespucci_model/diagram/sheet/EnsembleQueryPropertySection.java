@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -36,6 +35,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.sheet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -58,19 +58,21 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
- * Query Tab
+ * Properties tab showing the Ensemble query property.
+ * <p><i>Reviewed by Thomas Schulz (Sept. 5, 2011)</i><br/>
+ * <i>Reviewed by Dominic Scheurer (Sept. 18, 2011)</i></p>
  * 
  * @author Benjamin Lück
  * @generated NOT
- * 
  */
-public class ModelDescriptionPropertySection extends ChangedAbstractBasicTextPropertySection {
+public class EnsembleQueryPropertySection extends ChangedAbstractBasicTextPropertySection implements IPropertySourceProvider {
 
 	/**
-	 * URL to the vespucci editor package.
+	 * URL of the Vespucci model namespace.
 	 */
-	private static final String VESPUCCI_EDITOR_URL = "http://vespucci.editor";
-
+	private static final String VESPUCCI_NAMESPACE_URL =
+		ResourceBundle.getBundle("plugin").getString("vespucci_modelNamespaceURI");
+	
 	/**
 	 * @generated
 	 */
@@ -158,7 +160,7 @@ public class ModelDescriptionPropertySection extends ChangedAbstractBasicTextPro
 	@Override
 	protected void setPropertyValue(final EObject object, final Object value) {
 		if (object instanceof Shape) {
-			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_EDITOR_URL);
+			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_NAMESPACE_URL);
 			final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
 			object.eSet(vesPackage.getShape_Query(), value);
@@ -171,7 +173,7 @@ public class ModelDescriptionPropertySection extends ChangedAbstractBasicTextPro
 	 */
 	@Override
 	protected String getPropertyValueString() {
-		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_EDITOR_URL);
+		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_NAMESPACE_URL);
 		final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
 		if (eObject instanceof EnsembleImpl) {

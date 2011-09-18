@@ -51,26 +51,26 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.eclipse.ui.views.properties.IPropertySourceProvider;
-
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
- * Query Tab
+ * <p>Properties tab showing the Ensemble description property.</p>
+ * <p><i>Reviewed by Thomas Schulz (Aug. 26 - Sept. 5, 2011)</i></p>
+ * <p><i>Reviewed by Dominic Scheurer (Sept. 18, 2011)</i></p>
  * 
- * @author Benjamin Lück
+ * @author Theo Kischka
  * @generated NOT
- * 
  */
 public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBasicTextPropertySection {
 
 	/**
-	 * URL to the vespucci editor package.
+	 * URL of the Vespucci model namespace.
 	 */
-	private static final String VESPUCCI_EDITOR_URL = "http://vespucci.editor";
+	private static final String VESPUCCI_NAMESPACE_URL = ResourceBundle.getBundle("plugin").getString(
+			"vespucci_modelNamespaceURI");
 
 	/**
 	 * @generated
@@ -137,7 +137,7 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 
 	/**
 	 * @generated NOT
-	 * @return ""
+	 * @return Empty String.
 	 */
 	@Override
 	protected String getPropertyNameLabel() {
@@ -159,7 +159,7 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	@Override
 	protected void setPropertyValue(final EObject object, final Object value) {
 		if (object instanceof Shape) {
-			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_EDITOR_URL);
+			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_NAMESPACE_URL);
 			final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
 			object.eSet(vesPackage.getShape_Description(), value);
@@ -172,7 +172,7 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	 */
 	@Override
 	protected String getPropertyValueString() {
-		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_EDITOR_URL);
+		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_NAMESPACE_URL);
 		final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
 		if (eObject instanceof EnsembleImpl) {

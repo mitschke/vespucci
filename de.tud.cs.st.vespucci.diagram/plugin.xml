@@ -283,7 +283,7 @@
             id="property.section.query" 
             tab="property.tab.query"
             filter="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleFilter"
-            class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.ModelDescriptionPropertySection">
+            class="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleQueryPropertySection">
          </propertySection>
          <propertySection
             id="property.section.description" 

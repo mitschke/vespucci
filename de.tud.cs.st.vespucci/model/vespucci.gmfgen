@@ -1871,7 +1871,7 @@
         xsi:type="gmfgen:GenCustomPropertyTab"
         iD="query"
         label="Query"
-        className="ModelDescriptionPropertySection">
+        className="EnsembleQueryPropertySection">
       <filter
           xsi:type="gmfgen:CustomTabFilter"
           className="de.tud.cs.st.vespucci.vespucci_model.diagram.sheet.EnsembleFilter"/>

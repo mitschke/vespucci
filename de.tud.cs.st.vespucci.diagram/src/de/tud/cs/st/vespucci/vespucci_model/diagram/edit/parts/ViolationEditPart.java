@@ -136,7 +136,7 @@ public class ViolationEditPart extends ConnectionNodeEditPart implements ITreeBr
 	public ViolationFigure getPrimaryShape() {
 		return (ViolationFigure) getFigure();
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -185,7 +185,7 @@ public class ViolationEditPart extends ConnectionNodeEditPart implements ITreeBr
 			fFigureViolationNameFigure.setText("all");
 
 			this.add(fFigureViolationNameFigure);
-			
+
 			// Add warning triangle in the middle of the connection
 			this.add(new WarningDecoration(), new MiddleDecorationLocator(this));
 
