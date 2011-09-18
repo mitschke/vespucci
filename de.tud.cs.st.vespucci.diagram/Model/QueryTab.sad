@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
-  <ShapesDiagram xmi:id="_Ftha8FPHEeC3v84xT_hxyw">
-    <shapes xmi:type="Ensemble" xmi:id="_vsQdAVPjEeCJz47zSw89uQ" name="QueryTab" query="class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','ModelDescriptionPropertySection')&#xA; or class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','TabQueryFilter')&#xA; or class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','ChangedAbstractBasicTextPropertySection')&#xA;"/>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://vespucci.editor/2011-06-01" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <ShapesDiagram xmi:id="_J34a0OEaEeCYZbAP091L6Q">
+    <shapes xmi:type="Ensemble" xmi:id="_J34a0eEaEeCYZbAP091L6Q" name="QueryTab" query="class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','ModelDescriptionPropertySection')&#xA; or class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','TabQueryFilter')&#xA; or class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','ChangedAbstractBasicTextPropertySection')&#xA;"/>
   </ShapesDiagram>
-  <notation:Diagram xmi:id="_FttBIFPHEeC3v84xT_hxyw" type="Vespucci" element="_Ftha8FPHEeC3v84xT_hxyw" name="QueryTab.sad" measurementUnit="Pixel">
-    <children xmi:type="notation:Shape" xmi:id="_vvn6EFPjEeCJz47zSw89uQ" type="2001" element="_vsQdAVPjEeCJz47zSw89uQ" fontName="Segoe UI">
+  <notation:Diagram xmi:id="_J34a0uEaEeCYZbAP091L6Q" type="Vespucci" element="_J34a0OEaEeCYZbAP091L6Q" name="QueryTab.sad" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_J34a0-EaEeCYZbAP091L6Q" type="2001" element="_J34a0eEaEeCYZbAP091L6Q" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_vvohIFPjEeCJz47zSw89uQ" type="5001"/>
-      <children xmi:type="notation:BasicCompartment" xmi:id="_vvpIMFPjEeCJz47zSw89uQ" type="7001"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_J34a1OEaEeCYZbAP091L6Q" type="5008"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_J34a1eEaEeCYZbAP091L6Q" type="7001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_J34a1uEaEeCYZbAP091L6Q" type="7003"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_vvn6EVPjEeCJz47zSw89uQ" x="245" y="110" width="216" height="196"/>
     </children>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_FttBIVPHEeC3v84xT_hxyw"/>
