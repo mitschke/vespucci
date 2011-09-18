@@ -70,9 +70,9 @@ public class EnsembleQueryPropertySection extends ChangedAbstractBasicTextProper
 	/**
 	 * URL of the Vespucci model namespace.
 	 */
-	private static final String VESPUCCI_NAMESPACE_URL =
-		ResourceBundle.getBundle("plugin").getString("vespucci_modelNamespaceURI");
-	
+	private static final String VESPUCCI_NAMESPACE_URL = ResourceBundle.getBundle("plugin").getString(
+			"vespucci_modelNamespaceURI");
+
 	/**
 	 * @generated
 	 */

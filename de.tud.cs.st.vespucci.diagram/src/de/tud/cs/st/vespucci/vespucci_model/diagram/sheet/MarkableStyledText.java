@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
  *   Copyright (c) 2011
- *   Author Tam-Minh Nguyen
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
