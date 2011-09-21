@@ -56,6 +56,7 @@ import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
  * @author Thomas Schulz
  */
 public class QueryBuilder {
+	
 	// constants for the querybuilder
 	private static final String PACKAGE = "package";
 	private static final String CLASS_WITH_MEMBERS = "class_with_members";
@@ -66,7 +67,7 @@ public class QueryBuilder {
 	private static final String STANDARD_SHAPENAME = "A dynamic name";
 	private static final Object EMPTY = "empty";
 
-	private static String createClassQuery(final Object draggedElement, final String key) {
+	private static String createClassQuery(final Object draggedElement) {
 		String classQuery;
 		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
 		final String classname = Resolver.resolveClassName(draggedElement);
@@ -166,11 +167,11 @@ public class QueryBuilder {
 			if (draggedElement instanceof IPackageFragment) {
 				list.add(createPackageQuery(draggedElement));
 			} else if (draggedElement instanceof ICompilationUnit) {
-				list.add(createClassQuery(draggedElement, key));
+				list.add(createClassQuery(draggedElement));
 			} else if (draggedElement instanceof IMethod) {
 				list.add(createMethodQuery(draggedElement));
 			} else if (draggedElement instanceof IType) {
-				list.add(createTypeQuery(draggedElement, key));
+				list.add(createTypeQuery(draggedElement));
 			} else if (draggedElement instanceof IField) {
 				list.add(createFieldQuery(draggedElement));
 			} else if (draggedElement instanceof IPackageFragmentRoot) {
@@ -231,7 +232,7 @@ public class QueryBuilder {
 		}
 	}
 
-	private static String createTypeQuery(final Object draggedElement, final String key) {
+	private static String createTypeQuery(final Object draggedElement) {
 		final IType type = (IType) draggedElement;
 		final ICompilationUnit cU = type.getCompilationUnit();
 		final String packagename = Resolver.resolveFullyQualifiedPackageName(cU);
