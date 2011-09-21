@@ -33,24 +33,20 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
-import java.util.ArrayList;
-
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-
-import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
  * This class provides methods to resolve class names.
  * 
+ * The resolved class names are used to build ensemble queries.
+ * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
- *
+ * 
  */
 public class ClassNameVisitor extends AbstractVisitor {
 
@@ -61,7 +57,7 @@ public class ClassNameVisitor extends AbstractVisitor {
 	 * @return Returns the fully qualified class name.
 	 */
 	public String getFullyQualifiedClassName(final Object object) {
-		return (String) super.visit(object);
+		return (String) super.invokeCorrectMethod(object);
 	}
 
 	@Override
@@ -81,14 +77,14 @@ public class ClassNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final ICompilationUnit compilationUnit) {
-		return prependPackageName(removeFileEnding(compilationUnit.getElementName(),".java"), compilationUnit);
+		return prependPackageName(removeFileEnding(compilationUnit.getElementName(), ".java"), compilationUnit);
 	}
-	
+
 	@Override
 	public Object visit(final IClassFile classFile) {
-		return prependPackageName(removeFileEnding(classFile.getElementName(),".class"), classFile);
+		return prependPackageName(removeFileEnding(classFile.getElementName(), ".class"), classFile);
 	}
-	
+
 	private static String removeFileEnding(final String potentialClassName, final String ending) {
 		if (potentialClassName.toLowerCase().endsWith(ending)) {
 			return potentialClassName.substring(0, potentialClassName.length() - ending.length());
@@ -101,7 +97,7 @@ public class ClassNameVisitor extends AbstractVisitor {
 		final String fqPackageName = Resolver.resolveFullyQualifiedPackageName(javaElement);
 		return fqPackageName.equals("") ? className : fqPackageName + "." + className;
 	}
-	
+
 	@Override
 	public Object getDefaultResultObject() {
 		return null;

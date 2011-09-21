@@ -57,7 +57,7 @@ import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
  * @author Thomas Schulz
  */
 public class QueryBuilder {
-	
+
 	// constants for the querybuilder
 	private static final String PACKAGE = "package";
 	private static final String CLASS_WITH_MEMBERS = "class_with_members";
@@ -77,7 +77,7 @@ public class QueryBuilder {
 
 		return classQuery;
 	}
-	
+
 	private static String createClassQueryFromCompilationUnit(final Object draggedElement) {
 		String classQuery;
 		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
@@ -100,7 +100,7 @@ public class QueryBuilder {
 
 	private static List<String> createJARQuery(final Object draggedElement) {
 		final LinkedList<String> queryList = new LinkedList<String>();
-		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot)draggedElement);
+		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) draggedElement);
 		for (final String s : packages) {
 			final String jarQuery = String.format("%s('%s')", PACKAGE, s);
 			queryList.add(jarQuery);
@@ -248,9 +248,17 @@ public class QueryBuilder {
 	private static String createTypeQuery(final Object draggedElement) {
 		final IType type = (IType) draggedElement;
 		final ICompilationUnit cU = type.getCompilationUnit();
-		final String packagename = Resolver.resolveFullyQualifiedPackageName(cU);
-		final String classname = Resolver.resolveClassName(type);
-		return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+		final IClassFile cF = type.getClassFile();
+		if (cU != null) {
+			final String packagename = Resolver.resolveFullyQualifiedPackageName(cU);
+			final String classname = Resolver.resolveClassName(type);
+			return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+		} else {
+			final String packagename = Resolver.resolveFullyQualifiedPackageName(cF);
+			final String classname = Resolver.resolveClassName(type);
+			return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+		}
+
 	}
 
 	private QueryBuilder() {

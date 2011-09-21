@@ -82,5 +82,6 @@ public interface IEclipseObjectVisitor {
 
 	Object visit(IFolder folder);
 
+	// encapsulation of *.JAR and packages from referenced/external libraries
 	Object visit(ArrayList<IJavaElement> listOfJavaElements);
 }

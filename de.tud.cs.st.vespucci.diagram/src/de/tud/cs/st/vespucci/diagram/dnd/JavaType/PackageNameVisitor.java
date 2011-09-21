@@ -51,13 +51,13 @@ import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 /**
  * This class provides methods to resolve package names.
  * 
+ * The resolved package names are used to build ensemble queries.
+ * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
  * 
  */
 public class PackageNameVisitor extends AbstractVisitor {
-
-	private static final String DOT_JAR = ".jar";
 
 	/**
 	 * This method invokes the correct method to retrieve the particular package name.
@@ -66,7 +66,7 @@ public class PackageNameVisitor extends AbstractVisitor {
 	 * @return Returns the fully qualified package name.
 	 */
 	public String getFullyQualifiedPackageName(final Object object) {
-		return (String) super.visit(object);
+		return (String) super.invokeCorrectMethod(object);
 	}
 
 	@Override
@@ -76,72 +76,38 @@ public class PackageNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final IMethod method) {
-		try {
-			if (method.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR)) {
-				IJavaElement parent = method.getParent();
-				while (!(parent instanceof IPackageFragment)) {
-					parent = parent.getParent();
-				}
-				return visit((IPackageFragment) parent);
-			}
-		} catch (JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method %s", method), e);
+		IJavaElement parent = method.getParent();
+		while (!(parent instanceof IPackageFragment)) {
+			parent = parent.getParent();
 		}
-
-		return visit(method.getCompilationUnit());
+		return visit((IPackageFragment) parent);
 	}
 
 	@Override
 	public Object visit(final IClassFile classFile) {
-		try {
-			String ding = classFile.getUnderlyingResource().toString();
-			if (classFile.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR)) {
-				IJavaElement parent = classFile.getParent();
-				while (!(parent instanceof IPackageFragment)) {
-					parent = parent.getParent();
-				}
-				return visit((IPackageFragment) parent);
-			}
-		} catch (JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of class file %s",
-					classFile), e);
+		IJavaElement parent = classFile.getParent();
+		while (!(parent instanceof IPackageFragment)) {
+			parent = parent.getParent();
 		}
-
-		return "NO PACKAGE";
+		return visit((IPackageFragment) parent);
 	}
 
 	@Override
 	public Object visit(final IField field) {
-		try {
-			if (field.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR)) {
-				IJavaElement parent = field.getParent();
-				while (!(parent instanceof IPackageFragment)) {
-					parent = parent.getParent();
-				}
-				return visit((IPackageFragment) parent);
-			}
-		} catch (JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of field %s", field), e);
+		IJavaElement parent = field.getParent();
+		while (!(parent instanceof IPackageFragment)) {
+			parent = parent.getParent();
 		}
-
-		return visit(field.getCompilationUnit());
+		return visit((IPackageFragment) parent);
 	}
 
 	@Override
 	public Object visit(final IType type) {
-		try {
-			if (type.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR)) {
-				IJavaElement parent = type.getParent();
-				while (!(parent instanceof IPackageFragment)) {
-					parent = parent.getParent();
-				}
-				return visit((IPackageFragment) parent);
-			}
-		} catch (JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of type %s", type), e);
+		IJavaElement parent = type.getParent();
+		while (!(parent instanceof IPackageFragment)) {
+			parent = parent.getParent();
 		}
-
-		return visit(type.getCompilationUnit());
+		return visit((IPackageFragment) parent);
 	}
 
 	@Override

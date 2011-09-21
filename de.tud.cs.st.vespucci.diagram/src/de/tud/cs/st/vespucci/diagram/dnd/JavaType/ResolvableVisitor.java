@@ -50,12 +50,17 @@ import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 /**
  * This class provides methods to decide whether an object can be resolved.
  * 
+ * The resolving decision determines if an element can be dragged over to the Vespucci workspace.
+ * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
  * 
  */
 public class ResolvableVisitor extends AbstractVisitor {
 
+	/**
+	 * JAR-File ending
+	 */
 	private static final String DOT_JAR = ".jar";
 
 	/**
@@ -65,7 +70,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	 * @return Returns true only if the given argument can be resolved.
 	 */
 	public boolean isResolvable(final Object object) {
-		return (Boolean) super.visit(object);
+		return (Boolean) super.invokeCorrectMethod(object);
 	}
 
 	@Override
@@ -86,7 +91,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of ICU [%s]", icu), e);
 		}
 	}
-	
+
 	@Override
 	public Object visit(final IClassFile icf) {
 		return true;
@@ -94,36 +99,23 @@ public class ResolvableVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final IMethod method) {
-		try {
-			return !method.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
-		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method [%s]", method), e);
-		}
+		return true;
 	}
 
 	@Override
 	public Object visit(final IField field) {
-		try {
-			return !field.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
-		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of field [%s]", field), e);
-		}
+		return true;
 	}
 
 	@Override
 	public Object visit(final IType type) {
-		try {
-			return !type.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
-		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of type [%s]", type), e);
-		}
+		return true;
 	}
 
 	@Override
 	public Object visit(final ArrayList<IJavaElement> listOfJavaElements) {
 		final IJavaElement firstElement = listOfJavaElements.get(0);
-		return isLocatedInJarFile(firstElement)
-				&& ((firstElement instanceof IPackageFragment) || (firstElement instanceof IPackageFragmentRoot));
+		return ((firstElement instanceof IPackageFragment) || (firstElement instanceof IPackageFragmentRoot));
 	}
 
 	@Override

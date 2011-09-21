@@ -53,11 +53,17 @@ import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 /**
  * This class provides methods to resolve element names.
  * 
+ * The resolved element names are used as default name of an ensemble.
+ * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
  *
  */
 public class ElementNameVisitor extends AbstractVisitor {
+	
+	/**
+	 * The name of the default package.
+	 */
 	private static final String DEFAULT_PACKAGE = "Default Package";
 
 	/**
@@ -67,7 +73,7 @@ public class ElementNameVisitor extends AbstractVisitor {
 	 * @return Returns the element name.
 	 */
 	public String getElementName(final Object object) {
-		return (String) super.visit(object);
+		return (String) super.invokeCorrectMethod(object);
 	}
 
 	@Override
@@ -112,7 +118,7 @@ public class ElementNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final IClassFile classFile) {
-		return classFile.getElementName();
+		return Resolver.resolveFullyQualifiedClassName(classFile);
 	}
 
 	@Override
