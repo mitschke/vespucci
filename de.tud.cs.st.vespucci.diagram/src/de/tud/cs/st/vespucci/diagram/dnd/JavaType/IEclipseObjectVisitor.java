@@ -59,12 +59,15 @@ public interface IEclipseObjectVisitor {
 	
 	Object visit(IProject project);
 
+	// packages
 	Object visit(IPackageFragment packageFragment);
 
+	// *.jar; src-folder
 	Object visit(IPackageFragmentRoot packageFragmentRoot);
 
 	Object visit(ICompilationUnit compilationUnit);
 
+	// classes and nested classes
 	Object visit(IType type);
 
 	Object visit(IField field);

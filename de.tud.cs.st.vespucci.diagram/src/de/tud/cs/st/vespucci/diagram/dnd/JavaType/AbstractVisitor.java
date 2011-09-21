@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -48,6 +49,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 
@@ -67,15 +69,18 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 	public abstract Object getDefaultResultObject();
 
 	public Object visit(final Object element) {
-		
+
 		String className = this.getClass().getName();
-		
+
 		try {
 
-			if (element instanceof IPackageFragment && isLocatedInJarFile((IJavaElement) element)) {
-				// getClass().getInterfaces doesn't return any interfaces when element lies in JAR
-				final IPackageFragment elementInJar = (IPackageFragment) element;
-				final ArrayList listOfJavaElements = new ArrayList<IPackageFragment>();
+			if ((element instanceof IPackageFragment || element instanceof IPackageFragmentRoot)
+					&& isLocatedInJarFile((IJavaElement) element)) {
+				// getClass().getInterfaces doesn't return any interfaces if element is:
+				// 1. a package in a JAR-archive [IPackageFragment]
+				// 2. the JAR itself [IPackageFragmentRoot]
+				final IJavaElement elementInJar = (IJavaElement) element;
+				final ArrayList listOfJavaElements = new ArrayList<IJavaElement>();
 				listOfJavaElements.add(elementInJar);
 				final Class currentClass = listOfJavaElements.getClass();
 				final Method correctVisitMethod = getClass().getMethod("visit", currentClass);

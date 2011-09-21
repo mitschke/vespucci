@@ -83,7 +83,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 		try {
 			return !icu.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method %s", icu), e);
+			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of ICU [%s]", icu), e);
 		}
 	}
 	
@@ -97,7 +97,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 		try {
 			return !method.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method %s", method), e);
+			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method [%s]", method), e);
 		}
 	}
 
@@ -106,7 +106,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 		try {
 			return !field.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of field %s", field), e);
+			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of field [%s]", field), e);
 		}
 	}
 
@@ -115,7 +115,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 		try {
 			return !type.getUnderlyingResource().toString().toLowerCase().endsWith(DOT_JAR);
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of type %s", type), e);
+			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of type [%s]", type), e);
 		}
 	}
 
@@ -123,7 +123,7 @@ public class ResolvableVisitor extends AbstractVisitor {
 	public Object visit(final ArrayList<IJavaElement> listOfJavaElements) {
 		final IJavaElement firstElement = listOfJavaElements.get(0);
 		return isLocatedInJarFile(firstElement)
-				&& ((firstElement instanceof IPackageFragment) || (firstElement instanceof IPackageFragmentRoot) || (firstElement instanceof IClassFile));
+				&& ((firstElement instanceof IPackageFragment) || (firstElement instanceof IPackageFragmentRoot));
 	}
 
 	@Override

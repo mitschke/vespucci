@@ -134,8 +134,6 @@ public class ElementNameVisitor extends AbstractVisitor {
 			return visit((IPackageFragmentRoot) firstElement);
 		} else if (firstElement instanceof IPackageFragment) {
 			return visit((IPackageFragment) firstElement);
-		} else if (firstElement instanceof IClassFile) {
-			return visit((IClassFile) firstElement);
 		} else {
 			getIllegalArgumentException(firstElement);
 		}

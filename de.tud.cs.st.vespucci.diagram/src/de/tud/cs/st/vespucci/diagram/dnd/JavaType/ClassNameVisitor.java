@@ -33,11 +33,17 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
+import java.util.ArrayList;
+
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
  * This class provides methods to resolve class names.
@@ -47,8 +53,6 @@ import org.eclipse.jdt.core.IType;
  *
  */
 public class ClassNameVisitor extends AbstractVisitor {
-	private static final String DOT_JAVA = ".java";
-	private static final String DOT_CLASS = ".class";
 
 	/**
 	 * This method invokes the correct method to retrieve the particular class name.
@@ -77,27 +81,19 @@ public class ClassNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final ICompilationUnit compilationUnit) {
-		return prependPackageName(removeJavaFileEnding(compilationUnit.getElementName()), compilationUnit);
+		return prependPackageName(removeFileEnding(compilationUnit.getElementName(),".java"), compilationUnit);
 	}
 	
 	@Override
 	public Object visit(final IClassFile classFile) {
-		return prependPackageName(removeClassFileEnding(classFile.getElementName()), classFile);
+		return prependPackageName(removeFileEnding(classFile.getElementName(),".class"), classFile);
 	}
-
-	private static String removeClassFileEnding(final String className) {
-		if (className.toLowerCase().endsWith(DOT_JAVA)) {
-			return className.substring(0, className.length() - DOT_CLASS.length());
+	
+	private static String removeFileEnding(final String potentialClassName, final String ending) {
+		if (potentialClassName.toLowerCase().endsWith(ending)) {
+			return potentialClassName.substring(0, potentialClassName.length() - ending.length());
 		} else {
-			return className;
-		}
-	}
-
-	private static String removeJavaFileEnding(final String className) {
-		if (className.toLowerCase().endsWith(DOT_JAVA)) {
-			return className.substring(0, className.length() - DOT_JAVA.length());
-		} else {
-			return className;
+			return potentialClassName;
 		}
 	}
 
@@ -105,7 +101,7 @@ public class ClassNameVisitor extends AbstractVisitor {
 		final String fqPackageName = Resolver.resolveFullyQualifiedPackageName(javaElement);
 		return fqPackageName.equals("") ? className : fqPackageName + "." + className;
 	}
-
+	
 	@Override
 	public Object getDefaultResultObject() {
 		return null;
