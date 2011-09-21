@@ -86,6 +86,11 @@ public class ResolvableVisitor extends AbstractVisitor {
 			throw new VespucciUnexpectedException(String.format("Could not access underlying resource of method %s", icu), e);
 		}
 	}
+	
+	@Override
+	public Object visit(final IClassFile icf) {
+		return true;
+	}
 
 	@Override
 	public Object visit(final IMethod method) {

@@ -52,10 +52,10 @@ import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
  * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
- *
+ * 
  */
 public class PackageNameVisitor extends AbstractVisitor {
-	
+
 	/**
 	 * This method invokes the correct method to retrieve the particular package name.
 	 * 

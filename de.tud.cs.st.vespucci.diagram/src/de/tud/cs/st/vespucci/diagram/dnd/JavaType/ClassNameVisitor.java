@@ -33,6 +33,7 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
+import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
@@ -47,6 +48,7 @@ import org.eclipse.jdt.core.IType;
  */
 public class ClassNameVisitor extends AbstractVisitor {
 	private static final String DOT_JAVA = ".java";
+	private static final String DOT_CLASS = ".class";
 
 	/**
 	 * This method invokes the correct method to retrieve the particular class name.
@@ -77,8 +79,21 @@ public class ClassNameVisitor extends AbstractVisitor {
 	public Object visit(final ICompilationUnit compilationUnit) {
 		return prependPackageName(removeJavaFileEnding(compilationUnit.getElementName()), compilationUnit);
 	}
+	
+	@Override
+	public Object visit(final IClassFile classFile) {
+		return prependPackageName(removeClassFileEnding(classFile.getElementName()), classFile);
+	}
 
-	private String removeJavaFileEnding(final String className) {
+	private static String removeClassFileEnding(final String className) {
+		if (className.toLowerCase().endsWith(DOT_JAVA)) {
+			return className.substring(0, className.length() - DOT_CLASS.length());
+		} else {
+			return className;
+		}
+	}
+
+	private static String removeJavaFileEnding(final String className) {
 		if (className.toLowerCase().endsWith(DOT_JAVA)) {
 			return className.substring(0, className.length() - DOT_JAVA.length());
 		} else {
@@ -86,7 +101,7 @@ public class ClassNameVisitor extends AbstractVisitor {
 		}
 	}
 
-	private String prependPackageName(final String className, final Object javaElement) {
+	private static String prependPackageName(final String className, final Object javaElement) {
 		final String fqPackageName = Resolver.resolveFullyQualifiedPackageName(javaElement);
 		return fqPackageName.equals("") ? className : fqPackageName + "." + className;
 	}

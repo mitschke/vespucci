@@ -72,10 +72,10 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 		
 		try {
 
-			if (element instanceof IJavaElement && isLocatedInJarFile((IJavaElement) element)) {
+			if (element instanceof IPackageFragment && isLocatedInJarFile((IJavaElement) element)) {
 				// getClass().getInterfaces doesn't return any interfaces when element lies in JAR
-				final IJavaElement elementInJar = (IJavaElement) element;
-				final ArrayList listOfJavaElements = new ArrayList<IJavaElement>();
+				final IPackageFragment elementInJar = (IPackageFragment) element;
+				final ArrayList listOfJavaElements = new ArrayList<IPackageFragment>();
 				listOfJavaElements.add(elementInJar);
 				final Class currentClass = listOfJavaElements.getClass();
 				final Method correctVisitMethod = getClass().getMethod("visit", currentClass);

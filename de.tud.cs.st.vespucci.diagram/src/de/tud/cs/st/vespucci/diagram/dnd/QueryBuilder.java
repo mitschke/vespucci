@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
@@ -67,7 +68,17 @@ public class QueryBuilder {
 	private static final String STANDARD_SHAPENAME = "A dynamic name";
 	private static final Object EMPTY = "empty";
 
-	private static String createClassQuery(final Object draggedElement) {
+	private static String createClassQueryFromClassFile(Object draggedElement) {
+		String classQuery;
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
+		final String classname = Resolver.resolveClassName(draggedElement);
+
+		classQuery = String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+
+		return classQuery;
+	}
+	
+	private static String createClassQueryFromCompilationUnit(final Object draggedElement) {
 		String classQuery;
 		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
 		final String classname = Resolver.resolveClassName(draggedElement);
@@ -167,7 +178,9 @@ public class QueryBuilder {
 			if (draggedElement instanceof IPackageFragment) {
 				list.add(createPackageQuery(draggedElement));
 			} else if (draggedElement instanceof ICompilationUnit) {
-				list.add(createClassQuery(draggedElement));
+				list.add(createClassQueryFromCompilationUnit(draggedElement));
+			} else if (draggedElement instanceof IClassFile) {
+				list.add(createClassQueryFromClassFile(draggedElement));
 			} else if (draggedElement instanceof IMethod) {
 				list.add(createMethodQuery(draggedElement));
 			} else if (draggedElement instanceof IType) {
