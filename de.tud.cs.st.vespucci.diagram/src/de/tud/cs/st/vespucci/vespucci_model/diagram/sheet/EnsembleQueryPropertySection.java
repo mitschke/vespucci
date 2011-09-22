@@ -178,7 +178,7 @@ public class EnsembleQueryPropertySection extends ChangedAbstractBasicTextProper
 
 		if (eObject instanceof EnsembleImpl) {
 			getSectionComposite().setVisible(true);
-			String trimmedQuery = ((String) eObject.eGet(vesPackage.getShape_Query())).trim();
+			String trimmedQuery = ((String) eObject.eGet(vesPackage.getShape_Query()));
 			return trimmedQuery;
 		} else {
 			getSectionComposite().setVisible(false);
