@@ -42,6 +42,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 
@@ -50,12 +51,14 @@ import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 /**
  * This class provides methods to resolve package names.
  * 
+ * The resolved package names are used to build ensemble queries.
+ * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
- *
+ * 
  */
 public class PackageNameVisitor extends AbstractVisitor {
-	
+
 	/**
 	 * This method invokes the correct method to retrieve the particular package name.
 	 * 
@@ -63,7 +66,7 @@ public class PackageNameVisitor extends AbstractVisitor {
 	 * @return Returns the fully qualified package name.
 	 */
 	public String getFullyQualifiedPackageName(final Object object) {
-		return (String) super.visit(object);
+		return (String) super.invokeCorrectMethod(object);
 	}
 
 	@Override
@@ -73,22 +76,38 @@ public class PackageNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final IMethod method) {
-		return visit(method.getCompilationUnit());
+		IJavaElement parent = method.getParent();
+		while (!(parent instanceof IPackageFragment)) {
+			parent = parent.getParent();
+		}
+		return visit((IPackageFragment) parent);
 	}
 
 	@Override
 	public Object visit(final IClassFile classFile) {
-		return visit(classFile.getParent());
+		IJavaElement parent = classFile.getParent();
+		while (!(parent instanceof IPackageFragment)) {
+			parent = parent.getParent();
+		}
+		return visit((IPackageFragment) parent);
 	}
 
 	@Override
 	public Object visit(final IField field) {
-		return visit(field.getCompilationUnit());
+		IJavaElement parent = field.getParent();
+		while (!(parent instanceof IPackageFragment)) {
+			parent = parent.getParent();
+		}
+		return visit((IPackageFragment) parent);
 	}
 
 	@Override
 	public Object visit(final IType type) {
-		return visit(type.getCompilationUnit());
+		IJavaElement parent = type.getParent();
+		while (!(parent instanceof IPackageFragment)) {
+			parent = parent.getParent();
+		}
+		return visit((IPackageFragment) parent);
 	}
 
 	@Override
@@ -105,15 +124,13 @@ public class PackageNameVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(final ArrayList<IJavaElement> listOfJavaElements) {
-
 		final IJavaElement firstElement = listOfJavaElements.get(0);
-
 		if (firstElement instanceof IPackageFragment) {
 			return visit((IPackageFragment) firstElement);
-		} else if (firstElement instanceof IClassFile) {
-			return visit((IClassFile) firstElement);
+		} else if (firstElement instanceof IPackageFragmentRoot) {
+			return visit((IPackageFragmentRoot) firstElement);
 		}
-		throw new VespucciUnexpectedException(String.format("Given argument [%s] is not supported.", firstElement));
+		return getDefaultResultObject();
 	}
 
 	@Override
