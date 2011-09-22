@@ -59,6 +59,9 @@ import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
  */
 public class Resolver {
 
+	/**
+	 * Method name of a constructor.
+	 */
 	private static final String CONSTRUCTOR = "<init>";
 
 	private Resolver() {

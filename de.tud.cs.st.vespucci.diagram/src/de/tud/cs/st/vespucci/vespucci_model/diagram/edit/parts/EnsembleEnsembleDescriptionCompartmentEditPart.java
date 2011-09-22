@@ -1,7 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -79,7 +78,7 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends ListCompartm
 
 	/**
 	 * @generated NOT
-	//	 * @author Dominic Scheurer
+	 * @author Dominic Scheurer
 	 * 
 	 * Overridden to restore the saved collapse state of the
 	 * description label.

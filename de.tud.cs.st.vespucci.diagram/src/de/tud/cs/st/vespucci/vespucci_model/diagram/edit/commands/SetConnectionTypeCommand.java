@@ -61,6 +61,7 @@ import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequestFactory;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 
 /**
@@ -82,11 +83,10 @@ public class SetConnectionTypeCommand implements Command {
 	/**
 	 * Description used for this command.
 	 */
-	private static final String DESCRIPTION = "This command is only used when the type of a conenction is changed "
-			+ "via the context menu. It deletes and recreates the selected connections.";
+	private static final String DESCRIPTION = "Changes the dependency kind of a connection.";
 
 	/**
-	 * Connections to be changed.
+	 * Connection to be changed.
 	 */
 	private final ConnectionEditPart connectionToChange;
 
@@ -94,12 +94,6 @@ public class SetConnectionTypeCommand implements Command {
 	 * Connection, that is created during execution.
 	 */
 	private Connection createdConnection;
-
-	/**
-	 * Connection, that is created after undo. Note: this will be not the same as
-	 * {@link #connectionToChange}
-	 */
-	private ConnectionEditPart createdUndoConnection;
 
 	/**
 	 * Current used diagram view. It contains i.a. all {@link EditPart} shown.
@@ -121,7 +115,7 @@ public class SetConnectionTypeCommand implements Command {
 	private org.eclipse.gef.commands.Command deleteCommand;
 
 	/**
-	 * Creates a new command, that deletes and recreates given connections with given type.
+	 * Creates a new command, that deletes and recreates given connection with given type.
 	 * 
 	 * @param connection
 	 *            The connection, whose type is to be changed.
@@ -162,7 +156,7 @@ public class SetConnectionTypeCommand implements Command {
 	@Override
 	public void execute() {
 		// features will be needed for restoring later on
-		final HashMap<EStructuralFeature, Object> featureMap = getFeatureMap();
+		final HashMap<EStructuralFeature, Object> featureMap = getFeatureMapCopy();
 
 		deleteCommand = getDeleteCommand();
 		deleteCommand.execute();
@@ -179,8 +173,7 @@ public class SetConnectionTypeCommand implements Command {
 
 			getRestoreSemanticCommand(featureMap).execute();
 		} catch (final ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new VespucciUnexpectedException("Error during create command execution.",e);
 		}
 	}
 
@@ -209,15 +202,14 @@ public class SetConnectionTypeCommand implements Command {
 	@Override
 	public void redo() {
 		if (!createCommand.canRedo()) {
-			// TODO throw exception
+			throw new VespucciUnexpectedException("Create command can not be redone.");
 		}
 
 		deleteCommand.redo();
 		try {
 			createCommand.redo(null, null);
 		} catch (final ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new VespucciUnexpectedException("Error during redo execution.",e);
 		}
 	}
 
@@ -226,14 +218,13 @@ public class SetConnectionTypeCommand implements Command {
 		createdConnection = null;
 
 		if (!createCommand.canUndo() || !deleteCommand.canUndo()) {
-			// TODO throw exception
+			throw new VespucciUnexpectedException("Create command can not be undone.");
 		}
 
 		try {
 			createCommand.undo(null, null);
 		} catch (final ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new VespucciUnexpectedException("Error during undo execution.",e);
 		}
 		deleteCommand.undo();
 	}
@@ -307,10 +298,11 @@ public class SetConnectionTypeCommand implements Command {
 	/**
 	 * @return Returns a all EFeatures, mapped with their values, of the connection to be changed.
 	 */
-	private HashMap<EStructuralFeature, Object> getFeatureMap() {
+	private HashMap<EStructuralFeature, Object> getFeatureMapCopy() {
 		final HashMap<EStructuralFeature, Object> featureMap = new HashMap<EStructuralFeature, Object>();
 
 		final EObject semanticConn = connectionToChange.resolveSemanticElement();
+		//FIXME does not copy values. Current problem: original source/target history is deleted when delete command is executed. 
 		for (final EStructuralFeature feature : semanticConn.eClass().getEAllStructuralFeatures()) {
 			featureMap.put(feature, semanticConn.eGet(feature));
 		}

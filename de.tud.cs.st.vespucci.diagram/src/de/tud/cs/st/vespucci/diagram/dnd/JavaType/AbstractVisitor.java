@@ -55,8 +55,9 @@ import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
- * This abstract class provides the methods for all its subclasses and uses the reflection API to
- * determine the kind of visitor and object which is currently calling the visit method.
+ * This abstract class is the super class of all visitors. The main purpose lies in the invocation
+ * of the correct and
+ * highly polymorphic function "visit" of each visitor.
  * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
@@ -66,14 +67,23 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 
 	public abstract Object getDefaultResultObject();
 
-	public Object visit(final Object element) {
-		
-		String className = this.getClass().getName();
-		
+	/**
+	 * 
+	 * @param element
+	 * @return The invocation of the correct method (w.r.t. the parameter type)
+	 */
+	public Object invokeCorrectMethod(final Object element) {
+
+		final String className = this.getClass().getName();
+
 		try {
 
-			if (element instanceof IJavaElement && isLocatedInJarFile((IJavaElement) element)) {
-				// getClass().getInterfaces doesn't return any interfaces when element lies in JAR
+			if ((element instanceof IPackageFragment || element instanceof IPackageFragmentRoot)
+					&& isLocatedInJarFile((IJavaElement) element)) {
+				// unfortunately, getClass().getInterfaces doesn't return any interfaces if element
+				// is:
+				// 1. a package in a JAR-archive [IPackageFragment]
+				// 2. the JAR itself [IPackageFragmentRoot]
 				final IJavaElement elementInJar = (IJavaElement) element;
 				final ArrayList listOfJavaElements = new ArrayList<IJavaElement>();
 				listOfJavaElements.add(elementInJar);
@@ -114,6 +124,11 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 		}
 	}
 
+	/**
+	 * @param element
+	 * @return Returns true only if element is located in JAR-File
+	 */
+	@SuppressWarnings("restriction")
 	protected static boolean isLocatedInJarFile(final IJavaElement element) {
 		IJavaElement parent = element;
 		while (parent != null) {
@@ -193,6 +208,11 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 		}
 	}
 
+	/**
+	 * 
+	 * @param argument
+	 * @return Returns the specific VespucciException.
+	 */
 	protected RuntimeException getIllegalArgumentException(final Object argument) {
 		return new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", argument));
 	}

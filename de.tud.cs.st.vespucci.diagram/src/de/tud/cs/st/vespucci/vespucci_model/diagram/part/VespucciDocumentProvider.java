@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
@@ -98,6 +99,8 @@ import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
  */
 public class VespucciDocumentProvider extends AbstractDocumentProvider implements IDiagramDocumentProvider {
 
+	private static final ResourceBundle VESPUCCI_DIAGRAM_MSG_RES_BUNDLE = ResourceBundle.getBundle("messages");
+	
 	/**
 	 * @generated
 	 */
@@ -241,10 +244,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider implement
 	 *            The sad file to check and to update if necessary.
 	 */
 	private static void checkConversionNeeded(final IFile file) {
-		final String updateQuestionTitle = "Vespucci Upgrade Framework";
-		final String updateQuestionText = "The file you are trying to open is of an old version.\n"
-				+ "Shall Vespucci upgrade it to the current version? (recommended)\n"
-				+ "Vespucci will create a backup of your old file.";
+		final String updateQuestionTitle = VESPUCCI_DIAGRAM_MSG_RES_BUNDLE.getString("VespucciAutoTransformationTitle");
+		final String updateQuestionText = VESPUCCI_DIAGRAM_MSG_RES_BUNDLE.getString("VespucciAutoTransformationMessage");
 
 		final VespucciVersionChain versionChain = VespucciVersionChain.getInstance();
 

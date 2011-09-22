@@ -1,7 +1,6 @@
 ﻿/*
  *  License (BSD Style License):
- *   Copyright (c) 2010
- *   Author Tam-Minh Nguyen
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -104,45 +103,45 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements ICo
 	 */
 	public Image getImage(View view) {
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view)) {
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
+				return getImage(
+						"Navigator?TopLevelNode?http://vespucci.editor/2011-06-01?Dummy", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_2002); //$NON-NLS-1$
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
+				return getImage(
+						"Navigator?TopLevelNode?http://vespucci.editor/2011-06-01?Ensemble", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001); //$NON-NLS-1$
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
+				return getImage(
+						"Navigator?Link?http://vespucci.editor/2011-06-01?NotAllowed", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004); //$NON-NLS-1$
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
+				return getImage(
+						"Navigator?Diagram?http://vespucci.editor/2011-06-01?ShapesDiagram", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.ShapesDiagram_1000); //$NON-NLS-1$
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
 				return getImage(
 						"Navigator?Node?http://vespucci.editor/2011-06-01?Ensemble", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001); //$NON-NLS-1$
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
 				return getImage(
 						"Navigator?Link?http://vespucci.editor/2011-06-01?Incoming", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Incoming_4005); //$NON-NLS-1$
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
-				return getImage(
-						"Navigator?TopLevelNode?http://vespucci.editor/2011-06-01?Dummy", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_2002); //$NON-NLS-1$
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
-				return getImage(
-						"Navigator?Link?http://vespucci.editor/2011-06-01?Outgoing", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003); //$NON-NLS-1$
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
-				return getImage(
-						"Navigator?Link?http://vespucci.editor/2011-06-01?Violation", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009); //$NON-NLS-1$
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
 				return getImage(
 						"Navigator?Link?http://vespucci.editor/2011-06-01?GlobalOutgoing", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalOutgoing_4007); //$NON-NLS-1$
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
 				return getImage(
-						"Navigator?TopLevelNode?http://vespucci.editor/2011-06-01?Ensemble", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001); //$NON-NLS-1$
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-				return getImage(
-						"Navigator?Diagram?http://vespucci.editor/2011-06-01?ShapesDiagram", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.ShapesDiagram_1000); //$NON-NLS-1$
+						"Navigator?Link?http://vespucci.editor/2011-06-01?Outgoing", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003); //$NON-NLS-1$
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID:
 				return getImage(
 						"Navigator?Node?http://vespucci.editor/2011-06-01?Dummy", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003); //$NON-NLS-1$
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
 				return getImage(
-						"Navigator?Link?http://vespucci.editor/2011-06-01?Expected", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Expected_4002); //$NON-NLS-1$
+						"Navigator?Link?http://vespucci.editor/2011-06-01?Violation", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009); //$NON-NLS-1$
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID:
 				return getImage(
 						"Navigator?Link?http://vespucci.editor/2011-06-01?InAndOut", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.InAndOut_4001); //$NON-NLS-1$
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
-				return getImage(
-						"Navigator?Link?http://vespucci.editor/2011-06-01?NotAllowed", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004); //$NON-NLS-1$
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
 				return getImage(
 						"Navigator?Link?http://vespucci.editor/2011-06-01?GlobalIncoming", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalIncoming_4006); //$NON-NLS-1$
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
+				return getImage(
+						"Navigator?Link?http://vespucci.editor/2011-06-01?Expected", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Expected_4002); //$NON-NLS-1$
 		}
 		return getImage("Navigator?UnknownElement", null); //$NON-NLS-1$
 	}
@@ -195,32 +194,32 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements ICo
 			return getUnresolvedDomainElementProxyText(view);
 		}
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view)) {
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
+				return getDummy_2002Text(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
+				return getEnsemble_2001Text(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
+				return getNotAllowed_4004Text(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
+				return getShapesDiagram_1000Text(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
 				return getEnsemble_3001Text(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
 				return getIncoming_4005Text(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart.VISUAL_ID:
-				return getDummy_2002Text(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
-				return getOutgoing_4003Text(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
-				return getViolation_4009Text(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
 				return getGlobalOutgoing_4007Text(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-				return getEnsemble_2001Text(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-				return getShapesDiagram_1000Text(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
+				return getOutgoing_4003Text(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart.VISUAL_ID:
 				return getDummy_3003Text(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
-				return getExpected_4002Text(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+				return getViolation_4009Text(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID:
 				return getInAndOut_4001Text(view);
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
-				return getNotAllowed_4004Text(view);
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
 				return getGlobalIncoming_4006Text(view);
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
+				return getExpected_4002Text(view);
 		}
 		return getUnknownElementText(view);
 	}

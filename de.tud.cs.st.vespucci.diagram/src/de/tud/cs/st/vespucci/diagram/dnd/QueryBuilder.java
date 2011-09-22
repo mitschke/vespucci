@@ -1,6 +1,6 @@
 /*
  *  License (BSD Style License):
- *   Copyright (c) 2010
+ *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
  *   Technische Universität Darmstadt
@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
@@ -56,6 +57,7 @@ import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
  * @author Thomas Schulz
  */
 public class QueryBuilder {
+
 	// constants for the querybuilder
 	private static final String PACKAGE = "package";
 	private static final String CLASS_WITH_MEMBERS = "class_with_members";
@@ -66,7 +68,17 @@ public class QueryBuilder {
 	private static final String STANDARD_SHAPENAME = "A dynamic name";
 	private static final Object EMPTY = "empty";
 
-	private static String createClassQuery(final Object draggedElement, final String key) {
+	private static String createClassQueryFromClassFile(Object draggedElement) {
+		String classQuery;
+		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
+		final String classname = Resolver.resolveClassName(draggedElement);
+
+		classQuery = String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+
+		return classQuery;
+	}
+
+	private static String createClassQueryFromCompilationUnit(final Object draggedElement) {
 		String classQuery;
 		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
 		final String classname = Resolver.resolveClassName(draggedElement);
@@ -88,7 +100,7 @@ public class QueryBuilder {
 
 	private static List<String> createJARQuery(final Object draggedElement) {
 		final LinkedList<String> queryList = new LinkedList<String>();
-		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot)draggedElement);
+		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) draggedElement);
 		for (final String s : packages) {
 			final String jarQuery = String.format("%s('%s')", PACKAGE, s);
 			queryList.add(jarQuery);
@@ -166,11 +178,13 @@ public class QueryBuilder {
 			if (draggedElement instanceof IPackageFragment) {
 				list.add(createPackageQuery(draggedElement));
 			} else if (draggedElement instanceof ICompilationUnit) {
-				list.add(createClassQuery(draggedElement, key));
+				list.add(createClassQueryFromCompilationUnit(draggedElement));
+			} else if (draggedElement instanceof IClassFile) {
+				list.add(createClassQueryFromClassFile(draggedElement));
 			} else if (draggedElement instanceof IMethod) {
 				list.add(createMethodQuery(draggedElement));
 			} else if (draggedElement instanceof IType) {
-				list.add(createTypeQuery(draggedElement, key));
+				list.add(createTypeQuery(draggedElement));
 			} else if (draggedElement instanceof IField) {
 				list.add(createFieldQuery(draggedElement));
 			} else if (draggedElement instanceof IPackageFragmentRoot) {
@@ -231,12 +245,20 @@ public class QueryBuilder {
 		}
 	}
 
-	private static String createTypeQuery(final Object draggedElement, final String key) {
+	private static String createTypeQuery(final Object draggedElement) {
 		final IType type = (IType) draggedElement;
 		final ICompilationUnit cU = type.getCompilationUnit();
-		final String packagename = Resolver.resolveFullyQualifiedPackageName(cU);
-		final String classname = Resolver.resolveClassName(type);
-		return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+		final IClassFile cF = type.getClassFile();
+		if (cU != null) {
+			final String packagename = Resolver.resolveFullyQualifiedPackageName(cU);
+			final String classname = Resolver.resolveClassName(type);
+			return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+		} else {
+			final String packagename = Resolver.resolveFullyQualifiedPackageName(cF);
+			final String classname = Resolver.resolveClassName(type);
+			return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
+		}
+
 	}
 
 	private QueryBuilder() {
