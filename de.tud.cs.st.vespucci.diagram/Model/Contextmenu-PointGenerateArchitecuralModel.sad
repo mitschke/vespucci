@@ -19,7 +19,7 @@
       <children xmi:type="notation:BasicCompartment" xmi:id="_GYfi2-EaEeCYZbAP091L6Q" type="7003"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OjN5AVO2EeCFAqVbT4yc4A" x="335" y="125" width="111" height="221"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_fhEmUCk6EeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur-Diagramm für den Kontextmenupunkt &quot;Generate Architecural Model&quot;." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_fhEmUCk6EeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architekturdiagramm für den Kontextmenupunkt &quot;Generate Architecural Model&quot;." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_fhI3wCk6EeC7g5S-XZYxhw" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
