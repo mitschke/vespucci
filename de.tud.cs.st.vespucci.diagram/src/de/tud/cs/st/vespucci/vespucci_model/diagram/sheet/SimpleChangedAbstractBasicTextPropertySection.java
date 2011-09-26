@@ -54,9 +54,9 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  */
 public abstract class SimpleChangedAbstractBasicTextPropertySection extends AbstractModelerPropertySection {
 
-	private static final int DESCRIPTION_TAB_HEIGHT_SHIFT = 35;
+	private static final int DESCRIPTION_TAB_HEIGHT_SHIFT = 25;
 
-	private static final int DESCRIPTION_TAB_WIDTH_SHIFT = 45;
+	private static final int DESCRIPTION_TAB_WIDTH_SHIFT = 32;
 
 	// styled text widget to display and set value of the property
 	private StyledText textWidget;
@@ -72,6 +72,8 @@ public abstract class SimpleChangedAbstractBasicTextPropertySection extends Abst
 		@Override
 		public void handleEvent(final Event e) {
 			updateHeight();
+			scrolledParent.getVerticalBar().setVisible(false);
+			scrolledParent.getHorizontalBar().setVisible(false);
 		}
 	};
 

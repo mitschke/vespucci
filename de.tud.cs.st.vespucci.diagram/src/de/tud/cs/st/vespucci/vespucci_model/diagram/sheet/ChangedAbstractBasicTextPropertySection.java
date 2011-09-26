@@ -35,6 +35,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.EditorsUI;
@@ -67,9 +69,9 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 
 	private static final ResourceBundle PLUGIN_RES_BUNDLE = ResourceBundle.getBundle("plugin");
 
-	private static final int QUERY_TAB_HEIGHT_SHIFT = 35;
+	private static final int QUERY_TAB_HEIGHT_SHIFT = 25;
 
-	private static final int QUERY_TAB_WIDTH_SHIFT = 45;
+	private static final int QUERY_TAB_WIDTH_SHIFT = 32;
 
 	private static final int START_HEIGHT = 15;
 
@@ -91,6 +93,8 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		@Override
 		public void handleEvent(final Event e) {
 			updateHeight();
+			scrolledParent.getVerticalBar().setVisible(false);
+			scrolledParent.getHorizontalBar().setVisible(false);
 		}
 	};
 
@@ -457,6 +461,7 @@ public abstract class ChangedAbstractBasicTextPropertySection extends AbstractMo
 		super.createControls(parent, aTabbedPropertySheetPage);
 		sectionComposite = getWidgetFactory().createFlatFormComposite(parent);
 		styledTextWidget = createTextWidget(sectionComposite);
+		
 		scrolledParent = parent;
 
 		while (true) {
