@@ -876,7 +876,7 @@
                 name="Set Constraint Type">
           </category>
           <command
-                categoryId="de.tud.cs.st.vespucci.diagram.SetDependencyConstraint"
+                categoryId="de.tud.cs.st.vespucci.diagram.SetDependencyConstraintCat"
                 description="Sets the constraint of the dependency specified by SetConstraintTypeParam."
                 id="de.tud.cs.st.vespucci.diagram.SetDependencyConstraint"
                 name="Set dependency constraint">
@@ -918,23 +918,6 @@
                priority="medium">
          </factory>
       </extension>
-      
-      <?gmfgen generated="false"?>
-       <extension
-             point="org.eclipse.gmf.runtime.diagram.ui.paletteProviders">
-          <paletteProvider>
-             <Priority
-                   name="Lowest">
-             </Priority>
-                   <contribution>
-     					<predefinedEntry id="standardGroup/zoomTool"/>
-     					<predefinedEntry id="standardGroup/noteStack/noteTool"/> 
-						<predefinedEntry id="standardGroup/noteStack/textTool"/> 
-						<predefinedEntry id="standardGroup/noteStack/noteattachmentTool"/>
-      				</contribution>
-             
-          </paletteProvider>
-       </extension>
        
        <?gmfgen generated="false"?>
        <extension
