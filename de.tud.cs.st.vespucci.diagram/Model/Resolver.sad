@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://vespucci.editor/2011-06-01" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
   <ShapesDiagram xmi:id="_M2T1gOUlEeC1dOVOL-xa7A">
-    <shapes xmi:type="Ensemble" xmi:id="_eXlT4OUlEeC1dOVOL-xa7A" name="de.tud.cs.st.vespucci.diagram.dnd.JavaType" description="This package contains the logic to retrieve information for an ensemble which is created via drag and drop." query="derived&#xA;">
+    <shapes xmi:type="Ensemble" xmi:id="_eXlT4OUlEeC1dOVOL-xa7A" name="de.tud.cs.st.vespucci.diagram.dnd.JavaType" description="This package contains the logic to retrieve information for an ensemble which is created via drag and drop." query="derived">
       <shapes xmi:type="Ensemble" xmi:id="_dUPAgOUlEeC1dOVOL-xa7A" name="Resolver" description="This class delegates needed information to the specific visitors." query="class_with_members('de.tud.cs.st.vespucci.diagram.dnd.JavaType','Resolver')&#xA;">
         <targetConnections xmi:type="Outgoing" xmi:id="_gUezgOUnEeC1dOVOL-xa7A" source="_dUPAgOUlEeC1dOVOL-xa7A" target="_86_9cOUmEeC1dOVOL-xa7A" name="call"/>
       </shapes>
       <shapes xmi:type="Ensemble" xmi:id="_2EZHcOUlEeC1dOVOL-xa7A" name="AbstractVisitor" description="The class which calls the correct visit method for each visitor." query="class_with_members('de.tud.cs.st.vespucci.diagram.dnd.JavaType','AbstractVisitor')&#xA;"/>
-      <shapes xmi:type="Ensemble" xmi:id="_86_9cOUmEeC1dOVOL-xa7A" name="Visitors" query="derived&#xA;">
+      <shapes xmi:type="Ensemble" xmi:id="_86_9cOUmEeC1dOVOL-xa7A" name="Visitors" query="derived">
         <targetConnections xmi:type="InAndOut" xmi:id="_XcsTcOUnEeC1dOVOL-xa7A" source="_86_9cOUmEeC1dOVOL-xa7A" target="_2EZHcOUlEeC1dOVOL-xa7A" name="call"/>
         <shapes xmi:type="Ensemble" xmi:id="_U7HkAOUmEeC1dOVOL-xa7A" name="ElementNameVisitor" description="This visitor is responsible for retrieving Ensemble names. " query="class_with_members('de.tud.cs.st.vespucci.diagram.dnd.JavaType','ElementNameVisitor')&#xA;"/>
         <shapes xmi:type="Ensemble" xmi:id="_qhGN8OUmEeC1dOVOL-xa7A" name="ResolvableVisitor" description="This visitor decides whether or not an element can be dragged over to the workspace and can be dropped." query="class_with_members('de.tud.cs.st.vespucci.diagram.dnd.JavaType','ResolvableVisitor')&#xA;"/>
@@ -62,7 +62,7 @@
                 <styles xmi:type="notation:SortingStyle" xmi:id="_qhIDJOUmEeC1dOVOL-xa7A"/>
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_qhIDJeUmEeC1dOVOL-xa7A"/>
               </children>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qhHcEeUmEeC1dOVOL-xa7A" x="195" y="1" width="196" height="81"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qhHcEeUmEeC1dOVOL-xa7A" x="230" y="1" width="196" height="81"/>
             </children>
             <children xmi:type="notation:Shape" xmi:id="_9ze6EOUlEeC1dOVOL-xa7A" type="2001" element="_9zdr8OUlEeC1dOVOL-xa7A" fontName="Segoe UI">
               <children xmi:type="notation:DecorationNode" xmi:id="_9zfhIOUlEeC1dOVOL-xa7A" type="5001"/>
@@ -82,7 +82,7 @@
                 <styles xmi:type="notation:SortingStyle" xmi:id="_hkxzMuUmEeC1dOVOL-xa7A"/>
                 <styles xmi:type="notation:FilteringStyle" xmi:id="_hkxzM-UmEeC1dOVOL-xa7A"/>
               </children>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hkxMIeUmEeC1dOVOL-xa7A" x="165" y="89" width="231" height="75"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hkxMIeUmEeC1dOVOL-xa7A" x="195" y="86" width="231" height="75"/>
             </children>
           </children>
           <children xmi:type="notation:BasicCompartment" xmi:id="_87Byo-UmEeC1dOVOL-xa7A" type="7003" collapsed="true">

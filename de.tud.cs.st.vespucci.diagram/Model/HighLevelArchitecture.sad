@@ -11,7 +11,7 @@
           <targetConnections xmi:type="Outgoing" xmi:id="_JquIluEaEeCYZbAP091L6Q" source="_JquIleEaEeCYZbAP091L6Q" target="_JquIm-EaEeCYZbAP091L6Q"/>
           <targetConnections xmi:type="Outgoing" xmi:id="_JquIl-EaEeCYZbAP091L6Q" source="_JquIleEaEeCYZbAP091L6Q" target="_JquImOEaEeCYZbAP091L6Q"/>
         </shapes>
-        <shapes xmi:type="Ensemble" xmi:id="_JquImOEaEeCYZbAP091L6Q" name="Converter" query="package('de.tud.cs.st.vespucci.diagram.converter')"/>
+        <shapes xmi:type="Ensemble" xmi:id="_JquImOEaEeCYZbAP091L6Q" name="Creator" query="package('de.tud.cs.st.vespucci.diagram.creator')"/>
         <shapes xmi:type="Ensemble" xmi:id="_JquImeEaEeCYZbAP091L6Q" name="Supports" query="package('de.tud.cs.st.vespucci.diagram.supports')">
           <targetConnections xmi:type="Outgoing" xmi:id="_JquImuEaEeCYZbAP091L6Q" source="_JquImeEaEeCYZbAP091L6Q" target="_JquIm-EaEeCYZbAP091L6Q"/>
         </shapes>
@@ -70,14 +70,14 @@
             </children>
           </children>
           <children xmi:type="notation:BasicCompartment" xmi:id="_JquIu-EaEeCYZbAP091L6Q" type="7004"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YwBKgSOuEeCOo6bch11Byg" y="6" width="411" height="141"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YwBKgSOuEeCOo6bch11Byg" x="5" y="6" width="411" height="141"/>
         </children>
         <children xmi:type="notation:Shape" xmi:id="_JquIvOEaEeCYZbAP091L6Q" type="3001" element="_JquIm-EaEeCYZbAP091L6Q" fontName="Segoe UI">
           <children xmi:type="notation:DecorationNode" xmi:id="_aa8bQCOuEeCOo6bch11Byg" type="5006"/>
           <children xmi:type="notation:DecorationNode" xmi:id="_JquIveEaEeCYZbAP091L6Q" type="5007"/>
           <children xmi:type="notation:BasicCompartment" xmi:id="_JquIvuEaEeCYZbAP091L6Q" type="7002"/>
           <children xmi:type="notation:BasicCompartment" xmi:id="_JquIv-EaEeCYZbAP091L6Q" type="7004"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aa70MSOuEeCOo6bch11Byg" x="5" y="196" width="266" height="226"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aa70MSOuEeCOo6bch11Byg" x="5" y="201" width="266" height="196"/>
         </children>
         <children xmi:type="notation:Shape" xmi:id="_XJPBsFO4EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="für die Plugin ID" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
           <children xmi:type="notation:BasicDecorationNode" xmi:id="_XJUhQFO4EeCFAqVbT4yc4A" type="DiagramName">
@@ -89,11 +89,11 @@
           <styles xmi:type="notation:TextStyle" xmi:id="_XJPBsVO4EeCFAqVbT4yc4A"/>
           <styles xmi:type="notation:LineTypeStyle" xmi:id="_XJPBslO4EeCFAqVbT4yc4A"/>
           <element xsi:nil="true"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XJPBs1O4EeCFAqVbT4yc4A" x="295" y="281"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XJPBs1O4EeCFAqVbT4yc4A" x="290" y="246"/>
         </children>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_JquIwOEaEeCYZbAP091L6Q" type="7003"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kkez4COqEeCkc7phH_OITw" x="25" y="125" width="436" height="456"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kkez4COqEeCkc7phH_OITw" x="25" y="125" width="446" height="456"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_JquIweEaEeCYZbAP091L6Q" type="2001" element="_JquIneEaEeCYZbAP091L6Q" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_mMTtUCOqEeCkc7phH_OITw" type="5001"/>
@@ -122,7 +122,7 @@
         </children>
       </children>
       <children xmi:type="notation:BasicCompartment" xmi:id="_JquvoOEaEeCYZbAP091L6Q" type="7003"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mMTGQSOqEeCkc7phH_OITw" x="495" y="120" width="286" height="226"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mMTGQSOqEeCkc7phH_OITw" x="495" y="120" width="301" height="256"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_IoqT4CkpEeC7g5S-XZYxhw" type="Note" fontName="Segoe UI" description="Architektur-Diagramm welches einen groben Überblick über das Vespucci-Plug-In gibt." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_IovzcCkpEeC7g5S-XZYxhw" type="DiagramName">
@@ -146,9 +146,9 @@
       <styles xmi:type="notation:TextStyle" xmi:id="_R5M-QSlBEeC7g5S-XZYxhw"/>
       <styles xmi:type="notation:LineTypeStyle" xmi:id="_R5M-QilBEeC7g5S-XZYxhw"/>
       <element xsi:nil="true"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R5M-QylBEeC7g5S-XZYxhw" x="480" y="395"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R5M-QylBEeC7g5S-XZYxhw" x="480" y="395" width="156" height="116"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_DnjVUFO5EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="siehe DiagramConverter.sad" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_DnjVUFO5EeCFAqVbT4yc4A" type="Note" fontName="Segoe UI" description="siehe PrologFileCreator.sad" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_DnoN0FO5EeCFAqVbT4yc4A" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
@@ -160,7 +160,7 @@
       <element xsi:nil="true"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DnjVU1O5EeCFAqVbT4yc4A" x="220" y="55"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_s_xrYFu0EeC4taN3dMI1CQ" type="Note" fontName="Segoe UI" description="Die Outlineview benutzt die ModelImpl aber die restlichen Klassen sollte nur die Interfaces benutzen" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_s_xrYFu0EeC4taN3dMI1CQ" type="Note" fontName="Segoe UI" description="Die Outlineview benutzt die ModelImpl aber die&#xD;&#xA;restlichen Klassen sollte nur die Interfaces benutzen" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_s_yScFu0EeC4taN3dMI1CQ" type="DiagramName">
         <element xsi:nil="true"/>
       </children>
@@ -189,7 +189,7 @@
       </children>
       <styles xmi:type="notation:RoutingStyle" xmi:id="_BDQKQSlAEeC7g5S-XZYxhw"/>
       <styles xmi:type="notation:FontStyle" xmi:id="_BDQKQilAEeC7g5S-XZYxhw" fontName="Segoe UI"/>
-      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_BDQKQylAEeC7g5S-XZYxhw" points="[0, 48, 121, -117]$[0, 148, 121, -17]$[0, 165, 121, 0]$[-85, 165, 36, 0]"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_BDQKQylAEeC7g5S-XZYxhw" points="[-2, 60, 124, -65]$[-2, 125, 124, 0]$[-90, 125, 36, 0]"/>
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_BDVp0ClAEeC7g5S-XZYxhw" id="(0.6375,0.12727272727272726)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_IfCosFO5EeCFAqVbT4yc4A" id="(0.8646616541353384,0.030973451327433628)"/>
     </edges>
