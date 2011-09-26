@@ -809,15 +809,15 @@
                   id="toggleDependencyPopupMenu"
                   label="%toggle_dependency">
                <dynamic
-                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries"
+                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyKindEntries"
                      id="de.tud.cs.st.vespucci.diagram.menuItems.setDependencyEntries">
                </dynamic>
             </menu>
             <menu
                   id="setConstraintTypePopupMenu"
-                  label="Set Type">
+                  label="%set_type">
                <dynamic
-                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetConstraintTypeEntries"
+                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyConstraintEntries"
                      id="de.tud.cs.st.vespucci.diagram.SetConstraintType">
                </dynamic>
                <visibleWhen
@@ -856,40 +856,40 @@
             name="Generate Architecural Model">
       </command>
           <category
-                description="All commands, that change the dependency of a constraint."
-                id="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                description="All commands, that change the kind of a dependency."
+                id="de.tud.cs.st.vespucci.diagram.setDependencyKindCategory"
                 name="%set_dependencies_category">
           </category>
           <command
-                categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                categoryId="de.tud.cs.st.vespucci.diagram.setDependencyKindCategory"
                 id="de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand"
                 name="%toggle_dependency">
           </command>
           <command
-                categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                categoryId="de.tud.cs.st.vespucci.diagram.setDependencyKindCategory"
                 id="de.tud.cs.st.vespucci.diagram.setDependenciesCommand"
                 name="%set_dependency">
           </command>
           <category
-                description="All commands, that set the type of a constraint."
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintType"
+                description="All commands, that set the constraint of a dependency."
+                id="de.tud.cs.st.vespucci.diagram.SetDependencyConstraintCat"         
                 name="Set Constraint Type">
           </category>
           <command
-                categoryId="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                description="Sets the type of the constraint to the type specified by SetConstraintTypeParam."
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                name="Set Constraint Type">
+                categoryId="de.tud.cs.st.vespucci.diagram.SetDependencyConstraint"
+                description="Sets the constraint of the dependency specified by SetConstraintTypeParam."
+                id="de.tud.cs.st.vespucci.diagram.SetDependencyConstraint"
+                name="Set dependency constraint">
              <commandParameter
                    id="de.tud.cs.st.vespucci.diagram.SetConstraintTypeParam"
                    name="type"
                    optional="false"
-                   typeId="de.tud.cs.st.vespucci.diagram.SetTypeParamType"
+                   typeId="de.tud.cs.st.vespucci.diagram.SetConstraintParamType"
                    values="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeParameter">
              </commandParameter>
           </command>
           <commandParameterType
-                id="de.tud.cs.st.vespucci.diagram.SetTypeParamType"
+                id="de.tud.cs.st.vespucci.diagram.SetConstraintParamType"
                 type="org.eclipse.gmf.runtime.emf.type.core.IElementType">
           </commandParameterType>
  
@@ -899,16 +899,16 @@
       <extension
             point="org.eclipse.ui.handlers">
          <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.SetDependenciesHandler"
+               class="de.tud.cs.st.vespucci.diagram.handler.SetDependenciesKindHandler"
                commandId="de.tud.cs.st.vespucci.diagram.setDependenciesCommand">
          </handler>
          <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.ToggleDependenciesHandler"
+               class="de.tud.cs.st.vespucci.diagram.handler.ToggleDependenciesKindHandler"
                commandId="de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand">
          </handler>
          <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeHandler"
-               commandId="de.tud.cs.st.vespucci.diagram.SetConstraintType">
+               class="de.tud.cs.st.vespucci.diagram.handler.SetDependencyConstraintHandler"
+               commandId="de.tud.cs.st.vespucci.diagram.SetDependencyConstraint">
          </handler>
       </extension>
        <extension

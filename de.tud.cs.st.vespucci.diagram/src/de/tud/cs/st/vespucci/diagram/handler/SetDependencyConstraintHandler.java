@@ -54,7 +54,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.SetConnectionT
  * @author Alexander Weitzmann
  * @version 0.6
  */
-public final class SetConstraintTypeHandler extends AbstractHandler {
+public final class SetDependencyConstraintHandler extends AbstractHandler {
 	private static final String COMMAND_LABEL = "Change dependency constraint";
 	
 	@Override

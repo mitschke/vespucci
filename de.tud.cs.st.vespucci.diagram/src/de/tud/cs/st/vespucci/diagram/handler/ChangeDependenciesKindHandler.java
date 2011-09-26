@@ -57,7 +57,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * @author Alexander Weitzmann
  * @version 0.1
  */
-public abstract class ToggleDependenciesSuperHandler extends AbstractHandler {
+public abstract class ChangeDependenciesKindHandler extends AbstractHandler {
 
 	/**
 	 * Creates a string containing all strings from given array. The strings will be separated by

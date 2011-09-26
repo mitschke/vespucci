@@ -62,7 +62,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * @author Alexander Weitzmann
  * @version 0.4
  */
-public class SetDependencyEntries extends CompoundContributionItem {
+public class SetDependencyKindEntries extends CompoundContributionItem {
 	/** set command to toggle dependency for all constraints */
 	private static final String TOGGLE_DEPENDENCIES_CMD = "de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand";
 
@@ -75,7 +75,7 @@ public class SetDependencyEntries extends CompoundContributionItem {
 	 * Valid names for dependencies read from the resource-file.
 	 */
 	private static final String[] dependencies = KeywordReader.readAndParseResourceFile(
-			FrameworkUtil.getBundle(SetDependencyEntries.class).getSymbolicName(),
+			FrameworkUtil.getBundle(SetDependencyKindEntries.class).getSymbolicName(),
 			PLUGIN_RES_BUNDLE.getString("validDependenciesFile"));
 
 	/**
