@@ -380,7 +380,7 @@
       <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <specializationType
                id="de.tud.cs.st.vespucci.diagram.Dummy_2002"
-               name="%metatype.name.Dummy_2002"
+               name="Empty Ensemble"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="de.tud.cs.st.vespucci.diagram.Dummy_3003"/>
             <param name="semanticHint" value="2002"/>
