@@ -682,6 +682,57 @@
             <message><![CDATA[Queries of non leaf ensemble must be derived ]]></message>
             <target class="vespucci_model.Ensemble"/>
          </constraint>
+                  <constraint
+                        class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter6"
+                        id="EnsembleQueryValidParenthesisID"
+                        lang="Java"
+                        mode="Batch"
+                        name="WARNING if Ensemble query valid parenthesis count"
+                        severity="WARNING"
+                        statusCode="200">
+                     query.size()>0 and not query.oclIsUndefined()
+                     <description></description>
+                     <message>
+                        Ensemble query invalid parenthesis count.
+                     </message>
+                     <target
+                           class="vespucci_model.Ensemble">
+                     </target>
+                  </constraint>
+                  <constraint
+                        class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter7"
+                        id="EnsembleQueryCompletePrologStringsID"
+                        lang="Java"
+                        mode="Batch"
+                        name="WARNING if Ensemble query contains complete Prolog strings."
+                        severity="WARNING"
+                        statusCode="200">
+                     query.size()>0 and not query.oclIsUndefined()
+                     <description></description>
+                     <message>
+                        Ensemble query contains incomplete Prolog strings.
+                     </message>
+                     <target
+                           class="vespucci_model.Ensemble">
+                     </target>
+                  </constraint>
+                  <constraint
+                        class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter8"
+                        id="EnsembleQueryValidBracketID"
+                        lang="Java"
+                        mode="Batch"
+                        name="WARNING if Ensemble query valid bracket count"
+                        severity="WARNING"
+                        statusCode="200">
+                     query.size()>0 and not query.oclIsUndefined()
+                     <description></description>
+                     <message>
+                        Ensemble query invalid bracket count.
+                     </message>
+                     <target
+                           class="vespucci_model.Ensemble">
+                     </target>
+                  </constraint>
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/ConnectionsConstraintsID">
                   <constraint id="DependencyInvalidID"
@@ -709,6 +760,15 @@
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryNotNullID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.NonLeafEnsembleMustBeDerivedID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.DependencyInvalidID"/>
+                  <constraint
+                        ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryValidParenthesisID">
+                  </constraint>
+                  <constraint
+                        ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryCompletePrologStringsID">
+                  </constraint>
+                  <constraint
+                        ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryValidBracketID">
+                  </constraint>
                </binding>
 
    </extension>
@@ -809,15 +869,15 @@
                   id="toggleDependencyPopupMenu"
                   label="%toggle_dependency">
                <dynamic
-                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyEntries"
+                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyKindEntries"
                      id="de.tud.cs.st.vespucci.diagram.menuItems.setDependencyEntries">
                </dynamic>
             </menu>
             <menu
                   id="setConstraintTypePopupMenu"
-                  label="Set Type">
+                  label="%set_type">
                <dynamic
-                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetConstraintTypeEntries"
+                     class="de.tud.cs.st.vespucci.diagram.menuItems.SetDependencyConstraintEntries"
                      id="de.tud.cs.st.vespucci.diagram.SetConstraintType">
                </dynamic>
                <visibleWhen
@@ -856,40 +916,40 @@
             name="Generate Architecural Model">
       </command>
           <category
-                description="All commands, that change the dependency of a constraint."
-                id="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                description="All commands, that change the kind of a dependency."
+                id="de.tud.cs.st.vespucci.diagram.setDependencyKindCategory"
                 name="%set_dependencies_category">
           </category>
           <command
-                categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                categoryId="de.tud.cs.st.vespucci.diagram.setDependencyKindCategory"
                 id="de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand"
                 name="%toggle_dependency">
           </command>
           <command
-                categoryId="de.tud.cs.st.vespucci.diagram.setDependenciesCategory"
+                categoryId="de.tud.cs.st.vespucci.diagram.setDependencyKindCategory"
                 id="de.tud.cs.st.vespucci.diagram.setDependenciesCommand"
                 name="%set_dependency">
           </command>
           <category
-                description="All commands, that set the type of a constraint."
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintType"
+                description="All commands, that set the constraint of a dependency."
+                id="de.tud.cs.st.vespucci.diagram.SetDependencyConstraintCat"         
                 name="Set Constraint Type">
           </category>
           <command
-                categoryId="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                description="Sets the type of the constraint to the type specified by SetConstraintTypeParam."
-                id="de.tud.cs.st.vespucci.diagram.SetConstraintType"
-                name="Set Constraint Type">
+                categoryId="de.tud.cs.st.vespucci.diagram.SetDependencyConstraintCat"
+                description="Sets the constraint of the dependency specified by SetConstraintTypeParam."
+                id="de.tud.cs.st.vespucci.diagram.SetDependencyConstraint"
+                name="Set dependency constraint">
              <commandParameter
                    id="de.tud.cs.st.vespucci.diagram.SetConstraintTypeParam"
                    name="type"
                    optional="false"
-                   typeId="de.tud.cs.st.vespucci.diagram.SetTypeParamType"
+                   typeId="de.tud.cs.st.vespucci.diagram.SetConstraintParamType"
                    values="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeParameter">
              </commandParameter>
           </command>
           <commandParameterType
-                id="de.tud.cs.st.vespucci.diagram.SetTypeParamType"
+                id="de.tud.cs.st.vespucci.diagram.SetConstraintParamType"
                 type="org.eclipse.gmf.runtime.emf.type.core.IElementType">
           </commandParameterType>
  
@@ -899,16 +959,16 @@
       <extension
             point="org.eclipse.ui.handlers">
          <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.SetDependenciesHandler"
+               class="de.tud.cs.st.vespucci.diagram.handler.SetDependenciesKindHandler"
                commandId="de.tud.cs.st.vespucci.diagram.setDependenciesCommand">
          </handler>
          <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.ToggleDependenciesHandler"
+               class="de.tud.cs.st.vespucci.diagram.handler.ToggleDependenciesKindHandler"
                commandId="de.tud.cs.st.vespucci.diagram.toggleDependenciesCommand">
          </handler>
          <handler
-               class="de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeHandler"
-               commandId="de.tud.cs.st.vespucci.diagram.SetConstraintType">
+               class="de.tud.cs.st.vespucci.diagram.handler.SetDependencyConstraintHandler"
+               commandId="de.tud.cs.st.vespucci.diagram.SetDependencyConstraint">
          </handler>
       </extension>
        <extension
@@ -918,23 +978,6 @@
                priority="medium">
          </factory>
       </extension>
-      
-      <?gmfgen generated="false"?>
-       <extension
-             point="org.eclipse.gmf.runtime.diagram.ui.paletteProviders">
-          <paletteProvider>
-             <Priority
-                   name="Lowest">
-             </Priority>
-                   <contribution>
-     					<predefinedEntry id="standardGroup/zoomTool"/>
-     					<predefinedEntry id="standardGroup/noteStack/noteTool"/> 
-						<predefinedEntry id="standardGroup/noteStack/textTool"/> 
-						<predefinedEntry id="standardGroup/noteStack/noteattachmentTool"/>
-      				</contribution>
-             
-          </paletteProvider>
-       </extension>
        
        <?gmfgen generated="false"?>
        <extension

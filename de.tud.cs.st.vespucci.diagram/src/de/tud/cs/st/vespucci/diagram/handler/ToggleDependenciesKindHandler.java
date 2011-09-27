@@ -37,36 +37,64 @@ package de.tud.cs.st.vespucci.diagram.handler;
 import java.util.Arrays;
 
 /**
- * Handler for the "Set Dependency"-command issued from the "Toggle Dependency" menu.<br>
+ * Handler for the "Toggle Dependency"-command.<br>
  * "Toggle Dependency" is found in the popup-menu for constraints (connections in editor) under
  * "Edit Constraint".
  * 
  * @author Alexander Weitzmann
- * @version 0.3
+ * @version 0.2
  */
-public class SetDependenciesHandler extends ToggleDependenciesSuperHandler {
+public class ToggleDependenciesKindHandler extends ChangeDependenciesKindHandler {
+
 	/**
-	 * Creates a new string-array, with same strings as given original, but with the "transformString" added. If
-	 * given transformString is already present, it will not be added again i.e. the original will be returned.<br>
+	 * Creates a new string-array, with same strings as given original, but the "transform-string".
+	 * If
+	 * given transform-string is present, it will be removed, otherwise it will be added.<br>
+	 * <br>
+	 * <b>NOTE:</b> Only the first found instance of given toggleString will be toggled, even if
+	 * there
+	 * are more - e.g. if the dependency is named "all, create, all" and "all" needs to be toggled
+	 * (or removed in this case), then only the first "all" will be deleted!
 	 * 
 	 * @param original
 	 *            The original array to be copied.
 	 * @param transformString
-	 *            String to add.
-	 * @return The given array with transformString added, if setString was not already present.
+	 *            String to add or remove.
+	 * @return Toggled string-array. That is: Same array, but with given toggle-string removed or
+	 *         added.
 	 */
 	@Override
-	String[] transformedCopy(String[] original, String transformString) {
-		// Determine if string is present.
-		for(String str: original){
-			if(str.equals(transformString)){
-				return original;
+	String[] transformedCopy(final String[] original, final String transformString) {
+		boolean stringAbsent = true;
+
+		// Determine if string is present. If so, 'toggleIndex' will be corresponding index.
+		int toggleIndex = 0;
+		while (toggleIndex < original.length) {
+			if (original[toggleIndex].equals(transformString)) {
+				stringAbsent = false;
+				break;
+			}
+			++toggleIndex;
+		}
+
+		// Represents all dependencies after toggling;
+		String[] result;
+		if (stringAbsent) {
+			// append string
+			result = Arrays.copyOf(original, original.length + 1);
+			result[original.length] = transformString;
+		} else {
+			// remove string
+			result = new String[original.length - 1];
+			for (int i = 0; i < result.length; ++i) {
+				if (i >= toggleIndex) {
+					// skip string to be toggled
+					result[i] = original[i + 1];
+				} else {
+					result[i] = original[i];
+				}
 			}
 		}
-		// Add setString
-		String[] result = Arrays.copyOf(original, original.length + 1);
-		result[original.length] = transformString;
-		
 		return result;
 	}
 

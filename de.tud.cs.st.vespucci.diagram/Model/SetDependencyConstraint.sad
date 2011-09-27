@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor/2011-06-01" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <ShapesDiagram xmi:id="_JbjzoOUqEeCIEKjUs-_gbQ">
+    <shapes xmi:type="Ensemble" xmi:id="_eJzXsOh0EeCog_IibSihtg" name="SetDependencyConstraintHandler" description="Handles commands, that set the constraint of dependencies." query="class_with_members('de.tud.cs.st.vespucci.diagram.handler','SetDependencyConstraintHandler')&#xA;">
+      <targetConnections xmi:type="Outgoing" xmi:id="_KIEc0Oh2EeCog_IibSihtg" source="_eJzXsOh0EeCog_IibSihtg" target="_CzTEIOh1EeCog_IibSihtg" name="create"/>
+      <targetConnections xmi:type="Outgoing" xmi:id="_DBLq8Oh8EeCog_IibSihtg" source="_eJzXsOh0EeCog_IibSihtg" target="_-qqzIOh6EeCog_IibSihtg" name="create, call"/>
+    </shapes>
+    <shapes xmi:type="Ensemble" xmi:id="_zZIcMOh0EeCog_IibSihtg" name="SetDependencyConstraintEntries" description="Provides menu entries for the dynamic popup menu." query="class_with_members('de.tud.cs.st.vespucci.diagram.menuItems','SetDependencyConstraintEntries')&#xA;">
+      <targetConnections xmi:type="Outgoing" xmi:id="_EWssYOh8EeCog_IibSihtg" source="_zZIcMOh0EeCog_IibSihtg" target="_-qqzIOh6EeCog_IibSihtg" name="create, call"/>
+    </shapes>
+    <shapes xmi:type="Ensemble" xmi:id="_CzTEIOh1EeCog_IibSihtg" name="SetConnectionTypeCommand" description="EMF command, that upon execution changes the constraint of a dependency." query="class_with_members('de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands','SetConnectionTypeCommand')&#xA;"/>
+    <shapes xmi:type="Ensemble" xmi:id="_-qqzIOh6EeCog_IibSihtg" name="SetConstraintTypeParameter" description="Provides all possible parameters for the 'Set dependency constraint' command. The parameter is used to specify the constraint to be set." query="class_with_members('de.tud.cs.st.vespucci.diagram.handler','SetConstraintTypeParameter')&#xA;"/>
+  </ShapesDiagram>
+  <notation:Diagram xmi:id="_JbjzoeUqEeCIEKjUs-_gbQ" type="Vespucci" element="_JbjzoOUqEeCIEKjUs-_gbQ" name="SetType.sad" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_eKtWoOh0EeCog_IibSihtg" type="2001" element="_eJzXsOh0EeCog_IibSihtg" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_eKukwOh0EeCog_IibSihtg" type="5001"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_eKukweh0EeCog_IibSihtg" type="5008"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_eKvL0Oh0EeCog_IibSihtg" type="7001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_eKvL0eh0EeCog_IibSihtg" type="7003">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_eKvL0uh0EeCog_IibSihtg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_eKvL0-h0EeCog_IibSihtg"/>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_eKtWoeh0EeCog_IibSihtg" x="312" y="24" width="217" height="109"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_zZOi0Oh0EeCog_IibSihtg" type="2001" element="_zZIcMOh0EeCog_IibSihtg" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_zZPJ4Oh0EeCog_IibSihtg" type="5001"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_zZPw8Oh0EeCog_IibSihtg" type="5008"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_zZPw8eh0EeCog_IibSihtg" type="7001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_zZPw8uh0EeCog_IibSihtg" type="7003">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_zZPw8-h0EeCog_IibSihtg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_zZQYAOh0EeCog_IibSihtg"/>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zZOi0eh0EeCog_IibSihtg" x="576" y="492" width="205" height="87"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_CzWHcOh1EeCog_IibSihtg" type="2001" element="_CzTEIOh1EeCog_IibSihtg" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_CzXVkOh1EeCog_IibSihtg" type="5001"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_CzXVkeh1EeCog_IibSihtg" type="5008"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_CzX8oOh1EeCog_IibSihtg" type="7001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_CzYjsOh1EeCog_IibSihtg" type="7003">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_CzYjseh1EeCog_IibSihtg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_CzYjsuh1EeCog_IibSihtg"/>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CzWHceh1EeCog_IibSihtg" x="24" y="264" width="199"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_pgjioOh2EeCog_IibSihtg" type="Note" fontName="Segoe UI" description="Also associates the commands to be executed when an user clicks on a menu entry.&#xD;&#xA;This dependency is resolved at runtime." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_pgml8Oh2EeCog_IibSihtg" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_pgnNAOh2EeCog_IibSihtg" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="_pgjioeh2EeCog_IibSihtg"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_pgjiouh2EeCog_IibSihtg"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pgjio-h2EeCog_IibSihtg" x="288" y="384" width="253" height="85"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_nKVcsOh3EeCog_IibSihtg" type="Note" fontName="Segoe UI" description="Called by the eclipse framework, when command specified for the menu entry &quot;Set Constraint&quot; is used. These associations are defined in the plugin.xml" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_nKXR4Oh3EeCog_IibSihtg" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_nKXR4eh3EeCog_IibSihtg" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="_nKVcseh3EeCog_IibSihtg"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_nKVcsuh3EeCog_IibSihtg"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_nKVcs-h3EeCog_IibSihtg" x="288" y="264" width="253" height="85"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_GO8kQOh4EeCog_IibSihtg" type="Text" fontName="Segoe UI" description="Note, that the word &quot;command&quot; is overloaded.&#xD;&#xA;&#xD;&#xA;In context with the popup menu or a handler it is an abstract action. It does no actual work. (Thats what handlers are for.) They are defined in the plugin.xml.&#xD;&#xA;&#xD;&#xA;In context with EMF/GEF/GMF a command also describes an action. It is given to the framework, which in return changes something. These commands are defined by java classes.">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_GO9yYOh4EeCog_IibSihtg" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_GO-ZcOh4EeCog_IibSihtg" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_GO8kQeh4EeCog_IibSihtg" x="72" y="504" width="277" height="169"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_-qw5wOh6EeCog_IibSihtg" type="2001" element="_-qqzIOh6EeCog_IibSihtg" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_-qyH4Oh6EeCog_IibSihtg" type="5001"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_-qyH4eh6EeCog_IibSihtg" type="5008"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_-qyu8Oh6EeCog_IibSihtg" type="7001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_-qyu8eh6EeCog_IibSihtg" type="7003">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_-qyu8uh6EeCog_IibSihtg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_-qyu8-h6EeCog_IibSihtg"/>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-qw5weh6EeCog_IibSihtg" x="600" y="264" width="181"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_JbjzouUqEeCIEKjUs-_gbQ"/>
+    <edges xmi:type="notation:Edge" xmi:id="_KIIHMOh2EeCog_IibSihtg" type="4003" element="_KIEc0Oh2EeCog_IibSihtg" source="_eKtWoOh0EeCog_IibSihtg" target="_CzWHcOh1EeCog_IibSihtg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_KIJVUOh2EeCog_IibSihtg" type="6003">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_KIJVUeh2EeCog_IibSihtg" x="2" y="24"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_KIIHMeh2EeCog_IibSihtg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_KIIHMuh2EeCog_IibSihtg" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KIIHM-h2EeCog_IibSihtg" points="[0, 0, 232, -120]$[-232, 120, 0, 0]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KIX-0Oh2EeCog_IibSihtg" id="(0.2488479262672811,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KIX-0eh2EeCog_IibSihtg" id="(0.49748743718592964,0.0)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_phKmoOh2EeCog_IibSihtg" type="NoteAttachment" source="_zZOi0Oh0EeCog_IibSihtg" target="_pgjioOh2EeCog_IibSihtg" lineWidth="1">
+      <styles xmi:type="notation:ArrowStyle" xmi:id="_phLNsOh2EeCog_IibSihtg"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_phLNseh2EeCog_IibSihtg"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_phLNsuh2EeCog_IibSihtg" points="[0, 0, 0, -142]$[0, 142, 0, 0]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_61KMEOh4EeCog_IibSihtg" id="(0.6634146341463415,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_61KzIOh4EeCog_IibSihtg" id="(0.08300395256916997,0.0)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_nKhC4Oh3EeCog_IibSihtg" type="NoteAttachment" source="_eKtWoOh0EeCog_IibSihtg" target="_nKVcsOh3EeCog_IibSihtg" lineWidth="1">
+      <styles xmi:type="notation:ArrowStyle" xmi:id="_nKhp8Oh3EeCog_IibSihtg"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_nKhp8eh3EeCog_IibSihtg"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_nKhp8uh3EeCog_IibSihtg" points="[0, 0, 0, -120]$[0, 120, 0, 0]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_61GhsOh4EeCog_IibSihtg" id="(0.4976958525345622,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_61HIwOh4EeCog_IibSihtg" id="(0.4980237154150198,0.0)"/>
+    </edges>
+    <edges xmi:type="notation:Edge" xmi:id="_DBP8YOh8EeCog_IibSihtg" type="4003" element="_DBLq8Oh8EeCog_IibSihtg" source="_eKtWoOh0EeCog_IibSihtg" target="_-qw5wOh6EeCog_IibSihtg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_DBRKgOh8EeCog_IibSihtg" type="6003">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_DBRKgeh8EeCog_IibSihtg" x="16" y="-40"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_DBQjcOh8EeCog_IibSihtg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_DBQjceh8EeCog_IibSihtg" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_DBQjcuh8EeCog_IibSihtg" points="[0, 0, -193, -120]$[193, 120, 0, 0]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_DBnIwOh8EeCog_IibSihtg" id="(0.7465437788018433,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_DBnIweh8EeCog_IibSihtg" id="(0.3314917127071823,0.0)"/>
+    </edges>
+    <edges xmi:type="notation:Edge" xmi:id="_EWvvsOh8EeCog_IibSihtg" type="4003" element="_EWssYOh8EeCog_IibSihtg" source="_zZOi0Oh0EeCog_IibSihtg" target="_-qw5wOh6EeCog_IibSihtg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_EWwWwOh8EeCog_IibSihtg" type="6003">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_EWwWweh8EeCog_IibSihtg" x="-7" y="-7"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_EWvvseh8EeCog_IibSihtg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_EWvvsuh8EeCog_IibSihtg" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_EWvvs-h8EeCog_IibSihtg" points="[20, -87, -56, 228]$[48, -199, -28, 116]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_EW_nUOh8EeCog_IibSihtg" id="(0.7170731707317073,0.022988505747126436)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_EW_nUeh8EeCog_IibSihtg" id="(0.6629834254143646,0.0)"/>
+    </edges>
+  </notation:Diagram>
+</xmi:XMI>

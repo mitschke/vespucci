@@ -60,7 +60,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Dummy;
  * @version 0.5
  * 
  */
-public class SetConstraintTypeEntries extends CompoundContributionItem {
+public class SetDependencyConstraintEntries extends CompoundContributionItem {
 	/**
 	 * Descriptors for the check marks. There are two available check marks:
 	 * <UL>
@@ -190,7 +190,7 @@ public class SetConstraintTypeEntries extends CompoundContributionItem {
 			// Create parameter for menu item
 			final CommandContributionItemParameter contributionParameter = new CommandContributionItemParameter(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow(), "de.tud.cs.st.vespucci.diagram.menuItems.SetConstraintType_"
-					+ typeName, "de.tud.cs.st.vespucci.diagram.SetConstraintType", CommandContributionItem.STYLE_PUSH);
+					+ typeName, "de.tud.cs.st.vespucci.diagram.SetDependencyConstraint", CommandContributionItem.STYLE_PUSH);
 
 			// Set type for handler
 			final Map<String, String> parameter = new HashMap<String, String>(1);
