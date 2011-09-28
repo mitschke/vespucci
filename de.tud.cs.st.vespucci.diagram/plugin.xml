@@ -1019,7 +1019,7 @@
        <extension
              point="org.eclipse.core.expressions.propertyTesters">
           <propertyTester
-                class="de.tud.cs.st.vespucci.diagram.handler.ConnectionPointsToDummyTester"
+                class="de.tud.cs.st.vespucci.diagram.menuItems.ConnectionPointsToDummyTester"
                 id="de.tud.cs.st.vespucci.diagram.ConnectionPointsToDummyTester"
                 namespace="de.tud.cs.st.vespucci.diagram"
                 properties="pointsToDummy"
