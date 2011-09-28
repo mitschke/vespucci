@@ -51,6 +51,7 @@ public class ConnectionPointsToDummyTester extends PropertyTester {
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		ConnectionEditPart connectionEditPart = (ConnectionEditPart)receiver;
 		Connection connection = (Connection)connectionEditPart.resolveSemanticElement();
+		// FIXME getSource != original source
 		return (connection.getSource() instanceof Dummy) || (connection.getTarget() instanceof Dummy);
 	}
 

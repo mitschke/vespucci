@@ -885,7 +885,7 @@
                   <not>
                      <iterate
                            ifEmpty="true"
-                           operator="and">
+                           operator="or">
                         <test
                               property="de.tud.cs.st.vespucci.diagram.pointsToDummy">
                         </test>

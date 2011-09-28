@@ -43,8 +43,11 @@ import java.util.Map.Entry;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gef.EditPart;
@@ -63,6 +66,7 @@ import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * This command changes the class of the connection, e.g. from Incoming to Outgoing. Thus the class
@@ -304,7 +308,18 @@ public class SetConnectionTypeCommand implements Command {
 		final EObject semanticConn = connectionToChange.resolveSemanticElement();
 		//FIXME does not copy values. Current problem: original source/target history is deleted when delete command is executed. 
 		for (final EStructuralFeature feature : semanticConn.eClass().getEAllStructuralFeatures()) {
-			featureMap.put(feature, semanticConn.eGet(feature));
+			Object value = semanticConn.eGet(feature);
+			
+			// check for source/target-history; those must be copied
+			if(value instanceof EList && ((EList)value).size() != 0 && ((EList)value).get(0) instanceof Shape){
+				EList<Shape> shapeList = new BasicEList<Shape>();
+				for(Shape shape : (EList<Shape>) value){
+					shapeList.add(shape);
+				}
+				featureMap.put(feature, shapeList);
+			}else{
+				featureMap.put(feature, value);
+			}
 		}
 
 		return featureMap;

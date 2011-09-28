@@ -42,17 +42,16 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.SetConnectionTypeCommand;
 
 /**
- * Handler for "Set Type"-commands in the constraint popup menu.<br>
- * Set Type changes the class of the constraint, e.g. from Incoming to Outgoing. Thus the class of
+ * Handler for "Set Constraint"-commands in the dependency popup menu.<br>
+ * Set Constraint changes the class of the constraint, e.g. from Incoming to Outgoing. Thus the class of
  * the connection must be changed for the graphical and semantical object. In order to preserve
- * consistency the constraints will be deleted and then recreated via commands (i.e. the same
- * procedure a user initiates).
+ * consistency the dependencies will be deleted and then recreated via commands.
  * 
  * @author Alexander Weitzmann
- * @version 0.6
  */
 public final class SetDependencyConstraintHandler extends AbstractHandler {
 	private static final String COMMAND_LABEL = "Change dependency constraint";
@@ -80,23 +79,16 @@ public final class SetDependencyConstraintHandler extends AbstractHandler {
 			} else {
 				// If this exception is reached, then there should be something wrong with the
 				// visibleWhen entry of the popUp-menu.
-				return new ExecutionException("Selection is not a connection!");
+				return new VespucciUnexpectedException(COMMAND_LABEL + ": Selection is not a connection!");
 			}
 		}
 
 		CompoundCommand cmd = new CompoundCommand(COMMAND_LABEL);
-		int numOfConnectionsToChange = 0;
+
 		for(ConnectionEditPart conn : selectedConnections){
-			if (!new ConnectionPointsToDummyTester().test(conn, null, null, null)) {
-				// Only add command if connection does not point to Dummy
-				cmd.append(new SetConnectionTypeCommand(conn, setType));
-				numOfConnectionsToChange++;
-			}
+			cmd.append(new SetConnectionTypeCommand(conn, setType));
 		}
-		
-		if (numOfConnectionsToChange > 0) {
-			selectedConnections[0].getEditingDomain().getCommandStack().execute(cmd);
-		}
+		selectedConnections[0].getEditingDomain().getCommandStack().execute(cmd);
 		
 		return null;
 	}
