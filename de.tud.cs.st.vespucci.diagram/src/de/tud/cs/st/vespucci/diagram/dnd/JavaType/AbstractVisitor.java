@@ -85,6 +85,8 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 				// 1. a package in a JAR-archive [IPackageFragment]
 				// 2. the JAR itself [IPackageFragmentRoot]
 				final IJavaElement elementInJar = (IJavaElement) element;
+				// This workaround is necessary because every possible element is an instance of
+				// IJavaElement s.t. polymorphism doesn't work
 				final ArrayList listOfJavaElements = new ArrayList<IJavaElement>();
 				listOfJavaElements.add(elementInJar);
 				final Class currentClass = listOfJavaElements.getClass();
