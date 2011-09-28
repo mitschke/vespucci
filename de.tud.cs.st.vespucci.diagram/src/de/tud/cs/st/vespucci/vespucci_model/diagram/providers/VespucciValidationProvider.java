@@ -314,8 +314,10 @@ public class VespucciValidationProvider {
 	public static class Adapter8 extends AbstractModelConstraint {
 
 		/**
-		 * @author Theo Kischka, Thomas Schulz
+		 * @author Theo Kischka
+		 * @author Thomas Schulz
 		 * @generated NOT
+		 * @return Success-Status, if validation successful; Failure otherwise.
 		 */
 		public IStatus validate(IValidationContext ctx) {
 			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
