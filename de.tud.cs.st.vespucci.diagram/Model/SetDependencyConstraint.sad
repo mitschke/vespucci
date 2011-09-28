@@ -52,7 +52,7 @@
       <styles xmi:type="notation:TextStyle" xmi:id="_pgjioeh2EeCog_IibSihtg"/>
       <styles xmi:type="notation:LineTypeStyle" xmi:id="_pgjiouh2EeCog_IibSihtg"/>
       <element xsi:nil="true"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pgjio-h2EeCog_IibSihtg" x="288" y="384" width="253" height="85"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pgjio-h2EeCog_IibSihtg" x="320" y="380" width="253" height="85"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_nKVcsOh3EeCog_IibSihtg" type="Note" fontName="Segoe UI" description="Called by the eclipse framework, when command specified for the menu entry &quot;Set Constraint&quot; is used. These associations are defined in the plugin.xml" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_nKXR4Oh3EeCog_IibSihtg" type="DiagramName">
@@ -64,7 +64,7 @@
       <styles xmi:type="notation:TextStyle" xmi:id="_nKVcseh3EeCog_IibSihtg"/>
       <styles xmi:type="notation:LineTypeStyle" xmi:id="_nKVcsuh3EeCog_IibSihtg"/>
       <element xsi:nil="true"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_nKVcs-h3EeCog_IibSihtg" x="288" y="264" width="253" height="85"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_nKVcs-h3EeCog_IibSihtg" x="320" y="270" width="253" height="85"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_GO8kQOh4EeCog_IibSihtg" type="Text" fontName="Segoe UI" description="Note, that the word &quot;command&quot; is overloaded.&#xD;&#xA;&#xD;&#xA;In context with the popup menu or a handler it is an abstract action. It does no actual work. (Thats what handlers are for.) They are defined in the plugin.xml.&#xD;&#xA;&#xD;&#xA;In context with EMF/GEF/GMF a command also describes an action. It is given to the framework, which in return changes something. These commands are defined by java classes.">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_GO9yYOh4EeCog_IibSihtg" type="DiagramName">
@@ -74,7 +74,7 @@
         <element xsi:nil="true"/>
       </children>
       <element xsi:nil="true"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_GO8kQeh4EeCog_IibSihtg" x="72" y="504" width="277" height="169"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_GO8kQeh4EeCog_IibSihtg" x="25" y="365" width="277" height="169"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_-qw5wOh6EeCog_IibSihtg" type="2001" element="_-qqzIOh6EeCog_IibSihtg" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_-qyH4Oh6EeCog_IibSihtg" type="5001"/>
@@ -110,7 +110,7 @@
       <styles xmi:type="notation:LineTypeStyle" xmi:id="_nKhp8eh3EeCog_IibSihtg"/>
       <element xsi:nil="true"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_nKhp8uh3EeCog_IibSihtg" points="[0, 0, 0, -120]$[0, 120, 0, 0]"/>
-      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_61GhsOh4EeCog_IibSihtg" id="(0.4976958525345622,1.0)"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_jVdTAenOEeCwyeqdgkNKTg" id="(0.6082949308755761,0.21100917431192662)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_61HIwOh4EeCog_IibSihtg" id="(0.4980237154150198,0.0)"/>
     </edges>
     <edges xmi:type="notation:Edge" xmi:id="_DBP8YOh8EeCog_IibSihtg" type="4003" element="_DBLq8Oh8EeCog_IibSihtg" source="_eKtWoOh0EeCog_IibSihtg" target="_-qw5wOh6EeCog_IibSihtg">

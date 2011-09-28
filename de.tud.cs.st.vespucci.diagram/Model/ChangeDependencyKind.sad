@@ -25,7 +25,7 @@
       </children>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ina44eh8EeCog_IibSihtg" x="300" y="24" width="325" height="73"/>
     </children>
-    <children xmi:type="notation:Shape" xmi:id="_uzLOoOh9EeCog_IibSihtg" type="Note" fontName="Segoe UI" description="Also associates the commands to be executed when an user clicks on a menu entry.&#xD;&#xA;This dependency is resolved at runtime." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+    <children xmi:type="notation:Shape" xmi:id="_uzLOoOh9EeCog_IibSihtg" type="Note" fontName="Segoe UI" description="Also associates the commands to be executed when a user clicks on a menu entry.&#xD;&#xA;This dependency is resolved at runtime." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
       <children xmi:type="notation:BasicDecorationNode" xmi:id="_uzND0Oh9EeCog_IibSihtg" type="DiagramName">
         <element xsi:nil="true"/>
       </children>

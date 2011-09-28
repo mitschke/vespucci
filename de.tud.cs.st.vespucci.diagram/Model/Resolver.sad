@@ -3,7 +3,7 @@
   <ShapesDiagram xmi:id="_M2T1gOUlEeC1dOVOL-xa7A">
     <shapes xmi:type="Ensemble" xmi:id="_eXlT4OUlEeC1dOVOL-xa7A" name="de.tud.cs.st.vespucci.diagram.dnd.JavaType" description="This package contains the logic to retrieve information for an ensemble which is created via drag and drop." query="derived">
       <shapes xmi:type="Ensemble" xmi:id="_dUPAgOUlEeC1dOVOL-xa7A" name="Resolver" description="This class delegates needed information to the specific visitors." query="class_with_members('de.tud.cs.st.vespucci.diagram.dnd.JavaType','Resolver')&#xA;">
-        <targetConnections xmi:type="Outgoing" xmi:id="_gUezgOUnEeC1dOVOL-xa7A" source="_dUPAgOUlEeC1dOVOL-xa7A" target="_86_9cOUmEeC1dOVOL-xa7A" name="call"/>
+        <targetConnections xmi:type="Outgoing" xmi:id="_gUezgOUnEeC1dOVOL-xa7A" source="_dUPAgOUlEeC1dOVOL-xa7A" target="_86_9cOUmEeC1dOVOL-xa7A" name="create, call"/>
       </shapes>
       <shapes xmi:type="Ensemble" xmi:id="_2EZHcOUlEeC1dOVOL-xa7A" name="AbstractVisitor" description="The class which calls the correct visit method for each visitor." query="class_with_members('de.tud.cs.st.vespucci.diagram.dnd.JavaType','AbstractVisitor')&#xA;"/>
       <shapes xmi:type="Ensemble" xmi:id="_86_9cOUmEeC1dOVOL-xa7A" name="Visitors" query="derived">
@@ -101,17 +101,17 @@
     <styles xmi:type="notation:DiagramStyle" xmi:id="_M2T1guUlEeC1dOVOL-xa7A"/>
     <edges xmi:type="notation:Edge" xmi:id="_XcuvsOUnEeC1dOVOL-xa7A" type="4001" element="_XcsTcOUnEeC1dOVOL-xa7A" source="_87BLkOUmEeC1dOVOL-xa7A" target="_2EaVkOUlEeC1dOVOL-xa7A">
       <children xmi:type="notation:DecorationNode" xmi:id="_XcuvtOUnEeC1dOVOL-xa7A" type="6001">
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_XcvWwOUnEeC1dOVOL-xa7A" x="-7" y="-7"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_XcvWwOUnEeC1dOVOL-xa7A" x="-15" y="-16"/>
       </children>
       <styles xmi:type="notation:RoutingStyle" xmi:id="_XcuvseUnEeC1dOVOL-xa7A"/>
       <styles xmi:type="notation:FontStyle" xmi:id="_XcuvsuUnEeC1dOVOL-xa7A" fontName="Segoe UI"/>
-      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Xcuvs-UnEeC1dOVOL-xa7A" points="[0, -7, -59, 91]$[0, -92, -59, 6]$[59, -92, 0, 6]"/>
-      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_XdEG4OUnEeC1dOVOL-xa7A" id="(0.4793926247288503,0.03398058252427184)"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Xcuvs-UnEeC1dOVOL-xa7A" points="[-8, -1, -30, 91]$[-8, -86, -30, 6]$[22, -86, 0, 6]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_XdEG4OUnEeC1dOVOL-xa7A" id="(0.559652928416486,0.0048543689320388345)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_XdEG4eUnEeC1dOVOL-xa7A" id="(0.0035587188612099642,0.16279069767441862)"/>
     </edges>
     <edges xmi:type="notation:Edge" xmi:id="_gUgBoOUnEeC1dOVOL-xa7A" type="4003" element="_gUezgOUnEeC1dOVOL-xa7A" source="_dUSD0OUlEeC1dOVOL-xa7A" target="_87BLkOUmEeC1dOVOL-xa7A">
       <children xmi:type="notation:DecorationNode" xmi:id="_gUgosOUnEeC1dOVOL-xa7A" type="6003">
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_gUgoseUnEeC1dOVOL-xa7A" x="13" y="-3"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_gUgoseUnEeC1dOVOL-xa7A" x="18" y="31"/>
       </children>
       <styles xmi:type="notation:RoutingStyle" xmi:id="_gUgBoeUnEeC1dOVOL-xa7A"/>
       <styles xmi:type="notation:FontStyle" xmi:id="_gUgBouUnEeC1dOVOL-xa7A" fontName="Segoe UI"/>
