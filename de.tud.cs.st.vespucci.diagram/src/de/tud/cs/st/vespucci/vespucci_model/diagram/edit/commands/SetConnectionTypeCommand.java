@@ -47,7 +47,6 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gef.EditPart;
@@ -177,7 +176,7 @@ public class SetConnectionTypeCommand implements Command {
 
 			getRestoreSemanticCommand(featureMap).execute();
 		} catch (final ExecutionException e) {
-			throw new VespucciUnexpectedException("Error during create command execution.",e);
+			throw new VespucciUnexpectedException("Error during create command execution.", e);
 		}
 	}
 
@@ -213,7 +212,7 @@ public class SetConnectionTypeCommand implements Command {
 		try {
 			createCommand.redo(null, null);
 		} catch (final ExecutionException e) {
-			throw new VespucciUnexpectedException("Error during redo execution.",e);
+			throw new VespucciUnexpectedException("Error during redo execution.", e);
 		}
 	}
 
@@ -228,7 +227,7 @@ public class SetConnectionTypeCommand implements Command {
 		try {
 			createCommand.undo(null, null);
 		} catch (final ExecutionException e) {
-			throw new VespucciUnexpectedException("Error during undo execution.",e);
+			throw new VespucciUnexpectedException("Error during undo execution.", e);
 		}
 		deleteCommand.undo();
 	}
@@ -306,18 +305,21 @@ public class SetConnectionTypeCommand implements Command {
 		final HashMap<EStructuralFeature, Object> featureMap = new HashMap<EStructuralFeature, Object>();
 
 		final EObject semanticConn = connectionToChange.resolveSemanticElement();
-		//FIXME does not copy values. Current problem: original source/target history is deleted when delete command is executed. 
+		// when delete command is executed.
 		for (final EStructuralFeature feature : semanticConn.eClass().getEAllStructuralFeatures()) {
-			Object value = semanticConn.eGet(feature);
-			
-			// check for source/target-history; those must be copied
-			if(value instanceof EList && ((EList)value).size() != 0 && ((EList)value).get(0) instanceof Shape){
-				EList<Shape> shapeList = new BasicEList<Shape>();
-				for(Shape shape : (EList<Shape>) value){
+			final Object value = semanticConn.eGet(feature);
+
+			// Check for source/target-history; those must be copied or the history will be lost
+			// after execution of the delete command
+			if (value instanceof EList && ((EList) value).size() != 0 && ((EList) value).get(0) instanceof Shape) {
+				// copy source/target-history
+				final EList<Shape> shapeList = new BasicEList<Shape>();
+				for (final Shape shape : (EList<Shape>) value) {
 					shapeList.add(shape);
 				}
+				
 				featureMap.put(feature, shapeList);
-			}else{
+			} else {
 				featureMap.put(feature, value);
 			}
 		}
