@@ -41,6 +41,9 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolylineDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.impl.EAttributeImpl;
+import org.eclipse.emf.ecore.impl.EReferenceImpl;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ITreeBranchEditPart;
@@ -48,6 +51,10 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.PolylineConnectionEx;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.notation.View;
+
+import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
+import de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl;
 
 /**
  * @generated
@@ -152,6 +159,38 @@ public class ViolationEditPart extends ConnectionNodeEditPart implements ITreeBr
 
 			// always set the rotation reference point to the target anchor point
 			decoration.setReferencePoint(points.getPoint(points.size() - 2));
+		}
+	}
+	
+	/**
+	 * @generated NOT
+	 */
+	protected void handleNotificationEvent(Notification notification) {
+		super.handleNotificationEvent(notification);
+		if (notification.getFeature() instanceof EReferenceImpl) {
+			EReferenceImpl ref = (EReferenceImpl) notification.getFeature();
+			if (ref.getFeatureID() == Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE
+					|| ref.getFeatureID() == Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET) {
+				if (((ConnectionImpl) ((View) this.getModel()).getElement()).isTemp()) {
+					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
+				} else {
+					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.CONNECTION_COLOR);
+				}
+			}
+
+		}
+
+		if (notification.getFeature() instanceof EAttributeImpl) {
+			EAttributeImpl eai = (EAttributeImpl) notification.getFeature();
+			if (eai.getFeatureID() == Vespucci_modelPackage.CONNECTION__TEMP) {
+				if (notification.getNewBooleanValue()) {
+					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
+				} else {
+					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.CONNECTION_COLOR);
+				}
+
+			}
+
 		}
 	}
 

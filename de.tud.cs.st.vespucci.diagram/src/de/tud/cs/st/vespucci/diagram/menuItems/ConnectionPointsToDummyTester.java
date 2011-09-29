@@ -31,27 +31,46 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.handler;
+package de.tud.cs.st.vespucci.diagram.menuItems;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
- * PropertyTester to check whether a connection starts or ends at
- * an Empty Ensemble.
+ * PropertyTester to check whether a connection starts or ends at an Empty Ensemble.
  * 
  * @author Dominic Scheurer
  */
 public class ConnectionPointsToDummyTester extends PropertyTester {
 
 	@Override
-	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		ConnectionEditPart connectionEditPart = (ConnectionEditPart)receiver;
-		Connection connection = (Connection)connectionEditPart.resolveSemanticElement();
-		return (connection.getSource() instanceof Dummy) || (connection.getTarget() instanceof Dummy);
+	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
+		final ConnectionEditPart connectionEditPart = (ConnectionEditPart) receiver;
+		final Connection connection = (Connection) connectionEditPart.resolveSemanticElement();
+
+		return (getOriginalSource(connection) instanceof Dummy) || (getOriginalTarget(connection) instanceof Dummy);
+	}
+
+	// XXX: This method should be part of the Connection interface.
+	private static Shape getOriginalSource(final Connection conn) {
+		if (conn.getOriginalSource().isEmpty()) {
+			return conn.getSource();
+		} else {
+			return conn.getOriginalSource().get(0);
+		}
+	}
+
+	// XXX: This method should be part of the Connection interface
+	private static Shape getOriginalTarget(final Connection conn) {
+		if (conn.getOriginalTarget().isEmpty()) {
+			return conn.getTarget();
+		} else {
+			return conn.getOriginalTarget().get(0);
+		}
 	}
 
 }

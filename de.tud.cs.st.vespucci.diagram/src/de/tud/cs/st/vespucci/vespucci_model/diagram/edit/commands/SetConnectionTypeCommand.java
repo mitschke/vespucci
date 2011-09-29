@@ -43,6 +43,8 @@ import java.util.Map.Entry;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -63,6 +65,7 @@ import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * This command changes the class of the connection, e.g. from Incoming to Outgoing. Thus the class
@@ -173,7 +176,7 @@ public class SetConnectionTypeCommand implements Command {
 
 			getRestoreSemanticCommand(featureMap).execute();
 		} catch (final ExecutionException e) {
-			throw new VespucciUnexpectedException("Error during create command execution.",e);
+			throw new VespucciUnexpectedException("Error during create command execution.", e);
 		}
 	}
 
@@ -209,7 +212,7 @@ public class SetConnectionTypeCommand implements Command {
 		try {
 			createCommand.redo(null, null);
 		} catch (final ExecutionException e) {
-			throw new VespucciUnexpectedException("Error during redo execution.",e);
+			throw new VespucciUnexpectedException("Error during redo execution.", e);
 		}
 	}
 
@@ -224,7 +227,7 @@ public class SetConnectionTypeCommand implements Command {
 		try {
 			createCommand.undo(null, null);
 		} catch (final ExecutionException e) {
-			throw new VespucciUnexpectedException("Error during undo execution.",e);
+			throw new VespucciUnexpectedException("Error during undo execution.", e);
 		}
 		deleteCommand.undo();
 	}
@@ -302,9 +305,23 @@ public class SetConnectionTypeCommand implements Command {
 		final HashMap<EStructuralFeature, Object> featureMap = new HashMap<EStructuralFeature, Object>();
 
 		final EObject semanticConn = connectionToChange.resolveSemanticElement();
-		//FIXME does not copy values. Current problem: original source/target history is deleted when delete command is executed. 
+		// when delete command is executed.
 		for (final EStructuralFeature feature : semanticConn.eClass().getEAllStructuralFeatures()) {
-			featureMap.put(feature, semanticConn.eGet(feature));
+			final Object value = semanticConn.eGet(feature);
+
+			// Check for source/target-history; those must be copied or the history will be lost
+			// after execution of the delete command
+			if (value instanceof EList && ((EList) value).size() != 0 && ((EList) value).get(0) instanceof Shape) {
+				// copy source/target-history
+				final EList<Shape> shapeList = new BasicEList<Shape>();
+				for (final Shape shape : (EList<Shape>) value) {
+					shapeList.add(shape);
+				}
+				
+				featureMap.put(feature, shapeList);
+			} else {
+				featureMap.put(feature, value);
+			}
 		}
 
 		return featureMap;
