@@ -7,7 +7,8 @@ Bundle-ClassPath: .
 Bundle-Activator: de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts,
+Export-Package: de.tud.cs.st.vespucci.diagram.explorerMenu,
+ de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts,
  de.tud.cs.st.vespucci.vespucci_model.diagram.part,
  de.tud.cs.st.vespucci.vespucci_model.diagram.providers
 Require-Bundle: org.eclipse.core.runtime,

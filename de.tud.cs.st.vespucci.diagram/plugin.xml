@@ -34,6 +34,7 @@
   POSSIBILITY OF SUCH DAMAGE.
 -->
 <plugin>
+   <extension-point id="converters" name="SAD Converters" schema="schema/converters.exsd"/>
 
    <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
       <?gmfgen generated="true"?>
@@ -834,11 +835,10 @@
          <menu
                id="VespucciSubmenu"
                label="Vespucci">
-            <command
-                  commandId="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-                  label="Generate Architecural Model"
-                  style="push">
-               <visibleWhen>
+            <dynamic
+                  class="de.tud.cs.st.vespucci.diagram.explorerMenu.buildMenu"
+                  id="de.tud.cs.st.vespucci.diagram.dynamicGenerateMenu">
+                  <visibleWhen>
                   <with
                         variable="selection">
                      <iterate>
@@ -852,7 +852,7 @@
                      </iterate>
                   </with>
                </visibleWhen>
-            </command>
+            </dynamic>
          </menu>
          <separator
                name="de.tud.cs.st.vespucci.diagram.VespucciSubmenuSeparator"
@@ -910,11 +910,6 @@
    <!-- gmf generator persistent region begin -->  
 	  <?gmfgen generated="false"?>
       <extension point="org.eclipse.ui.commands" id="menu-commands"> 
-          <command
-            defaultHandler="de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts"
-            id="de.tud.cs.st.vespucci.diagram.GeneratePrologFacts"
-            name="Generate Architecural Model">
-      </command>
           <category
                 description="All commands, that change the kind of a dependency."
                 id="de.tud.cs.st.vespucci.diagram.setDependencyKindCategory"
