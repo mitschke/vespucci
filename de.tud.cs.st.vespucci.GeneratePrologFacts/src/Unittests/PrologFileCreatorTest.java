@@ -50,7 +50,8 @@ import java.io.OutputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
+import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
+
 
 
 public class PrologFileCreatorTest {

@@ -95,7 +95,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 
-import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
+//import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
@@ -386,7 +386,13 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	@Override
 	public void doSave(final IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
+		
+		/*
+		 * ToDo: Muss noch abgeklärt werden, Prolog Dateien beim abspeichern weiterhin erstellen?
+		 * Wenn ja, PlugIn oder direkt implementiert (-->Redundanter Code?)
+		 */
 
+		/*
 		final PrologFileCreator pfc = new PrologFileCreator();
 
 		final String filePath = getCurrentSelectedFilePath();
@@ -409,6 +415,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		} catch (final CoreException e) {
 			throw new VespucciUnexpectedException("Failed to refresh page view.", e);
 		}
+		*/
+		
+		System.out.println("Prolog Datei speichern nicht implementiert!");
 
 		validateDiagramConstraints();
 

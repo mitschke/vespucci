@@ -31,9 +31,10 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.creator;
+package de.tud.cs.st.vespucci.generateprologfacts.creator;
 
 import java.util.List;
+
 
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;

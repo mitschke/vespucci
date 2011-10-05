@@ -31,7 +31,7 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.creator;
+package de.tud.cs.st.vespucci.generateprologfacts.creator;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -44,6 +44,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+
 
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;

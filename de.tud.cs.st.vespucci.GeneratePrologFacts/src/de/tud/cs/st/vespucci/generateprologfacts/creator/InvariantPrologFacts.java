@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.diagram.creator;
+package de.tud.cs.st.vespucci.generateprologfacts.creator;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

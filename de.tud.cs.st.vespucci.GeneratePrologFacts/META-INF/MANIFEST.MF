@@ -4,4 +4,5 @@ Bundle-Name: GeneratePrologFacts
 Bundle-SymbolicName: de.tud.cs.st.vespucci.GeneratePrologFacts;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: de.tud.cs.st.vespucci.diagram
+Require-Bundle: de.tud.cs.st.vespucci.diagram,
+ org.junit;bundle-version="4.8.2"
