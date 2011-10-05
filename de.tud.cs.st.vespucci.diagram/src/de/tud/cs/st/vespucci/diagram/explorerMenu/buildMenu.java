@@ -21,7 +21,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class buildMenu extends ContributionItem {
 
-	private String EXTENSIONPOINT_ID = "toDo";
+	private String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.converters";
 	private LinkedList<ConverterItem> converterItems;
 	private LinkedList<IFile> diagramIFiles;
 
@@ -38,6 +38,7 @@ public class buildMenu extends ContributionItem {
 		// Get all converters for all registered Plug-Ins
 		this.converterItems = getConverterItems();
 		this.diagramIFiles = getSelectedDiagramIFiles();
+		
 
 		for (final ConverterItem converterItem : converterItems) {
 			MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
@@ -48,7 +49,7 @@ public class buildMenu extends ContributionItem {
 
 					for (IFile diagramFile : diagramIFiles) {
 
-						converterItem.getConverter().convert(diagramFile);
+						converterItem.getConverter().convert(diagramFile.getRawLocation().toFile());
 						try {
 							refreshPageView(diagramFile);
 						} catch (CoreException e1) {
