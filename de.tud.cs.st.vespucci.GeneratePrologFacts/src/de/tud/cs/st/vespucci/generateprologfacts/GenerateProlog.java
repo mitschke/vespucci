@@ -12,7 +12,6 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.IStorageClient;
 public class GenerateProlog implements IDiagramConverter, IStorageClient {
 
 	public GenerateProlog() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
