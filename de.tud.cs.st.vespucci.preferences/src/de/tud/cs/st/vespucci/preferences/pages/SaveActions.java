@@ -48,6 +48,7 @@ public class SaveActions extends FieldEditorPreferencePage implements
 			store.setDefault(generateId(i), true);
 		}
 		
+		
 	}
 
 	private String generateId(IConfigurationElement i) {

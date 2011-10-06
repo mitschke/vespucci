@@ -178,9 +178,10 @@
    <extension point="org.eclipse.ui.preferencePages" id="prefpages">
       <?gmfgen generated="true"?>
       <page
+            category="VespucciPreferencePages"
+            class="de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramGeneralPreferencePage"
             id="de.tud.cs.st.vespucci.diagram.general"
-            name="%prefpage.de.tud.cs.st.vespucci.diagram.general"
-            class="de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramGeneralPreferencePage">
+            name="%prefpage.de.tud.cs.st.vespucci.diagram.general">
       </page>
       <page
             id="de.tud.cs.st.vespucci.diagram.appearance"
