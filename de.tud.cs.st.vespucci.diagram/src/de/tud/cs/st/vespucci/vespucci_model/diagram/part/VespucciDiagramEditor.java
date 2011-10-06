@@ -46,6 +46,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -77,6 +78,7 @@ import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -108,6 +110,7 @@ import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
+import de.tud.cs.st.vespucci.preferences.Preferences;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
@@ -401,13 +404,20 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		
 		IConfigurationElement[] configurationElement = extensionRegistry
 				.getConfigurationElementsFor(EXTENSIONPOINT_ID);
+		
+		IPreferenceStore preferenceStore = Preferences.getDefault().getPreferenceStore();
 		try {
 			for (IConfigurationElement i : configurationElement) {
 
 				final Object o = i.createExecutableExtension("StorageClient");
 
 				if (o instanceof IStorageClient) {
-					((IStorageClient) o).doSave(filePathSAD, fileNameSAD);
+					
+					if (preferenceStore.getBoolean("saveBooleanOption" + i.getAttribute("id"))){
+						
+						((IStorageClient) o).doSave(filePathSAD, fileNameSAD);
+					}
+					
 				}
 			}
 

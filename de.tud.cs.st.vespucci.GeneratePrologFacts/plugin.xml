@@ -9,9 +9,13 @@
       </converter>
    </extension>
    <extension
+         id="generatePrologFacts"
+         name="Generate Prolog Facts"
          point="de.tud.cs.st.vespucci.diagram.doSave">
       <storage
-            StorageClient="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog">
+            Label="Generate/Save Prolog File"
+            StorageClient="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog"
+            id="savePrologFile">
       </storage>
    </extension>
 
