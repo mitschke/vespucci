@@ -35,6 +35,7 @@
 -->
 <plugin>
    <extension-point id="converters" name="SAD Converters" schema="schema/converters.exsd"/>
+   <extension-point id="doSave" name="doSave" schema="schema/doSave.exsd"/>
 
    <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
       <?gmfgen generated="true"?>

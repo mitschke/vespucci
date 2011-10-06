@@ -111,8 +111,13 @@ public class UpdateSadFileHandler extends AbstractHandler {
 
 	private static boolean isSadFile(final IFile file) {
 		final URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-		final List<EObject> fileModelContents =
-			new ResourceSetImpl().getResource(fileURI, true).getContents();
+		List<EObject> fileModelContents;
+		//ToDo: Only QuickFix
+		try {
+			fileModelContents = new ResourceSetImpl().getResource(fileURI, true).getContents();
+		} catch (Exception e) {
+			return false;
+		}
 		
 		return file.getFullPath().getFileExtension().equalsIgnoreCase("sad") &&
 			fileModelContents != null &&

@@ -45,10 +45,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -98,6 +101,8 @@ import org.eclipse.ui.part.ShowInContext;
 //import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
+import de.tud.cs.st.vespucci.diagram.explorerMenu.ConverterItem;
+import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramConverter;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
@@ -386,28 +391,30 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	@Override
 	public void doSave(final IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
+
+		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.doSave";
 		
-		/*
-		 * ToDo: Muss noch abgeklärt werden, Prolog Dateien beim abspeichern weiterhin erstellen?
-		 * Wenn ja, PlugIn oder direkt implementiert (-->Redundanter Code?)
-		 */
+		final String filePathSAD = getCurrentSelectedFilePath();
+		final String fileNameSAD = getCurrentSelectedFileName();
 
-		/*
-		final PrologFileCreator pfc = new PrologFileCreator();
-
-		final String filePath = getCurrentSelectedFilePath();
-		final String fileName = getCurrentSelectedFileName();
-
+		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+		
+		IConfigurationElement[] configurationElement = extensionRegistry
+				.getConfigurationElementsFor(EXTENSIONPOINT_ID);
 		try {
-			pfc.createPrologFileFromDiagram(filePath, fileName);
-		} catch (final FileNotFoundException e) {
-			throw new VespucciIOException(String.format("File [%s%s] not found.", filePath, fileName), e);
-		} catch (final IOException e) {
-			throw new VespucciIOException(String.format("Failed to save Prolog file from [%s%s].", filePath, fileName), e);
-		} catch (final Exception e) {
-			throw new VespucciIOException(String.format("File [%s%s] not found.", filePath, fileName), e);
-		}
+			for (IConfigurationElement i : configurationElement) {
 
+				final Object o = i.createExecutableExtension("StorageClient");
+
+				if (o instanceof IStorageClient) {
+					((IStorageClient) o).doSave(filePathSAD, fileNameSAD);
+				}
+			}
+
+		} catch (CoreException ex) {
+			System.err.print(ex.getMessage());
+		}
+		
 		// refresh Package View
 		final IProject activeProject = getSelectedFile().getFile().getProject();
 		try {
@@ -415,9 +422,6 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		} catch (final CoreException e) {
 			throw new VespucciUnexpectedException("Failed to refresh page view.", e);
 		}
-		*/
-		
-		System.out.println("Prolog Datei speichern nicht implementiert!");
 
 		validateDiagramConstraints();
 

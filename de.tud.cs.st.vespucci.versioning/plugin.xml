@@ -72,7 +72,7 @@
             locationURI="popup:VespucciSubmenu">
          <command
                commandId="de.tud.cs.st.vespucci.versioning.UpdateVespucciDiagram"
-               label="Update to current version"
+               label="Convert Diagram to current version"
                style="push">
             <visibleWhen
                   checkEnabled="true">

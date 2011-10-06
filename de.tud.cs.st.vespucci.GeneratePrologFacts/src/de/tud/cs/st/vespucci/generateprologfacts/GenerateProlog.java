@@ -7,8 +7,9 @@ import java.io.IOException;
 import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramConverter;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.IStorageClient;
 
-public class GenerateProlog implements IDiagramConverter {
+public class GenerateProlog implements IDiagramConverter, IStorageClient {
 
 	public GenerateProlog() {
 		// TODO Auto-generated constructor stub
@@ -36,6 +37,22 @@ public class GenerateProlog implements IDiagramConverter {
 		
 		System.out.println("HelloFromProloCreatorObject");
 
+	}
+
+	@Override
+	public void doSave(String filePathSAD, String fileNameSAD) {
+		
+		final PrologFileCreator prologFileCreator = new PrologFileCreator();
+
+		try {
+			prologFileCreator.createPrologFileFromDiagram(filePathSAD, fileNameSAD);
+		} catch (final FileNotFoundException e) {
+			throw new VespucciIOException(String.format("File [%s] not found.",filePathSAD, fileNameSAD), e);
+		} catch (final IOException e) {
+			throw new VespucciIOException(String.format("Failed to save Prolog file from [%s].",filePathSAD, fileNameSAD), e);
+		} catch (final Exception e) {
+			throw new VespucciIOException(String.format("File [%s] not found.",filePathSAD, fileNameSAD), e);
+		}
 	}
 
 }
