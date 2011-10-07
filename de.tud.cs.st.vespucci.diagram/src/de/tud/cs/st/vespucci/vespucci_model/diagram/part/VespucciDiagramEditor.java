@@ -104,7 +104,7 @@ import org.eclipse.ui.part.ShowInContext;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.explorerMenu.ConverterItem;
-import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramConverter;
+import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramProcessor;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;

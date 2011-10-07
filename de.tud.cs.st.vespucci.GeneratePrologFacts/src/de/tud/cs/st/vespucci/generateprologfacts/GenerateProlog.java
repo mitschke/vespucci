@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramConverter;
+import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramProcessor;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.IStorageClient;
 
-public class GenerateProlog implements IDiagramConverter, IStorageClient {
+public class GenerateProlog implements IDiagramProcessor, IStorageClient {
 
 	public GenerateProlog() {
 	}

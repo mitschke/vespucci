@@ -110,8 +110,8 @@ public class buildMenu extends ContributionItem {
 				// Handler holen
 				final Object o = i.createExecutableExtension("DiagramConverter");
 
-				if (o instanceof IDiagramConverter) {
-					converterItems.add(new ConverterItem((IDiagramConverter) o, i.getAttribute("Label")));
+				if (o instanceof IDiagramProcessor) {
+					converterItems.add(new ConverterItem((IDiagramProcessor) o, i.getAttribute("Label")));
 				}
 			}
 

@@ -3,7 +3,7 @@ package de.tud.cs.st.vespucci.diagram.explorerMenu;
 import java.io.File;
 
 
-public interface IDiagramConverter {
+public interface IDiagramProcessor {
 
 	public void convert(File diagramFile);
 	

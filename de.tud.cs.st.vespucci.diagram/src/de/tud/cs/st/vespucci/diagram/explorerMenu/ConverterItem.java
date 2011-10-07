@@ -2,10 +2,10 @@ package de.tud.cs.st.vespucci.diagram.explorerMenu;
 
 public class ConverterItem {
 
-	private IDiagramConverter converter;
+	private IDiagramProcessor converter;
 	private String label;
 
-	public ConverterItem(IDiagramConverter converter, String label) {
+	public ConverterItem(IDiagramProcessor converter, String label) {
 
 		this.converter = converter;
 		this.label = label;
@@ -19,11 +19,11 @@ public class ConverterItem {
 		this.label = label;
 	}
 
-	public IDiagramConverter getConverter() {
+	public IDiagramProcessor getConverter() {
 		return converter;
 	}
 
-	public void setConverter(IDiagramConverter converter) {
+	public void setConverter(IDiagramProcessor converter) {
 		this.converter = converter;
 	}
 
