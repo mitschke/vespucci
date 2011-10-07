@@ -178,7 +178,6 @@
    <extension point="org.eclipse.ui.preferencePages" id="prefpages">
       <?gmfgen generated="true"?>
       <page
-            category="VespucciPreferencePages"
             class="de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramGeneralPreferencePage"
             id="de.tud.cs.st.vespucci.diagram.general"
             name="%prefpage.de.tud.cs.st.vespucci.diagram.general">
@@ -207,6 +206,18 @@
             category="de.tud.cs.st.vespucci.diagram.general"
             class="de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramRulersAndGridPreferencePage">
       </page>
+      <page
+            category="de.tud.cs.st.vespucci.diagram.general"
+            class="de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.SaveActions"
+            id="de.tud.cs.st.vespucci.diagram.VespucciSaveActions"
+            name="Save Actions">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.Initializer">
+      </initializer>
    </extension>
 
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor" id="prop-contrib">
@@ -838,7 +849,7 @@
                id="VespucciSubmenu"
                label="Vespucci">
             <dynamic
-                  class="de.tud.cs.st.vespucci.diagram.explorerMenu.buildMenu"
+                  class="de.tud.cs.st.vespucci.diagram.processing.buildMenu"
                   id="de.tud.cs.st.vespucci.diagram.dynamicGenerateMenu">
                   <visibleWhen>
                   <with

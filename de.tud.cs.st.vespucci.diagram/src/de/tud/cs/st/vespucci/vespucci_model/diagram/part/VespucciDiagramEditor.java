@@ -33,8 +33,6 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -46,7 +44,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -100,17 +97,13 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 
-//import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
-import de.tud.cs.st.vespucci.diagram.explorerMenu.ProcessorItem;
-import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramProcessor;
+import de.tud.cs.st.vespucci.diagram.processing.ISaveDiagramAction;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
-import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
-import de.tud.cs.st.vespucci.preferences.Preferences;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
@@ -405,7 +398,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		IConfigurationElement[] configurationElement = extensionRegistry
 				.getConfigurationElementsFor(EXTENSIONPOINT_ID);
 		
-		IPreferenceStore preferenceStore = Preferences.getDefault().getPreferenceStore();
+		IPreferenceStore preferenceStore = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
+				.getPreferenceStore();
 		try {
 			for (IConfigurationElement i : configurationElement) {
 

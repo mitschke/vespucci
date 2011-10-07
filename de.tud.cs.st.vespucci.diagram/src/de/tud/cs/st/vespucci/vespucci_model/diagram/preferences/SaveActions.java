@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.preferences.pages;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.preferences;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -8,14 +8,13 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import de.tud.cs.st.vespucci.preferences.Preferences;
-
 public class SaveActions extends FieldEditorPreferencePage implements
 		IWorkbenchPreferencePage {
 
 	public SaveActions() {
 		super(GRID);
-		setPreferenceStore(Preferences.getDefault().getPreferenceStore());
+		setPreferenceStore(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
+				.getPreferenceStore());
 		setDescription("Which Plug-Ins should be executed on save?");
 		
 	}

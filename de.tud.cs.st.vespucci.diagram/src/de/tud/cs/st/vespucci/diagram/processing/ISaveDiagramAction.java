@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
+package de.tud.cs.st.vespucci.diagram.processing;
 
 public interface ISaveDiagramAction {
 

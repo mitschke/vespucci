@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.preferences;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.preferences;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -21,7 +21,8 @@ public class Initializer extends AbstractPreferenceInitializer {
 		IConfigurationElement[] configurationElement = extensionRegistry
 				.getConfigurationElementsFor(EXTENSIONPOINT_ID);
 		
-		IPreferenceStore store = Preferences.getDefault().getPreferenceStore();
+		IPreferenceStore store = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
+				.getPreferenceStore();
 		
 		for (IConfigurationElement i : configurationElement) {
 			store.setDefault(generateId(i), true);

@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.diagram.explorerMenu;
+package de.tud.cs.st.vespucci.diagram.processing;
 
 
 
