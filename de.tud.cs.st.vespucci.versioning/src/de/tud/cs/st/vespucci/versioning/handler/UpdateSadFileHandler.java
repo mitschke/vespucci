@@ -47,6 +47,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -55,6 +56,7 @@ import org.eclipse.gmf.runtime.notation.impl.DiagramImpl;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
@@ -117,14 +119,21 @@ public class UpdateSadFileHandler extends AbstractHandler {
 			try {
 				List<EObject> fileModelContents = new ResourceSetImpl()
 						.getResource(fileURI, true).getContents();
+
 				return fileModelContents != null
 						&& fileModelContents.size() == 2
 						&& ((fileModelContents.get(0) instanceof ShapesDiagramImpl && fileModelContents
 								.get(1) instanceof DiagramImpl) || (fileModelContents
 								.get(0) instanceof DiagramImpl && fileModelContents
 								.get(1) instanceof ShapesDiagramImpl));
+				
 			} catch (Exception e) {
-				// TODO: Fehler in ErrorView schreiben
+				
+				final IStatus is = new Status(IStatus.ERROR, "de.tud.cs.st.vespucci.versioning", e.getMessage(), e);
+				
+				//TODO: PopUp in isSadFile?
+				//StatusManager.getManager().handle(is, StatusManager.SHOW);
+				StatusManager.getManager().handle(is, StatusManager.LOG); 
 			}
 
 		}

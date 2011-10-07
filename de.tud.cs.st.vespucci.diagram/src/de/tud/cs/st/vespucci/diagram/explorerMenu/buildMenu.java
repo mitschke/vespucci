@@ -7,8 +7,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -18,6 +20,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class buildMenu extends ContributionItem {
 
@@ -53,8 +56,11 @@ public class buildMenu extends ContributionItem {
 						try {
 							refreshPageView(diagramFile);
 						} catch (CoreException e1) {
-							// TODO: Print Error on ErrorView
-							e1.printStackTrace();
+							final IStatus is = new Status(IStatus.ERROR, "de.tud.cs.st.vespucci.diagram", e1.getMessage(), e1);
+							
+							//TODO: PopUp in buildMenu?
+							//StatusManager.getManager().handle(is, StatusManager.SHOW);
+							StatusManager.getManager().handle(is, StatusManager.LOG);
 						}
 					}
 				}
@@ -117,8 +123,11 @@ public class buildMenu extends ContributionItem {
 			}
 
 		} catch (CoreException ex) {
-			//TODO: Print Error on ErrorView			
-			System.err.print(ex.getMessage());
+			final IStatus is = new Status(IStatus.ERROR, "de.tud.cs.st.vespucci.diagram", ex.getMessage(), ex);
+			
+			//TODO: PopUp in buildMenu?
+			//StatusManager.getManager().handle(is, StatusManager.SHOW);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		
 		return converterItems;
