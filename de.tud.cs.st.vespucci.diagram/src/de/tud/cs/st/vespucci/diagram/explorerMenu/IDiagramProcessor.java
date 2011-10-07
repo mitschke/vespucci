@@ -1,11 +1,13 @@
 package de.tud.cs.st.vespucci.diagram.explorerMenu;
 
-import java.io.File;
+
+
+import org.eclipse.core.resources.IFile;
 
 
 public interface IDiagramProcessor {
 
-	public void convert(File diagramFile);
+	public void process(IFile diagramFile);
 	
 	/*
 	 * ToDo: For further Conventions with Ralf

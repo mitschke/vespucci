@@ -49,7 +49,7 @@ public class buildMenu extends ContributionItem {
 
 					for (IFile diagramFile : diagramIFiles) {
 
-						converterItem.getConverter().convert(diagramFile.getRawLocation().toFile());
+						converterItem.getConverter().process(diagramFile);
 						try {
 							refreshPageView(diagramFile);
 						} catch (CoreException e1) {
