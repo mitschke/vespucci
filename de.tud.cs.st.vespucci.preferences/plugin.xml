@@ -15,5 +15,11 @@
             name="Save Actions">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.tud.cs.st.vespucci.preferences.Initializer">
+      </initializer>
+   </extension>
 
 </plugin>

@@ -5,7 +5,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -16,7 +15,6 @@ public class SaveActions extends FieldEditorPreferencePage implements
 
 	public SaveActions() {
 		super(GRID);
-		this.
 		setPreferenceStore(Preferences.getDefault().getPreferenceStore());
 		setDescription("Which Plug-Ins should be executed on save?");
 		
@@ -38,13 +36,10 @@ public class SaveActions extends FieldEditorPreferencePage implements
 		IConfigurationElement[] configurationElement = extensionRegistry
 				.getConfigurationElementsFor(EXTENSIONPOINT_ID);
 		
-		IPreferenceStore store = Preferences.getDefault().getPreferenceStore();
-		
 		for (IConfigurationElement i : configurationElement) {
 
 			addField(new BooleanFieldEditor(generateId(i),
 					i.getAttribute("Label"), getFieldEditorParent()));
-			store.setDefault(generateId(i), true);
 		}
 		
 		
