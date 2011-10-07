@@ -103,7 +103,7 @@ import org.eclipse.ui.part.ShowInContext;
 //import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
-import de.tud.cs.st.vespucci.diagram.explorerMenu.ConverterItem;
+import de.tud.cs.st.vespucci.diagram.explorerMenu.ProcessorItem;
 import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramProcessor;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
@@ -395,7 +395,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	public void doSave(final IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
 
-		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.doSave";
+		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.saveActions";
 		
 		final String filePathSAD = getCurrentSelectedFilePath();
 		final String fileNameSAD = getCurrentSelectedFileName();
@@ -409,13 +409,13 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		try {
 			for (IConfigurationElement i : configurationElement) {
 
-				final Object o = i.createExecutableExtension("StorageClient");
+				final Object o = i.createExecutableExtension("SaveAction");
 
-				if (o instanceof IStorageClient) {
+				if (o instanceof ISaveDiagramAction) {
 					
 					if (preferenceStore.getBoolean("saveBooleanOption" + i.getAttribute("id"))){
 						
-						((IStorageClient) o).doSave(filePathSAD, fileNameSAD);
+						((ISaveDiagramAction) o).doSave(filePathSAD, fileNameSAD);
 					}
 					
 				}

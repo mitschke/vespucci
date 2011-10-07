@@ -3,13 +3,13 @@
 <plugin>
    <extension
          id="generatePrologFacts"
-         name="Generate Prolog Facts"
-         point="de.tud.cs.st.vespucci.diagram.doSave">
-      <storage
+         name="name"
+         point="de.tud.cs.st.vespucci.diagram.saveActions">
+      <saveAction
             Label="Generate/Save Prolog File"
-            StorageClient="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog"
+            SaveAction="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog"
             id="savePrologFile">
-      </storage>
+      </saveAction>
    </extension>
    <extension
          point="de.tud.cs.st.vespucci.diagram.diagramProcessors">

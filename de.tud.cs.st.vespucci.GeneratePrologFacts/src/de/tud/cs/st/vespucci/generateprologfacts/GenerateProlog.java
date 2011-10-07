@@ -1,6 +1,5 @@
 package de.tud.cs.st.vespucci.generateprologfacts;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -8,15 +7,11 @@ import java.io.IOException;
 import de.tud.cs.st.vespucci.diagram.explorerMenu.IDiagramProcessor;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.part.IStorageClient;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.ISaveDiagramAction;
 import org.eclipse.core.resources.IFile;
 
 
-
-
-
-
-public class GenerateProlog implements IDiagramProcessor, IStorageClient {
+public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 
 	public GenerateProlog() {
 	}

@@ -21,8 +21,8 @@ import org.eclipse.ui.PlatformUI;
 
 public class buildMenu extends ContributionItem {
 
-	private String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.converters";
-	private LinkedList<ConverterItem> converterItems;
+	private String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.diagramProcessors";
+	private LinkedList<ProcessorItem> processorItems;
 	private LinkedList<IFile> diagramIFiles;
 
 	public buildMenu() {
@@ -35,24 +35,25 @@ public class buildMenu extends ContributionItem {
 	@Override
 	public void fill(Menu menu, int index) {
 
-		// Get all converters for all registered Plug-Ins
-		this.converterItems = getConverterItems();
+		// Get all Processors for all registered Plug-Ins
+		this.processorItems = getProcessorItems();
 		this.diagramIFiles = getSelectedDiagramIFiles();
 		
 
-		for (final ConverterItem converterItem : converterItems) {
+		for (final ProcessorItem processorItem : processorItems) {
 			MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
-			menuItem.setText(converterItem.getLabel());
+			menuItem.setText(processorItem.getLabel());
 			menuItem.addSelectionListener(new SelectionAdapter() {
 
 				public void widgetSelected(SelectionEvent e) {
 
 					for (IFile diagramFile : diagramIFiles) {
 
-						converterItem.getConverter().process(diagramFile);
+						processorItem.getProcessors().process(diagramFile);
 						try {
 							refreshPageView(diagramFile);
 						} catch (CoreException e1) {
+							// TODO: Print Error on ErrorView
 							e1.printStackTrace();
 						}
 					}
@@ -96,9 +97,9 @@ public class buildMenu extends ContributionItem {
 				new NullProgressMonitor());
 	}
 
-	private LinkedList<ConverterItem> getConverterItems() {
+	private LinkedList<ProcessorItem> getProcessorItems() {
 		
-		LinkedList<ConverterItem> converterItems = new LinkedList<ConverterItem>();
+		LinkedList<ProcessorItem> converterItems = new LinkedList<ProcessorItem>();
 		
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		
@@ -108,14 +109,15 @@ public class buildMenu extends ContributionItem {
 			for (IConfigurationElement i : configurationElement) {
 
 				// Handler holen
-				final Object o = i.createExecutableExtension("DiagramConverter");
+				final Object o = i.createExecutableExtension("DiagramProcessor");
 
 				if (o instanceof IDiagramProcessor) {
-					converterItems.add(new ConverterItem((IDiagramProcessor) o, i.getAttribute("Label")));
+					converterItems.add(new ProcessorItem((IDiagramProcessor) o, i.getAttribute("Label")));
 				}
 			}
 
 		} catch (CoreException ex) {
+			//TODO: Print Error on ErrorView			
 			System.err.print(ex.getMessage());
 		}
 		

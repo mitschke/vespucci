@@ -3,7 +3,7 @@
 <schema targetNamespace="de.tud.cs.st.vespucci.diagram" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="de.tud.cs.st.vespucci.diagram" id="doSave" name="doSave"/>
+         <meta.schema plugin="de.tud.cs.st.vespucci.diagram" id="SaveActions" name="SaveActions"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <choice minOccurs="1" maxOccurs="unbounded">
-            <element ref="storage" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="saveAction" minOccurs="1" maxOccurs="unbounded"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -27,14 +27,14 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="id" type="string" use="required">
+         <attribute name="id" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="name" type="string" use="required">
+         <attribute name="name" type="string">
             <annotation>
                <documentation>
                   
@@ -47,15 +47,15 @@
       </complexType>
    </element>
 
-   <element name="storage">
+   <element name="saveAction">
       <complexType>
-         <attribute name="StorageClient" type="string" use="required">
+         <attribute name="SaveAction" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":de.tud.cs.st.vespucci.vespucci_model.diagram.part.IStorageClient"/>
+                  <meta.attribute kind="java" basedOn=":de.tud.cs.st.vespucci.vespucci_model.diagram.part.ISaveDiagramAction"/>
                </appInfo>
             </annotation>
          </attribute>

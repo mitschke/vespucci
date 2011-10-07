@@ -6,7 +6,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -19,7 +18,7 @@ public class SaveActions extends FieldEditorPreferencePage implements
 		super(GRID);
 		this.
 		setPreferenceStore(Preferences.getDefault().getPreferenceStore());
-		setDescription("Which Plug-Ins should be executed at save?");
+		setDescription("Which Plug-Ins should be executed on save?");
 		
 	}
 
@@ -32,7 +31,7 @@ public class SaveActions extends FieldEditorPreferencePage implements
 	public void createFieldEditors() {
 		
 
-		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.doSave";
+		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.saveActions";
 
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 

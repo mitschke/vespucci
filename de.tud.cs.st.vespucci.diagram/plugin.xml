@@ -35,7 +35,7 @@
 -->
 <plugin>
    <extension-point id="diagramProcessors" name="SAD Processors" schema="schema/diagramProcessors.exsd"/>
-   <extension-point id="doSave" name="doSave" schema="schema/doSave.exsd"/>
+   <extension-point id="saveActions" name="SAD SaveActions" schema="schema/saveActions.exsd"/>
 
    <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
       <?gmfgen generated="true"?>
