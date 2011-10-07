@@ -111,21 +111,24 @@ public class UpdateSadFileHandler extends AbstractHandler {
 
 	private static boolean isSadFile(final IFile file) {
 		final URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-		List<EObject> fileModelContents;
-		//ToDo: Only QuickFix
-		try {
-			fileModelContents = new ResourceSetImpl().getResource(fileURI, true).getContents();
-		} catch (Exception e) {
-			return false;
+
+		if (file.getFullPath().getFileExtension().equalsIgnoreCase("sad")) {
+
+			try {
+				List<EObject> fileModelContents = new ResourceSetImpl()
+						.getResource(fileURI, true).getContents();
+				return fileModelContents != null
+						&& fileModelContents.size() == 2
+						&& ((fileModelContents.get(0) instanceof ShapesDiagramImpl && fileModelContents
+								.get(1) instanceof DiagramImpl) || (fileModelContents
+								.get(0) instanceof DiagramImpl && fileModelContents
+								.get(1) instanceof ShapesDiagramImpl));
+			} catch (Exception e) {
+				// TODO: Fehler in ErrorView schreiben
+			}
+
 		}
-		
-		return file.getFullPath().getFileExtension().equalsIgnoreCase("sad") &&
-			fileModelContents != null &&
-			fileModelContents.size() == 2 &&
-			((fileModelContents.get(0) instanceof ShapesDiagramImpl &&
-			  fileModelContents.get(1) instanceof DiagramImpl) ||
-			 (fileModelContents.get(0) instanceof DiagramImpl &&
-			  fileModelContents.get(1) instanceof ShapesDiagramImpl));
+		return false;
 	}
 
 	/**
