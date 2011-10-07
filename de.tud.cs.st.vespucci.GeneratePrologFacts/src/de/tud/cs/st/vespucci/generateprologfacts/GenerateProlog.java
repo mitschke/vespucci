@@ -44,6 +44,7 @@ import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
 import org.eclipse.core.resources.IFile;
 
 /**
+ * A processor/handler for saving a *.sad file to a *.pl Prolog file
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
@@ -71,9 +72,7 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 	}
 
 	@Override
-	public void convert(Object diagramElement) {
-		
-		System.out.println("HelloFromProloCreatorObject");
+	public void process(Object diagramElement) {
 
 	}
 

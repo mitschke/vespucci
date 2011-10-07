@@ -34,6 +34,7 @@
 package de.tud.cs.st.vespucci.diagram.processing;
 
 /**
+ * A data class for encapsulate properties of a diagramProcessor
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
@@ -44,7 +45,6 @@ public class ProcessorItem {
 	private String label;
 
 	public ProcessorItem(IDiagramProcessor converter, String label) {
-
 		this.diagramProcessor = converter;
 		this.label = label;
 	}

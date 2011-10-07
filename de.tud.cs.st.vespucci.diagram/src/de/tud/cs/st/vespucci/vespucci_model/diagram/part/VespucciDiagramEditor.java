@@ -377,6 +377,9 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	/**
 	 * New methods added to translate diagram to prolog facts.
 	 * New methods added to delete obsolete IMarker. -2011-07-15
+	 * Calls doSave(IFile) on Interface ISaveDiagramAction 
+	 * for each activated (preferencepage) registered Extension 
+	 * on ExtensionPoint de.tud.cs.st.vespucci.diagram.saveActions 
 	 * 
 	 * @author Patrick Jahnke
 	 * @author Malte Viering
