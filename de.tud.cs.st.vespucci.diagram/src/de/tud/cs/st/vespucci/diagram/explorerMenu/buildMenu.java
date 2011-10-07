@@ -56,10 +56,7 @@ public class buildMenu extends ContributionItem {
 						try {
 							refreshPageView(diagramFile);
 						} catch (CoreException e1) {
-							final IStatus is = new Status(IStatus.ERROR, "de.tud.cs.st.vespucci.diagram", e1.getMessage(), e1);
-							
-							//TODO: PopUp in buildMenu?
-							//StatusManager.getManager().handle(is, StatusManager.SHOW);
+							final IStatus is = new Status(IStatus.ERROR,"de.tud.cs.st.vespucci.diagram", e1.getMessage(), e1);
 							StatusManager.getManager().handle(is, StatusManager.LOG);
 						}
 					}
@@ -124,12 +121,9 @@ public class buildMenu extends ContributionItem {
 
 		} catch (CoreException ex) {
 			final IStatus is = new Status(IStatus.ERROR, "de.tud.cs.st.vespucci.diagram", ex.getMessage(), ex);
-			
-			//TODO: PopUp in buildMenu?
-			//StatusManager.getManager().handle(is, StatusManager.SHOW);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
-		
+
 		return converterItems;
 	}
 

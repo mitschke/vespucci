@@ -130,9 +130,6 @@ public class UpdateSadFileHandler extends AbstractHandler {
 			} catch (Exception e) {
 				
 				final IStatus is = new Status(IStatus.ERROR, "de.tud.cs.st.vespucci.versioning", e.getMessage(), e);
-				
-				//TODO: PopUp in isSadFile?
-				//StatusManager.getManager().handle(is, StatusManager.SHOW);
 				StatusManager.getManager().handle(is, StatusManager.LOG); 
 			}
 
