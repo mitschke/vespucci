@@ -382,6 +382,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	 * @author Malte Viering
 	 * @author Alexander Weitzmann
 	 * @author Thomas Schulz
+	 * @author Patrick Gottschämmer
+	 * @author Olav Lenz
 	 * @generated NOT
 	 */
 	@Override

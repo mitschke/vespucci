@@ -43,7 +43,11 @@ import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
 import org.eclipse.core.resources.IFile;
 
-
+/**
+ * 
+ * @author Patrick Gottschämmer
+ * @author Olav Lenz
+ */
 public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 
 	public GenerateProlog() {

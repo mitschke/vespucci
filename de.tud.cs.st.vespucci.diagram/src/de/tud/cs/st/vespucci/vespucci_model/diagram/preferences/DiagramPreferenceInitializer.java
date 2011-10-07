@@ -33,17 +33,19 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.preferences;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
- * @generated
+ * @author Patrick Gottschämmer
+ * @author Olav Lenz
+ * @generated NOT
  */
 public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer {
 
-	/**
-	 * @generated
-	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = getPreferenceStore();
 		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramGeneralPreferencePage.initDefaults(store);
@@ -52,6 +54,21 @@ public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer 
 		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramPrintingPreferencePage.initDefaults(store);
 		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramRulersAndGridPreferencePage.initDefaults(store);
 
+		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.saveActions";
+
+		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+
+		IConfigurationElement[] configurationElement = extensionRegistry
+				.getConfigurationElementsFor(EXTENSIONPOINT_ID);
+		
+		for (IConfigurationElement i : configurationElement) {
+			store.setDefault(generateId(i), true);
+		}
+		
+	}
+	
+	private String generateId(IConfigurationElement i) {
+		return "saveBooleanOption" + i.getAttribute("id");
 	}
 
 	/**

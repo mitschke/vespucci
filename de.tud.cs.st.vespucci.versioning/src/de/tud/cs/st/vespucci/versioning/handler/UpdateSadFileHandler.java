@@ -111,6 +111,12 @@ public class UpdateSadFileHandler extends AbstractHandler {
 		return VespucciVersionChain.getInstance().getVersionOfFile(file).isNewestVersion();
 	}
 
+	/**
+	 * 
+	 * @author Dominic Scheurer
+	 * @author Patrick Gottschämmer
+	 * @author Olav Lenz
+	 */
 	private static boolean isSadFile(final IFile file) {
 		final URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 

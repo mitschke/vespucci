@@ -55,6 +55,11 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+/**
+ * 
+ * @author Patrick Gottschämmer
+ * @author Olav Lenz
+ */
 public class buildMenu extends ContributionItem {
 
 	private String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.diagramProcessors";

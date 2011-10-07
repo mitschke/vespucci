@@ -33,11 +33,13 @@
  */
 package de.tud.cs.st.vespucci.diagram.processing;
 
-
-
 import org.eclipse.core.resources.IFile;
 
-
+/**
+ * 
+ * @author Patrick Gottschämmer
+ * @author Olav Lenz
+ */
 public interface IDiagramProcessor {
 
 	public void process(IFile diagramFile);

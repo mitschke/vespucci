@@ -213,12 +213,6 @@
             name="Save Actions">
       </page>
    </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.Initializer">
-      </initializer>
-   </extension>
 
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor" id="prop-contrib">
       <?gmfgen generated="false"?>
