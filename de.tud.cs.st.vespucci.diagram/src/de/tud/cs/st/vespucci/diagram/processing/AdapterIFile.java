@@ -50,13 +50,15 @@ public class AdapterIFile implements IAdapterFactory {
 			}
 		}
 
-		try {
-			throw new FileNotFoundException(
-					"ShapesDiagram could not be found in Document.");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+			try {
+				throw new FileNotFoundException(
+						"ShapesDiagram could not be found in Document.");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		return null;
 	}
 

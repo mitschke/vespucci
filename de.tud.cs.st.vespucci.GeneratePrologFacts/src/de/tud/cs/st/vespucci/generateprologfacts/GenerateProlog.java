@@ -63,7 +63,6 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 		final PrologFileCreator prologFileCreator = new PrologFileCreator();
 		
 		IAdapterManager manager = Platform.getAdapterManager();
-		
 		IFile diagramFile =  (IFile) manager.getAdapter(diagramObject, IFile.class);
 	
 		try {

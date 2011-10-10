@@ -80,7 +80,11 @@ public class buildMenu extends ContributionItem {
 		this.processorItems = getProcessorItems();
 		this.diagramIFiles = getSelectedDiagramIFiles();
 		
-
+		if (this.processorItems.size() == 0){
+			MenuItem menuItem = new MenuItem(menu, SWT.CHECK);
+			menuItem.setText("(No registered diagram processors)");
+			menuItem.setEnabled(false);
+		}else{
 		for (final ProcessorItem processorItem : processorItems) {
 			MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
 			menuItem.setText(processorItem.getLabel());
@@ -101,7 +105,7 @@ public class buildMenu extends ContributionItem {
 				}
 			});
 
-		}
+		}}
 
 	}
 
