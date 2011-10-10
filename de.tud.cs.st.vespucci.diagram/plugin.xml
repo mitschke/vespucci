@@ -1037,6 +1037,9 @@
              <adapter
                    type="org.eclipse.core.resources.IFile">
              </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram">
+             </adapter>
           </factory>
        </extension>
         <!-- gmf generator persistent region end -->

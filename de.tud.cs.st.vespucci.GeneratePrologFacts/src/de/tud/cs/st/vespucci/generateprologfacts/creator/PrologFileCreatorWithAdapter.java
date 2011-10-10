@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
@@ -59,7 +60,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
  * @author Thomas Schulz
  * @author Theo Kischka
  */
-public class PrologFileCreator {
+public class PrologFileCreatorWithAdapter {
 
 	/**
 	 * Name of the current diagram file.
@@ -69,27 +70,30 @@ public class PrologFileCreator {
 	/**
 	 * Read the given diagram and create a prolog file.
 	 * 
-	 * @param file
+	 * @param diagramFile
 	 *            File of the diagram.
 	 * @author Malte Viering
 	 * @throws Exception
 	 */
-	public void createPrologFileFromDiagram(final File file) throws Exception {
-		this.createPrologFileFromDiagram(file.getParent(), file.getName());
-
-	}
+//	public void createPrologFileFromDiagram(final IFile diagramIFile) throws Exception {
+//		
+//		File diagramFile = diagramIFile.getRawLocation().toFile();
+//		this.createPrologFileFromDiagram(diagramIFile);
+//	}
 
 	/**
 	 * Read the given diagram and create a prolog file.
 	 * 
 	 * @param location
-	 * @param fileName
+	 * @param diagramIFile 
 	 * @throws Exception
 	 */
-	public void createPrologFileFromDiagram(final String location, final String fileName) throws Exception {
-		diagramFileName = fileName;
-		final String fullFileName = location + "/" + fileName;
-		final ShapesDiagram diagram = loadDiagramFile(fullFileName);
+	public void createPrologFileFromDiagram(IFile diagramIFile) throws Exception {
+		
+		diagramFileName = diagramIFile.getName();
+		
+		final String fullFileName = diagramIFile.getLocation().toString();
+		final ShapesDiagram diagram = (ShapesDiagram) Platform.getAdapterManager().getAdapter(diagramIFile, ShapesDiagram.class);
 
 		// create a new Prolog File
 		final File prologFile = new File(fullFileName + ".pl");
@@ -102,32 +106,6 @@ public class PrologFileCreator {
 
 		bos.close();
 		fos.close();
-	}
-
-	/**
-	 * Loads a diagram file.
-	 * 
-	 * @param fullPath
-	 * @return Returns the loaded diagram.
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @author Dominic Scheurer
-	 */
-	private static ShapesDiagram loadDiagramFile(final String fullPath) throws FileNotFoundException, IOException {
-		final XMIResourceImpl diagramResource = new XMIResourceImpl();
-		final FileInputStream diagramStream = new FileInputStream(new File(fullPath));
-
-		diagramResource.load(diagramStream, new HashMap<Object, Object>());
-
-		// Find the ShapesDiagram-EObject
-		for (int i = 0; i < diagramResource.getContents().size(); i++) {
-			if (diagramResource.getContents().get(i) instanceof ShapesDiagram) {
-				final EObject eObject = diagramResource.getContents().get(i);
-				return (ShapesDiagram) eObject;
-			}
-		}
-
-		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
 	}
 
 	/**
