@@ -42,6 +42,8 @@ import de.tud.cs.st.vespucci.diagram.processing.ISaveDiagramAction;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IAdapterManager;
+import org.eclipse.core.runtime.Platform;
 
 /**
  * A processor/handler for saving a *.sad file to a *.pl Prolog file
@@ -55,24 +57,23 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 	}
 
 	@Override
-	public void process(IFile diagramFile) {
+	public void process(Object diagramFile) {
 		
 		final PrologFileCreator prologFileCreator = new PrologFileCreator();
+		
+		IAdapterManager manager = Platform.getAdapterManager();
+		
+		IFile IFileDiagramFile =  (IFile) manager.getAdapter(diagramFile, IFile.class);
 	
 		try {
-			prologFileCreator.createPrologFileFromDiagram(diagramFile.getRawLocation().toFile());
+			prologFileCreator.createPrologFileFromDiagram(IFileDiagramFile.getRawLocation().toFile());
 		} catch (final FileNotFoundException e) {
-			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
+			throw new VespucciIOException(String.format("File [%s] not found.",IFileDiagramFile), e);
 		} catch (final IOException e) {
-			throw new VespucciIOException(String.format("Failed to save Prolog file from [%s].",diagramFile), e);
+			throw new VespucciIOException(String.format("Failed to save Prolog file from [%s].",IFileDiagramFile), e);
 		} catch (final Exception e) {
-			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
+			throw new VespucciIOException(String.format("File [%s] not found.",IFileDiagramFile), e);
 		}
-
-	}
-
-	@Override
-	public void process(Object diagramElement) {
 
 	}
 

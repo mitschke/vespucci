@@ -1028,6 +1028,17 @@
                 type="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
           </propertyTester>
        </extension>
+       <extension
+             id="adapters"
+             point="org.eclipse.core.runtime.adapters">
+          <factory
+                adaptableType="org.eclipse.core.resources.IFile"
+                class="de.tud.cs.st.vespucci.diagram.processing.AdapterIFile">
+             <adapter
+                   type="org.eclipse.core.resources.IFile">
+             </adapter>
+          </factory>
+       </extension>
         <!-- gmf generator persistent region end -->
           
 
