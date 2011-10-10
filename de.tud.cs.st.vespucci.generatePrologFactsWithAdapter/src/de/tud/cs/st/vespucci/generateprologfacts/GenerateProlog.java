@@ -40,7 +40,6 @@ import java.io.IOException;
 import de.tud.cs.st.vespucci.diagram.processing.IDiagramProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.ISaveDiagramAction;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
-import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreatorWithAdapter;
 
 import org.eclipse.core.resources.IFile;
@@ -82,7 +81,7 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 	@Override
 	public void doSave(String filePathSAD, String fileNameSAD) {
 		
-		final PrologFileCreator prologFileCreator = new PrologFileCreator();
+		final PrologFileCreatorWithAdapter prologFileCreator = new PrologFileCreatorWithAdapter();
 
 		try {
 			prologFileCreator.createPrologFileFromDiagram(filePathSAD, fileNameSAD);

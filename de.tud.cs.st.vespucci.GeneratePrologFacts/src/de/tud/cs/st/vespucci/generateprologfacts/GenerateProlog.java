@@ -41,7 +41,6 @@ import de.tud.cs.st.vespucci.diagram.processing.IDiagramProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.ISaveDiagramAction;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
-import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreatorWithAdapter;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterManager;
@@ -61,14 +60,14 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 	@Override
 	public void process(Object diagramObject) {
 		
-		final PrologFileCreatorWithAdapter prologFileCreator = new PrologFileCreatorWithAdapter();
+		final PrologFileCreator prologFileCreator = new PrologFileCreator();
 		
 		IAdapterManager manager = Platform.getAdapterManager();
 		
 		IFile diagramFile =  (IFile) manager.getAdapter(diagramObject, IFile.class);
 	
 		try {
-			prologFileCreator.createPrologFileFromDiagram(diagramFile);
+			prologFileCreator.createPrologFileFromDiagram(diagramFile.getRawLocation().toFile());
 		} catch (final FileNotFoundException e) {
 			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
 		} catch (final IOException e) {

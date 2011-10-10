@@ -35,18 +35,13 @@ package de.tud.cs.st.vespucci.generateprologfacts.creator;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-
 
 import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
@@ -59,6 +54,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
  * @author Alexander Weitzmann
  * @author Thomas Schulz
  * @author Theo Kischka
+ * @author Patrick Gottschämmer
  */
 public class PrologFileCreatorWithAdapter {
 
@@ -70,22 +66,9 @@ public class PrologFileCreatorWithAdapter {
 	/**
 	 * Read the given diagram and create a prolog file.
 	 * 
-	 * @param diagramFile
-	 *            File of the diagram.
-	 * @author Malte Viering
-	 * @throws Exception
-	 */
-//	public void createPrologFileFromDiagram(final IFile diagramIFile) throws Exception {
-//		
-//		File diagramFile = diagramIFile.getRawLocation().toFile();
-//		this.createPrologFileFromDiagram(diagramIFile);
-//	}
-
-	/**
-	 * Read the given diagram and create a prolog file.
-	 * 
-	 * @param location
-	 * @param diagramIFile 
+	 * @param diagramIFile
+	 *            IFile of the diagram.
+	 * @author Patrick Gottschämmer
 	 * @throws Exception
 	 */
 	public void createPrologFileFromDiagram(IFile diagramIFile) throws Exception {
@@ -106,6 +89,24 @@ public class PrologFileCreatorWithAdapter {
 
 		bos.close();
 		fos.close();
+	}
+	
+	/**
+	 * Read the given diagram and create a prolog file.
+	 * 
+	 * @param location
+	 * @param fileName
+	 * @throws Exception
+	 * @author Patrick Gottschämmer
+	 */
+	
+	public void createPrologFileFromDiagram(String location, String fileName) throws Exception {
+
+		Path path = new Path(location + "/" + fileName);
+		IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+		
+		createPrologFileFromDiagram(iFile);
+		
 	}
 
 	/**

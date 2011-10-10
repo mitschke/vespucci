@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GeneratePrologFacts
-Bundle-SymbolicName: de.tud.cs.st.vespucci.generatePrologFacts;singleton:=true
+Bundle-SymbolicName: de.tud.cs.st.vespucci.generatePrologFactsWithAdapter;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: de.tud.cs.st.vespucci.diagram,
