@@ -56,6 +56,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
+ * Adds the dynamic processor items in the Vespucci menu, 
+ * depending on which processor Extensions are registered.
+ * See ExtensionPoint de.tud.cs.st.vespucci.diagram.diagramProcessors
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz

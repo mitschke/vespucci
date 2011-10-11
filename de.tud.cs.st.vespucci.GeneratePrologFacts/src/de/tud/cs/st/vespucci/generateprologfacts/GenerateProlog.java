@@ -43,6 +43,7 @@ import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
 
@@ -61,11 +62,10 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 	public void process(Object diagramObject) {
 		
 		final PrologFileCreator prologFileCreator = new PrologFileCreator();
-		
-		IAdapterManager manager = Platform.getAdapterManager();
-		
-		IFile diagramFile =  (IFile) manager.getAdapter(diagramObject, IFile.class);
 	
+		
+		IFile diagramFile = getDiagramIFile(diagramObject);
+			
 		try {
 			prologFileCreator.createPrologFileFromDiagram(diagramFile.getRawLocation().toFile());
 		} catch (final FileNotFoundException e) {
@@ -76,6 +76,24 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
 		}
 
+	}
+
+	private IFile getDiagramIFile(Object diagramObject) {
+		IFile diagramFile = null;
+		
+		if (IFile.class.isInstance(diagramObject)){
+			return (IFile) diagramObject;
+		}
+		
+		if (diagramObject instanceof IAdaptable){
+			diagramFile = (IFile) ((IAdaptable) diagramObject).getAdapter(IFile.class);
+		}
+		
+		if (diagramFile == null){
+			IAdapterManager manager = Platform.getAdapterManager();
+			diagramFile =  (IFile) manager.getAdapter(diagramObject, IFile.class);
+		}
+		return diagramFile;
 	}
 
 	@Override

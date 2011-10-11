@@ -1035,9 +1035,6 @@
                 adaptableType="org.eclipse.core.resources.IFile"
                 class="de.tud.cs.st.vespucci.diagram.processing.AdapterIFile">
              <adapter
-                   type="org.eclipse.core.resources.IFile">
-             </adapter>
-             <adapter
                    type="de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram">
              </adapter>
           </factory>

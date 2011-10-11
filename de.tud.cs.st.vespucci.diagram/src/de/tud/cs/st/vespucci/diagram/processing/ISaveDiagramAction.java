@@ -34,7 +34,7 @@
 package de.tud.cs.st.vespucci.diagram.processing;
 
 /**
- * An Interface for declaring a save method on a diagramFile. 
+ * An Interface for declaring a save method on a diagramObject. 
  * See ExtensionPoint de.tud.cs.st.vespucci.diagram.saveActions
  * 
  * @author Patrick Gottschämmer

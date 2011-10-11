@@ -44,6 +44,7 @@ import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreatorWithAd
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
 
@@ -65,8 +66,8 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 		
 		IAdapterManager manager = Platform.getAdapterManager();
 		
-		IFile diagramFile =  (IFile) manager.getAdapter(diagramObject, IFile.class);
-		ShapesDiagram shapesdiagram = (ShapesDiagram) Platform.getAdapterManager().getAdapter(diagramObject, ShapesDiagram.class);
+		IFile diagramFile = getDiagramIFile(diagramObject);
+		ShapesDiagram shapesdiagram = getShapeDiagram(diagramObject);
 				
 		try {
 			prologFileCreator.createPrologFileFromDiagram(diagramFile, shapesdiagram);
@@ -79,7 +80,43 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 		}
 
 	}
+	
+	private IFile getDiagramIFile(Object diagramObject) {
+		IFile diagramFile = null;
+		
+		if (IFile.class.isInstance(diagramObject)){
+			return (IFile) diagramObject;
+		}
+		
+		if (diagramObject instanceof IAdaptable){
+			diagramFile = (IFile) ((IAdaptable) diagramObject).getAdapter(IFile.class);
+		}
+		
+		if (diagramFile == null){
+			IAdapterManager manager = Platform.getAdapterManager();
+			diagramFile =  (IFile) manager.getAdapter(diagramObject, IFile.class);
+		}
+		return diagramFile;
+	}
 
+	private ShapesDiagram getShapeDiagram(Object diagramObject) {
+		ShapesDiagram shapesDiagram = null;
+		
+		if (ShapesDiagram.class.isInstance(diagramObject)){
+			return (ShapesDiagram) diagramObject;
+		}
+		
+		if (diagramObject instanceof IAdaptable){
+			shapesDiagram = (ShapesDiagram) ((IAdaptable) diagramObject).getAdapter(ShapesDiagram.class);
+		}
+		
+		if (shapesDiagram == null){
+			IAdapterManager manager = Platform.getAdapterManager();
+			shapesDiagram =  (ShapesDiagram) manager.getAdapter(diagramObject, ShapesDiagram.class);
+		}
+		return shapesDiagram;
+	}
+	
 	@Override
 	public void doSave(Object diagramElement) {
 		process(diagramElement);
