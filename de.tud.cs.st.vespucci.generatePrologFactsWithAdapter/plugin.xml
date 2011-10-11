@@ -39,7 +39,7 @@
          name="name"
          point="de.tud.cs.st.vespucci.diagram.saveActions">
       <saveAction
-            Label="Generate/Save Prolog File"
+            Label="Generate/Save Prolog File (ShapesDiagram)"
             SaveAction="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog"
             id="savePrologFile">
       </saveAction>
@@ -48,7 +48,7 @@
          point="de.tud.cs.st.vespucci.diagram.diagramProcessors">
       <diagramProcessor
             DiagramProcessor="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog"
-            Label="Generate Prolog Facts">
+            Label="Generate Prolog Facts (Shapes Diagram)">
       </diagramProcessor>
    </extension>
 

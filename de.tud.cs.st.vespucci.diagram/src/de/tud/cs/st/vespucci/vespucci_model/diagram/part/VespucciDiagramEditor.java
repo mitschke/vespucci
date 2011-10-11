@@ -33,14 +33,27 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFileState;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IPathVariableManager;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceProxy;
+import org.eclipse.core.resources.IResourceProxyVisitor;
+import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -49,7 +62,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentDescription;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -96,6 +114,7 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
@@ -397,7 +416,10 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		
 		final String filePathSAD = getCurrentSelectedFilePath();
 		final String fileNameSAD = getCurrentSelectedFileName();
-
+		
+		Path path = new Path(filePathSAD + "/" + fileNameSAD);
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+	
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		
 		IConfigurationElement[] configurationElement = extensionRegistry
@@ -414,14 +436,15 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 					
 					if (preferenceStore.getBoolean("saveBooleanOption" + i.getAttribute("id"))){
 						
-						((ISaveDiagramAction) o).doSave(filePathSAD, fileNameSAD);
+						((ISaveDiagramAction) o).doSave(file);
 					}
 					
 				}
 			}
 
 		} catch (CoreException ex) {
-			System.err.print(ex.getMessage());
+			final IStatus is = new Status(IStatus.ERROR,ID, ex.getMessage(), ex);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		
 		// refresh Package View

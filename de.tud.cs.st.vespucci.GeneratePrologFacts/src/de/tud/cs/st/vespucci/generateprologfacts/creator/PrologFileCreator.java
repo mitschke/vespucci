@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 

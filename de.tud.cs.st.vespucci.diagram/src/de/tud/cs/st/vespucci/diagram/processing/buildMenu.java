@@ -79,33 +79,33 @@ public class buildMenu extends ContributionItem {
 		// Get all Processors for all registered Plug-Ins
 		this.processorItems = getProcessorItems();
 		this.diagramIFiles = getSelectedDiagramIFiles();
-		
+
 		if (this.processorItems.size() == 0){
 			MenuItem menuItem = new MenuItem(menu, SWT.CHECK);
 			menuItem.setText("(No registered diagram processors)");
 			menuItem.setEnabled(false);
 		}else{
-		for (final ProcessorItem processorItem : processorItems) {
-			MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
-			menuItem.setText(processorItem.getLabel());
-			menuItem.addSelectionListener(new SelectionAdapter() {
+			for (final ProcessorItem processorItem : processorItems) {
+				MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
+				menuItem.setText(processorItem.getLabel());
+				menuItem.addSelectionListener(new SelectionAdapter() {
 
-				public void widgetSelected(SelectionEvent e) {
+					public void widgetSelected(SelectionEvent e) {
 
-					for (IFile diagramFile : diagramIFiles) {
+						for (IFile diagramFile : diagramIFiles) {
 
-						processorItem.getProcessors().process(diagramFile);
-						try {
-							refreshPageView(diagramFile);
-						} catch (CoreException e1) {
-							final IStatus is = new Status(IStatus.ERROR,"de.tud.cs.st.vespucci.diagram", e1.getMessage(), e1);
-							StatusManager.getManager().handle(is, StatusManager.LOG);
+							processorItem.getProcessors().process(diagramFile);
+							try {
+								refreshPageView(diagramFile);
+							} catch (CoreException e1) {
+								final IStatus is = new Status(IStatus.ERROR,"de.tud.cs.st.vespucci.diagram", e1.getMessage(), e1);
+								StatusManager.getManager().handle(is, StatusManager.LOG);
+							}
 						}
 					}
-				}
-			});
+				});
 
-		}}
+			}}
 
 	}
 
@@ -153,7 +153,7 @@ public class buildMenu extends ContributionItem {
 		try {
 			for (IConfigurationElement i : configurationElement) {
 
-				// Handler holen
+				// Get all Processors
 				final Object o = i.createExecutableExtension("DiagramProcessor");
 
 				if (o instanceof IDiagramProcessor) {

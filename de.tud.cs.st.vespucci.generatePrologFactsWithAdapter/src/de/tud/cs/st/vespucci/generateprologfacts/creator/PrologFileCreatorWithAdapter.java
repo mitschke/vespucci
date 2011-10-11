@@ -69,15 +69,15 @@ public class PrologFileCreatorWithAdapter {
 	 * @param diagramIFile
 	 *            IFile of the diagram.
 	 * @author Patrick Gottschämmer
+	 * @param shapesdiagram 
 	 * @throws Exception
 	 */
-	public void createPrologFileFromDiagram(IFile diagramIFile) throws Exception {
+	public void createPrologFileFromDiagram(IFile diagramIFile, ShapesDiagram shapesdiagram) throws Exception {
 		
 		diagramFileName = diagramIFile.getName();
 		
 		final String fullFileName = diagramIFile.getLocation().toString();
-		final ShapesDiagram diagram = (ShapesDiagram) Platform.getAdapterManager().getAdapter(diagramIFile, ShapesDiagram.class);
-
+		
 		// create a new Prolog File
 		final File prologFile = new File(fullFileName + ".pl");
 
@@ -85,30 +85,12 @@ public class PrologFileCreatorWithAdapter {
 		final FileOutputStream fos = new FileOutputStream(prologFile);
 		final BufferedOutputStream bos = new BufferedOutputStream(fos);
 
-		bos.write(createPrologFacts(diagram, fullFileName));
+		bos.write(createPrologFacts(shapesdiagram, fullFileName));
 
 		bos.close();
 		fos.close();
 	}
 	
-	/**
-	 * Read the given diagram and create a prolog file.
-	 * 
-	 * @param location
-	 * @param fileName
-	 * @throws Exception
-	 * @author Patrick Gottschämmer
-	 */
-	
-	public void createPrologFileFromDiagram(String location, String fileName) throws Exception {
-
-		Path path = new Path(location + "/" + fileName);
-		IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
-		
-		createPrologFileFromDiagram(iFile);
-		
-	}
-
 	/**
 	 * Read the diagram and create the prolog facts of ensembles and dependencies.
 	 * 

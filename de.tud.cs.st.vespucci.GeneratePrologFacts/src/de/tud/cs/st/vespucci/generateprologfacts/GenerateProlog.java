@@ -63,6 +63,7 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 		final PrologFileCreator prologFileCreator = new PrologFileCreator();
 		
 		IAdapterManager manager = Platform.getAdapterManager();
+		
 		IFile diagramFile =  (IFile) manager.getAdapter(diagramObject, IFile.class);
 	
 		try {
@@ -78,19 +79,8 @@ public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
 	}
 
 	@Override
-	public void doSave(String filePathSAD, String fileNameSAD) {
-		
-		final PrologFileCreator prologFileCreator = new PrologFileCreator();
-
-		try {
-			prologFileCreator.createPrologFileFromDiagram(filePathSAD, fileNameSAD);
-		} catch (final FileNotFoundException e) {
-			throw new VespucciIOException(String.format("File [%s] not found.",filePathSAD, fileNameSAD), e);
-		} catch (final IOException e) {
-			throw new VespucciIOException(String.format("Failed to save Prolog file from [%s].",filePathSAD, fileNameSAD), e);
-		} catch (final Exception e) {
-			throw new VespucciIOException(String.format("File [%s] not found.",filePathSAD, fileNameSAD), e);
-		}
+	public void doSave(Object diagramElement) {
+		process(diagramElement);
 	}
 
 }

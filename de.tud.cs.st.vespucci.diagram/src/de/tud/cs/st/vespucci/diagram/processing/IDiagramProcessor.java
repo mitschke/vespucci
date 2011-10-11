@@ -33,8 +33,6 @@
  */
 package de.tud.cs.st.vespucci.diagram.processing;
 
-import org.eclipse.core.resources.IFile;
-
 /**
  * An Interface for declaring a process method on a diagramFile. 
  * See ExtensionPoint de.tud.cs.st.vespucci.diagram.diagramProcessors

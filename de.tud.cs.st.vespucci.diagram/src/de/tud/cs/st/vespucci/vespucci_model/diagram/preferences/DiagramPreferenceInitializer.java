@@ -40,12 +40,15 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
- * @author Patrick Gottschämmer
- * @author Olav Lenz
+ *
  * @generated NOT
  */
 public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer {
-
+	
+	/**
+	 * @author Patrick Gottschämmer
+	 * @author Olav Lenz
+	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = getPreferenceStore();
 		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramGeneralPreferencePage.initDefaults(store);
@@ -54,12 +57,10 @@ public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer 
 		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramPrintingPreferencePage.initDefaults(store);
 		de.tud.cs.st.vespucci.vespucci_model.diagram.preferences.DiagramRulersAndGridPreferencePage.initDefaults(store);
 
-		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.saveActions";
-
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 
 		IConfigurationElement[] configurationElement = extensionRegistry
-				.getConfigurationElementsFor(EXTENSIONPOINT_ID);
+				.getConfigurationElementsFor("de.tud.cs.st.vespucci.diagram.saveActions");
 		
 		for (IConfigurationElement i : configurationElement) {
 			store.setDefault(generateId(i), true);
