@@ -45,11 +45,11 @@
       </saveAction>
    </extension>
    <extension
-         point="de.tud.cs.st.vespucci.diagram.diagramProcessors">
-      <diagramProcessor
-            DiagramProcessor="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog"
-            Label="Generate Prolog Facts">
-      </diagramProcessor>
+         point="de.tud.cs.st.vespucci.diagram.vespucciModelProcessor">
+      <vespucciModelProcessor
+            Label="Generate Prolog Facts"
+            VespucciModelProcessor="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog">
+      </vespucciModelProcessor>
    </extension>
 
 </plugin>

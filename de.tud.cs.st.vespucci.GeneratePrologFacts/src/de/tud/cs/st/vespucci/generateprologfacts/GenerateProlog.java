@@ -37,7 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-import de.tud.cs.st.vespucci.diagram.processing.IDiagramProcessor;
+import de.tud.cs.st.vespucci.diagram.processing.IVespucciModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.ISaveDiagramAction;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
@@ -53,7 +53,7 @@ import org.eclipse.core.runtime.Platform;
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class GenerateProlog implements IDiagramProcessor, ISaveDiagramAction {
+public class GenerateProlog implements IVespucciModelProcessor, ISaveDiagramAction {
 
 	public GenerateProlog() {
 	}

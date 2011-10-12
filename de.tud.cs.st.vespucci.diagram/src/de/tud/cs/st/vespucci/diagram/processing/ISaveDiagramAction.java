@@ -34,7 +34,7 @@
 package de.tud.cs.st.vespucci.diagram.processing;
 
 /**
- * An Interface for declaring a save method on a diagramObject. 
+ * An interface for declaring a save method on a diagramObject. 
  * See ExtensionPoint de.tud.cs.st.vespucci.diagram.saveActions
  * 
  * @author Patrick Gottschämmer
@@ -42,6 +42,31 @@ package de.tud.cs.st.vespucci.diagram.processing;
  */
 public interface ISaveDiagramAction {
 	
+	/** 
+	 * 
+	 * Use IAdaptable / Platform.getAdapterManager() for converting Object diagramElement,
+	 * see <b>Eclipse Corner Article: Adapters</b> for further notice<br>
+	 * Example: <pre>{@code @Override
+	 * public void doSave(Object diagramObject) {
+	 * 
+	 * ShapesDiagram shapesDiagram = null;
+	 * 
+	 * if (ShapesDiagram.class.isInstance(diagramObject)){
+	 * 		return (ShapesDiagram) diagramObject;
+	 * 	}
+	 * if (diagramObject instanceof IAdaptable){
+	 * 		shapesDiagram = (ShapesDiagram) ((IAdaptable) diagramObject).getAdapter(ShapesDiagram.class);
+	 * 	}
+	 * if (shapesDiagram == null){
+	 * 		IAdapterManager manager = Platform.getAdapterManager();
+	 * 		shapesDiagram = (ShapesDiagram) manager.getAdapter(diagramObject, ShapesDiagram.class);
+	 * 	}
+	 * return shapesDiagram;
+	 * } </pre>
+	 * @param diagramElement e.g. IFile, full diagram (ShapesDiagram)
+	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
+	 * 
+	 */
 	public void doSave(Object diagramElement);
 	
 }

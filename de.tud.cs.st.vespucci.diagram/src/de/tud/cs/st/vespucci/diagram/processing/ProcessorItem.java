@@ -41,10 +41,10 @@ package de.tud.cs.st.vespucci.diagram.processing;
  */
 public class ProcessorItem {
 
-	private IDiagramProcessor diagramProcessor;
+	private IVespucciModelProcessor diagramProcessor;
 	private String label;
 
-	public ProcessorItem(IDiagramProcessor converter, String label) {
+	public ProcessorItem(IVespucciModelProcessor converter, String label) {
 		this.diagramProcessor = converter;
 		this.label = label;
 	}
@@ -57,11 +57,11 @@ public class ProcessorItem {
 		this.label = label;
 	}
 
-	public IDiagramProcessor getProcessors() {
+	public IVespucciModelProcessor getProcessors() {
 		return diagramProcessor;
 	}
 
-	public void setConverter(IDiagramProcessor diagramProcessor) {
+	public void setConverter(IVespucciModelProcessor diagramProcessor) {
 		this.diagramProcessor = diagramProcessor;
 	}
 

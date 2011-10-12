@@ -65,7 +65,9 @@ import org.eclipse.ui.statushandlers.StatusManager;
  */
 public class buildMenu extends ContributionItem {
 
-	private String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.diagramProcessors";
+	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
+	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "VespucciModelProcessor";
+	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.vespucciModelProcessors";
 	private LinkedList<ProcessorItem> processorItems;
 	private LinkedList<IFile> diagramIFiles;
 
@@ -101,7 +103,7 @@ public class buildMenu extends ContributionItem {
 							try {
 								refreshPageView(diagramFile);
 							} catch (CoreException e1) {
-								final IStatus is = new Status(IStatus.ERROR,"de.tud.cs.st.vespucci.diagram", e1.getMessage(), e1);
+								final IStatus is = new Status(IStatus.ERROR,PLUGIN_ID, e1.getMessage(), e1);
 								StatusManager.getManager().handle(is, StatusManager.LOG);
 							}
 						}
@@ -157,15 +159,15 @@ public class buildMenu extends ContributionItem {
 			for (IConfigurationElement i : configurationElement) {
 
 				// Get all Processors
-				final Object o = i.createExecutableExtension("DiagramProcessor");
+				final Object o = i.createExecutableExtension(EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME);
 
-				if (o instanceof IDiagramProcessor) {
-					converterItems.add(new ProcessorItem((IDiagramProcessor) o, i.getAttribute("Label")));
+				if (o instanceof IVespucciModelProcessor) {
+					converterItems.add(new ProcessorItem((IVespucciModelProcessor) o, i.getAttribute("Label")));
 				}
 			}
 
 		} catch (CoreException ex) {
-			final IStatus is = new Status(IStatus.ERROR, "de.tud.cs.st.vespucci.diagram", ex.getMessage(), ex);
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, ex.getMessage(), ex);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 

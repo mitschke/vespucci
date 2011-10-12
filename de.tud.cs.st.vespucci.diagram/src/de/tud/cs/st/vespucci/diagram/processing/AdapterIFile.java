@@ -55,10 +55,10 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
  */
 public class AdapterIFile implements IAdapterFactory {
 
-	private static Class[] adapterList = { ShapesDiagram.class };
+	private static Class<?>[] adapterList = { ShapesDiagram.class };
 
 	@Override
-	public Object getAdapter(Object adaptableObject, Class adapterType) {
+	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
 		
 		if (adapterType == ShapesDiagram.class) {
 			return createDiagram((IFile) adaptableObject);
@@ -98,7 +98,7 @@ public class AdapterIFile implements IAdapterFactory {
 	}
 
 	@Override
-	public Class[] getAdapterList() {
+	public Class<?>[] getAdapterList() {
 		return AdapterIFile.adapterList;
 	}
 
