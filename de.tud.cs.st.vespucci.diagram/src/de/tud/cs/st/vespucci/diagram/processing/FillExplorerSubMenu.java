@@ -68,7 +68,7 @@ public class FillExplorerSubMenu extends ContributionItem {
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
 	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "VespucciModelProcessor";
 	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.vespucciModelProcessors";
-	private LinkedList<ProcessorItem> processorItems;
+	private LinkedList<ProcessorItem<IVespucciModelProcessor>> processorItems;
 	private LinkedList<IFile> diagramIFiles;
 
 	public FillExplorerSubMenu() {
@@ -80,17 +80,17 @@ public class FillExplorerSubMenu extends ContributionItem {
 	
 	@Override
 	public void fill(Menu menu, int index) {
-
+		
 		// Get all Processors for all registered Plug-Ins
 		this.processorItems = getProcessorItems();
 		this.diagramIFiles = getSelectedDiagramIFiles();
 
 		if (this.processorItems.size() == 0){
 			MenuItem menuItem = new MenuItem(menu, SWT.CHECK);
-			menuItem.setText("(No registered diagram processors)");
+			menuItem.setText("(No registered model processors)");
 			menuItem.setEnabled(false);
 		}else{
-			for (final ProcessorItem processorItem : processorItems) {
+			for (final ProcessorItem<IVespucciModelProcessor> processorItem : processorItems) {
 				MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
 				menuItem.setText(processorItem.getLabel());
 				menuItem.addSelectionListener(new SelectionAdapter() {
@@ -99,7 +99,7 @@ public class FillExplorerSubMenu extends ContributionItem {
 
 						for (IFile diagramFile : diagramIFiles) {
 
-							processorItem.getProcessors().processModel(diagramFile);
+							processorItem.getProcessor().processModel(diagramFile);
 							try {
 								refreshPageView(diagramFile);
 							} catch (CoreException e1) {
@@ -147,9 +147,9 @@ public class FillExplorerSubMenu extends ContributionItem {
 				new NullProgressMonitor());
 	}
 
-	private LinkedList<ProcessorItem> getProcessorItems() {
+	private LinkedList<ProcessorItem<IVespucciModelProcessor>> getProcessorItems() {
 		
-		LinkedList<ProcessorItem> converterItems = new LinkedList<ProcessorItem>();
+		LinkedList<ProcessorItem<IVespucciModelProcessor>> converterItems = new LinkedList<ProcessorItem<IVespucciModelProcessor>>();
 		
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		
@@ -162,7 +162,7 @@ public class FillExplorerSubMenu extends ContributionItem {
 				final Object o = i.createExecutableExtension(EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME);
 
 				if (o instanceof IVespucciModelProcessor) {
-					converterItems.add(new ProcessorItem((IVespucciModelProcessor) o, i.getAttribute("Label")));
+					converterItems.add(new ProcessorItem<IVespucciModelProcessor>((IVespucciModelProcessor) o, i.getAttribute("Label")));
 				}
 			}
 

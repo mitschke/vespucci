@@ -39,13 +39,14 @@ package de.tud.cs.st.vespucci.diagram.processing;
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class ProcessorItem {
 
-	private IVespucciModelProcessor diagramProcessor;
+public class ProcessorItem<P> {
+
+	private P processor;
 	private String label;
 
-	public ProcessorItem(IVespucciModelProcessor converter, String label) {
-		this.diagramProcessor = converter;
+	public ProcessorItem(P processor, String label) {
+		this.processor = processor;
 		this.label = label;
 	}
 
@@ -57,12 +58,12 @@ public class ProcessorItem {
 		this.label = label;
 	}
 
-	public IVespucciModelProcessor getProcessors() {
-		return diagramProcessor;
+	public P getProcessor() {
+		return processor;
 	}
 
-	public void setConverter(IVespucciModelProcessor diagramProcessor) {
-		this.diagramProcessor = diagramProcessor;
+	public void setProcessor(P modelProcessor) {
+		this.processor = modelProcessor;
 	}
 
 }
