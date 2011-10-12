@@ -36,18 +36,14 @@ package de.tud.cs.st.vespucci.generateprologfacts;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.eclipse.core.resources.IFile;
 
+import de.tud.cs.st.vespucci.diagram.processing.Adapted;
 import de.tud.cs.st.vespucci.diagram.processing.IVespucciModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.IVespucciModelSaveAction;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreatorWithAdapter;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IAdapterManager;
-import org.eclipse.core.runtime.Platform;
-
 /**
  * A processor/handler for saving a *.sad file to a *.pl Prolog file
  * 
@@ -64,8 +60,9 @@ public class GenerateProlog implements IVespucciModelProcessor, IVespucciModelSa
 		
 		final PrologFileCreatorWithAdapter prologFileCreator = new PrologFileCreatorWithAdapter();
 		
-		IFile diagramFile = getDiagramIFile(diagramModel);
-		ShapesDiagram shapesdiagram = getShapeDiagram(diagramModel);
+		IFile diagramFile = Adapted.getAdapted(diagramModel, IFile.class);
+		ShapesDiagram shapesdiagram = Adapted.getAdapted(diagramModel, ShapesDiagram.class);
+		
 				
 		try {
 			prologFileCreator.createPrologFileFromDiagram(diagramFile, shapesdiagram);
@@ -77,42 +74,6 @@ public class GenerateProlog implements IVespucciModelProcessor, IVespucciModelSa
 			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
 		}
 
-	}
-	
-	private IFile getDiagramIFile(Object diagramModel) {
-		IFile diagramFile = null;
-		
-		if (IFile.class.isInstance(diagramModel)){
-			return (IFile) diagramModel;
-		}
-		
-		if (diagramModel instanceof IAdaptable){
-			diagramFile = (IFile) ((IAdaptable) diagramModel).getAdapter(IFile.class);
-		}
-		
-		if (diagramFile == null){
-			IAdapterManager manager = Platform.getAdapterManager();
-			diagramFile =  (IFile) manager.getAdapter(diagramModel, IFile.class);
-		}
-		return diagramFile;
-	}
-
-	private ShapesDiagram getShapeDiagram(Object diagramModel) {
-		ShapesDiagram shapesDiagram = null;
-		
-		if (ShapesDiagram.class.isInstance(diagramModel)){
-			return (ShapesDiagram) diagramModel;
-		}
-		
-		if (diagramModel instanceof IAdaptable){
-			shapesDiagram = (ShapesDiagram) ((IAdaptable) diagramModel).getAdapter(ShapesDiagram.class);
-		}
-		
-		if (shapesDiagram == null){
-			IAdapterManager manager = Platform.getAdapterManager();
-			shapesDiagram =  (ShapesDiagram) manager.getAdapter(diagramModel, ShapesDiagram.class);
-		}
-		return shapesDiagram;
 	}
 	
 	@Override
