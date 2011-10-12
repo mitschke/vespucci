@@ -118,7 +118,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
-import de.tud.cs.st.vespucci.diagram.processing.ISaveDiagramAction;
+import de.tud.cs.st.vespucci.diagram.processing.IVespucciModelSaveAction;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
@@ -412,7 +412,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	public void doSave(final IProgressMonitor progressMonitor) {
 		super.doSave(progressMonitor);
 
-		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.saveActions";
+		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.vespucciModelSaveActions";
+		final String EXTENSIONPOINT_SAVEACTIONATTRIBUTE_NAME = "VespucciModelSaveAction";
 		
 		final String filePathSAD = getCurrentSelectedFilePath();
 		final String fileNameSAD = getCurrentSelectedFileName();
@@ -430,13 +431,13 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 		try {
 			for (IConfigurationElement i : configurationElement) {
 
-				final Object o = i.createExecutableExtension("SaveAction");
+				final Object o = i.createExecutableExtension(EXTENSIONPOINT_SAVEACTIONATTRIBUTE_NAME);
 
-				if (o instanceof ISaveDiagramAction) {
+				if (o instanceof IVespucciModelSaveAction) {
 					
 					if (preferenceStore.getBoolean("saveBooleanOption" + i.getAttribute("id"))){
 						
-						((ISaveDiagramAction) o).doSave(file);
+						((IVespucciModelSaveAction) o).doSave(file);
 					}
 					
 				}

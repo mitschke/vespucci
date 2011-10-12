@@ -34,7 +34,7 @@
   POSSIBILITY OF SUCH DAMAGE.
 -->
 <plugin>
-   <extension-point id="saveActions" name="SAD SaveActions" schema="schema/saveActions.exsd"/>
+   <extension-point id="vespucciModelSaveActions" name="Vespucci Model Save Actions" schema="schema/vespucciModelSaveActions.exsd"/>
    <extension-point id="vespucciModelProcessors" name="Vespucci Model Processor" schema="schema/vespucciModelProcessors.exsd"/>
 
    <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">

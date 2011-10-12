@@ -38,7 +38,7 @@ import java.io.IOException;
 
 
 import de.tud.cs.st.vespucci.diagram.processing.IVespucciModelProcessor;
-import de.tud.cs.st.vespucci.diagram.processing.ISaveDiagramAction;
+import de.tud.cs.st.vespucci.diagram.processing.IVespucciModelSaveAction;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreatorWithAdapter;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
@@ -54,7 +54,7 @@ import org.eclipse.core.runtime.Platform;
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class GenerateProlog implements IVespucciModelProcessor, ISaveDiagramAction {
+public class GenerateProlog implements IVespucciModelProcessor, IVespucciModelSaveAction {
 
 	public GenerateProlog() {
 	}
@@ -63,8 +63,6 @@ public class GenerateProlog implements IVespucciModelProcessor, ISaveDiagramActi
 	public void process(Object diagramObject) {
 		
 		final PrologFileCreatorWithAdapter prologFileCreator = new PrologFileCreatorWithAdapter();
-		
-		IAdapterManager manager = Platform.getAdapterManager();
 		
 		IFile diagramFile = getDiagramIFile(diagramObject);
 		ShapesDiagram shapesdiagram = getShapeDiagram(diagramObject);

@@ -67,7 +67,7 @@ public class SaveActions extends FieldEditorPreferencePage implements
 	public void createFieldEditors() {
 		
 
-		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.saveActions";
+		final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.vespucciModelSaveActions";
 
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 

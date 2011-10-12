@@ -40,7 +40,7 @@ package de.tud.cs.st.vespucci.diagram.processing;
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public interface ISaveDiagramAction {
+public interface IVespucciModelSaveAction {
 	
 	/** 
 	 * 

@@ -35,21 +35,19 @@
 -->
 <plugin>
    <extension
-         id="generatePrologFacts"
-         name="name"
-         point="de.tud.cs.st.vespucci.diagram.saveActions">
-      <saveAction
-            Label="Generate/Save Prolog File (ShapesDiagram)"
-            SaveAction="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog"
-            id="savePrologFile">
-      </saveAction>
-   </extension>
-   <extension
          point="de.tud.cs.st.vespucci.diagram.vespucciModelProcessors">
       <vespucciModelProcessor
             Label="Generate Prolog Facts"
             VespucciModelProcessor="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog">
       </vespucciModelProcessor>
+   </extension>
+   <extension
+         point="de.tud.cs.st.vespucci.diagram.vespucciModelSaveActions">
+      <vespucciModelSaveAction
+            Label="Generate/Save Prolog File"
+            VespucciModelSaveAction="de.tud.cs.st.vespucci.generateprologfacts.GenerateProlog"
+            id="savePrologFile">
+      </vespucciModelSaveAction>
    </extension>
 
 </plugin>
