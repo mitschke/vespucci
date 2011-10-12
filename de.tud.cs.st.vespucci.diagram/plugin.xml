@@ -819,6 +819,17 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
+         <menu
+               label="Vespucci">
+            <dynamic
+                  class="de.tud.cs.st.vespucci.diagram.processing.FillDiagramEditorSubMenu"
+                  id="de.tud.cs.st.vespucci.diagram.dynamicGenerateEditorMenu">
+            </dynamic>
+         </menu>
+      </menuContribution>
    </extension>
 
    <extension point="org.eclipse.ui.commands" id="menu-commands">
@@ -843,7 +854,7 @@
                id="VespucciSubmenu"
                label="Vespucci">
             <dynamic
-                  class="de.tud.cs.st.vespucci.diagram.processing.buildMenu"
+                  class="de.tud.cs.st.vespucci.diagram.processing.FillExplorerSubMenu"
                   id="de.tud.cs.st.vespucci.diagram.dynamicGenerateMenu">
                   <visibleWhen>
                   <with

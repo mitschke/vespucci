@@ -63,7 +63,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class buildMenu extends ContributionItem {
+public class FillDiagramEditorSubMenu extends ContributionItem {
 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
 	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "VespucciModelProcessor";
@@ -71,10 +71,10 @@ public class buildMenu extends ContributionItem {
 	private LinkedList<ProcessorItem> processorItems;
 	private LinkedList<IFile> diagramIFiles;
 
-	public buildMenu() {
+	public FillDiagramEditorSubMenu() {
 	}
 
-	public buildMenu(String id) {
+	public FillDiagramEditorSubMenu(String id) {
 		super(id);
 	}
 	
@@ -99,7 +99,7 @@ public class buildMenu extends ContributionItem {
 
 						for (IFile diagramFile : diagramIFiles) {
 
-							processorItem.getProcessors().process(diagramFile);
+							processorItem.getProcessors().processModel(diagramFile);
 							try {
 								refreshPageView(diagramFile);
 							} catch (CoreException e1) {

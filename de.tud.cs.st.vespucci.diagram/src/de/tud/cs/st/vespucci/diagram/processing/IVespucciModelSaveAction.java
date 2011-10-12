@@ -47,26 +47,26 @@ public interface IVespucciModelSaveAction {
 	 * Use IAdaptable / Platform.getAdapterManager() for converting Object diagramElement,
 	 * see <b>Eclipse Corner Article: Adapters</b> for further notice<br>
 	 * Example: <pre>{@code @Override
-	 * public void doSave(Object diagramObject) {
+	 * public void doSave(Object diagramModel) {
 	 * 
 	 * ShapesDiagram shapesDiagram = null;
 	 * 
-	 * if (ShapesDiagram.class.isInstance(diagramObject)){
-	 * 		return (ShapesDiagram) diagramObject;
+	 * if (ShapesDiagram.class.isInstance(diagramModel)){
+	 * 		return (ShapesDiagram) diagramModel;
 	 * 	}
-	 * if (diagramObject instanceof IAdaptable){
-	 * 		shapesDiagram = (ShapesDiagram) ((IAdaptable) diagramObject).getAdapter(ShapesDiagram.class);
+	 * if (diagramModel instanceof IAdaptable){
+	 * 		shapesDiagram = (ShapesDiagram) ((IAdaptable) diagramModel).getAdapter(ShapesDiagram.class);
 	 * 	}
 	 * if (shapesDiagram == null){
 	 * 		IAdapterManager manager = Platform.getAdapterManager();
-	 * 		shapesDiagram = (ShapesDiagram) manager.getAdapter(diagramObject, ShapesDiagram.class);
+	 * 		shapesDiagram = (ShapesDiagram) manager.getAdapter(diagramModel, ShapesDiagram.class);
 	 * 	}
 	 * return shapesDiagram;
 	 * } </pre>
-	 * @param diagramElement e.g. IFile, full diagram (ShapesDiagram)
+	 * @param diagramModel e.g. IFile, full diagram (ShapesDiagram)
 	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
 	 * 
 	 */
-	public void doSave(Object diagramElement);
+	public void doSave(Object diagramModel);
 	
 }

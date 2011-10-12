@@ -60,12 +60,12 @@ public class GenerateProlog implements IVespucciModelProcessor, IVespucciModelSa
 	}
 
 	@Override
-	public void process(Object diagramObject) {
+	public void processModel(Object diagramModel) {
 		
 		final PrologFileCreatorWithAdapter prologFileCreator = new PrologFileCreatorWithAdapter();
 		
-		IFile diagramFile = getDiagramIFile(diagramObject);
-		ShapesDiagram shapesdiagram = getShapeDiagram(diagramObject);
+		IFile diagramFile = getDiagramIFile(diagramModel);
+		ShapesDiagram shapesdiagram = getShapeDiagram(diagramModel);
 				
 		try {
 			prologFileCreator.createPrologFileFromDiagram(diagramFile, shapesdiagram);
@@ -79,45 +79,45 @@ public class GenerateProlog implements IVespucciModelProcessor, IVespucciModelSa
 
 	}
 	
-	private IFile getDiagramIFile(Object diagramObject) {
+	private IFile getDiagramIFile(Object diagramModel) {
 		IFile diagramFile = null;
 		
-		if (IFile.class.isInstance(diagramObject)){
-			return (IFile) diagramObject;
+		if (IFile.class.isInstance(diagramModel)){
+			return (IFile) diagramModel;
 		}
 		
-		if (diagramObject instanceof IAdaptable){
-			diagramFile = (IFile) ((IAdaptable) diagramObject).getAdapter(IFile.class);
+		if (diagramModel instanceof IAdaptable){
+			diagramFile = (IFile) ((IAdaptable) diagramModel).getAdapter(IFile.class);
 		}
 		
 		if (diagramFile == null){
 			IAdapterManager manager = Platform.getAdapterManager();
-			diagramFile =  (IFile) manager.getAdapter(diagramObject, IFile.class);
+			diagramFile =  (IFile) manager.getAdapter(diagramModel, IFile.class);
 		}
 		return diagramFile;
 	}
 
-	private ShapesDiagram getShapeDiagram(Object diagramObject) {
+	private ShapesDiagram getShapeDiagram(Object diagramModel) {
 		ShapesDiagram shapesDiagram = null;
 		
-		if (ShapesDiagram.class.isInstance(diagramObject)){
-			return (ShapesDiagram) diagramObject;
+		if (ShapesDiagram.class.isInstance(diagramModel)){
+			return (ShapesDiagram) diagramModel;
 		}
 		
-		if (diagramObject instanceof IAdaptable){
-			shapesDiagram = (ShapesDiagram) ((IAdaptable) diagramObject).getAdapter(ShapesDiagram.class);
+		if (diagramModel instanceof IAdaptable){
+			shapesDiagram = (ShapesDiagram) ((IAdaptable) diagramModel).getAdapter(ShapesDiagram.class);
 		}
 		
 		if (shapesDiagram == null){
 			IAdapterManager manager = Platform.getAdapterManager();
-			shapesDiagram =  (ShapesDiagram) manager.getAdapter(diagramObject, ShapesDiagram.class);
+			shapesDiagram =  (ShapesDiagram) manager.getAdapter(diagramModel, ShapesDiagram.class);
 		}
 		return shapesDiagram;
 	}
 	
 	@Override
-	public void doSave(Object diagramElement) {
-		process(diagramElement);
+	public void doSave(Object diagramModel) {
+		processModel(diagramModel);
 	}
 
 }
