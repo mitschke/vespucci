@@ -34,7 +34,7 @@
 package de.tud.cs.st.vespucci.diagram.processing;
 
 /**
- * An Interface for declaring a process method on a diagramObject. 
+ * An interface for declaring a process method on a diagramObject. 
  * See ExtensionPoint de.tud.cs.st.vespucci.diagram.diagramProcessors
  * 
  * @author Patrick Gottschämmer
