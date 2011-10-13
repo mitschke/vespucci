@@ -66,9 +66,9 @@ import org.eclipse.ui.statushandlers.StatusManager;
 public class FillExplorerSubMenu extends ContributionItem {
 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
-	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "VespucciModelProcessor";
-	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.vespucciModelProcessors";
-	private LinkedList<ProcessorItem<IVespucciModelProcessor>> processorItems;
+	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "ModelProcessor";
+	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.modelProcessors";
+	private LinkedList<ProcessorItem<IModelProcessor>> processorItems;
 	private LinkedList<IFile> diagramIFiles;
 
 	public FillExplorerSubMenu() {
@@ -90,7 +90,7 @@ public class FillExplorerSubMenu extends ContributionItem {
 			menuItem.setText("(No registered model processors)");
 			menuItem.setEnabled(false);
 		}else{
-			for (final ProcessorItem<IVespucciModelProcessor> processorItem : processorItems) {
+			for (final ProcessorItem<IModelProcessor> processorItem : processorItems) {
 				MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
 				menuItem.setText(processorItem.getLabel());
 				menuItem.addSelectionListener(new SelectionAdapter() {
@@ -147,9 +147,9 @@ public class FillExplorerSubMenu extends ContributionItem {
 				new NullProgressMonitor());
 	}
 
-	private LinkedList<ProcessorItem<IVespucciModelProcessor>> getProcessorItems() {
+	private LinkedList<ProcessorItem<IModelProcessor>> getProcessorItems() {
 		
-		LinkedList<ProcessorItem<IVespucciModelProcessor>> converterItems = new LinkedList<ProcessorItem<IVespucciModelProcessor>>();
+		LinkedList<ProcessorItem<IModelProcessor>> converterItems = new LinkedList<ProcessorItem<IModelProcessor>>();
 		
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		
@@ -161,8 +161,8 @@ public class FillExplorerSubMenu extends ContributionItem {
 				// Get all Processors
 				final Object o = i.createExecutableExtension(EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME);
 
-				if (o instanceof IVespucciModelProcessor) {
-					converterItems.add(new ProcessorItem<IVespucciModelProcessor>((IVespucciModelProcessor) o, i.getAttribute("Label")));
+				if (o instanceof IModelProcessor) {
+					converterItems.add(new ProcessorItem<IModelProcessor>((IModelProcessor) o, i.getAttribute("Label")));
 				}
 			}
 

@@ -60,7 +60,7 @@ public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer 
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 
 		IConfigurationElement[] configurationElement = extensionRegistry
-				.getConfigurationElementsFor("de.tud.cs.st.vespucci.diagram.vespucciModelSaveActions");
+				.getConfigurationElementsFor("de.tud.cs.st.vespucci.diagram.modelSaveActions");
 		
 		for (IConfigurationElement i : configurationElement) {
 			store.setDefault(generateId(i), true);
