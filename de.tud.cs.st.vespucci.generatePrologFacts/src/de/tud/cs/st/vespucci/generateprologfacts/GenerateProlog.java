@@ -42,7 +42,7 @@ import de.tud.cs.st.vespucci.diagram.processing.Adapted;
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.IModelSaveAction;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
-import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreatorWithAdapter;
+import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 /**
  * A processor/handler for saving a *.sad file to a *.pl Prolog file
@@ -58,7 +58,7 @@ public class GenerateProlog implements IModelProcessor, IModelSaveAction {
 	@Override
 	public void processModel(Object diagramModel) {
 		
-		final PrologFileCreatorWithAdapter prologFileCreator = new PrologFileCreatorWithAdapter();
+		final PrologFileCreator prologFileCreator = new PrologFileCreator();
 		
 		IFile diagramFile = Adapted.getAdapted(diagramModel, IFile.class);
 		ShapesDiagram shapesdiagram = Adapted.getAdapted(diagramModel, ShapesDiagram.class);

@@ -56,7 +56,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
  * @author Theo Kischka
  * @author Patrick Gottschämmer
  */
-public class PrologFileCreatorWithAdapter {
+public class PrologFileCreator {
 
 	/**
 	 * Name of the current diagram file.

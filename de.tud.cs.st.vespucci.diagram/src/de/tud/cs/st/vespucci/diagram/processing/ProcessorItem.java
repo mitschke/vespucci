@@ -34,7 +34,7 @@
 package de.tud.cs.st.vespucci.diagram.processing;
 
 /**
- * A data class for encapsulate properties of a diagramProcessor
+ * A generic data class for encapsulate properties of a diagramProcessor
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
@@ -62,8 +62,8 @@ public class ProcessorItem<P> {
 		return processor;
 	}
 
-	public void setProcessor(P modelProcessor) {
-		this.processor = modelProcessor;
+	public void setProcessor(P processor) {
+		this.processor = processor;
 	}
 
 }

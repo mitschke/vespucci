@@ -44,26 +44,15 @@ public interface IModelSaveAction {
 	
 	/** 
 	 * 
-	 * Use IAdaptable / Platform.getAdapterManager() for converting Object diagramElement,
-	 * see <b>Eclipse Corner Article: Adapters</b> for further notice<br>
+	 * Use generic <code>Adapted.getAdapted(adaptable, targetClass)</code> for converting Object diagramModel,
+	 * see linked article for further notice<br>
 	 * Example: <pre>{@code @Override
 	 * public void doSave(Object diagramModel) {
 	 * 
-	 * ShapesDiagram shapesDiagram = null;
-	 * 
-	 * if (ShapesDiagram.class.isInstance(diagramModel)){
-	 * 		return (ShapesDiagram) diagramModel;
-	 * 	}
-	 * if (diagramModel instanceof IAdaptable){
-	 * 		shapesDiagram = (ShapesDiagram) ((IAdaptable) diagramModel).getAdapter(ShapesDiagram.class);
-	 * 	}
-	 * if (shapesDiagram == null){
-	 * 		IAdapterManager manager = Platform.getAdapterManager();
-	 * 		shapesDiagram = (ShapesDiagram) manager.getAdapter(diagramModel, ShapesDiagram.class);
-	 * 	}
-	 * return shapesDiagram;
+	 * 	ShapesDiagram shapesDiagram = Adapted.getAdapted(diagramModel, Shapesdiagram.class);
+	 * 	...
 	 * } </pre>
-	 * @param diagramModel e.g. IFile, full diagram (ShapesDiagram)
+	 * @param diagramModel e.g. IFile, ShapesDiagram
 	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
 	 * 
 	 */
