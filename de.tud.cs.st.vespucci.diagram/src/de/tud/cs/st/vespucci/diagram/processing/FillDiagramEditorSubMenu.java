@@ -122,7 +122,7 @@ public class FillDiagramEditorSubMenu extends ContributionItem {
 				// Get all Processors
 				final Object o = i.createExecutableExtension(EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME);
 
-				if (o instanceof IModelProcessor) {
+				if (o instanceof IModelElementProcessor) {
 					processorItems.add(new ProcessorItem<IModelElementProcessor>((IModelElementProcessor) o, i.getAttribute("Label")));
 				}
 			}
