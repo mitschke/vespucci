@@ -3,7 +3,7 @@
 <schema targetNamespace="de.tud.cs.st.vespucci.diagram" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="de.tud.cs.st.vespucci.diagram" id="vespucciModelProcessors" name="Vespucci Model Processors"/>
+         <meta.schema plugin="de.tud.cs.st.vespucci.diagram" id="modelSaveActions" name="Model Save Actions"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <choice minOccurs="1" maxOccurs="unbounded">
-            <element ref="vespucciModelProcessor" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="modelSaveAction" minOccurs="1" maxOccurs="unbounded"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,22 +47,32 @@
       </complexType>
    </element>
 
-   <element name="vespucciModelProcessor">
+   <element name="modelSaveAction">
       <complexType>
-         <attribute name="Label" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="VespucciModelProcessor" type="string" use="required">
+         <attribute name="ModelSaveAction" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":de.tud.cs.st.vespucci.diagram.processing.IVespucciModelProcessor"/>
+                  <meta.attribute kind="java" basedOn=":de.tud.cs.st.vespucci.diagram.processing.IModelSaveAction"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="Label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The Label to be shown in the PreferencesPage for Vespucci Save Actions
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="identifier"/>
                </appInfo>
             </annotation>
          </attribute>

@@ -39,8 +39,8 @@ import java.io.IOException;
 import org.eclipse.core.resources.IFile;
 
 import de.tud.cs.st.vespucci.diagram.processing.Adapted;
-import de.tud.cs.st.vespucci.diagram.processing.IVespucciModelProcessor;
-import de.tud.cs.st.vespucci.diagram.processing.IVespucciModelSaveAction;
+import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
+import de.tud.cs.st.vespucci.diagram.processing.IModelSaveAction;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreatorWithAdapter;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
@@ -50,7 +50,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class GenerateProlog implements IVespucciModelProcessor, IVespucciModelSaveAction {
+public class GenerateProlog implements IModelProcessor, IModelSaveAction {
 
 	public GenerateProlog() {
 	}

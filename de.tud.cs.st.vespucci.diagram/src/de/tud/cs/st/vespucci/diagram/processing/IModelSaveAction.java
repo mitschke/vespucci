@@ -34,21 +34,20 @@
 package de.tud.cs.st.vespucci.diagram.processing;
 
 /**
- * An Interface for declaring a process method on a diagramObject. 
- * See ExtensionPoint de.tud.cs.st.vespucci.diagram.diagramProcessors
+ * An interface for declaring a save method on a diagramObject. 
+ * See ExtensionPoint de.tud.cs.st.vespucci.diagram.saveActions
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public interface IVespucciModelProcessor {
-
+public interface IModelSaveAction {
 	
 	/** 
 	 * 
 	 * Use IAdaptable / Platform.getAdapterManager() for converting Object diagramElement,
 	 * see <b>Eclipse Corner Article: Adapters</b> for further notice<br>
 	 * Example: <pre>{@code @Override
-	 * public void processModel(Object diagramModel) {
+	 * public void doSave(Object diagramModel) {
 	 * 
 	 * ShapesDiagram shapesDiagram = null;
 	 * 
@@ -68,6 +67,6 @@ public interface IVespucciModelProcessor {
 	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
 	 * 
 	 */
-	public void processModel(Object diagramModel);
+	public void doSave(Object diagramModel);
 	
 }

@@ -62,9 +62,9 @@ import org.eclipse.ui.statushandlers.StatusManager;
 public class FillDiagramEditorSubMenu extends ContributionItem {
 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
-	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "VespucciModelElementProcessor";
-	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.vespucciModelElementProcessors";
-	private LinkedList<ProcessorItem<IVespucciModelElementProcessor>> processorItems;
+	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "ModelElementProcessor";
+	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.modelElementProcessors";
+	private LinkedList<ProcessorItem<IModelElementProcessor>> processorItems;
 	private LinkedList<Object> diagramElements;
 
 	public FillDiagramEditorSubMenu() {
@@ -86,7 +86,7 @@ public class FillDiagramEditorSubMenu extends ContributionItem {
 			menuItem.setText("(No registered model element processors)");
 			menuItem.setEnabled(false);
 		} else {
-			for (final ProcessorItem<IVespucciModelElementProcessor> processorItem : processorItems) {
+			for (final ProcessorItem<IModelElementProcessor> processorItem : processorItems) {
 				MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
 				menuItem.setText(processorItem.getLabel());
 				menuItem.addSelectionListener(new SelectionAdapter() {
@@ -108,9 +108,9 @@ public class FillDiagramEditorSubMenu extends ContributionItem {
 		return new LinkedList<Object>();
 	}
 
-	private LinkedList<ProcessorItem<IVespucciModelElementProcessor>> getProcessorItems() {
+	private LinkedList<ProcessorItem<IModelElementProcessor>> getProcessorItems() {
 		
-		LinkedList<ProcessorItem<IVespucciModelElementProcessor>> processorItems = new LinkedList<ProcessorItem<IVespucciModelElementProcessor>>();
+		LinkedList<ProcessorItem<IModelElementProcessor>> processorItems = new LinkedList<ProcessorItem<IModelElementProcessor>>();
 		
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		
@@ -122,8 +122,8 @@ public class FillDiagramEditorSubMenu extends ContributionItem {
 				// Get all Processors
 				final Object o = i.createExecutableExtension(EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME);
 
-				if (o instanceof IVespucciModelProcessor) {
-					processorItems.add(new ProcessorItem<IVespucciModelElementProcessor>((IVespucciModelElementProcessor) o, i.getAttribute("Label")));
+				if (o instanceof IModelProcessor) {
+					processorItems.add(new ProcessorItem<IModelElementProcessor>((IModelElementProcessor) o, i.getAttribute("Label")));
 				}
 			}
 
