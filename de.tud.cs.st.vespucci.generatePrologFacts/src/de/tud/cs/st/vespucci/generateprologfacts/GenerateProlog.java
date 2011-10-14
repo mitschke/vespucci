@@ -35,12 +35,16 @@ package de.tud.cs.st.vespucci.generateprologfacts;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 
 import de.tud.cs.st.vespucci.diagram.processing.Adapted;
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.IModelSaveAction;
+import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
@@ -61,6 +65,7 @@ public class GenerateProlog implements IModelProcessor, IModelSaveAction {
 		final PrologFileCreator prologFileCreator = new PrologFileCreator();
 		
 		IFile diagramFile = Adapted.getAdapted(diagramModel, IFile.class);
+		test(diagramFile);
 		ShapesDiagram shapesdiagram = Adapted.getAdapted(diagramModel, ShapesDiagram.class);
 		
 				
@@ -75,6 +80,27 @@ public class GenerateProlog implements IModelProcessor, IModelSaveAction {
 		}
 
 	}
+
+	private void test(IFile diagramFile) {
+		System.out.println(".java Files:");
+		LinkedList<IFile> ifiles = Util.getFilesOfProject(diagramFile.getProject(), Util.Selection.JAVA);
+		for (IFile iFile : ifiles) {
+			System.out.println(iFile.getName());
+		}
+
+		System.out.println(".class Files:");
+		ifiles = Util.getFilesOfProject(diagramFile.getProject(), Util.Selection.CLASS);
+		for (IFile iFile : ifiles) {
+			System.out.println(iFile.getName());
+		}
+		
+		System.out.println("Project .jar Files:");
+		ifiles = Util.getFilesOfProject(diagramFile.getProject(), Util.Selection.PROJECT_JAR);
+		for (IFile iFile : ifiles) {
+			System.out.println(iFile.getName());
+		}
+	}
+	
 	
 	@Override
 	public void doSave(Object diagramModel) {

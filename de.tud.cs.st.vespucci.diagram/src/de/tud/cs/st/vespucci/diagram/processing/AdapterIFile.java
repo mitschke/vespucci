@@ -55,6 +55,8 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
  */
 public class AdapterIFile implements IAdapterFactory {
 
+	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
+	
 	private static Class<?>[] adapterList = { ShapesDiagram.class };
 
 	@Override
@@ -66,7 +68,7 @@ public class AdapterIFile implements IAdapterFactory {
 
 		return null;
 	}
-
+	
 	private ShapesDiagram createDiagram(IFile diagramFile) {
 
 		final XMIResourceImpl diagramResource = new XMIResourceImpl();
@@ -88,10 +90,10 @@ public class AdapterIFile implements IAdapterFactory {
 						"ShapesDiagram could not be found in Document.");
 				
 			} catch (FileNotFoundException e1) {
-				final IStatus is = new Status(IStatus.ERROR,"de.tud.cs.st.vespucci.diagram", e1.getMessage(), e1);
+				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e1.getMessage(), e1);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			} catch (IOException e1) {
-				final IStatus is = new Status(IStatus.ERROR,"de.tud.cs.st.vespucci.diagram", e1.getMessage(), e1);
+				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e1.getMessage(), e1);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
 		return null;

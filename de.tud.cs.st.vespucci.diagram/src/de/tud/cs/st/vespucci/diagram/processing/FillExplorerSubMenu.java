@@ -64,8 +64,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * @author Olav Lenz
  */
 public class FillExplorerSubMenu extends ContributionItem {
-
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
+
 	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "ModelProcessor";
 	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.modelProcessors";
 	private LinkedList<ProcessorItem<IModelProcessor>> processorItems;
@@ -126,20 +126,13 @@ public class FillExplorerSubMenu extends ContributionItem {
 		for (Object o : selection.toArray()) {
 			if (o instanceof IFile) {
 				final IFile file = (IFile) o;
-				if (isDiagramFile(file)) {
+				if (Util.isFileType(file, "sad")) {
 					diagramIFiles.add(file);
 				}
 			}
 		}
 
 		return diagramIFiles;
-	}
-
-	private static boolean isDiagramFile(final IFile file) {
-		
-		final String extension = file.getName().substring(
-				(file.getName().length() - 3), file.getName().length());
-		return (extension.equals("sad"));
 	}
 
 	private static void refreshPageView(final IFile file) throws CoreException {

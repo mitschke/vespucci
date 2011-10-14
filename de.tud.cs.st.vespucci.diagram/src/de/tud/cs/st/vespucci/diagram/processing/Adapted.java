@@ -78,5 +78,5 @@ public class Adapted {
 
 		return target;
 	}
-
+	
 }

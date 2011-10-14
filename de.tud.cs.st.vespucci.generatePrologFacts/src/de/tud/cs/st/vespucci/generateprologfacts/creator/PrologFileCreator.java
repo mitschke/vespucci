@@ -141,13 +141,4 @@ public class PrologFileCreator {
 		return false;
 	}
 
-	/**
-	 * @param file
-	 * @return Return true only if the given file object is a diagram file.
-	 */
-	public static boolean isDiagramFile(final File file) {
-		final String extension = file.getName().substring((file.getName().length() - 3), file.getName().length());
-		return (extension.equals("sad"));
-	}
-
 }
