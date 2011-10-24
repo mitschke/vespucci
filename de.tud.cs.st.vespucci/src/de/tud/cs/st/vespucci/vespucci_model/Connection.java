@@ -51,7 +51,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getTarget <em>Target</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getName <em>Name</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#isTemp <em>Temp</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource <em>Original Source</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespuc
+ *   ci_model.Connection#getOriginalSource <em>Original Source</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget <em>Original Target</em>}</li>
  * </ul>
  * </p>

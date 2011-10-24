@@ -6,4 +6,5 @@ public interface IEnsemble extends IShape {
 	
 	LinkedList<IShape> getShapes();
 
+	void setShapes(LinkedList<IShape> shapes);
 }

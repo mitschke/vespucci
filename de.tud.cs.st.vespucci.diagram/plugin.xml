@@ -1051,6 +1051,48 @@
              </adapter>
           </factory>
        </extension>
+       <extension
+             id="ECoreAdapter"
+             point="org.eclipse.core.runtime.adapters">
+          <factory
+                adaptableType="de.tud.cs.st.vespucci.vespucci_model.Connection"
+                class="de.tud.cs.st.vespucci.diagram.processing.AdapterECore">
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IConnection">
+             </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IExpected">
+             </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IGlobalIncoming">
+             </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IGlobalOutgoing">
+             </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IInAndOut">
+             </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IIncoming">
+             </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IViolation">
+             </adapter>
+          </factory>
+          <factory
+                adaptableType="de.tud.cs.st.vespucci.vespucci_model.Shape"
+                class="de.tud.cs.st.vespucci.diagram.processing.AdapterECore">
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IShape">
+             </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IEnsemble">
+             </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IDummy">
+             </adapter>
+          </factory>
+       </extension>
         <!-- gmf generator persistent region end -->
           
 

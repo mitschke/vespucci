@@ -5,11 +5,16 @@ import java.util.LinkedList;
 
 public class Ensemble extends Shape implements IEnsemble {
 
+	LinkedList<IShape> shapes;
+	
 	@Override
 	public LinkedList<IShape> getShapes() {
-		// TODO Auto-generated method stub
-		return null;
+		return shapes;
 	}
 
+	@Override
+	public void setShapes(LinkedList<IShape> shapes) {
+		this.shapes = shapes;
+	}
 
 }
