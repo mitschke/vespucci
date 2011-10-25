@@ -46,11 +46,37 @@ import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.INotableEditPart;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.statushandlers.StatusManager;
+
+import de.tud.cs.st.vespucci.diagram.outputIModel.Connection;
+import de.tud.cs.st.vespucci.diagram.outputIModel.Dummy;
+import de.tud.cs.st.vespucci.diagram.outputIModel.Ensemble;
+import de.tud.cs.st.vespucci.diagram.outputIModel.Expected;
+import de.tud.cs.st.vespucci.diagram.outputIModel.GlobalIncoming;
+import de.tud.cs.st.vespucci.diagram.outputIModel.GlobalOutgoing;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IConnection;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IDummy;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IEnsemble;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IExpected;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IGlobalIncoming;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IGlobalOutgoing;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IInAndOut;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IIncoming;
+import de.tud.cs.st.vespucci.diagram.outputIModel.INotAllowed;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IOutgoing;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IShape;
+import de.tud.cs.st.vespucci.diagram.outputIModel.IViolation;
+import de.tud.cs.st.vespucci.diagram.outputIModel.InAndOut;
+import de.tud.cs.st.vespucci.diagram.outputIModel.Incoming;
+import de.tud.cs.st.vespucci.diagram.outputIModel.NotAllowed;
+import de.tud.cs.st.vespucci.diagram.outputIModel.Outgoing;
+import de.tud.cs.st.vespucci.diagram.outputIModel.Shape;
+import de.tud.cs.st.vespucci.diagram.outputIModel.Violation;
 
 /**
  * Some static helpful methods
@@ -155,6 +181,136 @@ public class Util {
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return elements;
+	}
+	
+	public static IConnection getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.Connection inConnection) {
+
+		IConnection outConnection = new Connection();
+
+		return createIConnectionSubtype(inConnection, outConnection);
+	}
+
+	public static IExpected getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.Expected inExpected) {
+
+		Expected outExpected = new Expected();
+
+		return createIConnectionSubtype(inExpected, outExpected);
+	}
+
+	public static IGlobalIncoming getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming inIncoming) {
+
+		GlobalIncoming outIncoming = new GlobalIncoming();
+
+		return createIConnectionSubtype(inIncoming, outIncoming);
+	}
+
+	public static IGlobalOutgoing getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing inOutgoing) {
+
+		GlobalOutgoing outOutgoing = new GlobalOutgoing();
+
+		return createIConnectionSubtype(inOutgoing, outOutgoing);
+	}
+
+	public static IInAndOut getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.InAndOut inInAndOut) {
+
+		InAndOut outInAndOut = new InAndOut();
+
+		return createIConnectionSubtype(inInAndOut, outInAndOut);
+	}
+
+	public static IIncoming getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.Incoming inIncoming) {
+
+		Incoming outIncoming = new Incoming();
+
+		return createIConnectionSubtype(inIncoming, outIncoming);
+	}
+
+	public static INotAllowed getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.NotAllowed inNotAllowed) {
+
+		NotAllowed outNotAllowed = new NotAllowed();
+
+		return createIConnectionSubtype(inNotAllowed, outNotAllowed);
+	}
+
+	public static IOutgoing getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.Outgoing inOutgoing) {
+
+		Outgoing outOutgoing = new Outgoing();
+
+		return createIConnectionSubtype(inOutgoing, outOutgoing);
+	}
+
+	public static IViolation getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.Violation inViolation) {
+
+		Violation outViolation = new Violation();
+
+		return createIConnectionSubtype(inViolation, outViolation);
+	}
+
+	public static IShape getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.Shape inShape) {
+
+		return createShapeInstance(inShape);
+	}
+
+	public static IEnsemble getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.Ensemble inEnsemble) {
+
+		return createEnsembleInstance(inEnsemble);
+	}
+
+	public static IDummy getOutputModel(
+			de.tud.cs.st.vespucci.vespucci_model.Dummy inDummy) {
+
+		return createDummyInstance(inDummy);
+	}
+	
+	private static IShape createShapeInstance(de.tud.cs.st.vespucci.vespucci_model.Shape adaptableObject) {
+		IShape shape = new Shape();
+		shape.setDescription(adaptableObject.getDescription());
+		shape.setName(adaptableObject.getName());
+		shape.setQuery(adaptableObject.getQuery());
+		return shape;
+	}
+
+	private static IEnsemble createEnsembleInstance(de.tud.cs.st.vespucci.vespucci_model.Ensemble adaptableObject) {
+		IEnsemble ensemble = new Ensemble();
+		ensemble.setDescription(adaptableObject.getDescription());
+		ensemble.setName(adaptableObject.getName());
+		ensemble.setQuery(adaptableObject.getQuery());
+
+		LinkedList<IShape> shapes = new LinkedList<IShape>();
+		for (de.tud.cs.st.vespucci.vespucci_model.Shape sha : adaptableObject.getShapes()){
+			shapes.add(createShapeInstance(sha));
+		}		
+		ensemble.setShapes(shapes);
+
+		return ensemble;
+	}
+
+	private static IDummy createDummyInstance(de.tud.cs.st.vespucci.vespucci_model.Dummy aptableObject) {
+		IDummy dummy = new Dummy();
+		dummy.setDescription(aptableObject.getDescription());
+		dummy.setName(aptableObject.getName());
+		dummy.setQuery(aptableObject.getQuery());
+		return dummy;
+	}
+
+	private static <A extends IConnection> A createIConnectionSubtype(de.tud.cs.st.vespucci.vespucci_model.Connection adaptableObject, A adapterType) {
+		adapterType.setName(adaptableObject.getName());
+		adapterType.setTemp(adaptableObject.isTemp());
+		adapterType.setSource(createShapeInstance(adaptableObject.getSource()));
+		adapterType.setTarget(createShapeInstance(adaptableObject.getTarget()));
+
+		return adapterType;
 	}
 		
 	private static LinkedList<IFile> getFilesList(IProject project, String extension) {
