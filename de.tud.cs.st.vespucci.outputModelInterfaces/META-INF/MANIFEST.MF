@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OutputModelInterfaces
+Bundle-SymbolicName: de.tud.cs.st.vespucci.outputModelInterfaces
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: de.tud.cs.st.vespucci.diagram.outputModelInterfaces

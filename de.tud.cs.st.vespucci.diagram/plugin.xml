@@ -1058,38 +1058,38 @@
                 adaptableType="de.tud.cs.st.vespucci.vespucci_model.Connection"
                 class="de.tud.cs.st.vespucci.diagram.processing.AdapterECore">
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IConnection">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IConnection">
              </adapter>
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IExpected">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IExpected">
              </adapter>
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IGlobalIncoming">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IGlobalIncoming">
              </adapter>
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IGlobalOutgoing">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IGlobalOutgoing">
              </adapter>
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IInAndOut">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IInAndOut">
              </adapter>
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IIncoming">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IIncoming">
              </adapter>
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IViolation">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IDocumentedViolation">
              </adapter>
           </factory>
           <factory
                 adaptableType="de.tud.cs.st.vespucci.vespucci_model.Shape"
                 class="de.tud.cs.st.vespucci.diagram.processing.AdapterECore">
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IShape">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IShape">
              </adapter>
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IEnsemble">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IEnsemble">
              </adapter>
              <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputIModel.IDummy">
+                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IDummy">
              </adapter>
           </factory>
        </extension>

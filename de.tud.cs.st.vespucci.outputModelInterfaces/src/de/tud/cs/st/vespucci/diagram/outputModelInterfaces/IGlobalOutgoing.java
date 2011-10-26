@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.diagram.outputIModel;
+package de.tud.cs.st.vespucci.diagram.outputModelInterfaces;
 
 public interface IGlobalOutgoing extends IConnection {
 

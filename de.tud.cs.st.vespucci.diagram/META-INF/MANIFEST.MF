@@ -7,8 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Export-Package: de.tud.cs.st.vespucci.diagram.outputIModel,
- de.tud.cs.st.vespucci.diagram.processing,
+Export-Package: de.tud.cs.st.vespucci.diagram.processing,
  de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts,
  de.tud.cs.st.vespucci.vespucci_model.diagram.part,
  de.tud.cs.st.vespucci.vespucci_model.diagram.providers
@@ -50,7 +49,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.qvt.oml.runtime,
  org.eclipse.m2m.qvt.oml.runtime.ui;bundle-version="2.1.1",
  org.eclipse.m2m.qvt.oml,
- de.tud.cs.st.vespucci.versioning
+ de.tud.cs.st.vespucci.versioning,
+ de.tud.cs.st.vespucci.outputModelInterfaces;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

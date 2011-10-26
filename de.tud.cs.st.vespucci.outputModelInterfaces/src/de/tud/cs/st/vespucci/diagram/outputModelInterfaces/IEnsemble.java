@@ -1,8 +1,8 @@
-package de.tud.cs.st.vespucci.diagram.outputIModel;
+package de.tud.cs.st.vespucci.diagram.outputModelInterfaces;
 
 import java.util.LinkedList;
 
-public interface IShape {
+public interface IEnsemble {
 	
 	String getDescription();
 	
@@ -13,11 +13,7 @@ public interface IShape {
 	LinkedList<IConnection> getSourceConnections();
 	
 	LinkedList<IConnection> getTargetConnections();
-
-	void setName(String name);
 	
-	void setDescription(String desc);
-	
-	void setQuery(String Query);
+	LinkedList<IEnsemble> getInnerEnsembles();
 
 }
