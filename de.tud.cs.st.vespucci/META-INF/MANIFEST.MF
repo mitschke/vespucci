@@ -9,9 +9,9 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.tud.cs.st.vespucci.exceptions,
  de.tud.cs.st.vespucci.io,
- de.tud.cs.st.vespucci.vespucci_model,
- de.tud.cs.st.vespucci.vespucci_model.impl,
- de.tud.cs.st.vespucci.vespucci_model.util
+ de.tud.cs.st.vespucci.model,
+ de.tud.cs.st.vespucci.model.impl,
+ de.tud.cs.st.vespucci.model.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.m2m.qvt.oml.runtime,
