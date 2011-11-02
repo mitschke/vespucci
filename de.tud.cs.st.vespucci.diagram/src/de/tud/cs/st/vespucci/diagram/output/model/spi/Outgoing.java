@@ -31,19 +31,19 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.outputModelInterfaces;
+package de.tud.cs.st.vespucci.diagram.output.model.spi;
+
+import de.tud.cs.st.vespucci.diagram.output.model.IOutgoing;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public interface IConnection {
-	
-	String getName();
-	
-	IEnsemble getSource();
-	
-	IEnsemble getTarget();
+public class Outgoing extends Connection implements IOutgoing {
+
+	public Outgoing(de.tud.cs.st.vespucci.vespucci_model.Outgoing connection) {
+		super(connection);
+	}
 
 }

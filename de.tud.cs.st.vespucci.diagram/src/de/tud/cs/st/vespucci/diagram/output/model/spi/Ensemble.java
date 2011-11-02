@@ -31,14 +31,14 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.outputModelImpl;
+package de.tud.cs.st.vespucci.diagram.output.model.spi;
 
 import java.util.LinkedList;
 
 import org.eclipse.emf.common.util.EList;
 
-import de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IConnection;
-import de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IEnsemble;
+import de.tud.cs.st.vespucci.diagram.output.model.IConnection;
+import de.tud.cs.st.vespucci.diagram.output.model.IEnsemble;
 
 /**
  * 

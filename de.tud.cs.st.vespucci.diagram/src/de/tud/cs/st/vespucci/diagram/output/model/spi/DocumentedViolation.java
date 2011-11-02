@@ -31,18 +31,18 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.outputModelImpl;
+package de.tud.cs.st.vespucci.diagram.output.model.spi;
 
-import de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IExpected;
+import de.tud.cs.st.vespucci.diagram.output.model.IDocumentedViolation;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class Expected extends Connection implements IExpected {
+public class DocumentedViolation extends Connection implements IDocumentedViolation {
 
-	public Expected(de.tud.cs.st.vespucci.vespucci_model.Expected connection) {
+	public DocumentedViolation(de.tud.cs.st.vespucci.vespucci_model.Violation connection) {
 		super(connection);
 	}
 

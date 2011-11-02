@@ -31,37 +31,13 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.outputModelImpl;
-
-import de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IConnection;
-import de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IEnsemble;
+package de.tud.cs.st.vespucci.diagram.output.model;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class Connection implements IConnection {
-
-	private de.tud.cs.st.vespucci.vespucci_model.Connection connection;
-	
-	public Connection(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
-		this.connection = connection;
-	}
-
-	@Override
-	public String getName() {
-		return connection.getName();
-	}
-
-	@Override
-	public IEnsemble getSource() {
-		return new Ensemble(connection.getSource());
-	}
-
-	@Override
-	public IEnsemble getTarget() {
-		return new Ensemble(connection.getSource());
-	}
+public interface IExpected extends IConnection {
 
 }

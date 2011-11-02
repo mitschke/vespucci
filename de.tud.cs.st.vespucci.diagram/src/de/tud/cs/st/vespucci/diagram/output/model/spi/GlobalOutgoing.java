@@ -31,18 +31,18 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.outputModelImpl;
+package de.tud.cs.st.vespucci.diagram.output.model.spi;
 
-import de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IDocumentedViolation;
+import de.tud.cs.st.vespucci.diagram.output.model.IGlobalOutgoing;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class DocumentedViolation extends Connection implements IDocumentedViolation {
+public class GlobalOutgoing extends Connection implements IGlobalOutgoing {
 
-	public DocumentedViolation(de.tud.cs.st.vespucci.vespucci_model.Violation connection) {
+	public GlobalOutgoing(de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing connection) {
 		super(connection);
 	}
 

@@ -31,27 +31,19 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.outputModelInterfaces;
+package de.tud.cs.st.vespucci.diagram.output.model.spi;
 
-import java.util.LinkedList;
+import de.tud.cs.st.vespucci.diagram.output.model.IExpected;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public interface IEnsemble {
-	
-	String getDescription();
-	
-	String getName();
-	
-	String getQuery();
-	
-	LinkedList<IConnection> getSourceConnections();
-	
-	LinkedList<IConnection> getTargetConnections();
-	
-	LinkedList<IEnsemble> getInnerEnsembles();
+public class Expected extends Connection implements IExpected {
+
+	public Expected(de.tud.cs.st.vespucci.vespucci_model.Expected connection) {
+		super(connection);
+	}
 
 }

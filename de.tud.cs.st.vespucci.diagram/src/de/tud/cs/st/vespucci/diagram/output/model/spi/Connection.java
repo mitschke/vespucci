@@ -31,19 +31,37 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.outputModelImpl;
+package de.tud.cs.st.vespucci.diagram.output.model.spi;
 
-import de.tud.cs.st.vespucci.diagram.outputModelInterfaces.INotAllowed;
+import de.tud.cs.st.vespucci.diagram.output.model.IConnection;
+import de.tud.cs.st.vespucci.diagram.output.model.IEnsemble;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class NotAllowed extends Connection implements INotAllowed {
+public class Connection implements IConnection {
 
-	public NotAllowed(de.tud.cs.st.vespucci.vespucci_model.NotAllowed connection) {
-		super(connection);
+	private de.tud.cs.st.vespucci.vespucci_model.Connection connection;
+	
+	public Connection(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
+		this.connection = connection;
+	}
+
+	@Override
+	public String getName() {
+		return connection.getName();
+	}
+
+	@Override
+	public IEnsemble getSource() {
+		return new Ensemble(connection.getSource());
+	}
+
+	@Override
+	public IEnsemble getTarget() {
+		return new Ensemble(connection.getSource());
 	}
 
 }

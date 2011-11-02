@@ -31,13 +31,19 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.outputModelInterfaces;
+package de.tud.cs.st.vespucci.diagram.output.model.spi;
+
+import de.tud.cs.st.vespucci.diagram.output.model.INotAllowed;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public interface IGlobalOutgoing extends IConnection {
+public class NotAllowed extends Connection implements INotAllowed {
+
+	public NotAllowed(de.tud.cs.st.vespucci.vespucci_model.NotAllowed connection) {
+		super(connection);
+	}
 
 }
