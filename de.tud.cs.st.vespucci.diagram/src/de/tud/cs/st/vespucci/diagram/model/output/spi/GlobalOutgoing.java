@@ -31,18 +31,18 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.output.model.spi;
+package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IGlobalIncoming;
+import de.tud.cs.st.vespucci.diagram.output.model.IGlobalOutgoing;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class GlobalIncoming extends Connection implements IGlobalIncoming {
+public class GlobalOutgoing extends Connection implements IGlobalOutgoing {
 
-	public GlobalIncoming(de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming connection) {
+	public GlobalOutgoing(de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing connection) {
 		super(connection);
 	}
 

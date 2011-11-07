@@ -31,18 +31,18 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.output.model.spi;
+package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IDocumentedViolation;
+import de.tud.cs.st.vespucci.diagram.output.model.INotAllowed;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class DocumentedViolation extends Connection implements IDocumentedViolation {
+public class NotAllowed extends Connection implements INotAllowed {
 
-	public DocumentedViolation(de.tud.cs.st.vespucci.vespucci_model.Violation connection) {
+	public NotAllowed(de.tud.cs.st.vespucci.vespucci_model.NotAllowed connection) {
 		super(connection);
 	}
 

@@ -31,18 +31,18 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.output.model.spi;
+package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IIncoming;
+import de.tud.cs.st.vespucci.diagram.output.model.IOutgoing;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class Incoming extends Connection implements IIncoming {
+public class Outgoing extends Connection implements IOutgoing {
 
-	public Incoming(de.tud.cs.st.vespucci.vespucci_model.Incoming connection) {
+	public Outgoing(de.tud.cs.st.vespucci.vespucci_model.Outgoing connection) {
 		super(connection);
 	}
 
