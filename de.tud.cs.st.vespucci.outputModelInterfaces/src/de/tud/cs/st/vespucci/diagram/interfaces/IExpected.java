@@ -31,13 +31,13 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.output.model;
+package de.tud.cs.st.vespucci.diagram.interfaces;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public interface IExpected extends IConnection {
+public interface IExpected extends IConstraint {
 
 }

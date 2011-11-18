@@ -33,14 +33,14 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IExpected;
+import de.tud.cs.st.vespucci.diagram.interfaces.IExpected;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class Expected extends Connection implements IExpected {
+public class Expected extends Constraint implements IExpected {
 
 	public Expected(de.tud.cs.st.vespucci.vespucci_model.Expected connection) {
 		super(connection);

@@ -33,14 +33,14 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IIncoming;
+import de.tud.cs.st.vespucci.diagram.interfaces.IIncoming;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class Incoming extends Connection implements IIncoming {
+public class Incoming extends Constraint implements IIncoming {
 
 	public Incoming(de.tud.cs.st.vespucci.vespucci_model.Incoming connection) {
 		super(connection);

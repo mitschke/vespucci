@@ -33,14 +33,14 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IDocumentedViolation;
+import de.tud.cs.st.vespucci.diagram.interfaces.IDocumentedViolation;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class DocumentedViolation extends Connection implements IDocumentedViolation {
+public class DocumentedViolation extends Constraint implements IDocumentedViolation {
 
 	public DocumentedViolation(de.tud.cs.st.vespucci.vespucci_model.Violation connection) {
 		super(connection);

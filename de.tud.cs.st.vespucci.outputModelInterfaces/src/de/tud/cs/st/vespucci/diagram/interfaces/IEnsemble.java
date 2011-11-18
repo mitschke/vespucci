@@ -31,19 +31,27 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.output.model;
+package de.tud.cs.st.vespucci.diagram.interfaces;
+
+import java.util.LinkedList;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public interface IConnection {
-	
+public interface IEnsemble {
+
+	String getDescription();
+
 	String getName();
-	
-	IEnsemble getSource();
-	
-	IEnsemble getTarget();
+
+	String getQuery();
+
+	LinkedList<IConstraint> getSourceConnections();
+
+	LinkedList<IConstraint> getTargetConnections();
+
+	LinkedList<IEnsemble> getInnerEnsembles();
 
 }

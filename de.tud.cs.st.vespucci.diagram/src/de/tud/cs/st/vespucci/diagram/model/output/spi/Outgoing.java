@@ -33,14 +33,14 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IOutgoing;
+import de.tud.cs.st.vespucci.diagram.interfaces.IOutgoing;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class Outgoing extends Connection implements IOutgoing {
+public class Outgoing extends Constraint implements IOutgoing {
 
 	public Outgoing(de.tud.cs.st.vespucci.vespucci_model.Outgoing connection) {
 		super(connection);

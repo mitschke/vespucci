@@ -33,14 +33,14 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IGlobalIncoming;
+import de.tud.cs.st.vespucci.diagram.interfaces.IGlobalIncoming;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class GlobalIncoming extends Connection implements IGlobalIncoming {
+public class GlobalIncoming extends Constraint implements IGlobalIncoming {
 
 	public GlobalIncoming(de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming connection) {
 		super(connection);

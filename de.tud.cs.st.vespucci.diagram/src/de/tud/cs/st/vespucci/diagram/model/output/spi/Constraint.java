@@ -33,24 +33,24 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IConnection;
-import de.tud.cs.st.vespucci.diagram.output.model.IEnsemble;
+import de.tud.cs.st.vespucci.diagram.interfaces.IConstraint;
+import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class Connection implements IConnection {
+public class Constraint implements IConstraint {
 
 	private de.tud.cs.st.vespucci.vespucci_model.Connection connection;
 	
-	public Connection(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
+	public Constraint(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
 		this.connection = connection;
 	}
 
 	@Override
-	public String getName() {
+	public String getDependencyKind() {
 		return connection.getName();
 	}
 

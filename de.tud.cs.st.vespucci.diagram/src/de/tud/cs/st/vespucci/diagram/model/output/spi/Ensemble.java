@@ -37,8 +37,8 @@ import java.util.LinkedList;
 
 import org.eclipse.emf.common.util.EList;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IConnection;
-import de.tud.cs.st.vespucci.diagram.output.model.IEnsemble;
+import de.tud.cs.st.vespucci.diagram.interfaces.IConstraint;
+import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
 
 /**
  * 
@@ -50,8 +50,8 @@ public class Ensemble implements IEnsemble {
 	private de.tud.cs.st.vespucci.vespucci_model.Shape shape;
 	
 	private LinkedList<IEnsemble> innerEnsemble;
-	private LinkedList<IConnection> sourceConnection;
-	private LinkedList<IConnection> targetConnection;
+	private LinkedList<IConstraint> sourceConnection;
+	private LinkedList<IConstraint> targetConnection;
 	
 	public Ensemble(de.tud.cs.st.vespucci.vespucci_model.Shape ensemble) {
 		this.shape = ensemble;
@@ -94,7 +94,7 @@ public class Ensemble implements IEnsemble {
 	}
 
 	@Override
-	public LinkedList<IConnection> getSourceConnections() {
+	public LinkedList<IConstraint> getSourceConnections() {
 		if (sourceConnection == null){
 			sourceConnection = getIConnections(shape.getSourceConnections());
 		}
@@ -102,22 +102,22 @@ public class Ensemble implements IEnsemble {
 	}
 
 	@Override
-	public LinkedList<IConnection> getTargetConnections() {
+	public LinkedList<IConstraint> getTargetConnections() {
 		if (targetConnection == null){
 			targetConnection = getIConnections(shape.getTargetConnections());
 		}
 		return targetConnection;	
 	}
 
-	private LinkedList<IConnection> getIConnections(EList<de.tud.cs.st.vespucci.vespucci_model.Connection> eList) {
-		LinkedList<IConnection> connections = new LinkedList<IConnection>();
+	private LinkedList<IConstraint> getIConnections(EList<de.tud.cs.st.vespucci.vespucci_model.Connection> eList) {
+		LinkedList<IConstraint> connections = new LinkedList<IConstraint>();
 		for (de.tud.cs.st.vespucci.vespucci_model.Connection connection : eList) {
 						connections.add(createIConnectedSubtypeInstance(connection));
 		}		
 		return connections;
 	}
 
-	private Connection createIConnectedSubtypeInstance(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
+	private Constraint createIConnectedSubtypeInstance(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
 		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Expected){
 			return new Expected((de.tud.cs.st.vespucci.vespucci_model.Expected) connection);
 		}
@@ -143,7 +143,7 @@ public class Ensemble implements IEnsemble {
 			return new DocumentedViolation((de.tud.cs.st.vespucci.vespucci_model.Violation) connection);
 		}
 		
-		return new Connection(connection);
+		return new Constraint(connection);
 
 	}
 	

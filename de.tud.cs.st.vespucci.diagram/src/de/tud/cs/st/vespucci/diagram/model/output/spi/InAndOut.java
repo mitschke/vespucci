@@ -33,14 +33,14 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.IInAndOut;
+import de.tud.cs.st.vespucci.diagram.interfaces.IInAndOut;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class InAndOut extends Connection implements IInAndOut {
+public class InAndOut extends Constraint implements IInAndOut {
 
 	public InAndOut(de.tud.cs.st.vespucci.vespucci_model.InAndOut connection) {
 		super(connection);

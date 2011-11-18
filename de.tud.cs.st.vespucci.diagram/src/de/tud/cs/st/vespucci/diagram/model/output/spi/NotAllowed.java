@@ -33,14 +33,14 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.output.model.INotAllowed;
+import de.tud.cs.st.vespucci.diagram.interfaces.INotAllowed;
 
 /**
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
  */
-public class NotAllowed extends Connection implements INotAllowed {
+public class NotAllowed extends Constraint implements INotAllowed {
 
 	public NotAllowed(de.tud.cs.st.vespucci.vespucci_model.NotAllowed connection) {
 		super(connection);

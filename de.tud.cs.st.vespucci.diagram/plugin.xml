@@ -1051,48 +1051,6 @@
              </adapter>
           </factory>
        </extension>
-       <extension
-             id="ECoreAdapter"
-             point="org.eclipse.core.runtime.adapters">
-          <factory
-                adaptableType="de.tud.cs.st.vespucci.vespucci_model.Connection"
-                class="de.tud.cs.st.vespucci.diagram.processing.AdapterECore">
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IConnection">
-             </adapter>
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IExpected">
-             </adapter>
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IGlobalIncoming">
-             </adapter>
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IGlobalOutgoing">
-             </adapter>
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IInAndOut">
-             </adapter>
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IIncoming">
-             </adapter>
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IDocumentedViolation">
-             </adapter>
-          </factory>
-          <factory
-                adaptableType="de.tud.cs.st.vespucci.vespucci_model.Shape"
-                class="de.tud.cs.st.vespucci.diagram.processing.AdapterECore">
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IShape">
-             </adapter>
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IEnsemble">
-             </adapter>
-             <adapter
-                   type="de.tud.cs.st.vespucci.diagram.outputModelInterfaces.IDummy">
-             </adapter>
-          </factory>
-       </extension>
         <!-- gmf generator persistent region end -->
           
 
