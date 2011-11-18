@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.tud.cs.st.vespucci.diagram.modelProcessors">
+      <modelProcessor
+            Label="MockProcessor"
+            ModelProcessor="de.tud.cs.st.vespucci.mockprocessor.MockProcessor">
+      </modelProcessor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.core.resources.IFile"
+            class="de.tud.cs.st.vespucci.mockprocessor.AdapterIFile">
+         <adapter
+               type="de.tud.cs.st.vespucci.mockprocessor.ModelT284">
+         </adapter>
+      </factory>
+   </extension>
+
+</plugin>

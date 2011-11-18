@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mockprocessor
+Bundle-SymbolicName: de.tud.cs.st.vespucci.mockprocessor;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: de.tud.cs.st.vespucci.diagram,
+ de.tud.cs.st.vespucci.interfaces;bundle-version="1.0.0",
+ org.eclipse.equinox.registry
+Export-Package: de.tud.cs.st.vespucci.mockprocessor
