@@ -94,7 +94,7 @@ public class Util {
 		// Ask platform adapter manager for a correct adapter for targetClass
 		if (target == null) {
 			IAdapterManager manager = Platform.getAdapterManager();
-			target = (A) manager.getAdapter(adaptable, targetClass);
+			target = (A) manager.loadAdapter(adaptable, targetClass.getName());
 		}
 	
 		return target;
