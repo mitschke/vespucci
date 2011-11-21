@@ -31,7 +31,6 @@
 	</pluginRepositories>
 
 	<dependencies>
-
 		<!-- Scala Library -->
 		<dependency>
 			<groupId>org.scala-lang</groupId>
@@ -46,6 +45,31 @@
 			<version>1.6.1</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.dorest</groupId>
+			<artifactId>org.dorest</artifactId>
+			<version>0.0.0-SNAPSHOT</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.dorest</groupId>
+			<artifactId>org.dorest.core</artifactId>
+			<version>0.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Database -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.3.161</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scalaquery</groupId>
+			<artifactId>scalaquery_2.9.0-1</artifactId>
+			<version>0.9.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
