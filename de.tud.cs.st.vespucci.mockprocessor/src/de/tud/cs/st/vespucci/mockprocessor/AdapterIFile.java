@@ -28,7 +28,7 @@ public class AdapterIFile implements IAdapterFactory {
 	private ModelT284 createDiagram(IFile diagramFile) {
 		
 		ShapesDiagram d = Util.getAdapted(diagramFile, ShapesDiagram.class);
-		
+	
 		if (d != null){
 			LinkedList<IEnsemble> list = new LinkedList<IEnsemble>();
 			

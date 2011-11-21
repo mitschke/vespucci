@@ -61,7 +61,7 @@ public class Constraint implements IConstraint {
 
 	@Override
 	public IEnsemble getTarget() {
-		return new Ensemble(connection.getSource());
+		return new Ensemble(connection.getTarget());
 	}
 
 }
