@@ -1,4 +1,4 @@
-package de.tud.cs.st.opal.vmdb
+package de.tud.cs.st.opal.vads
 // Import the session management, including the implicit threadLocalSession
 import org.scalaquery.session._
 import org.scalaquery.session.Database.threadLocalSession
