@@ -13,10 +13,12 @@ import org.scalatest.matchers.ShouldMatchers
 class RestApiTest extends FlatSpec with ShouldMatchers {
 
   import dispatch._
-  import org.apache.http.protocol.HTTP.CONTENT_ENCODING
+  import Http._
 
-   "The Server" should "display a plain text message on GET" in {
+  "The Server" should "display a plain text message on GET" in {
+
+    Http(url("http://localhost:9000") <:< Map("Accept" -> "application/json") >>> System.out)
     
   }
-  
+
 }
