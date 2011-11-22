@@ -33,7 +33,9 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -48,6 +50,8 @@ import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
 public class Ensemble implements IEnsemble {
 
 	private de.tud.cs.st.vespucci.vespucci_model.Shape shape;
+	
+	Map<Class<? extends de.tud.cs.st.vespucci.vespucci_model.Connection>, Class<? extends Constraint>> mapping;
 	
 	private LinkedList<IEnsemble> innerEnsemble;
 	private LinkedList<IConstraint> sourceConnection;
@@ -118,33 +122,59 @@ public class Ensemble implements IEnsemble {
 	}
 
 	private Constraint createIConnectedSubtypeInstance(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
-		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Expected){
-			return new Expected((de.tud.cs.st.vespucci.vespucci_model.Expected) connection);
-		}
-		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Incoming){
-			return new Incoming((de.tud.cs.st.vespucci.vespucci_model.Incoming) connection);
-		}
-		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.NotAllowed){
-			return new NotAllowed((de.tud.cs.st.vespucci.vespucci_model.NotAllowed) connection);
-		}
-		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Outgoing){
-			return new Outgoing((de.tud.cs.st.vespucci.vespucci_model.Outgoing) connection);
-		}
-		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming){
-			return new GlobalIncoming((de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming) connection);
-		}
-		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing){
-			return new GlobalOutgoing((de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing) connection);
-		}
-		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.InAndOut){
-			return new InAndOut((de.tud.cs.st.vespucci.vespucci_model.InAndOut) connection);
-		}
-		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Violation){
-			return new DocumentedViolation((de.tud.cs.st.vespucci.vespucci_model.Violation) connection);
-		}
 		
-		return new Constraint(connection);
-
+//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Expected){
+//			return new Expected((de.tud.cs.st.vespucci.vespucci_model.Expected) connection);
+//		}
+//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Incoming){
+//			return new Incoming((de.tud.cs.st.vespucci.vespucci_model.Incoming) connection);
+//		}
+//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.NotAllowed){
+//			return new NotAllowed((de.tud.cs.st.vespucci.vespucci_model.NotAllowed) connection);
+//		}
+//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Outgoing){
+//			return new Outgoing((de.tud.cs.st.vespucci.vespucci_model.Outgoing) connection);
+//		}
+//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming){
+//			return new GlobalIncoming((de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming) connection);
+//		}
+//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing){
+//			return new GlobalOutgoing((de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing) connection);
+//		}
+//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.InAndOut){
+//			return new InAndOut((de.tud.cs.st.vespucci.vespucci_model.InAndOut) connection);
+//		}
+//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Violation){
+//			return new DocumentedViolation((de.tud.cs.st.vespucci.vespucci_model.Violation) connection);
+//		}
+//		
+//		return new Constraint(connection);
+		
+		// Initialize Map
+		this.mapping = new HashMap<Class<? extends de.tud.cs.st.vespucci.vespucci_model.Connection>, Class<? extends Constraint>>();
+		
+		// Put Mapping values (de.tud.cs.st.vespucci.vespucci_model.Expected --> Expected)
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.Expected.class, Expected.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.Incoming.class, Incoming.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.NotAllowed.class, NotAllowed.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.Outgoing.class, Outgoing.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming.class, GlobalIncoming.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing.class, GlobalOutgoing.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.InAndOut.class, InAndOut.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.Violation.class, DocumentedViolation.class);
+		
+		
+		// Map connection
+		  try {
+		    Class<? extends Constraint> subtype = mapping.get( connection.getClass() );
+		    
+		    return subtype.getConstructor( connection.getClass() ).newInstance( connection );
+		    
+		  } catch( Exception e) { //you might want to catch the more specific types
+			
+		    return new Constraint(connection);
+			  
+		  }
 	}
 	
 }
