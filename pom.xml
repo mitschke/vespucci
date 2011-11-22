@@ -3,10 +3,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.tud.cs.st.opal</groupId>
-	<artifactId>vmdb</artifactId>
+	<artifactId>vads</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
-	<description>Vespucci Model Database</description>
+	<description>Vespucci Architecture Description Server</description>
 	<inceptionYear>2011</inceptionYear>
 
 	<properties>
