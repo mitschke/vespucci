@@ -1,5 +1,6 @@
 package de.tud.cs.st.opal.vads
 import org.dorest.server.jdk.Server
+import org.dorest.server.HandlerFactory
 import org.dorest.server.log.ConsoleLogging
 
 /**
@@ -10,6 +11,19 @@ object VespucciArchitectureDescriptionServer
   with scala.App
   with ConsoleLogging // TODO needs to exchanged
   {
-  start()
+
+  this register new HandlerFactory[Welcome] {
+    path {"/"}
+    def create = new Welcome
   }
 
+  start()
+}
+
+import org.dorest.server.rest.{ RESTInterface, TEXTSupport }
+
+class Welcome extends RESTInterface with TEXTSupport {
+
+  get returns TEXT { "Hello!" }
+
+}
