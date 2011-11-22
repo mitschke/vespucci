@@ -45,7 +45,14 @@
 			<version>1.6.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.databinder</groupId>
+			<artifactId>dispatch-http_2.9.1</artifactId>
+			<version>0.8.6</version>
+			<scope>test</scope>
+		</dependency>
 
+		<!-- DoRest -->
 		<dependency>
 			<groupId>org.dorest</groupId>
 			<artifactId>org.dorest</artifactId>
