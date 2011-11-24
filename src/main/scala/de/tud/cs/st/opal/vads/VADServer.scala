@@ -11,17 +11,17 @@ class VADServer
   with ConsoleLogging // TODO needs to exchanged
   {
 
-  this register new HandlerFactory[Welcome] {
+  this register new HandlerFactory[Root] {
     path {"/"}
-    def create = new Welcome
+    def create = new Root
   }
-
+  
   start()
 }
 
 import org.dorest.server.rest.{ RESTInterface, TEXTSupport }
 
-class Welcome extends RESTInterface with TEXTSupport {
+class Root extends RESTInterface with TEXTSupport {
 
   get returns TEXT { "Hello!" }
 
