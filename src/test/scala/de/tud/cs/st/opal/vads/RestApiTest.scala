@@ -20,7 +20,7 @@ class RestApiTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll {
   override def beforeAll(configMap: Map[String, Any]) {
 
     import de.tud.cs.st.opal.vads.VADServer
-    VADServer
+    new VADServer
   }
 
   "The root resource" should "return plain text on GET" in {
