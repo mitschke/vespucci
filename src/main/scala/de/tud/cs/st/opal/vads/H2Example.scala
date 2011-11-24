@@ -20,27 +20,55 @@ import org.scalaquery.ql.extended.{ ExtendedTable => Table }
  * http://download.oracle.com/javase/tutorial/jdbc/basics/tables.html.
  */
 
-object User extends Table[(Long, String, String)]("USERS") {
+
+
+object FirstExample {
+  def main(args: Array[String]) {
+    
+    val User = new Table[(Long, String, String)]("USERS") {
         def id = column[Long]("ID", O.PrimaryKey)
         def name = column[String]("NAME")
         def surname = column[String]("SURNAME")
         def * = id ~ name ~ surname
       }
 
-object FirstExample {
-  def main(args: Array[String]) {
-
-    val db = Database.forURL("jdbc:h2:mem:test1", driver = "org.h2.Driver")
-    db withSession {
+    val db = Database.forURL("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", driver = "org.h2.Driver")
+//    		val db = Database.forURL("jdbc:h2:~/dbtest1", driver = "org.h2.Driver")
+    db withSession{
       
       lazy val scopeIdentity = SimpleFunction.nullary[Long]("scope_identity")
       val lastId = (() => Query(SimpleFunction.nullary[Long]("scope_identity")).first)
       User.ddl.create
-      
-      User.insert(0L, "foo", "bar")
+      User insert (0L, "foo", "bar")
       println("Inserted id " + lastId())
       User.insert(1L, "foo", "bar")
       println("Inserted id " + lastId())
+
+    }
+    
+    db withSession {
+      
+      lazy val scopeIdentity = SimpleFunction.nullary[Long]("scope_identity")
+      val lastId = (() => Query(SimpleFunction.nullary[Long]("scope_identity")).first)
+      
+      User insert (3L, "foo", "bar")
+      println("Inserted id " + lastId())
+      User.insert(5L, "foo", "bar")
+      println("Inserted id " + lastId())
+
+    }
+    
+    db withSession {
+      
+      lazy val scopeIdentity = SimpleFunction.nullary[Long]("scope_identity")
+      val lastId = (() => Query(SimpleFunction.nullary[Long]("scope_identity")).first)
+      
+      User insert (7L, "foo", "bar")
+      println("Inserted id " + lastId())
+      User.insert(8L, "foo", "bar")
+      println("Inserted id " + lastId())
+      
+       println(Query(User).list())
 
     }
   }
