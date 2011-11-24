@@ -74,13 +74,13 @@ public interface Vespucci_modelFactory extends EFactory {
 	Shape createShape();
 
 	/**
-	 * Returns a new object of class '<em>Dummy</em>'.
+	 * Returns a new object of class '<em>Empty</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Dummy</em>'.
+	 * @return a new object of class '<em>Empty</em>'.
 	 * @generated
 	 */
-	Dummy createDummy();
+	Empty createEmpty();
 
 	/**
 	 * Returns a new object of class '<em>Ensemble</em>'.

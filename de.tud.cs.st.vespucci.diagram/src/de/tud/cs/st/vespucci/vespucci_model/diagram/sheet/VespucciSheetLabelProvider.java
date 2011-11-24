@@ -45,7 +45,8 @@ import org.eclipse.swt.graphics.Image;
 /**
  * @generated
  */
-public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILabelProvider {
+public class VespucciSheetLabelProvider extends BaseLabelProvider implements
+		ILabelProvider {
 	/**
 	 * @generated NOT
 	 */
@@ -53,7 +54,8 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILa
 	public String getText(Object element) {
 		element = unwrap(element);
 		if (element instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) element).getGroupName();
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorGroup) element)
+					.getGroupName();
 		}
 		// quick fix
 		if (getView(element) instanceof Diagram) {
@@ -69,7 +71,9 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILa
 	@Override
 	public Image getImage(Object element) {
 		IElementType etype = getElementType(getView(unwrap(element)));
-		return etype == null ? null : de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getImage(etype);
+		return etype == null ? null
+				: de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+						.getImage(etype);
 	}
 
 	/**
@@ -101,12 +105,15 @@ public class VespucciSheetLabelProvider extends BaseLabelProvider implements ILa
 	private IElementType getElementType(View view) {
 		// For intermediate views climb up the containment hierarchy to find the one associated with an element type.
 		while (view != null) {
-			int vid = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(view);
-			IElementType etype = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getElementType(vid);
+			int vid = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+					.getVisualID(view);
+			IElementType etype = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+					.getElementType(vid);
 			if (etype != null) {
 				return etype;
 			}
-			view = view.eContainer() instanceof View ? (View) view.eContainer() : null;
+			view = view.eContainer() instanceof View ? (View) view.eContainer()
+					: null;
 		}
 		return null;
 	}

@@ -40,7 +40,8 @@ import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.EList;
 
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
@@ -197,7 +198,7 @@ public class EnsemblePrologFacts {
 
 		String komma = "";
 		for (final Shape shape : ensembles) {
-			if (shape instanceof Dummy) {
+			if (shape instanceof Empty) {
 				strBuilder.append(komma + "'empty'");
 			} else if (shape instanceof Ensemble) {
 				strBuilder.append(komma + "'" + shape.getName() + "'");

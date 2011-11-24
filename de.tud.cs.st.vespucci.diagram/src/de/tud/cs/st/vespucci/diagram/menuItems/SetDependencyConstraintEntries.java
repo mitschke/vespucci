@@ -50,7 +50,7 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 import de.tud.cs.st.vespucci.diagram.handler.SetConstraintTypeParameter;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 
 /**
  * This class provides the entries for the "Edit Constraint"/"Set Type"-menu.

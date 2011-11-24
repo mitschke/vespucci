@@ -60,13 +60,13 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTyp
  * 
  * @author Tam-Minh Nguyen
  */
-public class CreateDummyAction implements IObjectActionDelegate {
+public class CreateEmptyAction implements IObjectActionDelegate {
 
 	private DiagramEditPart selectedElement;
 
 	@Override
 	public void run(final IAction action) {
-		final CreateViewRequest dummyRequest = CreateViewRequestFactory.getCreateShapeRequest(VespucciElementTypes.Dummy_2002,
+		final CreateViewRequest dummyRequest = CreateViewRequestFactory.getCreateShapeRequest(VespucciElementTypes.Empty_2002,
 				selectedElement.getDiagramPreferencesHint());
 		dummyRequest.setLocation(EditPartService.getRecentRightClickPos());
 

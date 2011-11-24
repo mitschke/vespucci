@@ -1,4 +1,4 @@
-/**
+/*
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -31,71 +31,12 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.tests;
-
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
-
-import junit.textui.TestRunner;
+package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
 
 /**
- * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Dummy</b></em>'.
- * <!-- end-user-doc -->
  * @generated
  */
-public class DummyTest extends ShapeTest {
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(DummyTest.class);
-	}
-
-	/**
-	 * Constructs a new Dummy test case with the given name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public DummyTest(String name) {
-		super(name);
-	}
-
-	/**
-	 * Returns the fixture for this Dummy test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected Dummy getFixture() {
-		return (Dummy)fixture;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		setFixture(Vespucci_modelFactory.eINSTANCE.createDummy());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		setFixture(null);
-	}
-
-} //DummyTest
+public class EmptyEditHelper
+		extends
+		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
+}

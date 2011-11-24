@@ -37,7 +37,8 @@
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
+
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
 import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
@@ -85,7 +86,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass dummyEClass = null;
+	private EClass emptyEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -295,8 +296,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getDummy() {
-		return dummyEClass;
+	public EClass getEmpty() {
+		return emptyEClass;
 	}
 
 	/**
@@ -490,7 +491,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		createEAttribute(shapeEClass, SHAPE__DESCRIPTION);
 		createEAttribute(shapeEClass, SHAPE__QUERY);
 
-		dummyEClass = createEClass(DUMMY);
+		emptyEClass = createEClass(EMPTY);
 
 		ensembleEClass = createEClass(ENSEMBLE);
 		createEReference(ensembleEClass, ENSEMBLE__SHAPES);
@@ -548,7 +549,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		dummyEClass.getESuperTypes().add(this.getShape());
+		emptyEClass.getESuperTypes().add(this.getShape());
 		ensembleEClass.getESuperTypes().add(this.getShape());
 		notAllowedEClass.getESuperTypes().add(this.getConnection());
 		outgoingEClass.getESuperTypes().add(this.getConnection());
@@ -570,7 +571,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		initEAttribute(getShape_Description(), ecorePackage.getEString(), "description", "<description>", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getShape_Query(), ecorePackage.getEString(), "query", "empty", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(dummyEClass, Dummy.class, "Dummy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(emptyEClass, Empty.class, "Empty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(ensembleEClass, Ensemble.class, "Ensemble", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getEnsemble_Shapes(), this.getShape(), null, "shapes", null, 0, -1, Ensemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -189,7 +189,7 @@ public class EnsembleItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.ENSEMBLE__SHAPES,
-				 Vespucci_modelFactory.eINSTANCE.createDummy()));
+				 Vespucci_modelFactory.eINSTANCE.createEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter

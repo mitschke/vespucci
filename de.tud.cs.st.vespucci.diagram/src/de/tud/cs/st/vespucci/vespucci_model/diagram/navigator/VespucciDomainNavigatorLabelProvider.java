@@ -43,14 +43,15 @@ import org.eclipse.ui.navigator.ICommonLabelProvider;
 /**
  * @generated
  */
-public class VespucciDomainNavigatorLabelProvider implements ICommonLabelProvider {
+public class VespucciDomainNavigatorLabelProvider implements
+		ICommonLabelProvider {
 
 	/**
 	 * @generated
 	 */
 	private AdapterFactoryLabelProvider myAdapterFactoryLabelProvider = new AdapterFactoryLabelProvider(
-			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
-					.getItemProvidersAdapterFactory());
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+					.getInstance().getItemProvidersAdapterFactory());
 
 	/**
 	 * @generated

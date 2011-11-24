@@ -108,7 +108,8 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 	/**
 	 * @generated
 	 */
-	public void setOpenNewlyCreatedDiagramEditor(boolean openNewlyCreatedDiagramEditor) {
+	public void setOpenNewlyCreatedDiagramEditor(
+			boolean openNewlyCreatedDiagramEditor) {
 		this.openNewlyCreatedDiagramEditor = openNewlyCreatedDiagramEditor;
 	}
 
@@ -143,16 +144,20 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		IRunnableWithProgress op = new WorkspaceModifyOperation(null) {
 
-			protected void execute(IProgressMonitor monitor) throws CoreException, InterruptedException {
-				diagram = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil.createDiagram(
-						diagramModelFilePage.getURI(), monitor);
+			protected void execute(IProgressMonitor monitor)
+					throws CoreException, InterruptedException {
+				diagram = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
+						.createDiagram(diagramModelFilePage.getURI(), monitor);
 				if (isOpenNewlyCreatedDiagramEditor() && diagram != null) {
 					try {
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil.openDiagram(diagram);
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
+								.openDiagram(diagram);
 					} catch (PartInitException e) {
-						ErrorDialog.openError(getContainer().getShell(),
-								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizardOpenEditorError,
-								null, e.getStatus());
+						ErrorDialog
+								.openError(
+										getContainer().getShell(),
+										de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizardOpenEditorError,
+										null, e.getStatus());
 					}
 				}
 			}
@@ -163,12 +168,17 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			if (e.getTargetException() instanceof CoreException) {
-				ErrorDialog.openError(getContainer().getShell(),
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizardCreationError, null,
-						((CoreException) e.getTargetException()).getStatus());
+				ErrorDialog
+						.openError(
+								getContainer().getShell(),
+								de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizardCreationError,
+								null, ((CoreException) e.getTargetException())
+										.getStatus());
 			} else {
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
-						"Error creating diagram", e.getTargetException()); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+						.getInstance()
+						.logError(
+								"Error creating diagram", e.getTargetException()); //$NON-NLS-1$
 			}
 			return false;
 		}

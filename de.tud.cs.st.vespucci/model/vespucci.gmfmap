@@ -61,11 +61,11 @@
         href="vespucci.ecore#//ShapesDiagram/shapes"/>
     <ownedChild>
       <domainMetaElement
-          href="vespucci.ecore#//Dummy"/>
+          href="vespucci.ecore#//Empty"/>
       <labelMappings
           xsi:type="gmfmap:FeatureLabelMapping">
         <diagramLabel
-            href="vespucci.gmfgraph#DummyName"/>
+            href="vespucci.gmfgraph#EmptyName"/>
         <features
             href="vespucci.ecore#//Shape/name"/>
       </labelMappings>
@@ -73,7 +73,7 @@
           xsi:type="gmftool:CreationTool"
           href="vespucci.gmftool#//@palette/@tools.0/@tools.1"/>
       <diagramNode
-          href="vespucci.gmfgraph#Dummy"/>
+          href="vespucci.gmfgraph#Empty"/>
     </ownedChild>
   </nodes>
   <links>
@@ -105,7 +105,7 @@
       <sourceEnd
           body="self &lt;> oppositeEnd"/>
       <targetEnd
-          body="not self.oclIsTypeOf(Dummy)"/>
+          body="not self.oclIsTypeOf(Empty)"/>
     </creationConstraints>
   </links>
   <links>
@@ -137,7 +137,7 @@
         href="vespucci.ecore#//Connection/target"/>
     <creationConstraints>
       <sourceEnd
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
     </creationConstraints>
   </links>
   <links>
@@ -167,9 +167,9 @@
         href="vespucci.ecore#//Connection/target"/>
     <creationConstraints>
       <sourceEnd
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
       <targetEnd
-          body="not self.oclIsTypeOf(Dummy)"/>
+          body="not self.oclIsTypeOf(Empty)"/>
     </creationConstraints>
   </links>
   <links>
@@ -199,9 +199,9 @@
         href="vespucci.ecore#//Connection/target"/>
     <creationConstraints>
       <sourceEnd
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
       <targetEnd
-          body="not self.oclIsTypeOf(Dummy)"/>
+          body="not self.oclIsTypeOf(Empty)"/>
     </creationConstraints>
   </links>
   <links>
@@ -231,9 +231,9 @@
         href="vespucci.ecore#//Connection/target"/>
     <creationConstraints>
       <sourceEnd
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
       <targetEnd
-          body="not self.oclIsTypeOf(Dummy)"/>
+          body="not self.oclIsTypeOf(Empty)"/>
     </creationConstraints>
   </links>
   <links>
@@ -263,9 +263,9 @@
         href="vespucci.ecore#//Connection/target"/>
     <creationConstraints>
       <sourceEnd
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
       <targetEnd
-          body="not self.oclIsTypeOf(Dummy)"/>
+          body="not self.oclIsTypeOf(Empty)"/>
     </creationConstraints>
   </links>
   <links>
@@ -295,9 +295,9 @@
         href="vespucci.ecore#//Connection/target"/>
     <creationConstraints>
       <sourceEnd
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
       <targetEnd
-          body="not self.oclIsTypeOf(Dummy)"/>
+          body="not self.oclIsTypeOf(Empty)"/>
     </creationConstraints>
   </links>
   <links>
@@ -327,9 +327,9 @@
         href="vespucci.ecore#//Connection/target"/>
     <creationConstraints>
       <sourceEnd
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Dummy))"/>
+          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
       <targetEnd
-          body="not self.oclIsTypeOf(Dummy)"/>
+          body="not self.oclIsTypeOf(Empty)"/>
     </creationConstraints>
   </links>
   <diagram>

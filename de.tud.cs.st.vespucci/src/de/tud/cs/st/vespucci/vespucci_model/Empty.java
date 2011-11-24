@@ -30,44 +30,19 @@
  *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
- * 
- *
- * $Id$
  */
-package de.tud.cs.st.vespucci.vespucci_model.impl;
+package de.tud.cs.st.vespucci.vespucci_model;
 
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Dummy</b></em>'.
+ * A representation of the model object '<em><b>Empty</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
+ *
+ * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getEmpty()
+ * @model
  * @generated
  */
-public class DummyImpl extends ShapeImpl implements Dummy {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected DummyImpl() {
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return Vespucci_modelPackage.Literals.DUMMY;
-	}
-
-} //DummyImpl
+public interface Empty extends Shape {
+} // Empty

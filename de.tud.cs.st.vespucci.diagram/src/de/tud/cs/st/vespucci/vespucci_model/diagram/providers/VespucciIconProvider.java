@@ -43,13 +43,15 @@ import org.eclipse.swt.graphics.Image;
 /**
  * @generated
  */
-public class VespucciIconProvider extends AbstractProvider implements IIconProvider {
+public class VespucciIconProvider extends AbstractProvider implements
+		IIconProvider {
 
 	/**
 	 * @generated
 	 */
 	public Image getIcon(IAdaptable hint, int flags) {
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.getImage(hint);
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
+				.getImage(hint);
 	}
 
 	/**

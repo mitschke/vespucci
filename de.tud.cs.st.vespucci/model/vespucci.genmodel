@@ -20,7 +20,7 @@
       <genFeatures createChild="false" propertyCategory="" propertyDescription=""
           ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/query"/>
     </genClasses>
-    <genClasses ecoreClass="vespucci.ecore#//Dummy"/>
+    <genClasses ecoreClass="vespucci.ecore#//Empty"/>
     <genClasses ecoreClass="vespucci.ecore#//Ensemble">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//Ensemble/shapes"/>
     </genClasses>

@@ -189,7 +189,7 @@ public class ShapesDiagramItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES,
-				 Vespucci_modelFactory.eINSTANCE.createDummy()));
+				 Vespucci_modelFactory.eINSTANCE.createEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter

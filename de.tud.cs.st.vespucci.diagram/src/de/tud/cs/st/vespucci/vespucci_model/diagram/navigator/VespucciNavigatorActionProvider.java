@@ -99,10 +99,12 @@ public class VespucciNavigatorActionProvider extends CommonActionProvider {
 		if (!myContribute) {
 			return;
 		}
-		IStructuredSelection selection = (IStructuredSelection) getContext().getSelection();
+		IStructuredSelection selection = (IStructuredSelection) getContext()
+				.getSelection();
 		myOpenDiagramAction.selectionChanged(selection);
 		if (myOpenDiagramAction.isEnabled()) {
-			actionBars.setGlobalActionHandler(ICommonActionConstants.OPEN, myOpenDiagramAction);
+			actionBars.setGlobalActionHandler(ICommonActionConstants.OPEN,
+					myOpenDiagramAction);
 		}
 	}
 
@@ -131,7 +133,8 @@ public class VespucciNavigatorActionProvider extends CommonActionProvider {
 		 * @generated
 		 */
 		public OpenDiagramAction(ICommonViewerWorkbenchSite viewerSite) {
-			super(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorActionProvider_OpenDiagramActionName);
+			super(
+					de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.NavigatorActionProvider_OpenDiagramActionName);
 			myViewerSite = viewerSite;
 		}
 
@@ -146,7 +149,8 @@ public class VespucciNavigatorActionProvider extends CommonActionProvider {
 					selectedElement = ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) selectedElement)
 							.getView();
 				} else if (selectedElement instanceof IAdaptable) {
-					selectedElement = ((IAdaptable) selectedElement).getAdapter(View.class);
+					selectedElement = ((IAdaptable) selectedElement)
+							.getAdapter(View.class);
 				}
 				if (selectedElement instanceof Diagram) {
 					Diagram diagram = (Diagram) selectedElement;
@@ -171,10 +175,13 @@ public class VespucciNavigatorActionProvider extends CommonActionProvider {
 			IEditorInput editorInput = getEditorInput(myDiagram);
 			IWorkbenchPage page = myViewerSite.getPage();
 			try {
-				page.openEditor(editorInput, de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditor.ID);
+				page.openEditor(
+						editorInput,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditor.ID);
 			} catch (PartInitException e) {
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
-						"Exception while openning diagram", e); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+						.getInstance().logError(
+								"Exception while openning diagram", e); //$NON-NLS-1$
 			}
 		}
 
@@ -185,14 +192,16 @@ public class VespucciNavigatorActionProvider extends CommonActionProvider {
 			Resource diagramResource = diagram.eResource();
 			for (EObject nextEObject : diagramResource.getContents()) {
 				if (nextEObject == diagram) {
-					return new FileEditorInput(WorkspaceSynchronizer.getFile(diagramResource));
+					return new FileEditorInput(
+							WorkspaceSynchronizer.getFile(diagramResource));
 				}
 				if (nextEObject instanceof Diagram) {
 					break;
 				}
 			}
 			URI uri = EcoreUtil.getURI(diagram);
-			String editorName = uri.lastSegment() + '#' + diagram.eResource().getContents().indexOf(diagram);
+			String editorName = uri.lastSegment() + '#'
+					+ diagram.eResource().getContents().indexOf(diagram);
 			IEditorInput editorInput = new URIEditorInput(uri, editorName);
 			return editorInput;
 		}

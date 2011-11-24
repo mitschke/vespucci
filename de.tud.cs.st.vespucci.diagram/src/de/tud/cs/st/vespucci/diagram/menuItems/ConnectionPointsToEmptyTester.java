@@ -37,7 +37,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
@@ -45,14 +45,14 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
  * 
  * @author Dominic Scheurer
  */
-public class ConnectionPointsToDummyTester extends PropertyTester {
+public class ConnectionPointsToEmptyTester extends PropertyTester {
 
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
 		final ConnectionEditPart connectionEditPart = (ConnectionEditPart) receiver;
 		final Connection connection = (Connection) connectionEditPart.resolveSemanticElement();
 
-		return (getOriginalSource(connection) instanceof Dummy) || (getOriginalTarget(connection) instanceof Dummy);
+		return (getOriginalSource(connection) instanceof Empty) || (getOriginalTarget(connection) instanceof Empty);
 	}
 
 	// XXX: This method should be part of the Connection interface.

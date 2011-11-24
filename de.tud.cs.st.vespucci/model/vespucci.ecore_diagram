@@ -34,23 +34,6 @@
     <element xmi:type="ecore:EClass" href="vespucci.ecore#//Shape"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UvmG0alAEd-Mlt9QeSKOYw" x="284" y="135" width="101" height="94"/>
   </children>
-  <children xmi:type="notation:Shape" xmi:id="_Uvn8AKlAEd-Mlt9QeSKOYw" type="2001" fontName="DejaVu Sans Mono">
-    <children xmi:type="notation:DecorationNode" xmi:id="_Uvn8AqlAEd-Mlt9QeSKOYw" type="5001"/>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_Uvn8A6lAEd-Mlt9QeSKOYw" type="7001">
-      <styles xmi:type="notation:SortingStyle" xmi:id="_Uvn8BKlAEd-Mlt9QeSKOYw"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_Uvn8BalAEd-Mlt9QeSKOYw"/>
-    </children>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_UvojEKlAEd-Mlt9QeSKOYw" type="7002">
-      <styles xmi:type="notation:SortingStyle" xmi:id="_UvojEalAEd-Mlt9QeSKOYw"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_UvojEqlAEd-Mlt9QeSKOYw"/>
-    </children>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_UvojE6lAEd-Mlt9QeSKOYw" type="7003">
-      <styles xmi:type="notation:SortingStyle" xmi:id="_UvojFKlAEd-Mlt9QeSKOYw"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_UvojFalAEd-Mlt9QeSKOYw"/>
-    </children>
-    <element xmi:type="ecore:EClass" href="vespucci.ecore#//Dummy"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Uvn8AalAEd-Mlt9QeSKOYw" x="262" y="270"/>
-  </children>
   <children xmi:type="notation:Shape" xmi:id="_UvpKIKlAEd-Mlt9QeSKOYw" type="2001" fontName="DejaVu Sans Mono">
     <children xmi:type="notation:DecorationNode" xmi:id="_UvpKIqlAEd-Mlt9QeSKOYw" type="5001"/>
     <children xmi:type="notation:BasicCompartment" xmi:id="_UvpxMKlAEd-Mlt9QeSKOYw" type="7001">

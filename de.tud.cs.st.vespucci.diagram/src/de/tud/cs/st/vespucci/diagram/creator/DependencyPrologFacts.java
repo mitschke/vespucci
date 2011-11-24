@@ -37,7 +37,8 @@ import java.util.List;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
 import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
@@ -224,7 +225,7 @@ public class DependencyPrologFacts {
 	private static String getEnsembleName(final Shape shape) {
 		if (shape instanceof Ensemble) {
 			return EnsemblePrologFacts.createEnsembleDescriptor(shape);
-		} else if (shape instanceof Dummy) {
+		} else if (shape instanceof Empty) {
 			return "empty";
 		}
 		return "not_defined";

@@ -18,7 +18,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="empty"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Dummy" eSuperTypes="#//Shape"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Empty" eSuperTypes="#//Shape"/>
   <eClassifiers xsi:type="ecore:EClass" name="Ensemble" eSuperTypes="#//Shape">
     <eStructuralFeatures xsi:type="ecore:EReference" name="shapes" upperBound="-1"
         eType="#//Shape" containment="true"/>

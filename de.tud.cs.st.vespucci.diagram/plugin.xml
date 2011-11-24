@@ -379,10 +379,10 @@
       </metamodel>
       <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <specializationType
-               id="de.tud.cs.st.vespucci.diagram.Dummy_2002"
-               name="Empty Ensemble"
+               id="de.tud.cs.st.vespucci.diagram.Empty_2002"
+               name="%metatype.name.Empty_2002"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="de.tud.cs.st.vespucci.diagram.Dummy_3003"/>
+            <specializes id="de.tud.cs.st.vespucci.diagram.Empty_3003"/>
             <param name="semanticHint" value="2002"/>
          </specializationType>
       </metamodel>
@@ -397,11 +397,11 @@
       </metamodel>
       <metamodel nsURI="http://vespucci.editor/2011-06-01">
          <metamodelType
-               id="de.tud.cs.st.vespucci.diagram.Dummy_3003"
-               name="%metatype.name.Dummy_3003"
+               id="de.tud.cs.st.vespucci.diagram.Empty_3003"
+               name="%metatype.name.Empty_3003"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="Dummy"
-               edithelper="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.DummyEditHelper">
+               eclass="Empty"
+               edithelper="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.EmptyEditHelper">
             <param name="semanticHint" value="3003"/>
          </metamodelType>
       </metamodel>
@@ -499,9 +499,9 @@
       <binding context="de.tud.cs.st.vespucci.diagram.TypeContext">
          <elementType ref="de.tud.cs.st.vespucci.diagram.ShapesDiagram_1000"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.Ensemble_2001"/>
-         <elementType ref="de.tud.cs.st.vespucci.diagram.Dummy_2002"/>
+         <elementType ref="de.tud.cs.st.vespucci.diagram.Empty_2002"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.Ensemble_3001"/>
-         <elementType ref="de.tud.cs.st.vespucci.diagram.Dummy_3003"/>
+         <elementType ref="de.tud.cs.st.vespucci.diagram.Empty_3003"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.Incoming_4005"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.Outgoing_4003"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.InAndOut_4001"/>
@@ -682,57 +682,6 @@
             <message><![CDATA[Queries of non leaf ensemble must be derived ]]></message>
             <target class="vespucci_model.Ensemble"/>
          </constraint>
-                  <constraint
-                        class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter6"
-                        id="EnsembleQueryValidParenthesisID"
-                        lang="Java"
-                        mode="Batch"
-                        name="WARNING if Ensemble query valid parenthesis count"
-                        severity="WARNING"
-                        statusCode="200">
-                     query.size()>0 and not query.oclIsUndefined()
-                     <description></description>
-                     <message>
-                        Ensemble query invalid parenthesis count.
-                     </message>
-                     <target
-                           class="vespucci_model.Ensemble">
-                     </target>
-                  </constraint>
-                  <constraint
-                        class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter7"
-                        id="EnsembleQueryCompletePrologStringsID"
-                        lang="Java"
-                        mode="Batch"
-                        name="WARNING if Ensemble query contains complete Prolog strings."
-                        severity="WARNING"
-                        statusCode="200">
-                     query.size()>0 and not query.oclIsUndefined()
-                     <description></description>
-                     <message>
-                        Ensemble query contains incomplete Prolog strings.
-                     </message>
-                     <target
-                           class="vespucci_model.Ensemble">
-                     </target>
-                  </constraint>
-                  <constraint
-                        class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter8"
-                        id="EnsembleQueryValidBracketID"
-                        lang="Java"
-                        mode="Batch"
-                        name="WARNING if Ensemble query valid bracket count"
-                        severity="WARNING"
-                        statusCode="200">
-                     query.size()>0 and not query.oclIsUndefined()
-                     <description></description>
-                     <message>
-                        Ensemble query invalid bracket count.
-                     </message>
-                     <target
-                           class="vespucci_model.Ensemble">
-                     </target>
-                  </constraint>
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/ConnectionsConstraintsID">
                   <constraint id="DependencyInvalidID"
@@ -760,15 +709,6 @@
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryNotNullID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.NonLeafEnsembleMustBeDerivedID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.DependencyInvalidID"/>
-                  <constraint
-                        ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryValidParenthesisID">
-                  </constraint>
-                  <constraint
-                        ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryCompletePrologStringsID">
-                  </constraint>
-                  <constraint
-                        ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryValidBracketID">
-                  </constraint>
                </binding>
 
    </extension>
@@ -1019,7 +959,7 @@
        <extension
              point="org.eclipse.core.expressions.propertyTesters">
           <propertyTester
-                class="de.tud.cs.st.vespucci.diagram.menuItems.ConnectionPointsToDummyTester"
+                class="de.tud.cs.st.vespucci.diagram.menuItems.ConnectionPointsToEmptyTester"
                 id="de.tud.cs.st.vespucci.diagram.ConnectionPointsToDummyTester"
                 namespace="de.tud.cs.st.vespucci.diagram"
                 properties="pointsToDummy"

@@ -37,27 +37,31 @@ import org.eclipse.gmf.runtime.common.core.command.ICommand;
 import org.eclipse.gmf.runtime.common.core.command.UnexecutableCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
 
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 
 /**
  * @generated
  */
-public class OutgoingEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
+public class OutgoingEditHelper
+		extends
+		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
 
 	/**
 	 * @author Theo
 	 * @generated NOT
 	 */
 	@Override
-	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
+	protected ICommand getReorientRelationshipCommand(
+			ReorientRelationshipRequest request) {
 		// TODO: Change this function after removal of Dummies from the model.
 		if (request.getDirection() == ReorientRelationshipRequest.REORIENT_SOURCE) {
 			if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
 				return UnexecutableCommand.INSTANCE;
 			}
 		} else if (request.getDirection() == ReorientRelationshipRequest.REORIENT_TARGET) {
-			if (!(request.getNewRelationshipEnd() instanceof Ensemble || (request.getNewRelationshipEnd() instanceof Dummy))) {
+			if (!(request.getNewRelationshipEnd() instanceof Ensemble || (request
+					.getNewRelationshipEnd() instanceof Empty))) {
 				return UnexecutableCommand.INSTANCE;
 			}
 		}

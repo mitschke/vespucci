@@ -49,7 +49,8 @@ import org.eclipse.gmf.runtime.notation.View;
 /**
  * @generated
  */
-public class EnsembleEnsembleDescriptionCompartmentEditPart extends ListCompartmentEditPart {
+public class EnsembleEnsembleDescriptionCompartmentEditPart extends
+		ListCompartmentEditPart {
 
 	/**
 	 * @generated
@@ -87,7 +88,8 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends ListCompartm
 	public void activate() {
 		super.activate();
 
-		getDescriptionEditPart().getFigure().setVisible(getCompartmentFigure().isExpanded());
+		getDescriptionEditPart().getFigure().setVisible(
+				getCompartmentFigure().isExpanded());
 	}
 
 	/**
@@ -108,7 +110,8 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends ListCompartm
 	 * @generated
 	 */
 	public IFigure createFigure() {
-		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super.createFigure();
+		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super
+				.createFigure();
 		result.setTitleVisibility(false);
 		return result;
 	}
@@ -118,7 +121,8 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends ListCompartm
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new ResizableCompartmentEditPolicy());
+		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
+				new ResizableCompartmentEditPolicy());
 		installEditPolicy(
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleDescriptionCompartmentItemSemanticEditPolicy());
@@ -142,8 +146,10 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends ListCompartm
 	@Override
 	protected void handleNotificationEvent(Notification event) {
 		super.handleNotificationEvent(event);
-		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(event.getFeature())) {
-			getDescriptionEditPart().getFigure().setVisible(getCompartmentFigure().isExpanded());
+		if (NotationPackage.eINSTANCE.getDrawerStyle_Collapsed().equals(
+				event.getFeature())) {
+			getDescriptionEditPart().getFigure().setVisible(
+					getCompartmentFigure().isExpanded());
 		}
 	}
 }

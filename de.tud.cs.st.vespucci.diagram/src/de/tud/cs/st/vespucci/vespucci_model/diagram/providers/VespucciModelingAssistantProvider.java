@@ -57,29 +57,31 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 /**
  * @generated
  */
-public class VespucciModelingAssistantProvider extends ModelingAssistantProvider {
+public class VespucciModelingAssistantProvider extends
+		ModelingAssistantProvider {
 
 	/**
 	 * @generated
 	 */
 	public List getTypesForPopupBar(IAdaptable host) {
-		IGraphicalEditPart editPart = (IGraphicalEditPart) host.getAdapter(IGraphicalEditPart.class);
+		IGraphicalEditPart editPart = (IGraphicalEditPart) host
+				.getAdapter(IGraphicalEditPart.class);
 		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart) {
 			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
 			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001);
-			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_2002);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2002);
 			return types;
 		}
 		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
 			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
 			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
-			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003);
 			return types;
 		}
 		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart) {
 			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
 			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
-			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003);
 			return types;
 		}
 		return Collections.EMPTY_LIST;
@@ -89,21 +91,22 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 	 * @generated
 	 */
 	public List getRelTypesOnSource(IAdaptable source) {
-		IGraphicalEditPart sourceEditPart = (IGraphicalEditPart) source.getAdapter(IGraphicalEditPart.class);
+		IGraphicalEditPart sourceEditPart = (IGraphicalEditPart) source
+				.getAdapter(IGraphicalEditPart.class);
 		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) sourceEditPart)
 					.getMARelTypesOnSource();
 		}
-		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) sourceEditPart)
+		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) sourceEditPart)
 					.getMARelTypesOnSource();
 		}
 		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) sourceEditPart)
 					.getMARelTypesOnSource();
 		}
-		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) sourceEditPart)
+		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) sourceEditPart)
 					.getMARelTypesOnSource();
 		}
 		return Collections.EMPTY_LIST;
@@ -113,21 +116,22 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 	 * @generated
 	 */
 	public List getRelTypesOnTarget(IAdaptable target) {
-		IGraphicalEditPart targetEditPart = (IGraphicalEditPart) target.getAdapter(IGraphicalEditPart.class);
+		IGraphicalEditPart targetEditPart = (IGraphicalEditPart) target
+				.getAdapter(IGraphicalEditPart.class);
 		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) targetEditPart)
 					.getMARelTypesOnTarget();
 		}
-		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) targetEditPart)
+		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) targetEditPart)
 					.getMARelTypesOnTarget();
 		}
 		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) targetEditPart)
 					.getMARelTypesOnTarget();
 		}
-		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) targetEditPart)
+		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) targetEditPart)
 					.getMARelTypesOnTarget();
 		}
 		return Collections.EMPTY_LIST;
@@ -136,23 +140,26 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 	/**
 	 * @generated
 	 */
-	public List getRelTypesOnSourceAndTarget(IAdaptable source, IAdaptable target) {
-		IGraphicalEditPart sourceEditPart = (IGraphicalEditPart) source.getAdapter(IGraphicalEditPart.class);
-		IGraphicalEditPart targetEditPart = (IGraphicalEditPart) target.getAdapter(IGraphicalEditPart.class);
+	public List getRelTypesOnSourceAndTarget(IAdaptable source,
+			IAdaptable target) {
+		IGraphicalEditPart sourceEditPart = (IGraphicalEditPart) source
+				.getAdapter(IGraphicalEditPart.class);
+		IGraphicalEditPart targetEditPart = (IGraphicalEditPart) target
+				.getAdapter(IGraphicalEditPart.class);
 		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) sourceEditPart)
 					.getMARelTypesOnSourceAndTarget(targetEditPart);
 		}
-		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) sourceEditPart)
+		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) sourceEditPart)
 					.getMARelTypesOnSourceAndTarget(targetEditPart);
 		}
 		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) sourceEditPart)
 					.getMARelTypesOnSourceAndTarget(targetEditPart);
 		}
-		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) sourceEditPart)
+		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) sourceEditPart)
 					.getMARelTypesOnSourceAndTarget(targetEditPart);
 		}
 		return Collections.EMPTY_LIST;
@@ -161,22 +168,24 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 	/**
 	 * @generated
 	 */
-	public List getTypesForSource(IAdaptable target, IElementType relationshipType) {
-		IGraphicalEditPart targetEditPart = (IGraphicalEditPart) target.getAdapter(IGraphicalEditPart.class);
+	public List getTypesForSource(IAdaptable target,
+			IElementType relationshipType) {
+		IGraphicalEditPart targetEditPart = (IGraphicalEditPart) target
+				.getAdapter(IGraphicalEditPart.class);
 		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) targetEditPart)
 					.getMATypesForSource(relationshipType);
 		}
-		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) targetEditPart)
+		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) targetEditPart)
 					.getMATypesForSource(relationshipType);
 		}
 		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) targetEditPart)
 					.getMATypesForSource(relationshipType);
 		}
-		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) targetEditPart)
+		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) targetEditPart)
 					.getMATypesForSource(relationshipType);
 		}
 		return Collections.EMPTY_LIST;
@@ -185,22 +194,24 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 	/**
 	 * @generated
 	 */
-	public List getTypesForTarget(IAdaptable source, IElementType relationshipType) {
-		IGraphicalEditPart sourceEditPart = (IGraphicalEditPart) source.getAdapter(IGraphicalEditPart.class);
+	public List getTypesForTarget(IAdaptable source,
+			IElementType relationshipType) {
+		IGraphicalEditPart sourceEditPart = (IGraphicalEditPart) source
+				.getAdapter(IGraphicalEditPart.class);
 		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) sourceEditPart)
 					.getMATypesForTarget(relationshipType);
 		}
-		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart) sourceEditPart)
+		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart) sourceEditPart)
 					.getMATypesForTarget(relationshipType);
 		}
 		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) {
 			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart) sourceEditPart)
 					.getMATypesForTarget(relationshipType);
 		}
-		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) {
-			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart) sourceEditPart)
+		if (sourceEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) {
+			return ((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart) sourceEditPart)
 					.getMATypesForTarget(relationshipType);
 		}
 		return Collections.EMPTY_LIST;
@@ -209,15 +220,19 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 	/**
 	 * @generated
 	 */
-	public EObject selectExistingElementForSource(IAdaptable target, IElementType relationshipType) {
-		return selectExistingElement(target, getTypesForSource(target, relationshipType));
+	public EObject selectExistingElementForSource(IAdaptable target,
+			IElementType relationshipType) {
+		return selectExistingElement(target,
+				getTypesForSource(target, relationshipType));
 	}
 
 	/**
 	 * @generated
 	 */
-	public EObject selectExistingElementForTarget(IAdaptable source, IElementType relationshipType) {
-		return selectExistingElement(source, getTypesForTarget(source, relationshipType));
+	public EObject selectExistingElementForTarget(IAdaptable source,
+			IElementType relationshipType) {
+		return selectExistingElement(source,
+				getTypesForTarget(source, relationshipType));
 	}
 
 	/**
@@ -227,13 +242,15 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 		if (types.isEmpty()) {
 			return null;
 		}
-		IGraphicalEditPart editPart = (IGraphicalEditPart) host.getAdapter(IGraphicalEditPart.class);
+		IGraphicalEditPart editPart = (IGraphicalEditPart) host
+				.getAdapter(IGraphicalEditPart.class);
 		if (editPart == null) {
 			return null;
 		}
 		Diagram diagram = (Diagram) editPart.getRoot().getContents().getModel();
 		HashSet<EObject> elements = new HashSet<EObject>();
-		for (Iterator<EObject> it = diagram.getElement().eAllContents(); it.hasNext();) {
+		for (Iterator<EObject> it = diagram.getElement().eAllContents(); it
+				.hasNext();) {
 			EObject element = it.next();
 			if (isApplicableElement(element, types)) {
 				elements.add(element);
@@ -242,14 +259,16 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 		if (elements.isEmpty()) {
 			return null;
 		}
-		return selectElement((EObject[]) elements.toArray(new EObject[elements.size()]));
+		return selectElement((EObject[]) elements.toArray(new EObject[elements
+				.size()]));
 	}
 
 	/**
 	 * @generated
 	 */
 	protected boolean isApplicableElement(EObject element, Collection types) {
-		IElementType type = ElementTypeRegistry.getInstance().getElementType(element);
+		IElementType type = ElementTypeRegistry.getInstance().getElementType(
+				element);
 		return types.contains(type);
 	}
 
@@ -259,9 +278,10 @@ public class VespucciModelingAssistantProvider extends ModelingAssistantProvider
 	protected EObject selectElement(EObject[] elements) {
 		Shell shell = Display.getCurrent().getActiveShell();
 		ILabelProvider labelProvider = new AdapterFactoryLabelProvider(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
-						.getItemProvidersAdapterFactory());
-		ElementListSelectionDialog dialog = new ElementListSelectionDialog(shell, labelProvider);
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+						.getInstance().getItemProvidersAdapterFactory());
+		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
+				shell, labelProvider);
 		dialog.setMessage(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciModelingAssistantProviderMessage);
 		dialog.setTitle(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciModelingAssistantProviderTitle);
 		dialog.setMultipleSelection(false);

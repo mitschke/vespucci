@@ -182,14 +182,14 @@ public interface Vespucci_modelPackage extends EPackage {
 	int SHAPE_FEATURE_COUNT = 5;
 
 	/**
-	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.DummyImpl <em>Dummy</em>}' class.
+	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.EmptyImpl <em>Empty</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.DummyImpl
-	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getDummy()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.EmptyImpl
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getEmpty()
 	 * @generated
 	 */
-	int DUMMY = 2;
+	int EMPTY = 2;
 
 	/**
 	 * The feature id for the '<em><b>Source Connections</b></em>' containment reference list.
@@ -198,7 +198,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DUMMY__SOURCE_CONNECTIONS = SHAPE__SOURCE_CONNECTIONS;
+	int EMPTY__SOURCE_CONNECTIONS = SHAPE__SOURCE_CONNECTIONS;
 
 	/**
 	 * The feature id for the '<em><b>Target Connections</b></em>' containment reference list.
@@ -207,7 +207,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DUMMY__TARGET_CONNECTIONS = SHAPE__TARGET_CONNECTIONS;
+	int EMPTY__TARGET_CONNECTIONS = SHAPE__TARGET_CONNECTIONS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -216,7 +216,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DUMMY__NAME = SHAPE__NAME;
+	int EMPTY__NAME = SHAPE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -225,7 +225,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DUMMY__DESCRIPTION = SHAPE__DESCRIPTION;
+	int EMPTY__DESCRIPTION = SHAPE__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Query</b></em>' attribute.
@@ -234,16 +234,16 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DUMMY__QUERY = SHAPE__QUERY;
+	int EMPTY__QUERY = SHAPE__QUERY;
 
 	/**
-	 * The number of structural features of the '<em>Dummy</em>' class.
+	 * The number of structural features of the '<em>Empty</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DUMMY_FEATURE_COUNT = SHAPE_FEATURE_COUNT + 0;
+	int EMPTY_FEATURE_COUNT = SHAPE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl <em>Ensemble</em>}' class.
@@ -1063,14 +1063,14 @@ public interface Vespucci_modelPackage extends EPackage {
 	EAttribute getShape_Query();
 
 	/**
-	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Dummy <em>Dummy</em>}'.
+	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Empty <em>Empty</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Dummy</em>'.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Dummy
+	 * @return the meta object for class '<em>Empty</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Empty
 	 * @generated
 	 */
-	EClass getDummy();
+	EClass getEmpty();
 
 	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Ensemble <em>Ensemble</em>}'.
@@ -1340,14 +1340,14 @@ public interface Vespucci_modelPackage extends EPackage {
 		EAttribute SHAPE__QUERY = eINSTANCE.getShape_Query();
 
 		/**
-		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.DummyImpl <em>Dummy</em>}' class.
+		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.EmptyImpl <em>Empty</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.DummyImpl
-		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getDummy()
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.EmptyImpl
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getEmpty()
 		 * @generated
 		 */
-		EClass DUMMY = eINSTANCE.getDummy();
+		EClass EMPTY = eINSTANCE.getEmpty();
 
 		/**
 		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl <em>Ensemble</em>}' class.

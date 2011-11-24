@@ -51,7 +51,8 @@ public class VespucciNavigatorSorter extends ViewerSorter {
 	public int category(Object element) {
 		if (element instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
 			de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem item = (de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) element;
-			return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry.getVisualID(item.getView());
+			return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+					.getVisualID(item.getView());
 		}
 		return GROUP_CATEGORY;
 	}

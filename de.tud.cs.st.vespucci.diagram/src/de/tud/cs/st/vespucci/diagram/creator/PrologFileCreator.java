@@ -45,7 +45,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
@@ -170,7 +170,7 @@ public class PrologFileCreator {
 	 */
 	private static boolean hasDummy(final List<Shape> shapeList) {
 		for (final Shape shape : shapeList) {
-			if (shape instanceof Dummy) {
+			if (shape instanceof Empty) {
 				return true;
 			}
 		}

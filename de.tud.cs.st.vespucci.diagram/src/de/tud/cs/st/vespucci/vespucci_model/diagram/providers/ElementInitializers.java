@@ -46,11 +46,12 @@ public class ElementInitializers {
 	 * @generated
 	 */
 	public static ElementInitializers getInstance() {
-		ElementInitializers cached = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
-				.getElementInitializers();
+		ElementInitializers cached = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+				.getInstance().getElementInitializers();
 		if (cached == null) {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().setElementInitializers(
-					cached = new ElementInitializers());
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+					.getInstance().setElementInitializers(
+							cached = new ElementInitializers());
 		}
 		return cached;
 	}

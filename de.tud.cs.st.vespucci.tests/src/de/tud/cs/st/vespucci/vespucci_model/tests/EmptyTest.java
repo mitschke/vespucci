@@ -30,23 +30,72 @@
  *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
- * 
- *
- * $Id$
  */
-package de.tud.cs.st.vespucci.vespucci_model;
+package de.tud.cs.st.vespucci.vespucci_model.tests;
 
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Dummy</b></em>'.
- * TODO get rid of "Dummy"
+ * A test case for the model object '<em><b>Empty</b></em>'.
  * <!-- end-user-doc -->
- *
- *
- * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getDummy()
- * @model
  * @generated
  */
-public interface Dummy extends Shape {
-} // Dummy
+public class EmptyTest extends ShapeTest {
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public static void main(String[] args) {
+		TestRunner.run(EmptyTest.class);
+	}
+
+	/**
+	 * Constructs a new Empty test case with the given name.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EmptyTest(String name) {
+		super(name);
+	}
+
+	/**
+	 * Returns the fixture for this Empty test case.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected Empty getFixture() {
+		return (Empty)fixture;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		setFixture(Vespucci_modelFactory.eINSTANCE.createEmpty());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		setFixture(null);
+	}
+
+} //EmptyTest

@@ -63,13 +63,14 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
  * @author Theo Kischka
  * @generated NOT
  */
-public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBasicTextPropertySection {
+public class EnsembleDescriptionPropertySection extends
+		SimpleChangedAbstractBasicTextPropertySection {
 
 	/**
 	 * URL of the Vespucci model namespace.
 	 */
-	private static final String VESPUCCI_NAMESPACE_URL = ResourceBundle.getBundle("plugin").getString(
-			"vespucci_modelNamespaceURI");
+	private static final String VESPUCCI_NAMESPACE_URL = ResourceBundle
+			.getBundle("plugin").getString("vespucci_modelNamespaceURI");
 
 	/**
 	 * @generated
@@ -80,13 +81,15 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 		}
 		final AdapterFactory af = getAdapterFactory(object);
 		if (af != null) {
-			final IItemPropertySource ips = (IItemPropertySource) af.adapt(object, IItemPropertySource.class);
+			final IItemPropertySource ips = (IItemPropertySource) af.adapt(
+					object, IItemPropertySource.class);
 			if (ips != null) {
 				return new PropertySource(object, ips);
 			}
 		}
 		if (object instanceof IAdaptable) {
-			return (IPropertySource) ((IAdaptable) object).getAdapter(IPropertySource.class);
+			return (IPropertySource) ((IAdaptable) object)
+					.getAdapter(IPropertySource.class);
 		}
 		return null;
 	}
@@ -105,13 +108,16 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	 */
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection) {
-		if (selection.isEmpty() || false == selection instanceof StructuredSelection) {
+		if (selection.isEmpty()
+				|| false == selection instanceof StructuredSelection) {
 			super.setInput(part, selection);
 			return;
 		}
 		final StructuredSelection structuredSelection = ((StructuredSelection) selection);
-		final ArrayList<Object> transformedSelection = new ArrayList<Object>(structuredSelection.size());
-		for (final Iterator<?> it = structuredSelection.iterator(); it.hasNext();) {
+		final ArrayList<Object> transformedSelection = new ArrayList<Object>(
+				structuredSelection.size());
+		for (final Iterator<?> it = structuredSelection.iterator(); it
+				.hasNext();) {
 			final Object r = transformSelection(it.next());
 			if (r != null) {
 				transformedSelection.add(r);
@@ -125,11 +131,14 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	 */
 	protected AdapterFactory getAdapterFactory(final Object object) {
 		if (getEditingDomain() instanceof AdapterFactoryEditingDomain) {
-			return ((AdapterFactoryEditingDomain) getEditingDomain()).getAdapterFactory();
+			return ((AdapterFactoryEditingDomain) getEditingDomain())
+					.getAdapterFactory();
 		}
-		final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(object);
+		final TransactionalEditingDomain editingDomain = TransactionUtil
+				.getEditingDomain(object);
 		if (editingDomain != null) {
-			return ((AdapterFactoryEditingDomain) editingDomain).getAdapterFactory();
+			return ((AdapterFactoryEditingDomain) editingDomain)
+					.getAdapterFactory();
 		}
 		return null;
 	}
@@ -158,7 +167,8 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	@Override
 	protected void setPropertyValue(final EObject object, final Object value) {
 		if (object instanceof Shape) {
-			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_NAMESPACE_URL);
+			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
+					.getEPackage(VESPUCCI_NAMESPACE_URL);
 			final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
 			object.eSet(vesPackage.getShape_Description(), value);
@@ -171,7 +181,8 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 	 */
 	@Override
 	protected String getPropertyValueString() {
-		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(VESPUCCI_NAMESPACE_URL);
+		final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
+				.getEPackage(VESPUCCI_NAMESPACE_URL);
 		final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
 		if (eObject instanceof EnsembleImpl) {
@@ -179,7 +190,8 @@ public class EnsembleDescriptionPropertySection extends SimpleChangedAbstractBas
 			return (String) eObject.eGet(vesPackage.getShape_Description());
 		} else {
 			getSectionComposite().setVisible(false);
-			throw new VespucciUnexpectedException(String.format("[%s] is not an ensemble.", eObject));
+			throw new VespucciUnexpectedException(String.format(
+					"[%s] is not an ensemble.", eObject));
 		}
 
 	}

@@ -57,7 +57,8 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl;
 /**
  * @generated
  */
-public class ExpectedEditPart extends ConnectionNodeEditPart implements ITreeBranchEditPart {
+public class ExpectedEditPart extends ConnectionNodeEditPart implements
+		ITreeBranchEditPart {
 
 	/**
 	 * @generated
@@ -76,7 +77,8 @@ public class ExpectedEditPart extends ConnectionNodeEditPart implements ITreeBra
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
+		installEditPolicy(
+				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ExpectedItemSemanticEditPolicy());
 	}
 
@@ -151,10 +153,13 @@ public class ExpectedEditPart extends ConnectionNodeEditPart implements ITreeBra
 			EReferenceImpl ref = (EReferenceImpl) notification.getFeature();
 			if (ref.getFeatureID() == Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE
 					|| ref.getFeatureID() == Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET) {
-				if (((ConnectionImpl) ((View) this.getModel()).getElement()).isTemp()) {
-					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
+				if (((ConnectionImpl) ((View) this.getModel()).getElement())
+						.isTemp()) {
+					this.getFigure().setForegroundColor(
+							CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
 				} else {
-					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.CONNECTION_COLOR);
+					this.getFigure().setForegroundColor(
+							CompartmentEditPartSupporter.CONNECTION_COLOR);
 				}
 			}
 
@@ -164,9 +169,11 @@ public class ExpectedEditPart extends ConnectionNodeEditPart implements ITreeBra
 			EAttributeImpl eai = (EAttributeImpl) notification.getFeature();
 			if (eai.getFeatureID() == Vespucci_modelPackage.CONNECTION__TEMP) {
 				if (notification.getNewBooleanValue()) {
-					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
+					this.getFigure().setForegroundColor(
+							CompartmentEditPartSupporter.TMP_CONNECTION_COLOR);
 				} else {
-					this.getFigure().setForegroundColor(CompartmentEditPartSupporter.CONNECTION_COLOR);
+					this.getFigure().setForegroundColor(
+							CompartmentEditPartSupporter.CONNECTION_COLOR);
 				}
 
 			}

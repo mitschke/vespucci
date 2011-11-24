@@ -38,7 +38,7 @@ package de.tud.cs.st.vespucci.vespucci_model.impl;
 
 import de.tud.cs.st.vespucci.vespucci_model.*;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
@@ -104,7 +104,7 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 		switch (eClass.getClassifierID()) {
 			case Vespucci_modelPackage.SHAPES_DIAGRAM: return createShapesDiagram();
 			case Vespucci_modelPackage.SHAPE: return createShape();
-			case Vespucci_modelPackage.DUMMY: return createDummy();
+			case Vespucci_modelPackage.EMPTY: return createEmpty();
 			case Vespucci_modelPackage.ENSEMBLE: return createEnsemble();
 			case Vespucci_modelPackage.CONNECTION: return createConnection();
 			case Vespucci_modelPackage.NOT_ALLOWED: return createNotAllowed();
@@ -145,9 +145,9 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Dummy createDummy() {
-		DummyImpl dummy = new DummyImpl();
-		return dummy;
+	public Empty createEmpty() {
+		EmptyImpl empty = new EmptyImpl();
+		return empty;
 	}
 
 	/**

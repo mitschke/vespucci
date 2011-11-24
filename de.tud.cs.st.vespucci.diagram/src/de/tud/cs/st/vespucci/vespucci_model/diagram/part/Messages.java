@@ -450,22 +450,22 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Dummy_2002_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Dummy_2002_outgoinglinks;
-
-	/**
-	 * @generated
-	 */
 	public static String NavigatorGroupName_GlobalIncoming_4006_target;
 
 	/**
 	 * @generated
 	 */
 	public static String NavigatorGroupName_GlobalIncoming_4006_source;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Empty_2002_incominglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Empty_2002_outgoinglinks;
 
 	/**
 	 * @generated
@@ -495,16 +495,6 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Dummy_3003_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Dummy_3003_outgoinglinks;
-
-	/**
-	 * @generated
-	 */
 	public static String NavigatorGroupName_InAndOut_4001_target;
 
 	/**
@@ -521,6 +511,16 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String NavigatorGroupName_Outgoing_4003_source;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Empty_3003_incominglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Empty_3003_outgoinglinks;
 
 	/**
 	 * @generated

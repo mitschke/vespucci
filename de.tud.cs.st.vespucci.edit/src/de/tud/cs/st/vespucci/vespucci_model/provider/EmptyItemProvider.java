@@ -30,14 +30,11 @@
  *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
- * 
- *
- * $Id$
  */
 package de.tud.cs.st.vespucci.vespucci_model.provider;
 
 
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 import java.util.Collection;
@@ -54,12 +51,12 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 
 /**
- * This is the item provider adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Dummy} object.
+ * This is the item provider adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Empty} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class DummyItemProvider
+public class EmptyItemProvider
 	extends ShapeItemProvider
 	implements
 		IEditingDomainItemProvider,
@@ -73,7 +70,7 @@ public class DummyItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DummyItemProvider(AdapterFactory adapterFactory) {
+	public EmptyItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -93,14 +90,14 @@ public class DummyItemProvider
 	}
 
 	/**
-	 * This returns Dummy.gif.
+	 * This returns Empty.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Dummy"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Empty"));
 	}
 
 	/**
@@ -111,10 +108,10 @@ public class DummyItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Dummy)object).getName();
+		String label = ((Empty)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Dummy_type") :
-			getString("_UI_Dummy_type") + " " + label;
+			getString("_UI_Empty_type") :
+			getString("_UI_Empty_type") + " " + label;
 	}
 
 	/**

@@ -55,7 +55,8 @@ import org.eclipse.ui.navigator.ICommonContentProvider;
 /**
  * @generated
  */
-public class VespucciDomainNavigatorContentProvider implements ICommonContentProvider {
+public class VespucciDomainNavigatorContentProvider implements
+		ICommonContentProvider {
 
 	/**
 	 * @generated
@@ -92,9 +93,10 @@ public class VespucciDomainNavigatorContentProvider implements ICommonContentPro
 	 */
 	public VespucciDomainNavigatorContentProvider() {
 		myAdapterFctoryContentProvier = new AdapterFactoryContentProvider(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance()
-						.getItemProvidersAdapterFactory());
-		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE.createEditingDomain();
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+						.getInstance().getItemProvidersAdapterFactory());
+		TransactionalEditingDomain editingDomain = GMFEditingDomainFactory.INSTANCE
+				.createEditingDomain();
 		myEditingDomain = (AdapterFactoryEditingDomain) editingDomain;
 		myEditingDomain.setResourceToReadOnlyMap(new HashMap() {
 			public Object get(Object key) {
@@ -111,28 +113,30 @@ public class VespucciDomainNavigatorContentProvider implements ICommonContentPro
 				}
 			}
 		};
-		myWorkspaceSynchronizer = new WorkspaceSynchronizer(editingDomain, new WorkspaceSynchronizer.Delegate() {
-			public void dispose() {
-			}
+		myWorkspaceSynchronizer = new WorkspaceSynchronizer(editingDomain,
+				new WorkspaceSynchronizer.Delegate() {
+					public void dispose() {
+					}
 
-			public boolean handleResourceChanged(final Resource resource) {
-				unloadAllResources();
-				asyncRefresh();
-				return true;
-			}
+					public boolean handleResourceChanged(final Resource resource) {
+						unloadAllResources();
+						asyncRefresh();
+						return true;
+					}
 
-			public boolean handleResourceDeleted(Resource resource) {
-				unloadAllResources();
-				asyncRefresh();
-				return true;
-			}
+					public boolean handleResourceDeleted(Resource resource) {
+						unloadAllResources();
+						asyncRefresh();
+						return true;
+					}
 
-			public boolean handleResourceMoved(Resource resource, final URI newURI) {
-				unloadAllResources();
-				asyncRefresh();
-				return true;
-			}
-		});
+					public boolean handleResourceMoved(Resource resource,
+							final URI newURI) {
+						unloadAllResources();
+						asyncRefresh();
+						return true;
+					}
+				});
 	}
 
 	/**
@@ -159,7 +163,8 @@ public class VespucciDomainNavigatorContentProvider implements ICommonContentPro
 	 * @generated
 	 */
 	void unloadAllResources() {
-		for (Resource nextResource : myEditingDomain.getResourceSet().getResources()) {
+		for (Resource nextResource : myEditingDomain.getResourceSet()
+				.getResources()) {
 			nextResource.unload();
 		}
 	}
@@ -169,7 +174,8 @@ public class VespucciDomainNavigatorContentProvider implements ICommonContentPro
 	 */
 	void asyncRefresh() {
 		if (myViewer != null && !myViewer.getControl().isDisposed()) {
-			myViewer.getControl().getDisplay().asyncExec(myViewerRefreshRunnable);
+			myViewer.getControl().getDisplay()
+					.asyncExec(myViewerRefreshRunnable);
 		}
 	}
 
@@ -204,9 +210,13 @@ public class VespucciDomainNavigatorContentProvider implements ICommonContentPro
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof IFile) {
 			IFile file = (IFile) parentElement;
-			URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-			Resource resource = myEditingDomain.getResourceSet().getResource(fileURI, true);
-			return wrapEObjects(myAdapterFctoryContentProvier.getChildren(resource), parentElement);
+			URI fileURI = URI.createPlatformResourceURI(file.getFullPath()
+					.toString(), true);
+			Resource resource = myEditingDomain.getResourceSet().getResource(
+					fileURI, true);
+			return wrapEObjects(
+					myAdapterFctoryContentProvier.getChildren(resource),
+					parentElement);
 		}
 
 		if (parentElement instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem) {
@@ -225,7 +235,8 @@ public class VespucciDomainNavigatorContentProvider implements ICommonContentPro
 		for (int i = 0; i < objects.length; i++) {
 			if (objects[i] instanceof EObject) {
 				result.add(new de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem(
-						(EObject) objects[i], parentElement, myAdapterFctoryContentProvier));
+						(EObject) objects[i], parentElement,
+						myAdapterFctoryContentProvier));
 			}
 		}
 		return result.toArray();

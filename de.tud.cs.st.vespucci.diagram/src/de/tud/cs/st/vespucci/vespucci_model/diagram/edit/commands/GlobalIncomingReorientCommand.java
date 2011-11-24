@@ -94,14 +94,16 @@ public class GlobalIncomingReorientCommand extends EditElementCommand {
 		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink().getTarget();
+		de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink()
+				.getTarget();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canExistGlobalIncoming_4006(container, getLink(), getNewSource(), target);
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canExistGlobalIncoming_4006(container,
+						getLink(), getNewSource(), target);
 	}
 
 	/**
@@ -111,22 +113,26 @@ public class GlobalIncomingReorientCommand extends EditElementCommand {
 		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink().getSource();
+		de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink()
+				.getSource();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
 			return false;
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
 				.eContainer();
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canExistGlobalIncoming_4006(container, getLink(), source, getNewTarget());
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
+				.getLinkConstraints().canExistGlobalIncoming_4006(container,
+						getLink(), source, getNewTarget());
 	}
 
 	/**
 	 * @generated
 	 */
-	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+	protected CommandResult doExecuteWithResult(IProgressMonitor monitor,
+			IAdaptable info) throws ExecutionException {
 		if (!canExecute()) {
-			throw new ExecutionException("Invalid arguments in reorient link command"); //$NON-NLS-1$
+			throw new ExecutionException(
+					"Invalid arguments in reorient link command"); //$NON-NLS-1$
 		}
 		if (reorientDirection == ReorientRelationshipRequest.REORIENT_SOURCE) {
 			return reorientSource();

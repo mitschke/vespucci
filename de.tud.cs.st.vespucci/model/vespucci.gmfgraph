@@ -292,10 +292,10 @@
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.2/@children.0"/>
     </descriptors>
     <descriptors
-        name="DummyFigure">
+        name="EmptyFigure">
       <actualFigure
           xsi:type="gmfgraph:Rectangle"
-          name="DummyFigure">
+          name="EmptyFigure">
         <backgroundColor
             xsi:type="gmfgraph:ConstantColor"
             value="lightGray"/>
@@ -304,7 +304,7 @@
             dy="20"/>
         <children
             xsi:type="gmfgraph:Label"
-            name="DummyNameFigure"
+            name="EmptyNameFigure"
             text=""/>
       </actualFigure>
       <accessors
@@ -457,8 +457,8 @@
       name="Ensemble"
       figure="EnsembleFigure"/>
   <nodes
-      name="Dummy"
-      figure="DummyFigure"/>
+      name="Empty"
+      figure="EmptyFigure"/>
   <connections
       name="Incoming"
       figure="IncomingFigure"/>
@@ -507,8 +507,8 @@
       figure="EnsembleFigure"
       accessor="//@figures.0/@descriptors.0/@accessors.2"/>
   <labels
-      name="DummyName"
-      figure="DummyFigure"
+      name="EmptyName"
+      figure="EmptyFigure"
       elementIcon="false"
       accessor="//@figures.0/@descriptors.1/@accessors.0"/>
   <labels

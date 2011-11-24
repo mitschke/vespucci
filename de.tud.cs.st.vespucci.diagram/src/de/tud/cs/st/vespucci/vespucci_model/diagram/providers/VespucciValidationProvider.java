@@ -69,7 +69,8 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static void runWithConstraints(TransactionalEditingDomain editingDomain, Runnable operation) {
+	public static void runWithConstraints(
+			TransactionalEditingDomain editingDomain, Runnable operation) {
 		final Runnable op = operation;
 		Runnable task = new Runnable() {
 			public void run() {
@@ -85,8 +86,8 @@ public class VespucciValidationProvider {
 			try {
 				editingDomain.runExclusive(task);
 			} catch (Exception e) {
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.getInstance().logError(
-						"Validation failed", e); //$NON-NLS-1$
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+						.getInstance().logError("Validation failed", e); //$NON-NLS-1$
 			}
 		} else {
 			task.run();
@@ -146,7 +147,8 @@ public class VespucciValidationProvider {
 			if (context.getQuery().equals("derived")) {
 				return ctx.createSuccessStatus();
 			}
-			return ctx.createFailureStatus("Queries of non leaf ensemble must be derived.");
+			return ctx
+					.createFailureStatus("Queries of non leaf ensemble must be derived.");
 		}
 	}
 
@@ -155,7 +157,8 @@ public class VespucciValidationProvider {
 	 */
 	public static class Adapter5 extends AbstractModelConstraint {
 		// TODO change the name Adapter5 to a more expressive name (CAUTION: Refactoring may affect code generator!)
-		private static ResourceBundle pluginProperties = ResourceBundle.getBundle("plugin");
+		private static ResourceBundle pluginProperties = ResourceBundle
+				.getBundle("plugin");
 
 		/**
 		 * Checks if given dependency kind for constrain is valid.
@@ -166,8 +169,10 @@ public class VespucciValidationProvider {
 		 */
 		@Override
 		public IStatus validate(final IValidationContext ctx) {
-			final String context = (String) ctx.getTarget().eGet(
-					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getConnection_Name());
+			final String context = (String) ctx
+					.getTarget()
+					.eGet(de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
+							.getConnection_Name());
 			if (context == null) {
 				return Status.OK_STATUS;
 			}
@@ -175,8 +180,11 @@ public class VespucciValidationProvider {
 			/**
 			 * Valid names for dependencies read from the resource-file.
 			 */
-			final String[] validDependencies = KeywordReader.readAndParseResourceFile(FrameworkUtil.getBundle(Adapter5.class)
-					.getSymbolicName(), pluginProperties.getString("validDependenciesFile"));
+			final String[] validDependencies = KeywordReader
+					.readAndParseResourceFile(
+							FrameworkUtil.getBundle(Adapter5.class)
+									.getSymbolicName(), pluginProperties
+									.getString("validDependenciesFile"));
 
 			final String[] dependencies = context.split(", ");
 			boolean valid = false;
@@ -192,143 +200,9 @@ public class VespucciValidationProvider {
 					}
 				}
 				if (!valid) {
-					return ctx.createFailureStatus(String.format("Depdendency kind %s is invalid", context));
+					return ctx.createFailureStatus(String.format(
+							"Depdendency kind %s is invalid", context));
 				}
-			}
-			return ctx.createSuccessStatus();
-		}
-	}
-	
-	/**
-	 * @generated
-	 */
-	public static class Adapter6 extends AbstractModelConstraint {
-
-		/**
-		 * Checks if the brackets in an Ensemble Query are complete.
-		 * 
-		 * @author Theo Kischka
-		 * @generated NOT
-		 * @return Success-Status, if validation successful; Failure otherwise.
-		 */
-		public IStatus validate(IValidationContext ctx) {
-			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
-					.getTarget();
-			String query = context.getQuery();
-
-			// alle Klammern innerhalb Prolog-Strings rausfiltern (z.B. im Ensemblenamen)
-			query = filterPrologStringsRek(query);
-
-			if (!checkBrackets(query, '(', ')')) {
-				return ctx.createFailureStatus("Invalid parenthesis count in Ensemble query.");
-			}
-			return ctx.createSuccessStatus();
-		}
-
-		/**
-		 * Returns true, if brackets are typed properly.
-		 * 
-		 * @generated NOT
-		 */
-		protected static boolean checkBrackets(String query, char openingBracket, char closingBracket) {
-			Stack<Character> openBrackets = new Stack<Character>();
-
-			for (int i = 0; i < query.length(); i++) {
-				char c = query.charAt(i);
-
-				if (c == openingBracket) {
-					openBrackets.push(c);
-				}
-				if (c == closingBracket) {
-					if (openBrackets.isEmpty()) {
-						return false;
-					} else {
-						openBrackets.pop();
-					}
-				}
-			}
-
-			if (!openBrackets.isEmpty()) {
-				return false;
-			}
-			return true;
-		}
-
-		/**
-		 * Filters everything between two 's within a string out.
-		 * 
-		 * @generated NOT
-		 */
-		protected static String filterPrologStringsRek(String s) {
-			int beginIndex = s.indexOf('\'');
-			int endIndex = s.length() - 1;
-			if (beginIndex == -1) {
-				return s;
-			} else {
-				endIndex = s.replaceFirst("'", " ").indexOf('\'');
-				if (endIndex == -1) {
-					return s;
-				} else {
-					return s.substring(0, beginIndex) + filterPrologStringsRek(s.substring(endIndex, s.length()));
-				}
-			}
-		}
-	}
-
-	/**
-	 * @generated
-	 */
-	public static class Adapter7 extends AbstractModelConstraint {
-
-		/**
-		 * Checks if Ensemble query prolog strings are complete.
-		 * E.g.: package('de.tud.cs.se.flashcards.ui') is correct while
-		 * package(de.tud.cs.se.flashcards.ui') is not.
-		 * 
-		 * @author Theo Kischka
-		 * @generated NOT
-		 * @return Success-Status, if validation successful; Failure otherwise.
-		 */
-		public IStatus validate(IValidationContext ctx) {
-			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
-					.getTarget();
-			String query = context.getQuery();
-			boolean stringOpen = false;
-
-			for (int i = 0; i < query.length(); i++) {
-				char c = query.charAt(i);
-				if (c == '\'') {
-					stringOpen = !stringOpen;
-				}
-			}
-			if (stringOpen) {
-				return ctx.createFailureStatus("Missing ' in Ensemble query.");
-			}
-			return ctx.createSuccessStatus();
-		}
-	}
-
-	/**
-	 * @generated
-	 */
-	public static class Adapter8 extends AbstractModelConstraint {
-
-		/**
-		 * @author Theo Kischka
-		 * @author Thomas Schulz
-		 * @generated NOT
-		 * @return Success-Status, if validation successful; Failure otherwise.
-		 */
-		public IStatus validate(IValidationContext ctx) {
-			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
-					.getTarget();
-			String query = context.getQuery();
-
-			// alle Klammern innerhalb Prolog-Strings rausfiltern (z.B. im Ensemblenamen)
-			query = Adapter6.filterPrologStringsRek(query);
-
-			if (!Adapter6.checkBrackets(query, '[', ']')) {
-				return ctx.createFailureStatus("Invalid brackets count in Ensemble query.");
 			}
 			return ctx.createSuccessStatus();
 		}

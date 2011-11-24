@@ -38,7 +38,7 @@ package de.tud.cs.st.vespucci.vespucci_model.util;
 
 import de.tud.cs.st.vespucci.vespucci_model.*;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
+
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
@@ -121,8 +121,8 @@ public class Vespucci_modelAdapterFactory extends AdapterFactoryImpl {
 				return createShapeAdapter();
 			}
 			@Override
-			public Adapter caseDummy(Dummy object) {
-				return createDummyAdapter();
+			public Adapter caseEmpty(Empty object) {
+				return createEmptyAdapter();
 			}
 			@Override
 			public Adapter caseEnsemble(Ensemble object) {
@@ -213,16 +213,16 @@ public class Vespucci_modelAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.Dummy <em>Dummy</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.Empty <em>Empty</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Dummy
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Empty
 	 * @generated
 	 */
-	public Adapter createDummyAdapter() {
+	public Adapter createEmptyAdapter() {
 		return null;
 	}
 

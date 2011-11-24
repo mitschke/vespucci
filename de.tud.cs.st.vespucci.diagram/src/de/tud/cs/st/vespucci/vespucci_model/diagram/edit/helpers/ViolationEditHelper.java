@@ -42,14 +42,17 @@ import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 /**
  * @generated
  */
-public class ViolationEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
+public class ViolationEditHelper
+		extends
+		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
 
 	/**
 	 * @author Theo Kischka, Dominic Scheurer
 	 * @generated NOT
 	 */
 	@Override
-	protected ICommand getReorientRelationshipCommand(ReorientRelationshipRequest request) {
+	protected ICommand getReorientRelationshipCommand(
+			ReorientRelationshipRequest request) {
 		if (!(request.getNewRelationshipEnd() instanceof Ensemble)) {
 			return UnexecutableCommand.INSTANCE;
 		} else {

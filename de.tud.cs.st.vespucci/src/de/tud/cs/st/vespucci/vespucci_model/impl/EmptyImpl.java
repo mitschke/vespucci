@@ -1,4 +1,4 @@
-/*
+/**
  *  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Engineering
@@ -31,10 +31,40 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
+package de.tud.cs.st.vespucci.vespucci_model.impl;
+
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
+
+import org.eclipse.emf.ecore.EClass;
 
 /**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Empty</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * </p>
+ *
  * @generated
  */
-public class DummyEditHelper extends de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
-}
+public class EmptyImpl extends ShapeImpl implements Empty {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EmptyImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return Vespucci_modelPackage.Literals.EMPTY;
+	}
+
+} //EmptyImpl

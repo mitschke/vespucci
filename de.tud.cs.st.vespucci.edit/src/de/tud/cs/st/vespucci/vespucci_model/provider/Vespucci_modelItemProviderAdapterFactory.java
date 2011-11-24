@@ -152,26 +152,26 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.Dummy} instances.
+	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.Empty} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected DummyItemProvider dummyItemProvider;
+	protected EmptyItemProvider emptyItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Dummy}.
+	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Empty}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createDummyAdapter() {
-		if (dummyItemProvider == null) {
-			dummyItemProvider = new DummyItemProvider(this);
+	public Adapter createEmptyAdapter() {
+		if (emptyItemProvider == null) {
+			emptyItemProvider = new EmptyItemProvider(this);
 		}
 
-		return dummyItemProvider;
+		return emptyItemProvider;
 	}
 
 	/**
@@ -505,7 +505,7 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 	public void dispose() {
 		if (shapesDiagramItemProvider != null) shapesDiagramItemProvider.dispose();
 		if (shapeItemProvider != null) shapeItemProvider.dispose();
-		if (dummyItemProvider != null) dummyItemProvider.dispose();
+		if (emptyItemProvider != null) emptyItemProvider.dispose();
 		if (ensembleItemProvider != null) ensembleItemProvider.dispose();
 		if (connectionItemProvider != null) connectionItemProvider.dispose();
 		if (notAllowedItemProvider != null) notAllowedItemProvider.dispose();

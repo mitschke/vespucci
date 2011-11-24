@@ -40,14 +40,16 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
 /**
  * @generated
  */
-public class GlobalIncomingItemSemanticEditPolicy extends
+public class GlobalIncomingItemSemanticEditPolicy
+		extends
 		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
 	 */
 	public GlobalIncomingItemSemanticEditPolicy() {
-		super(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalIncoming_4006);
+		super(
+				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalIncoming_4006);
 	}
 
 	/**

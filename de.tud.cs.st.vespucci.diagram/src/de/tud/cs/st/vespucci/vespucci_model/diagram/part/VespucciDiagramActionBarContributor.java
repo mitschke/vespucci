@@ -47,7 +47,8 @@ import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 /**
  * @generated
  */
-public class VespucciDiagramActionBarContributor extends DiagramActionBarContributor {
+public class VespucciDiagramActionBarContributor extends
+		DiagramActionBarContributor {
 
 	/**
 	 * @generated
@@ -77,19 +78,24 @@ public class VespucciDiagramActionBarContributor extends DiagramActionBarContrib
 	public void init(final IActionBars bars, final IWorkbenchPage page) {
 		super.init(bars, page);
 		// print preview
-		final IMenuManager fileMenu = bars.getMenuManager().findMenuUsingPath(IWorkbenchActionConstants.M_FILE);
+		final IMenuManager fileMenu = bars.getMenuManager().findMenuUsingPath(
+				IWorkbenchActionConstants.M_FILE);
 		if (fileMenu == null) {
-			throw new VespucciUnexpectedException(String.format("FileMenu [%s] must not be null.", fileMenu));
+			throw new VespucciUnexpectedException(String.format(
+					"FileMenu [%s] must not be null.", fileMenu));
 		}
 		fileMenu.remove("pageSetupAction");
-		final IMenuManager editMenu = bars.getMenuManager().findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
+		final IMenuManager editMenu = bars.getMenuManager().findMenuUsingPath(
+				IWorkbenchActionConstants.M_EDIT);
 		if (editMenu == null) {
-			throw new VespucciUnexpectedException(String.format("EditMenu [%s] must not be null.", editMenu));
+			throw new VespucciUnexpectedException(String.format(
+					"EditMenu [%s] must not be null.", editMenu));
 		}
 		if (editMenu.find("validationGroup") == null) {
 			editMenu.add(new GroupMarker("validationGroup"));
 		}
-		final IAction validateAction = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.ValidateAction(page);
+		final IAction validateAction = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.ValidateAction(
+				page);
 		editMenu.appendToGroup("validationGroup", validateAction);
 
 		// remove compartmentMenu

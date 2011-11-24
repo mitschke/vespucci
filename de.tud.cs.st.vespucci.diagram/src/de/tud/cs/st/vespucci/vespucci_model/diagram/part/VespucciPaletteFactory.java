@@ -67,7 +67,8 @@ public class VespucciPaletteFactory {
 		PaletteDrawer paletteContainer = new PaletteDrawer(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Modules1Group_title);
 		paletteContainer.setId("createModules1Group"); //$NON-NLS-1$
-		paletteContainer.setDescription(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Modules1Group_desc);
+		paletteContainer
+				.setDescription(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Modules1Group_desc);
 		paletteContainer.add(createEnsemble1CreationTool());
 		paletteContainer.add(createEmptyEnsemble2CreationTool());
 		return paletteContainer;
@@ -101,7 +102,8 @@ public class VespucciPaletteFactory {
 		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
 		NodeToolEntry entry = new NodeToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Ensemble1CreationTool_title,
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Ensemble1CreationTool_desc, types);
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.Ensemble1CreationTool_desc,
+				types);
 		entry.setId("createEnsemble1CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
 				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001));
@@ -114,14 +116,15 @@ public class VespucciPaletteFactory {
 	 */
 	private ToolEntry createEmptyEnsemble2CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003);
-		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_2002);
+		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003);
+		types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2002);
 		NodeToolEntry entry = new NodeToolEntry(
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.EmptyEnsemble2CreationTool_title,
-				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.EmptyEnsemble2CreationTool_desc, types);
+				de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.EmptyEnsemble2CreationTool_desc,
+				types);
 		entry.setId("createEmptyEnsemble2CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes
-				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Dummy_3003));
+				.getImageDescriptor(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -267,7 +270,8 @@ public class VespucciPaletteFactory {
 		/**
 		 * @generated
 		 */
-		private NodeToolEntry(String title, String description, List<IElementType> elementTypes) {
+		private NodeToolEntry(String title, String description,
+				List<IElementType> elementTypes) {
 			super(title, description, null, null);
 			this.elementTypes = elementTypes;
 		}
@@ -295,7 +299,8 @@ public class VespucciPaletteFactory {
 		/**
 		 * @generated
 		 */
-		private LinkToolEntry(String title, String description, List<IElementType> relationshipTypes) {
+		private LinkToolEntry(String title, String description,
+				List<IElementType> relationshipTypes) {
 			super(title, description, null, null);
 			this.relationshipTypes = relationshipTypes;
 		}
