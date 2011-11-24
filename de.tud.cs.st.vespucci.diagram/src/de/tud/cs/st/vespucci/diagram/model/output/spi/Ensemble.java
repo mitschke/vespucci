@@ -123,58 +123,52 @@ public class Ensemble implements IEnsemble {
 
 	private Constraint createIConnectedSubtypeInstance(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
 		
-//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Expected){
-//			return new Expected((de.tud.cs.st.vespucci.vespucci_model.Expected) connection);
-//		}
-//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Incoming){
-//			return new Incoming((de.tud.cs.st.vespucci.vespucci_model.Incoming) connection);
-//		}
-//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.NotAllowed){
-//			return new NotAllowed((de.tud.cs.st.vespucci.vespucci_model.NotAllowed) connection);
-//		}
-//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Outgoing){
-//			return new Outgoing((de.tud.cs.st.vespucci.vespucci_model.Outgoing) connection);
-//		}
-//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming){
-//			return new GlobalIncoming((de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming) connection);
-//		}
-//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing){
-//			return new GlobalOutgoing((de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing) connection);
-//		}
-//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.InAndOut){
-//			return new InAndOut((de.tud.cs.st.vespucci.vespucci_model.InAndOut) connection);
-//		}
-//		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Violation){
-//			return new DocumentedViolation((de.tud.cs.st.vespucci.vespucci_model.Violation) connection);
-//		}
-//		
-//		return new Constraint(connection);
-		
-		// Initialize Map
-		this.mapping = new HashMap<Class<? extends de.tud.cs.st.vespucci.vespucci_model.Connection>, Class<? extends Constraint>>();
-		
-		// Put Mapping values (de.tud.cs.st.vespucci.vespucci_model.Expected --> Expected)
-		mapping.put(de.tud.cs.st.vespucci.vespucci_model.Expected.class, Expected.class);
-		mapping.put(de.tud.cs.st.vespucci.vespucci_model.Incoming.class, Incoming.class);
-		mapping.put(de.tud.cs.st.vespucci.vespucci_model.NotAllowed.class, NotAllowed.class);
-		mapping.put(de.tud.cs.st.vespucci.vespucci_model.Outgoing.class, Outgoing.class);
-		mapping.put(de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming.class, GlobalIncoming.class);
-		mapping.put(de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing.class, GlobalOutgoing.class);
-		mapping.put(de.tud.cs.st.vespucci.vespucci_model.InAndOut.class, InAndOut.class);
-		mapping.put(de.tud.cs.st.vespucci.vespucci_model.Violation.class, DocumentedViolation.class);
-		
-		
+		fillMapWithMappingClasses();
 		// Map connection
 		  try {
 		    Class<? extends Constraint> subtype = mapping.get( connection.getClass() );
 		    
-		    return subtype.getConstructor( connection.getClass() ).newInstance( connection );
+		    // Use for debugging only
+		    //System.out.println("from createIConnectedSubtypeInstance, connection.getClass():" + connection.getClass());
+		    //System.out.println("subtype.getName(): " + subtype.getName());
+		    return subtype.getConstructor( connection.getClass().getInterfaces() ).newInstance( connection );
 		    
-		  } catch( Exception e) { //you might want to catch the more specific types
-			
-		    return new Constraint(connection);
+		  } catch( Exception e) {
 			  
+			// Use for debugging only
+			//e.printStackTrace();
+		    return new Constraint(connection);
 		  }
+	}
+
+	private void fillMapWithMappingClasses() {
+		// Initialize Map
+		this.mapping = new HashMap<Class<? extends de.tud.cs.st.vespucci.vespucci_model.Connection>, Class<? extends Constraint>>();
+		
+		/*
+		 * Old:
+		 * mapping.put(de.tud.cs.st.vespucci.vespucci_model.Expected.class, Expected.class);
+		 * .	.	.
+		 * .	.	.
+		 * .	.	.
+		 * mapping.put(de.tud.cs.st.vespucci.vespucci_model.Violation.class, DocumentedViolation.class);
+		 * 
+		 * New, cause: connection.getClass() (in createIConnectedSubtypeInstance) delivers (e.g.) 
+		 * 			de.tud.cs.st.vespucci.vespucci_model.impl.ExpectedImpl.class
+		 * and NOT: 
+		 * 			de.tud.cs.st.vespucci.vespucci_model.Expected.class
+		 * , see Old
+		 */
+		
+		// Put Mapping values (de.tud.cs.st.vespucci.vespucci_model.impl.ExpectedImpl.class --> Expected)
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.impl.ExpectedImpl.class, Expected.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.impl.IncomingImpl.class, Incoming.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.impl.NotAllowedImpl.class, NotAllowed.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.impl.OutgoingImpl.class, Outgoing.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.impl.GlobalIncomingImpl.class, GlobalIncoming.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.impl.GlobalOutgoingImpl.class, GlobalOutgoing.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.impl.InAndOutImpl.class, InAndOut.class);
+		mapping.put(de.tud.cs.st.vespucci.vespucci_model.impl.ViolationImpl.class, DocumentedViolation.class);
 	}
 	
 }
