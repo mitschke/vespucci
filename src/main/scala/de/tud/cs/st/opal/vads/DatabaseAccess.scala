@@ -15,6 +15,9 @@ import org.scalaquery.ql.extended.H2Driver.Implicit._
 import org.scalaquery.ql.extended.{ ExtendedTable => Table }
 
 trait DatabaseAccess {
+  
+   val props = new scala.sys.SystemProperties()
+  val db = Database.forURL(props("org.tud.cs.st.opal.vads.database"), driver = "org.h2.Driver")
 
   import org.scalaquery.session.Database._
 

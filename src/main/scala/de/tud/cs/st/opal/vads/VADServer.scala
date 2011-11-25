@@ -17,9 +17,6 @@ class VADServer
   with ConsoleLogging // TODO needs to exchanged
   {
 
-  val props = new scala.sys.SystemProperties()
-  val db = Database.forURL(props("org.tud.cs.st.opal.vads.database"), driver = "org.h2.Driver")
-
   def root = "/"
 
   this register new HandlerFactory[Root] {
@@ -32,11 +29,11 @@ class VADServer
     db withSession {
       architectureDescriptions.ddl.create
     }
-    implicit def create = new Descriptions(db)
+    implicit def create = new Descriptions
   }
 
   this register new HandlerFactory[Description] {
-    path { root :: "descriptions" :: LongValue((desc, longid) => desc.id = longid) }
+    path { root :: "descriptions/" :: StringValue((desc, id) => desc.id = id) }
     implicit def create = new Description()
   }
 
@@ -51,17 +48,26 @@ class Root extends RESTInterface with TEXTSupport {
 
 }
 
-class Description extends RESTInterface with TEXTSupport with XMLSupport {
+class Description extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
-  var id: Long = _
+  var id: String = _
+  import org.scalaquery.ql._
+  get returns TEXT {
+    db withSession {
+     val query = for { ad <- architectureDescriptions if ad.id === id } yield ad.name
+     query.list mkString "\n"
+    }
+  }
 
 }
 
-class Descriptions(db: Database) extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
+class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
+  import org.scalaquery.ql._
   get returns TEXT {
     db withSession {
-      org.scalaquery.ql.Query(architectureDescriptions).list().toString()
+     val query = for { ad <- architectureDescriptions } yield ad.name
+     query.list mkString "\n"
     }
   }
 
@@ -69,9 +75,9 @@ class Descriptions(db: Database) extends RESTInterface with DatabaseAccess with 
   post of XML returns XML {
     db withSession {
       id = uniqueId()
-      architectureDescriptions insert (id, "foo", "bar")
+      architectureDescriptions insert (id, id, "bar")
     }
-    <success><id> { id } </id></success>
+    <success><id>{id}</id></success>
   }
 
 }

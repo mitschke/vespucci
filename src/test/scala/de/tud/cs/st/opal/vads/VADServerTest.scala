@@ -23,21 +23,23 @@ class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     new VADServer
   }
 
+  var id1: String = _
+  var id2: String = _
+
   "The descriptions resource" should "create a new description on POST via XML" in {
-    Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << "<xml/>" </> { nodes => (nodes \\ "id").text })
+    id1 = Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << "<xml/>" </> { nodes => (nodes \\ "id").text })
   }
-  
-  it should " list a description on GET via TEXT" in {
-     Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "text/plain") as_str) should equal { "SomeName" }
+
+  it should "create another description on POST via XML" in {
+    id2 = Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << "<xml/>" </> { nodes => (nodes \\ "id").text })
   }
-  
-  
-   "The descriptions resource" should "create a new description on POST via XMLs" in {
-    Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << "<xml/>" </> { nodes => (nodes \\ "id").text })
+
+  it should "return a list of all descriptions which where created on GET" in {
+    Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "text/plain") as_str) should equal { "SomeName" }
   }
-   
-    it should " list a description on GET via TEXT2" in {
-     Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "text/plain") as_str) should equal { "SomeName" }
+
+  it should "provide a reference to the created description on GET providing its id" in {
+    Http(url("http://localhost:9000/descriptions/" + id1) <:< Map("Accept" -> "text/plain") as_str) should equal { "SomeName" }
   }
 
 }
@@ -54,12 +56,4 @@ object Http extends DispatchHttp {
     def warn(msg: String, items: Any*) {
     }
   }
-}
-
-trait AutoInc {
-
-  val id = new java.util.concurrent.atomic.AtomicLong(1L)
-
-  def uniqueId = id.getAndIncrement().toString()
-
 }
