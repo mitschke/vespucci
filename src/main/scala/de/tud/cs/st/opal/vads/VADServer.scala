@@ -27,7 +27,7 @@ class VADServer
   this register new HandlerFactory[Descriptions] {
     path { root :: "descriptions" }
     db withSession {
-      architectureDescriptions.ddl.create
+      descriptions.ddl.create
     }
     implicit def create = new Descriptions
   }
@@ -51,10 +51,9 @@ class Root extends RESTInterface with TEXTSupport {
 class Description extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
   var id: String = _
-  import org.scalaquery.ql._
   get returns TEXT {
     db withSession {
-     val query = for { ad <- architectureDescriptions if ad.id === id } yield ad.name
+     val query = for { ad <- descriptions if ad.id === id } yield ad.name
      query.list mkString "\n"
     }
   }
@@ -63,10 +62,9 @@ class Description extends RESTInterface with DatabaseAccess with TEXTSupport wit
 
 class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
-  import org.scalaquery.ql._
   get returns TEXT {
     db withSession {
-     val query = for { ad <- architectureDescriptions } yield ad.name
+     val query = for { ad <- descriptions } yield ad.name
      query.list mkString "\n"
     }
   }
@@ -75,7 +73,7 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
   post of XML returns XML {
     db withSession {
       id = uniqueId()
-      architectureDescriptions insert (id, id, "bar")
+      descriptions insert (id, id, "bar")
     }
     <success><id>{id}</id></success>
   }

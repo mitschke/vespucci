@@ -23,7 +23,7 @@ trait DatabaseAccess {
 
   val uniqueId = (() => java.util.UUID.randomUUID().toString())
 
-  object architectureDescriptions extends Table[(String, String, String)]("DESCRIPTIONS") {
+  object descriptions extends Table[(String, String, String)]("DESCRIPTIONS") {
     def id = column[String]("ID", O.PrimaryKey)
     def name = column[String]("NAME")
     def description = column[String]("DESCRIPTION")
