@@ -41,3 +41,4 @@ build.log
 build.log
 
 .cache*
+/vads.h2.db
