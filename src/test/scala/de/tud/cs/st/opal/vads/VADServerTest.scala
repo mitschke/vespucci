@@ -18,28 +18,18 @@ class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
 
   override def beforeAll(configMap: Map[String, Any]) {
     println("Starting tests")
-    new SystemProperties += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1")
+    new SystemProperties += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:testdb;DB_CLOSE_DELAY=-1")
     import de.tud.cs.st.opal.vads.VADServer
     VADServer
   }
 
   var id1: String = _
   var id2: String = _
+  val sad = xml.XML.loadFile("src/test/resources/mapping_detailed_description.sad")
 
   "The descriptions resource" should "create a new description on POST via XML" in {
-    id1 = Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << "<xml/>" </> { nodes => (nodes \\ "id").text })
-  }
-
-  it should "create another description on POST via XML" in {
-    id2 = Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << "<xml/>" </> { nodes => (nodes \\ "id").text })
-  }
-
-  it should "return a list of all descriptions which where created on GET" in {
-    Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "text/plain") as_str) should equal { "SomeName" }
-  }
-
-  it should "provide a reference to the created description on GET providing its id" in {
-    Http(url("http://localhost:9000/descriptions/" + id1) <:< Map("Accept" -> "text/plain") as_str) should equal { "SomeName" }
+    id1 = Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << sad.toString </> { xml => (xml \\ "id").text })
+    id1 should equal { "_x5HuMF5MEeCxut-tIzAezA" }
   }
 
 }
@@ -51,9 +41,11 @@ object Http extends DispatchHttp {
 
   override def make_logger = new Logger {
     def info(msg: String, items: Any*) {
+      // no-op
     }
 
     def warn(msg: String, items: Any*) {
+      // no-op
     }
   }
 }

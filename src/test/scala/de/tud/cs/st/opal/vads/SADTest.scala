@@ -15,7 +15,7 @@ class DescriptionTest extends FlatSpec with ShouldMatchers {
     SAD(sad).diagramId should equal { "_x5HuMF5MEeCxut-tIzAezA" }
   }
   
-  it should "countain the correct diagamName" in {
+  it should "countain the correct diagramName" in {
      SAD(sad).diagramName should equal { "mapping.sad" }
   }
 
