@@ -69,9 +69,11 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
 
   var id: String = _
   post of XML returns XML {
+    val sad = SAD(XMLRequestBody)
     db withSession {
-      id = uniqueId
-      descriptions insert (id, id, "bar")
+      id = sad.diagramId
+      logger.info("inserting " + id + sad.diagramName)
+      descriptions insert (id, sad.diagramName, sad.xmlData)
     }
     <success><id>{ id }</id></success>
   }
@@ -80,7 +82,7 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
 
 object VADServerApp extends scala.App with Logging {
 
-  logger.info("Starting Vespucci Architecture Description Server... {}")
+  logger.info("Starting Vespucci Architecture Description Server...")
 
   val configuration = new scala.sys.SystemProperties()
   configuration += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:vads")

@@ -28,7 +28,7 @@ trait DatabaseAccess extends Logging {
   object descriptions extends Table[(String, String, String)]("DESCRIPTIONS") {
     def id = column[String]("ID", O.PrimaryKey)
     def name = column[String]("NAME")
-    def description = column[String]("DESCRIPTION")
+    def description = column[String]("XMLDATA")
     def * = id ~ name ~ description
   }
 

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <ShapesDiagram xmi:id="_x1YdsF5MEeCxut-tIzAezA">
+    <shapes xmi:type="Ensemble" xmi:id="_RpQfAF5NEeCxut-tIzAezA" name="Mapping" query="package('cirrus.hibernate.map')"/>
+    <shapes xmi:type="Ensemble" xmi:id="_uSlvqWwyEeCPd9WeAvlslQ" name="PersistenceManager" query="class_with_members('cirrus.hibernate.impl','ClassPersister')&#xD;&#xA; or class_with_members('cirrus.hibernate.impl','CollectionPersister')">
+      <targetConnections xmi:type="Incoming" xmi:id="_wmnnwGwyEeCPd9WeAvlslQ" source="_uSlvqWwyEeCPd9WeAvlslQ" target="_RpQfAF5NEeCxut-tIzAezA" name="[calls]"/>
+    </shapes>
+    <shapes xmi:type="Ensemble" xmi:id="_LqbwJF5NEeCxut-tIzAezA" name="Configuration" query="package('cirrus.hibernate.cfg')&#xD;&#xA;or class_with_members(transitive(supertype(class('cirrus.hibernate','Datastore'))))&#xD;&#xA;">
+      <targetConnections xmi:type="Incoming" xmi:id="_kiVasWwrEeCPd9WeAvlslQ" source="_LqbwJF5NEeCxut-tIzAezA" target="_RpQfAF5NEeCxut-tIzAezA" name="[create,calls]"/>
+    </shapes>
+    <shapes xmi:type="Ensemble" xmi:id="_t9HaOHaLEeCjkcxo4o6cLQ" name="Session" query="class_with_members('cirrus.hibernate.impl','SessionFactoryObjectFactory')&#xD;&#xA; or class_with_members('cirrus.hibernate.impl','SessionImplementor')&#xD;&#xA; or class_with_members('cirrus.hibernate','SessionFactory')&#xD;&#xA; or class_with_members('cirrus.hibernate','Session')&#xD;&#xA; or class_with_members('cirrus.hibernate.impl','RelationalDatabaseSession')&#xD;&#xA; or class_with_members('cirrus.hibernate.impl','RelationalDatabaseSessionFactory')&#xD;&#xA;">
+      <targetConnections xmi:type="Incoming" xmi:id="_u7j_cHaLEeCjkcxo4o6cLQ" source="_t9HaOHaLEeCjkcxo4o6cLQ" target="_RpQfAF5NEeCxut-tIzAezA" name="[calls]"/>
+    </shapes>
+  </ShapesDiagram>
+  <notation:Diagram xmi:id="_x5HuMF5MEeCxut-tIzAezA" type="Vespucci" element="_x1YdsF5MEeCxut-tIzAezA" name="mapping.sad" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_RpP38F5NEeCxut-tIzAezA" type="2001" element="_RpQfAF5NEeCxut-tIzAezA" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_RpP38V5NEeCxut-tIzAezA" type="5001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_RpP38l5NEeCxut-tIzAezA" type="7001">
+        <children xmi:type="notation:Shape" xmi:id="_RpP3815NEeCxut-tIzAezA" type="Text" fontName="Segoe UI" description="The Hibernate configuration-time metamodel that defines a mapping from classes and collections to database tables">
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_RpP39F5NEeCxut-tIzAezA" type="DiagramName">
+            <element xsi:nil="true"/>
+          </children>
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_RpP39V5NEeCxut-tIzAezA" type="Description">
+            <element xsi:nil="true"/>
+          </children>
+          <element xsi:nil="true"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RpP39l5NEeCxut-tIzAezA" y="1" width="186" height="66"/>
+        </children>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RpP3915NEeCxut-tIzAezA" x="36" y="276" width="208" height="105"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_RLcdMF7zEeC4e5MaDLh-Nw" type="Note" fontName="Segoe UI" description="implements functionalities for persisting an entity" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_RLdEQF7zEeC4e5MaDLh-Nw" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_RLdEQV7zEeC4e5MaDLh-Nw" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="_RLcdMV7zEeC4e5MaDLh-Nw"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_RLcdMl7zEeC4e5MaDLh-Nw"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RLcdM17zEeC4e5MaDLh-Nw" x="240" y="180" width="193" height="51"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_Q61ygGwyEeCPd9WeAvlslQ" type="Note" fontName="Segoe UI" description="reads user configuration and builds the configuration-time metamodel" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_Q61yhGwyEeCPd9WeAvlslQ" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_Q61yhWwyEeCPd9WeAvlslQ" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="_Q61ygWwyEeCPd9WeAvlslQ"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_Q61ygmwyEeCPd9WeAvlslQ"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Q61yg2wyEeCPd9WeAvlslQ" x="-190" y="170" width="242"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_uSlvoWwyEeCPd9WeAvlslQ" type="2001" element="_uSlvqWwyEeCPd9WeAvlslQ" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_uSlvomwyEeCPd9WeAvlslQ" type="5001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_uSlvo2wyEeCPd9WeAvlslQ" type="7001">
+        <children xmi:type="notation:Shape" xmi:id="_uSlvpGwyEeCPd9WeAvlslQ" type="Text" fontName="Segoe UI" description="Hibernate run-time metamodel and persistence mechanisms for entities and collections">
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_uSlvpWwyEeCPd9WeAvlslQ" type="DiagramName">
+            <element xsi:nil="true"/>
+          </children>
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_uSlvpmwyEeCPd9WeAvlslQ" type="Description">
+            <element xsi:nil="true"/>
+          </children>
+          <element xsi:nil="true"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_uSlvp2wyEeCPd9WeAvlslQ" x="6" width="166" height="60"/>
+        </children>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_uSlvqGwyEeCPd9WeAvlslQ" x="384" y="276" width="197" height="105"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_LqTNRF5NEeCxut-tIzAezA" type="2001" element="_LqbwJF5NEeCxut-tIzAezA" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_LqTNRV5NEeCxut-tIzAezA" type="5001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_LqTNRl5NEeCxut-tIzAezA" type="7001">
+        <children xmi:type="notation:Shape" xmi:id="_LqTNR15NEeCxut-tIzAezA" type="Text" fontName="Segoe UI" description="APIs for configuring Hibernate, and classes for building the Hibernate configuration-time metamodel">
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_LqTNSF5NEeCxut-tIzAezA" type="DiagramName">
+            <element xsi:nil="true"/>
+          </children>
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_LqTNSV5NEeCxut-tIzAezA" type="Description">
+            <element xsi:nil="true"/>
+          </children>
+          <element xsi:nil="true"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LqTNSl5NEeCxut-tIzAezA" y="1" width="187" height="67"/>
+        </children>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LqTNS15NEeCxut-tIzAezA" x="44" y="24" height="100"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_qndF8HaLEeCjkcxo4o6cLQ" type="Note" fontName="Segoe UI" description="retrieves the Hibernate metamodel and instantiates ClassPersister and CollectionPersister classes (runtime-model)" fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_qndF8XaLEeCjkcxo4o6cLQ" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_qndF8naLEeCjkcxo4o6cLQ" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="_qndF83aLEeCjkcxo4o6cLQ"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_qndF9HaLEeCjkcxo4o6cLQ"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qndF9XaLEeCjkcxo4o6cLQ" x="-155" y="415" width="241" height="80"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_t9HaMHaLEeCjkcxo4o6cLQ" type="2001" element="_t9HaOHaLEeCjkcxo4o6cLQ" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_t9HaMXaLEeCjkcxo4o6cLQ" type="5001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_t9HaMnaLEeCjkcxo4o6cLQ" type="7001">
+        <children xmi:type="notation:Shape" xmi:id="_t9HaM3aLEeCjkcxo4o6cLQ" type="Text" fontName="Segoe UI" description="The central, organizing component, exposes interfaces to the application and other components">
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_t9HaNHaLEeCjkcxo4o6cLQ" type="DiagramName">
+            <element xsi:nil="true"/>
+          </children>
+          <children xmi:type="notation:BasicDecorationNode" xmi:id="_t9HaNXaLEeCjkcxo4o6cLQ" type="Description">
+            <element xsi:nil="true"/>
+          </children>
+          <element xsi:nil="true"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_t9HaNnaLEeCjkcxo4o6cLQ" x="5" width="161"/>
+        </children>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_t9HaN3aLEeCjkcxo4o6cLQ" x="-300" y="276" width="201" height="109"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_x5HuMV5MEeCxut-tIzAezA"/>
+    <edges xmi:type="notation:Edge" xmi:id="_kibhUGwrEeCPd9WeAvlslQ" type="4005" element="_kiVasWwrEeCPd9WeAvlslQ" source="_LqTNRF5NEeCxut-tIzAezA" target="_RpP38F5NEeCxut-tIzAezA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_kibhVGwrEeCPd9WeAvlslQ" type="6005">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_kibhVWwrEeCPd9WeAvlslQ" x="-8" y="-42"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_kibhUWwrEeCPd9WeAvlslQ"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_kibhUmwrEeCPd9WeAvlslQ" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_kibhU2wrEeCPd9WeAvlslQ" points="[0, 0, -114, -193]$[112, 192, -2, -1]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_kinukGwrEeCPd9WeAvlslQ" id="(0.45374449339207046,0.13)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_kinukWwrEeCPd9WeAvlslQ" id="(0.5048076923076923,0.04132231404958678)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_W-sLUGwyEeCPd9WeAvlslQ" type="NoteAttachment" source="_Q61ygGwyEeCPd9WeAvlslQ" target="_kibhUGwrEeCPd9WeAvlslQ" lineWidth="1">
+      <styles xmi:type="notation:ArrowStyle" xmi:id="_W-sLUWwyEeCPd9WeAvlslQ"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_W-sLUmwyEeCPd9WeAvlslQ"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_W-sLU2wyEeCPd9WeAvlslQ" points="[-1, 0, -4, 23]$[59, -18, 56, 5]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_W-18UGwyEeCPd9WeAvlslQ" id="(1.0,0.6071428571428571)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_W-18UWwyEeCPd9WeAvlslQ" id="(0.15384615384615385,0.49162011173184356)"/>
+    </edges>
+    <edges xmi:type="notation:Edge" xmi:id="_wmxYwGwyEeCPd9WeAvlslQ" type="4005" element="_wmnnwGwyEeCPd9WeAvlslQ" source="_uSlvoWwyEeCPd9WeAvlslQ" target="_RpP38F5NEeCxut-tIzAezA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_wmxYxGwyEeCPd9WeAvlslQ" type="6005">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_wmxYxWwyEeCPd9WeAvlslQ" x="-6" y="12"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_wmxYwWwyEeCPd9WeAvlslQ"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_wmxYwmwyEeCPd9WeAvlslQ" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_wmxYw2wyEeCPd9WeAvlslQ" points="[-45, 23, 439, -227]$[-472, 243, 12, -7]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_wnETsGwyEeCPd9WeAvlslQ" id="(0.2556818181818182,0.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_wnETsWwyEeCPd9WeAvlslQ" id="(0.9423076923076923,0.08264462809917356)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_2oGCAGwyEeCPd9WeAvlslQ" type="NoteAttachment" source="_RLcdMF7zEeC4e5MaDLh-Nw" target="_wmxYwGwyEeCPd9WeAvlslQ" lineWidth="1">
+      <styles xmi:type="notation:ArrowStyle" xmi:id="_2oGCAWwyEeCPd9WeAvlslQ"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_2oGCAmwyEeCPd9WeAvlslQ"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_2oGCA2wyEeCPd9WeAvlslQ" points="[0, 0, 101, 94]$[-105, -87, -4, 7]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_2oPzAGwyEeCPd9WeAvlslQ" id="(0.23316062176165803,0.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_2oPzAWwyEeCPd9WeAvlslQ" id="(0.30837004405286345,0.6680161943319838)"/>
+    </edges>
+    <edges xmi:type="notation:Edge" xmi:id="_u7l0oHaLEeCjkcxo4o6cLQ" type="4005" element="_u7j_cHaLEeCjkcxo4o6cLQ" source="_t9HaMHaLEeCjkcxo4o6cLQ" target="_RpP38F5NEeCxut-tIzAezA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_u7mbsHaLEeCjkcxo4o6cLQ" type="6005">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_u7mbsXaLEeCjkcxo4o6cLQ" x="-7" y="-7"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_u7l0oXaLEeCjkcxo4o6cLQ"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_u7l0onaLEeCjkcxo4o6cLQ" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_u7l0o3aLEeCjkcxo4o6cLQ" points="[0, 0, -134, 30]$[125, -35, -9, -5]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_u71FMHaLEeCjkcxo4o6cLQ" id="(0.9493087557603687,0.09174311926605505)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_u71FMXaLEeCjkcxo4o6cLQ" id="(0.07211538461538461,0.04132231404958678)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_xGAdwHaLEeCjkcxo4o6cLQ" type="NoteAttachment" source="_qndF8HaLEeCjkcxo4o6cLQ" target="_u7l0oHaLEeCjkcxo4o6cLQ" lineWidth="1">
+      <styles xmi:type="notation:ArrowStyle" xmi:id="_xGAdwXaLEeCjkcxo4o6cLQ"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_xGAdwnaLEeCjkcxo4o6cLQ"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_xGAdw3aLEeCjkcxo4o6cLQ" points="[-23, -32, 145, 175]$[-121, -207, 47, 0]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xGFWQHaLEeCjkcxo4o6cLQ" id="(0.6390041493775933,0.0196078431372549)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xGFWQXaLEeCjkcxo4o6cLQ" id="(0.7098765432098766,0.6363636363636364)"/>
+    </edges>
+  </notation:Diagram>
+</xmi:XMI>
