@@ -14,7 +14,7 @@ import org.scalaquery.ql.TypeMapper._
 import org.scalaquery.ql.extended.H2Driver.Implicit._
 import org.scalaquery.ql.extended.{ ExtendedTable => Table }
 
-import grizzled.slf4j.Logging
+import com.weiglewilczek.slf4s.Logging
 
 trait DatabaseAccess extends Logging {
 

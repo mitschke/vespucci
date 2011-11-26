@@ -3,8 +3,7 @@ import org.dorest.server.jdk.Server
 import org.dorest.server.HandlerFactory
 import org.scalaquery.session.Database._
 import org.scalaquery.ql.extended.H2Driver.Implicit._
-import grizzled.slf4j.Logging
-
+import com.weiglewilczek.slf4s.Logging
 
 /**
  * Vespucci Architecture Description Server
@@ -14,8 +13,7 @@ import org.scalaquery.session.Database
 object VADServer
   extends Server(9000)
   with DatabaseAccess
-  with Logging
-  {
+  with Logging {
 
   startDatabase()
 
@@ -80,7 +78,6 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
 
 }
 
-import grizzled.slf4j.Logging
 object VADServerApp extends scala.App with Logging {
 
   logger.info("Starting Vespucci Architecture Description Server... {}")
