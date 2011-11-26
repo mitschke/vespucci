@@ -1,10 +1,10 @@
 package de.tud.cs.st.opal.vads
 import org.dorest.server.jdk.Server
 import org.dorest.server.HandlerFactory
-import org.dorest.server.log.ConsoleLogging
-
 import org.scalaquery.session.Database._
 import org.scalaquery.ql.extended.H2Driver.Implicit._
+import grizzled.slf4j.Logging
+
 
 /**
  * Vespucci Architecture Description Server
@@ -14,7 +14,7 @@ import org.scalaquery.session.Database
 object VADServer
   extends Server(9000)
   with DatabaseAccess
-  with ConsoleLogging // TODO needs to exchanged
+  with Logging
   {
 
   startDatabase()
@@ -80,9 +80,10 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
 
 }
 
-object VADServerApp extends scala.App {
+import grizzled.slf4j.Logging
+object VADServerApp extends scala.App with Logging {
 
-  println("Starting Vespucci Architecture Description Server...")
+  logger.info("Starting Vespucci Architecture Description Server... {}")
 
   val configuration = new scala.sys.SystemProperties()
   configuration += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:vads")

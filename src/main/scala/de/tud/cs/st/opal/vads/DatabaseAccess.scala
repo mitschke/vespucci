@@ -14,7 +14,9 @@ import org.scalaquery.ql.TypeMapper._
 import org.scalaquery.ql.extended.H2Driver.Implicit._
 import org.scalaquery.ql.extended.{ ExtendedTable => Table }
 
-trait DatabaseAccess {
+import grizzled.slf4j.Logging
+
+trait DatabaseAccess extends Logging {
 
   val props = new scala.sys.SystemProperties()
   val db = Database.forURL(props("org.tud.cs.st.opal.vads.database"), driver = "org.h2.Driver")
@@ -33,8 +35,10 @@ trait DatabaseAccess {
   def startDatabase() = {
     db withSession {
       if (isDatabaseEmpty) {
+        logger.info("Creating database tables...")
         (descriptions).ddl create
       }
+      logger.info("Database startup completed.")
     }
   }
 
