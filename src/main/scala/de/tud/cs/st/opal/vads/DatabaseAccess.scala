@@ -15,13 +15,13 @@ import org.scalaquery.ql.extended.H2Driver.Implicit._
 import org.scalaquery.ql.extended.{ ExtendedTable => Table }
 
 trait DatabaseAccess {
-  
-   val props = new scala.sys.SystemProperties()
+
+  val props = new scala.sys.SystemProperties()
   val db = Database.forURL(props("org.tud.cs.st.opal.vads.database"), driver = "org.h2.Driver")
 
   import org.scalaquery.session.Database._
 
-  val uniqueId = (() => java.util.UUID.randomUUID().toString())
+  def uniqueId: String = java.util.UUID.randomUUID().toString()
 
   object descriptions extends Table[(String, String, String)]("DESCRIPTIONS") {
     def id = column[String]("ID", O.PrimaryKey)
@@ -29,8 +29,6 @@ trait DatabaseAccess {
     def description = column[String]("DESCRIPTION")
     def * = id ~ name ~ description
   }
-
-  
 
 }
 

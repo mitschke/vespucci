@@ -29,12 +29,12 @@ class VADServer
     db withSession {
       descriptions.ddl.create
     }
-    implicit def create = new Descriptions
+    def create = new Descriptions
   }
 
   this register new HandlerFactory[Description] {
     path { root :: "descriptions/" :: StringValue((desc, id) => desc.id = id) }
-    implicit def create = new Description()
+    def create = new Description
   }
 
   start()
@@ -72,7 +72,7 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
   var id: String = _
   post of XML returns XML {
     db withSession {
-      id = uniqueId()
+      id = uniqueId
       descriptions insert (id, id, "bar")
     }
     <success><id>{id}</id></success>
