@@ -20,7 +20,7 @@ class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     println("Starting tests")
     new SystemProperties += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1")
     import de.tud.cs.st.opal.vads.VADServer
-    new VADServer
+    VADServer
   }
 
   var id1: String = _

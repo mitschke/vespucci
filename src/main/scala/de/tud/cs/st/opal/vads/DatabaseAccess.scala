@@ -30,6 +30,15 @@ trait DatabaseAccess {
     def * = id ~ name ~ description
   }
 
+  def startDatabase() = {
+    db withSession {
+      if (isDatabaseEmpty) {
+        (descriptions).ddl create
+      }
+    }
+  }
+
+  protected def isDatabaseEmpty: Boolean = org.scalaquery.meta.MTable.getTables.list().length == 0
 }
 
 

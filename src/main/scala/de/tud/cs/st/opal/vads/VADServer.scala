@@ -11,11 +11,13 @@ import org.scalaquery.ql.extended.H2Driver.Implicit._
  */
 
 import org.scalaquery.session.Database
-class VADServer
+object VADServer
   extends Server(9000)
   with DatabaseAccess
   with ConsoleLogging // TODO needs to exchanged
   {
+
+  startDatabase()
 
   def root = "/"
 
@@ -26,9 +28,7 @@ class VADServer
 
   this register new HandlerFactory[Descriptions] {
     path { root :: "descriptions" }
-    db withSession {
-      descriptions.ddl.create
-    }
+
     def create = new Descriptions
   }
 
@@ -53,8 +53,8 @@ class Description extends RESTInterface with DatabaseAccess with TEXTSupport wit
   var id: String = _
   get returns TEXT {
     db withSession {
-     val query = for { ad <- descriptions if ad.id === id } yield ad.name
-     query.list mkString "\n"
+      val query = for { ad <- descriptions if ad.id === id } yield ad.name
+      query.list mkString "\n"
     }
   }
 
@@ -64,8 +64,8 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
 
   get returns TEXT {
     db withSession {
-     val query = for { ad <- descriptions } yield ad.name
-     query.list mkString "\n"
+      val query = for { ad <- descriptions } yield ad.name
+      query.list mkString "\n"
     }
   }
 
@@ -75,9 +75,18 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
       id = uniqueId
       descriptions insert (id, id, "bar")
     }
-    <success><id>{id}</id></success>
+    <success><id>{ id }</id></success>
   }
 
 }
 
-class VADServerApp extends VADServer with scala.App
+object VADServerApp extends scala.App {
+
+  println("Starting Vespucci Architecture Description Server...")
+
+  val configuration = new scala.sys.SystemProperties()
+  configuration += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:vads")
+
+  VADServer
+
+}
