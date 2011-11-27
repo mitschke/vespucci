@@ -35,22 +35,12 @@ class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   val sad1expectedId = "_x5HuMF5MEeCxut-tIzAezA"
 
   "The descriptions resource" should "create a new description on POST via XML" in {
-    id1 = Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << lines </> { xml => (xml \\ "id").text })
-    id1 should equal { sad1expectedId }
+    id1 = Http(url("http://localhost:9000/sads") <:< Map("Accept" -> "application/xml") << lines </> { xml => (xml \\ "id").text })
   }
 
   it should "return the created description on GET providing its id" in {
     import Utility.trim
-    val sad: xml.Elem = Http(url("http://localhost:9000/descriptions/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
-  /** Saves a node to a file with given filename using given encoding
-   *  optionally with xmldecl and doctype declaration.
-   *
-   *  @param filename the filename
-   *  @param node     the xml node we want to write
-   *  @param enc      encoding to use
-   *  @param xmlDecl  if true, write xml declaration
-   *  @param doctype  if not null, write doctype declaration
-   */
+    val sad: xml.Elem = Http(url("http://localhost:9000/sads/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
     SAD(sad).diagramName should equal { "mapping.sad" }
     scala.xml.XML.save("temp/sad.xml", sad, "UTF-8", true, null)
   }

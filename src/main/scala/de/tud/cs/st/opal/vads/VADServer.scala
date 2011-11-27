@@ -24,15 +24,20 @@ object VADServer
     def create = new Root
   }
 
-  this register new HandlerFactory[Descriptions] {
-    path { root :: "descriptions" }
+  this register new HandlerFactory[Sads] {
+    path { root :: "sads" }
 
-    def create = new Descriptions
+    def create = new Sads
   }
 
-  this register new HandlerFactory[Description] {
-    path { root :: "descriptions/" :: StringValue((desc, id) => desc.id = id) }
-    def create = new Description
+  this register new HandlerFactory[SadRessource] {
+    path { root :: "sads/" :: StringValue((desc, id) => desc.id = id) }
+    def create = new SadRessource
+  }
+
+  this register new HandlerFactory[Users] {
+    path { root :: "users" }
+    def create = new Users
   }
 
   start()
@@ -46,32 +51,39 @@ class Root extends RESTInterface with TEXTSupport with HTMLSupport {
 
 }
 
-class Description extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
+class SadRessource extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
   var id: String = _
 
   get returns TEXT {
     db withSession {
-      val query = for { ad <- descriptions if ad.id === id } yield ad.name
+      val query = for { sad <- SADS if sad.id === id } yield sad.name
       query.list mkString "\n"
     }
   }
 
   get returns XML {
     db withSession {
-      val query = for { ad <- descriptions if ad.id === id } yield ad.description
+      val query = for { sad <- SADS if sad.id === id } yield sad.description
       scala.xml.XML.loadString(query.list first)
     }
   }
 
 }
 
-class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
+class Sads extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
   get returns TEXT {
     db withSession {
-      val query = for { ad <- descriptions } yield ad.name
+      val query = for { sad <- SADS } yield sad.id ~ sad.name
       query.list mkString "\n"
+    }
+  }
+
+  get returns XML {
+    db withSession {
+      val query = for { sad <- SADS } yield sad.id ~ sad.name
+      <sads>{ query.list.map(e => <sad id={e._1} name={e._2}/>)}</sads>
     }
   }
 
@@ -79,12 +91,20 @@ class Descriptions extends RESTInterface with DatabaseAccess with TEXTSupport wi
   post of XML returns XML {
     val sad = SAD(XMLRequestBody)
     db withSession {
-      id = sad.diagramId
+      id = uniqueId
       logger.info("Persisting " + sad + " with id=" + id)
-      descriptions insert (id, sad.diagramName, sad.xmlData)
+      SADS insert (id, sad.diagramName, sad.xmlData)
     }
-    <success><id>{ id }</id></success>
+    <success><id>{id}</id></success>
   }
+
+}
+
+class Users extends RESTInterface with RegisteredUserAuthorization with TEXTSupport with XMLSupport {
+
+  get returns TEXT { "Hello " + username + "!" }
+  
+  get returns XML { <hello>{username}</hello> }
 
 }
 
