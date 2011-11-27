@@ -16,7 +16,7 @@ import scala.sys.SystemProperties
 import scala.xml.{ XML, Utility }
 
 @RunWith(classOf[JUnitRunner])
-class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll {
+class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll {
 
   override def beforeAll(configMap: Map[String, Any]) {
     println("Starting tests")
@@ -27,21 +27,34 @@ class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   var id1: String = _
   var id2: String = _
 
-  val source = scala.io.Source.fromFile("src/test/resources/mapping_detailed_description.sad")
-  val lines = source.mkString
-  source.close()
-  val sad1 = XML.loadString(lines)
-  val sad1expectedId = "_x5HuMF5MEeCxut-tIzAezA"
+  val sad1 = XML.loadFile("src/test/resources/sad1.sad")
+  val sad2 = XML.loadFile("src/test/resources/sad2.sad")
 
-  "The descriptions resource" should "create a new description on POST via XML" in {
-    id1 = Http(url("http://localhost:9000/sads") <:< Map("Accept" -> "application/xml") << lines </> { xml => (xml \\ "id").text })
+  "The descriptions resource" should "create a SAD on POST via XML" in {
+    id1 = Http(url("http://localhost:9000/sads") <:< Map("Accept" -> "application/xml") << sad1.toString </> { xml => (xml \\ "id").text })
   }
 
-  it should "return the created description on GET providing its id" in {
+  it should "return the created SAD on GET providing its id" in {
     val sad: xml.Elem = Http(url("http://localhost:9000/sads/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
     SAD(sad).diagramName should equal { "mapping.sad" }
-    scala.xml.XML.save("temp/sad.xml", sad, "UTF-8", true, null)
+    scala.xml.XML.save("temp/sad1.xml", sad, "UTF-8", true, null)
   }
+  
+  it should "create another SAD on POST via XML" in {
+    id2 = Http(url("http://localhost:9000/sads") <:< Map("Accept" -> "application/xml") << sad2.toString </> { xml => (xml \\ "id").text })
+  }
+  
+  it should "return the created second SAD on GET providing its id" in {
+    val sad: xml.Elem = Http(url("http://localhost:9000/sads/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
+    SAD(sad).diagramName should equal { "mapping.sad" }
+    scala.xml.XML.save("temp/sad2.xml", sad, "UTF-8", true, null)
+  }
+  
+  it should "return a list of created SADs on GET" in {
+     val sad: xml.Elem = Http(url("http://localhost:9000/sads") <:< Map("Accept" -> "application/xml") <> { xml => xml })
+  }
+  
+  
 
 }
 

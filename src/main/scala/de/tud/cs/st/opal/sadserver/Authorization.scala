@@ -6,10 +6,10 @@ trait AdminAuthorization extends BasicAuthentication
   with SimpleAuthenticator
   with AuthenticatedUser {
 
-  def authenticationRealm = "Demo App"
+  def authenticationRealm = "http://www.opal-project.de/vespucci_project"
 
   val authorizationUser = "admin"
-  val authorizationPwd = "admin"
+  val authorizationPwd = "password"
 
 }
 
@@ -18,7 +18,7 @@ import org.scalaquery.ql.extended.H2Driver.Implicit._
 trait RegisteredUserAuthorization extends BasicAuthentication with DatabaseAccess {
 
   def authenticationRealm = "http://www.opal-project.de/vespucci_project"
-    
+
   var username: String = _
   var password: String = _
 
@@ -26,10 +26,10 @@ trait RegisteredUserAuthorization extends BasicAuthentication with DatabaseAcces
 
     username = uname
     password = pwd
-		  
+
     db withSession {
-      val query = for { user <- USERS if user.username === uname if user.password === pwd} yield user
-      !(query.list).isEmpty 
+      val query = for { user <- USERS if user.username === uname if user.password === pwd } yield user
+      !(query.list).isEmpty
     }
   }
 

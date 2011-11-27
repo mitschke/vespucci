@@ -8,8 +8,6 @@ import com.weiglewilczek.slf4s.Logging
 /**
  * Software Architecture Description Server
  */
-
-import org.scalaquery.session.Database
 object SADServer
   extends Server(9000)
   with DatabaseAccess
@@ -83,7 +81,7 @@ class Sads extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSu
   get returns XML {
     db withSession {
       val query = for { sad <- SADS } yield sad.id ~ sad.name
-      <sads>{ query.list.map(e => <sad id={e._1} name={e._2}/>)}</sads>
+      <sads>{ query.list.map(e => <sad id={ e._1 } name={ e._2 }/>) }</sads>
     }
   }
 
@@ -95,7 +93,7 @@ class Sads extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSu
       logger.info("Persisting " + sad + " with id=" + id)
       SADS insert (id, sad.diagramName, sad.xmlData)
     }
-    <success><id>{id}</id></success>
+    <success><id>{ id }</id></success>
   }
 
 }
@@ -103,17 +101,20 @@ class Sads extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSu
 class Users extends RESTInterface with RegisteredUserAuthorization with TEXTSupport with XMLSupport {
 
   get returns TEXT { "Hello " + username + "!" }
-  
-  get returns XML { <hello>{username}</hello> }
+
+  get returns XML { <hello>{ username }</hello> }
 
 }
 
+/**
+ * Starts the SADServer as a configured stand-alone application.
+ */
 object VADServerApp extends scala.App with Logging {
 
   logger.info("Starting Software Architecture Description Server...")
 
   val configuration = new scala.sys.SystemProperties()
-  configuration += ("org.tud.cs.st.opal.sads.database" -> "jdbc:h2:sads")
+  configuration += ("org.tud.cs.st.opal.sadserver.database" -> "jdbc:h2:sads")
 
   SADServer
 

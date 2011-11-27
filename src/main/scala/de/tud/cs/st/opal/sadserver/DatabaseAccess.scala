@@ -19,7 +19,7 @@ import com.weiglewilczek.slf4s.Logging
 trait DatabaseAccess extends Logging {
 
   val props = new scala.sys.SystemProperties()
-  val db = Database.forURL(props("org.tud.cs.st.opal.vads.database"), driver = "org.h2.Driver")
+  val db = Database.forURL(props("org.tud.cs.st.opal.sadserver.database"), driver = "org.h2.Driver")
 
   import org.scalaquery.session.Database._
 

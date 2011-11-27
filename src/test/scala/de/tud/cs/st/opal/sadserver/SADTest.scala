@@ -6,9 +6,9 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
-class DescriptionTest extends FlatSpec with ShouldMatchers {
+class SADTest extends FlatSpec with ShouldMatchers {
   
-  val sad = xml.XML.loadFile("src/test/resources/mapping_detailed_description.sad")
+  val sad = xml.XML.loadFile("src/test/resources/sad1.sad")
       
   "The parsed SAD" should "contain a correct diagramId" in {
     SAD(sad).diagramId should equal { "_x5HuMF5MEeCxut-tIzAezA" }
