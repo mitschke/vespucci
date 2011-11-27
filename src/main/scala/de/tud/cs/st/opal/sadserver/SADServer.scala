@@ -56,18 +56,14 @@ class SAD extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSup
   get returns TEXT {
     db withSession {
       val query = for { sad <- sads if sad.id === id } yield sad.name
-      query.list mkString "\n"
+      query >>> (q => q mkString "\n")
     }
   }
 
   get returns XML {
     db withSession {
       val query = for { sad <- sads if sad.id === id } yield sad.description
-      val l: List[String] = query.list
-      val result: scala.xml.Elem = scala.xml.XML.loadString(l.first)
-      val r: Option[scala.xml.Node] = if (l.isEmpty) None else result
-      r
-      if (l.isEmpty) None else result
+      query >>> scala.xml.XML.loadString
     }
   }
 
