@@ -13,23 +13,36 @@ import dispatch.{ Http => DispatchHttp, _ }
 import DispatchHttp._
 import scala.sys.SystemProperties
 
+import scala.xml.{ XML, Utility }
+
 @RunWith(classOf[JUnitRunner])
 class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll {
 
   override def beforeAll(configMap: Map[String, Any]) {
     println("Starting tests")
-    new SystemProperties += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:testdb;DB_CLOSE_DELAY=-1")
+    new SystemProperties += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1")
     import de.tud.cs.st.opal.vads.VADServer
     VADServer
   }
 
   var id1: String = _
   var id2: String = _
-  val sad = xml.XML.loadFile("src/test/resources/mapping_detailed_description.sad")
+
+  val source = scala.io.Source.fromFile("src/test/resources/mapping_detailed_description.sad")
+  val lines = source.mkString
+  source.close()
+  val sad1 = XML.loadString(lines)
+  val sad1expectedId = "_x5HuMF5MEeCxut-tIzAezA"
 
   "The descriptions resource" should "create a new description on POST via XML" in {
-    id1 = Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << sad.toString </> { xml => (xml \\ "id").text })
-    id1 should equal { "_x5HuMF5MEeCxut-tIzAezA" }
+    id1 = Http(url("http://localhost:9000/descriptions") <:< Map("Accept" -> "application/xml") << lines </> { xml => (xml \\ "id").text })
+    id1 should equal { sad1expectedId }
+  }
+
+  it should "provide a reference to the created description on GET providing its id" in {
+    import Utility.trim
+    val e: xml.Node = Http(url("http://localhost:9000/descriptions/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
+    Utility.trim(e) should equal { Utility.trim(sad1) }
   }
 
 }

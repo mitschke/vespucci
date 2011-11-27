@@ -49,10 +49,18 @@ class Root extends RESTInterface with TEXTSupport {
 class Description extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
   var id: String = _
+  
   get returns TEXT {
     db withSession {
       val query = for { ad <- descriptions if ad.id === id } yield ad.name
       query.list mkString "\n"
+    }
+  }
+  
+  get returns XML {
+    db withSession {
+      val query = for { ad <- descriptions if ad.id === id } yield ad.description
+      scala.xml.XML.loadString(query.list first)
     }
   }
 
