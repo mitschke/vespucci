@@ -11,11 +11,11 @@ class SADTest extends FlatSpec with ShouldMatchers {
   val sad = xml.XML.loadFile("src/test/resources/sad1.sad")
       
   "The parsed SAD" should "contain a correct diagramId" in {
-    SAD(sad).diagramId should equal { "_x5HuMF5MEeCxut-tIzAezA" }
+    SADParser(sad).diagramId should equal { "_x5HuMF5MEeCxut-tIzAezA" }
   }
   
   it should "countain the correct diagramName" in {
-     SAD(sad).diagramName should equal { "mapping.sad" }
+     SADParser(sad).diagramName should equal { "mapping.sad" }
   }
 
 }

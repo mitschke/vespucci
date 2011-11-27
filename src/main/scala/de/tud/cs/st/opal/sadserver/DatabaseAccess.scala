@@ -28,19 +28,19 @@ trait DatabaseAccess extends Logging {
   /**
    * Stores software architecture descriptions
    */
-  object SADS extends Table[(String, String, String)]("SADS") {
+  object sads extends Table[(String, String, String)]("SADS") {
     def id = column[String]("ID", O.PrimaryKey)
     def name = column[String]("NAME")
     def description = column[String]("XMLDATA")
     def * = id ~ name ~ description
   }
-  
+
   /**
    * Stores registered users in the system
    */
-  object USERS extends Table[(String, String)]("USERS") {
+  object users extends Table[(String, String)]("USERS") {
     def username = column[String]("USERNAME", O.PrimaryKey)
-    def password= column[String]("PASSWORD")
+    def password = column[String]("PASSWORD")
     def * = username ~ password
   }
 
@@ -48,11 +48,11 @@ trait DatabaseAccess extends Logging {
     db withSession {
       if (isDatabaseEmpty) {
         logger.info("Creating database tables...")
-        (SADS.ddl ++ USERS.ddl).create
-        
+        (sads.ddl ++ users.ddl).create
+
         logger.info("Creating initial users...")
-        USERS.insert("admin", "password")
-        USERS.insert("mateusz", "password")
+        users.insert("admin", "password")
+        users.insert("mateusz", "password")
       }
       logger.info("Database startup completed.")
     }

@@ -28,7 +28,7 @@ trait RegisteredUserAuthorization extends BasicAuthentication with DatabaseAcces
     password = pwd
 
     db withSession {
-      val query = for { user <- USERS if user.username === uname if user.password === pwd } yield user
+      val query = for { user <- users if user.username === uname if user.password === pwd } yield user
       !(query.list).isEmpty
     }
   }

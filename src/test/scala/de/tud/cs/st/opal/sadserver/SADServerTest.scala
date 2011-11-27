@@ -36,7 +36,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
 
   it should "return the created SAD on GET providing its id" in {
     val sad: xml.Elem = Http(url("http://localhost:9000/sads/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
-    SAD(sad).diagramName should equal { "mapping.sad" }
+    SADParser(sad).diagramName should equal { "mapping.sad" }
     scala.xml.XML.save("temp/sad1.xml", sad, "UTF-8", true, null)
   }
   
@@ -46,7 +46,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   
   it should "return the created second SAD on GET providing its id" in {
     val sad: xml.Elem = Http(url("http://localhost:9000/sads/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
-    SAD(sad).diagramName should equal { "mapping.sad" }
+    SADParser(sad).diagramName should equal { "mapping.sad" }
     scala.xml.XML.save("temp/sad2.xml", sad, "UTF-8", true, null)
   }
   

@@ -22,15 +22,15 @@ object SADServer
     def create = new Root
   }
 
-  this register new HandlerFactory[Sads] {
+  this register new HandlerFactory[SADs] {
     path { root :: "sads" }
 
-    def create = new Sads
+    def create = new SADs
   }
 
-  this register new HandlerFactory[SadRessource] {
+  this register new HandlerFactory[SAD] {
     path { root :: "sads/" :: StringValue((desc, id) => desc.id = id) }
-    def create = new SadRessource
+    def create = new SAD
   }
 
   this register new HandlerFactory[Users] {
@@ -49,49 +49,53 @@ class Root extends RESTInterface with TEXTSupport with HTMLSupport {
 
 }
 
-class SadRessource extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
+class SAD extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
   var id: String = _
 
   get returns TEXT {
     db withSession {
-      val query = for { sad <- SADS if sad.id === id } yield sad.name
+      val query = for { sad <- sads if sad.id === id } yield sad.name
       query.list mkString "\n"
     }
   }
 
   get returns XML {
     db withSession {
-      val query = for { sad <- SADS if sad.id === id } yield sad.description
-      scala.xml.XML.loadString(query.list first)
+      val query = for { sad <- sads if sad.id === id } yield sad.description
+      val l: List[String] = query.list
+      val result: scala.xml.Elem = scala.xml.XML.loadString(l.first)
+      val r: Option[scala.xml.Node] = if (l.isEmpty) None else result
+      r
+      if (l.isEmpty) None else result
     }
   }
 
 }
 
-class Sads extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
+class SADs extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
   get returns TEXT {
     db withSession {
-      val query = for { sad <- SADS } yield sad.id ~ sad.name
+      val query = for { sad <- sads } yield sad.id ~ sad.name
       query.list mkString "\n"
     }
   }
 
   get returns XML {
     db withSession {
-      val query = for { sad <- SADS } yield sad.id ~ sad.name
+      val query = for { sad <- sads } yield sad.id ~ sad.name
       <sads>{ query.list.map(e => <sad id={ e._1 } name={ e._2 }/>) }</sads>
     }
   }
 
   var id: String = _
   post of XML returns XML {
-    val sad = SAD(XMLRequestBody)
+    val sad = SADParser(XMLRequestBody)
     db withSession {
       id = uniqueId
       logger.info("Persisting " + sad + " with id=" + id)
-      SADS insert (id, sad.diagramName, sad.xmlData)
+      sads insert (id, sad.diagramName, sad.xmlData)
     }
     <success><id>{ id }</id></success>
   }
