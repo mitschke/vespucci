@@ -41,3 +41,5 @@ build.log
 build.log
 
 .cache*
+/vads.h2.db
+/sads.h2.db
