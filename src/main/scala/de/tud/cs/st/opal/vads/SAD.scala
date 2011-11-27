@@ -17,6 +17,10 @@ object SAD {
     lazy val diagramId = (xml \ "Diagram" \ xmi("id")).toString
     lazy val diagramName = (xml \ "Diagram" \ "@name").toString
 
+    override def toString = {
+      "SAD[diagramId=\"" + diagramId + "\", diagramName=\"" + diagramName + "\"]"
+    }
+
   }
 
 }
