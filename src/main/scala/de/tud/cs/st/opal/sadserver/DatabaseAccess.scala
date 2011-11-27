@@ -1,4 +1,4 @@
-package de.tud.cs.st.opal.vads
+package de.tud.cs.st.opal.sadserver
 
 import org.scalaquery.session._
 import org.scalaquery.session.Database.threadLocalSession
@@ -49,7 +49,8 @@ trait DatabaseAccess extends Logging {
       if (isDatabaseEmpty) {
         logger.info("Creating database tables...")
         (SADS.ddl ++ USERS.ddl).create
-        // TODO: creates admin
+        
+        logger.info("Creating initial users...")
         USERS.insert("admin", "password")
         USERS.insert("mateusz", "password")
       }

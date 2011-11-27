@@ -1,4 +1,4 @@
-package de.tud.cs.st.opal.vads
+package de.tud.cs.st.opal.sadserver
 import org.dorest.server.jdk.Server
 import org.dorest.server.HandlerFactory
 import org.scalaquery.session.Database._
@@ -6,11 +6,11 @@ import org.scalaquery.ql.extended.H2Driver.Implicit._
 import com.weiglewilczek.slf4s.Logging
 
 /**
- * Vespucci Architecture Description Server
+ * Software Architecture Description Server
  */
 
 import org.scalaquery.session.Database
-object VADServer
+object SADServer
   extends Server(9000)
   with DatabaseAccess
   with Logging {
@@ -110,11 +110,11 @@ class Users extends RESTInterface with RegisteredUserAuthorization with TEXTSupp
 
 object VADServerApp extends scala.App with Logging {
 
-  logger.info("Starting Vespucci Architecture Description Server...")
+  logger.info("Starting Software Architecture Description Server...")
 
   val configuration = new scala.sys.SystemProperties()
-  configuration += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:vads")
+  configuration += ("org.tud.cs.st.opal.sads.database" -> "jdbc:h2:sads")
 
-  VADServer
+  SADServer
 
 }

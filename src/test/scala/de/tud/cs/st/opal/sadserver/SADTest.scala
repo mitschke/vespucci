@@ -1,10 +1,9 @@
-package de.tud.cs.st.opal.vads
+package de.tud.cs.st.opal.sadserver
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
-import SAD._
 
 @RunWith(classOf[JUnitRunner])
 class DescriptionTest extends FlatSpec with ShouldMatchers {

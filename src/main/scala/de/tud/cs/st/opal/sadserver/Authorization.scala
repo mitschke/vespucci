@@ -1,4 +1,4 @@
-package de.tud.cs.st.opal.vads
+package de.tud.cs.st.opal.sadserver
 
 import org.dorest.server.auth._
 

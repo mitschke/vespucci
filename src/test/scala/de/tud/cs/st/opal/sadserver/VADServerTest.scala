@@ -1,4 +1,4 @@
-package de.tud.cs.st.opal.vads
+package de.tud.cs.st.opal.sadserver
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -20,9 +20,8 @@ class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
 
   override def beforeAll(configMap: Map[String, Any]) {
     println("Starting tests")
-    new SystemProperties += ("org.tud.cs.st.opal.vads.database" -> "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1")
-    import de.tud.cs.st.opal.vads.VADServer
-    VADServer
+    new SystemProperties += ("org.tud.cs.st.opal.sadserver.database" -> "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1")
+    SADServer
   }
 
   var id1: String = _
@@ -39,7 +38,6 @@ class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   }
 
   it should "return the created description on GET providing its id" in {
-    import Utility.trim
     val sad: xml.Elem = Http(url("http://localhost:9000/sads/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
     SAD(sad).diagramName should equal { "mapping.sad" }
     scala.xml.XML.save("temp/sad.xml", sad, "UTF-8", true, null)
