@@ -40,9 +40,9 @@ object VADServer
 
 import org.dorest.server.rest._
 
-class Root extends RESTInterface with TEXTSupport {
+class Root extends RESTInterface with TEXTSupport with HTMLSupport {
 
-  get returns TEXT { "Hello!" }
+  get returns HTML { "Hello!" }
 
 }
 
