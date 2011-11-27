@@ -39,10 +39,10 @@ class VADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     id1 should equal { sad1expectedId }
   }
 
-  it should "provide a reference to the created description on GET providing its id" in {
+  it should "return the created description on GET providing its id" in {
     import Utility.trim
-    val e: xml.Node = Http(url("http://localhost:9000/descriptions/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
-    Utility.trim(e) should equal { Utility.trim(sad1) }
+    val sad: xml.Elem = Http(url("http://localhost:9000/descriptions/" + id1) <:< Map("Accept" -> "application/xml") <> { xml => xml })
+    SAD(sad).diagramName should equal { "mapping.sad" }
   }
 
 }
