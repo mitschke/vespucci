@@ -18,7 +18,7 @@ object SADParser {
     lazy val diagramName = (xml \ "Diagram" \ "@name").toString
 
     override def toString = {
-      "SAD[diagramId=\"" + diagramId + "\", diagramName=\"" + diagramName + "\"]"
+      "SAD[diagramId=[" + diagramId + "], diagramName=[" + diagramName + "]]"
     }
 
   }
