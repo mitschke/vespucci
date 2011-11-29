@@ -56,14 +56,14 @@ class SAD extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSup
   get returns TEXT {
     db withSession {
       val query = for { sad <- sads if sad.id === id } yield sad.name
-      query >>| (q => q mkString "\n")
+      query.firstOption map (q => q mkString "\n")
     }
   }
 
   get returns XML {
     db withSession {
       val query = for { sad <- sads if sad.id === id } yield sad.description
-      query >>| scala.xml.XML.loadString
+      query.firstOption map scala.xml.XML.loadString
     }
   }
 
