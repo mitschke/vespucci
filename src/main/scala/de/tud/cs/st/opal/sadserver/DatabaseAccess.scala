@@ -25,16 +25,6 @@ trait DatabaseAccess extends Logging {
 
   def uniqueId: String = java.util.UUID.randomUUID().toString()
 
-  final class QueryAssoc[A](val query: org.scalaquery.ql.Query[org.scalaquery.ql.NamedColumn[A]]) {
-    @inline def >>>[B](f: (A => B)): Option[B] = {
-      val l = query.list
-      val result = f(l.first)
-      val r: Option[B] = if (l.isEmpty) None else Option(result)
-      r
-    }
-  }
-  implicit def any2QueryAssoc[A](x: org.scalaquery.ql.Query[org.scalaquery.ql.NamedColumn[A]]): QueryAssoc[A] = new QueryAssoc(x)
-
   /**
    * Stores software architecture descriptions
    */
@@ -69,6 +59,17 @@ trait DatabaseAccess extends Logging {
   }
 
   protected def isDatabaseEmpty: Boolean = org.scalaquery.meta.MTable.getTables.list().length == 0
+
+  /////////////////// helper /////////////////////
+
+  final class QueryAssoc[A](val query: org.scalaquery.ql.Query[org.scalaquery.ql.NamedColumn[A]]) {
+    @inline def >>|[B](f: (A => B)): Option[B] = {
+      val x = query.firstOption()
+      if (x.isDefined) Option(f(x.get)) else None
+    }
+  }
+  implicit def any2QueryAssoc[A](x: org.scalaquery.ql.Query[org.scalaquery.ql.NamedColumn[A]]): QueryAssoc[A] = new QueryAssoc(x)
+
 }
 
 
