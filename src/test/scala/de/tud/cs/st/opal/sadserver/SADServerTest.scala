@@ -30,7 +30,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   val sad1 = XML.loadFile("src/test/resources/sad1.sad")
   val sad2 = XML.loadFile("src/test/resources/sad2.sad")
 
-  "The descriptions resource" should "create a SAD on POST via XML" in {
+  "The '/sads' resource" should "create a SAD on POST via XML" in {
     id1 = Http(url("http://localhost:9000/sads") <:< Map("Accept" -> "application/xml") << sad1.toString </> { xml => (xml \\ "id").text })
   }
 
@@ -49,6 +49,8 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     SADParser(sad).diagramName should equal { "mapping.sad" }
     scala.xml.XML.save("temp/sad2.xml", sad, "UTF-8", true, null)
   }
+  
+  it should "return a 404 if the id is not known"
   
   it should "return a list of created SADs on GET" in {
      val sad: xml.Elem = Http(url("http://localhost:9000/sads") <:< Map("Accept" -> "application/xml") <> { xml => xml })
