@@ -6,7 +6,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
-class SADTest extends FlatSpec with ShouldMatchers {
+class SADParserTest extends FlatSpec with ShouldMatchers {
   
   val sad = xml.XML.loadFile("src/test/resources/sad1.sad")
       
