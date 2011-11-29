@@ -150,7 +150,6 @@
 						</goals>
 					</execution>
 				</executions>
-
 			</plugin>
 
 			<!-- Disable Surefire to avoid running tests twice when using scalatest-plugin -->
