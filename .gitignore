@@ -45,3 +45,4 @@ build.log
 /sads.h2.db
 /src/test/resources/hibernate40/
 /src/main/resources/
+/src/test/resources/logback-test.xml
