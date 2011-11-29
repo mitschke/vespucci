@@ -43,3 +43,5 @@ build.log
 .cache*
 /vads.h2.db
 /sads.h2.db
+/src/test/resources/hibernate40/
+/src/main/resources/
