@@ -335,9 +335,9 @@
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart" id="ShapesDiagram_1000"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart" id="Ensemble_2001"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart" id="Ensemble_3001"/>
-         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.DummyEditPart" id="Dummy_2002"/>
-         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Dummy2EditPart" id="Dummy_3003"/>
-         <context elements="ShapesDiagram_1000,Ensemble_2001,Ensemble_3001,Dummy_2002,Dummy_3003"/>
+         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart" id="Empty_2002"/>
+         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart" id="Empty_3003"/>
+         <context elements="ShapesDiagram_1000,Ensemble_2001,Ensemble_3001,Empty_2002,Empty_3003"/>
       </modelingAssistantProvider>
    </extension>
 
@@ -827,7 +827,7 @@
                            ifEmpty="true"
                            operator="or">
                         <test
-                              property="de.tud.cs.st.vespucci.diagram.pointsToDummy">
+                              property="de.tud.cs.st.vespucci.diagram.pointsToEmpty">
                         </test>
                      </iterate>
                   </not>
@@ -960,9 +960,9 @@
              point="org.eclipse.core.expressions.propertyTesters">
           <propertyTester
                 class="de.tud.cs.st.vespucci.diagram.menuItems.ConnectionPointsToEmptyTester"
-                id="de.tud.cs.st.vespucci.diagram.ConnectionPointsToDummyTester"
+                id="de.tud.cs.st.vespucci.diagram.ConnectionPointsToEmptyTester"
                 namespace="de.tud.cs.st.vespucci.diagram"
-                properties="pointsToDummy"
+                properties="pointsToEmpty"
                 type="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
           </propertyTester>
        </extension>

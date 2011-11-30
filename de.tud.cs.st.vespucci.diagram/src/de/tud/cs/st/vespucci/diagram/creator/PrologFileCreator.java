@@ -147,7 +147,7 @@ public class PrologFileCreator {
 
 		final StringBuilder ensembleFacts = EnsemblePrologFacts.getFacts(diagram.getShapes(), diagramFileName);
 
-		if (hasDummy(diagram.getShapes())) {
+		if (hasEmpty(diagram.getShapes())) {
 			ensembleFacts.append("ensemble('" + diagramFileName + "',(empty),empty,[]).\n");
 		}
 
@@ -166,9 +166,9 @@ public class PrologFileCreator {
 	/**
 	 * 
 	 * @param shapeList
-	 * @return Return true only if given shape list contains a dummy.
+	 * @return Return true only if given shape list contains a empty.
 	 */
-	private static boolean hasDummy(final List<Shape> shapeList) {
+	private static boolean hasEmpty(final List<Shape> shapeList) {
 		for (final Shape shape : shapeList) {
 			if (shape instanceof Empty) {
 				return true;

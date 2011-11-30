@@ -115,7 +115,7 @@ import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineConnectionEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineDummyEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEmptyEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineExpectedSourceConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineExpectedTargetConnectionEditPart;
@@ -297,7 +297,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 					if (element instanceof Ensemble) {
 						return new OutlineEnsembleEditPart(model);
 					} else if (element instanceof Empty) {
-						return new OutlineDummyEditPart(model);
+						return new OutlineEmptyEditPart(model);
 					} else if (element instanceof Connection) {
 						return getOutlineConnectionEditPart(model, element,
 								context);

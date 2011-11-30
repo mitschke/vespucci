@@ -92,7 +92,7 @@ public class EnsemblePrologFacts {
 	}
 
 	/**
-	 * Search the diagram recursively and create all ensemble facts, except Dummy.
+	 * Search the diagram recursively and create all ensemble facts, except Empty.
 	 * 
 	 * @param shapeList
 	 *            The list of shapes in the diagram.
