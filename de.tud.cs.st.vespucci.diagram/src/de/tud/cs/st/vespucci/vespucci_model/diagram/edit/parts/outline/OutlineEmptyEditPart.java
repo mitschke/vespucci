@@ -58,7 +58,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPl
  */
 public class OutlineEmptyEditPart extends TreeEditPart {
 
-	private static final String ENSEMBLE_IMAGE = "icons/outline/Dummy.gif";
+	private static final String ENSEMBLE_IMAGE = "icons/outline/Empty.gif";
 
 	public OutlineEmptyEditPart(final Object model) {
 		super(model);
