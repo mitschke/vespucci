@@ -56,7 +56,7 @@ import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes;
 
 /**
- * Responsibility: create new dummy object called from context menu.
+ * Responsibility: create new empty object called from context menu.
  * 
  * @author Tam-Minh Nguyen
  */
@@ -66,16 +66,16 @@ public class CreateEmptyAction implements IObjectActionDelegate {
 
 	@Override
 	public void run(final IAction action) {
-		final CreateViewRequest dummyRequest = CreateViewRequestFactory.getCreateShapeRequest(VespucciElementTypes.Empty_2002,
+		final CreateViewRequest emptyRequest = CreateViewRequestFactory.getCreateShapeRequest(VespucciElementTypes.Empty_2002,
 				selectedElement.getDiagramPreferencesHint());
-		dummyRequest.setLocation(EditPartService.getRecentRightClickPos());
+		emptyRequest.setLocation(EditPartService.getRecentRightClickPos());
 
-		final Command createCommand = selectedElement.getCommand(dummyRequest);
+		final Command createCommand = selectedElement.getCommand(emptyRequest);
 		selectedElement.getDiagramEditDomain().getDiagramCommandStack().execute(createCommand);
 
 		// put the new topic in edit mode
 		final EditPartViewer viewer = selectedElement.getViewer();
-		final IAdaptable viewAdapter = (IAdaptable) ((List<?>) dummyRequest.getNewObject()).get(0);
+		final IAdaptable viewAdapter = (IAdaptable) ((List<?>) emptyRequest.getNewObject()).get(0);
 		final EditPart elementPart = (EditPart) viewer.getEditPartRegistry().get(viewAdapter.getAdapter(View.class));
 		if (elementPart != null) {
 			Display.getCurrent().asyncExec(new Runnable() {
