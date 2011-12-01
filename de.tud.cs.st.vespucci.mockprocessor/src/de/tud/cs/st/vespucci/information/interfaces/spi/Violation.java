@@ -14,8 +14,6 @@ public class Violation implements IViolation{
 	IEnsemble targetEnsemble;
 	IConstraint constraint;
 	
-	
-	
 	public Violation(String description, ISourceCodeElement sourceElement,
 			ISourceCodeElement targetElement, IEnsemble sourceEnsemble,
 			IEnsemble targetEnsemble, IConstraint constraint) {

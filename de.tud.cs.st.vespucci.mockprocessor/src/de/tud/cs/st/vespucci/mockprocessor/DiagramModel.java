@@ -4,11 +4,11 @@ import java.util.LinkedList;
 
 import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
 
-public class ModelT284 {
+public class DiagramModel {
 
 	LinkedList<IEnsemble> elements;
 
-	public ModelT284(LinkedList<IEnsemble> elements) {
+	public DiagramModel(LinkedList<IEnsemble> elements) {
 		this.elements = elements;
 	}
 

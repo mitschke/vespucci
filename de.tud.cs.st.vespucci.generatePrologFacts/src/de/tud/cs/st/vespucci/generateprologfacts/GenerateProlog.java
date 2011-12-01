@@ -56,7 +56,7 @@ public class GenerateProlog implements IModelProcessor, IModelSaveAction {
 	}
 
 	@Override
-	public void processModel(Object diagramModel) {
+	public Object processModel(Object diagramModel) {
 		
 		final PrologFileCreator prologFileCreator = new PrologFileCreator();
 		
@@ -73,11 +73,17 @@ public class GenerateProlog implements IModelProcessor, IModelSaveAction {
 			throw new VespucciIOException(String.format("File [%s] not found.",diagramFile), e);
 		}
 
+		return null;
 	}
 		
 	@Override
 	public void doSave(Object diagramModel) {
 		processModel(diagramModel);
+	}
+
+	@Override
+	public Class<?> getReturnType() {
+		return null;
 	}
 
 }

@@ -13,19 +13,19 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
 public class AdapterIFile implements IAdapterFactory {
 	
-	private static Class<?>[] adapterList = { ModelT284.class };
+	private static Class<?>[] adapterList = { DiagramModel.class };
 
 	@Override
 	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
 		
-		if (adapterType == ModelT284.class) {
+		if (adapterType == DiagramModel.class) {
 			return createDiagram((IFile) adaptableObject);
 		}
 
 		return null;
 	}
 	
-	private ModelT284 createDiagram(IFile diagramFile) {
+	private DiagramModel createDiagram(IFile diagramFile) {
 		
 		ShapesDiagram d = Util.getAdapted(diagramFile, ShapesDiagram.class);
 	
@@ -36,7 +36,7 @@ public class AdapterIFile implements IAdapterFactory {
 				list.add(new Ensemble(shape));
 			}
 			
-			return new ModelT284(list);
+			return new DiagramModel(list);
 		}
 		
 		return null;		

@@ -70,10 +70,11 @@ public class FillExplorerSubMenu extends ContributionItem {
 	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.modelProcessors";
 	private LinkedList<ProcessorItem<IModelProcessor>> processorItems;
 	private LinkedList<IFile> diagramIFiles;
+	private LinkedList<IReturnProcessor> returnProcessors;
 
 	public FillExplorerSubMenu() {
 	}
-
+	
 	public FillExplorerSubMenu(String id) {
 		super(id);
 	}
@@ -84,22 +85,30 @@ public class FillExplorerSubMenu extends ContributionItem {
 		// Get all Processors for all registered Plug-Ins
 		this.processorItems = getProcessorItems();
 		this.diagramIFiles = getSelectedDiagramIFiles();
+		this.returnProcessors = getReturnProcessors();
 
 		if (this.processorItems.size() == 0){
 			MenuItem menuItem = new MenuItem(menu, SWT.CHECK);
 			menuItem.setText("(No registered model processors)");
 			menuItem.setEnabled(false);
 		}else{
-			for (final ProcessorItem<IModelProcessor> processorItem : processorItems) {
+			for (final ProcessorItem<IModelProcessor> processor : processorItems) {
 				MenuItem menuItem = new MenuItem(menu, SWT.CHECK, index);
-				menuItem.setText(processorItem.getLabel());
+				menuItem.setText(processor.getLabel());
 				menuItem.addSelectionListener(new SelectionAdapter() {
 
 					public void widgetSelected(SelectionEvent e) {
 
 						for (IFile diagramFile : diagramIFiles) {
 
-							processorItem.getProcessor().processModel(diagramFile);
+							Object result = processor.getProcessor().processModel(diagramFile);
+							
+							for (IReturnProcessor returnProcessor : returnProcessors) {
+								if (returnProcessor.isInterested(processor.getProcessor().getReturnType())){
+									returnProcessor.update(result, diagramFile.getProject());
+								}
+							}
+							
 							try {
 								refreshPageView(diagramFile);
 							} catch (CoreException e1) {
@@ -166,5 +175,34 @@ public class FillExplorerSubMenu extends ContributionItem {
 
 		return converterItems;
 	}
+	
+
+	private LinkedList<IReturnProcessor> getReturnProcessors() {
+		
+		LinkedList<IReturnProcessor> returnProcessors = new LinkedList<IReturnProcessor>();
+		
+		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+		
+		IConfigurationElement[] configurationElement = extensionRegistry
+				.getConfigurationElementsFor("de.tud.cs.st.vespucci.diagram.returnProcessors");
+		try {
+			for (IConfigurationElement i : configurationElement) {
+
+				// Get all Processors
+				final Object o = i.createExecutableExtension("ReturnProcessor");
+
+				if (o instanceof IReturnProcessor) {
+					returnProcessors.add((IReturnProcessor) o);
+				}
+			}
+
+		} catch (CoreException ex) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, ex.getMessage(), ex);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
+		
+		return returnProcessors;
+	}
+
 
 }

@@ -37,6 +37,7 @@
    <extension-point id="modelSaveActions" name="Model Save Actions" schema="schema/modelSaveActions.exsd"/>
    <extension-point id="modelProcessors" name="Model Processor" schema="schema/modelProcessors.exsd"/>
    <extension-point id="modelElementProcessors" name="Model Element Processors" schema="schema/modelElementProcessors.exsd"/>
+   <extension-point id="returnProcessors" name="Return Processors" schema="schema/returnProcessors.exsd"/>
 
    <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
       <?gmfgen generated="true"?>

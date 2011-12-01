@@ -54,9 +54,12 @@ public interface IModelProcessor {
 	 * 	...
 	 * } </pre>
 	 * @param diagramModel e.g. IFile, full diagram (ShapesDiagram)
+	 * @return 
 	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
 	 * 
 	 */
-	public void processModel(Object diagramModel);
+	public Object processModel(Object diagramModel);
+	
+	public Class<?> getReturnType();
 	
 }

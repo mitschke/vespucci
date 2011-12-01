@@ -14,7 +14,7 @@
             adaptableType="org.eclipse.core.resources.IFile"
             class="de.tud.cs.st.vespucci.mockprocessor.AdapterIFile">
          <adapter
-               type="de.tud.cs.st.vespucci.mockprocessor.ModelT284">
+               type="de.tud.cs.st.vespucci.mockprocessor.DiagramModel">
          </adapter>
       </factory>
    </extension>
