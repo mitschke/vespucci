@@ -33,6 +33,11 @@ object SADServer
     def create = new SAD
   }
 
+  this register new HandlerFactory[SADdata] {
+    path { root :: "sads/" :: StringValue((desc, id) => desc.id = id) :: "/data" }
+    def create = new SADdata
+  }
+
   this register new HandlerFactory[Users] {
     path { root :: "users" }
     def create = new Users
@@ -51,19 +56,59 @@ class Root extends RESTInterface with TEXTSupport with HTMLSupport {
 
 class SAD extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
+  import scala.xml.XML.load
+  import scala.io.Source.fromInputStream
+
   var id: String = _
+
+  implicit def clob2xml(x: java.sql.Clob) = load(fromInputStream(x.getAsciiStream).toString)
 
   get returns TEXT {
     db withSession {
       val query = for { sad <- sads if sad.id === id } yield sad.name
-      query.firstOption map (q => q mkString "\n")
+      None
     }
   }
 
   get returns XML {
     db withSession {
-      val query = for { sad <- sads if sad.id === id } yield sad.description
-      query.firstOption map scala.xml.XML.loadString
+      val query = for { sad <- sads if sad.id === id } yield sad.data
+      query.firstOption() match {
+        // 1st option: does entry exist in DB? 2nd option: has entry sad-clob?
+        case Some(Some(clob)) => Some(clob2xml(clob))
+        case _ => None
+      }
+    }
+  }
+
+}
+
+class SADdata extends RESTInterface with DatabaseAccess with XMLSupport {
+
+  var id: String = _
+
+  import scala.xml.XML.load
+  import scala.io.Source.fromInputStream
+
+  implicit def clob2xml(x: java.sql.Clob) = load(fromInputStream(x.getAsciiStream).toString)
+
+  put of XML returns XML {
+    db withSession {
+      logger.info("Putting sad-data for id " + id)
+      import javax.sql.rowset.serial.SerialClob
+      sads insert (id, "name", "stuff", None, None, false)
+    }
+    <success><id>{ id }</id></success>
+  }
+
+  get returns XML {
+    db withSession {
+      val query = for { sad <- sads if sad.id === id } yield sad.data
+      query.firstOption() match {
+        // 1st option: does entry exist in DB? 2nd option: has entry sad-clob?
+        case Some(Some(clob)) => Some(clob2xml(clob))
+        case _ => None
+      }
     }
   }
 
@@ -91,7 +136,7 @@ class SADs extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSu
     db withSession {
       id = uniqueId
       logger.info("Persisting " + sad + " with id=" + id)
-      sads insert (id, sad.diagramName, sad.xmlData)
+      sads insert (id, sad.diagramName, sad.xmlData, None, None, false)
     }
     <success><id>{ id }</id></success>
   }
