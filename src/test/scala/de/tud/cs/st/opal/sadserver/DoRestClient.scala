@@ -7,26 +7,29 @@ import auth._
 import client.params._
 import auth.params._
 import impl.client._
+import impl.auth._
 import client._
 import methods._
 
 object DoRestClient {
 
-  def get(headers: Map[String, String], auth: Auth = NoAuth())(url: String): Response = {
+  def get(headers: Map[String, String], auth: Auth = NoAuth)(url: String): Response = {
     execute(new HttpGet(url), headers, auth)
   }
 
-  def post(headers: Map[String, String], auth: Auth = NoAuth())(url: String, content: String): Response = {
+  def post(headers: Map[String, String], auth: Auth = NoAuth)(url: String, content: String): Response = {
     val post: HttpPost = new HttpPost(url)
     post.setEntity(new StringEntity(content))
     execute(post, headers, auth)
   }
 
   private[this] def execute[T <: HttpRequestBase, S <: Auth](request: T, headers: Map[String, String], auth: S): Response = {
+    auth.applyHeader(request)
     for ((key, value) <- headers) request.addHeader(key, value)
-    new Response(new DefaultHttpClient().execute(request))
+    val httpClient = new DefaultHttpClient()
+    new Response(httpClient.execute(request))
   }
-  
+
 }
 
 class Response(private val response: HttpResponse) {
@@ -43,12 +46,37 @@ class Response(private val response: HttpResponse) {
 
 }
 
-sealed case class Auth
+abstract class Auth {
 
-case class NoAuth extends Auth
+  def applyHeader(httpRequest: HttpRequest): HttpRequest
 
-case class BasicAuth extends Auth
+}
 
-case class DigestAuth extends Auth
+object NoAuth extends Auth {
+
+  def applyHeader(httpRequest: HttpRequest) = httpRequest
+
+}
+
+class BasicAuth(private val username: String, private val password: String) extends Auth {
+
+  def applyHeader(httpRequest: HttpRequest) = {
+    val header = new BasicScheme().authenticate(new UsernamePasswordCredentials(username, password), httpRequest)
+    httpRequest.addHeader(header)
+    httpRequest
+  }
+
+}
+
+class DigestAuth(username: String, password: String) extends Auth {
+
+  def applyHeader(httpRequest: HttpRequest) = {
+    val header = new DigestScheme().authenticate(new UsernamePasswordCredentials(username, password), httpRequest)
+    httpRequest.addHeader(header)
+    httpRequest
+  }
+
+}
+
 
 

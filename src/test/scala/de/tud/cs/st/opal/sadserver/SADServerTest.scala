@@ -32,8 +32,9 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   val sad1 = XML.loadFile("src/test/resources/sad1.sad")
   val sad2 = XML.loadFile("src/test/resources/sad2.sad")
 
-  var post = DoRestClient.post(Map("Accept" -> "application/xml")) _
-  var get = DoRestClient.get(Map("Accept" -> "application/xml")) _
+  val post = DoRestClient.post(Map("Accept" -> "application/xml")) _
+  val get = DoRestClient.get(Map("Accept" -> "application/xml")) _
+  val basicAuthGet = DoRestClient.get(Map("Accept" -> "application/xml"), new BasicAuth("admin", "password")) _
 
   "The '/sads' resource" should "create a SAD on POST via XML" in {
     val response = post(host + "/sads", sad1.toString)
@@ -64,6 +65,16 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   it should "return a list of created SADs on GET" in {
     val response = get(host + "/sads")
     response.statusCode should equal { 200 }
+  }
+  
+   "The '/users' resource" should "return FORBIDDEN for unauthorized" in {
+    val response = get(host + "/users")
+    response.statusCode should equal(401)
+  }
+   
+   it should "return OK for authorized users" in {
+    val response = basicAuthGet(host + "/users")
+    response.statusCode should equal(200)
   }
   
 
