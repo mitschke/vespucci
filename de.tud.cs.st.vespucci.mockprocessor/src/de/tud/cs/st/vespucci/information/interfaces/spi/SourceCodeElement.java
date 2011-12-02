@@ -4,62 +4,30 @@ import de.tud.cs.st.vespucci.information.interfaces.ISourceCodeElement;
 
 public class SourceCodeElement implements ISourceCodeElement {
 	
-	private String codeElementPackage;
-	private String codeClassName;
-	private Integer lineNr;
+	private String packageName;
+	private String className;
+	private int lineNumber;
 	
-	
-	
-	public SourceCodeElement(String codeElementPackage, String codeClassName,
-			Integer lineNr) {
-		this.codeElementPackage = codeElementPackage;
-		this.codeClassName = codeClassName;
-		this.lineNr = lineNr;
+	public SourceCodeElement(String packageName, String className,
+			Integer lineNumber) {
+		this.packageName = packageName;
+		this.className = className;
+		this.lineNumber = lineNumber;
 	}
-
-
 
 	@Override
-	public String getCodeElementPackage() {
-		return codeElementPackage;
+	public String getPackageName() {
+		return packageName;
 	}
-
-
 
 	@Override
-	public void setCodeElementPackage(String codeElementPackage) {
-		this.codeElementPackage = codeElementPackage;
+	public String getClassName() {
+		return className;
 	}
-
-
 
 	@Override
-	public String getCodeClassName() {
-		return codeClassName;
+	public int getLineNumber() {
+		return lineNumber;
 	}
-
-
-
-	@Override
-	public void setCodeClassName(String codeClassName) {
-		this.codeClassName = codeClassName;
-	}
-
-
-
-	@Override
-	public Integer getLineNr() {
-		return lineNr;
-	}
-
-
-
-	@Override
-	public void setLineNr(Integer lineNr) {
-		this.lineNr = lineNr;
-	}
-
-
-	
 	
 }

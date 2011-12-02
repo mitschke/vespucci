@@ -28,7 +28,7 @@ public class Violation implements IViolation{
 
 	@Override
 	public String getDescription() {
-		return null;
+		return description;
 	}
 
 	@Override
