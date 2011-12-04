@@ -5,12 +5,8 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FlatSpec
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.ShouldMatchers
-import org.apache.http.client.methods.HttpUriRequest
-import org.apache.http.client.{ ResponseHandler, HttpClient }
-import org.apache.http.protocol.HttpContext
-import org.apache.http.{ HttpRequest, HttpHost }
-import dispatch.{ Http => DispatchHttp, _ }
-import DispatchHttp._
+import org.dorest.client.SimpleClient
+import org.dorest.client.{BasicAuth, DigestAuth}
 import scala.sys.SystemProperties
 import scala.xml.XML.loadString
 
@@ -32,16 +28,15 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   val sad1 = XML.loadFile("src/test/resources/sad1.sad")
   val sad2 = XML.loadFile("src/test/resources/sad2.sad")
 
-  val post = DoRestClient.post(Map("Accept" -> "application/xml")) _
-  val get = DoRestClient.get(Map("Accept" -> "application/xml")) _
-  val basicAuthGet = DoRestClient.get(Map("Accept" -> "application/xml"), new BasicAuth("admin", "password")) _
+  var post = SimpleClient.post(Map("Accept" -> "application/xml")) _
+  var get = SimpleClient.get(Map("Accept" -> "application/xml")) _
+  var basicAuthGet = SimpleClient.get(Map("Accept" -> "application/xml"), new BasicAuth("admin", "password")) _
+  var digestAuthGet = SimpleClient.get(Map("Accept" -> "application/xml"), new DigestAuth("admin", "password")) _
 
   "The '/sads' resource" should "create a SAD on POST via XML" in {
     val response = post(host + "/sads", sad1.toString)
     response.statusCode should equal(201)
     id1 = (XML.loadString(response.body) \\ "id").text
-    println("ID" + id1)
-
   }
 
   it should "return the created SAD on GET providing its id" in {
@@ -77,21 +72,4 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     response.statusCode should equal(200)
   }
   
-
-}
-
-/**
- * Enables control over logging.
- */
-object Http extends DispatchHttp {
-
-  override def make_logger = new Logger {
-    def info(msg: String, items: Any*) {
-      // no-op
-    }
-
-    def warn(msg: String, items: Any*) {
-      // no-op
-    }
-  }
 }

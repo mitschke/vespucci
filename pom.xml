@@ -52,9 +52,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.databinder</groupId>
-			<artifactId>dispatch-http_2.9.1</artifactId>
-			<version>0.8.6</version>
+			<groupId>org.dorest</groupId>
+			<artifactId>org.dorest.ext.client</artifactId>
+			<version>0.0.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -67,6 +67,11 @@
 		<dependency>
 			<groupId>org.dorest</groupId>
 			<artifactId>org.dorest.ext.basicauth</artifactId>
+			<version>0.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.dorest</groupId>
+			<artifactId>org.dorest.ext.digestauth</artifactId>
 			<version>0.0.0-SNAPSHOT</version>
 		</dependency>
 
