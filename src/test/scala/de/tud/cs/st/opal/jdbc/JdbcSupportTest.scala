@@ -28,52 +28,60 @@ class SDBCTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll with 
   }
 
   it should "insert entries" in {
-    withinSession { conn =>
+    withinPreparedStatement("insert into users values(?, ?)") { ps =>
       {
-        conn prepareStatement ("insert into users values(?, ?)") executeUpdateWith (string("foo"), string("bar")) close;
-        conn prepareStatement ("insert into users values(?, ?)") executeUpdateWith (string("quz"), string("baz")) close
+        ps executeUpdateWith ("foo", "bar")
+        ps executeUpdateWith ("quz", "baz")
       }
     }
   }
 
   it should "find entries" in {
-    withinSession { conn =>
+    withinPreparedStatement("select top 1 password from users where username = ?") { ps =>
       {
-        conn prepareStatement ("select top 1 * from users where username = ?") executeQueryWith (string("quz")) getFromNextRowAndClose (string("password"))
+        ps executeQueryWith ("quz") getFromNextRow (string("password"))
       }
     } should equal { Some(Tuple1("baz")) }
   }
 
   it should "delete" in {
-    withinSession { conn =>
+    withinPreparedStatement("delete from users where username = ?") { ps =>
       {
-        conn prepareStatement ("delete from users where username = ?") executeUpdateWith (string("quz")) close
+        ps executeUpdateWith ("quz")
       }
     }
   }
 
   it should "not find deleted entries" in {
-    withinSession { conn =>
+    withinPreparedStatement("select * from users where username = ?") { ps =>
       {
-        conn prepareStatement ("select * from users where username = ?") executeQueryWith (string("quz")) getFromNextRowAndClose (string("password"))
+        ps executeQueryWith ("quz") getFromNextRow (string("password"))
       }
     } should equal { None }
   }
 
   it should "update entries" in {
-    withinSession { conn =>
+    withinPreparedStatement("update users set password = ? where username = ?") { ps =>
       {
-        conn prepareStatement ("update users set password = ? where username = ?") executeUpdateWith (string("updated"), string("foo")) close
+        ps executeUpdateWith ("updated", "foo")
       }
     }
   }
 
   it should "find updated entries" in {
-    withinSession { conn =>
+    withinPreparedStatement("select password from users where username = ?") { ps =>
       {
-        conn prepareStatement ("select top 1 * from users where username = ?") executeQueryWith (string("foo")) getFromNextRowAndClose (string("password"))
+        ps executeQueryWith ("foo") getFromNextRow (string("password"))
       }
     } should equal { Some(Tuple1("updated")) }
+  }
+  
+   it should "allow adding Null-entries" in {
+    withinPreparedStatement("insert into users values(?, ?)") { ps =>
+      {
+        ps executeUpdateWith ("mrNullPwd", Null_Int)
+      }
+    }
   }
 
 }
