@@ -11,8 +11,10 @@ import com.weiglewilczek.slf4s.Logging
 object SADServer
   extends Server(9000)
   with DatabaseAccess
+  with DAO
   with Logging {
 
+  startTheDatabase()
   startDatabase()
 
   def root = "/"
