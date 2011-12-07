@@ -937,10 +937,12 @@
 					</popupStructuredContributionCriteria>
 					
 					<popupPredefinedItem id="addGroup" remove="false"/>
+					<popupPredefinedItem path="\Add\" id="Geoshapes" remove="true"/>
 					<popupPredefinedItem id="navigateGroup" remove="true"/>
-					
 
 				</popupContribution>
+
+			
 			</contributionItemProvider>
 		</extension>
 		
