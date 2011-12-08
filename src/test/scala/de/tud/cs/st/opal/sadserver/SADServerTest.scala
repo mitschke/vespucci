@@ -6,7 +6,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.ShouldMatchers
 import org.dorest.client.SimpleClient
-import org.dorest.client.{BasicAuth, DigestAuth}
+import org.dorest.client.{ BasicAuth, DigestAuth }
 import scala.sys.SystemProperties
 import scala.xml.XML.loadString
 
@@ -56,20 +56,43 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     response.statusCode should equal { 200 }
     SADParser(XML.loadString(response body)).diagramName should equal { "mapping.sad" }
   }
+  
+  it should "return 404 when providing an unknown id" in {
+    val response = get(host + "/sads/" + "someIdThatDoesNotExist")
+    response.statusCode should equal { 404 }
+  }
+  
+   it should "return 404 when providing an unknown resource to a known id" in {
+    val response = get(host + "/sads/" + id1 + "/someResourceThatDoesNotExist")
+    response.statusCode should equal { 404 }
+  }
 
   it should "return a list of created SADs on GET" in {
     val response = get(host + "/sads")
     response.statusCode should equal { 200 }
   }
-  
-   "The '/users' resource" should "return FORBIDDEN for unauthorized" in {
+
+  "The '/users' resource" should "return FORBIDDEN for unauthorized" in {
     val response = get(host + "/users")
     response.statusCode should equal(401)
   }
-   
-   it should "return OK for authorized users" in {
+
+  it should "return OK for authorized users" in {
     val response = basicAuthGet(host + "/users")
     response.statusCode should equal(200)
   }
+
+  it should "let upload files" in {
+    val response = SimpleClient.putFile(Map("Accept" -> "application/xml"))(host + "/sads/" + id1 + "/data", new java.io.File("/Users/mateusz/Developer/Scala/sadserver/pom.xml"))
+    response.statusCode should equal(200)
+  }
   
+  it should "get a stream" in {
+    val response = SimpleClient.get(Map("Accept" -> "application/pdf"))(host + "/data")
+    response.statusCode should equal(200)
+    org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("foo.pdf"), response.bytes)
+  }
+  
+  
+
 }

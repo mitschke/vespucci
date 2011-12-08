@@ -4,6 +4,8 @@ import org.dorest.server.HandlerFactory
 import org.scalaquery.session.Database._
 import org.scalaquery.ql.extended.H2Driver.Implicit._
 import com.weiglewilczek.slf4s.Logging
+import org.dorest.server.rest._
+import org.dorest.server.MediaType
 
 /**
  * Software Architecture Description Server
@@ -14,7 +16,6 @@ object SADServer
   with DAO
   with Logging {
 
-  startTheDatabase()
   startDatabase()
 
   def root = "/"
@@ -35,10 +36,11 @@ object SADServer
     def create = new SAD
   }
 
-  this register new HandlerFactory[SADdata] {
-    path { root :: "sads/" :: StringValue((desc, id) => desc.id = id) :: "/data" }
-    def create = new SADdata
-  }
+    this register new HandlerFactory[SADdata] {
+//      path { root :: "sads/" :: StringValue((desc, id) => desc.id = id) :: "/data" }
+      path { root :: "data" }
+      def create = new SADdata
+    }
 
   this register new HandlerFactory[Users] {
     path { root :: "users" }
@@ -56,7 +58,7 @@ class Root extends RESTInterface with TEXTSupport with HTMLSupport {
 
 }
 
-class SAD extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
+class SAD extends RESTInterface with DatabaseAccess with DAO with TEXTSupport with XMLSupport {
 
   import scala.xml.XML.load
   import scala.io.Source.fromInputStream
@@ -66,7 +68,13 @@ class SAD extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSup
   implicit def clob2xml(x: java.sql.Clob) = load(fromInputStream(x.getAsciiStream).toString)
 
   get returns TEXT {
+    
+    
     db withSession {
+      sad(id) match {
+        case Some((name, typ, abstrct, model, documentation, wip)) => println()
+        case None => println()
+      }
       val query = for { sad <- sads if sad.id === id } yield sad.name
       None
     }
@@ -85,34 +93,32 @@ class SAD extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSup
 
 }
 
-class SADdata extends RESTInterface with DatabaseAccess with XMLSupport {
+class SADdata extends RESTInterface with DatabaseAccess with BinarySupport {
 
   var id: String = _
 
   import scala.xml.XML.load
   import scala.io.Source.fromInputStream
-
-  implicit def clob2xml(x: java.sql.Clob) = load(fromInputStream(x.getAsciiStream).toString)
-
-  put of XML returns XML {
-    db withSession {
-      logger.info("Putting sad-data for id " + id)
-      import javax.sql.rowset.serial.SerialClob
-      sads insert (id, "name", "stuff", None, None, false)
-    }
-    <success><id>{ id }</id></success>
+  val is = new java.io.FileInputStream("/Users/mateusz/Desktop/das_bild_der_tu_darmstadt.pdf")
+  val bs = new java.io.BufferedInputStream(is)
+  
+  get returns Binary(MediaType.APPLICATION_PDF) {
+    
+	(bs, 2975904)
   }
+  
+  
 
-  get returns XML {
-    db withSession {
-      val query = for { sad <- sads if sad.id === id } yield sad.data
-      query.firstOption() match {
-        // 1st option: does entry exist in DB? 2nd option: has entry sad-clob?
-        case Some(Some(clob)) => Some(clob2xml(clob))
-        case _ => None
-      }
-    }
-  }
+  //  get returns PDF {
+  //    db withSession {
+  //      val query = for { sad <- sads if sad.id === id } yield sad.data
+  //      query.firstOption() match {
+  //        // 1st option: does entry exist in DB? 2nd option: has entry sad-clob?
+  //        case Some(Some(clob)) => Some(clob2xml(clob))
+  //        case _ => None
+  //      }
+  //    }
+  //  }
 
 }
 
@@ -156,7 +162,7 @@ class Users extends RESTInterface with RegisteredUserAuthorization with TEXTSupp
 /**
  * Starts the SADServer as a configured stand-alone application.
  */
-object VADServerApp extends scala.App with Logging {
+object SADServerApp extends scala.App with Logging {
 
   logger.info("Starting Software Architecture Description Server...")
 
