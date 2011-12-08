@@ -21,6 +21,7 @@ import java.io._
 import io.Codec
 import scala.xml._
 import java.nio.charset.Charset
+import org.apache.commons.io.IOUtils
 
 /**
  * Provides support for handling XML representations.
@@ -29,16 +30,36 @@ import java.nio.charset.Charset
  */
 trait BinarySupport {
 
-   def Binary[M <: MediaType.Value](mediaType: M)(input: (java.io.InputStream, Int)) = RepresentationFactory(mediaType) {
+  def Binary[M <: MediaType.Value](mediaType: M)(input: Option[(java.io.InputStream, Int)]) = RepresentationFactory(mediaType) {
+
+    input match {
+      case Some((in, length2)) => {
         Some(new Representation[mediaType.type] {
 
-            def contentType = Some((mediaType, Some(Codec.UTF8)))
+          def contentType = Some((mediaType, Some(Codec.UTF8)))
 
-            def length = input._2
+          def length = length2
 
-            def write(out: OutputStream) {
-               org.apache.commons.io.IOUtils.copy(input._1, out)
-            }
+          def write(out: OutputStream) {
+            println("Writing stream of length " + length)
+            IOUtils.copy(in, out)
+          }
         })
+      }
+      case None => { println("None"); None }
     }
+  }
+
+  private[this] var _inputStream: java.io.InputStream = _
+  private[this] var _bytes: Array[Byte] = _
+
+  def BinaryIn[M <: MediaType.Value](mediaType: M): RequestBodyProcessor = new RequestBodyProcessor(
+    mediaType,
+    (charset: Option[Charset], in: InputStream) ⇒ {
+      _bytes = IOUtils.toByteArray(in)
+    })
+
+  def inputStream = _inputStream
+
+  def bytes = _bytes
 }
