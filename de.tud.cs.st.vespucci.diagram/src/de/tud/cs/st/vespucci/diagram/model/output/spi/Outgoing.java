@@ -33,7 +33,7 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import de.tud.cs.st.vespucci.diagram.interfaces.IOutgoing;
+import de.tud.cs.st.vespucci.model.IOutgoing;
 
 /**
  * 

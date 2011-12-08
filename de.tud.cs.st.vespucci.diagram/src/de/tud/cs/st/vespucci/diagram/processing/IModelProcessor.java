@@ -48,18 +48,21 @@ public interface IModelProcessor {
 	 * Use generic <code>Adapted.getAdapted(adaptable, targetClass)</code> for converting Object diagramElement,
 	 * see linked article for further notice<br>
 	 * Example: <pre>{@code @Override
-	 * public void processModel(Object diagramModel) {
+	 * public Object processModel(Object diagramModel) {
 	 * 
 	 * 	ShapesDiagram shapesDiagram = Adapted.getAdapted(diagramModel, ShapesDiagram.class);
 	 * 	...
 	 * } </pre>
 	 * @param diagramModel e.g. IFile, full diagram (ShapesDiagram)
-	 * @return 
+	 * @return The result of the processor
 	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
 	 * 
 	 */
-	public Object processModel(Object diagramModel);
+	Object processModel(Object diagramModel);
 	
-	public Class<?> getReturnType();
+	/**
+	 * @return the Type of the result value of the processor
+	 */
+	Class<?> resultClass();
 	
 }

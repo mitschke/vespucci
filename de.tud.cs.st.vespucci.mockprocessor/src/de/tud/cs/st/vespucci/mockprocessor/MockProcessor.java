@@ -1,9 +1,9 @@
 package de.tud.cs.st.vespucci.mockprocessor;
 
-import java.util.LinkedList;
+import java.util.List;
 
-import de.tud.cs.st.vespucci.diagram.interfaces.IConstraint;
-import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
+import de.tud.cs.st.vespucci.model.IConstraint;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.information.interfaces.ISourceCodeElement;
@@ -17,14 +17,17 @@ public class MockProcessor implements IModelProcessor {
 
 	@Override
 	public Object processModel(Object diagramModel) {
-		DiagramModel model = Util.getAdapted(diagramModel, DiagramModel.class);
-
-		LinkedList<IEnsemble> elements = model.getElements();
+		DiagramModel model = Util.adapt(diagramModel, DiagramModel.class);
+		List<IEnsemble> elements = model.getElements();
 		
 		IEnsemble sourceElement = elements.get(0);
 		IEnsemble targetElement = elements.get(1);
-		IConstraint constraint = sourceElement.getTargetConnections().getFirst();
 		
+		IConstraint myConstraint = null;
+	
+		for (IConstraint constraint : sourceElement.getTargetConnections()) {
+			myConstraint = constraint;
+		}		
 		
 		// Violation in Datei DataModel.java in der Zeile 9 der Methodenaufruf von MainController.doSome();
 		ISourceCodeElement sourceCodeElement = new SourceCodeElement("model", "DataModel", 9);
@@ -35,7 +38,7 @@ public class MockProcessor implements IModelProcessor {
 													targetCodeElement, 
 													sourceElement, 
 													targetElement, 
-													constraint);
+													myConstraint);
 			
 		IViolationReport violationReport = new ViolationReport();
 		
@@ -45,7 +48,7 @@ public class MockProcessor implements IModelProcessor {
 	}
 
 	@Override
-	public Class<?> getReturnType() {
+	public Class<?> resultClass() {
 		return IViolationReport.class;
 	}
 

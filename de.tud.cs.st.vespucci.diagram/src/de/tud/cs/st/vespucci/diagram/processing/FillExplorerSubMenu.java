@@ -70,7 +70,7 @@ public class FillExplorerSubMenu extends ContributionItem {
 	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.modelProcessors";
 	private LinkedList<ProcessorItem<IModelProcessor>> processorItems;
 	private LinkedList<IFile> diagramIFiles;
-	private LinkedList<IReturnProcessor> returnProcessors;
+	private LinkedList<IResultProcessor> returnProcessors;
 
 	public FillExplorerSubMenu() {
 	}
@@ -103,9 +103,9 @@ public class FillExplorerSubMenu extends ContributionItem {
 
 							Object result = processor.getProcessor().processModel(diagramFile);
 							
-							for (IReturnProcessor returnProcessor : returnProcessors) {
-								if (returnProcessor.isInterested(processor.getProcessor().getReturnType())){
-									returnProcessor.update(result, diagramFile.getProject());
+							for (IResultProcessor returnProcessor : returnProcessors) {
+								if (returnProcessor.isInterested(processor.getProcessor().resultClass())){
+									returnProcessor.processResult(result, diagramFile.getProject());
 								}
 							}
 							
@@ -177,9 +177,9 @@ public class FillExplorerSubMenu extends ContributionItem {
 	}
 	
 
-	private LinkedList<IReturnProcessor> getReturnProcessors() {
+	private LinkedList<IResultProcessor> getReturnProcessors() {
 		
-		LinkedList<IReturnProcessor> returnProcessors = new LinkedList<IReturnProcessor>();
+		LinkedList<IResultProcessor> returnProcessors = new LinkedList<IResultProcessor>();
 		
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		
@@ -191,8 +191,8 @@ public class FillExplorerSubMenu extends ContributionItem {
 				// Get all Processors
 				final Object o = i.createExecutableExtension("ReturnProcessor");
 
-				if (o instanceof IReturnProcessor) {
-					returnProcessors.add((IReturnProcessor) o);
+				if (o instanceof IResultProcessor) {
+					returnProcessors.add((IResultProcessor) o);
 				}
 			}
 

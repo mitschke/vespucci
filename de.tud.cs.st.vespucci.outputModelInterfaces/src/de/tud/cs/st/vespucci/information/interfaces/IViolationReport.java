@@ -1,6 +1,6 @@
 package de.tud.cs.st.vespucci.information.interfaces;
 
-import java.util.LinkedList;
+import java.util.Set;
 
 public interface IViolationReport {
 
@@ -8,5 +8,5 @@ public interface IViolationReport {
 	
 	boolean removeViolation(IViolation violation);
 	
-	LinkedList<IViolation> getViolations();
+	Set<IViolation> getViolations();
 }

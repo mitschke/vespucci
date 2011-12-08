@@ -60,8 +60,8 @@ public class GenerateProlog implements IModelProcessor, IModelSaveAction {
 		
 		final PrologFileCreator prologFileCreator = new PrologFileCreator();
 		
-		IFile diagramFile = Util.getAdapted(diagramModel, IFile.class);
-		ShapesDiagram shapesdiagram = Util.getAdapted(diagramModel, ShapesDiagram.class);
+		IFile diagramFile = Util.adapt(diagramModel, IFile.class);
+		ShapesDiagram shapesdiagram = Util.adapt(diagramModel, ShapesDiagram.class);
 				
 		try {
 			prologFileCreator.createPrologFileFromDiagram(diagramFile, shapesdiagram);
@@ -82,7 +82,7 @@ public class GenerateProlog implements IModelProcessor, IModelSaveAction {
 	}
 
 	@Override
-	public Class<?> getReturnType() {
+	public Class<?> resultClass() {
 		return null;
 	}
 

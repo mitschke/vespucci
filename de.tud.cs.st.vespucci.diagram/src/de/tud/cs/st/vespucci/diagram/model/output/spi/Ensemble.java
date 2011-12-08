@@ -33,12 +33,13 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
-import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 
-import de.tud.cs.st.vespucci.diagram.interfaces.IConstraint;
-import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
+import de.tud.cs.st.vespucci.model.IConstraint;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 
 /**
  * 
@@ -49,33 +50,33 @@ public class Ensemble implements IEnsemble {
 
 	private de.tud.cs.st.vespucci.vespucci_model.Shape shape;
 	
-	private LinkedList<IEnsemble> innerEnsemble;
-	private LinkedList<IConstraint> sourceConnection;
-	private LinkedList<IConstraint> targetConnection;
+	private Set<IEnsemble> innerEnsemble;
+	private Set<IConstraint> sourceConnection;
+	private Set<IConstraint> targetConnection;
 	
 	public Ensemble(de.tud.cs.st.vespucci.vespucci_model.Shape ensemble) {
 		this.shape = ensemble;
 	}
 	
 	@Override
-	public LinkedList<IEnsemble> getInnerEnsembles() {
+	public Set<IEnsemble> getInnerEnsembles() {
 		if (innerEnsemble == null){
 			innerEnsemble = getInnerEnsemble();
 		}
 		return innerEnsemble;	
 	}
 
-	private LinkedList<IEnsemble> getInnerEnsemble() {
+	private Set<IEnsemble> getInnerEnsemble() {
 		if (shape instanceof de.tud.cs.st.vespucci.vespucci_model.Ensemble){
 			de.tud.cs.st.vespucci.vespucci_model.Ensemble ensemble = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) shape;
 						
-			LinkedList<IEnsemble> connections = new LinkedList<IEnsemble>();
+			Set<IEnsemble> connections = new HashSet<IEnsemble>();
 			for (de.tud.cs.st.vespucci.vespucci_model.Shape shape : ensemble.getShapes()) {
 				connections.add(new Ensemble(shape));
 			}		
 			return connections;
 		}
-		return new LinkedList<IEnsemble>();
+		return new HashSet<IEnsemble>();
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class Ensemble implements IEnsemble {
 	}
 
 	@Override
-	public LinkedList<IConstraint> getSourceConnections() {
+	public Set<IConstraint> getSourceConnections() {
 		if (sourceConnection == null){
 			sourceConnection = getIConnections(shape.getSourceConnections());
 		}
@@ -102,15 +103,15 @@ public class Ensemble implements IEnsemble {
 	}
 
 	@Override
-	public LinkedList<IConstraint> getTargetConnections() {
+	public Set<IConstraint> getTargetConnections() {
 		if (targetConnection == null){
 			targetConnection = getIConnections(shape.getTargetConnections());
 		}
 		return targetConnection;	
 	}
 
-	private LinkedList<IConstraint> getIConnections(EList<de.tud.cs.st.vespucci.vespucci_model.Connection> eList) {
-		LinkedList<IConstraint> connections = new LinkedList<IConstraint>();
+	private Set<IConstraint> getIConnections(EList<de.tud.cs.st.vespucci.vespucci_model.Connection> eList) {
+		Set<IConstraint> connections = new HashSet<IConstraint>();
 		for (de.tud.cs.st.vespucci.vespucci_model.Connection connection : eList) {
 						connections.add(createIConnectedSubtypeInstance(connection));
 		}		
@@ -118,6 +119,7 @@ public class Ensemble implements IEnsemble {
 	}
 
 	private Constraint createIConnectedSubtypeInstance(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
+		
 		if (connection instanceof de.tud.cs.st.vespucci.vespucci_model.Expected){
 			return new Expected((de.tud.cs.st.vespucci.vespucci_model.Expected) connection);
 		}

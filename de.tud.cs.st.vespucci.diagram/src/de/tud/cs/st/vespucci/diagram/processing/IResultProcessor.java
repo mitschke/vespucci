@@ -31,27 +31,29 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.interfaces;
+package de.tud.cs.st.vespucci.diagram.processing;
 
-import java.util.LinkedList;
+import org.eclipse.core.resources.IProject;
 
-/**
- * 
- * @author Patrick Gottschämmer
- * @author Olav Lenz
- */
-public interface IEnsemble {
+public interface IResultProcessor {
 
-	String getDescription();
-
-	String getName();
-
-	String getQuery();
-
-	LinkedList<IConstraint> getSourceConnections();
-
-	LinkedList<IConstraint> getTargetConnections();
-
-	LinkedList<IEnsemble> getInnerEnsembles();
-
+	/** 
+	 * 
+	 * Use generic <code>Adapted.getAdapted(adaptable, targetClass)</code> for converting Object result,
+	 * see linked article for further notice<br>
+	 * @param result 
+	 * @param project The Project the processors work on
+	 * @return The result of the processor
+	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
+	 * 
+	 */
+	void processResult(Object result, IProject project);
+	
+	/**
+	 * Checks if the ResultProcessor is interested in a result of the given typ
+	 * 
+	 * @param resultClass
+	 * @return weather the ResultProcessor is interested or not
+	 */
+	boolean isInterested(Class<?> resultClass);
 }

@@ -1,7 +1,7 @@
 package de.tud.cs.st.vespucci.information.interfaces;
 
-import de.tud.cs.st.vespucci.diagram.interfaces.IConstraint;
-import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
+import de.tud.cs.st.vespucci.model.IConstraint;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public interface IViolation {
 

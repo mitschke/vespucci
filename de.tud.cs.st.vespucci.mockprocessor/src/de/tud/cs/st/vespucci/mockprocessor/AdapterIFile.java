@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
 
-import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.diagram.model.output.spi.Ensemble;
 import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
@@ -27,7 +27,7 @@ public class AdapterIFile implements IAdapterFactory {
 	
 	private DiagramModel createDiagram(IFile diagramFile) {
 		
-		ShapesDiagram d = Util.getAdapted(diagramFile, ShapesDiagram.class);
+		ShapesDiagram d = Util.adapt(diagramFile, ShapesDiagram.class);
 	
 		if (d != null){
 			LinkedList<IEnsemble> list = new LinkedList<IEnsemble>();

@@ -77,7 +77,7 @@ public class Util {
 	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
 	 */
 	@SuppressWarnings("unchecked")
-	public static <A> A getAdapted(Object adaptable, Class<A> targetClass) {
+	public static <A> A adapt(Object adaptable, Class<A> targetClass) {
 	
 		A target = null;
 	

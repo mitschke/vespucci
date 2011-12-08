@@ -2,7 +2,7 @@ package de.tud.cs.st.vespucci.mockprocessor;
 
 import java.util.LinkedList;
 
-import de.tud.cs.st.vespucci.diagram.interfaces.IEnsemble;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public class DiagramModel {
 
