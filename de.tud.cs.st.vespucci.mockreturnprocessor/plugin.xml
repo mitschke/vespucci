@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.tud.cs.st.vespucci.diagram.returnProcessors">
+      <returnProcessor
+            ReturnProcessor="de.tud.cs.st.vespucci.mockreturnprocessor.ReturnProcessor">
+      </returnProcessor>
+   </extension>
+   <extension
+         id="id1"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+
+</plugin>
