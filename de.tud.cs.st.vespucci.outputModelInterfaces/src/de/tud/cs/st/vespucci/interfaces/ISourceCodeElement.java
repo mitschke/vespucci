@@ -10,6 +10,7 @@ public interface ISourceCodeElement {
 	
 	public String getPackageIdentifier();
 		
+	// NOT SimpleClassName.java
 	public String getSimpleClassName();
 		
 	public int getLineNumber();
