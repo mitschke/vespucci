@@ -1,22 +1,19 @@
 package de.tud.cs.st.vespucci.mockprocessor;
 
-import java.util.LinkedList;
+import java.util.Set;
 
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public class DiagramModel {
 
-	LinkedList<IEnsemble> elements;
+	Set<IEnsemble> elements;
 
-	public DiagramModel(LinkedList<IEnsemble> elements) {
+	public DiagramModel(Set<IEnsemble> elements) {
 		this.elements = elements;
 	}
 
-	public LinkedList<IEnsemble> getElements() {
+	public Set<IEnsemble> getElements() {
 		return elements;
 	}
-	
-	
-	
 	
 }

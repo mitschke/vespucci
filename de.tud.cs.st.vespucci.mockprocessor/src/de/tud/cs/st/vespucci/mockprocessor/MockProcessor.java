@@ -1,9 +1,7 @@
 package de.tud.cs.st.vespucci.mockprocessor;
 
-import java.util.List;
+import java.util.Set;
 
-import de.tud.cs.st.vespucci.model.IConstraint;
-import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.information.interfaces.ISourceCodeElement;
@@ -12,16 +10,29 @@ import de.tud.cs.st.vespucci.information.interfaces.IViolationReport;
 import de.tud.cs.st.vespucci.information.interfaces.spi.SourceCodeElement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Violation;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationReport;
+import de.tud.cs.st.vespucci.model.IConstraint;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public class MockProcessor implements IModelProcessor {
 
 	@Override
 	public Object processModel(Object diagramModel) {
 		DiagramModel model = Util.adapt(diagramModel, DiagramModel.class);
-		List<IEnsemble> elements = model.getElements();
+		Set<IEnsemble> elements = model.getElements();
+	
+		IEnsemble sourceElement = null;
+		IEnsemble targetElement = null;
 		
-		IEnsemble sourceElement = elements.get(0);
-		IEnsemble targetElement = elements.get(1);
+		int i = 0;
+		for (IEnsemble iEnsemble : elements) {
+			if (i == 0){
+				sourceElement = iEnsemble;
+				i++;
+			}else{
+				targetElement = iEnsemble;
+				break;
+			}
+		}
 		
 		IConstraint myConstraint = null;
 	

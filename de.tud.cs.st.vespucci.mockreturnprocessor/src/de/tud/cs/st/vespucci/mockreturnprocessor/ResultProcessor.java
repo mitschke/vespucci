@@ -1,5 +1,6 @@
 package de.tud.cs.st.vespucci.mockreturnprocessor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -15,10 +16,11 @@ import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.information.interfaces.IViolation;
 import de.tud.cs.st.vespucci.information.interfaces.IViolationReport;
 
-public class ReturnProcessor implements IResultProcessor {
+public class ResultProcessor implements IResultProcessor {
 
 	private IProject project;
 	private Set<IViolation> violations;
+	private Set<Long> markers = new HashSet<Long>();
 
 	@Override
 	public void processResult(Object object, IProject project) {
@@ -36,7 +38,7 @@ public class ReturnProcessor implements IResultProcessor {
 			String packageName = violation.getSourceElement().getPackageName();
 			
 			IFile file = project.getFile("src"+ System.getProperty("file.separator") + packageName  + System.getProperty("file.separator") + fileName + ".java");	
-			addMarker(file, violation.getDescription(), violation.getSourceElement().getLineNumber(), IMarker.PRIORITY_HIGH);
+			addMarker(file, violation.getDescription(), violation.getSourceElement().getLineNumber(), 4 , 5, IMarker.PRIORITY_HIGH);
 		}
 	}
 
@@ -45,13 +47,18 @@ public class ReturnProcessor implements IResultProcessor {
 		return type.equals(IViolationReport.class);
 	}
 
-	private void addMarker(IFile file, String message, int lineNumber,int severity) {
+	private void addMarker(IFile file, String message, int lineNumber, int charStart, int charEnd ,int severity) {
 
 		try {
 			IMarker marker = file.createMarker("org.eclipse.core.resources.problemmarker");
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, severity);
 			marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
+			marker.setAttribute(IMarker.CHAR_START, charStart);
+			marker.setAttribute(IMarker.CHAR_END, charEnd);
+			
+			markers.add(marker.getId());
+			
 		}
 		catch (CoreException e) {
 			final IStatus is = new Status(IStatus.ERROR,"de.tud.cs.st.vespucci.mockreturnprocessor", e.getMessage(), e);

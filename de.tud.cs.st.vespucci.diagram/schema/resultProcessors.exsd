@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <choice>
-            <element ref="returnProcessor"/>
+            <element ref="resultProcessor"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,15 +47,15 @@
       </complexType>
    </element>
 
-   <element name="returnProcessor">
+   <element name="resultProcessor">
       <complexType>
-         <attribute name="ReturnProcessor" type="string" use="required">
+         <attribute name="ResultProcessor" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":de.tud.cs.st.vespucci.diagram.processing.IReturnProcessor"/>
+                  <meta.attribute kind="java" basedOn=":de.tud.cs.st.vespucci.diagram.processing.IResultProcessor"/>
                </appInfo>
             </annotation>
          </attribute>

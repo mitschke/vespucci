@@ -2,12 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="de.tud.cs.st.vespucci.diagram.returnProcessors">
-      <returnProcessor
-            ReturnProcessor="de.tud.cs.st.vespucci.mockreturnprocessor.ReturnProcessor">
-      </returnProcessor>
-   </extension>
-   <extension
          id="id1"
          point="org.eclipse.core.resources.markers">
       <super
@@ -16,6 +10,12 @@
       <persistent
             value="false">
       </persistent>
+   </extension>
+   <extension
+         point="de.tud.cs.st.vespucci.diagram.resultProcessors">
+      <resultProcessor
+            ResultProcessor="de.tud.cs.st.vespucci.mockreturnprocessor.ResultProcessor">
+      </resultProcessor>
    </extension>
 
 </plugin>

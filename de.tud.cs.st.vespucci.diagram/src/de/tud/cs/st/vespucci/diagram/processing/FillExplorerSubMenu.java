@@ -70,7 +70,7 @@ public class FillExplorerSubMenu extends ContributionItem {
 	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.modelProcessors";
 	private LinkedList<ProcessorItem<IModelProcessor>> processorItems;
 	private LinkedList<IFile> diagramIFiles;
-	private LinkedList<IResultProcessor> returnProcessors;
+	private LinkedList<IResultProcessor> resultProcessors;
 
 	public FillExplorerSubMenu() {
 	}
@@ -85,7 +85,7 @@ public class FillExplorerSubMenu extends ContributionItem {
 		// Get all Processors for all registered Plug-Ins
 		this.processorItems = getProcessorItems();
 		this.diagramIFiles = getSelectedDiagramIFiles();
-		this.returnProcessors = getReturnProcessors();
+		this.resultProcessors = getResultProcessors();
 
 		if (this.processorItems.size() == 0){
 			MenuItem menuItem = new MenuItem(menu, SWT.CHECK);
@@ -103,9 +103,9 @@ public class FillExplorerSubMenu extends ContributionItem {
 
 							Object result = processor.getProcessor().processModel(diagramFile);
 							
-							for (IResultProcessor returnProcessor : returnProcessors) {
-								if (returnProcessor.isInterested(processor.getProcessor().resultClass())){
-									returnProcessor.processResult(result, diagramFile.getProject());
+							for (IResultProcessor resultProcessor : resultProcessors) {
+								if (resultProcessor.isInterested(processor.getProcessor().resultClass())){
+									resultProcessor.processResult(result, diagramFile.getProject());
 								}
 							}
 							
@@ -177,19 +177,19 @@ public class FillExplorerSubMenu extends ContributionItem {
 	}
 	
 
-	private LinkedList<IResultProcessor> getReturnProcessors() {
+	private LinkedList<IResultProcessor> getResultProcessors() {
 		
 		LinkedList<IResultProcessor> returnProcessors = new LinkedList<IResultProcessor>();
 		
 		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
 		
 		IConfigurationElement[] configurationElement = extensionRegistry
-				.getConfigurationElementsFor("de.tud.cs.st.vespucci.diagram.returnProcessors");
+				.getConfigurationElementsFor("de.tud.cs.st.vespucci.diagram.resultProcessors");
 		try {
 			for (IConfigurationElement i : configurationElement) {
 
 				// Get all Processors
-				final Object o = i.createExecutableExtension("ReturnProcessor");
+				final Object o = i.createExecutableExtension("ResultProcessor");
 
 				if (o instanceof IResultProcessor) {
 					returnProcessors.add((IResultProcessor) o);

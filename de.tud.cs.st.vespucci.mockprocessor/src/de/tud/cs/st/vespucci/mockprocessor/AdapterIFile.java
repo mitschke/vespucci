@@ -1,13 +1,14 @@
 package de.tud.cs.st.vespucci.mockprocessor;
 
-import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
 
-import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.diagram.model.output.spi.Ensemble;
 import de.tud.cs.st.vespucci.diagram.processing.Util;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
@@ -30,13 +31,13 @@ public class AdapterIFile implements IAdapterFactory {
 		ShapesDiagram d = Util.adapt(diagramFile, ShapesDiagram.class);
 	
 		if (d != null){
-			LinkedList<IEnsemble> list = new LinkedList<IEnsemble>();
+			Set<IEnsemble> ensembles = new HashSet<IEnsemble>();
 			
 			for (Shape shape : d.getShapes()) {
-				list.add(new Ensemble(shape));
+				ensembles.add(new Ensemble(shape));
 			}
 			
-			return new DiagramModel(list);
+			return new DiagramModel(ensembles);
 		}
 		
 		return null;		
