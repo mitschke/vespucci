@@ -16,12 +16,12 @@ public class SourceCodeElement implements ISourceCodeElement {
 	}
 
 	@Override
-	public String getPackageName() {
+	public String getPackageIdentifier() {
 		return packageName;
 	}
 
 	@Override
-	public String getClassName() {
+	public String getSimpleClassName() {
 		return className;
 	}
 

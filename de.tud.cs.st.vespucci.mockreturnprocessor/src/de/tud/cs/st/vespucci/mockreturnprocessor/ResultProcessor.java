@@ -46,8 +46,8 @@ public class ResultProcessor implements IResultProcessor {
 	
 	private void mark() {
 		for (IViolation violation : violations) {
-			String fileName = violation.getSourceElement().getClassName();
-			String packageName = violation.getSourceElement().getPackageName();
+			String fileName = violation.getSourceElement().getSimpleClassName();
+			String packageName = violation.getSourceElement().getPackageIdentifier();
 			
 			IFile file = project.getFile("src"+ System.getProperty("file.separator") + packageName  + System.getProperty("file.separator") + fileName + ".java");	
 			addMarker(file, violation.getDescription(), violation.getSourceElement().getLineNumber(), 4 , 5, IMarker.PRIORITY_HIGH);
