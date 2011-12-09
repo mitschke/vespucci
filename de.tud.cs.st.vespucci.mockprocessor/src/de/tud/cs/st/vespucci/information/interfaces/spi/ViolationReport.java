@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import de.tud.cs.st.vespucci.information.interfaces.IViolation;
-import de.tud.cs.st.vespucci.information.interfaces.IViolationReport;
+import de.tud.cs.st.vespucci.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 
 public class ViolationReport implements IViolationReport {
 

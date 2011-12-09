@@ -13,8 +13,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.Util;
-import de.tud.cs.st.vespucci.information.interfaces.IViolation;
-import de.tud.cs.st.vespucci.information.interfaces.IViolationReport;
+import de.tud.cs.st.vespucci.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 
 public class ResultProcessor implements IResultProcessor {
 

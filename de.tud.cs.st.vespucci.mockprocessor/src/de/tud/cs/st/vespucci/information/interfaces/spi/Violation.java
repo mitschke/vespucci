@@ -2,8 +2,8 @@ package de.tud.cs.st.vespucci.information.interfaces.spi;
 
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
-import de.tud.cs.st.vespucci.information.interfaces.ISourceCodeElement;
-import de.tud.cs.st.vespucci.information.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
+import de.tud.cs.st.vespucci.interfaces.IViolation;
 
 public class Violation implements IViolation{
 

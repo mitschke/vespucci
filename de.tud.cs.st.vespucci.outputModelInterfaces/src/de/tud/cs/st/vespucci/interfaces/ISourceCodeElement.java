@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.information.interfaces;
+package de.tud.cs.st.vespucci.interfaces;
 
 /**
  * A source code element is either a whole class, a method or a field

@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.information.interfaces;
+package de.tud.cs.st.vespucci.interfaces;
 
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;

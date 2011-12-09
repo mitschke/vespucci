@@ -4,12 +4,12 @@ import java.util.Set;
 
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.Util;
-import de.tud.cs.st.vespucci.information.interfaces.ISourceCodeElement;
-import de.tud.cs.st.vespucci.information.interfaces.IViolation;
-import de.tud.cs.st.vespucci.information.interfaces.IViolationReport;
 import de.tud.cs.st.vespucci.information.interfaces.spi.SourceCodeElement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Violation;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationReport;
+import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
+import de.tud.cs.st.vespucci.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
