@@ -44,7 +44,7 @@ public class MockProcessor implements IModelProcessor {
 		ISourceCodeElement sourceCodeElement = new SourceCodeElement("model", "DataModel", 9);
 		ISourceCodeElement targetCodeElement = new SourceCodeElement("controller", "MainController", 5);
 		
-		IViolation firstViolation = new Violation("Nicht erlaubter Aufruf", 
+		IViolation firstViolation = new Violation("Not allowed Call", 
 													sourceCodeElement, 
 													targetCodeElement, 
 													sourceElement, 
