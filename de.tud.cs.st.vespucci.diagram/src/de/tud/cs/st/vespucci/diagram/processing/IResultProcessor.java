@@ -56,4 +56,6 @@ public interface IResultProcessor {
 	 * @return weather the ResultProcessor is interested or not
 	 */
 	boolean isInterested(Class<?> resultClass);
+
+	void cleanUp();
 }

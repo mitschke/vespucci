@@ -20,7 +20,7 @@ public class ResultProcessor implements IResultProcessor {
 
 	private IProject project;
 	private Set<IViolation> violations;
-	private Set<Long> markers = new HashSet<Long>();
+	private static Set<IMarker> markers = new HashSet<IMarker>();
 
 	@Override
 	public void processResult(Object object, IProject project) {
@@ -32,6 +32,18 @@ public class ResultProcessor implements IResultProcessor {
 		}
 	}
 
+	@Override
+	public void cleanUp(){
+		for (IMarker marker : markers){
+			try {
+				marker.delete();
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	private void mark() {
 		for (IViolation violation : violations) {
 			String fileName = violation.getSourceElement().getClassName();
@@ -57,8 +69,7 @@ public class ResultProcessor implements IResultProcessor {
 			marker.setAttribute(IMarker.CHAR_START, charStart);
 			marker.setAttribute(IMarker.CHAR_END, charEnd);
 			
-			markers.add(marker.getId());
-			
+			markers.add(marker);
 		}
 		catch (CoreException e) {
 			final IStatus is = new Status(IStatus.ERROR,"de.tud.cs.st.vespucci.mockreturnprocessor", e.getMessage(), e);
