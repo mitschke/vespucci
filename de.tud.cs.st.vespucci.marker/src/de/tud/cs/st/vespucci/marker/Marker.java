@@ -56,7 +56,8 @@ public class Marker implements IResultProcessor {
 			String fileName = violation.getSourceElement().getSimpleClassName();
 			String packageName = violation.getSourceElement().getPackageIdentifier();
 			
-			packageName = packageName.replaceAll(".", System.getProperty("file.separator"));
+			packageName = packageName.replace(".", System.getProperty("file.separator"));
+			
 			
 			// TODO: "src" NOGO
 			IFile file = project.getFile("src"+ System.getProperty("file.separator") + packageName  + System.getProperty("file.separator") + fileName + ".java");	
