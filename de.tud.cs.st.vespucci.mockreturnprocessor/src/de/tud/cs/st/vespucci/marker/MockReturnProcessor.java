@@ -74,8 +74,8 @@ public class MockReturnProcessor implements IResultProcessor {
 	}
 	
 	@Override
-	public boolean isInterested(Class<?> type) {
-		return type.equals(IViolationReport.class);
+	public boolean isInterested(Class<?> resultClass) {
+		return IViolationReport.class.equals(resultClass);
 	}
 
 
