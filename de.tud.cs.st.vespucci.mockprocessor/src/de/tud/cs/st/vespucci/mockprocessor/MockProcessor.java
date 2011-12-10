@@ -1,12 +1,17 @@
 package de.tud.cs.st.vespucci.mockprocessor;
 
+import java.util.LinkedList;
 import java.util.Set;
 
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.Util;
+import de.tud.cs.st.vespucci.information.interfaces.spi.MethodElement;
+import de.tud.cs.st.vespucci.information.interfaces.spi.SourceClass;
 import de.tud.cs.st.vespucci.information.interfaces.spi.SourceCodeElement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Violation;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationReport;
+import de.tud.cs.st.vespucci.interfaces.IMethodElement;
+import de.tud.cs.st.vespucci.interfaces.ISourceClass;
 import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationReport;
@@ -19,43 +24,67 @@ public class MockProcessor implements IModelProcessor {
 	@Override
 	public Object processModel(Object diagramModel) {
 		
-		IArchitectureModel model = Util.adapt(diagramModel, IArchitectureModel.class);
-		Set<IEnsemble> elements = model.getEnsembles();
+		IArchitectureModel architectureModel = Util.adapt(diagramModel, IArchitectureModel.class);
+		Set<IEnsemble> elements = architectureModel.getEnsembles();
 		
-		IEnsemble sourceElement = null;
-		IEnsemble targetElement = null;
+		IEnsemble controller = null;
+		IEnsemble model = null;
+		IEnsemble view = null;
 		
 		int i = 0;
-		for (IEnsemble iEnsemble : elements) {
-			if (i == 0){
-				sourceElement = iEnsemble;
-				i++;
-			}else{
-				targetElement = iEnsemble;
-				break;
+		
+		for (IEnsemble ensemble : elements) {
+			if (ensemble.getName().equals("Model")){
+				model = ensemble;
+			}else if (ensemble.getName().equals("Controller")){
+				controller = ensemble;
+			}else if (ensemble.getName().equals("View")){
+				view = ensemble;
 			}
 		}
 		
-		IConstraint myConstraint = null;
+		IConstraint modelToController = null;
+		IConstraint modelToView = null;
 	
-		for (IConstraint constraint : sourceElement.getTargetConnections()) {
-			myConstraint = constraint;
-		}		
-		
-		// Violation in Datei DataModel.java in der Zeile 9 der Methodenaufruf von MainController.doSome();
-		ISourceCodeElement sourceCodeElement = new SourceCodeElement("model", "DataModel", 9);
-		ISourceCodeElement targetCodeElement = new SourceCodeElement("controller", "MainController", 5);
-		
-		IViolation firstViolation = new Violation("Not allowed Call", 
-													sourceCodeElement, 
-													targetCodeElement, 
-													sourceElement, 
-													targetElement, 
-													myConstraint);
+		for (IConstraint constraint : architectureModel.getConstraints()) {
 			
+			if (constraint.getTarget() == controller){
+				modelToController = constraint;
+			}else{
+				modelToView = constraint;
+			}
+			
+		}
+		ISourceCodeElement dataModel_callController = new SourceCodeElement("model", "DataModel", 29);
+		
+		ISourceClass mainView = new SourceClass("view", "MainView");
+		
+		LinkedList<String> paramTypes = new LinkedList<String>();
+		IMethodElement dataModel_createView = new MethodElement("model", "DataModel", "createView", "void", paramTypes);
+		
+		paramTypes = new LinkedList<String>();
+		IMethodElement mainController_doSome = new MethodElement("controller", "MainController", "doSome", "void", paramTypes);
+
+		IViolation firstViolation = new Violation(
+				"Not allowed call from Model to Controller",
+				dataModel_callController, 
+				mainController_doSome, 
+				model,
+				controller, 
+				modelToController);
+		
+		IViolation secondViolation = new Violation(
+				"Not allowed construction from Model to View",
+				dataModel_createView, 
+				mainView,
+				model, 
+				view, 
+				modelToView);
+		
 		IViolationReport violationReport = new ViolationReport();
 		
 		violationReport.addViolation(firstViolation);
+		violationReport.addViolation(secondViolation);
 		
 		return violationReport;
 	}

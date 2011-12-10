@@ -2,7 +2,7 @@ package de.tud.cs.st.vespucci.interfaces;
 
 import java.util.List;
 
-public interface IMethodElement {
+public interface IMethodElement extends ISourceCodeElement{
 
 	String getMethodName();
 	String getReturnType();

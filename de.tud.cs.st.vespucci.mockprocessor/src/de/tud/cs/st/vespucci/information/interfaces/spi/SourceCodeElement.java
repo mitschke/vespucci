@@ -4,25 +4,26 @@ import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
 
 public class SourceCodeElement implements ISourceCodeElement {
 	
-	private String packageName;
-	private String className;
+	private String packageIdentifier;
+	private String simpleClassName;
 	private int lineNumber;
 	
-	public SourceCodeElement(String packageName, String className,
+	public SourceCodeElement(String packageName, String simpleClassName,
 			Integer lineNumber) {
-		this.packageName = packageName;
-		this.className = className;
+		
+		this.packageIdentifier = packageName;
+		this.simpleClassName = simpleClassName;
 		this.lineNumber = lineNumber;
 	}
 
 	@Override
 	public String getPackageIdentifier() {
-		return packageName;
+		return packageIdentifier;
 	}
 
 	@Override
 	public String getSimpleClassName() {
-		return className;
+		return simpleClassName;
 	}
 
 	@Override
