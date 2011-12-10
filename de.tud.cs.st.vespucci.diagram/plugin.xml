@@ -1050,6 +1050,9 @@
              <adapter
                    type="de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram">
              </adapter>
+             <adapter
+                   type="de.tud.cs.st.vespucci.model.IArchitectureModel">
+             </adapter>
           </factory>
        </extension>
         <!-- gmf generator persistent region end -->

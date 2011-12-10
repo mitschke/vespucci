@@ -10,6 +10,7 @@ import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationReport;
 import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationReport;
+import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
@@ -17,9 +18,10 @@ public class MockProcessor implements IModelProcessor {
 
 	@Override
 	public Object processModel(Object diagramModel) {
-		DiagramModel model = Util.adapt(diagramModel, DiagramModel.class);
-		Set<IEnsemble> elements = model.getElements();
-	
+		
+		IArchitectureModel model = Util.adapt(diagramModel, IArchitectureModel.class);
+		Set<IEnsemble> elements = model.getEnsembles();
+		
 		IEnsemble sourceElement = null;
 		IEnsemble targetElement = null;
 		

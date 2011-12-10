@@ -37,6 +37,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
@@ -46,6 +48,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.tud.cs.st.vespucci.diagram.model.output.spi.ArchitectureModel;
+import de.tud.cs.st.vespucci.diagram.model.output.spi.Ensemble;
+import de.tud.cs.st.vespucci.model.IArchitectureModel;
+import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
 /**
@@ -57,18 +64,40 @@ public class AdapterIFile implements IAdapterFactory {
 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
 	
-	private static Class<?>[] adapterList = { ShapesDiagram.class };
+	private static Class<?>[] adapterList = { ShapesDiagram.class, IArchitectureModel.class };
 
 	@Override
 	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
 		
 		if (adapterType == ShapesDiagram.class) {
+
 			return createDiagram((IFile) adaptableObject);
+
+		} else if (adapterType == IArchitectureModel.class) {
+			
+			return createArchitectureModel((IFile) adaptableObject);
 		}
 
 		return null;
 	}
 	
+	private IArchitectureModel createArchitectureModel(IFile diagramFile) {
+		
+		ShapesDiagram diagram = Util.adapt(diagramFile, ShapesDiagram.class);
+		
+		if (diagram != null){
+			Set<IEnsemble> ensembles = new HashSet<IEnsemble>();
+			
+			for (Shape shape : diagram.getShapes()) {
+				ensembles.add(new Ensemble(shape));
+			}
+			
+			return new ArchitectureModel(ensembles);
+		}
+		
+		return null;
+	}
+
 	private ShapesDiagram createDiagram(IFile diagramFile) {
 
 		final XMIResourceImpl diagramResource = new XMIResourceImpl();
