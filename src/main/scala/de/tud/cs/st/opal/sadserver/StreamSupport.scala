@@ -1,4 +1,4 @@
-
+ 
 /*
    Copyright 2011 Michael Eichberg et al
  
@@ -16,21 +16,21 @@
  */
 package org.dorest.server
 package rest
-
+ 
 import java.io._
 import io.Codec
 import scala.xml._
 import java.nio.charset.Charset
 import java.nio.channels._
 import org.apache.commons.io.IOUtils
-
+ 
 /**
  * Provides support for receiving and sending InputStream or CharacterStream-based representations of binary- and text-files.
  *
  * @author Mateusz Parzonka
  */
-trait BinarySupport {
-
+trait StreamSupport {
+ 
   /**
    * Provides support for sending an inputStream as response body. The encoding is fixed to UTF-8.
    *
@@ -38,15 +38,15 @@ trait BinarySupport {
    * @param input A tuple of (InputStream, length of InputStream).
    */
   def ByteStream[M <: MediaType.Value](mediaType: M)(input: Option[(java.io.InputStream, Int)]) = RepresentationFactory(mediaType) {
-
+ 
     input match {
       case Some((inputStream, streamLength)) => {
         Some(new Representation[mediaType.type] {
-
+ 
           def contentType = Some((mediaType, Some(Codec.UTF8)))
-
+ 
           def length = streamLength
-
+ 
           def write(out: OutputStream) {
             IOUtils.copy(inputStream, out)
           }
@@ -55,7 +55,7 @@ trait BinarySupport {
       case None => None
     }
   }
-
+ 
   /**
    * Provides access to the byte- or character-stream request bodies received by PUT- and POST-methods.
    *
@@ -67,15 +67,15 @@ trait BinarySupport {
       _inputStream = in
       _charset = charset
     })
-
+ 
   private[this] var _inputStream: java.io.InputStream = _
   private[this] var _charset: Option[Charset] = _
-
+ 
   /**
    * Returns the inputStream.
    */
   def inputStream = _inputStream
-
+ 
   /**
    * Returns a reader on the inputStream decoding with the charset specified by the content-encoding in the header.
    */
@@ -83,10 +83,10 @@ trait BinarySupport {
     case Some(charset) => new InputStreamReader(_inputStream, charset)
     case None => new InputStreamReader(_inputStream)
   }
-
+ 
   /**
    * Returns the inputStream as an array of bytes.
    */
   lazy val bytes = IOUtils.toByteArray(_inputStream)
-
+ 
 }

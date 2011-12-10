@@ -13,7 +13,6 @@ import org.dorest.server.MediaType
 object SADServer
   extends Server(9000)
   with DatabaseAccess
-  with DAO
   with Logging {
 
   startDatabase()
@@ -58,7 +57,7 @@ class Root extends RESTInterface with TEXTSupport with HTMLSupport {
 
 }
 
-class SAD extends RESTInterface with DatabaseAccess with DAO with TEXTSupport with XMLSupport {
+class SAD extends RESTInterface with DatabaseAccess with TEXTSupport with XMLSupport {
 
   import scala.xml.XML.load
   import scala.io.Source.fromInputStream
@@ -68,13 +67,7 @@ class SAD extends RESTInterface with DatabaseAccess with DAO with TEXTSupport wi
   implicit def clob2xml(x: java.sql.Clob) = load(fromInputStream(x.getAsciiStream).toString)
 
   get returns TEXT {
-    
-    
     db withSession {
-      sad(id) match {
-        case Some((name, typ, abstrct, model, documentation, wip)) => println()
-        case None => println()
-      }
       val query = for { sad <- sads if sad.id === id } yield sad.name
       None
     }
@@ -93,7 +86,7 @@ class SAD extends RESTInterface with DatabaseAccess with DAO with TEXTSupport wi
 
 }
 
-class SADdata extends RESTInterface with DatabaseAccess with BinarySupport {
+class SADdata extends RESTInterface with DatabaseAccess with StreamSupport {
 
   var id: String = _
 
@@ -101,9 +94,7 @@ class SADdata extends RESTInterface with DatabaseAccess with BinarySupport {
   import scala.io.Source.fromInputStream
   val is = new java.io.FileInputStream("/Users/mateusz/Desktop/das_bild_der_tu_darmstadt.pdf")
   val bs = new java.io.BufferedInputStream(is)
-  
   get returns Binary(MediaType.APPLICATION_PDF) {
-    
 	(bs, 2975904)
   }
   

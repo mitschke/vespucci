@@ -18,7 +18,7 @@ import org.apache.commons.io.{ IOUtils, FileUtils }
 /**
  * Starts the SADServer as a configured stand-alone application.
  */
-object BinarySupportTestServer extends Server(9000) {
+object StreamSupportTestServer extends Server(9000) {
 
   this register new HandlerFactory[ByteStreamResource] {
     path { "/bytestream" }
@@ -37,7 +37,7 @@ object BinarySupportTestServer extends Server(9000) {
 
   start()
 
-  class ByteStreamResource extends RESTInterface with XMLSupport with BinarySupport {
+  class ByteStreamResource extends RESTInterface with XMLSupport with StreamSupport {
 
     def byteStream(file: String) = new BufferedInputStream(new FileInputStream(file))
 
@@ -67,7 +67,7 @@ object BinarySupportTestServer extends Server(9000) {
 
   }
 
-  class ByteStreamBytesResource extends RESTInterface with XMLSupport with BinarySupport {
+  class ByteStreamBytesResource extends RESTInterface with XMLSupport with StreamSupport {
 
     put of InputStream(MediaType.APPLICATION_PDF) returns XML {
       FileUtils.writeByteArrayToFile(new java.io.File("temp/uploaded (bytes).pdf"), bytes)
@@ -83,7 +83,7 @@ object BinarySupportTestServer extends Server(9000) {
   /**
    * We write files with different encodings as UTF-8
    */
-  class CharacterStreamResource extends RESTInterface with XMLSupport with BinarySupport {
+  class CharacterStreamResource extends RESTInterface with XMLSupport with StreamSupport {
 
     var encoding: String = _
 
@@ -104,11 +104,11 @@ object BinarySupportTestServer extends Server(9000) {
 }
 
 @RunWith(classOf[JUnitRunner])
-class BinarySupportTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll {
+class StreamSupportTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll {
 
   override def beforeAll(configMap: Map[String, Any]) {
-    println("Starting BinarySupportTest")
-    BinarySupportTestServer
+    println("Starting StreamSupportTest")
+    StreamSupportTestServer
   }
 
   def get(contentType: String) = SimpleClient.get(Map("Accept" -> contentType)) _
