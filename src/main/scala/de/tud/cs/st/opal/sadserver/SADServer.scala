@@ -18,37 +18,37 @@ object SADServer
   startDatabase()
 
   val rootPath = ""
-  val descriptionCollectionPath = "/sads/"
-  val userCollectionPath = "users/"
+  val descriptionCollectionPath = "/sads"
+  val userCollectionPath = "/users"
 
-  this register new HandlerFactory[RootRessource] {
+  this register new HandlerFactory[RootResource] {
     path { rootPath }
-    def create = new RootRessource
+    def create = new RootResource
   }
 
-  this register new HandlerFactory[DescriptionCollectionRessource] {
+  this register new HandlerFactory[DescriptionCollectionResource] {
     path { descriptionCollectionPath }
-    def create = new DescriptionCollectionRessource
+    def create = new DescriptionCollectionResource
   }
 
-  this register new HandlerFactory[DescriptionRessource] {
-    path { descriptionCollectionPath :: StringValue((desc, id) => desc.id = id) }
-    def create = new DescriptionRessource
+  this register new HandlerFactory[DescriptionResource] {
+    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
+    def create = new DescriptionResource
   }
 
-  this register new HandlerFactory[DescriptionModelRessource] {
-    path { descriptionCollectionPath :: StringValue((desc, id) => desc.id = id) :: "/model" }
-    def create = new DescriptionModelRessource
+  this register new HandlerFactory[DescriptionModelResource] {
+    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: "/model" }
+    def create = new DescriptionModelResource
   }
 
-  this register new HandlerFactory[DescriptionDocumentationRessource] {
-    path { descriptionCollectionPath :: StringValue((desc, id) => desc.id = id) :: "/documentation" }
-    def create = new DescriptionDocumentationRessource
+  this register new HandlerFactory[DescriptionDocumentationResource] {
+    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: "/documentation" }
+    def create = new DescriptionDocumentationResource
   }
 
-  this register new HandlerFactory[UserCollectionRessource] {
+  this register new HandlerFactory[UserCollectionResource] {
     path { userCollectionPath }
-    def create = new UserCollectionRessource
+    def create = new UserCollectionResource
   }
 
   start()
@@ -56,13 +56,13 @@ object SADServer
 
 import org.dorest.server.rest._
 
-class RootRessource extends RESTInterface with HTMLSupport {
+class RootResource extends RESTInterface with HTMLSupport {
 
   get returns HTML { "Hello!" }
 
 }
 
-class DescriptionCollectionRessource extends RESTInterface with DAO with XMLSupport {
+class DescriptionCollectionResource extends RESTInterface with DAO with XMLSupport {
 
   get returns XML {
     listDescriptions.toXML
@@ -74,7 +74,7 @@ class DescriptionCollectionRessource extends RESTInterface with DAO with XMLSupp
 
 }
 
-class DescriptionRessource extends RESTInterface with DAO with XMLSupport with Logging {
+class DescriptionResource extends RESTInterface with DAO with XMLSupport with Logging {
 
   var id: String = _
 
@@ -88,7 +88,7 @@ class DescriptionRessource extends RESTInterface with DAO with XMLSupport with L
 
 }
 
-class DescriptionModelRessource extends RESTInterface with DAO with StreamSupport with XMLSupport {
+class DescriptionModelResource extends RESTInterface with DAO with StreamSupport with XMLSupport {
 
   var id: String = _
 
@@ -107,7 +107,7 @@ class DescriptionModelRessource extends RESTInterface with DAO with StreamSuppor
 
 }
 
-class DescriptionDocumentationRessource extends RESTInterface with DAO with StreamSupport with XMLSupport {
+class DescriptionDocumentationResource extends RESTInterface with DAO with StreamSupport with XMLSupport {
 
   var id: String = _
 
@@ -126,9 +126,13 @@ class DescriptionDocumentationRessource extends RESTInterface with DAO with Stre
 
 }
 
-class UserCollectionRessource extends RESTInterface with RegisteredUserAuthorization with TEXTSupport with XMLSupport {
+class UserCollectionResource extends RESTInterface with RegisteredUserAuthorization with DAO with XMLSupport {
 
-  get returns TEXT { "Hello " + username + "!" }
+  get returns XML { <hello>{ username }</hello> }
+
+}
+
+class UserResource extends RESTInterface with RegisteredUserAuthorization with TEXTSupport with XMLSupport {
 
   get returns XML { <hello>{ username }</hello> }
 

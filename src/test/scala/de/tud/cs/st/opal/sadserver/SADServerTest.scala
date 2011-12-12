@@ -43,29 +43,29 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     response.statusCode should equal(201)
     id1 = Description(XML.loadString(response.body)).id
   }
-  
+
   it should "return 201 on another POST" in {
     val response = post(host + SADServer.descriptionCollectionPath, Entity(sad1.toString))
     response.statusCode should equal(201)
     id2 = Description(XML.loadString(response.body)).id
   }
-  
+
   it should "return 200 on GET and print a list" in {
     val response = get(host + SADServer.descriptionCollectionPath)
     response.statusCode should equal { 200 }
     println(response.body)
   }
-  
+
   it should "return 405 on PUT" in {
     val response = put(host + SADServer.descriptionCollectionPath, Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal { 405 }
   }
-  
-   it should "return 405 on DELETE" in {
+
+  it should "return 405 on DELETE" in {
     val response = delete(host + SADServer.descriptionCollectionPath)
     response.statusCode should equal { 405 }
   }
-  
+
   "DescriptionResource" should "return 200 on GET" in {
     val path = host + SADServer.descriptionCollectionPath + "/" + id1
     val response = get(path)
@@ -88,37 +88,37 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   }
 
   "ModelResource" should "return 404 on GET when not set" in {
-    val response = get(host + SADServer.descriptionCollectionPath + id1 + "/model")
+    val response = get(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model")
     response.statusCode should equal { 404 }
   }
 
   it should "return 200 on PUT" in {
-    val response = put(host + SADServer.descriptionCollectionPath + id1 + "/model", Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
+    val response = put(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model", Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal { 200 }
   }
-  
+
   it should "return 405 on POST" in {
-    val response = post(host + SADServer.descriptionCollectionPath + id1 + "/model", Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
+    val response = post(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model", Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal { 405 }
   }
 
   it should "return 200 on GET" in {
-    val response = get(host + SADServer.descriptionCollectionPath + id1 + "/model")
+    val response = get(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model")
     response.statusCode should equal { 200 }
     println(response.body)
   }
 
   it should "return 204 on DELETE" in {
-    val response = delete(host + SADServer.descriptionCollectionPath + id1 + "/model")
+    val response = delete(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model")
     response.statusCode should equal { 204 }
   }
 
   it should "return 200 on GET when deleted" in {
-    val response = get(host + SADServer.descriptionCollectionPath + id1 + "/model")
+    val response = get(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model")
     response.statusCode should equal { 404 }
   }
 
-  "The '/users' resource" should "return FORBIDDEN for unauthorized" in {
+  "UserCollectionResource" should "return FORBIDDEN on GET for unauthorized" in {
     val response = get(host + "/users")
     response.statusCode should equal(401)
   }
