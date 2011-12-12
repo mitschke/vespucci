@@ -86,6 +86,11 @@
 			<artifactId>scalaquery_2.9.0-1</artifactId>
 			<version>0.9.5</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.1</version>
+		</dependency>
 
 		<!-- Logging -->
 		<dependency>
@@ -98,6 +103,14 @@
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+
+		<!-- FileIO -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.1</version>
+		</dependency>
+
 
 	</dependencies>
 
