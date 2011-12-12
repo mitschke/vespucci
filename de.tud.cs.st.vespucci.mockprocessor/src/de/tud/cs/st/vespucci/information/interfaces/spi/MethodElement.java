@@ -31,20 +31,38 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.interfaces;
+package de.tud.cs.st.vespucci.information.interfaces.spi;
 
-import java.util.Set;
+import de.tud.cs.st.vespucci.interfaces.IMethodElement;
 
-/**
- * Contains a Collection of IViolations
- * 
- * @author Olav Lenz
- */
-public interface IViolationReport {
-
-	void addViolation(IViolation violation);
+public class MethodElement extends SourceCodeElement implements IMethodElement  {
 	
-	boolean removeViolation(IViolation violation);
+	private String methodName;
+	private String returnType;
+	private String[] paramTypes;
+
+	public MethodElement(String packageIdentifier, String simpleClassName, String methodName, String returnType, String[] paramTypes){
+		
+		super(packageIdentifier, simpleClassName, -1);
+		
+		this.methodName = methodName;
+		this.returnType = returnType;
+		this.paramTypes = paramTypes;
+	}
+
+	@Override
+	public String getMethodName() {
+		return this.methodName;
+	}
+
+	@Override
+	public String getReturnType() {
+		return this.returnType;
+	}
 	
-	Set<IViolation> getViolations();
+	@Override
+	public String[] getParameterTypes() {
+		return this.paramTypes;
+	}
+
 }
