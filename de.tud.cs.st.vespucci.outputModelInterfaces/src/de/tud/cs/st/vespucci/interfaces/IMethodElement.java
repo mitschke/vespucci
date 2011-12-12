@@ -35,8 +35,19 @@ package de.tud.cs.st.vespucci.interfaces;
 
 public interface IMethodElement extends ISourceCodeElement{
 
+	/**
+	 * examples for the return: "createView"
+	 */
 	String getMethodName();
+	
+	/**
+	 * examples for the return: "V" (void), "I" (int)
+	 */
 	String getReturnType();
-	String[] getListParamTypes();
+	
+	/**
+	 * examples for the return: {"QString;"}
+	 */
+	String[] getParameterTypes();
 	
 }

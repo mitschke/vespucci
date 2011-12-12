@@ -62,9 +62,7 @@ public class MockProcessor implements IModelProcessor {
 		IEnsemble controller = null;
 		IEnsemble model = null;
 		IEnsemble view = null;
-		
-		int i = 0;
-		
+				
 		for (IEnsemble ensemble : elements) {
 			if (ensemble.getName().equals("Model")){
 				model = ensemble;
@@ -87,16 +85,22 @@ public class MockProcessor implements IModelProcessor {
 			}
 			
 		}
+		
+		String[] paramTypes1 = new String[1];
+		paramTypes1[0] = "QString;";
+		String[] paramTypes2 = new String[0];
+		
+		
+		//------------------------
+		
 		ISourceCodeElement dataModel_callController = new SourceCodeElement("model", "DataModel", 29);
-		
 		ISourceClass mainView = new SourceClass("view", "MainView");
-		
-		String[] paramTypes = new String[0];
-		IMethodElement dataModel_createView = new MethodElement("model", "DataModel", "createView", "V", paramTypes);
-		
-		paramTypes = new String[0];
-		IMethodElement mainController_doSome = new MethodElement("controller.test", "MainController", "doSome", "V", paramTypes);
+		IMethodElement dataModel_createView = new MethodElement("model", "DataModel", "createView", "I", paramTypes1);	
+		IMethodElement mainController_doSome = new MethodElement("controller.test", "MainController", "doSome", "V", paramTypes2);
 
+		//------------------------
+		
+		
 		IViolation firstViolation = new Violation(
 				"Not allowed call from Model to Controller",
 				dataModel_callController, 

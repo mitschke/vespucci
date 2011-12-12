@@ -61,7 +61,7 @@ public class MethodElement extends SourceCodeElement implements IMethodElement  
 	}
 	
 	@Override
-	public String[] getListParamTypes() {
+	public String[] getParameterTypes() {
 		return this.paramTypes;
 	}
 

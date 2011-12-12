@@ -35,6 +35,11 @@ package de.tud.cs.st.vespucci.interfaces;
 
 import java.util.Set;
 
+/**
+ * Contains a Collection of IViolations
+ * 
+ * @author Olav Lenz
+ */
 public interface IViolationReport {
 
 	void addViolation(IViolation violation);

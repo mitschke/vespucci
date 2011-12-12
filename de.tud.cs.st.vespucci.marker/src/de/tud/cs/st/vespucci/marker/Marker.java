@@ -70,6 +70,11 @@ import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 
+/**
+ * Mark Violations in a given project.
+ * 
+ * @author Olav Lenz
+ */
 public class Marker implements IResultProcessor {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.mockreturnprocessor";
@@ -93,12 +98,16 @@ public class Marker implements IResultProcessor {
 
 	private void markViolations() {
 		for (IViolation violation : violations) {
-			markISourceCodeElement(violation.getSourceElement(), violation.getDescription());
-			markISourceCodeElement(violation.getTargetElement(), violation.getDescription());
+			if (violation.getSourceElement() != null){
+				startSearchOfISourceCodeElement(violation.getSourceElement(), violation.getDescription());
+			}
+			if (violation.getTargetElement() != null){
+				startSearchOfISourceCodeElement(violation.getTargetElement(), violation.getDescription());
+			}			
 		}
 	}
 
-	private void markISourceCodeElement(ISourceCodeElement sourceElement, String violationMessage) {
+	private void startSearchOfISourceCodeElement(ISourceCodeElement sourceElement, String violationMessage) {
 		SearchPattern searchPattern;
 		
 		//Set default SearchScope
@@ -132,16 +141,17 @@ public class Marker implements IResultProcessor {
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 	    
+	    // create searchPattern specialized for each kind of element
+	    
 		if (sourceElement instanceof IMethodElement){
 			IMethodElement methodElement = (IMethodElement) sourceElement;
-			
-			searchPattern = SearchPattern.createPattern(methodElement.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-			
+
+			searchPattern = SearchPattern.createPattern(methodElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
 			
 		}else if (sourceElement instanceof ISourceClass){
-			ISourceClass methodElement = (ISourceClass) sourceElement;
+			ISourceClass sourceClass = (ISourceClass) sourceElement;
 			
-			searchPattern = SearchPattern.createPattern(methodElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			searchPattern = SearchPattern.createPattern(sourceClass.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 		}else{
 			searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 		}
@@ -149,14 +159,14 @@ public class Marker implements IResultProcessor {
 		search(searchPattern, javaSearchScope, sourceElement, violationMessage);
 		
 	}
-
+	
 	private void search(SearchPattern searchPattern, IJavaSearchScope javaSearchScope, final ISourceCodeElement sourceElement, final String string) {
 		
 		SearchRequestor requestor = new SearchRequestor() {
 			
 			@Override
 			public void acceptSearchMatch(SearchMatch match) throws CoreException {
-				markFoundMatch(match, sourceElement, string);
+				foundMatch(match, sourceElement, string);
 			}
 		};
 		
@@ -171,9 +181,24 @@ public class Marker implements IResultProcessor {
 		}
 	}
 
-	protected void markFoundMatch(SearchMatch match, ISourceCodeElement sourceElement, String violationMessage) {
+	protected void foundMatch(SearchMatch match, ISourceCodeElement sourceElement, String violationMessage) {
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof ISourceClass)){
+			
 			markIMember((IMember) match.getElement(), violationMessage);
+			
+		}else if ((match.getElement() instanceof IType) && (sourceElement instanceof IMethodElement)){
+			
+			IType m = (IType) match.getElement();
+			IMethodElement me = (IMethodElement) sourceElement;
+			
+			SearchPattern searchPattern = SearchPattern.createPattern(me.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			
+			IJavaElement[] je = new IJavaElement[1];
+			je[0] = m;
+			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+			
+			search(searchPattern, javaSearchScope, sourceElement, violationMessage);
+			
 			
 		}else if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodElement)){
 			
@@ -181,11 +206,11 @@ public class Marker implements IResultProcessor {
 			IMethodElement me = (IMethodElement) sourceElement;
 			
 			
-			//is the returntype correct?
+			//check weather the method signature is correct
 			try {
 				if (m.getReturnType().equals(me.getReturnType())){
 					String[] mParaTypes = m.getParameterTypes();
-					String[] meParaTypes = me.getListParamTypes();
+					String[] meParaTypes = me.getParameterTypes();
 					
 					if (meParaTypes.length == mParaTypes.length){
 						boolean equalParameterTypes = true;
@@ -204,8 +229,8 @@ public class Marker implements IResultProcessor {
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
 			
-			
 		}else if ((match.getElement() instanceof IType) && (sourceElement instanceof ISourceCodeElement)){
+			
 			IType type = (IType) match.getElement();
 			ISourceCodeElement sourceCodeElement = (ISourceCodeElement) sourceElement;
 			
@@ -223,12 +248,14 @@ public class Marker implements IResultProcessor {
 				int offSet = member.getSourceRange().getOffset();
 				int length = member.getSourceRange().getLength();
 				IFile file = project.getFile(member.getResource().getProjectRelativePath());
-				int lineNumber = getLineNumber(offSet, member);
+				int lineNumber = calcLineNumber(offSet, member);
+				
 				if (underline){
 					addMarker(file, description, offSet, offSet + length, IMarker.PRIORITY_HIGH);
 				}else{
 					addMarker(file, description, lineNumber, IMarker.PRIORITY_HIGH);	
-				}				
+				}
+				
 			} catch (JavaModelException e) {
 				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
@@ -236,6 +263,14 @@ public class Marker implements IResultProcessor {
 		}	
 	}
 
+	/**
+	 * Add a Marker (IMarker) to a given IFile
+	 * @param file File to create the marker on
+	 * @param message message shown in the ProblemsView
+	 * @param start The start position of the marker in the File (absolute, from the beginning of the file)
+	 * @param end The end position of the marker in the File (absolute, from the beginning of the file)
+	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
+	 */
 	private void addMarker(IFile file, String message, int start, int end, int severity) {
 		try {
 			IMarker marker = file.createMarker("org.eclipse.core.resources.problemmarker");
@@ -252,6 +287,13 @@ public class Marker implements IResultProcessor {
 		}
 	}
 	
+	/**
+	 * Add a Marker (IMarker) to a given IFile
+	 * @param file File to create the marker on
+	 * @param message message shown in the ProblemsView
+	 * @param lineNumber line which should be marked
+	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
+	 */
 	private void addMarker(IFile file, String message, int lineNumber, int severity) {
 		try {
 			IMarker marker = file.createMarker("org.eclipse.core.resources.problemmarker");
@@ -284,13 +326,19 @@ public class Marker implements IResultProcessor {
 		}
 	}
 	
-	private int getLineNumber(int offset, IMember type){
+	/**
+	 * Calculate the line number out of the given offset
+	 * @param offset the given offset 
+	 * @param type reference to a containing Element
+	 * @return the calculated line number
+	 */
+	private int calcLineNumber(int offset, IMember type){
 		String source;
 		int lineNumber= 1;
 		try {
 			source = type.getCompilationUnit().getSource();
 			for (int i= 0; i < offset; i++){
-				//TODO: must be changed. doesn't work on all maschines
+				//TODO: must be changed. doesn't work on all machines
 				if (source.charAt(i) == Character.LINE_SEPARATOR){
 			    	lineNumber++;
 			    }
