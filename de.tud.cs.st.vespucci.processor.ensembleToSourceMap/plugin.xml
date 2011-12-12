@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="de.tud.cs.st.vespucci.processor.ensembleToSourceMap.modelSaveActions"
+         name="Ensemble Elements On Save"
+         point="de.tud.cs.st.vespucci.diagram.modelSaveActions">
+      <modelSaveAction
+            Label="de.tud.cs.st.vespucci.processor.ensembleToSourceMap.modelSaveAction"
+            ModelSaveAction="de.tud.cs.st.vespucci.processor.ensembletosourcemap.EnsembleElementModelSaveAction"
+            id="de.tud.cs.st.vespucci.processor.ensembleToSourceMap.modelSaveAction">
+      </modelSaveAction>
+   </extension>
+   <extension
+         id="de.tud.cs.st.vespucci.processor.ensembleToSourceMap.modelProcessors"
+         name="Ensemble Elements For Model"
+         point="de.tud.cs.st.vespucci.diagram.modelProcessors">
+      <modelProcessor
+            Label="Ensemble Elements"
+            ModelProcessor="de.tud.cs.st.vespucci.processor.ensembletosourcemap.EnsembleElementModelProcessor">
+      </modelProcessor>
+   </extension>
+   <extension
+         id="de.tud.cs.st.vespucci.processor.ensembleToSourceMap.modelElementProcessors"
+         name="Ensemble Elements For Single Ensemble"
+         point="de.tud.cs.st.vespucci.diagram.modelElementProcessors">
+      <modelElementProcessor
+            Label="Ensemble Elements"
+            ModelElementProcessor="de.tud.cs.st.vespucci.processor.ensembletosourcemap.EnsembleElementModelElementProcessor">
+      </modelElementProcessor>
+   </extension>
+
+</plugin>
