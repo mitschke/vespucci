@@ -26,11 +26,16 @@ object SADServer
     def create = new RootResource
   }
 
+   this register new HandlerFactory[RestrictedDescriptionCollectionResource] {
+    path { descriptionCollectionPath }
+    def create = new RestrictedDescriptionCollectionResource
+  }
+   
   this register new HandlerFactory[DescriptionCollectionResource] {
     path { descriptionCollectionPath }
     def create = new DescriptionCollectionResource
   }
-
+  
   this register new HandlerFactory[DescriptionResource] {
     path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
     def create = new DescriptionResource
@@ -67,6 +72,10 @@ class DescriptionCollectionResource extends RESTInterface with DAO with XMLSuppo
   get returns XML {
     listDescriptions.toXML
   }
+
+}
+
+class RestrictedDescriptionCollectionResource extends RESTInterface with DAO with XMLSupport {
 
   post of XML returns XML {
     createDescription(Description(XMLRequestBody)).toXML

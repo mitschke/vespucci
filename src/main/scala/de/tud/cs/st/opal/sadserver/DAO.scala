@@ -140,11 +140,27 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
 
   // User-CRUD and authentification
 
+//  def createUser(username: String, password: String) =
+//    withPreparedStatement("INSERT INTO users VALUES(?, ?)") {
+//      ps =>
+//        ps.executeUpdateWith(description.id, description.name, description.`type`, description.`abstract`, description.wip)
+//        logger.debug("Created [%s]" format username)
+//        description
+//    }
+  
+  def createUser(user: User) = withPreparedStatement("INSERT INTO users VALUES(?, ?, ?)") {
+    ps =>
+       ps.executeUpdateWith(user.id, user.name, user.password)
+       logger.debug("Created [%s]" format user)
+       user
+  }
+    
+
   def doesUserExist(username: String) = withPreparedStatement("SELECT * FROM users WHERE username = ?") {
     !_.executeQueryWith(username).isEmpty
   }
 
-  def password(username: String) = withPreparedStatement("SELECT password FROM users WHERE username = ?") {
+  def findPassword(username: String) = withPreparedStatement("SELECT password FROM users WHERE username = ?") {
     _.executeQueryWith(username).nextValue(string)
   }
 
