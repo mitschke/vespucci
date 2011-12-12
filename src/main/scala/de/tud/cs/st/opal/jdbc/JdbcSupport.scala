@@ -6,8 +6,6 @@ import scala.collection.mutable.MutableList
 
 trait JdbcSupport {
   
-   def uuid = java.util.UUID.randomUUID().toString
-
   /**
    * Mixins must provide a java.sql.connection.
    */
@@ -32,8 +30,8 @@ trait JdbcSupport {
   implicit def preparedStatement2RichPreparedStatement(ps: PreparedStatement): RichPreparedStatement = new RichPreparedStatement(ps)
   class RichPreparedStatement(ps: PreparedStatement) {
     def executeQueryWith(args: Any*) = { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.executeQuery }
-    def executeUpdateWith(args: Any*) { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.executeUpdate }
-    def executeWith(args: Any*) { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.execute }
+    def executeUpdateWith(args: Any*) = { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.executeUpdate; true }
+    def executeWith(args: Any*) = { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.execute }
 
     private[this] def prep[T](arg: T, i: Int) {
       import java.sql.Types
@@ -44,6 +42,7 @@ trait JdbcSupport {
         case any: Double => ps.setDouble(i, any)
         case any: Float => ps.setFloat(i, any)
         case any: java.io.InputStream => ps.setBinaryStream(i, any)
+        case null => ps.setNull(i, Types.NULL)
         case any: java.io.Reader => ps.setCharacterStream(i, any)
         case SqlNullType(typeNr) => ps.setNull(i, typeNr)
         case _ => throw new RuntimeException("Argument type not known")
@@ -77,6 +76,7 @@ trait JdbcSupport {
   def string = ((rs: ResultSet, i: Int) => rs.getString(i))
   def varchar = string
   def int = ((rs: ResultSet, i: Int) => rs.getInt(i))
+  def integer = ((rs: ResultSet, i: Int) => rs.getInt(i))
   def characterStream = ((rs: ResultSet, i: Int) => rs.getCharacterStream(i))
   def clob = characterStream
   def binaryStream = ((rs: ResultSet, i: Int) => rs.getBinaryStream(i))
