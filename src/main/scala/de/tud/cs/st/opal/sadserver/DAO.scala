@@ -82,14 +82,13 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
     rs =>
       var list: List[Description] = List[Description]()
       while (rs.next) {
-        println("adding")
         list = {
           new Description(
             rs.getString("id"),
             rs.getString("name"),
             rs.getString("type"),
             rs.getString("abstract"),
-            if (rs.getString("model") != null) { println("Model is there"); Some(rs.getCharacterStream("model") -> rs.getInt(6)) } else { println("model is not there"); None },
+            if (rs.getString("model") != null) Some(rs.getCharacterStream("model") -> rs.getInt(6)) else None,
             if (rs.getString("documentation") != null) Some(rs.getBinaryStream("documentation") -> rs.getInt(8)) else None,
             rs.getBoolean("wip")) +: list
         }
@@ -103,7 +102,10 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
   def findModel(id: String) = withPreparedStatement("SELECT model, length(model) FROM SADs WHERE id = ?") {
     ps =>
       val rs = ps.executeQueryWith(id)
-      val model = ps.executeQueryWith(id).nextTuple(blob, integer)
+      val model = ps.executeQueryWith(id).nextTuple(blob, integer) match {
+        case some @ Some((_, length)) if length > 0 => some
+        case _ => None
+      }
       logger.debug("Retrieved model [%s] using id [%s]" format (model, id))
       model
   }
@@ -116,7 +118,10 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
   }
 
   def deleteModel(id: String) = withPreparedStatement("UPDATE sads SET model = NULL WHERE id = ?") {
-    _.executeUpdateWith(id)
+    ps =>
+      val result = ps.executeUpdateWith(id)
+      logger.debug("Deleted model [%s]" format id)
+      result
   }
 
   // Documentation-RUD
