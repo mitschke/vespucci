@@ -34,6 +34,7 @@ trait StreamSupport {
   protected implicit def readerAndLength2someReaderAndLength(input: (java.io.Reader, Int)) = Some(input)
 
   protected val defaultCharset = Codec.UTF8
+  
   /**
    * Provides support for sending an inputStream as response body. The encoding is set to UTF-8.
    *
@@ -48,7 +49,7 @@ trait StreamSupport {
       case Some((inputStream, streamLength)) => {
         Some(new Representation[mediaType.type] {
 
-          def contentType = Some((mediaType, Some(Codec.UTF8)))
+          def contentType = Some((mediaType, Some(defaultCharset)))
 
           def length = streamLength
 
@@ -75,7 +76,7 @@ trait StreamSupport {
       case Some((reader, streamLength)) => {
         Some(new Representation[mediaType.type] {
 
-          def contentType = Some((mediaType, Some(Codec.UTF8)))
+          def contentType = Some((mediaType, Some(defaultCharset)))
 
           def length = streamLength
 

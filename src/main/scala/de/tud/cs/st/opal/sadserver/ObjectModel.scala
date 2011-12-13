@@ -36,9 +36,9 @@ case class Description(
     </model>
 
   private def documentationToXML =
-    <model size={ documentation.get._2.toString }>
+    <documentation size={ documentation.get._2.toString }>
       <url>{ url + "/documentation" }</url>
-    </model>
+    </documentation>
 
   def toXML: Elem =
     <description id={ id }>

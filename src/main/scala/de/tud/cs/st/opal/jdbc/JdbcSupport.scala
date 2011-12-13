@@ -30,7 +30,7 @@ trait JdbcSupport {
   implicit def preparedStatement2RichPreparedStatement(ps: PreparedStatement): RichPreparedStatement = new RichPreparedStatement(ps)
   class RichPreparedStatement(ps: PreparedStatement) {
     def executeQueryWith(args: Any*) = { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.executeQuery }
-    def executeUpdateWith(args: Any*) = { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.executeUpdate; true }
+    def executeUpdateWith(args: Any*) = { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.executeUpdate }
     def executeWith(args: Any*) = { var i = 0; for (arg <- args) { i = i + 1; prep(arg, i) }; ps.execute }
 
     private[this] def prep[T](arg: T, i: Int) {

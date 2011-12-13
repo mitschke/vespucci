@@ -24,7 +24,7 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
         conn.executeUpdate("""
             CREATE TABLE sads (
             id UUID PRIMARY KEY,
-            name VARCHAR(100), 
+            name VARCHAR(100) NOT NULL, 
             type VARCHAR(100), 
             abstract VARCHAR(150), 
             model BLOB, 
@@ -47,24 +47,25 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
         description
     }
 
-  def findDescription(id: String): Option[Description] = withPreparedStatement("SELECT name, type, abstract, model, length(model), documentation, length(documentation), wip FROM SADs WHERE id = ?") {
-    ps =>
-      val rs = ps.executeQueryWith(id)
-      val retrieved = if (rs.next) {
-        Some(new Description(
-          id,
-          rs.getString("name"),
-          rs.getString("type"),
-          rs.getString("abstract"),
-          if (rs.getString("model") != null) Some(rs.getCharacterStream("model") -> rs.getInt(5)) else None,
-          if (rs.getString("documentation") != null) Some(rs.getBinaryStream("documentation") -> rs.getInt(7)) else None,
-          rs.getBoolean("wip")));
-      } else {
-        None
-      }
-      logger.debug("Retrieved description [%s] using id [%s]" format (retrieved, id))
-      retrieved
-  }
+  def findDescription(id: String): Option[Description] =
+    withPreparedStatement("SELECT name, type, abstract, model, length(model), documentation, length(documentation), wip FROM SADs WHERE id = ?") {
+      ps =>
+        val rs = ps.executeQueryWith(id)
+        val retrieved = if (rs.next) {
+          Some(new Description(
+            id,
+            rs.getString("name"),
+            rs.getString("type"),
+            rs.getString("abstract"),
+            if (rs.getString("model") != null) Some(rs.getCharacterStream("model") -> rs.getInt(5)) else None,
+            if (rs.getString("documentation") != null) Some(rs.getBinaryStream("documentation") -> rs.getInt(7)) else None,
+            rs.getBoolean("wip")));
+        } else {
+          None
+        }
+        logger.debug("Retrieved description [%s] using id [%s]" format (retrieved, id))
+        retrieved
+    }
 
   def updateDescription(id: String, description: Description): Description =
     withPreparedStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ? WHERE id = ?") {
@@ -76,7 +77,7 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
 
   def deleteDescription(id: String) = withPreparedStatement("DELETE FROM sads WHERE id = ?") {
     ps =>
-      val result = ps.executeUpdateWith(id)
+      val result = ps.executeUpdateWith(id) == 1
       logger.debug("Deleted description using id [%s]" format id)
       result
   }
@@ -113,16 +114,16 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
       model
   }
 
-  def updateModel(id: String, blob: InputStream) = withPreparedStatement("UPDATE sads SET model = ? WHERE id = ?") {
+  def updateModel(id: String, blob: InputStream) = withPreparedStatement("UPDATE sads SET model = ? WHERE id IS ?") {
     ps =>
-      val result = ps.executeUpdateWith(blob, id)
+      val result = ps.executeUpdateWith(blob, id) == 1
       logger.debug("Updated model to [%s] using id [%s] => success=%s" format (blob, id, result))
       result
   }
 
   def deleteModel(id: String) = withPreparedStatement("UPDATE sads SET model = NULL WHERE id = ?") {
     ps =>
-      val result = ps.executeUpdateWith(id)
+      val result = ps.executeUpdateWith(id) == 1
       logger.debug("Deleted model [%s]" format id)
       result
   }
@@ -130,26 +131,31 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
   // Documentation-RUD
 
   def findDocumentation(id: String) = withPreparedStatement("SELECT documentation, length(documentation) FROM sads WHERE id = ?") {
-    _.executeQueryWith(id).nextTuple(blob, integer)
+    ps =>
+      val rs = ps.executeQueryWith(id)
+      val documentation = ps.executeQueryWith(id).nextTuple(blob, integer) match {
+        case some @ Some((_, length)) if length > 0 => some
+        case _ => None
+      }
+      logger.debug("Retrieved documentation [%s] using id [%s]" format (documentation, id))
+      documentation
   }
 
-  def updateDocumentation(id: String, blob: InputStream) = withPreparedStatement("UPDATE sads SET documentation = ? WHERE id = ?") {
-    _.executeUpdateWith(blob, id)
+  def updateDocumentation(id: String, blob: InputStream) = withPreparedStatement("UPDATE sads SET documentation = ? WHERE id IS ?") {
+    ps =>
+      val result = ps.executeUpdateWith(blob, id) == 1
+      logger.debug("Updated documentation to [%s] using id [%s] => success=%s" format (blob, id, result))
+      result
   }
 
   def deleteDocumentation(id: String) = withPreparedStatement("UPDATE sads SET documentation = NULL WHERE id = ?") {
-    _.executeUpdateWith(id)
+    ps =>
+      val result = ps.executeUpdateWith(id) == 1
+      logger.debug("Deleted documentation [%s]" format id)
+      result
   }
 
   // User-CRUD and authentification
-
-  //  def createUser(username: String, password: String) =
-  //    withPreparedStatement("INSERT INTO users VALUES(?, ?)") {
-  //      ps =>
-  //        ps.executeUpdateWith(description.id, description.name, description.`type`, description.`abstract`, description.wip)
-  //        logger.debug("Created [%s]" format username)
-  //        description
-  //    }
 
   def createUser(user: User) = withPreparedStatement("INSERT INTO users VALUES(?, ?, ?)") {
     ps =>
@@ -167,10 +173,10 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
       logger.debug("Retrieved user [%s] using id [%s]" format (user, id))
       user
   }
-  
+
   def deleteUser(id: String) = withPreparedStatement("DELETE FROM users WHERE id = ?") {
-     ps =>
-      val result = ps.executeUpdateWith(id)
+    ps =>
+      val result = ps.executeUpdateWith(id) == 1
       logger.debug("Deleted user using id [%s]" format id)
       result
   }

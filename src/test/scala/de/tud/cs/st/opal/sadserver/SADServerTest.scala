@@ -30,6 +30,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
 
   val sad1 = XML.loadFile("src/test/resources/newDescription.xml")
   val sad2 = XML.loadFile("src/test/resources/sad2.sad")
+  val pdfEntity = Entity(new File("src/test/resources/test.pdf"), "application/pdf")
 
   val registeredUser = new DigestAuth("somebody", "password")
 
@@ -102,11 +103,13 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   "DescriptionResource" should "return 200 on GET" in {
     val path = host + SADServer.descriptionCollectionPath + "/" + id1
     val response = get(path)
+    response.contentType should equal { "application/xml; charset=UTF-8" }
     response.statusCode should equal { 200 }
   }
 
   it should "return 200 on GET on 2nd created description" in {
     val response = get(host + SADServer.descriptionCollectionPath + "/" + id2)
+    response.contentType should equal { "application/xml; charset=UTF-8" }
     response.statusCode should equal { 200 }
   }
 
@@ -119,6 +122,43 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     val response = get(host + SADServer.descriptionCollectionPath + "/" + id1 + "/someResourceThatDoesNotExist")
     response.statusCode should equal { 404 }
   }
+
+  it should "return 401 on unauthorized PUT" in {
+    val response = put(host + SADServer.descriptionCollectionPath + "/" + id1, Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal { 401 }
+  }
+
+  it should "return 405 on authorized PUT" in {
+    val response = authPut(host + SADServer.descriptionCollectionPath + "/" + id1, Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal { 405 }
+  }
+
+  it should "return 401 on unauthorized POST" in {
+    val response = post(host + SADServer.descriptionCollectionPath + "/" + id1, Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal { 401 }
+  }
+
+  it should "return 405 on authorized POST" in {
+    val response = authPost(host + SADServer.descriptionCollectionPath + "/" + id1, Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal { 405 }
+  }
+
+  it should "return 401 on unauthorized DELETE" in {
+    val response = delete(host + SADServer.descriptionCollectionPath + "/" + id2)
+    response.statusCode should equal { 401 }
+  }
+
+  it should "return 204 on authorized DELETE" in {
+    val response = authDelete(host + SADServer.descriptionCollectionPath + "/" + id2)
+    response.statusCode should equal { 204 }
+  }
+
+  it should "return 404 on GET when successfully deleted" in {
+    val response = get(host + SADServer.descriptionCollectionPath + "/" + id2)
+    response.statusCode should equal { 404 }
+  }
+
+  // ModelResource
 
   "ModelResource" should "return 404 on GET when model not set" in {
     val response = get(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model")
@@ -135,6 +175,16 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     response.statusCode should equal { 200 }
   }
 
+  it should "return 404 on authorized PUT with non-existest id" in {
+    val response = authPut(host + SADServer.descriptionCollectionPath + "/" + "thisIdDoesNotExist" + "/model", Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal { 404 }
+  }
+
+  it should "return 404 on GET when model depends on non-existent id" in {
+    val response = get(host + SADServer.descriptionCollectionPath + "/" + "thisIdDoesNotExist" + "/model")
+    response.statusCode should equal { 404 }
+  }
+
   it should "return 401 on unauthorized POST" in {
     val response = post(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model", Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal { 401 }
@@ -148,6 +198,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   it should "return 200 on GET when model is set" in {
     val response = get(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model")
     response.statusCode should equal { 200 }
+    response.contentType should equal { "application/xml; charset=UTF-8" }
     println(response.body)
   }
 
@@ -166,6 +217,87 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     response.statusCode should equal { 404 }
   }
 
+  it should "return 200 on authorized PUT again" in {
+    val response = authPut(host + SADServer.descriptionCollectionPath + "/" + id1 + "/model", Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal { 200 }
+  }
+
+  // DocumentationResource
+
+  "DocumentationResource" should "return 404 on GET when documentation not set" in {
+    val response = SimpleClient.get(Map("Accept" -> "application/pdf"))(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation")
+    response.statusCode should equal { 404 }
+  }
+
+  it should "return 401 on unauthorized PUT" in {
+    val response = put(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation", pdfEntity)
+    response.statusCode should equal { 401 }
+  }
+
+  it should "return 200 on authorized PUT" in {
+    val response = authPut(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation", pdfEntity)
+    response.statusCode should equal { 200 }
+  }
+
+  it should "return 401 on unauthorized POST" in {
+    val response = post(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation", pdfEntity)
+    response.statusCode should equal { 401 }
+  }
+
+  it should "return 405 on authorized POST" in {
+    val response = authPost(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation", pdfEntity)
+    response.statusCode should equal { 405 }
+    response.contentType should equal { "application/pdf; charset=UTF-8" }
+
+  }
+
+  it should "return 200 on GET when documentation is set and PDF expected" in {
+    val response = SimpleClient.get(Map("Accept" -> "application/pdf"))(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation")
+    response.statusCode should equal { 200 }
+    response.contentType should equal { "application/pdf; charset=UTF-8" }
+    org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("temp/server/model_pdfExpected.pdf"), response.bytes)
+
+  }
+
+  it should "return 200 on GET when documentation is set and PDF, XML expected" in {
+    val response = SimpleClient.get(Map("Accept" -> "application/pdf, application/xml"))(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation")
+    response.statusCode should equal { 200 }
+    response.contentType should equal { "application/pdf; charset=UTF-8" }
+    org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("temp/server/model_pdfXmlExpected.pdf"), response.bytes)
+
+  }
+
+  it should "return 401 on unauthorized DELETE" in {
+    val response = delete(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation")
+    response.statusCode should equal { 401 }
+
+  }
+
+  it should "return 204 on authorized DELETE" in {
+    val response = authDelete(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation")
+    response.statusCode should equal { 204 }
+  }
+
+  it should "return 404 on GET when model deleted" in {
+    val response = SimpleClient.get(Map("Accept" -> "application/pdf"))(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation")
+    response.statusCode should equal { 404 }
+  }
+
+  it should "return 200 on authorized PUT again" in {
+    val response = authPut(host + SADServer.descriptionCollectionPath + "/" + id1 + "/documentation", pdfEntity)
+    response.statusCode should equal { 200 }
+  }
+  
+  // print a final collection view
+
+  "DescriptionCollectionResource" should "should print a list containing a description with subresources" in {
+    val response = get(host + SADServer.descriptionCollectionPath)
+    response.statusCode should equal { 200 }
+    println(response.body)
+  }
+  
+  // User(s) resource
+
   "UserCollectionResource" should "return FORBIDDEN on GET for unauthorized" in {
     val response = get(host + "/users")
     response.statusCode should equal(401)
@@ -174,6 +306,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   it should "return OK for authorized users" in {
     val response = authGet(host + "/users")
     response.statusCode should equal(200)
+
   }
 
   //  it should "let upload files" in {

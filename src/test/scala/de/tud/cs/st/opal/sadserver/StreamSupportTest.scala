@@ -103,7 +103,7 @@ object StreamSupportTestServer extends Server(9000) {
       val fis = new FileInputStream("src/test/resources/test_utf-8.xml");
       val isr = new InputStreamReader(fis, "UTF-8");
       val bsr = new BufferedReader(isr);
-      (bsr, 23)
+      (bsr, 60)
     }
 
   }
@@ -125,7 +125,7 @@ class StreamSupportTest extends FlatSpec with ShouldMatchers with BeforeAndAfter
     val response = get("application/pdf")("http://localhost:9000/bytestream")
     response.statusCode should equal { 200 }
     response.contentType should equal { "application/pdf; charset=UTF-8" }
-    FileUtils.writeByteArrayToFile(new java.io.File("temp/downloaded.pdf"), response.bytes)
+    org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("temp/downloaded.pdf"), response.bytes)
   }
 
   it should "allow a client to GET a png" in {

@@ -97,8 +97,7 @@ class DescriptionModelResource extends RESTInterface with DAO with StreamSupport
   }
 
   put of InputStream(MediaType.APPLICATION_XML) returns XML {
-    updateModel(id, encodedInputStream)
-    <updated/>
+    if (updateModel(id, encodedInputStream)) <updated/> else None
   }
 
   delete {
@@ -116,8 +115,7 @@ class DescriptionDocumentationResource extends RESTInterface with DAO with Strea
   }
 
   put of InputStream(MediaType.APPLICATION_PDF) returns XML {
-    updateDocumentation(id, inputStream)
-    <updated/>
+    if (updateDocumentation(id, inputStream))  <updated/> else None
   }
 
   delete {
