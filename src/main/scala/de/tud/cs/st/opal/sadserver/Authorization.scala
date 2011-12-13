@@ -1,36 +1,49 @@
 package de.tud.cs.st.opal.sadserver
 
 import org.dorest.server.auth._
+import org.dorest.server._
 
-trait AdminAuthorization extends BasicAuthentication
-  with SimpleAuthenticator
-  with AuthenticatedUser {
+trait RestrictToAdmins extends DigestAuthentication with DAO {
 
   def authenticationRealm = "http://www.opal-project.de/vespucci_project"
-
-  val authorizationUser = "admin"
-  val authorizationPwd = "password"
+    
+  def password(username: String) = {
+    username match {
+      case "admin" => Some("password")
+      case _ => None
+    }
+  }
+     
 
 }
 
-import org.scalaquery.session.Database._
-import org.scalaquery.ql.extended.H2Driver.Implicit._
-trait RegisteredUserAuthorization extends BasicAuthentication with DatabaseAccess {
+/**
+ * GET operations for all, write operations for registered users found in the database.
+ */
+trait RestrictWriteToRegisteredUsers
+  extends SuperHandler
+  with DigestAuthentication
+  with DAO {
 
   def authenticationRealm = "http://www.opal-project.de/vespucci_project"
 
-  var username: String = _
-  var password: String = _
+  var _username: String = _
 
-  def authenticate(uname: String, pwd: String): Boolean = {
+  def username = _username
 
-    username = uname
-    password = pwd
-
-    db withSession {
-      val query = for { user <- users if user.username === uname if user.password === pwd } yield user
-      !(query.list).isEmpty
-    }
+  def password(username: String) = {
+    _username = username
+    findPassword(username)
   }
 
+  abstract override def processRequest(requestBody: java.io.InputStream) = {
+    method match {
+      case GET => super[SuperHandler].processRequest(requestBody)
+      case _ => super[DigestAuthentication].processRequest(requestBody)
+    }
+  }
+}
+
+trait SuperHandler extends Handler {
+  abstract override def processRequest(requestBody: java.io.InputStream): Response = super.processRequest(requestBody)
 }

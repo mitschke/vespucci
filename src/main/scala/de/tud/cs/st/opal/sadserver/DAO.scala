@@ -31,6 +31,9 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
             documentation BLOB, 
             wip BOOLEAN)
             """)
+        conn.executeUpdate("""
+            INSERT INTO users VALUES('someid', 'somebody', 'password')
+            """)
     }
   }
 
@@ -140,27 +143,43 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
 
   // User-CRUD and authentification
 
-//  def createUser(username: String, password: String) =
-//    withPreparedStatement("INSERT INTO users VALUES(?, ?)") {
-//      ps =>
-//        ps.executeUpdateWith(description.id, description.name, description.`type`, description.`abstract`, description.wip)
-//        logger.debug("Created [%s]" format username)
-//        description
-//    }
-  
+  //  def createUser(username: String, password: String) =
+  //    withPreparedStatement("INSERT INTO users VALUES(?, ?)") {
+  //      ps =>
+  //        ps.executeUpdateWith(description.id, description.name, description.`type`, description.`abstract`, description.wip)
+  //        logger.debug("Created [%s]" format username)
+  //        description
+  //    }
+
   def createUser(user: User) = withPreparedStatement("INSERT INTO users VALUES(?, ?, ?)") {
     ps =>
-       ps.executeUpdateWith(user.id, user.name, user.password)
-       logger.debug("Created [%s]" format user)
-       user
+      ps.executeUpdateWith(user.id, user.name, user.password)
+      logger.debug("Created [%s]" format user)
+      user
   }
-    
+
+  def findUser(id: String) = withPreparedStatement("SELECT * FROM users WHERE id = ?") {
+    ps =>
+      val user = ps.executeQueryWith(id).nextTuple(string, string, string) match {
+        case Some((id, name, password)) => Some(new User(id, name, password))
+        case None => None
+      }
+      logger.debug("Retrieved user [%s] using id [%s]" format (user, id))
+      user
+  }
+  
+  def deleteUser(id: String) = withPreparedStatement("DELETE FROM users WHERE id = ?") {
+     ps =>
+      val result = ps.executeUpdateWith(id)
+      logger.debug("Deleted user using id [%s]" format id)
+      result
+  }
 
   def doesUserExist(username: String) = withPreparedStatement("SELECT * FROM users WHERE username = ?") {
     !_.executeQueryWith(username).isEmpty
   }
 
-  def findPassword(username: String) = withPreparedStatement("SELECT password FROM users WHERE username = ?") {
+  def findPassword(username: String) = withPreparedStatement("SELECT password FROM users WHERE name = ?") {
     _.executeQueryWith(username).nextValue(string)
   }
 

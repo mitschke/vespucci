@@ -26,34 +26,29 @@ object SADServer
     def create = new RootResource
   }
 
-   this register new HandlerFactory[RestrictedDescriptionCollectionResource] {
-    path { descriptionCollectionPath }
-    def create = new RestrictedDescriptionCollectionResource
-  }
-   
   this register new HandlerFactory[DescriptionCollectionResource] {
     path { descriptionCollectionPath }
-    def create = new DescriptionCollectionResource
+    def create = new DescriptionCollectionResource with RestrictWriteToRegisteredUsers
   }
-  
+
   this register new HandlerFactory[DescriptionResource] {
     path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
-    def create = new DescriptionResource
+    def create = new DescriptionResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionModelResource] {
     path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: "/model" }
-    def create = new DescriptionModelResource
+    def create = new DescriptionModelResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionDocumentationResource] {
     path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: "/documentation" }
-    def create = new DescriptionDocumentationResource
+    def create = new DescriptionDocumentationResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[UserCollectionResource] {
     path { userCollectionPath }
-    def create = new UserCollectionResource
+    def create = new UserCollectionResource with RestrictToAdmins
   }
 
   start()
@@ -73,17 +68,13 @@ class DescriptionCollectionResource extends RESTInterface with DAO with XMLSuppo
     listDescriptions.toXML
   }
 
-}
-
-class RestrictedDescriptionCollectionResource extends RESTInterface with DAO with XMLSupport {
-
   post of XML returns XML {
     createDescription(Description(XMLRequestBody)).toXML
   }
 
 }
 
-class DescriptionResource extends RESTInterface with DAO with XMLSupport with Logging {
+class DescriptionResource extends RESTInterface with DAO with XMLSupport {
 
   var id: String = _
 
@@ -135,15 +126,25 @@ class DescriptionDocumentationResource extends RESTInterface with DAO with Strea
 
 }
 
-class UserCollectionResource extends RESTInterface with RegisteredUserAuthorization with DAO with XMLSupport {
-
-  get returns XML { <hello>{ username }</hello> }
+class UserCollectionResource extends RESTInterface with DAO with XMLSupport {
+  
+  post of XML returns XML {
+    createUser(User(XMLRequestBody)).toXML
+  }
 
 }
 
-class UserResource extends RESTInterface with RegisteredUserAuthorization with TEXTSupport with XMLSupport {
+class UserResource extends RESTInterface with DAO with XMLSupport {
+  
+  var id: String = _
 
-  get returns XML { <hello>{ username }</hello> }
+  get returns XML {
+    findUser(id).map(_.toXML)
+  }
+  
+  delete {
+    deleteUser(id)
+  }
 
 }
 
