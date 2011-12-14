@@ -967,6 +967,8 @@
  		<popupPredefinedItem id="alignMenu" path="/formatMenu/" remove="true"/>
  		<popupPredefinedItem id="textAlignmentMenu" path="/formatMenu/" remove="true"/>
  		<popupPredefinedItem id="copyAppearancePropertiesAction" path="/formatMenu/" remove="true"/>
+ 		<popupPredefinedItem id="addGeoShapesGroup" path="/diagramAddMenu/" remove="true"/>
+ 		<popupPredefinedItem id="addGeoShapes2Group" path="/diagramAddMenu/" remove="true"/>
 
 	 	</popupContribution>
  		</contributionItemProvider>
