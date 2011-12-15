@@ -29,44 +29,118 @@
 package de.tud.cs.st.vespucci.diagram.dnd.patterns;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 
-import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
-import de.tud.cs.st.vespucci.diagram.handler.GeneratePrologFacts;
+import de.tud.cs.st.vespucci.diagram.dnd.QueryBuilder;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 public abstract class PatternRoutine {
 
-    // TODO Get rid of file parameter.
-    // TODO Retrieve diagram location by workspace path.
-    
-    
+    // TODO Connect class with QueryBuilder.
+    // TODO How to create Commands/Requests for editing other, non-selected ensembles.
+
     private List<String> abstractFactory = new ArrayList<String>();
+
+    private static ShapesDiagramEditPart currentDiagram = null;
 
     /**
      * Sets the characteristic keywords of the Abstract Factory <br>
      * Vespucci Diagram Template.
      */
     private void buildKeywords() {
+	abstractFactory.add("Client");
 	abstractFactory.add("Abstract Factory");
 	abstractFactory.add("Concrete Factories");
-	abstractFactory.add("Client");
 	abstractFactory.add("Abstract Products");
 	abstractFactory.add("Concrete Products");
     }
-    
+
+    public static void cacheCurrentDiagramAndEnsembles(
+	    ShapesDiagramEditPart diagram) {
+	if (currentDiagram == null) {
+	    cache(diagram);
+	} else if (currentDiagram.equals(diagram)) {
+	    System.out.println("Already got it.");
+	} else {
+	    cache(diagram);
+	    System.out.println("You just opened a new diagram.");
+	}
+
+    }
+
+    private static void cache(ShapesDiagramEditPart diagram) {
+	currentDiagram = diagram;
+	List<EnsembleImpl> ensembles = resolveSemanticEnsembles(currentDiagram
+		.getChildren());
+	for (EnsembleImpl e : ensembles) {
+	    System.out.println(e.getName());
+	}
+    }
+
+    /**
+     * Resolve the semantic ensembles from a List<EditPart>. <br>
+     * The names and queries of the semantic elements can be edited.
+     * 
+     * @param childrenOfDiagram
+     *            The ShapesDiagramEditPart which contains the ensembles to
+     *            resolve.
+     * @return
+     */
+    private static List<EnsembleImpl> resolveSemanticEnsembles(
+	    List childrenOfDiagram) {
+	List<EnsembleImpl> ensembles = new ArrayList<EnsembleImpl>();
+	for (Object o : childrenOfDiagram) {
+	    if (o instanceof EnsembleEditPart) {
+		EnsembleEditPart eep = (EnsembleEditPart) o;
+		EObject eo = eep.resolveSemanticElement();
+		if (eo instanceof EnsembleImpl) {
+		    ensembles.add((EnsembleImpl) eo);
+		}
+	    }
+	}
+	return ensembles;
+    }
+
+    /**
+     * Resolve the semantic ensembles from a List<EditPart>. <br>
+     * The names and queries of the semantic elements can be edited.
+     * 
+     * @param Object The Object where the
+     * @return
+     */
+    private static EnsembleImpl resolveSemanticEnsemble(Object o) {
+	EnsembleImpl ensemble = null;
+
+	if (o instanceof EnsembleEditPart) {
+	    EnsembleEditPart eep = (EnsembleEditPart) o;
+	    EObject eo = eep.resolveSemanticElement();
+	    if (eo instanceof EnsembleImpl) {
+		ensemble = ((EnsembleImpl) eo);
+	    }
+	}
+
+	return ensemble;
+    }
+
     /**
      * Returns true iff the diagram file is a pattern template.
      * 
@@ -78,17 +152,17 @@ public abstract class PatternRoutine {
     @AbsFac("AF")
     public boolean diagramIsPatternTemplate(File diagramFile)
 	    throws FileNotFoundException, IOException {
-	
+
 	if (abstractFactory.isEmpty())
 	    buildKeywords();
-	
+
 	// Retrieve all ensembles
 	String location = diagramFile.getParent();
 	String diagramFileName = diagramFile.getName();
 	final String fullFileName = location + "/" + diagramFileName;
 	final ShapesDiagram diagram = loadDiagramFile(fullFileName);
 	List<Shape> shapes = diagram.getShapes();
-	
+
 	// Check if the names of the ensembles match at least one keyword.
 	for (Shape shape : shapes) {
 	    if (shape instanceof Ensemble && shape != null) {
@@ -98,7 +172,7 @@ public abstract class PatternRoutine {
 			return true;
 		    }
 		}
-		}
+	    }
 	}
 
 	return false;
