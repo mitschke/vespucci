@@ -28,36 +28,47 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd.patterns;
 
-import java.io.File;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 
-import de.tud.cs.st.vespucci.diagram.dnd.QueryBuilder;
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
-public abstract class PatternRoutine {
+/**
+ * This class controls the mechanisms that are needed to <br>
+ * compute queries for ensembles in a diagram which was <br>
+ * recognized as a pattern template.
+ * 
+ * @author Thomas Schulz
+ * @version 0.9
+ */
+public class PatternRoutine {
 
+    // ====================================
+    // ====================================
+    // ====================================
+    
+    // ####################################
+    // ####################################
+    // ####################################
+    
     // TODO Connect class with QueryBuilder.
     // TODO How to create Commands/Requests for editing other, non-selected
     // ensembles.
+    // TODO Update license text in all new classes.
+    // TODO Complete comments in new classes regarding their responsibilities.
+    // TODO Optional: Apply Visitor Pattern for each new Design Pattern.
+    
+    // ####################################
+    // ####################################
+    // ####################################
+    
+    // ====================================
+    // ====================================
+    // ====================================
 
     private static List<String> abstractFactoryKeywords = new ArrayList<String>();
 
@@ -68,6 +79,15 @@ public abstract class PatternRoutine {
     private static boolean isDiagramPatternTemplate = false;
 
     private static boolean isPatternRoutineComplete = false;
+
+    /**
+     * For now, it is not necessary to instantiate this class <br>
+     * as it contains only static methods and just fulfills <br>
+     * pure computation tasks.
+     */
+    private PatternRoutine() {
+
+    }
 
     /**
      * Sets the characteristic keywords of the Abstract Factory <br>
@@ -81,19 +101,24 @@ public abstract class PatternRoutine {
 	abstractFactoryKeywords.add("Concrete Products");
     }
 
-    public static void cacheCurrentDiagramAndEnsembles(
-	    ShapesDiagramEditPart diagram) {
-	if (currentDiagram == null) {
+    /**
+     * Stores the current diagram and its ensembles <u> <b>once</b> </u> <br>
+     * s.t. the same diagram will not be cached every time.
+     * 
+     * @param diagram
+     *            The diagram to cache.
+     */
+    public static void lazyStoreDiagramAndEnsembles(
+	    final ShapesDiagramEditPart diagram) {
+	if (!currentDiagram.equals(diagram)) {
+	    // the user has opened a new unknown diagram file
 	    buildAbstractFactoryKeywords();
-	    cache(diagram);
-	} else if (currentDiagram.equals(diagram)) {
-	    System.out.println("Already got it.");
-	} else {
-	    buildAbstractFactoryKeywords();
-	    cache(diagram);
+	    storeDiagramAndEnsembles(diagram);
+	    // ESCA-JAVA0266:
 	    System.out.println("You just opened a new diagram.");
+	} else {
+	    // the given diagram is already the one that was cached before
 	}
-
     }
 
     /**
@@ -104,32 +129,34 @@ public abstract class PatternRoutine {
      *            The diagram from which the ensembles shall be extracted.
      */
     @SuppressWarnings("unchecked")
-    private static void cache(ShapesDiagramEditPart diagram) {
+    private static void storeDiagramAndEnsembles(
+	    final ShapesDiagramEditPart diagram) {
 	currentDiagram = diagram;
-	resolveSemanticEnsemblesFromList((List<Object>) currentDiagram
-		.getChildren());
+	resolveSemanticEnsemblesFromList(currentDiagram.getChildren());
     }
 
     /**
      * Resolve the semantic ensembles from a List<EditPart>. <br>
      * The names will be compared against the pattern keywords. <br>
      * <br>
-     * This method implicitly determines whether this diagram is a pattern
-     * template.
+     * This method implicitly determines whether the current diagram is a
+     * pattern template.
      * 
      * @param childrenOfDiagram
      *            The ShapesDiagramEditPart which contains the ensembles to
      *            resolve.
      */
     private static void resolveSemanticEnsemblesFromList(
-	    List<Object> childrenOfDiagram) {
+	    final List<Object> childrenOfDiagram) {
 	isDiagramPatternTemplate = true;
-	for (Object o : childrenOfDiagram) {
+	for (final Object o : childrenOfDiagram) {
 	    if (o instanceof EnsembleEditPart) {
-		EnsembleEditPart eep = (EnsembleEditPart) o;
-		EObject eo = eep.resolveSemanticElement();
+		// recovery cast
+		final EnsembleEditPart eep = (EnsembleEditPart) o;
+		final EObject eo = eep.resolveSemanticElement();
 		if (eo instanceof EnsembleImpl) {
-		    EnsembleImpl ensemble = (EnsembleImpl) eo;
+		    // recovery cast
+		    final EnsembleImpl ensemble = (EnsembleImpl) eo;
 		    ensembles.add(ensemble);
 		    abstractFactoryKeywords.remove(ensemble.getName());
 		}
@@ -146,9 +173,9 @@ public abstract class PatternRoutine {
     }
 
     /**
-     * @return Returns true iff the pattern routine is complete.
+     * @return Returns true iff the pattern routine is finished.
      */
-    public static boolean isPatternRoutineComplete() {
+    public static boolean isPatternRoutineFinished() {
 	return isPatternRoutineComplete;
     }
 

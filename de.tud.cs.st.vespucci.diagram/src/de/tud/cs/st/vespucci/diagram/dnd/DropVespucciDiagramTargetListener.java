@@ -130,7 +130,8 @@ public class DropVespucciDiagramTargetListener extends
     private void cacheCurrentDiagramAndEnsembles() {
 	EditPart e = getTargetEditPart();
 	if (e instanceof ShapesDiagramEditPart) {
-	    PatternRoutine.cacheCurrentDiagramAndEnsembles((ShapesDiagramEditPart) e);
+	    PatternRoutine
+		    .lazyStoreDiagramAndEnsembles((ShapesDiagramEditPart) e);
 	}
     }
 
