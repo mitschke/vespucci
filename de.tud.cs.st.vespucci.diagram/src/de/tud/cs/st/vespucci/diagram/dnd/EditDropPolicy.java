@@ -47,68 +47,89 @@ import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 
+import de.tud.cs.st.vespucci.diagram.dnd.patterns.PatternRoutine;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
- * A EditDropPolicy that allows and handles the drop of ISelections on the EditPart that is corresponding to a subtype
- * of the metaclass Shape. The Request of the drop must be a DirectEditRequest.
+ * A EditDropPolicy that allows and handles the drop of ISelections on the
+ * EditPart that is corresponding to a subtype of the metaclass Shape. The
+ * Request of the drop must be a DirectEditRequest.
  * 
  * @author Malte Viering
  */
 public class EditDropPolicy extends DirectEditPolicy {
 
-	@Override
-	public Command getCommand(final Request request) {
-		if (RequestConstants.REQ_DIRECT_EDIT.equals(request.getType())) {
-			return getDirectEditCommand((DirectEditRequest) request);
-		}
-		return null;
+    @Override
+    public Command getCommand(final Request request) {
+	if (RequestConstants.REQ_DIRECT_EDIT.equals(request.getType())) {
+	    return getDirectEditCommand((DirectEditRequest) request);
+	}
+	return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected Command getDirectEditCommand(final DirectEditRequest request) {
+	final EObject semanticElement;
+	if (getHost() instanceof GraphicalEditPart) {
+	    semanticElement = ((GraphicalEditPart) getHost())
+		    .resolveSemanticElement();
+	} else {
+	    return null;
 	}
 
-	@Override
-	protected Command getDirectEditCommand(final DirectEditRequest request) {
-		final EObject semanticElement;
-		if (getHost() instanceof GraphicalEditPart) {
-			semanticElement = ((GraphicalEditPart) getHost()).resolveSemanticElement();
-		} else {
-			return null;
+	if (semanticElement instanceof Shape) {
+	    // get info about the EMF meta model so we can refer to the
+	    // singleton that saves Vespucci_modelPackage
+	    final String modelNamespace = ResourceBundle.getBundle("plugin")
+		    .getString("vespucci_modelNamespaceURI");
+	    final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
+		    .getEPackage(modelNamespace);
+	    final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
+
+	    if (semanticElement.eClass().getEAllStructuralFeatures()
+		    .contains(vesPackage.getShape_Query())) {
+		// get the old query
+		final Object oldQuery = semanticElement.eGet(vesPackage
+			.getShape_Query());
+
+		// build the new query
+		String newQuery = QueryBuilder.createQueryFromRequestData(
+			request.getExtendedData(), (String) oldQuery);
+
+		if (PatternRoutine.isDiagramPatternTemplate()) {
+		    // TODO Insert useful code.
 		}
 
-		if (semanticElement instanceof Shape) {
-			// get info about the EMF meta model so we can refer to the singleton that saves Vespucci_modelPackage
-			final String modelNamespace = ResourceBundle.getBundle("plugin").getString("vespucci_modelNamespaceURI");
-			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage(modelNamespace);
-			final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
+		// create the obligatory request in order to change the query of
+		// the semantic element
+		final SetRequest sr = new SetRequest(semanticElement,
+			vesPackage.getShape_Query(), newQuery);
+		final org.eclipse.gmf.runtime.common.core.command.ICommand com = new SetValueCommand(
+			sr);
+		// return the edit Request in a proxy so it can be handled
+		return new org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy(
+			com);
 
-			if (semanticElement.eClass().getEAllStructuralFeatures().contains(vesPackage.getShape_Query())) {
-				// get the old query
-				final Object oldQuery = semanticElement.eGet(vesPackage.getShape_Query());
-				@SuppressWarnings("unchecked")
-				final SetRequest sr = new SetRequest(semanticElement, vesPackage.getShape_Query(),
-						QueryBuilder.createQueryFromRequestData(request.getExtendedData(), (String) oldQuery));
-
-				final org.eclipse.gmf.runtime.common.core.command.ICommand com = new SetValueCommand(sr);
-				// return the edit Request in a proxy so it can be handled
-				return new org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy(com);
-			}
-		}
-		return null;
+	    }
 	}
+	return null;
+    }
 
-	@Override
-	public EditPart getTargetEditPart(final Request request) {
-		final EditPart editPart = super.getTargetEditPart(request);
-		if (editPart != null) {
-			return editPart;
-		}
-		if (REQ_DIRECT_EDIT.equals(request.getType())) {
-			return getHost();
-		}
-		return null;
+    @Override
+    public EditPart getTargetEditPart(final Request request) {
+	final EditPart editPart = super.getTargetEditPart(request);
+	if (editPart != null) {
+	    return editPart;
 	}
+	if (REQ_DIRECT_EDIT.equals(request.getType())) {
+	    return getHost();
+	}
+	return null;
+    }
 
-	@Override
-	protected void showCurrentEditValue(final DirectEditRequest request) {
-	}
+    @Override
+    protected void showCurrentEditValue(final DirectEditRequest request) {
+    }
 }

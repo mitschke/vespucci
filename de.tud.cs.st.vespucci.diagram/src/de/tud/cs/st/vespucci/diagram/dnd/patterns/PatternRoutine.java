@@ -56,155 +56,100 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 public abstract class PatternRoutine {
 
     // TODO Connect class with QueryBuilder.
-    // TODO How to create Commands/Requests for editing other, non-selected ensembles.
+    // TODO How to create Commands/Requests for editing other, non-selected
+    // ensembles.
 
-    private List<String> abstractFactory = new ArrayList<String>();
+    private static List<String> abstractFactoryKeywords = new ArrayList<String>();
 
     private static ShapesDiagramEditPart currentDiagram = null;
+
+    private static List<EnsembleImpl> ensembles = new ArrayList<EnsembleImpl>();
+
+    private static boolean isDiagramPatternTemplate = false;
+
+    private static boolean isPatternRoutineComplete = false;
 
     /**
      * Sets the characteristic keywords of the Abstract Factory <br>
      * Vespucci Diagram Template.
      */
-    private void buildKeywords() {
-	abstractFactory.add("Client");
-	abstractFactory.add("Abstract Factory");
-	abstractFactory.add("Concrete Factories");
-	abstractFactory.add("Abstract Products");
-	abstractFactory.add("Concrete Products");
+    private static void buildAbstractFactoryKeywords() {
+	abstractFactoryKeywords.add("Client");
+	abstractFactoryKeywords.add("Abstract Factory");
+	abstractFactoryKeywords.add("Concrete Factories");
+	abstractFactoryKeywords.add("Abstract Products");
+	abstractFactoryKeywords.add("Concrete Products");
     }
 
     public static void cacheCurrentDiagramAndEnsembles(
 	    ShapesDiagramEditPart diagram) {
 	if (currentDiagram == null) {
+	    buildAbstractFactoryKeywords();
 	    cache(diagram);
 	} else if (currentDiagram.equals(diagram)) {
 	    System.out.println("Already got it.");
 	} else {
+	    buildAbstractFactoryKeywords();
 	    cache(diagram);
 	    System.out.println("You just opened a new diagram.");
 	}
 
     }
 
+    /**
+     * Caches the (semantic) ensembles of the given diagram file <br>
+     * as well as the diagram itself.
+     * 
+     * @param diagram
+     *            The diagram from which the ensembles shall be extracted.
+     */
+    @SuppressWarnings("unchecked")
     private static void cache(ShapesDiagramEditPart diagram) {
 	currentDiagram = diagram;
-	List<EnsembleImpl> ensembles = resolveSemanticEnsembles(currentDiagram
+	resolveSemanticEnsemblesFromList((List<Object>) currentDiagram
 		.getChildren());
-	for (EnsembleImpl e : ensembles) {
-	    System.out.println(e.getName());
-	}
     }
 
     /**
      * Resolve the semantic ensembles from a List<EditPart>. <br>
-     * The names and queries of the semantic elements can be edited.
+     * The names will be compared against the pattern keywords. <br>
+     * <br>
+     * This method implicitly determines whether this diagram is a pattern
+     * template.
      * 
      * @param childrenOfDiagram
      *            The ShapesDiagramEditPart which contains the ensembles to
      *            resolve.
-     * @return
      */
-    private static List<EnsembleImpl> resolveSemanticEnsembles(
-	    List childrenOfDiagram) {
-	List<EnsembleImpl> ensembles = new ArrayList<EnsembleImpl>();
+    private static void resolveSemanticEnsemblesFromList(
+	    List<Object> childrenOfDiagram) {
+	isDiagramPatternTemplate = true;
 	for (Object o : childrenOfDiagram) {
 	    if (o instanceof EnsembleEditPart) {
 		EnsembleEditPart eep = (EnsembleEditPart) o;
 		EObject eo = eep.resolveSemanticElement();
 		if (eo instanceof EnsembleImpl) {
-		    ensembles.add((EnsembleImpl) eo);
+		    EnsembleImpl ensemble = (EnsembleImpl) eo;
+		    ensembles.add(ensemble);
+		    abstractFactoryKeywords.remove(ensemble.getName());
 		}
 	    }
 	}
-	return ensembles;
+	isDiagramPatternTemplate = abstractFactoryKeywords.isEmpty();
     }
 
     /**
-     * Resolve the semantic ensembles from a List<EditPart>. <br>
-     * The names and queries of the semantic elements can be edited.
-     * 
-     * @param Object The Object where the
-     * @return
+     * @return Returns true iff the current diagram is a pattern template.
      */
-    private static EnsembleImpl resolveSemanticEnsemble(Object o) {
-	EnsembleImpl ensemble = null;
-
-	if (o instanceof EnsembleEditPart) {
-	    EnsembleEditPart eep = (EnsembleEditPart) o;
-	    EObject eo = eep.resolveSemanticElement();
-	    if (eo instanceof EnsembleImpl) {
-		ensemble = ((EnsembleImpl) eo);
-	    }
-	}
-
-	return ensemble;
+    public static boolean isDiagramPatternTemplate() {
+	return isDiagramPatternTemplate;
     }
 
     /**
-     * Returns true iff the diagram file is a pattern template.
-     * 
-     * @param diagramFile
-     * @return
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @return Returns true iff the pattern routine is complete.
      */
-    @AbsFac("AF")
-    public boolean diagramIsPatternTemplate(File diagramFile)
-	    throws FileNotFoundException, IOException {
-
-	if (abstractFactory.isEmpty())
-	    buildKeywords();
-
-	// Retrieve all ensembles
-	String location = diagramFile.getParent();
-	String diagramFileName = diagramFile.getName();
-	final String fullFileName = location + "/" + diagramFileName;
-	final ShapesDiagram diagram = loadDiagramFile(fullFileName);
-	List<Shape> shapes = diagram.getShapes();
-
-	// Check if the names of the ensembles match at least one keyword.
-	for (Shape shape : shapes) {
-	    if (shape instanceof Ensemble && shape != null) {
-		Ensemble ensemble = (Ensemble) shape;
-		for (String s : abstractFactory) {
-		    if (ensemble.getName().equals(s)) {
-			return true;
-		    }
-		}
-	    }
-	}
-
-	return false;
-    }
-
-    /**
-     * Loads a diagram file.
-     * 
-     * @param fullPath
-     * @return Returns the loaded diagram.
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @author Dominic Scheurer
-     */
-    private static ShapesDiagram loadDiagramFile(final String fullPath)
-	    throws FileNotFoundException, IOException {
-	final XMIResourceImpl diagramResource = new XMIResourceImpl();
-	final FileInputStream diagramStream = new FileInputStream(new File(
-		fullPath));
-
-	diagramResource.load(diagramStream, new HashMap<Object, Object>());
-
-	// Find the ShapesDiagram-EObject
-	for (int i = 0; i < diagramResource.getContents().size(); i++) {
-	    if (diagramResource.getContents().get(i) instanceof ShapesDiagram) {
-		final EObject eObject = diagramResource.getContents().get(i);
-		return (ShapesDiagram) eObject;
-	    }
-	}
-
-	throw new FileNotFoundException(
-		"ShapesDiagram could not be found in Document.");
+    public static boolean isPatternRoutineComplete() {
+	return isPatternRoutineComplete;
     }
 
 }
