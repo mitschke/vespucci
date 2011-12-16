@@ -35,20 +35,20 @@ package de.tud.cs.st.vespucci.information.interfaces.spi;
 
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
-import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 
 public class Violation implements IViolation{
 
 	String description;
-	ISourceCodeElement sourceElement;
-	ISourceCodeElement targetElement;
+	ICodeElement sourceElement;
+	ICodeElement targetElement;
 	IEnsemble sourceEnsemble;
 	IEnsemble targetEnsemble;
 	IConstraint constraint;
 	
-	public Violation(String description, ISourceCodeElement sourceElement,
-			ISourceCodeElement targetElement, IEnsemble sourceEnsemble,
+	public Violation(String description, ICodeElement sourceElement,
+			ICodeElement targetElement, IEnsemble sourceEnsemble,
 			IEnsemble targetEnsemble, IConstraint constraint) {
 		super();
 		this.description = description;
@@ -65,12 +65,12 @@ public class Violation implements IViolation{
 	}
 
 	@Override
-	public ISourceCodeElement getSourceElement() {
+	public ICodeElement getSourceElement() {
 		return sourceElement;
 	}
 
 	@Override
-	public ISourceCodeElement getTargetElement() {
+	public ICodeElement getTargetElement() {
 		return targetElement;
 	}
 

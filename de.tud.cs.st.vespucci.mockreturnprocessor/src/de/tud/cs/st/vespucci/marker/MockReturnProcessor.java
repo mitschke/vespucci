@@ -52,17 +52,12 @@ public class MockReturnProcessor implements IResultProcessor {
 			sb.append(violation.getSourceElement().getPackageIdentifier() + "/" + violation.getSourceElement().getSimpleClassName());
 			sb.append("\n");
 			sb.append("Type :" + violation.getSourceElement().getClass().toString() );
-			sb.append("\n");
-			sb.append("Line: ");
-			sb.append(violation.getSourceElement().getLineNumber());
+
 			sb.append("\n");
 			sb.append("SourceCodeTargetElement: ");
 			sb.append(violation.getTargetElement().getPackageIdentifier() + "/" + violation.getTargetElement().getSimpleClassName());
 			sb.append("\n");
 			sb.append("Type :" + violation.getTargetElement().getClass().toString());
-			sb.append("\n");
-			sb.append("Line: ");
-			sb.append(violation.getTargetElement().getLineNumber());
 			
 			System.out.println(sb);
 			

@@ -41,10 +41,10 @@ public interface IViolation {
 	String getDescription();
 
 	// Could be null
-	ISourceCodeElement getSourceElement();
+	ICodeElement getSourceElement();
 
 	// Could be null
-	ISourceCodeElement getTargetElement();
+	ICodeElement getTargetElement();
 
 	IEnsemble getSourceEnsemble();
 

@@ -33,6 +33,9 @@
  */
 package de.tud.cs.st.vespucci.interfaces;
 
-public interface ISourceClass extends ISourceCodeElement{
+public interface IClassDeclaration extends ICodeElement{
 
+	// Ljava/lang/Object; FieldTypeQualifier
+	String getTypeQualifier();
+	
 }

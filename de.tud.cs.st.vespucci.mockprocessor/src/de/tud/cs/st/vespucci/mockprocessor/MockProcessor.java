@@ -37,14 +37,16 @@ import java.util.Set;
 
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.Util;
-import de.tud.cs.st.vespucci.information.interfaces.spi.MethodElement;
-import de.tud.cs.st.vespucci.information.interfaces.spi.SourceClass;
-import de.tud.cs.st.vespucci.information.interfaces.spi.SourceCodeElement;
+import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
+import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
+import de.tud.cs.st.vespucci.information.interfaces.spi.CodeElement;
+import de.tud.cs.st.vespucci.information.interfaces.spi.Statement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Violation;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationReport;
-import de.tud.cs.st.vespucci.interfaces.IMethodElement;
-import de.tud.cs.st.vespucci.interfaces.ISourceClass;
-import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
+import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
+import de.tud.cs.st.vespucci.interfaces.IStatement;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
@@ -93,10 +95,10 @@ public class MockProcessor implements IModelProcessor {
 		
 		//------------------------
 		
-		ISourceCodeElement dataModel_callController = new SourceCodeElement("model", "DataModel", 29);
-		ISourceClass mainView = new SourceClass("view", "MainView");
-		IMethodElement dataModel_createView = new MethodElement("model", "DataModel", "createView", "I", paramTypes1);	
-		IMethodElement mainController_doSome = new MethodElement("controller.test", "MainController", "doSome", "V", paramTypes2);
+		IStatement dataModel_callController = new Statement("model", "DataModel", 29);
+		IClassDeclaration mainView = new ClassDeclaration("view", "MainView", "typeQualifier");
+		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createView", "I", paramTypes1);	
+		IMethodDeclaration mainController_doSome = new MethodDeclaration("controller.test", "MainController", "doSome", "V", paramTypes2);
 
 		//------------------------
 		

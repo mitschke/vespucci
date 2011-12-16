@@ -33,36 +33,26 @@
  */
 package de.tud.cs.st.vespucci.information.interfaces.spi;
 
-import de.tud.cs.st.vespucci.interfaces.IMethodElement;
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
-public class MethodElement extends SourceCodeElement implements IMethodElement  {
+public abstract class CodeElement implements ICodeElement {
 	
-	private String methodName;
-	private String returnType;
-	private String[] paramTypes;
-
-	public MethodElement(String packageIdentifier, String simpleClassName, String methodName, String returnType, String[] paramTypes){
-		
-		super(packageIdentifier, simpleClassName, -1);
-		
-		this.methodName = methodName;
-		this.returnType = returnType;
-		this.paramTypes = paramTypes;
-	}
-
-	@Override
-	public String getMethodName() {
-		return this.methodName;
-	}
-
-	@Override
-	public String getReturnType() {
-		return this.returnType;
-	}
+	private String packageIdentifier;
+	private String simpleClassName;
 	
+	public CodeElement(String packageName, String simpleClassName) {
+		this.packageIdentifier = packageName;
+		this.simpleClassName = simpleClassName;
+	}
+
 	@Override
-	public String[] getParameterTypes() {
-		return this.paramTypes;
+	public String getPackageIdentifier() {
+		return packageIdentifier;
+	}
+
+	@Override
+	public String getSimpleClassName() {
+		return simpleClassName;
 	}
 
 }

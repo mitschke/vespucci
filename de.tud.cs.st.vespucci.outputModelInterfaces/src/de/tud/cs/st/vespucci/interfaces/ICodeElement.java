@@ -31,14 +31,25 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.information.interfaces.spi;
+package de.tud.cs.st.vespucci.interfaces;
 
-import de.tud.cs.st.vespucci.interfaces.ISourceClass;
-
-public class SourceClass extends SourceCodeElement implements ISourceClass {
-
-	public SourceClass(String packageName, String className) {
-		super(packageName, className, -1);
-	}
+/**
+ * A source code element is either a whole class, a method or a field
+ * Always identified by a PackageIdentifier, a SimpleClassName and a LineNumber
+ * We don't distinguish here between classes, methods or just simple fields
+ * 
+ */
+public interface ICodeElement {
+	
+	/**
+	 *  examples for the return: "model", "tud.cs.st.vespucci.test.test"
+	 *  what about default package?
+	 */
+	public String getPackageIdentifier();
+			
+	/**
+	 *  examples  for the return: "DataModel", "MainController" 
+	 */
+	public String getSimpleClassName();
 
 }

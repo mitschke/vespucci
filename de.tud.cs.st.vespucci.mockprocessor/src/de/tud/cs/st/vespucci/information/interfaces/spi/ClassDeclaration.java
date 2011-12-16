@@ -33,35 +33,20 @@
  */
 package de.tud.cs.st.vespucci.information.interfaces.spi;
 
-import de.tud.cs.st.vespucci.interfaces.ISourceCodeElement;
+import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 
-public class SourceCodeElement implements ISourceCodeElement {
+public class ClassDeclaration extends CodeElement implements IClassDeclaration {
+
+	String typeQualifier;
 	
-	private String packageIdentifier;
-	private String simpleClassName;
-	private int lineNumber;
-	
-	public SourceCodeElement(String packageName, String simpleClassName,
-			Integer lineNumber) {
-		
-		this.packageIdentifier = packageName;
-		this.simpleClassName = simpleClassName;
-		this.lineNumber = lineNumber;
+	public ClassDeclaration(String packageName, String className, String typeQualifier) {
+		super(packageName, className);
+		this.typeQualifier = typeQualifier;
 	}
 
 	@Override
-	public String getPackageIdentifier() {
-		return packageIdentifier;
+	public String getTypeQualifier() {
+		return typeQualifier;
 	}
 
-	@Override
-	public String getSimpleClassName() {
-		return simpleClassName;
-	}
-
-	@Override
-	public int getLineNumber() {
-		return lineNumber;
-	}
-	
 }

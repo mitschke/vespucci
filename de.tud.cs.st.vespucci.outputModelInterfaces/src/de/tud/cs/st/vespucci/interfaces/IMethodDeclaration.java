@@ -33,27 +33,21 @@
  */
 package de.tud.cs.st.vespucci.interfaces;
 
-/**
- * A source code element is either a whole class, a method or a field
- * Always identified by a PackageIdentifier, a SimpleClassName and a LineNumber
- * We don't distinguish here between classes, methods or just simple fields
- * 
- */
-public interface ISourceCodeElement {
+public interface IMethodDeclaration extends ICodeElement{
+
+	/**
+	 * examples for the return: "createView"
+	 */
+	String getMethodName();
 	
 	/**
-	 *  examples for the return: "model", "tud.cs.st.vespucci.test.test"
+	 * examples for the return: "V" (void), "I" (int)
 	 */
-	public String getPackageIdentifier();
-			
+	String getReturnTypeQualifier();
+	
 	/**
-	 *  examples  for the return: "DataModel", "MainController" 
+	 * examples for the return: {"Ljava/lang/String;"}
 	 */
-	public String getSimpleClassName();
-		
-	/**
-	 * If it returns '-1', the line isn't relevant
-	 */
-	public int getLineNumber();
-
+	String[] getParameterTypeQualifiers();
+	
 }

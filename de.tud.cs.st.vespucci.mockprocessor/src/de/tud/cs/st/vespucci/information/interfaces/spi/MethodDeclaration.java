@@ -31,23 +31,38 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.interfaces;
+package de.tud.cs.st.vespucci.information.interfaces.spi;
 
-public interface IMethodElement extends ISourceCodeElement{
+import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 
-	/**
-	 * examples for the return: "createView"
-	 */
-	String getMethodName();
+public class MethodDeclaration extends CodeElement implements IMethodDeclaration  {
 	
-	/**
-	 * examples for the return: "V" (void), "I" (int)
-	 */
-	String getReturnType();
+	private String methodName;
+	private String returnType;
+	private String[] paramTypes;
+
+	public MethodDeclaration(String packageIdentifier, String simpleClassName, String methodName, String returnType, String[] paramTypes){
+		
+		super(packageIdentifier, simpleClassName);
+		
+		this.methodName = methodName;
+		this.returnType = returnType;
+		this.paramTypes = paramTypes;
+	}
+
+	@Override
+	public String getMethodName() {
+		return this.methodName;
+	}
+
+	@Override
+	public String getReturnTypeQualifier() {
+		return this.returnType;
+	}
 	
-	/**
-	 * examples for the return: {"QString;"}
-	 */
-	String[] getParameterTypes();
-	
+	@Override
+	public String[] getParameterTypeQualifiers() {
+		return this.paramTypes;
+	}
+
 }
