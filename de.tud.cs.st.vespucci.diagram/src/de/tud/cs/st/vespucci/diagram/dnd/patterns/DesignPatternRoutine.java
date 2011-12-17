@@ -45,7 +45,7 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
  * @author Thomas Schulz
  * @version 0.9
  */
-public class PatternRoutine {
+public class DesignPatternRoutine {
 
     // ====================================
     // ====================================
@@ -85,7 +85,7 @@ public class PatternRoutine {
      * as it contains only static methods and just fulfills <br>
      * pure computation tasks.
      */
-    private PatternRoutine() {
+    private DesignPatternRoutine() {
 
     }
 
@@ -110,7 +110,7 @@ public class PatternRoutine {
      */
     public static void lazyStoreDiagramAndEnsembles(
 	    final ShapesDiagramEditPart diagram) {
-	if (!currentDiagram.equals(diagram)) {
+	if (currentDiagram == null || !currentDiagram.equals(diagram)) {
 	    // the user has opened a new unknown diagram file
 	    buildAbstractFactoryKeywords();
 	    storeDiagramAndEnsembles(diagram);
@@ -169,6 +169,7 @@ public class PatternRoutine {
      * @return Returns true iff the current diagram is a pattern template.
      */
     public static boolean isDiagramPatternTemplate() {
+//	return false;
 	return isDiagramPatternTemplate;
     }
 
@@ -177,6 +178,10 @@ public class PatternRoutine {
      */
     public static boolean isPatternRoutineFinished() {
 	return isPatternRoutineComplete;
+    }
+
+    public static List<EnsembleImpl> getEnsembles() {
+	return ensembles;
     }
 
 }

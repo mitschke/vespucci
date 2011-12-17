@@ -49,7 +49,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.dnd.DND;
 
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
-import de.tud.cs.st.vespucci.diagram.dnd.patterns.PatternRoutine;
+import de.tud.cs.st.vespucci.diagram.dnd.patterns.DesignPatternRoutine;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
@@ -130,7 +130,7 @@ public class DropVespucciDiagramTargetListener extends
     private void cacheCurrentDiagramAndEnsembles() {
 	EditPart e = getTargetEditPart();
 	if (e instanceof ShapesDiagramEditPart) {
-	    PatternRoutine
+	    DesignPatternRoutine
 		    .lazyStoreDiagramAndEnsembles((ShapesDiagramEditPart) e);
 	}
     }

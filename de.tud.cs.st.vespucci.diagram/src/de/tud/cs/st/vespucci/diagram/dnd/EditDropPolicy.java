@@ -33,6 +33,7 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.eclipse.emf.ecore.EObject;
@@ -43,13 +44,16 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.gmf.runtime.common.core.command.ICommand;
+import org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 
-import de.tud.cs.st.vespucci.diagram.dnd.patterns.PatternRoutine;
+import de.tud.cs.st.vespucci.diagram.dnd.patterns.DesignPatternRoutine;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
+import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
  * A EditDropPolicy that allows and handles the drop of ISelections on the
@@ -71,6 +75,15 @@ public class EditDropPolicy extends DirectEditPolicy {
     @SuppressWarnings("unchecked")
     @Override
     protected Command getDirectEditCommand(final DirectEditRequest request) {
+
+	if (DesignPatternRoutine.isDiagramPatternTemplate()) {
+	    return createEditRequestForAllEnsembles();
+	} else {
+	    return createEditRequestForDropTarget(request);
+	}
+    }
+
+    private Command createEditRequestForDropTarget(DirectEditRequest request) {
 	final EObject semanticElement;
 	if (getHost() instanceof GraphicalEditPart) {
 	    semanticElement = ((GraphicalEditPart) getHost())
@@ -98,7 +111,7 @@ public class EditDropPolicy extends DirectEditPolicy {
 		String newQuery = QueryBuilder.createQueryFromRequestData(
 			request.getExtendedData(), (String) oldQuery);
 
-		if (PatternRoutine.isDiagramPatternTemplate()) {
+		if (DesignPatternRoutine.isDiagramPatternTemplate()) {
 		    // TODO Insert useful code.
 		}
 
@@ -106,15 +119,46 @@ public class EditDropPolicy extends DirectEditPolicy {
 		// the semantic element
 		final SetRequest sr = new SetRequest(semanticElement,
 			vesPackage.getShape_Query(), newQuery);
-		final org.eclipse.gmf.runtime.common.core.command.ICommand com = new SetValueCommand(
-			sr);
+		final ICommand com = new SetValueCommand(sr);
 		// return the edit Request in a proxy so it can be handled
-		return new org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy(
-			com);
+		return new ICommandProxy(com);
 
 	    }
 	}
 	return null;
+    }
+
+    private Command createEditRequestForAllEnsembles() {
+	List<EnsembleImpl> ensembles = DesignPatternRoutine.getEnsembles();
+	// get info about the EMF meta model so we can refer to the
+	// singleton that saves Vespucci_modelPackage
+	final String modelNamespace = ResourceBundle.getBundle("plugin")
+		.getString("vespucci_modelNamespaceURI");
+	final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
+		.getEPackage(modelNamespace);
+	final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
+
+	final SetRequest firstReq = new SetRequest(ensembles.remove(0),
+		vesPackage.getShape_Query(), "I just edited that :)");
+
+	final ICommand firstComm = new SetValueCommand(firstReq);
+	
+	
+	// TODO This approach does not work in GMF. Find a way to sequentially execute Commands.
+	for (EnsembleImpl e : ensembles) {
+
+	    final SetRequest req = new SetRequest(e,
+		    vesPackage.getShape_Query(), "I just edited that :)");
+
+	    final ICommand com = new SetValueCommand(req);
+
+	    firstComm.compose(com);
+	}
+	
+	final ICommandProxy icp = new ICommandProxy(firstComm);
+
+	return icp;
+
     }
 
     @Override
