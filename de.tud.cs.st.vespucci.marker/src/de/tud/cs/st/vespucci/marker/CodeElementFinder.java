@@ -33,23 +33,16 @@
  */
 package de.tud.cs.st.vespucci.marker;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
@@ -62,6 +55,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
+import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IStatement;
 
@@ -69,63 +63,21 @@ public class CodeElementFinder {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
 	
-	protected static void startSearchOfISourceCodeElement(ICodeElement sourceElement, String violationMessage, IProject project) {
-		SearchPattern searchPattern;
-		
-		//Set default SearchScope
-		IJavaSearchScope javaSearchScope = SearchEngine.createWorkspaceScope();
-		
-		//Try to get better SearchScope
-	    try {
-	    	IJavaProject javaProject= JavaCore.create(project);
-	    	IPackageFragmentRoot[] packageFragmentRoots = javaProject.getPackageFragmentRoots();
-	    	
-	    	List<IJavaElement> packages = new LinkedList<IJavaElement>();
-	    	for (IPackageFragmentRoot packageFragmentRoot : packageFragmentRoots) {
-				for (IJavaElement javaElement : packageFragmentRoot.getChildren()) {
-					if (javaElement instanceof IPackageFragment){
-						IPackageFragment candidatePackage = (IPackageFragment) javaElement;
-						if (candidatePackage.getElementName().equals(sourceElement.getPackageIdentifier())){
-							packages.add(candidatePackage);
-						}
-					}
-				}
-			}
-
-	    	
-	    	IJavaElement[] javaElements = new IJavaElement[packages.size()];
-	    	for (int i = 0; i < packages.size(); i++) {
-				javaElements[i] = packages.get(i);
-			}
-			javaSearchScope = SearchEngine.createJavaSearchScope(javaElements);
-		} catch (JavaModelException e) {
-			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		}
-	    
-	    // create searchPattern specialized for each kind of element
-	    
-		if (sourceElement instanceof ICodeElement){
-			ICodeElement methodElement = (ICodeElement) sourceElement;
-
-			searchPattern = SearchPattern.createPattern(methodElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
-
-			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project);
+	protected static void search(ICodeElement sourceElement, String violationMessage, IProject project){
 			
-		}
-	
+		foundMatch(null, sourceElement, violationMessage, project);
+			
 	}
-	
+		
 	private static void search(SearchPattern searchPattern, IJavaSearchScope javaSearchScope, final ICodeElement sourceElement, final String string, final IProject project) {
 		
 		SearchRequestor requestor = new SearchRequestor() {
-			
 			@Override
 			public void acceptSearchMatch(SearchMatch match) throws CoreException {
 				foundMatch(match, sourceElement, string, project);
-			}
+			}		
+			
 		};
-		
 		
 	    // Search
 	    SearchEngine searchEngine = new SearchEngine();
@@ -137,36 +89,107 @@ public class CodeElementFinder {
 		}
 	}
 
-	protected static void foundMatch(SearchMatch match, ICodeElement sourceElement, String violationMessage, IProject project) {
-		if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){
+	protected static void notfoundMatch(ICodeElement sourceElement, String string, IProject project) {
+		System.out.println("Didn't find anything");
+		// TODO: this case will be use when we are searching for inner classes or anonym classes
+	}
+
+	protected static boolean foundMatch(SearchMatch match, ICodeElement sourceElement, String violationMessage, IProject project) {
+		// Initial case: nothing found yet. We start so search
+		if (match == null){
 			
-			CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);
-			
-		}else if ((match.getElement() instanceof IType) && (sourceElement instanceof IMethodDeclaration)){
-			
-			IType m = (IType) match.getElement();
-			IMethodDeclaration me = (IMethodDeclaration) sourceElement;
+			IJavaSearchScope javaSearchScope = SearchEngine.createWorkspaceScope();
+			SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getPackageIdentifier(), IJavaSearchConstants.PACKAGE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 						
-			SearchPattern searchPattern = SearchPattern.createPattern(me.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project);
+			
+			return true;
+		}
+		// Find a packageFragment, now looking for the SimpleClassName
+		if (match.getElement() instanceof IPackageFragment){
+			IPackageFragment packageFragment = (IPackageFragment) match.getElement();
+			
+			//TODO: At the moment no inner classes or anonym classes are supported
+			SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
 			
 			IJavaElement[] je = new IJavaElement[1];
-			je[0] = m;
+			je[0] = packageFragment;
 			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
 			
 			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project);
 			
+			return true;
+		}
+		// Find a class declaration and we were looking for it
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){
+		
+			IType type = (IType) match.getElement();
+		
+			//TODO: At this point the typeQulifier has to be checked 
 			
-		}else if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
+			// return false, if the match was not the right hit
+		
+			CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);
+			return true;	
 			
-			IMethod m = (IMethod) match.getElement();
-			IMethodDeclaration me = (IMethodDeclaration) sourceElement;
+		}	
+		// Find a class declaration and we were looking for a IMethodDeclaration
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IMethodDeclaration)){
+			
+			IType type = (IType) match.getElement();
+			IMethodDeclaration methodeDeclaration = (IMethodDeclaration) sourceElement;
+						
+			SearchPattern searchPattern = SearchPattern.createPattern(methodeDeclaration.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			
+			IJavaElement[] je = new IJavaElement[1];
+			je[0] = type;
+			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+			
+			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project);
+			
+			return true;
+		}
+		// Find a class declaration and we were looking for a IFieldDeclaration
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IFieldDeclaration)){
+			
+			IType type = (IType) match.getElement();
+			IFieldDeclaration fieldDeclaration = (IFieldDeclaration) sourceElement;
+						
+			SearchPattern searchPattern = SearchPattern.createPattern(fieldDeclaration.getFieldName(), IJavaSearchConstants.FIELD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			
+			IJavaElement[] je = new IJavaElement[1];
+			je[0] = type;
+			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+			
+			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project);
+			
+			return true;
+		}
+		// Find a class declaration and we were looking for a IStatement
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){
+			
+			IType type = (IType) match.getElement();
+			IStatement sourceCodeElement = (IStatement) sourceElement;
+			
+			CodeElementMarker.markIStatement((IMember) match.getElement(), violationMessage, sourceCodeElement.getLineNumber(), project);
+			return true;
+			
+		}
+		// Find a method and we were looking for a IMethodDeclaration
+		if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
+					
+			IMethodDeclaration methodDeclaration = (IMethodDeclaration) sourceElement;
+			IMethod method = (IMethod) match.getElement();
 			
 			
-			//check weather the method signature is correct
+			//TODO: At this point the typeQulifier of the ReturnTyp and the parameters has to be checked  
+			// return false, if the match was not the right hit	
+	
+			// Old Code --has to be replaced--
 			try {
-				if (m.getReturnType().equals(me.getReturnTypeQualifier())){
-					String[] mParaTypes = m.getParameterTypes();
-					String[] meParaTypes = me.getParameterTypeQualifiers();
+				if (method.getReturnType().equals(methodDeclaration.getReturnTypeQualifier())){
+					String[] mParaTypes = method.getParameterTypes();
+					String[] meParaTypes = methodDeclaration.getParameterTypeQualifiers();
 					
 					if (meParaTypes.length == mParaTypes.length){
 						boolean equalParameterTypes = true;
@@ -176,7 +199,8 @@ public class CodeElementFinder {
 							}
 						}
 						if (equalParameterTypes){
-							CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);		
+							CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);
+							return true;
 						}
 					}
 				}
@@ -184,19 +208,25 @@ public class CodeElementFinder {
 				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
+			// --- Old Code
+		
+			return false;
+		}	
+		// find a field declaration and we were looking for a IFieldDeclaration
+		if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
 			
-		}else if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){
+			IField field = (IField) match.getElement();
+			IFieldDeclaration sourceCodeElement = (IFieldDeclaration) sourceElement;
+						
+			// TODO: check TypQualifier
+			// return false, if the match was not the right hit
+
+			CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);
 			
-			IType type = (IType) match.getElement();
-			IStatement sourceCodeElement = (IStatement) sourceElement;
-			
-			//TODO:
-			if (sourceCodeElement.getLineNumber() != -1){
-				IFile file = project.getFile(type.getResource().getProjectRelativePath());
-				//addMarker(file, violationMessage, sourceCodeElement.getLineNumber() , IMarker.PRIORITY_HIGH);	
-			}
+			return true;
 			
 		}
+		return false;
 	}
 	
 }

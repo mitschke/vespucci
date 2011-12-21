@@ -36,12 +36,14 @@ package de.tud.cs.st.vespucci.mockprocessor;
 import java.util.Set;
 
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
+import de.tud.cs.st.vespucci.information.interfaces.spi.FieldDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.CodeElement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Statement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Violation;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationReport;
+import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
@@ -95,34 +97,45 @@ public class MockProcessor implements IModelProcessor {
 		
 		//------------------------
 		
-		IStatement dataModel_callController = new Statement("model", "DataModel", 29);
+		//IStatement dataModel_callController = new Statement("model", "DataModel", 29);
 		IClassDeclaration mainView = new ClassDeclaration("view", "MainView", "typeQualifier");
-		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createView", "I", paramTypes1);	
+		//IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createView", "I", paramTypes1);	
 		IMethodDeclaration mainController_doSome = new MethodDeclaration("controller.test", "MainController", "doSome", "V", paramTypes2);
 
+		//IFieldDeclaration field_dec = new FieldDeclaration("model", "DataModel", "test");
+		IFieldDeclaration field_dec2 = new FieldDeclaration("model", "DataModel", "test4");
 		//------------------------
 		
 		
-		IViolation firstViolation = new Violation(
-				"Not allowed call from Model to Controller",
-				dataModel_callController, 
-				mainController_doSome, 
-				model,
-				controller, 
-				modelToController);
+//		IViolation firstViolation = new Violation(
+//				"Not allowed call from Model to Controller",
+//				dataModel_callController, 
+//				mainController_doSome, 
+//				model,
+//				controller, 
+//				modelToController);
+//		
+//		IViolation secondViolation = new Violation(
+//				"Not allowed construction from Model to View",
+//				dataModel_createView, 
+//				mainView,
+//				model, 
+//				view, 
+//				modelToView);
 		
-		IViolation secondViolation = new Violation(
-				"Not allowed construction from Model to View",
-				dataModel_createView, 
-				mainView,
-				model, 
-				view, 
-				modelToView);
+		IViolation thirdViolation = new Violation(
+				"Not allowed FieldDeclaration", 
+				mainView, 
+				field_dec2, 
+				null, 
+				null, 
+				null);
 		
 		IViolationReport violationReport = new ViolationReport();
 		
-		violationReport.addViolation(firstViolation);
-		violationReport.addViolation(secondViolation);
+//		violationReport.addViolation(firstViolation);
+//		violationReport.addViolation(secondViolation);
+		violationReport.addViolation(thirdViolation);
 		
 		return violationReport;
 	}
