@@ -74,7 +74,7 @@ implements Comparable<VespucciVersionTemplate> {
 	 * <p>Pointer to the newest version descriptor.</p>
 	 * <p><strong>Remember to update this when adding newer versions!</strong></p>
 	 */
-	public static final VespucciVersionTemplate NEWEST_VERSION = new VespucciVersion_20110601();
+	public static final VespucciVersionTemplate NEWEST_VERSION = new VespucciVersion_20111129();
 	
 	/**
 	 * Number of (single) steps needed to perform the conversion task.

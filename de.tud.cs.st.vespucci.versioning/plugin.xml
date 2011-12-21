@@ -53,6 +53,9 @@
                   nsURI="http://vespucci.editor/2011-06-01">
             </metamodel>
             <metamodel
+                  nsURI="http://vespucci.editor/2011-11-29">
+            </metamodel>
+            <metamodel
                   nsURI="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
             </metamodel>
          </library>
@@ -60,9 +63,13 @@
    </extension>
    <extension
          point="org.eclipse.m2m.qvt.oml.runtime.qvtTransformation">
-      <transformation
+          <transformation
             file="transformations/migrate_v0_to_v1_model.qvto"
             id="transformations.migrate_v0_to_v1">
+      </transformation>
+      <transformation
+            file="transformations/migrate_v1_to_v2_model.qvto"
+            id="transformations.migrate_v1_to_v2">
       </transformation>
    </extension>
    <extension
@@ -87,6 +94,13 @@
             id="de.tud.cs.st.vespucci.versioning.UpdateVespucciDiagram"
             name="Update to current version">
       </command>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            class="vespucci.vespucci_model.Vespucci_modelPackage_01"
+            uri="http://vespucci.editor/2011-06-01">
+      </package>
    </extension>
    
 </plugin>

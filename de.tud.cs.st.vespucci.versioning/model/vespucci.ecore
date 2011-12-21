@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="vespucci_model"
+    nsURI="http://vespucci.editor/2011-11-29" nsPrefix="vespucci-2011-11-29">
+  <eClassifiers xsi:type="ecore:EClass" name="ShapesDiagram">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="shapes" upperBound="-1"
+        eType="#//Shape" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Shape">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceConnections" upperBound="-1"
+        eType="#//Connection" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetConnections" upperBound="-1"
+        eType="#//Connection" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="&lt;description>"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="empty"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Empty" eSuperTypes="#//Shape"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Ensemble" eSuperTypes="#//Shape">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="shapes" upperBound="-1"
+        eType="#//Shape" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Connection">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Shape"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Shape"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="all"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalSource" upperBound="-1"
+        eType="#//Shape"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalTarget" upperBound="-1"
+        eType="#//Shape"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NotAllowed" eSuperTypes="#//Connection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Outgoing" eSuperTypes="#//Connection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Incoming" eSuperTypes="#//Connection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InAndOut" eSuperTypes="#//Connection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Expected" eSuperTypes="#//Connection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GlobalOutgoing" eSuperTypes="#//Connection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GlobalIncoming" eSuperTypes="#//Connection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Violation" eSuperTypes="#//Connection"/>
+</ecore:EPackage>

@@ -43,9 +43,15 @@
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="http://vespucci.editor"
+            uri="http://vespucci.editor/2011-11-29"
             class="de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage"
             genModel="model/vespucci.genmodel"/>
    </extension>
-
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://vespucci.editor/2011-06-01"
+            class="de.tud.cs.st.vespucci_2011_06_01.vespucci_model.Vespucci_modelPackage_2011_01_06"
+            genModel="model/vespucci.genmodel"/>
+   </extension>
+ 
 </plugin>
