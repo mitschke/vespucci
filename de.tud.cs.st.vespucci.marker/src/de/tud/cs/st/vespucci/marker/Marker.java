@@ -38,9 +38,9 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
-import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationReport;
+import de.tud.cs.st.vespucci.utilities.Util;
 
 /**
  * Mark Violations in a given project.

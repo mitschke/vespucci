@@ -52,6 +52,7 @@ import de.tud.cs.st.vespucci.diagram.model.output.spi.ArchitectureModel;
 import de.tud.cs.st.vespucci.diagram.model.output.spi.Ensemble;
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.utilities.Util;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 

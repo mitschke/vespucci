@@ -36,7 +36,6 @@ package de.tud.cs.st.vespucci.mockprocessor;
 import java.util.Set;
 
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
-import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.CodeElement;
@@ -52,6 +51,7 @@ import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.utilities.Util;
 
 public class MockProcessor implements IModelProcessor {
 

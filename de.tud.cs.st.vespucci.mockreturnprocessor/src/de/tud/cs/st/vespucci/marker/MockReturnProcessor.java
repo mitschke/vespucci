@@ -16,10 +16,10 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
-import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.utilities.Util;
 
 public class MockReturnProcessor implements IResultProcessor {
 
