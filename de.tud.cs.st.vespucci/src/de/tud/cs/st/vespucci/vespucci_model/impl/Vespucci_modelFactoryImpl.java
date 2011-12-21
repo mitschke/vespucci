@@ -73,7 +73,7 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 	 */
 	public static Vespucci_modelFactory init() {
 		try {
-			Vespucci_modelFactory theVespucci_modelFactory = (Vespucci_modelFactory)EPackage.Registry.INSTANCE.getEFactory("http://vespucci.editor/2011-06-01"); 
+			Vespucci_modelFactory theVespucci_modelFactory = (Vespucci_modelFactory)EPackage.Registry.INSTANCE.getEFactory("http://vespucci.editor/2011-11-29"); 
 			if (theVespucci_modelFactory != null) {
 				return theVespucci_modelFactory;
 			}
