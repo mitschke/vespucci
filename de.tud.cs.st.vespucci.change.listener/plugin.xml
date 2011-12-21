@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="de.tud.cs.st.vespucci.change.listener.startup"
+         name="de.tud.cs.st.vespucci.change.listener.startup"
+         point="org.eclipse.ui.startup">
+      <startup
+            class="de.tud.cs.st.vespucci.change.listener.StartUpConfigurator">
+      </startup>
+   </extension>
+
+</plugin>

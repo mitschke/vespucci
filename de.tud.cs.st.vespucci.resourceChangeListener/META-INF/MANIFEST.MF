@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ResourceChangeListener
+Bundle-SymbolicName: de.tud.cs.st.vespucci.resourceChangeListener
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.tud.cs.st.vespucci.resourcechangelistener.Activator
+Bundle-Vendor: TU Darmstadt
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
