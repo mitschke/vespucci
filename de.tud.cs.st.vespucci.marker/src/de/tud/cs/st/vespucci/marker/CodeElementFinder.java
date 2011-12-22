@@ -211,8 +211,6 @@ public class CodeElementFinder {
 			// Debug Info		
 			System.out.println("IMehtod");
 					
-			//TODO: At this point the typeQulifier of the ReturnTyp and the parameters has to be checked  
-			
 			try {
 				IType declaringType = method.getDeclaringType();
 				
@@ -241,33 +239,6 @@ public class CodeElementFinder {
 			
 			// return false, if the match was not the right hit	
 			return false;
-			
-//			// Old Code --has to be replaced--
-//			try {
-//				if (method.getReturnType().equals(methodDeclaration.getReturnTypeQualifier())){
-//					String[] mParaTypes = method.getParameterTypes();
-//					String[] meParaTypes = methodDeclaration.getParameterTypeQualifiers();
-//					
-//					if (meParaTypes.length == mParaTypes.length){
-//						boolean equalParameterTypes = true;
-//						for (int i = 0; i < mParaTypes.length; i++){
-//							if (!meParaTypes[i].equals(mParaTypes[i])){
-//								equalParameterTypes = false;
-//							}
-//						}
-//						if (equalParameterTypes){
-//							CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);
-//							return true;
-//						}
-//					}
-//				}
-//			} catch (JavaModelException e) {
-//				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-//				StatusManager.getManager().handle(is, StatusManager.LOG);
-//			}
-//			// --- Old Code
-//		
-//			return false;
 		}
 		// find a field declaration and we were looking for a IFieldDeclaration
 		if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
