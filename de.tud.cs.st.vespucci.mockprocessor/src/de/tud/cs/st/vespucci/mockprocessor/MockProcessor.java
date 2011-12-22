@@ -91,41 +91,42 @@ public class MockProcessor implements IModelProcessor {
 		}
 		
 		String[] paramTypes1 = new String[1];
-		paramTypes1[0] = "QString;";
-		String[] paramTypes2 = new String[0];
+		paramTypes1[0] = "Ljava/lang/String;";
+		String[] paramTypes2 = new String[1];
+		paramTypes2[0] = "[I;";
 		
 		
 		//------------------------
 		
-		//IStatement dataModel_callController = new Statement("model", "DataModel", 29);
-		IClassDeclaration mainView = new ClassDeclaration("view", "MainView", "typeQualifier");
-		//IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createView", "I", paramTypes1);	
-		IMethodDeclaration mainController_doSome = new MethodDeclaration("controller.test", "MainController", "doSome", "V", paramTypes2);
+		IStatement dataModel_callController = new Statement("model", "DataModel", 26);
+		IClassDeclaration mainView = new ClassDeclaration("view", "ViewMain", "Lview/ViewMain;");
+		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createView", "[Ljava/lang/String;", paramTypes1);	
+		IMethodDeclaration mainController_doSome = new MethodDeclaration("controller.test", "MainController", "doSome", "C;", paramTypes2);
 
-		//IFieldDeclaration field_dec = new FieldDeclaration("model", "DataModel", "test");
-		IFieldDeclaration field_dec2 = new FieldDeclaration("model", "DataModel", "test4");
+		IFieldDeclaration field_dec = new FieldDeclaration("model", "DataModel", "test", "[Ljava/lang/String;");
+		IFieldDeclaration field_dec2 = new FieldDeclaration("model", "DataModel", "dataModel", "Lmodel/DataModel;");
 		//------------------------
 		
 		
-//		IViolation firstViolation = new Violation(
-//				"Not allowed call from Model to Controller",
-//				dataModel_callController, 
-//				mainController_doSome, 
-//				model,
-//				controller, 
-//				modelToController);
-//		
-//		IViolation secondViolation = new Violation(
-//				"Not allowed construction from Model to View",
-//				dataModel_createView, 
-//				mainView,
-//				model, 
-//				view, 
-//				modelToView);
+		IViolation firstViolation = new Violation(
+				"Not allowed call from Model to Controller",
+				dataModel_callController, 
+				mainController_doSome, 
+				model,
+				controller, 
+				modelToController);
+		
+		IViolation secondViolation = new Violation(
+				"Not allowed construction from Model to View",
+				dataModel_createView, 
+				mainView,
+				model, 
+				view, 
+				modelToView);
 		
 		IViolation thirdViolation = new Violation(
 				"Not allowed FieldDeclaration", 
-				mainView, 
+				field_dec, 
 				field_dec2, 
 				null, 
 				null, 
@@ -133,8 +134,8 @@ public class MockProcessor implements IModelProcessor {
 		
 		IViolationReport violationReport = new ViolationReport();
 		
-//		violationReport.addViolation(firstViolation);
-//		violationReport.addViolation(secondViolation);
+		violationReport.addViolation(firstViolation);
+		violationReport.addViolation(secondViolation);
 		violationReport.addViolation(thirdViolation);
 		
 		return violationReport;

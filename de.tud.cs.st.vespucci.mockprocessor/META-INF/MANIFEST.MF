@@ -10,3 +10,4 @@ Require-Bundle: de.tud.cs.st.vespucci.diagram,
  de.tud.cs.st.vespucci.model;bundle-version="1.0.0",
  de.tud.cs.st.vespucci.utilities;bundle-version="1.0.0"
 Export-Package: de.tud.cs.st.vespucci.mockprocessor
+Import-Package: org.eclipse.jdt.internal.corext.util
