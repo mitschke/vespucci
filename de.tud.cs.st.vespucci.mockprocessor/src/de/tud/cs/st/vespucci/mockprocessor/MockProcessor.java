@@ -36,12 +36,14 @@ package de.tud.cs.st.vespucci.mockprocessor;
 import java.util.Set;
 
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
+import de.tud.cs.st.vespucci.information.interfaces.spi.FieldDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.CodeElement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Statement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Violation;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationReport;
+import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
@@ -89,17 +91,20 @@ public class MockProcessor implements IModelProcessor {
 		}
 		
 		String[] paramTypes1 = new String[1];
-		paramTypes1[0] = "QString;";
-		String[] paramTypes2 = new String[0];
+		paramTypes1[0] = "Ljava/lang/String;";
+		String[] paramTypes2 = new String[1];
+		paramTypes2[0] = "[I;";
 		
 		
 		//------------------------
 		
-		IStatement dataModel_callController = new Statement("model", "DataModel", 29);
-		IClassDeclaration mainView = new ClassDeclaration("view", "MainView", "typeQualifier");
-		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createView", "I", paramTypes1);	
-		IMethodDeclaration mainController_doSome = new MethodDeclaration("controller.test", "MainController", "doSome", "V", paramTypes2);
+		IStatement dataModel_callController = new Statement("model", "DataModel", 26);
+		IClassDeclaration mainView = new ClassDeclaration("view", "ViewMain", "Lview/ViewMain;");
+		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createView", "[Ljava/lang/String;", paramTypes1);	
+		IMethodDeclaration mainController_doSome = new MethodDeclaration("controller.test", "MainController", "doSome", "C;", paramTypes2);
 
+		IFieldDeclaration field_dec = new FieldDeclaration("model", "DataModel", "test", "[Ljava/lang/String;");
+		IFieldDeclaration field_dec2 = new FieldDeclaration("model", "DataModel", "dataModel", "Lmodel/DataModel;");
 		//------------------------
 		
 		
@@ -119,10 +124,19 @@ public class MockProcessor implements IModelProcessor {
 				view, 
 				modelToView);
 		
+		IViolation thirdViolation = new Violation(
+				"Not allowed FieldDeclaration", 
+				field_dec, 
+				field_dec2, 
+				null, 
+				null, 
+				null);
+		
 		IViolationReport violationReport = new ViolationReport();
 		
 		violationReport.addViolation(firstViolation);
 		violationReport.addViolation(secondViolation);
+		violationReport.addViolation(thirdViolation);
 		
 		return violationReport;
 	}

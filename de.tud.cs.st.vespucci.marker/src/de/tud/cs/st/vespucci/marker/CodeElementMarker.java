@@ -35,7 +35,6 @@ package de.tud.cs.st.vespucci.marker;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -44,8 +43,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -55,13 +52,20 @@ public class CodeElementMarker {
 		
 	private static Set<IMarker> markers = new HashSet<IMarker>();
 
+	protected static void markIStatement(IMember member, String description, int lineNumber, IProject project){
+		if ((lineNumber > -1) && (member.getResource() != null)){
+			IFile file = project.getFile(member.getResource().getProjectRelativePath());
+			
+			addMarker(file, description, lineNumber, IMarker.PRIORITY_HIGH);
+		}
+	}
+	
 	protected static void markIMember(IMember member, String description, IProject project) {
 		if (member.getResource() != null){
 			try {
 				IFile file = project.getFile(member.getResource().getProjectRelativePath());
-				int lineNumber = calcLineNumber(member.getSourceRange().getOffset(), member);
 				
-				addMarker(file, description, lineNumber, IMarker.PRIORITY_HIGH);	
+				addMarker(file, description, member.getSourceRange().getOffset(), member.getSourceRange().getOffset(), IMarker.PRIORITY_HIGH);	
 				
 			} catch (JavaModelException e) {
 				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
@@ -93,38 +97,29 @@ public class CodeElementMarker {
 	}
 	
 	/**
-	 * Calculate the line number out of the given offset
-	 * @param offset the given offset 
-	 * @param type reference to a containing Element
-	 * @return the calculated line number
+	 * Add a Marker (IMarker) to a given IFile
+	 * @param file File to create the marker on
+	 * @param message message shown in the ProblemsView
+	 * @param startPosition start position of the marker relative to the beginning of the file
+	 * @param endPosition end position of the marker relative to the beginning of the file
+	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
 	 */
-	private static int calcLineNumber(int offset, IMember type){
-		String source;
-		int lineNumber= 1;
+	private static void addMarker(IFile file, String message, int startPositon, int endPosition, int severity) {
 		try {
-			source = type.getCompilationUnit().getSource();
-			for (int i= 0; i < offset; i++){
-				//TODO: must be changed. doesn't work on all machines
-				if (source.charAt(i) == Character.LINE_SEPARATOR){
-			    	lineNumber++;
-			    }
-			}   
-		} catch (JavaModelException e) {
+			IMarker marker = file.createMarker("org.eclipse.core.resources.problemmarker");
+			marker.setAttribute(IMarker.MESSAGE, message);
+			marker.setAttribute(IMarker.SEVERITY, severity);
+			marker.setAttribute(IMarker.CHAR_START, startPositon);
+			marker.setAttribute(IMarker.CHAR_END, endPosition);
+			marker.setAttribute(IMarker.TRANSIENT, true);
+			markers.add(marker);
+		}
+		catch (CoreException e) {
 			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
-
- 
-		return lineNumber;
 	}
 	
-	private int getMethodLineNumber(final IType type, IMethod method) throws JavaModelException {
-	    String source= type.getCompilationUnit().getSource();
-	    String sourceUpToMethod= source.substring(0, method.getSourceRange().getOffset());
-	    Pattern lineEnd= Pattern.compile("$", Pattern.MULTILINE | Pattern.DOTALL);
-	    return lineEnd.split(sourceUpToMethod).length;
-	}
-
 	protected static void deleteAllMarkers(){
 		for (IMarker marker : markers){
 			try {

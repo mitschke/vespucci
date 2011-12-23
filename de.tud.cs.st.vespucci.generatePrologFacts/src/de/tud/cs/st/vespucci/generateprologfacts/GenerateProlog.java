@@ -40,9 +40,9 @@ import org.eclipse.core.resources.IFile;
 
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.diagram.processing.IModelSaveAction;
-import de.tud.cs.st.vespucci.diagram.processing.Util;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.generateprologfacts.creator.PrologFileCreator;
+import de.tud.cs.st.vespucci.utilities.Util;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 /**
  * A processor/handler for saving a *.sad file to a *.pl Prolog file

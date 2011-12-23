@@ -44,8 +44,6 @@ import de.tud.cs.st.vespucci.utilities.Util;
 
 /**
  * Mark Violations in a given project.
- * 
- * @author Olav Lenz
  */
 public class Marker implements IResultProcessor {
 
@@ -64,10 +62,10 @@ public class Marker implements IResultProcessor {
 	private void markViolations() {
 		for (IViolation violation : violations) {
 			if (violation.getSourceElement() != null){
-				CodeElementFinder.startSearchOfISourceCodeElement(violation.getSourceElement(), violation.getDescription(), project);
+				CodeElementFinder.search(violation.getSourceElement(), violation.getDescription(), project);
 			}
 			if (violation.getTargetElement() != null){
-				CodeElementFinder.startSearchOfISourceCodeElement(violation.getTargetElement(), violation.getDescription(), project);
+				CodeElementFinder.search(violation.getTargetElement(), violation.getDescription(), project);
 			}			
 		}
 	}	
