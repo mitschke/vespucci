@@ -56,6 +56,7 @@ public class EnsembleElementListView implements IEnsembleElementList,
 
 	@Override
 	public void added(IPair<IEnsemble, ICodeElement> element) {
+		System.out.println("added: " + element.getFirst().getName() + " :: " + element.getSecond());
 		for (IDataViewObserver<IPair<IEnsemble, ICodeElement>> observer : observers) {
 			observer.added(element);
 		}
@@ -63,6 +64,7 @@ public class EnsembleElementListView implements IEnsembleElementList,
 
 	@Override
 	public void removed(IPair<IEnsemble, ICodeElement> element) {
+		System.out.println("removed: " + element.getFirst().getName() + " :: " + element.getSecond());
 		for (IDataViewObserver<IPair<IEnsemble, ICodeElement>> observer : observers) {
 			observer.deleted(element);
 		}
@@ -74,6 +76,11 @@ public class EnsembleElementListView implements IEnsembleElementList,
 		for (IDataViewObserver<IPair<IEnsemble, ICodeElement>> observer : observers) {
 			observer.updated(oldElement, newElement);
 		}
+	}
+
+	@Override
+	public void dispose() {
+		// TODO implement disposal
 	}
 
 }
