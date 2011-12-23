@@ -17,6 +17,12 @@ public interface IDataView<T>
 	 */
 	Iterator<T> iterator();
 	
+	/**
+	 * Disposes of the given data view
+	 * TODO currently not implemented
+	 */
+	void dispose();
+	
 	void register(IDataViewObserver<T> observer);
 	
 	void unregister(IDataViewObserver<T> observer);
