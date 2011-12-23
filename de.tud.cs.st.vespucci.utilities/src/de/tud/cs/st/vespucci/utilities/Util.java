@@ -121,10 +121,7 @@ public class Util {
 	 *         parameter extension
 	 */
 	public static boolean isFileType(final IFile file, String extension) {
-		int extlength = extension.length();
-		final String ext = file.getName().substring(
-				(file.getName().length() - extlength), file.getName().length());
-		return (ext.equals(extension));
+		return extension.equals(file.getLocation().getFileExtension());
 	}
 
 	/**
@@ -144,13 +141,13 @@ public class Util {
 		List<IFile> ifiles = new LinkedList<IFile>();
 		switch (selection) {
 		case CLASS:
-			ifiles = getFilesList(project, ".class");
+			ifiles = getFilesList(project, "class");
 			break;
 		case JAVA:
-			ifiles = getFilesList(project, ".java");
+			ifiles = getFilesList(project, "java");
 			break;
 		case PROJECT_JAR:
-			ifiles = getFilesList(project, ".jar");
+			ifiles = getFilesList(project, "jar");
 			break;
 		}
 		return ifiles;
