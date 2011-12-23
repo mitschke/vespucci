@@ -1,9 +1,14 @@
 package de.tud.cs.st.vespucci.bytecode.database.provider;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -136,11 +141,30 @@ public class ProjectDatabaseProvider {
 
 		for (IFile file : classFiles) {
 			try {
-				database.addClassFile(file.getContents());
+				IFileStore store = FileBuffers.getFileStoreAtLocation(file
+						.getLocation());
+
+				InputStream stream = store.openInputStream(EFS.NONE, null);
+				database.addClassFile(stream);
+				stream.close();
+				Activator.getDefault().makeShadowCopy(file);
+				
 			} catch (CoreException e) {
 				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						"unable to read resource: "
 								+ file.getLocation().toString(), e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+
+			} catch (IOException e) {
+				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"unable close stream for resource: "
+								+ file.getLocation().toString(), e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+
+			} catch (Error e) {
+				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"error while reading class file: "
+								+ file.getLocation().toString() + " - " + e.getMessage(), e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 
 			}
