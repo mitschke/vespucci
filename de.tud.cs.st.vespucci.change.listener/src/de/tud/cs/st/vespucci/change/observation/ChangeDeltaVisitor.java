@@ -30,17 +30,30 @@ public class ChangeDeltaVisitor implements IResourceDeltaVisitor {
 
 		IResource resource = delta.getResource();
 
+		
 		IProject project = resource.getProject();
 
+		/* 
+		 * The root has no project but we wish to visit the children  
+		 */
+		if(project == null)
+			return true;
+		
 		if (!changeProvider.hasObserver(project)) {
 			return false;
 		}
 
+
 		int type = resource.getType();
+		if (type == IResource.FOLDER || type == IResource.PROJECT ) {
+			return true;
+		}
+
 		if (type != IResource.FILE) {
 			return false;
 		}
 
+		
 		if (isClassFileExtension(resource.getFileExtension())) {
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:

@@ -63,16 +63,17 @@ public class ResourceChangeListener implements IResourceChangeListener {
 		// modifications
 		// to one or more resources expressed as a hierarchical resource delta
 		// as returned by getDelta.
-		if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-			IResourceDelta delta = event.getDelta();
-			try {
-				visitor.visit(delta);
-			} catch (CoreException e) {
-				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						"unexpected core exception", e);
-				StatusManager.getManager().handle(is, StatusManager.LOG);
+		if (event.getType() != IResourceChangeEvent.POST_CHANGE)
+			return;
+		
+		IResourceDelta delta = event.getDelta();
+		try {
+			delta.accept(visitor);
+		} catch (CoreException e) {
+			IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+					"unexpected core exception", e);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
 
-			}
 		}
 	}
 
