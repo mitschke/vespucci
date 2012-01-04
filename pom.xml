@@ -66,11 +66,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.dorest</groupId>
-			<artifactId>org.dorest.ext.basicauth</artifactId>
-			<version>0.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.dorest</groupId>
 			<artifactId>org.dorest.ext.digestauth</artifactId>
 			<version>0.0.0-SNAPSHOT</version>
 		</dependency>

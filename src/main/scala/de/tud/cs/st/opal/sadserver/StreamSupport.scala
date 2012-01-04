@@ -1,4 +1,3 @@
-
 /*
    Copyright 2011 Michael Eichberg et al
  
