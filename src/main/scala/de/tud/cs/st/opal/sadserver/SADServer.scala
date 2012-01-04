@@ -18,6 +18,7 @@ import org.dorest.server.jdk.Server
 import org.dorest.server.HandlerFactory
 import com.weiglewilczek.slf4s.Logging
 import org.dorest.server.rest._
+import org.dorest.server.rest.representation.stream.StreamSupport
 import org.dorest.server.MediaType
 
 /**

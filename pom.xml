@@ -37,6 +37,23 @@
 			<artifactId>scala-library</artifactId>
 			<version>${scala.version}</version>
 		</dependency>
+		
+		<!-- DoRest -->
+		<dependency>
+			<groupId>org.dorest</groupId>
+			<artifactId>org.dorest.core</artifactId>
+			<version>0.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.dorest</groupId>
+			<artifactId>org.dorest.ext.digestauth</artifactId>
+			<version>0.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.dorest</groupId>
+			<artifactId>org.dorest.ext.stream</artifactId>
+			<version>0.0.0-SNAPSHOT</version>
+		</dependency>
 
 		<!-- Test-Dependencies -->
 		<dependency>
@@ -56,18 +73,6 @@
 			<artifactId>org.dorest.ext.client</artifactId>
 			<version>0.0.0-SNAPSHOT</version>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- DoRest -->
-		<dependency>
-			<groupId>org.dorest</groupId>
-			<artifactId>org.dorest.core</artifactId>
-			<version>0.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.dorest</groupId>
-			<artifactId>org.dorest.ext.digestauth</artifactId>
-			<version>0.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Database -->
