@@ -34,6 +34,8 @@
 package de.tud.cs.st.vespucci.marker;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -42,12 +44,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -55,32 +59,80 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
+import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
+import de.tud.cs.st.vespucci.information.interfaces.spi.FieldDeclaration;
+import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
+import de.tud.cs.st.vespucci.information.interfaces.spi.Statement;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IStatement;
+import de.tud.cs.st.vespucci.marker.extra.IComplexeCodeElement;
+import de.tud.cs.st.vespucci.marker.extra.spi.ComplexCodeElement;
 
 public class CodeElementFinder {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
 	
 	protected static void search(ICodeElement sourceElement, String violationMessage, IProject project){
-		// Debug Info
-		System.out.println("-----Start Seraching");
-		foundMatch(null, sourceElement, violationMessage, project);
+		SearchPattern searchPattern;
+		
+		//Set default SearchScope
+		IJavaSearchScope javaSearchScope = SearchEngine.createWorkspaceScope();
+		
+		//Try to get better SearchScope
+	    try {
+	    	IJavaProject javaProject= JavaCore.create(project);
+	    	IPackageFragmentRoot[] packageFragmentRoots = javaProject.getPackageFragmentRoots();
+	    	
+	    	List<IJavaElement> packages = new LinkedList<IJavaElement>();
+	    	for (IPackageFragmentRoot packageFragmentRoot : packageFragmentRoots) {
+				for (IJavaElement javaElement : packageFragmentRoot.getChildren()) {
+					if (javaElement instanceof IPackageFragment){
+						IPackageFragment candidatePackage = (IPackageFragment) javaElement;
+						if (candidatePackage.getElementName().equals(sourceElement.getPackageIdentifier())){
+							packages.add(candidatePackage);
+						}
+					}
+				}
+			}
+
+	    	
+	    	IJavaElement[] javaElements = new IJavaElement[packages.size()];
+	    	for (int i = 0; i < packages.size(); i++) {
+				javaElements[i] = packages.get(i);
+			}
+			javaSearchScope = SearchEngine.createJavaSearchScope(javaElements);
+		} catch (JavaModelException e) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
+	    
+	    // start initial search
+
+		searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
+
+		search(searchPattern, javaSearchScope, sourceElement, violationMessage, project);
+
 	}
 		
-	private static void search(SearchPattern searchPattern, IJavaSearchScope javaSearchScope, final ICodeElement sourceElement, final String string, final IProject project) {
+	private static void search(SearchPattern searchPattern, final IJavaSearchScope javaSearchScope, final ICodeElement sourceElement, final String string, final IProject project) {
 		
 		SearchRequestor requestor = new SearchRequestor() {
 			private boolean sucess = false;
 			
 			@Override
 			public void acceptSearchMatch(SearchMatch match) throws CoreException {
-				sucess = foundMatch(match, sourceElement, string, project);
+				if (sucess){
+					foundMatch(match, sourceElement, string, project, javaSearchScope);
+				}else{
+					sucess = foundMatch(match, sourceElement, string, project, javaSearchScope); 
+				}
+				
 			}		
 			
 			@Override
@@ -102,43 +154,136 @@ public class CodeElementFinder {
 		}
 	}
 
-	protected static void notfoundMatch(ICodeElement sourceElement, String string, IProject project) {
+	protected static void notfoundMatch(ICodeElement sourceElement, String violationMessage, IProject project) {
 		// Debug Info
 		System.out.println("Didn't find anything");
-		// TODO: this case will be use when we are searching for inner classes or anonym classes
+
+		if (sourceElement instanceof IComplexeCodeElement){
+			IComplexeCodeElement temp = (IComplexeCodeElement) sourceElement;
+			if (temp.getSimpleClassName().contains("$")){
+				temp.pushToWaitingArea(getLastDollarSequence(temp.getSimpleClassName()));
+				temp.setSimpleClassName(removeLastDollarSequence(temp.getSimpleClassName()));
+				
+				search(temp, violationMessage, project);
+			}else{
+				if (temp.isWaitingAreaEmtpy()){
+					// Bad Escape
+					System.out.println("Bad Escape");
+					
+					//processBadSearchResult(violationMessage, project, temp);
+					
+				}else {
+					// add WaintingArea Element
+					if (!temp.areStacksEmpty()){
+						temp.setSimpleClassName(temp.getSimpleClassName() + "$" + temp.popFromWaitingArea());
+						
+						search(temp, violationMessage, project);
+					}else{
+						// Nothing can be found
+						System.out.println("Nothing can be found");
+					}
+					
+				}
+			}
+		}else{
+			if (sourceElement.getSimpleClassName().contains("$")){
+				//create instance of IComplexeCodeElement
+				IComplexeCodeElement temp = new ComplexCodeElement(sourceElement.getPackageIdentifier(),
+																	removeLastDollarSequence(sourceElement.getSimpleClassName()), 
+																	sourceElement);
+				temp.pushToWaitingArea(getLastDollarSequence(sourceElement.getSimpleClassName()));
+								
+				search(temp, violationMessage, project);
+			}else{
+				// everything else end up here and will be lost in space
+				// Nothing can be found
+				System.out.println("Nothing can be found");
+			}
+		}
+		
 	}
 
-	protected static boolean foundMatch(SearchMatch match, ICodeElement sourceElement, String violationMessage, IProject project) {
-		// Initial case: nothing found yet. We start so search
-		if (match == null){
+	private static void processBadSearchResult(String violationMessage, IProject project, IComplexeCodeElement temp) {
+		
+		if ((temp.peekLastFoundKey() != null)&&(temp.peekLastScope() != null)){
+			IClassDeclaration te = new ClassDeclaration(temp.getPackageIdentifier(), temp.peekLastFoundKey(), null);
+			SearchPattern searchPattern = SearchPattern.createPattern(temp.peekLastFoundKey(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 			
-			// Debug Info
-			System.out.println("null");
-			
-			IJavaSearchScope javaSearchScope = SearchEngine.createWorkspaceScope();
-			SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getPackageIdentifier(), IJavaSearchConstants.PACKAGE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-						
-			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project);
-			
-			return true;
+			search(searchPattern, temp.peekLastScope(), te, violationMessage, project);
 		}
-		// Find a packageFragment, now looking for the SimpleClassName
-		if (match.getElement() instanceof IPackageFragment){
-			IPackageFragment packageFragment = (IPackageFragment) match.getElement();
+	}
+
+	private static String removeLastDollarSequence(String simpleClassName) {
+		return simpleClassName.substring(0, simpleClassName.lastIndexOf("$"));
+	}
+	
+	private static String getLastDollarSequence(String simpleClassName) {
+		return simpleClassName.substring(simpleClassName.lastIndexOf("$") + 1);
+	}
+
+	protected static boolean foundMatch(SearchMatch match, ICodeElement sourceElement, String violationMessage, IProject project, IJavaSearchScope searchScope) {
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IComplexeCodeElement)){
+			IComplexeCodeElement complexCodeElement = (IComplexeCodeElement) sourceElement;
 			
-			// Debug Info
-			System.out.println("packageFragment");
+			complexCodeElement.pushLastFoundKeyWordAndScope(complexCodeElement.getSimpleClassName(), searchScope);
 			
-			//TODO: At the moment no inner classes or anonym classes are supported
-			SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
 			
-			IJavaElement[] je = new IJavaElement[1];
-			je[0] = packageFragment;
-			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+			if (complexCodeElement.isWaitingAreaEmtpy()){
+				// manipulate ICSCE
+				
+				ICodeElement temp = complexCodeElement.getSpecialElement();
+				ICodeElement element = null;
+				
+				if (temp instanceof IClassDeclaration){
+					IClassDeclaration t = (IClassDeclaration) temp;
+					element = new ClassDeclaration(t.getPackageIdentifier(), complexCodeElement.peekLastFoundKey(), t.getTypeQualifier());
+				}else
+				if (temp instanceof IMethodDeclaration){
+					IMethodDeclaration t = (IMethodDeclaration) temp;
+					element = new MethodDeclaration(t.getPackageIdentifier(), complexCodeElement.peekLastFoundKey(), t.getMethodName(), t.getReturnTypeQualifier(), t.getParameterTypeQualifiers());
+				}else
+				if (temp instanceof IFieldDeclaration){
+					IFieldDeclaration t = (IFieldDeclaration) temp;
+					element = new FieldDeclaration(t.getPackageIdentifier(), complexCodeElement.peekLastFoundKey(), t.getFieldName(), t.getTypeQualifier());
+				}else
+				if (temp instanceof IStatement){
+					IStatement t = (IStatement) temp;
+					element = new Statement(t.getPackageIdentifier(), complexCodeElement.peekLastFoundKey(), t.getLineNumber());
+				}
+				
+				
+				if (element != null){
+					SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+					
+					IJavaSearchScope temp3 = complexCodeElement.peekLastScope();
+					
+					search(searchPattern, temp3, element, violationMessage, project);
+					return true;
+				}				
+				
+			}else{
+				// 
+				complexCodeElement.setSimpleClassName(complexCodeElement.popFromWaitingArea());
+				
+				if (isNumeric(complexCodeElement.getSimpleClassName())){
+					// Bad Escape
+					System.out.println("Bad Escape");
+					
+					//processBadSearchResult(violationMessage, project, complexCodeElement);
+				}else{
+					IJavaElement[] je = new IJavaElement[1];
+					je[0] = (IType) match.getElement();
+					IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+					
+					SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+					
+					search(searchPattern, javaSearchScope, complexCodeElement, violationMessage, project);
+					return true;
+				}
+
+				
+			}
 			
-			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project);
-			
-			return true;
 		}
 		// Find a class declaration and we were looking for it
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){
@@ -148,13 +293,16 @@ public class CodeElementFinder {
 			// Debug Info
 			System.out.println("IType");
 			
-			// check if the match was what we were searching for
-			if (type.getKey().equals(classDeclaration.getTypeQualifier())){
+			if (classDeclaration.getTypeQualifier() != null){
+				if (type.getKey().equals(classDeclaration.getTypeQualifier())){
+					CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);
+					return true;
+				}
+			}else{
 				CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);
 				return true;
 			}
-						
-			// return false, if the match was not what we were searching for
+
 			return false;
 		}	
 		// Find a class declaration and we were looking for a IMethodDeclaration
@@ -264,6 +412,17 @@ public class CodeElementFinder {
 		return false;
 	}
 	
+	// Source: http://www.java-forum.org/java-basics-anfaenger-themen/108130-pruefen-ob-string-zahl.html
+	private static boolean isNumeric(String simpleClassName) {
+		 try {
+		    Integer.parseInt(simpleClassName);
+		    return true; 
+		 }
+		 catch(NumberFormatException e) {
+		   return false;
+		 }
+	}
+
 	private static Map<String,String> primitiveTypeTable;
 	
 	private static String createTypQualifier(String signatur, IType declaringType) {
