@@ -3,7 +3,7 @@
  *   Copyright (c) 2011
  *   Software Technology Group
  *   Department of Computer Science
- *   Technische Universitiät Darmstadt
+ *   Technische UniversitiÃ€t Darmstadt
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -15,7 +15,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Technology Group Group or Technische
- *     Universität Darmstadt nor the names of its contributors may be used to
+ *     UniversitÃ€t Darmstadt nor the names of its contributors may be used to
  *     endorse or promote products derived from this software without specific
  *     prior written permission.
  *
@@ -71,7 +71,7 @@ import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IStatement;
-import de.tud.cs.st.vespucci.marker.extra.IComplexeCodeElement;
+import de.tud.cs.st.vespucci.marker.extra.IComplexCodeElement;
 import de.tud.cs.st.vespucci.marker.extra.spi.ComplexCodeElement;
 
 public class CodeElementFinder {
@@ -158,41 +158,37 @@ public class CodeElementFinder {
 		// Debug Info
 		System.out.println("Didn't find anything");
 
-		if (sourceElement instanceof IComplexeCodeElement){
-			IComplexeCodeElement temp = (IComplexeCodeElement) sourceElement;
-			if (temp.getSimpleClassName().contains("$")){
-				temp.pushToWaitingArea(getLastDollarSequence(temp.getSimpleClassName()));
-				temp.setSimpleClassName(removeLastDollarSequence(temp.getSimpleClassName()));
-				
-				search(temp, violationMessage, project);
-			}else{
+		if (sourceElement instanceof IComplexCodeElement){
+			IComplexCodeElement temp = (IComplexCodeElement) sourceElement;
+			
+			if (temp.alreadyFindSomePart()){
 				if (temp.isWaitingAreaEmtpy()){
 					// Bad Escape
 					System.out.println("Bad Escape");
-					
-					//processBadSearchResult(violationMessage, project, temp);
-					
+					processBadSearchResult(violationMessage, project, temp);	
 				}else {
-					// add WaintingArea Element
-					if (!temp.areStacksEmpty()){
-						temp.setSimpleClassName(temp.getSimpleClassName() + "$" + temp.popFromWaitingArea());
-						
-						search(temp, violationMessage, project);
-					}else{
-						// Nothing can be found
-						System.out.println("Nothing can be found");
-					}
+					// add WaitingArea Element
+					temp.setSimpleClassName(temp.getSimpleClassName() + "$" + temp.popFromWaitingArea());
+					search(temp, violationMessage, project);
+				}
+			}else{
+				if (temp.getSimpleClassName().contains("$")){
+					temp.pushToWaitingArea(getLastDollarSequence(temp.getSimpleClassName()));
+					temp.setSimpleClassName(removeLastDollarSequence(temp.getSimpleClassName()));
 					
+					search(temp, violationMessage, project);
+				}else{
+					System.out.println("Cannot be found");
 				}
 			}
+			
 		}else{
 			if (sourceElement.getSimpleClassName().contains("$")){
 				//create instance of IComplexeCodeElement
-				IComplexeCodeElement temp = new ComplexCodeElement(sourceElement.getPackageIdentifier(),
+				IComplexCodeElement temp = new ComplexCodeElement(sourceElement.getPackageIdentifier(),
 																	removeLastDollarSequence(sourceElement.getSimpleClassName()), 
 																	sourceElement);
-				temp.pushToWaitingArea(getLastDollarSequence(sourceElement.getSimpleClassName()));
-								
+				temp.pushToWaitingArea(getLastDollarSequence(sourceElement.getSimpleClassName()));	
 				search(temp, violationMessage, project);
 			}else{
 				// everything else end up here and will be lost in space
@@ -203,13 +199,13 @@ public class CodeElementFinder {
 		
 	}
 
-	private static void processBadSearchResult(String violationMessage, IProject project, IComplexeCodeElement temp) {
+	private static void processBadSearchResult(String violationMessage, IProject project, IComplexCodeElement temp) {
 		
-		if ((temp.peekLastFoundKey() != null)&&(temp.peekLastScope() != null)){
-			IClassDeclaration te = new ClassDeclaration(temp.getPackageIdentifier(), temp.peekLastFoundKey(), null);
-			SearchPattern searchPattern = SearchPattern.createPattern(temp.peekLastFoundKey(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+		if ((temp.getLastFoundSimpleClassName() != null)&&(temp.getSearchScopeOfLastFoundSimpleClassName() != null)){
+			IClassDeclaration te = new ClassDeclaration(temp.getPackageIdentifier(), temp.getLastFoundSimpleClassName(), null);
+			SearchPattern searchPattern = SearchPattern.createPattern(temp.getLastFoundSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 			
-			search(searchPattern, temp.peekLastScope(), te, violationMessage, project);
+			search(searchPattern, temp.getSearchScopeOfLastFoundSimpleClassName(), te, violationMessage, project);
 		}
 	}
 
@@ -222,10 +218,10 @@ public class CodeElementFinder {
 	}
 
 	protected static boolean foundMatch(SearchMatch match, ICodeElement sourceElement, String violationMessage, IProject project, IJavaSearchScope searchScope) {
-		if ((match.getElement() instanceof IType) && (sourceElement instanceof IComplexeCodeElement)){
-			IComplexeCodeElement complexCodeElement = (IComplexeCodeElement) sourceElement;
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IComplexCodeElement)){
+			IComplexCodeElement complexCodeElement = (IComplexCodeElement) sourceElement;
 			
-			complexCodeElement.pushLastFoundKeyWordAndScope(complexCodeElement.getSimpleClassName(), searchScope);
+			complexCodeElement.setFoundPartInfos(complexCodeElement.getSimpleClassName(), searchScope);
 			
 			
 			if (complexCodeElement.isWaitingAreaEmtpy()){
@@ -236,26 +232,26 @@ public class CodeElementFinder {
 				
 				if (temp instanceof IClassDeclaration){
 					IClassDeclaration t = (IClassDeclaration) temp;
-					element = new ClassDeclaration(t.getPackageIdentifier(), complexCodeElement.peekLastFoundKey(), t.getTypeQualifier());
+					element = new ClassDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getTypeQualifier());
 				}else
 				if (temp instanceof IMethodDeclaration){
 					IMethodDeclaration t = (IMethodDeclaration) temp;
-					element = new MethodDeclaration(t.getPackageIdentifier(), complexCodeElement.peekLastFoundKey(), t.getMethodName(), t.getReturnTypeQualifier(), t.getParameterTypeQualifiers());
+					element = new MethodDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getMethodName(), t.getReturnTypeQualifier(), t.getParameterTypeQualifiers());
 				}else
 				if (temp instanceof IFieldDeclaration){
 					IFieldDeclaration t = (IFieldDeclaration) temp;
-					element = new FieldDeclaration(t.getPackageIdentifier(), complexCodeElement.peekLastFoundKey(), t.getFieldName(), t.getTypeQualifier());
+					element = new FieldDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getFieldName(), t.getTypeQualifier());
 				}else
 				if (temp instanceof IStatement){
 					IStatement t = (IStatement) temp;
-					element = new Statement(t.getPackageIdentifier(), complexCodeElement.peekLastFoundKey(), t.getLineNumber());
+					element = new Statement(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getLineNumber());
 				}
 				
 				
 				if (element != null){
 					SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 					
-					IJavaSearchScope temp3 = complexCodeElement.peekLastScope();
+					IJavaSearchScope temp3 = complexCodeElement.getSearchScopeOfLastFoundSimpleClassName();
 					
 					search(searchPattern, temp3, element, violationMessage, project);
 					return true;
@@ -265,12 +261,12 @@ public class CodeElementFinder {
 				// 
 				complexCodeElement.setSimpleClassName(complexCodeElement.popFromWaitingArea());
 				
-				if (isNumeric(complexCodeElement.getSimpleClassName())){
+				//if (isNumeric(complexCodeElement.getSimpleClassName())){
 					// Bad Escape
-					System.out.println("Bad Escape");
+					//System.out.println("Bad Escape");
 					
 					//processBadSearchResult(violationMessage, project, complexCodeElement);
-				}else{
+				//}else{
 					IJavaElement[] je = new IJavaElement[1];
 					je[0] = (IType) match.getElement();
 					IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
@@ -279,7 +275,7 @@ public class CodeElementFinder {
 					
 					search(searchPattern, javaSearchScope, complexCodeElement, violationMessage, project);
 					return true;
-				}
+				//}
 
 				
 			}

@@ -1,13 +1,10 @@
 package de.tud.cs.st.vespucci.marker.extra;
 
-import java.util.LinkedList;
-
 import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.internal.core.search.JavaSearchScope;
 
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
-public interface IComplexeCodeElement extends ICodeElement{
+public interface IComplexCodeElement extends ICodeElement{
 	
 	void setSimpleClassName(String SimpleClassName);
 	
@@ -19,12 +16,12 @@ public interface IComplexeCodeElement extends ICodeElement{
 	
 	boolean isWaitingAreaEmtpy();
 	
-	void pushLastFoundKeyWordAndScope(String keyWord, IJavaSearchScope searchScope);
+	void setFoundPartInfos(String keyWord, IJavaSearchScope searchScope);
 	
-	String peekLastFoundKey();
+	String getLastFoundSimpleClassName();
 	
-	IJavaSearchScope peekLastScope();
+	IJavaSearchScope getSearchScopeOfLastFoundSimpleClassName();
 	
-	boolean areStacksEmpty();
+	boolean alreadyFindSomePart();
 	
 }

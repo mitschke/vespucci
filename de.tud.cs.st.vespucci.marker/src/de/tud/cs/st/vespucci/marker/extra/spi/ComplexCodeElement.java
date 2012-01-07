@@ -5,15 +5,15 @@ import java.util.Stack;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
-import de.tud.cs.st.vespucci.marker.extra.IComplexeCodeElement;
+import de.tud.cs.st.vespucci.marker.extra.IComplexCodeElement;
 
-public class ComplexCodeElement implements IComplexeCodeElement {
+public class ComplexCodeElement implements IComplexCodeElement {
 
 	private String packageIdentifier;
 	private String simpleClassName;
 	private ICodeElement specialCodeElement;
-	private Stack<String> keyWords;
-	private Stack<IJavaSearchScope> searchScope;
+	private String lastFoundSimpleClassName;
+	private IJavaSearchScope lastSearchScope;
 	private Stack<String> waitingArea;
 
 	
@@ -22,8 +22,8 @@ public class ComplexCodeElement implements IComplexeCodeElement {
 		this.packageIdentifier = packageIdentifier;
 		this.simpleClassName = simpleClassName;
 		this.specialCodeElement = specialCodeElement;
-		keyWords = new Stack<String>();
-		searchScope = new Stack<IJavaSearchScope>();
+		lastFoundSimpleClassName = null;
+		lastSearchScope = null;
 		waitingArea = new Stack<String>();
 	}
 
@@ -47,31 +47,25 @@ public class ComplexCodeElement implements IComplexeCodeElement {
 	}
 
 	@Override
-	public void pushLastFoundKeyWordAndScope(String keyWord,
+	public void setFoundPartInfos(String keyWord,
 			IJavaSearchScope searchScope) {
-		this.keyWords.push(keyWord);
-		this.searchScope.push(searchScope);
+		this.lastFoundSimpleClassName = keyWord;
+		this.lastSearchScope = searchScope;
 	}
 
 	@Override
-	public String peekLastFoundKey() {
-		if (!keyWords.isEmpty()){
-			return keyWords.peek();
-		}
-		return null;
+	public String getLastFoundSimpleClassName() {
+		return lastFoundSimpleClassName;
 	}
 
 	@Override
-	public IJavaSearchScope peekLastScope() {
-		if (!searchScope.isEmpty()){
-			return searchScope.peek();
-		}
-		return null;		
+	public IJavaSearchScope getSearchScopeOfLastFoundSimpleClassName() {
+		return lastSearchScope;
 	}
 
 	@Override
-	public boolean areStacksEmpty() {
-		return (keyWords.isEmpty() && searchScope.isEmpty());
+	public boolean alreadyFindSomePart() {
+		return (lastFoundSimpleClassName != null && lastSearchScope != null);
 	}
 
 	@Override
