@@ -1,7 +1,6 @@
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
@@ -11,11 +10,16 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
 public class ArchitectureModel implements IArchitectureModel {
 	
 	private Set<IEnsemble> ensembles;
+	
 	private Set<IConstraint> contraints;
 	
-	public ArchitectureModel(Set<IEnsemble> ensembles){
+	private String name;
+	
+	public ArchitectureModel(Set<IEnsemble> ensembles, String name){
 		
 		this.ensembles = ensembles;
+		
+		this.name = name;
 		
 		this.contraints = new HashSet<IConstraint>();
 		for (IEnsemble ensemble : ensembles) {
@@ -32,6 +36,11 @@ public class ArchitectureModel implements IArchitectureModel {
 	@Override
 	public Set<IConstraint> getConstraints() {
 		return this.contraints;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 }

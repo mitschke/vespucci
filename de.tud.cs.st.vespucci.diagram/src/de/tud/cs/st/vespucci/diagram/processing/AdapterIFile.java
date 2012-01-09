@@ -93,7 +93,7 @@ public class AdapterIFile implements IAdapterFactory {
 				ensembles.add(new Ensemble(shape));
 			}
 			
-			return new ArchitectureModel(ensembles);
+			return new ArchitectureModel(ensembles, diagramFile.getName());
 		}
 		
 		return null;

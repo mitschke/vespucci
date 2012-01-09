@@ -64,4 +64,13 @@ public class Constraint implements IConstraint {
 		return new Ensemble(connection.getTarget());
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Constraint(" + getSource().getName() + ", "
+				+ getTarget().getName() + ")";
+	}
+
 }
