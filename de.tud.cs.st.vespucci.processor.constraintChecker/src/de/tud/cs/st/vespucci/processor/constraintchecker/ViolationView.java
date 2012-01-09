@@ -1,0 +1,110 @@
+package de.tud.cs.st.vespucci.processor.constraintchecker;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import sae.LazyView;
+import sae.Observer;
+import sae.collections.Conversions;
+import sae.collections.QueryResult;
+import scala.collection.immutable.List;
+import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
+import de.tud.cs.st.vespucci.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.IViolationReport;
+import de.tud.cs.st.vespucci.interfaces.IViolationView;
+
+/**
+ * TODO remove IViolationReport interface
+ * 
+ * @author Ralf Mitschke
+ *
+ */
+public class ViolationView implements IViolationView, IViolationReport, Observer<IViolation>
+{
+
+	private LazyView<IViolation> violations;
+	
+	private Set<IDataViewObserver<IViolation>> observers;
+
+	
+	public ViolationView(LazyView<IViolation> violations) {
+		this.violations = violations;
+		observers = new HashSet<IDataViewObserver<IViolation>>();
+		this.violations.addObserver(this);
+	}
+
+	@Override
+	public Iterator<IViolation> iterator() {
+		QueryResult<IViolation> result = Conversions.lazyViewToResult(violations);
+
+		List<IViolation> list = result.asList();
+
+		return scala.collection.JavaConversions.asJavaIterator(list.iterator());
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void register(IDataViewObserver<IViolation> observer) {
+		observers.add(observer);
+	}
+
+	@Override
+	public void unregister(IDataViewObserver<IViolation> observer) {
+		observers.remove(observer);
+	}
+
+	@Override
+	public void addViolation(IViolation violation) {
+		throw new UnsupportedOperationException();		
+	}
+
+	@Override
+	public boolean removeViolation(IViolation violation) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Set<IViolation> getViolations() {
+		QueryResult<IViolation> result = Conversions.lazyViewToResult(violations);
+
+		List<IViolation> list = result.asList();
+		
+		return scala.collection.JavaConversions.setAsJavaSet(list.<IViolation>toSet());
+	}
+
+	@Override
+	public void added(IViolation arg0) {
+		System.out.println("added: " + arg0);
+		
+		for (IDataViewObserver<IViolation> o : observers) {
+			o.added(arg0);
+		}
+	}
+
+	@Override
+	public void removed(IViolation arg0) {
+		
+		System.out.println("removed: " + arg0);
+		
+		for (IDataViewObserver<IViolation> o : observers) {
+			o.deleted(arg0);
+		}
+	}
+
+	@Override
+	public void updated(IViolation arg0, IViolation arg1) {
+		
+		System.out.println("updated: " + arg0);
+		
+		for (IDataViewObserver<IViolation> o : observers) {
+			o.updated(arg0, arg1);
+		}
+	}
+
+}

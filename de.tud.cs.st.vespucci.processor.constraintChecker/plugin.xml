@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="de.tud.cs.st.vespucci.processor.constraintChecker.modelProcessors"
+         name="Constraint Checker Model Processors"
+         point="de.tud.cs.st.vespucci.diagram.modelProcessors">
+      <modelProcessor
+            Label="Check Architecture Conformance"
+            ModelProcessor="de.tud.cs.st.vespucci.processor.constraintchecker.ArchitectureConformanceModelProcessor">
+      </modelProcessor>
+      <modelProcessor
+            Label="Set Global Model"
+            ModelProcessor="de.tud.cs.st.vespucci.processor.constraintchecker.ArchitectureGlobalModelSetter">
+      </modelProcessor>
+   </extension>
+
+</plugin>
