@@ -155,16 +155,12 @@ public class CodeElementFinder {
 	}
 
 	protected static void notfoundMatch(ICodeElement sourceElement, String violationMessage, IProject project) {
-		// Debug Info
-		System.out.println("Didn't find anything");
 
 		if (sourceElement instanceof IComplexCodeElement){
 			IComplexCodeElement temp = (IComplexCodeElement) sourceElement;
 			
 			if (temp.alreadyFindSomePart()){
 				if (temp.isWaitingAreaEmtpy()){
-					// Bad Escape
-					System.out.println("Bad Escape");
 					processBadSearchResult(violationMessage, project, temp);	
 				}else {
 					// add WaitingArea Element
@@ -178,7 +174,7 @@ public class CodeElementFinder {
 					
 					search(temp, violationMessage, project);
 				}else{
-					System.out.println("Cannot be found");
+					// Element we are looking for dont exists
 				}
 			}
 			
@@ -191,9 +187,7 @@ public class CodeElementFinder {
 				temp.pushToWaitingArea(getLastDollarSequence(sourceElement.getSimpleClassName()));	
 				search(temp, violationMessage, project);
 			}else{
-				// everything else end up here and will be lost in space
-				// Nothing can be found
-				System.out.println("Nothing can be found");
+				// Element we are looking for dont exists
 			}
 		}
 		
@@ -274,9 +268,6 @@ public class CodeElementFinder {
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){
 			IType type = (IType) match.getElement();
 			IClassDeclaration classDeclaration = (IClassDeclaration) sourceElement;
-	
-			// Debug Info
-			System.out.println("IType");
 			
 			if (classDeclaration.getTypeQualifier() != null){
 				if (type.getKey().equals(classDeclaration.getTypeQualifier())){
@@ -294,9 +285,6 @@ public class CodeElementFinder {
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IMethodDeclaration)){
 			IType type = (IType) match.getElement();
 			IMethodDeclaration methodeDeclaration = (IMethodDeclaration) sourceElement;
-				
-			// Debug Info
-			System.out.println("IType");
 			
 			SearchPattern searchPattern = SearchPattern.createPattern(methodeDeclaration.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 			
@@ -312,10 +300,7 @@ public class CodeElementFinder {
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IFieldDeclaration)){
 			IType type = (IType) match.getElement();
 			IFieldDeclaration fieldDeclaration = (IFieldDeclaration) sourceElement;
-			
-			// Debug Info
-			System.out.println("IType");	
-			
+
 			SearchPattern searchPattern = SearchPattern.createPattern(fieldDeclaration.getFieldName(), IJavaSearchConstants.FIELD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 			
 			IJavaElement[] je = new IJavaElement[1];
@@ -329,10 +314,7 @@ public class CodeElementFinder {
 		// Find a class declaration and we were looking for a IStatement
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){
 			IStatement sourceCodeElement = (IStatement) sourceElement;
-			
-			// Debug Info
-			System.out.println("IType");
-			
+
 			CodeElementMarker.markIStatement((IMember) match.getElement(), violationMessage, sourceCodeElement.getLineNumber(), project);
 			return true;
 		}
@@ -340,10 +322,7 @@ public class CodeElementFinder {
 		if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
 			IMethodDeclaration methodDeclaration = (IMethodDeclaration) sourceElement;
 			IMethod method = (IMethod) match.getElement();
-			
-			// Debug Info		
-			System.out.println("IMehtod");
-					
+
 			try {
 				IType declaringType = method.getDeclaringType();
 				
@@ -377,10 +356,7 @@ public class CodeElementFinder {
 		if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
 			IField field = (IField) match.getElement();
 			IFieldDeclaration fieldDeclaration = (IFieldDeclaration) sourceElement;
-			
-			// Debug Info		
-			System.out.println("IField");
-			
+
 			try {
 				if (fieldDeclaration.getTypeQualifier().equals(createTypQualifier(field.getTypeSignature(), field.getDeclaringType()))){
 					CodeElementMarker.markIMember((IMember) match.getElement(), violationMessage, project);
