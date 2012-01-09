@@ -53,9 +53,12 @@ public class Marker implements IResultProcessor {
 	@Override
 	public void processResult(Object result, IProject project) {
 		this.project = project;
-		this.violations = Util.adapt(result, IViolationReport.class).getViolations();
-		if (violations != null){
-			markViolations();
+		IViolationReport violationReport = Util.adapt(result, IViolationReport.class);
+		if (violationReport != null){
+			this.violations = violationReport.getViolations();
+			if (violations != null){
+				markViolations();
+			}
 		}
 	}
 
