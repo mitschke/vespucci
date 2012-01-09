@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Bytecode Database
-Bundle-SymbolicName: de.tud.cs.st.vespucci.bytecode.database
+Bundle-Name: Bytecode Database Provider
+Bundle-SymbolicName: de.tud.cs.st.vespucci.database.bytecode
 Bundle-Version: 1.0.0
-Bundle-Activator: de.tud.cs.st.vespucci.bytecode.database.Activator
+Bundle-Activator: de.tud.cs.st.vespucci.database.bytecode.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.7.100",
@@ -15,4 +15,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem;bundle-version="1.3.100"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: de.tud.cs.st.vespucci.bytecode.database.provider
+Export-Package: de.tud.cs.st.vespucci.database.bytecode.provider

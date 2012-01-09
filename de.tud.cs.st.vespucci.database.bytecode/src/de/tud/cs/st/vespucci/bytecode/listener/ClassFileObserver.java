@@ -3,19 +3,16 @@ package de.tud.cs.st.vespucci.bytecode.listener;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.core.filebuffers.FileBuffers;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import sae.bytecode.Database;
-import de.tud.cs.st.vespucci.bytecode.database.Activator;
 import de.tud.cs.st.vespucci.change.observation.IClassFileObserver;
+import de.tud.cs.st.vespucci.database.bytecode.Activator;
+import de.tud.cs.st.vespucci.utilities.StateLocationCopyService;
 
 /**
  * Observer that tracks changes to class files and writes them to the database
@@ -25,21 +22,20 @@ import de.tud.cs.st.vespucci.change.observation.IClassFileObserver;
 public class ClassFileObserver implements IClassFileObserver {
 
 	private Database database;
-
-	private IWorkspace workspace;
-
-	public ClassFileObserver(Database database, IWorkspace workspace) {
+	
+	private StateLocationCopyService copyService;
+	
+	public ClassFileObserver(Database database, StateLocationCopyService copyService) {
 		this.database = database;
-		this.workspace = workspace;
+		this.copyService = copyService;
 	}
 
 	@Override
 	public void classFileAdded(IResource resource) {
 		System.out.println("classFileAdded " + resource.getLocation().toString());
-		
-		Activator.getDefault().makeShadowCopy(resource);
 		try {
-			InputStream stream = Activator.getDefault().getShadowCopyStream(resource);
+			copyService.makeShadowCopy(resource);
+			InputStream stream = copyService.getShadowCopyStream(resource);
 			database.addClassFile(stream);
 			stream.close();
 			
@@ -62,10 +58,10 @@ public class ClassFileObserver implements IClassFileObserver {
 		System.out.println("classFileRemoved " + resource.getLocation().toString());
 		
 		try {
-			InputStream stream = Activator.getDefault().getShadowCopyStream(resource);
+			InputStream stream = copyService.getShadowCopyStream(resource);
 			database.removeClassFile(stream);
 			stream.close();
-			Activator.getDefault().deleteShadowCopy(resource);
+			copyService.deleteShadowCopy(resource);
 		} catch (CoreException e) {
 			IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					"unable to read shadow copy of resource: "
@@ -85,7 +81,7 @@ public class ClassFileObserver implements IClassFileObserver {
 		// remove old class file
 		InputStream oldStream = null;
 		try {
-			oldStream = Activator.getDefault().getShadowCopyStream(
+			oldStream = copyService.getShadowCopyStream(
 					resource);
 		} catch (CoreException e) {
 			IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
@@ -106,12 +102,11 @@ public class ClassFileObserver implements IClassFileObserver {
 			return;
 		}
 		
-
-		// make a shadow copy of the new file
-		Activator.getDefault().makeShadowCopy(resource);
-		
+	
 		try {
-			InputStream stream = Activator.getDefault().getShadowCopyStream(resource);
+			// make a shadow copy of the new file
+			copyService.makeShadowCopy(resource);
+			InputStream stream = copyService.getShadowCopyStream(resource);
 			database.addClassFile(stream);
 			stream.close();
 			

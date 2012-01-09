@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.bytecode.database.provider;
+package de.tud.cs.st.vespucci.database.bytecode.provider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -19,14 +19,15 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import sae.bytecode.Database;
 import sae.bytecode.MaterializedDatabase;
-import de.tud.cs.st.vespucci.bytecode.database.Activator;
 import de.tud.cs.st.vespucci.bytecode.listener.ClassFileObserver;
 import de.tud.cs.st.vespucci.change.observation.IClassFileObserver;
 import de.tud.cs.st.vespucci.change.observation.VespucciChangeProvider;
+import de.tud.cs.st.vespucci.database.bytecode.Activator;
+import de.tud.cs.st.vespucci.utilities.StateLocationCopyService;
 import de.tud.cs.st.vespucci.utilities.Util;
 import de.tud.cs.st.vespucci.utilities.Util.Selection;
 
-public class ProjectDatabaseProvider {
+public class BytecodeDatabaseProvider {
 
 	private Map<IProject, Database> databases = new HashMap<IProject, Database>();
 
@@ -34,14 +35,12 @@ public class ProjectDatabaseProvider {
 
 	private Map<IProject, IClassFileObserver> observers = new HashMap<IProject, IClassFileObserver>();
 
-	public static ProjectDatabaseProvider getInstance() {
+	public static BytecodeDatabaseProvider getInstance() {
 		return Activator.getDefault().getDatabaseProvider();
 	}
 
-	private IWorkspace workspace;
-
-	public ProjectDatabaseProvider(IWorkspace workspace) {
-		this.workspace = workspace;
+	public BytecodeDatabaseProvider() {
+	
 	}
 
 	/**
@@ -52,7 +51,7 @@ public class ProjectDatabaseProvider {
 	 * @param project
 	 * @return
 	 */
-	public Database getDatabase(IProject project) {
+	public Database getBytecodeDatabase(IProject project) {
 		if (databases.containsKey(project))
 			return databases.get(project);
 
@@ -109,7 +108,7 @@ public class ProjectDatabaseProvider {
 		if (observers.containsKey(project))
 			return;
 
-		ClassFileObserver observer = new ClassFileObserver(database, workspace);
+		ClassFileObserver observer = new ClassFileObserver(database, new StateLocationCopyService(Activator.getDefault().getStateLocation(), ResourcesPlugin.getWorkspace().getRoot()));
 		VespucciChangeProvider.getInstance().registerClassFileObserver(project,
 				observer);
 		observers.put(project, observer);
@@ -138,7 +137,9 @@ public class ProjectDatabaseProvider {
 
 		List<IFile> classFiles = Util.getFilesOfProject(project,
 				Selection.CLASS);
-
+		
+		StateLocationCopyService service = new StateLocationCopyService(Activator.getDefault().getStateLocation(), ResourcesPlugin.getWorkspace().getRoot());
+		
 		for (IFile file : classFiles) {
 			try {
 				IFileStore store = FileBuffers.getFileStoreAtLocation(file
@@ -147,7 +148,7 @@ public class ProjectDatabaseProvider {
 				InputStream stream = store.openInputStream(EFS.NONE, null);
 				database.addClassFile(stream);
 				stream.close();
-				Activator.getDefault().makeShadowCopy(file);
+				service.makeShadowCopy(file);
 				
 			} catch (CoreException e) {
 				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
