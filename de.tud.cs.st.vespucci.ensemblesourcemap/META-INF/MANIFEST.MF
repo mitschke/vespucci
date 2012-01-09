@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ensemblesourcemap
+Bundle-SymbolicName: de.tud.cs.st.vespucci.ensemblesourcemap; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.tud.cs.st.vespucci.ensemblesourcemap.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ de.tud.cs.st.vespucci.diagram,
+ de.tud.cs.st.vespucci.interfaces;bundle-version="1.0.0",
+ de.tud.cs.st.vespucci.utilities;bundle-version="1.0.0",
+ de.tud.cs.st.vespucci.model;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
