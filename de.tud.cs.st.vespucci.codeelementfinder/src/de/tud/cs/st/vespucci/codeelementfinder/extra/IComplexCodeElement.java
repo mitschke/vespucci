@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.marker.extra;
+package de.tud.cs.st.vespucci.codeelementfinder.extra;
 
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 

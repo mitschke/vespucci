@@ -8,6 +8,7 @@ Require-Bundle: de.tud.cs.st.vespucci.diagram,
  de.tud.cs.st.vespucci.interfaces;bundle-version="1.0.0",
  org.eclipse.core.runtime;bundle-version="3.7.0",
  org.eclipse.jdt.core;bundle-version="3.7.1",
- de.tud.cs.st.vespucci.utilities;bundle-version="1.0.0"
+ de.tud.cs.st.vespucci.utilities;bundle-version="1.0.0",
+ de.tud.cs.st.vespucci.codeelementfinder;bundle-version="1.0.0"
 Import-Package: org.eclipse.jdt.internal.corext.util,
  org.eclipse.ui.statushandlers

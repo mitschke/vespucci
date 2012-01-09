@@ -37,6 +37,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 
+import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationReport;
@@ -65,10 +66,10 @@ public class Marker implements IResultProcessor {
 	private void markViolations() {
 		for (IViolation violation : violations) {
 			if (violation.getSourceElement() != null){
-				CodeElementFinder.search(violation.getSourceElement(), violation.getDescription(), project);
+				CodeElementFinder.search(violation.getSourceElement(), violation.getDescription(), project, new CodeElementMarker());
 			}
 			if (violation.getTargetElement() != null){
-				CodeElementFinder.search(violation.getTargetElement(), violation.getDescription(), project);
+				CodeElementFinder.search(violation.getTargetElement(), violation.getDescription(), project, new CodeElementMarker());
 			}			
 		}
 	}	

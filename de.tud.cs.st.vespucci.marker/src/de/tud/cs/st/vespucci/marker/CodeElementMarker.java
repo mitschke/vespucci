@@ -46,7 +46,9 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-public class CodeElementMarker {
+import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
+
+public class CodeElementMarker implements ICodeElementFoundProcessor<String> {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
 		
@@ -129,5 +131,17 @@ public class CodeElementMarker {
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
 		}
+	}
+
+	@Override
+	public void processFoundCodeElement(IMember member, String value, IProject project) {
+		markIMember(member, value, project);
+	}
+
+	@Override
+	public void processFoundCodeElement(IMember member, String value,
+			int lineNr, IProject project) {
+		markIStatement(member, value, lineNr, project);
+		
 	}
 }

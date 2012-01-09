@@ -1,11 +1,11 @@
-package de.tud.cs.st.vespucci.marker.extra.spi;
+package de.tud.cs.st.vespucci.codeelementfinder.extra.spi;
 
 import java.util.Stack;
 
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 
+import de.tud.cs.st.vespucci.codeelementfinder.extra.IComplexCodeElement;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
-import de.tud.cs.st.vespucci.marker.extra.IComplexCodeElement;
 
 public class ComplexCodeElement implements IComplexCodeElement {
 
