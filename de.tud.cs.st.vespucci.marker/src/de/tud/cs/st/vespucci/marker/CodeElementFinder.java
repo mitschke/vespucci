@@ -247,7 +247,6 @@ public class CodeElementFinder {
 					element = new Statement(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getLineNumber());
 				}
 				
-				
 				if (element != null){
 					SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 					
@@ -258,26 +257,16 @@ public class CodeElementFinder {
 				}				
 				
 			}else{
-				// 
 				complexCodeElement.setSimpleClassName(complexCodeElement.popFromWaitingArea());
 				
-				//if (isNumeric(complexCodeElement.getSimpleClassName())){
-					// Bad Escape
-					//System.out.println("Bad Escape");
-					
-					//processBadSearchResult(violationMessage, project, complexCodeElement);
-				//}else{
-					IJavaElement[] je = new IJavaElement[1];
-					je[0] = (IType) match.getElement();
-					IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
-					
-					SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-					
-					search(searchPattern, javaSearchScope, complexCodeElement, violationMessage, project);
-					return true;
-				//}
-
+				IJavaElement[] je = new IJavaElement[1];
+				je[0] = (IType) match.getElement();
+				IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
 				
+				SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+				
+				search(searchPattern, javaSearchScope, complexCodeElement, violationMessage, project);
+				return true;
 			}
 			
 		}
@@ -408,17 +397,6 @@ public class CodeElementFinder {
 		return false;
 	}
 	
-	// Source: http://www.java-forum.org/java-basics-anfaenger-themen/108130-pruefen-ob-string-zahl.html
-	private static boolean isNumeric(String simpleClassName) {
-		 try {
-		    Integer.parseInt(simpleClassName);
-		    return true; 
-		 }
-		 catch(NumberFormatException e) {
-		   return false;
-		 }
-	}
-
 	private static Map<String,String> primitiveTypeTable;
 	
 	private static String createTypQualifier(String signatur, IType declaringType) {
