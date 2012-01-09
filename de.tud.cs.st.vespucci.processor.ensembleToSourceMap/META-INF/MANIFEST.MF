@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.tud.cs.st.opal.sae.database-bytecode-reader;bundle-version="0.3.0",
  de.tud.cs.st.opal.sae.unisson-model;bundle-version="0.3.0",
  de.tud.cs.st.opal.sae.unisson-query-code_model;bundle-version="0.3.0",
- de.tud.cs.st.vespucci.bytecode.database;bundle-version="1.0.0"
+ de.tud.cs.st.vespucci.database.bytecode;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.ui.statushandlers

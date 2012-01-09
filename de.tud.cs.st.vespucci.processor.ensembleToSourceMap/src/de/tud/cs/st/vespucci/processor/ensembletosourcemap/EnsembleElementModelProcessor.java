@@ -24,7 +24,7 @@ import unisson.query.UnissonQuery;
 import unisson.query.code_model.SourceElement;
 import unisson.query.compiler.QueryCompiler;
 import unisson.query.parser.QueryParser;
-import de.tud.cs.st.vespucci.bytecode.database.provider.ProjectDatabaseProvider;
+import de.tud.cs.st.vespucci.database.bytecode.provider.BytecodeDatabaseProvider;
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
@@ -37,6 +37,7 @@ public class EnsembleElementModelProcessor implements IModelProcessor {
 
 	/**
 	 * TODO refactoring
+	 * 
 	 */
 	@Override
 	public Object processModel(Object diagramModel) {
@@ -48,7 +49,7 @@ public class EnsembleElementModelProcessor implements IModelProcessor {
 
 		IProject project = diagramFile.getProject();
 
-		Database database = ProjectDatabaseProvider.getInstance().getDatabase(
+		Database database = BytecodeDatabaseProvider.getInstance().getBytecodeDatabase(
 				project);
 
 		List<Projection<SourceElement<Object>, IPair<IEnsemble, ICodeElement>>> mappings = new ArrayList<Projection<SourceElement<Object>, IPair<IEnsemble, ICodeElement>>>(
@@ -72,7 +73,7 @@ public class EnsembleElementModelProcessor implements IModelProcessor {
 			mappings.add(ensembleToCode);
 		}
 
-		ProjectDatabaseProvider.getInstance().initializeDatabase(project);
+		BytecodeDatabaseProvider.getInstance().initializeDatabase(project);
 
 		if (mappings.size() == 0) {
 			return new EmptyEnsembleElementList();
