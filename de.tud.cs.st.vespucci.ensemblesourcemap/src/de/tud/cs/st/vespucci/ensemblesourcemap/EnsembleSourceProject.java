@@ -18,6 +18,7 @@ public class EnsembleSourceProject implements IDataViewObserver<IPair<IEnsemble,
 	private List<IPair<IEnsemble, ICodeElement>> pairs;
 	
 	public EnsembleSourceProject(IEnsembleElementList ensembleElementList){
+		pairs = new LinkedList<IPair<IEnsemble,ICodeElement>>();
 		this.ensembleElementList = ensembleElementList;
 		this.ensembleElementList.register(this);
 		fillDataInitial();
@@ -32,21 +33,30 @@ public class EnsembleSourceProject implements IDataViewObserver<IPair<IEnsemble,
 	@Override
 	public void added(IPair<IEnsemble, ICodeElement> element) {
 		pairs.add(element);
+		
+		//Debug
+		print();
 	}
 
 	@Override
 	public void deleted(IPair<IEnsemble, ICodeElement> element) {
 		pairs.remove(element);
+
+		//Debug
+		print();
 	}
 
 	@Override
 	public void updated(IPair<IEnsemble, ICodeElement> oldValue,
 			IPair<IEnsemble, ICodeElement> newValue) {
 		pairs.remove(oldValue);
-		pairs.add(newValue);		
+		pairs.add(newValue);
+		
+		//Debug
+		print();
 	}
 	
-	public List<EnsembleSource> getElements(){
+	public LinkedList<EnsembleSource> getElements(){
 		Map<IEnsemble, List<ICodeElement>> elements = new HashMap<IEnsemble, List<ICodeElement>>();
 		
 		for (IPair<IEnsemble, ICodeElement> pair : pairs) {
@@ -67,29 +77,21 @@ public class EnsembleSourceProject implements IDataViewObserver<IPair<IEnsemble,
 		return ensembleSource;	
 	}
 	
+	public void print(){
+		LinkedList<EnsembleSource> temp = getElements();
+		
+		for (EnsembleSource ensembleSource : temp) {
+			System.out.println("------- IEnsemble: " + ensembleSource.getEnsemble().getName() + " -------");
+			for (ICodeElement codeElement : ensembleSource.getCodeElements()) {
+				System.out.println("\t - " + codeElement.getPackageIdentifier() + "; " + codeElement.getSimpleClassName());
+			}
+			System.out.println("-------  -------");
+		}
+	}
+	
 	public void dispose(){
 		ensembleElementList.dispose();
 		dispose();
 	}
-}
-
-class EnsembleSource {
-	
-	private IEnsemble ensemble;
-	private List<ICodeElement> codeElements;
-
-	public EnsembleSource(IEnsemble ensemble, List<ICodeElement> codeElements){
-		this.ensemble = ensemble;
-		this.codeElements = codeElements;
-	}
-	
-	public IEnsemble getEnsemble(){
-		return ensemble;
-	}
-	
-	public List<ICodeElement> getCodeElements(){
-		return codeElements;
-	}
-	
 }
 
