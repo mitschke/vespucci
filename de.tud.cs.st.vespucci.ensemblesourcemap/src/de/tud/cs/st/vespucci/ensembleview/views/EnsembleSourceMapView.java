@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensemblesourcemap.views;
+package de.tud.cs.st.vespucci.ensembleview.views;
 
 
 import java.util.LinkedList;
@@ -19,8 +19,9 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import de.tud.cs.st.vespucci.ensemblesourcemap.EnsembleSource;
-import de.tud.cs.st.vespucci.ensemblesourcemap.EnsembleSourceProject;
+//import de.tud.cs.st.vespucci.ensembleview.EnsembleSource;
+import de.tud.cs.st.vespucci.ensembleview.EnsembleSourceProject;
+import de.tud.cs.st.vespucci.ensembleview.model.TreeElement;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
 
@@ -31,7 +32,7 @@ public class EnsembleSourceMapView extends ViewPart {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "de.tud.cs.st.vespucci.ensemblesourcemap.views.EnsembleSourceMapView";
+//	public static final String ID = "de.tud.cs.st.vespucci.ensemblesourcemap.views.EnsembleSourceMapView";
 
 	public static TreeViewer tableTree;	 
 	
@@ -61,9 +62,10 @@ public class EnsembleSourceMapView extends ViewPart {
 		ensembles.add(project);
 		
 		//Mock
-		EnsembleSourceMapView.tableTree.setInput(ensembles.get(0));
 		
-		//TODO: do something with it
+		EnsembleSourceMapView.tableTree.setInput(ensembles.get(0).getElements());
+		EnsembleSourceMapView.tableTree.expandAll();
+
 	}
 	
 	/**
@@ -75,6 +77,7 @@ public class EnsembleSourceMapView extends ViewPart {
 		ensembleTree.setHeaderVisible(true);
 		EnsembleSourceMapView.tableTree = new TreeViewer(ensembleTree);
 		EnsembleSourceMapView.tableTree.setLabelProvider(new TableLabelProvider());
+		
 		EnsembleSourceMapView.tableTree.setContentProvider(new EnsembleContentProvider());
 
 		TreeColumn ensemble = new TreeColumn(ensembleTree, SWT.LEFT);
@@ -82,15 +85,15 @@ public class EnsembleSourceMapView extends ViewPart {
 		ensemble.setAlignment(SWT.LEFT);
 		ensemble.setText("Ensemble");
 		ensemble.setWidth(160);
-		TreeColumn incredits = new TreeColumn(ensembleTree, SWT.RIGHT);
-		incredits.setAlignment(SWT.LEFT);
-		incredits.setText("Source");
-		incredits.setWidth(100);
+//		TreeColumn incredits = new TreeColumn(ensembleTree, SWT.RIGHT);
+//		incredits.setAlignment(SWT.LEFT);
+//		incredits.setText("Source");
+//		incredits.setWidth(100);
 
-		EnsembleSourceMapView.tableTree.expandAll();
+//		EnsembleSourceMapView.tableTree.expandAll();
 		
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(EnsembleSourceMapView.tableTree.getControl(), "de.tud.cs.st.vespucci.ensemblesourcemap.viewer");
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(EnsembleSourceMapView.tableTree.getControl(), "de.tud.cs.st.vespucci.ensembleviewer.viewer");
 	}
 
 
@@ -106,10 +109,12 @@ public class EnsembleSourceMapView extends ViewPart {
 	
 	   class EnsembleContentProvider implements ITreeContentProvider{
 		      public Object[] getChildren(Object parentElement){
-		         if (parentElement instanceof EnsembleSource)
-		            return ((List<ICodeElement>) ((EnsembleSource )parentElement).getCodeElements()).toArray();
-		         return new Object[0];
-		      }
+		    	  if (parentElement instanceof TreeElement<?>){
+		    		  return ((TreeElement) parentElement).getChildren().toArray();
+		    	  }else{
+		    		  return new Object[0];
+		    	  }
+		     }
 
 			@Override
 			public void dispose() {
@@ -118,26 +123,31 @@ public class EnsembleSourceMapView extends ViewPart {
 
 			@Override
 			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {
-				// TODO Auto-generated method stub
+					Object newInput) {	
 				
 			}
 
 			@Override
 			public Object[] getElements(Object inputElement) {
-				return getChildren(inputElement);
+				return getChildren(ensembles.get(0).getElements());
 			}
 
 			@Override
 			public Object getParent(Object element) {
-				// TODO Auto-generated method stub
-				return null;
+		    	  if (element instanceof TreeElement<?>){
+		    		  return ((TreeElement) element).getParent();
+		    	  }else{
+		    		  return new Object[0];
+		    	  }
 			}
 
 			@Override
 			public boolean hasChildren(Object element) {
-				// TODO Auto-generated method stub
-				return false;
+		    	  if (element instanceof TreeElement<?>){
+		    		  return ((TreeElement) element).hasChildren();
+		    	  }else{
+		    		  return false;
+		    	  }
 			}
 		 
 		   }

@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ensemblesourcemap
-Bundle-SymbolicName: de.tud.cs.st.vespucci.ensemblesourcemap; singleton:=true
+Bundle-Name: Ensembleview
+Bundle-SymbolicName: de.tud.cs.st.vespucci.ensembleview;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.tud.cs.st.vespucci.ensemblesourcemap.Activator
+Bundle-Activator: de.tud.cs.st.vespucci.ensembleview.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  de.tud.cs.st.vespucci.diagram,

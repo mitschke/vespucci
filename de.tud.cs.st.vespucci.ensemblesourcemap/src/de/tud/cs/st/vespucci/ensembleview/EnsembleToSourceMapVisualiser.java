@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensemblesourcemap;
+package de.tud.cs.st.vespucci.ensembleview;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
@@ -8,13 +8,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
-import de.tud.cs.st.vespucci.ensemblesourcemap.views.EnsembleSourceMapView;
+import de.tud.cs.st.vespucci.ensembleview.model.TreeElement;
+import de.tud.cs.st.vespucci.ensembleview.views.EnsembleSourceMapView;
 import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.utilities.Util;
 
 public class EnsembleToSourceMapVisualiser implements IResultProcessor {
 
-	public static final String ID = "de.tud.cs.st.vespucci.ensemblesourcemap";
+	public static final String ID = "de.tud.cs.st.vespucci.ensembleview";
 	
 	@Override
 	public void processResult(Object result, IProject project) {
@@ -22,18 +24,25 @@ public class EnsembleToSourceMapVisualiser implements IResultProcessor {
 		if (ensembleElementList != null){
 			EnsembleSourceProject temp = new EnsembleSourceProject(ensembleElementList);
 		
+			
 			try {
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("de.tud.cs.st.vespucci.ensemblesourcemap");
-				
-				EnsembleSourceMapView.pseudoSingelton.addEnsembleSourceProject(new EnsembleSourceProject(ensembleElementList));
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage().showView(ID);
 
+				for (TreeElement<IEnsemble> iterable_element : new EnsembleSourceProject(
+						ensembleElementList).getElements()) {
+					iterable_element.print("");
+				}
+
+				EnsembleSourceMapView.pseudoSingelton
+						.addEnsembleSourceProject(temp);
 			} catch (PartInitException e) {
-				final IStatus is = new Status(IStatus.ERROR, ID, e.getMessage(), e);
-				StatusManager.getManager().handle(is, StatusManager.LOG);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
-			//Debug
-			temp.print();
+			
+
 		
 		}
 	}
