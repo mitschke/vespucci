@@ -175,7 +175,7 @@ public class CodeElementFinder {
 					
 					search(temp, passenger, project, processor);
 				}else{
-					// Element we are looking for dont exists
+					processor.noMatchFound(sourceElement, passenger);
 				}
 			}
 			
@@ -188,7 +188,7 @@ public class CodeElementFinder {
 				temp.pushToWaitingArea(getLastDollarSequence(sourceElement.getSimpleClassName()));	
 				search(temp, passenger, project, processor);
 			}else{
-				// Element we are looking for dont exists
+				processor.noMatchFound(sourceElement, passenger);
 			}
 		}
 		

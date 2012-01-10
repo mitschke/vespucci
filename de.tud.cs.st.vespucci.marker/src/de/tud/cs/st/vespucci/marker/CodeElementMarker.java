@@ -47,6 +47,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
 public class CodeElementMarker implements ICodeElementFoundProcessor<String> {
 
@@ -143,5 +144,10 @@ public class CodeElementMarker implements ICodeElementFoundProcessor<String> {
 			int lineNr, IProject project) {
 		markIStatement(member, value, lineNr, project);
 		
+	}
+
+	@Override
+	public void noMatchFound(ICodeElement codeElement, String passenger) {
+
 	}
 }
