@@ -38,6 +38,7 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public interface IViolation {
 
+	// TODO remove this method from violation; introduce a GUI class that computes a description from IViolation
 	String getDescription();
 
 	// Could be null

@@ -40,6 +40,7 @@ import java.util.Set;
  * 
  * @author Olav Lenz
  */
+// TODO remove this class and use IViolationView instead
 public interface IViolationReport {
 
 	void addViolation(IViolation violation);
