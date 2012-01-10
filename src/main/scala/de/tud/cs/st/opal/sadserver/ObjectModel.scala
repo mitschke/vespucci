@@ -47,7 +47,7 @@ case class Description(
   val wip: Boolean) {
 
   // TODO Provide (global?) access to authority and port
-  val url: String = "http://localhost:9000" + SADServer.descriptionCollectionPath + id
+  val url: String = "http://localhost:9000" + SADServer.descriptionCollectionPath + "/" + id
 
   private def modelToXML =
     <model size={ model.get._2.toString }>
