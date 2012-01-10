@@ -387,6 +387,7 @@ public class CodeElementFinder {
 			primitiveTypeTable.put("long", "J");
 			primitiveTypeTable.put("short", "S");
 			primitiveTypeTable.put("boolean", "Z");
+			primitiveTypeTable.put("void", "V");
 		}
 		
 		String typeQualifier = "";

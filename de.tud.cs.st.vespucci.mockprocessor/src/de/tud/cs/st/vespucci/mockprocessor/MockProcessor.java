@@ -98,9 +98,13 @@ public class MockProcessor implements IModelProcessor {
 		
 		//------------------------
 		
-		IStatement dataModel_callController = new Statement("model", "DataModel", 26);
+		IStatement dataModel_callController = new Statement("model", "DataModel", 3);
 		IClassDeclaration mainView = new ClassDeclaration("view", "ViewMain", "Lview/ViewMain;");
-		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createView", "[Ljava/lang/String;", paramTypes1);	
+		
+		
+	
+		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel$Sub", "createView", "V;", paramTypes1);	
+						
 		IMethodDeclaration mainController_doSome = new MethodDeclaration("controller.test", "MainController", "doSome", "C;", paramTypes2);
 
 		IFieldDeclaration field_dec = new FieldDeclaration("model", "DataModel", "test", "[Ljava/lang/String;");

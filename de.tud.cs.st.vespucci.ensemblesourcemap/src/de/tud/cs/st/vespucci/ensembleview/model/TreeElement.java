@@ -8,14 +8,14 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public class TreeElement<A> {
 
-	private TreeElement parent;
-	private List<TreeElement> children;
+	private TreeElement<?> parent;
+	private List<TreeElement<?>> children;
 	private A reference;
 
-	public TreeElement(TreeElement parent, A reference) {
+	public TreeElement(TreeElement<?> parent, A reference) {
 		this.parent = parent;
 		this.reference = reference;
-		this.children = new LinkedList<TreeElement>();
+		this.children = new LinkedList<TreeElement<?>>();
 	}
 
 	public A getReference() {
@@ -23,11 +23,11 @@ public class TreeElement<A> {
 		return this.reference;
 	}
 
-	public TreeElement getParent() {
+	public TreeElement<?> getParent() {
 		return parent;
 	}
 
-	public void setParent(TreeElement newParent) {
+	public void setParent(TreeElement<?> newParent) {
 
 		this.parent = newParent;
 	}
@@ -49,21 +49,21 @@ public class TreeElement<A> {
 		return !this.children.isEmpty();
 	}
 
-	public List<TreeElement> getChildren() {
-		return this.children;
+	public Object[] getChildren() {
+		return this.children.toArray();
 	}
 
-	public void addChild(TreeElement child) {
+	public void addChild(TreeElement<?> child) {
 
 		this.children.add(child);
 	}
 
-	public void addChildren(List<TreeElement> newChildren) {
+	public void addChildren(List<TreeElement<?>> newChildren) {
 
 		this.children.addAll(newChildren);
 	}
 
-	public boolean removeChild(TreeElement child) {
+	public boolean removeChild(TreeElement<?> child) {
 
 		return this.children.remove(child);
 	}
@@ -82,7 +82,7 @@ public class TreeElement<A> {
 			System.out.println(prefix + (String) this.reference);
 		}
 		
-		for (TreeElement child : this.children) {
+		for (TreeElement<?> child : this.children) {
 			child.print(prefix + "\t");
 		}
 		
