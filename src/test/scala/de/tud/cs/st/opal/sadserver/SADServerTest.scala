@@ -52,18 +52,18 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
 
   it should "return 401 on POST with wrong credentials" in {
     val response = SimpleClient.post(acceptsXml,
-      new DigestAuth("nobody", "noidea"))(host + SADServer.descriptionCollectionPath, Entity(sad1.toString))
+      new DigestAuth("nobody", "noidea"))(host + SADServer.descriptionCollectionPath, Entity(sad1.toString, "application/xml", "UTF-8"))
     response.statusCode should equal(401)
   }
 
   it should "return 201 on authorized POST" in {
-    val response = authPost(host + SADServer.descriptionCollectionPath, Entity(sad1.toString))
+    val response = authPost(host + SADServer.descriptionCollectionPath, Entity(sad1.toString, "application/xml", "UTF-8"))
     response.statusCode should equal(201)
     id1 = Description(XML.loadString(response.body)).id
   }
 
   it should "return 201 on another authorized POST" in {
-    val response = authPost(host + SADServer.descriptionCollectionPath, Entity(sad1.toString))
+    val response = authPost(host + SADServer.descriptionCollectionPath, Entity(sad1.toString, "application/xml", "UTF-8"))
     response.statusCode should equal(201)
     id2 = Description(XML.loadString(response.body)).id
   }
@@ -304,7 +304,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   }
 
   it should "return OK for authorized users" in {
-    val response = authGet(host + "/users")
+    val response = SimpleClient.get(acceptsXml, new DigestAuth("admin", "password"))(host + "/users")
     response.statusCode should equal(200)
 
   }
