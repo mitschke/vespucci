@@ -6,21 +6,15 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import sae.bytecode.Database;
 import unisson.model.UnissonDatabase;
-import de.tud.cs.st.vespucci.architecture.listener.ArchitectureFileListener;
+import de.tud.cs.st.vespucci.architecture.listener.ArchitectureFileProcessor;
 import de.tud.cs.st.vespucci.change.observation.IArchitectureObserver;
 import de.tud.cs.st.vespucci.change.observation.VespucciChangeProvider;
 import de.tud.cs.st.vespucci.database.architecture.Activator;
 import de.tud.cs.st.vespucci.database.bytecode.provider.BytecodeDatabaseProvider;
-import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.utilities.StateLocationCopyService;
-import de.tud.cs.st.vespucci.utilities.Util;
 
 public class ArchitectureDatabaseProvider {
 
@@ -28,7 +22,7 @@ public class ArchitectureDatabaseProvider {
 
 	private Map<IProject, Boolean> initializations = new HashMap<IProject, Boolean>();
 
-	private Map<IProject, ArchitectureFileListener> observers = new HashMap<IProject, ArchitectureFileListener>();
+	private Map<IProject, ArchitectureFileProcessor> observers = new HashMap<IProject, ArchitectureFileProcessor>();
 
 	private StateLocationCopyService copyService = new StateLocationCopyService(
 			Activator.getDefault().getStateLocation(), ResourcesPlugin
@@ -108,75 +102,50 @@ public class ArchitectureDatabaseProvider {
 		if (!databases.containsKey(project))
 			return;
 
-		UnissonDatabase database = databases.get(project);
-		IArchitectureModel model = Util.adapt(modelFile,
-				IArchitectureModel.class);
-		database.addModel(model);
+		ArchitectureFileProcessor fileProcessor = observers.get(project);
 		
-		try {
-			copyService.makeShadowCopy(modelFile);
-		} catch (CoreException e) {
-			IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					"unable to create a shadow copy of resource: "
-							+ modelFile.getLocation().toString(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-
+		if(!fileProcessor.isModel(modelFile))
+		{
+			fileProcessor.registerModel(modelFile);
+			fileProcessor.architectureDiagramAdded(modelFile);
 		}
-		
-		ArchitectureFileListener fileListener = observers.get(project);
-		fileListener.registerModel(modelFile);
-
+		else
+		{
+			fileProcessor.architectureDiagramChanged(modelFile);
+		}
 	}
 
 	public void removeModelFileFromProject(IFile modelFile, IProject project) {
-		UnissonDatabase database = databases.get(project);
-		IArchitectureModel model = Util.adapt(modelFile,
-				IArchitectureModel.class);
+		if (!databases.containsKey(project))
+			return;
 		
-		database.removeModel(model);
-		
-		try {
-			copyService.deleteShadowCopy(modelFile);
-		} catch (CoreException e) {
-			IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					"unable to create a shadow copy of resource: "
-							+ modelFile.getLocation().toString(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-
-		}
-		
-		ArchitectureFileListener fileListener = observers.get(project);
-		fileListener.unregisterModel(modelFile);
+		ArchitectureFileProcessor fileProcessor = observers.get(project);
+		fileProcessor.architectureDiagramRemoved(modelFile);
+		fileProcessor.unregisterModel(modelFile);
 	}
-
-	private boolean isGlobalModelSet = false;
+	
+	
+	public void updateModelFileForProject(IFile modelFile, IProject project) {
+		if (!databases.containsKey(project))
+			return;
+		
+		ArchitectureFileProcessor fileProcessor = observers.get(project);
+		fileProcessor.architectureDiagramChanged(modelFile);
+	}
+	
 
 	public void setGlobalModelFileForProject(IFile modelFile,
 			IProject project) {
-		UnissonDatabase database = databases.get(project);
-		IArchitectureModel model = Util.adapt(modelFile, IArchitectureModel.class);
 		
-		if( !isGlobalModelSet ){ 
-			database.addGlobalModel(model);
-		}	
+		ArchitectureFileProcessor fileProcessor = observers.get(project);
+		if(!fileProcessor.isGlobalModel(modelFile))
+		{
+			fileProcessor.setGlobalModel(modelFile);
+			fileProcessor.architectureDiagramAdded(modelFile);
+		}
 		else {
-			IFile shadowCopyFile = copyService.getShadowCopyFile(modelFile);
-			IArchitectureModel oldModel = Util.adapt(shadowCopyFile, IArchitectureModel.class);			
-			database.updateGlobalModel(oldModel, model);
+			fileProcessor.architectureDiagramChanged(modelFile);
 		}
-		
-		try {
-			copyService.makeShadowCopy(modelFile);
-		} catch (CoreException e) {
-			IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					"unable to create a shadow copy of resource: "
-							+ modelFile.getLocation().toString(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-
-		}
-		isGlobalModelSet = true;
-		ArchitectureFileListener fileListener = observers.get(project);
-		fileListener.setGlobalModel(modelFile);
 	}
 
 	/**
@@ -190,7 +159,7 @@ public class ArchitectureDatabaseProvider {
 		if (observers.containsKey(project))
 			return;
 
-		ArchitectureFileListener observer = new ArchitectureFileListener(
+		ArchitectureFileProcessor observer = new ArchitectureFileProcessor(
 				database, new StateLocationCopyService(Activator.getDefault()
 						.getStateLocation(), ResourcesPlugin.getWorkspace()
 						.getRoot()), Activator.PLUGIN_ID);
