@@ -166,15 +166,15 @@ public class EnsembleSourceMapView extends ViewPart {
 	      tree.setLinesVisible(true);
 	      column1.setAlignment(SWT.LEFT);
 	      column1.setText("Ensemble/Source");
-	      column1.setWidth(160);
+	      column1.setWidth(250);
 	      TreeColumn column2 = new TreeColumn(tree, SWT.RIGHT);
 	      column2.setAlignment(SWT.LEFT);
 	      column2.setText("Resource");
-	      column2.setWidth(100);
+	      column2.setWidth(160);
 	      TreeColumn column3 = new TreeColumn(tree, SWT.RIGHT);
 	      column3.setAlignment(SWT.LEFT);
 	      column3.setText("Path");
-	      column3.setWidth(35);
+	      column3.setWidth(160);
 	
 		//viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewContentProvider =new ViewContentProvider();
@@ -197,5 +197,6 @@ public class EnsembleSourceMapView extends ViewPart {
 	public void addEnsembleSourceProject(EnsembleSourceProject temp) {
 		viewContentProvider.setTree(temp.getElements());
 		viewer.refresh();
+		viewer.expandAll();
 	}
 }
