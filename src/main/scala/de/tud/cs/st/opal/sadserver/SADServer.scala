@@ -23,7 +23,7 @@ import org.dorest.server.MediaType
 
 /**
  * Software Architecture Description Server
- * 
+ *
  * @author Mateusz Parzonka
  */
 object SADServer
@@ -133,7 +133,7 @@ class DescriptionDocumentationResource extends RESTInterface with DAO with Strea
   }
 
   put of InputStream(MediaType.APPLICATION_PDF) returns XML {
-    if (updateDocumentation(id, inputStream))  <updated/> else None
+    if (updateDocumentation(id, inputStream)) <updated/> else None
   }
 
   delete {
@@ -143,7 +143,11 @@ class DescriptionDocumentationResource extends RESTInterface with DAO with Strea
 }
 
 class UserCollectionResource extends RESTInterface with DAO with XMLSupport {
-  
+
+  get returns XML {
+    listUsers.toXML
+  }
+
   post of XML returns XML {
     createUser(User(XMLRequestBody)).toXML
   }
@@ -151,13 +155,13 @@ class UserCollectionResource extends RESTInterface with DAO with XMLSupport {
 }
 
 class UserResource extends RESTInterface with DAO with XMLSupport {
-  
+
   var id: String = _
 
   get returns XML {
     findUser(id).map(_.toXML)
   }
-  
+
   delete {
     deleteUser(id)
   }

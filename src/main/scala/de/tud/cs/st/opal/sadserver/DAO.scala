@@ -198,6 +198,21 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
       logger.debug("Deleted user using id [%s]" format id)
       result
   }
+  
+  def listUsers() = withQuery("SELECT * FROM users") {
+     rs =>
+      var list: List[User] = List[User]()
+      while (rs.next) {
+        list = {
+          new User(
+            rs.getString("id"),
+            rs.getString("name"),
+            rs.getString("password")) +: list
+        }
+      }
+      println(list)
+      new UserCollection(list)
+  }
 
   def doesUserExist(username: String) = withPreparedStatement("SELECT * FROM users WHERE username = ?") {
     !_.executeQueryWith(username).isEmpty
