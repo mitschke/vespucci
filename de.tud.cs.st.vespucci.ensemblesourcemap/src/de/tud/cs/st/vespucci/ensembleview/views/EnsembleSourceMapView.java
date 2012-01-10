@@ -1,15 +1,15 @@
 package de.tud.cs.st.vespucci.ensembleview.views;
 
 
-import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -19,181 +19,183 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-//import de.tud.cs.st.vespucci.ensembleview.EnsembleSource;
+import de.tud.cs.st.vespucci.ensembleview.Activator;
 import de.tud.cs.st.vespucci.ensembleview.EnsembleSourceProject;
 import de.tud.cs.st.vespucci.ensembleview.model.TreeElement;
-import de.tud.cs.st.vespucci.interfaces.ICodeElement;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 
 
 public class EnsembleSourceMapView extends ViewPart {
 
-	public static EnsembleSourceMapView pseudoSingelton;
-	
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-//	public static final String ID = "de.tud.cs.st.vespucci.ensemblesourcemap.views.EnsembleSourceMapView";
+	public static final String ID = "ttesd.views.SampleView";
 
-	public static TreeViewer tableTree;	 
+	public static EnsembleSourceMapView treeTable;
 	
+	private TreeViewer viewer;
+
+	/*
+	 * The content provider class is responsible for
+	 * providing objects to the view. It can wrap
+	 * existing objects in adapters or simply return
+	 * objects as-is. These objects may be sensitive
+	 * to the current input of the view, or ignore
+	 * it and always show the same content 
+	 * (like Task List, for example).
+	 */
+	class ViewContentProvider implements IStructuredContentProvider, 
+										   ITreeContentProvider {
+		private TreeElement<String> invisibleRoot;
+
+		public ViewContentProvider(){
+			invisibleRoot = new TreeElement<String>(null, "Root");
+		}
+		
+		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+		}
+		public void dispose() {
+		}
+		public Object[] getElements(Object parent) {
+			if (parent.equals(getViewSite())) {
+				return getChildren(invisibleRoot);
+			}
+			return getChildren(parent);
+		}
+		public Object getParent(Object child) {
+			if (child instanceof TreeElement) {
+				return ((TreeElement<?>)child).getParent();
+			}
+			return null;
+		}
+		public Object [] getChildren(Object parent) {
+			if (parent instanceof TreeElement) {
+				return ((TreeElement<?>)parent).getChildren();
+			}
+			return new Object[0];
+		}
+		public boolean hasChildren(Object parent) {
+			if (parent instanceof TreeElement)
+				return ((TreeElement<?>)parent).hasChildren();
+			return false;
+		}
+/*
+ * We will set up a dummy model to initialize tree heararchy.
+ * In a real code, you will connect to a real model and
+ * expose its hierarchy.
+ */
+//		private void initialize() {
+//			invisibleRoot = new TreeElement<String>(null, "Root");
+//		}
+		
+		public void setTree(List<TreeElement<IEnsemble>> Tree){
+			invisibleRoot = new TreeElement<String>(null, "Root");
+			for (TreeElement<IEnsemble> treeElement : Tree) {
+				invisibleRoot.addChild(treeElement);
+			}
+		}
+	}
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
-		public String getColumnText(Object obj, int index) {
-			return getText(obj);
+		@Override
+		public Image getColumnImage(Object element, int columnIndex) {
+			
+			//TODO: check if ImageDesriptor != null
+			if (columnIndex == 0){
+				if (element instanceof TreeElement){
+					if (((TreeElement<?>) element).getReference() instanceof IEnsemble){
+						return Activator.getImageDescriptor("icons/newpackfolder_wiz.gif").createImage();
+					}
+					if (((TreeElement<?>) element).getReference() instanceof String){
+						
+						if (((TreeElement<?>) element).getParent().getReference() instanceof IEnsemble){
+							return Activator.getImageDescriptor("icons/package_obj.gif").createImage();
+						}else{
+							return Activator.getImageDescriptor("icons/generate_class.gif").createImage();
+						}
+					}
+					
+					return null;
+				}
+
+			}
+			return null;
 		}
-		public Image getColumnImage(Object obj, int index) {
-			return getImage(obj);
+		@Override
+		public String getColumnText(Object element, int columnIndex) {
+			if (columnIndex == 0){
+				if (element instanceof TreeElement){
+					TreeElement<?> treeElement = (TreeElement<?>) element;
+					
+					if (treeElement.getReference() instanceof IEnsemble){
+						return ((IEnsemble)treeElement.getReference()).getName();
+					}
+					
+					if (treeElement.getReference() instanceof String){
+						return (String) treeElement.getReference();
+					}
+					return element.toString();
+				}
+				return element.toString();
+			}
+			return "";
 		}
-		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().
-					getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-		}
+	}
+	class NameSorter extends ViewerSorter {
 	}
 
 	/**
 	 * The constructor.
 	 */
 	public EnsembleSourceMapView() {
-		EnsembleSourceMapView.pseudoSingelton = this;
+		EnsembleSourceMapView.treeTable = this;
 	}
-	
-	private LinkedList<EnsembleSourceProject> ensembles = new LinkedList<EnsembleSourceProject>();
 
-	public void addEnsembleSourceProject(EnsembleSourceProject project){
-		ensembles.add(project);
-		
-		//Mock
-		
-		EnsembleSourceMapView.tableTree.setInput(ensembles.get(0).getElements());
-		EnsembleSourceMapView.tableTree.expandAll();
-
-	}
+	private ViewContentProvider viewContentProvider;
 	
 	/**
 	 * This is a callback that will allow us
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		Tree ensembleTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		ensembleTree.setHeaderVisible(true);
-		EnsembleSourceMapView.tableTree = new TreeViewer(ensembleTree);
-		EnsembleSourceMapView.tableTree.setLabelProvider(new TableLabelProvider());
+		Tree tree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		tree.setHeaderVisible(true);
+		viewer = new TreeViewer(tree);
 		
-		EnsembleSourceMapView.tableTree.setContentProvider(new EnsembleContentProvider());
+	      TreeColumn column1 = new TreeColumn(tree, SWT.LEFT);
+	      tree.setLinesVisible(true);
+	      column1.setAlignment(SWT.LEFT);
+	      column1.setText("Ensemble/Source");
+	      column1.setWidth(160);
+	      TreeColumn column2 = new TreeColumn(tree, SWT.RIGHT);
+	      column2.setAlignment(SWT.LEFT);
+	      column2.setText("Resource");
+	      column2.setWidth(100);
+	      TreeColumn column3 = new TreeColumn(tree, SWT.RIGHT);
+	      column3.setAlignment(SWT.LEFT);
+	      column3.setText("Path");
+	      column3.setWidth(35);
+	
+		//viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		viewContentProvider =new ViewContentProvider();
+		viewer.setContentProvider(viewContentProvider);
+		viewer.setLabelProvider(new ViewLabelProvider());
+		viewer.setSorter(new NameSorter());
+		viewer.setInput(getViewSite());
 
-		TreeColumn ensemble = new TreeColumn(ensembleTree, SWT.LEFT);
-		ensembleTree.setLinesVisible(true);
-		ensemble.setAlignment(SWT.LEFT);
-		ensemble.setText("Ensemble");
-		ensemble.setWidth(160);
-//		TreeColumn incredits = new TreeColumn(ensembleTree, SWT.RIGHT);
-//		incredits.setAlignment(SWT.LEFT);
-//		incredits.setText("Source");
-//		incredits.setWidth(100);
-
-//		EnsembleSourceMapView.tableTree.expandAll();
-		
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(EnsembleSourceMapView.tableTree.getControl(), "de.tud.cs.st.vespucci.ensembleviewer.viewer");
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "Ttesd.viewer");
 	}
 
-
-	@Override
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		EnsembleSourceMapView.tableTree.getControl().setFocus();
+		viewer.getControl().setFocus();
 	}
-	
-	// Source: http://javawiki.sowas.com/doku.php?id=swt-jface:treetableviewer
-	
-	   class EnsembleContentProvider implements ITreeContentProvider{
-		      public Object[] getChildren(Object parentElement){
-		    	  if (parentElement instanceof TreeElement<?>){
-		    		  return ((TreeElement) parentElement).getChildren().toArray();
-		    	  }else{
-		    		  return new Object[0];
-		    	  }
-		     }
 
-			@Override
-			public void dispose() {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {	
-				
-			}
-
-			@Override
-			public Object[] getElements(Object inputElement) {
-				return getChildren(ensembles.get(0).getElements());
-			}
-
-			@Override
-			public Object getParent(Object element) {
-		    	  if (element instanceof TreeElement<?>){
-		    		  return ((TreeElement) element).getParent();
-		    	  }else{
-		    		  return new Object[0];
-		    	  }
-			}
-
-			@Override
-			public boolean hasChildren(Object element) {
-		    	  if (element instanceof TreeElement<?>){
-		    		  return ((TreeElement) element).hasChildren();
-		    	  }else{
-		    		  return false;
-		    	  }
-			}
-		 
-		   }
-		 
-		 
-		   class TableLabelProvider implements ITableLabelProvider{
-		 
-		      public Image getColumnImage(Object element, int columnIndex){
-		         return null;
-		      }
-		 
-		      public String getColumnText(Object element, int columnIndex){
-//		         switch (columnIndex){
-//		            case 0: return element.toString();
-//		            case 1:
-//		               if (element instanceof House)
-//		                  return ((House)element).getPerson();
-//		            case 2: 
-//		               if (element instanceof House)
-//		                  return ((House)element).getSex();
-//		         }
-		         return element.toString();
-		      }
-		 
-		      public void dispose(){
-		      }
-		 
-		      public boolean isLabelProperty(Object element, String property){
-		         return false;
-		      }
-		 
-
-
-			@Override
-			public void addListener(ILabelProviderListener listener) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void removeListener(ILabelProviderListener listener) {
-				// TODO Auto-generated method stub
-				
-			}
-		   }	
-	
-
-
+	public void addEnsembleSourceProject(EnsembleSourceProject temp) {
+		viewContentProvider.setTree(temp.getElements());
+		viewer.refresh();
+	}
 }

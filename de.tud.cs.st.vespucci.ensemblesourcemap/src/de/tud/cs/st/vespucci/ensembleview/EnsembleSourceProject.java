@@ -76,10 +76,9 @@ public class EnsembleSourceProject implements IDataViewObserver<IPair<IEnsemble,
 		
 		for (IEnsemble ensemble : elements.keySet()) {
 			
-			TreeElement layer1 = new TreeElement<IEnsemble>(null, ensemble);
+			TreeElement<IEnsemble> layer1 = new TreeElement<IEnsemble>(null, ensemble);
 			result.add(layer1);
-			List<ICodeElement> codeElements = new LinkedList<ICodeElement>();
-			codeElements = elements.get(ensemble);
+			List<ICodeElement> codeElements = elements.get(ensemble);
 			
 			Map<String, List<ICodeElement>> elements2 = new HashMap<String, List<ICodeElement>>();
 	
@@ -124,9 +123,6 @@ public class EnsembleSourceProject implements IDataViewObserver<IPair<IEnsemble,
 		}
 		
 		return result;		
-		
-		
-		
 	}
 
 	

@@ -34,16 +34,13 @@ public class EnsembleToSourceMapVisualiser implements IResultProcessor {
 					iterable_element.print("");
 				}
 
-				EnsembleSourceMapView.pseudoSingelton
+				EnsembleSourceMapView.treeTable
 						.addEnsembleSourceProject(temp);
+			
 			} catch (PartInitException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
-
-		
 		}
 	}
 
