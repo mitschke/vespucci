@@ -327,6 +327,9 @@ public class CodeElementFinder {
 			try {
 				IType declaringType = method.getDeclaringType();
 				
+				//Debug
+				System.out.println("ReturnTypeQualifier: " + method.getReturnType() + " --> " + createTypQualifier(method.getReturnType(), declaringType));
+				
 				// check if the returnType is the expected
 				if (methodDeclaration.getReturnTypeQualifier().equals(createTypQualifier(method.getReturnType(), declaringType))){
 					// check if all parameterTypes are equal the expected
@@ -334,6 +337,9 @@ public class CodeElementFinder {
 					String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
 					boolean equal = true;
 					for (int i = 0; i < parameterTypes.length; i++){
+						//Debug
+						System.out.println("\t ParameterTypeQualifier: " + parameterTypes[i] + " --> " + createTypQualifier(parameterTypes[i], declaringType));
+
 						if (!expectedParameterTypes[i].equals(createTypQualifier(parameterTypes[i], declaringType))){
 							equal = false;
 							break;
