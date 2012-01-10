@@ -33,14 +33,18 @@
  */
 package de.tud.cs.st.vespucci.diagram.processing;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -64,68 +68,79 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 public class AdapterIFile implements IAdapterFactory {
 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
-	
-	private static Class<?>[] adapterList = { ShapesDiagram.class, IArchitectureModel.class };
+
+	private static Class<?>[] adapterList = { ShapesDiagram.class,
+			IArchitectureModel.class };
 
 	@Override
-	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
-		
+	public Object getAdapter(Object adaptableObject,
+			@SuppressWarnings("rawtypes") Class adapterType) {
+
 		if (adapterType == ShapesDiagram.class) {
 
 			return createDiagram((IFile) adaptableObject);
 
 		} else if (adapterType == IArchitectureModel.class) {
-			
+
 			return createArchitectureModel((IFile) adaptableObject);
 		}
 
 		return null;
 	}
-	
+
 	private IArchitectureModel createArchitectureModel(IFile diagramFile) {
-		
+
 		ShapesDiagram diagram = Util.adapt(diagramFile, ShapesDiagram.class);
-		
-		if (diagram != null){
+
+		if (diagram != null) {
 			Set<IEnsemble> ensembles = new HashSet<IEnsemble>();
-			
+
 			for (Shape shape : diagram.getShapes()) {
 				ensembles.add(new Ensemble(shape));
 			}
-			
+
 			return new ArchitectureModel(ensembles, diagramFile.getName());
 		}
-		
+
 		return null;
 	}
 
 	private ShapesDiagram createDiagram(IFile diagramFile) {
 
 		final XMIResourceImpl diagramResource = new XMIResourceImpl();
-		FileInputStream diagramStream;
 
-			try {
-				diagramStream = new FileInputStream(diagramFile.getRawLocation().toFile());
-				diagramResource.load(diagramStream, new HashMap<Object, Object>());
-				
-				// Find the ShapesDiagram-EObject
-				for (int i = 0; i < diagramResource.getContents().size(); i++) {
-					if (diagramResource.getContents().get(i) instanceof ShapesDiagram) {
-						final EObject eObject = diagramResource.getContents().get(i);
-						return (ShapesDiagram) eObject;
-					}
+		IFileStore fileStore = FileBuffers.getFileStoreAtLocation(diagramFile
+				.getFullPath());
+		try {
+			InputStream diagramStream = fileStore.openInputStream(EFS.NONE,
+					null);
+			diagramResource.load(diagramStream, new HashMap<Object, Object>());
+
+			// Find the ShapesDiagram-EObject
+			for (int i = 0; i < diagramResource.getContents().size(); i++) {
+				if (diagramResource.getContents().get(i) instanceof ShapesDiagram) {
+					final EObject eObject = diagramResource.getContents()
+							.get(i);
+					return (ShapesDiagram) eObject;
 				}
-				
-				throw new FileNotFoundException(
-						"ShapesDiagram could not be found in Document.");
-				
-			} catch (FileNotFoundException e1) {
-				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e1.getMessage(), e1);
-				StatusManager.getManager().handle(is, StatusManager.LOG);
-			} catch (IOException e1) {
-				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e1.getMessage(), e1);
-				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
+			diagramStream.close();
+			throw new FileNotFoundException(
+					"ShapesDiagram could not be found in Document.");
+
+		} catch (FileNotFoundException e1) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID,
+					e1.getMessage(), e1);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		} catch (IOException e1) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID,
+					e1.getMessage(), e1);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		} catch (CoreException e1) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID,
+					e1.getMessage(), e1);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
 		return null;
 	}
 

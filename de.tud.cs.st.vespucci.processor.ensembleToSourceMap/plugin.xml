@@ -20,14 +20,5 @@
             ModelProcessor="de.tud.cs.st.vespucci.processor.ensembletosourcemap.EnsembleElementModelProcessor">
       </modelProcessor>
    </extension>
-   <extension
-         id="de.tud.cs.st.vespucci.processor.ensembleToSourceMap.modelElementProcessors"
-         name="Ensemble Elements For Single Ensemble"
-         point="de.tud.cs.st.vespucci.diagram.modelElementProcessors">
-      <modelElementProcessor
-            Label="Ensemble Elements"
-            ModelElementProcessor="de.tud.cs.st.vespucci.processor.ensembletosourcemap.EnsembleElementModelElementProcessor">
-      </modelElementProcessor>
-   </extension>
 
 </plugin>

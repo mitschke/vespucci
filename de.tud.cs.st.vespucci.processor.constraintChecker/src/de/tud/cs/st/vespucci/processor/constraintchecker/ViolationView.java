@@ -11,7 +11,6 @@ import sae.collections.QueryResult;
 import scala.collection.immutable.List;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
-import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 
 /**
@@ -20,7 +19,7 @@ import de.tud.cs.st.vespucci.interfaces.IViolationView;
  * @author Ralf Mitschke
  *
  */
-public class ViolationView implements IViolationView, IViolationReport, Observer<IViolation>
+public class ViolationView implements IViolationView, Observer<IViolation>
 {
 
 	private LazyView<IViolation> violations;
@@ -57,25 +56,6 @@ public class ViolationView implements IViolationView, IViolationReport, Observer
 	@Override
 	public void unregister(IDataViewObserver<IViolation> observer) {
 		observers.remove(observer);
-	}
-
-	@Override
-	public void addViolation(IViolation violation) {
-		throw new UnsupportedOperationException();		
-	}
-
-	@Override
-	public boolean removeViolation(IViolation violation) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Set<IViolation> getViolations() {
-		QueryResult<IViolation> result = Conversions.lazyViewToResult(violations);
-
-		List<IViolation> list = result.asList();
-		
-		return scala.collection.JavaConversions.setAsJavaSet(list.<IViolation>toSet());
 	}
 
 	@Override
