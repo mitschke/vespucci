@@ -98,40 +98,38 @@ public class MockProcessor implements IModelProcessor {
 		
 		//------------------------
 		
-		IStatement dataModel_callController = new Statement("model", "DataModel", 3);
-		IClassDeclaration mainView = new ClassDeclaration("view", "ViewMain", "Lview/ViewMain;");
+		IStatement markStatement = new Statement("model", "DataModel", 26);
+		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createInnerView", "[Ljava/lang/String;", paramTypes1);
 		
-		
-	
-		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel$Sub", "createView", "V;", paramTypes1);	
-						
-		IMethodDeclaration mainController_doSome = new MethodDeclaration("controller.test", "MainController", "doSome", "C;", paramTypes2);
+		IMethodDeclaration SubView_show = new MethodDeclaration("view", "MainView$SubView", "show", "V;", new String[0]);
+		IClassDeclaration mainView = new ClassDeclaration("view", "MainView$SubView", "Lview/MainView$SubView;");
 
-		IFieldDeclaration field_dec = new FieldDeclaration("model", "DataModel", "test", "[Ljava/lang/String;");
-		IFieldDeclaration field_dec2 = new FieldDeclaration("model", "DataModel", "dataModel", "Lmodel/DataModel;");
+		IFieldDeclaration field_dec = new FieldDeclaration("controller", "MainController$InnerController$InnerInnerConroller", "someString", "Ljava/lang/String;");
+		IMethodDeclaration innerInnerController_doSomething = new MethodDeclaration("controller", "MainController$InnerController$InnerInnerConroller$InnerInnerController", "doSomething", "V;", new String[0]);
+		
 		//------------------------
 		
 		
 		IViolation firstViolation = new Violation(
-				"Not allowed call from Model to Controller",
-				dataModel_callController, 
-				mainController_doSome, 
+				"Some Violation 1",
+				markStatement, 
+				dataModel_createView, 
 				model,
 				controller, 
 				modelToController);
 		
 		IViolation secondViolation = new Violation(
-				"Not allowed construction from Model to View",
-				dataModel_createView, 
+				"Some Violation 2",
+				SubView_show, 
 				mainView,
 				model, 
 				view, 
 				modelToView);
 		
 		IViolation thirdViolation = new Violation(
-				"Not allowed FieldDeclaration", 
+				"Some Violation 3", 
 				field_dec, 
-				field_dec2, 
+				innerInnerController_doSomething, 
 				null, 
 				null, 
 				null);
