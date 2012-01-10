@@ -79,7 +79,7 @@ public class CodeElementFinder {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
 	
-	public static void search(ICodeElement sourceElement, String value, IProject project, ICodeElementFoundProcessor processor){
+	public static <T> void search(ICodeElement sourceElement, T passenger, IProject project, ICodeElementFoundProcessor<T> processor){
 		SearchPattern searchPattern;
 		
 		//Set default SearchScope
@@ -117,11 +117,11 @@ public class CodeElementFinder {
 
 		searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
 
-		search(searchPattern, javaSearchScope, sourceElement, value, project, processor);
+		search(searchPattern, javaSearchScope, sourceElement, passenger, project, processor);
 
 	}
 		
-	private static void search(SearchPattern searchPattern, final IJavaSearchScope javaSearchScope, final ICodeElement sourceElement, final String string, final IProject project, final ICodeElementFoundProcessor processor) {
+	private static <T> void search(SearchPattern searchPattern, final IJavaSearchScope javaSearchScope, final ICodeElement sourceElement, final T passenger, final IProject project, final ICodeElementFoundProcessor<T> processor) {
 		
 		SearchRequestor requestor = new SearchRequestor() {
 			private boolean sucess = false;
@@ -129,9 +129,9 @@ public class CodeElementFinder {
 			@Override
 			public void acceptSearchMatch(SearchMatch match) throws CoreException {
 				if (sucess){
-					foundMatch(match, sourceElement, string, project, javaSearchScope, processor);
+					foundMatch(match, sourceElement, passenger, project, javaSearchScope, processor);
 				}else{
-					sucess = foundMatch(match, sourceElement, string, project, javaSearchScope, processor); 
+					sucess = foundMatch(match, sourceElement, passenger, project, javaSearchScope, processor); 
 				}
 				
 			}		
@@ -139,7 +139,7 @@ public class CodeElementFinder {
 			@Override
 			public void endReporting(){
 				if (!sucess){
-					notfoundMatch(sourceElement, string, project, processor);
+					notfoundMatch(sourceElement, passenger, project, processor);
 				}
 			}
 			
@@ -155,25 +155,25 @@ public class CodeElementFinder {
 		}
 	}
 
-	protected static void notfoundMatch(ICodeElement sourceElement, String violationMessage, IProject project, ICodeElementFoundProcessor processor) {
+	protected static<T> void notfoundMatch(ICodeElement sourceElement, T passenger, IProject project, ICodeElementFoundProcessor<T> processor) {
 
 		if (sourceElement instanceof IComplexCodeElement){
 			IComplexCodeElement temp = (IComplexCodeElement) sourceElement;
 			
 			if (temp.alreadyFindSomePart()){
 				if (temp.isWaitingAreaEmtpy()){
-					processBadSearchResult(violationMessage, project, temp, processor);	
+					processBadSearchResult(passenger, project, temp, processor);	
 				}else {
 					// add WaitingArea Element
 					temp.setSimpleClassName(temp.getSimpleClassName() + "$" + temp.popFromWaitingArea());
-					search(temp, violationMessage, project, processor);
+					search(temp, passenger, project, processor);
 				}
 			}else{
 				if (temp.getSimpleClassName().contains("$")){
 					temp.pushToWaitingArea(getLastDollarSequence(temp.getSimpleClassName()));
 					temp.setSimpleClassName(removeLastDollarSequence(temp.getSimpleClassName()));
 					
-					search(temp, violationMessage, project, processor);
+					search(temp, passenger, project, processor);
 				}else{
 					// Element we are looking for dont exists
 				}
@@ -186,7 +186,7 @@ public class CodeElementFinder {
 																	removeLastDollarSequence(sourceElement.getSimpleClassName()), 
 																	sourceElement);
 				temp.pushToWaitingArea(getLastDollarSequence(sourceElement.getSimpleClassName()));	
-				search(temp, violationMessage, project, processor);
+				search(temp, passenger, project, processor);
 			}else{
 				// Element we are looking for dont exists
 			}
@@ -194,13 +194,13 @@ public class CodeElementFinder {
 		
 	}
 
-	private static void processBadSearchResult(String violationMessage, IProject project, IComplexCodeElement temp, ICodeElementFoundProcessor processor) {
+	private static <T> void processBadSearchResult(T passenger, IProject project, IComplexCodeElement temp, ICodeElementFoundProcessor<T> processor) {
 		
 		if ((temp.getLastFoundSimpleClassName() != null)&&(temp.getSearchScopeOfLastFoundSimpleClassName() != null)){
 			IClassDeclaration te = new ClassDeclaration(temp.getPackageIdentifier(), temp.getLastFoundSimpleClassName(), null);
 			SearchPattern searchPattern = SearchPattern.createPattern(temp.getLastFoundSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 			
-			search(searchPattern, temp.getSearchScopeOfLastFoundSimpleClassName(), te, violationMessage, project, processor);
+			search(searchPattern, temp.getSearchScopeOfLastFoundSimpleClassName(), te, passenger, project, processor);
 		}
 	}
 
@@ -212,7 +212,7 @@ public class CodeElementFinder {
 		return simpleClassName.substring(simpleClassName.lastIndexOf("$") + 1);
 	}
 
-	protected static boolean foundMatch(SearchMatch match, ICodeElement sourceElement, String violationMessage, IProject project, IJavaSearchScope searchScope, ICodeElementFoundProcessor processor) {
+	protected static <T> boolean foundMatch(SearchMatch match, ICodeElement sourceElement, T passenger, IProject project, IJavaSearchScope searchScope, ICodeElementFoundProcessor<T> processor) {
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IComplexCodeElement)){
 			IComplexCodeElement complexCodeElement = (IComplexCodeElement) sourceElement;
 			
@@ -247,7 +247,7 @@ public class CodeElementFinder {
 					
 					IJavaSearchScope temp3 = complexCodeElement.getSearchScopeOfLastFoundSimpleClassName();
 					
-					search(searchPattern, temp3, element, violationMessage, project, processor);
+					search(searchPattern, temp3, element, passenger, project, processor);
 					return true;
 				}				
 				
@@ -260,7 +260,7 @@ public class CodeElementFinder {
 				
 				SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 				
-				search(searchPattern, javaSearchScope, complexCodeElement, violationMessage, project, processor);
+				search(searchPattern, javaSearchScope, complexCodeElement, passenger, project, processor);
 				return true;
 			}
 			
@@ -272,11 +272,11 @@ public class CodeElementFinder {
 			
 			if (classDeclaration.getTypeQualifier() != null){
 				if (type.getKey().equals(classDeclaration.getTypeQualifier())){
-					processor.processFoundCodeElement((IMember) match.getElement(), violationMessage, project);
+					processor.processFoundCodeElement((IMember) match.getElement(), passenger, project);
 					return true;
 				}
 			}else{
-				processor.processFoundCodeElement((IMember) match.getElement(), violationMessage, project);
+				processor.processFoundCodeElement((IMember) match.getElement(), passenger, project);
 				return true;
 			}
 
@@ -293,7 +293,7 @@ public class CodeElementFinder {
 			je[0] = type;
 			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
 			
-			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project, processor);
+			search(searchPattern, javaSearchScope, sourceElement, passenger, project, processor);
 			
 			return true;
 		}
@@ -308,7 +308,7 @@ public class CodeElementFinder {
 			je[0] = type;
 			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
 			
-			search(searchPattern, javaSearchScope, sourceElement, violationMessage, project, processor);
+			search(searchPattern, javaSearchScope, sourceElement, passenger, project, processor);
 			
 			return true;
 		}
@@ -316,7 +316,7 @@ public class CodeElementFinder {
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){
 			IStatement sourceCodeElement = (IStatement) sourceElement;
 
-			processor.processFoundCodeElement((IMember) match.getElement(), violationMessage, sourceCodeElement.getLineNumber(), project);
+			processor.processFoundCodeElement((IMember) match.getElement(), passenger, sourceCodeElement.getLineNumber(), project);
 			return true;
 		}
 		// Find a method and we were looking for a IMethodDeclaration
@@ -340,7 +340,7 @@ public class CodeElementFinder {
 						}
 					}
 					if (equal){
-						processor.processFoundCodeElement((IMember) match.getElement(), violationMessage, project);
+						processor.processFoundCodeElement((IMember) match.getElement(), passenger, project);
 						return true;
 					}
 				}
@@ -360,7 +360,7 @@ public class CodeElementFinder {
 
 			try {
 				if (fieldDeclaration.getTypeQualifier().equals(createTypQualifier(field.getTypeSignature(), field.getDeclaringType()))){
-					processor.processFoundCodeElement((IMember) match.getElement(), violationMessage, project);
+					processor.processFoundCodeElement((IMember) match.getElement(), passenger, project);
 					return true;
 				}
 			} catch (JavaModelException e) {
