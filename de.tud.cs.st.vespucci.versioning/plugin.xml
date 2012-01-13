@@ -95,12 +95,5 @@
             name="Update to current version">
       </command>
    </extension>
-   <extension
-         point="org.eclipse.emf.ecore.generated_package">
-      <package
-            class="vespucci.vespucci_model.Vespucci_modelPackage_01"
-            uri="http://vespucci.editor/2011-06-01">
-      </package>
-   </extension>
    
 </plugin>

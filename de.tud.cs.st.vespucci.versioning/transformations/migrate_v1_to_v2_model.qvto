@@ -45,6 +45,7 @@
 
 import VespucciConverter.Utils.TransformationHelperLibrary;
 
+
 modeltype OldModel 'strict' uses 'http://vespucci.editor/2011-06-01';
 modeltype NewModel 'strict' uses  'http://vespucci.editor/2011-11-29';
 
