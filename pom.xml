@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>org.parzonka</groupId>
+	<artifactId>java-tycho-template</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>java-tycho-template-plugin</module>
+		<module>java-tycho-template-feature</module>
+		<module>java-tycho-template-updatesite</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceDirectory>src</project.build.sourceDirectory>
+		<tycho.version>0.13.0</tycho.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Maven Plugin Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>indigo</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/indigo</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+	</dependencies>
+	
+	<distributionManagement>
+	    <repository>
+	      <id>ftp-repository</id>
+	<file>/Users/mateusz/Developer/Scala/java-tycho-template/java-tycho-template-updatesite/target/site/</file>
+	      <url>ftp://ftp.strato.com/repo</url>
+	    </repository>
+	  </distributionManagement>
+	
+	<build>
+		<extensions>
+		      <!-- Enabling the use of FTP -->
+		      <extension>
+		        <groupId>org.apache.maven.wagon</groupId>
+		         <artifactId>wagon-ftp</artifactId>
+		         <version>1.0-beta-6</version>
+		      </extension>
+		    </extensions>
+		<pluginManagement>
+  			<plugins>
+  				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-maven-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<extensions>true</extensions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>target-platform-configuration</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<resolver>p2</resolver>
+						<ignoreTychoRepositories>false</ignoreTychoRepositories>
+						<environments>
+							<environment>
+								<os>linux</os>
+								<ws>gtk</ws>
+								<arch>x86</arch>
+							</environment>
+							<environment>
+								<os>linux</os>
+								<ws>gtk</ws>
+								<arch>x86_64</arch>
+							</environment>
+							<environment>
+								<os>win32</os>
+								<ws>win32</ws>
+								<arch>x86</arch>
+							</environment>
+							<environment>
+								<os>win32</os>
+								<ws>win32</ws>
+								<arch>x86_64</arch>
+							</environment>
+							<environment>
+								<os>macosx</os>
+								<ws>cocoa</ws>
+								<arch>x86_64</arch>
+							</environment>
+						</environments>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-source-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-packaging-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+  			</plugins>
+  		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

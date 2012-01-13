@@ -1,0 +1,2 @@
+Template for an Eclipse-IDE feature employing maven and tycho in the build process.
+A separate test-plugin and dependency-plugin (aggregating maven-dependencies via maven-assembly-plugin) is included.
