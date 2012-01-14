@@ -10,6 +10,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>java-tycho-template-dependencies</module>
 		<module>java-tycho-template-plugin</module>
 		<module>java-tycho-template-feature</module>
 		<module>java-tycho-template-updatesite</module>
