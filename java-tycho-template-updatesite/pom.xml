@@ -20,9 +20,6 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		
-		
-		
 	</build>
 
 </project>

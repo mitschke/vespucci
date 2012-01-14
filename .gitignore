@@ -1,0 +1,11 @@
+target/
+LocalConfiguration.txt
+Safari*OLD*
+.DS_Store
+Icon?
+.scala_dependencies
+.settings
+.cache*
+*.iml
+*.ipr
+*.iws

@@ -13,6 +13,7 @@
 		<module>java-tycho-template-plugin</module>
 		<module>java-tycho-template-feature</module>
 		<module>java-tycho-template-updatesite</module>
+		<module>java-tycho-template-tests</module>
 	</modules>
 
 	<properties>
@@ -34,26 +35,8 @@
 		</repository>
 	</repositories>
 
-	<dependencies>
-	</dependencies>
-	
-	<distributionManagement>
-	    <repository>
-	      <id>ftp-repository</id>
-	<file>/Users/mateusz/Developer/Scala/java-tycho-template/java-tycho-template-updatesite/target/site/</file>
-	      <url>ftp://ftp.strato.com/repo</url>
-	    </repository>
-	  </distributionManagement>
-	
 	<build>
-		<extensions>
-		      <!-- Enabling the use of FTP -->
-		      <extension>
-		        <groupId>org.apache.maven.wagon</groupId>
-		         <artifactId>wagon-ftp</artifactId>
-		         <version>1.0-beta-6</version>
-		      </extension>
-		    </extensions>
+
 		<pluginManagement>
   			<plugins>
   				<plugin>
