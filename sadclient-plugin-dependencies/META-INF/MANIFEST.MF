@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: sadclient-plugin
-Bundle-SymbolicName: sadclient-plugin-dependencies;singleton:=true
+Bundle-SymbolicName: sadclient-plugin-dependencypacker;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

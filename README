@@ -1,3 +1,5 @@
 Sadclient is a Eclipse-Plugin for for up- and downloading software-architecture-descriptions associated with the Vespucci Project.
 
-To create the updatesite for the plugin, execute "mvn clean package" in the maven-aggregator project "sadclient".
+To create the updatesite for the plugin, execute "mvn clean package" in the maven aggregator-project "sadclient".
+
+The purpose of the module sadclient-plugin-dependencies is to create a jar with maven dependencies (including transitive dependencies) which is imported by the sadclient-plugin. If future builds should need different or updated dependencies, just adjust the POM of sadclient-plugin-dependencies. The next call of "mvn clean package" will update the jar with the packed-dependencies.

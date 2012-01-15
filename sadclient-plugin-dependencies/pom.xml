@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.parzonka</groupId>
+		<groupId>de.tud.cs.st.vespucci</groupId>
 		<artifactId>sadclient</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -70,7 +70,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<finalName>maven-dependencies</finalName>
+					<finalName>packed</finalName>
 					<outputDirectory>../sadclient-plugin/lib</outputDirectory>
 					<descriptors>
 						<descriptor>assembly.xml</descriptor>

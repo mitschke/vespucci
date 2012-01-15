@@ -12,8 +12,8 @@
             name="SADClient"
             icon="icons/sample.gif"
             category="sadclient"
-            class="org.parzonka.java.tycho.template.views.SampleView"
-            id="org.parzonka.java.tycho.template.views.SampleView">
+            class="de.tud.cs.st.vespucci.java.tycho.template.views.SampleView"
+            id="de.tud.cs.st.vespucci.java.tycho.template.views.SampleView">
       </view>
    </extension>
    <extension
@@ -24,7 +24,7 @@
                ratio="0.5"
                relative="org.eclipse.ui.views.TaskList"
                relationship="right"
-               id="org.parzonka.java.tycho.template.views.SampleView">
+               id="de.tud.cs.st.vespucci.java.tycho.template.views.SampleView">
          </view>
       </perspectiveExtension>
    </extension>
