@@ -6,14 +6,14 @@
          point="org.eclipse.ui.views">
       <category
             name="Vespucci"
-            id="sadclient">
+            id="de.tud.cs.st.vespucci">
       </category>
       <view
             name="SADClient"
             icon="icons/sample.gif"
-            category="sadclient"
-            class="de.tud.cs.st.vespucci.java.tycho.template.views.SampleView"
-            id="de.tud.cs.st.vespucci.java.tycho.template.views.SampleView">
+            category="de.tud.cs.st.vespucci"
+            class="de.tud.cs.st.vespucci.sadclient.views.RemoteSadsView"
+            id="de.tud.cs.st.vespucci.sadclient.views.RemoteSadsView">
       </view>
    </extension>
    <extension
