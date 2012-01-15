@@ -11,7 +11,7 @@ Set "useProjectArtifact" to false, and shortened id to "jar" -->
   <dependencySets>
     <dependencySet>
       <outputDirectory>/</outputDirectory>
-      <useProjectArtifact>true</useProjectArtifact>
+      <useProjectArtifact>false</useProjectArtifact>
       <unpack>true</unpack>
       <scope>runtime</scope>
     </dependencySet>

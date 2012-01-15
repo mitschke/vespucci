@@ -13,6 +13,8 @@
 	<artifactId>sadclient-plugin-dependencies</artifactId>
 	<packaging>pom</packaging>
 
+	<!-- All dependencies declared here and their transitive dependencies are 
+		wrapped into a jar which will is imported by the sadclient-plugin -->
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -43,7 +45,7 @@
 									</pluginExecutionFilter>
 									<action>
 										<execute>
-											<ignore/>
+											<ignore />
 										</execute>
 									</action>
 								</pluginExecution>
