@@ -1,4 +1,4 @@
-package org.parzonka.java.tycho.template;
+package de.tud.cs.st.vespucci.sadclient;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

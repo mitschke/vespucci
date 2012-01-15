@@ -1,4 +1,4 @@
-package org.parzonka.java.tycho.template.views;
+package de.tud.cs.st.vespucci.sadclient.views;
 
 
 import org.eclipse.swt.widgets.Composite;

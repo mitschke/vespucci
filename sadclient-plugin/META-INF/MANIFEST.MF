@@ -3,10 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: sadclient-plugin
 Bundle-SymbolicName: sadclient-plugin;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: org.parzonka.java.tycho.template.Activator
+Bundle-Activator: de.tud.cs.st.vespucci.sadclient.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: lib/maven-dependencies-jar.jar,
- .
+Bundle-ClassPath: lib/maven-dependencies-jar.jar

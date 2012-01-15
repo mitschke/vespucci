@@ -1,4 +1,4 @@
-package org.parzonka.java.tycho.template;
+package de.tud.cs.st.vespucci.sadclient;
 
 import static org.junit.Assert.assertTrue;
 
