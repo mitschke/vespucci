@@ -23,7 +23,11 @@ import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+
 
 /**
  * @author Mateusz Parzonka
@@ -91,7 +95,10 @@ public class RemoteSadsView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
-				| SWT.V_SCROLL);
+				| SWT.V_SCROLL | SWT.BORDER);
+		createColumns(parent, viewer);
+		viewer.getTable().setHeaderVisible(true);
+		viewer.getTable().setLinesVisible(true);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new NameSorter());
@@ -105,6 +112,91 @@ public class RemoteSadsView extends ViewPart {
 		hookDoubleClickAction();
 		contributeToActionBars();
 	}
+
+	private void createColumns(Composite parent, TableViewer viewer2) {
+		String[] titles = { "First name", "Last name", "Gender", "Married" };
+		int[] bounds = { 100, 100, 100, 100 };
+		
+		// First column is for the first name
+		TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+//				Person p = (Person) element;
+				return "1";
+
+			}
+		});
+
+		// Second column is for the last name
+		col = createTableViewerColumn(titles[1], bounds[1], 1);
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+//				Person p = (Person) element;
+				return "2";
+
+			}
+		});
+
+		// Now the gender
+		col = createTableViewerColumn(titles[2], bounds[2], 2);
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+//				Person p = (Person) element;
+				return "3";
+			}
+		});
+
+		// // Now the status married
+//		col = createTableViewerColumn(titles[3], bounds[3], 3);
+//		col.setLabelProvider(new ColumnLabelProvider() {
+//			@Override
+//			public String getText(Object element) {
+//				return null;
+//			}
+//
+//			@Override
+//			public Image getImage(Object element) {
+////				if (((Person) element).isMarried()) {
+////					return null;
+////				} else {
+////					return null;
+////				}
+//				return null;
+//			}
+//		});
+	}
+	
+	private TableViewerColumn createTableViewerColumn(String title, int bound,
+			final int colNumber) {
+		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
+				SWT.NONE);
+		final TableColumn column = viewerColumn.getColumn();
+		column.setText(title);
+		column.setWidth(bound);
+		column.setResizable(true);
+		column.setMoveable(true);
+		column.addSelectionListener(getSelectionAdapter(column, colNumber));
+		return viewerColumn;
+	}
+	
+	private SelectionAdapter getSelectionAdapter(final TableColumn column,
+			final int index) {
+		SelectionAdapter selectionAdapter = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+//				comparator.setColumn(index);
+//				int dir = comparator.getDirection();
+//				viewer.getTable().setSortDirection(dir);
+				viewer.getTable().setSortColumn(column);
+				viewer.refresh();
+			}
+		};
+		return selectionAdapter;
+	}
+
 
 	private void hookContextMenu() {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
@@ -168,7 +260,7 @@ public class RemoteSadsView extends ViewPart {
 				ISelection selection = viewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
-				showMessage("Double-click detected on " + obj.toString());
+				showMessage("Double-click detected on3 " + obj.toString());
 			}
 		};
 	}
