@@ -5,16 +5,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>org.parzonka</groupId>
-	<artifactId>java-tycho-template</artifactId>
+	<artifactId>sadclient</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>java-tycho-template-plugin-dependencies</module>
-		<module>java-tycho-template-plugin</module>
-		<module>java-tycho-template-feature</module>
-		<module>java-tycho-template-updatesite</module>
-		<module>java-tycho-template-tests</module>
+		<module>sadclient-plugin-dependencies</module>
+		<module>sadclient-plugin</module>
+		<module>sadclient-feature</module>
+		<module>sadclient-updatesite</module>
+		<module>sadclient-tests</module>
 	</modules>
 
 	<properties>

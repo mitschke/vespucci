@@ -1,2 +1,3 @@
-Template for an Eclipse-IDE feature employing maven and tycho in the build process.
-A separate test-plugin and dependency-plugin (aggregating maven-dependencies via maven-assembly-plugin) is included.
+Sadclient is a Eclipse-Plugin for for up- and downloading software-architecture-descriptions associated with the Vespucci Project.
+
+To create the updatesite for the plugin, execute "mvn clean package" in the maven-aggregator project "sadclient".
