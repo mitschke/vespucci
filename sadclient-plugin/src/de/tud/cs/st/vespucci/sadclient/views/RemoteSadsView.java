@@ -27,6 +27,13 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import de.tud.cs.st.vespucci.sadclient.upload.UploadWizard;
+import de.tud.cs.st.vespucci.sadclient.upload.UploadWizardPage;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 
 /**
@@ -99,6 +106,11 @@ public class RemoteSadsView extends ViewPart {
 		createColumns(parent, viewer);
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
+		
+		TableViewerColumn tableViewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+		TableColumn tblclmnUploaded = tableViewerColumn.getColumn();
+		tblclmnUploaded.setWidth(100);
+		tblclmnUploaded.setText("Uploaded");
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new NameSorter());
@@ -274,8 +286,11 @@ public class RemoteSadsView extends ViewPart {
 	}
 
 	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(),
-				"SADClient", message);
+//		MessageDialog.openInformation(viewer.getControl().getShell(),
+//				"SADClient", message);
+		UploadWizard wizard = new UploadWizard();
+		WizardDialog dialog = new WizardDialog(viewer.getControl().getShell(), wizard);
+		dialog.open();
 	}
 
 	/**
