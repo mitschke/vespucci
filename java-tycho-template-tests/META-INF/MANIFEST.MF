@@ -6,7 +6,7 @@ Bundle-Version: 0.0.1.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jdt.junit,
- java-tycho-template-plugin;bundle-version="0.0.1",
+ java-tycho-template-plugin,
  org.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

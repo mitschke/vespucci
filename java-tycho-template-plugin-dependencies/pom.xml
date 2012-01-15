@@ -10,7 +10,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>java-tycho-template-dependencies</artifactId>
+	<artifactId>java-tycho-template-plugin-dependencies</artifactId>
 	<packaging>pom</packaging>
 
 	<dependencies>
@@ -59,7 +59,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2.2</version>
-
 				<executions>
 					<execution>
 						<goals>
@@ -67,13 +66,13 @@
 						</goals>
 						<phase>generate-sources</phase>
 					</execution>
-
 				</executions>
 				<configuration>
+					<finalName>maven-dependencies</finalName>
 					<outputDirectory>../java-tycho-template-plugin/lib</outputDirectory>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
+					<descriptors>
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
 				</configuration>
 
 			</plugin>

@@ -10,7 +10,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>java-tycho-template-dependencies</module>
+		<module>java-tycho-template-plugin-dependencies</module>
 		<module>java-tycho-template-plugin</module>
 		<module>java-tycho-template-feature</module>
 		<module>java-tycho-template-updatesite</module>
@@ -115,6 +115,7 @@
 				<artifactId>target-platform-configuration</artifactId>
 			</plugin>
 		</plugins>
+		
 	</build>
 
 </project>

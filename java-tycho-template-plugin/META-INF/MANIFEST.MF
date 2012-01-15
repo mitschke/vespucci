@@ -8,4 +8,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.apache.http.client
+Bundle-ClassPath: lib/maven-dependencies-jar.jar,
+ .
