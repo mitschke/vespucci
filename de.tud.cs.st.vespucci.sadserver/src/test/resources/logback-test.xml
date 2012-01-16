@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="10 seconds" > 
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%-6level [%thread] %logger{10} - %msg%n</Pattern>
+    </layout>
+  </appender>
+
+  <logger name="de.tud.cs.st.opal.sadserver.DAO" level="TRACE"/>
+
+  <root level="TRACE">
+    <appender-ref ref="STDOUT" />
+  </root>  
+  
+</configuration>
