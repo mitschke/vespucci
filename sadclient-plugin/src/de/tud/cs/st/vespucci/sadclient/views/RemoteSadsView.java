@@ -20,6 +20,7 @@ import org.eclipse.ui.part.*;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.*;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
@@ -27,6 +28,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+
+import de.tud.cs.st.vespucci.sadclient.upload.UploadDialog;
 import de.tud.cs.st.vespucci.sadclient.upload.UploadWizard;
 import de.tud.cs.st.vespucci.sadclient.upload.UploadWizardPage;
 import org.eclipse.core.commands.AbstractHandler;
@@ -288,9 +291,11 @@ public class RemoteSadsView extends ViewPart {
 	private void showMessage(String message) {
 //		MessageDialog.openInformation(viewer.getControl().getShell(),
 //				"SADClient", message);
-		UploadWizard wizard = new UploadWizard();
-		WizardDialog dialog = new WizardDialog(viewer.getControl().getShell(), wizard);
+//		UploadWizard wizard = new UploadWizard();
+//		WizardDialog dialog = new WizardDialog(viewer.getControl().getShell(), wizard);
+		Dialog dialog = new UploadDialog(viewer.getControl().getShell());
 		dialog.open();
+		System.out.println(dialog.getReturnCode());
 	}
 
 	/**
