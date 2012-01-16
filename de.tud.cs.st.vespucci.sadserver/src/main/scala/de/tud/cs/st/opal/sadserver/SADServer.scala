@@ -21,23 +21,20 @@ import org.dorest.server.rest._
 import org.dorest.server.rest.representation.stream.StreamSupport
 import org.dorest.server.MediaType
 
+import GlobalProperties.{ port, rootPath, userCollectionPath, descriptionCollectionPath, modelPath, documentationPath }
 /**
  * Software Architecture Description Server
  *
  * @author Mateusz Parzonka
  */
 object SADServer
-  extends Server(9000)
+  extends Server(port)
   with DAO
   with Logging {
 
   logger.debug("Starting Software Architecture Description Server...")
 
   startDatabase()
-
-  val rootPath = ""
-  val descriptionCollectionPath = "/sads"
-  val userCollectionPath = "/users"
 
   this register new HandlerFactory[RootResource] {
     path { rootPath }
@@ -55,12 +52,12 @@ object SADServer
   }
 
   this register new HandlerFactory[DescriptionModelResource] {
-    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: "/model" }
+    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
     def create = new DescriptionModelResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionDocumentationResource] {
-    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: "/documentation" }
+    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
     def create = new DescriptionDocumentationResource with RestrictWriteToRegisteredUsers
   }
 
@@ -172,9 +169,6 @@ class UserResource extends RESTInterface with DAO with XMLSupport {
  * Starts the SADServer as a configured stand-alone application.
  */
 object SADServerApp extends scala.App with Logging {
-
-  val configuration = new scala.sys.SystemProperties()
-  configuration += ("org.tud.cs.st.opal.sadserver.database" -> "jdbc:h2:sads")
 
   SADServer
 

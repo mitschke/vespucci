@@ -17,6 +17,7 @@ package de.tud.cs.st.opal.sadserver
 
 import java.io.{ Reader, InputStream }
 import scala.xml.Elem
+import de.tud.cs.st.opal.sadserver.GlobalProperties._
 
 // Description(s)
 
@@ -46,17 +47,16 @@ case class Description(
   val documentation: Option[(InputStream, Int)],
   val wip: Boolean) {
 
-  // TODO Provide (global?) access to authority and port
-  val url: String = "http://localhost:9000" + SADServer.descriptionCollectionPath + "/" + id
+  val url: String = "http://" + authority + ":" + port + rootPath + descriptionCollectionPath + "/" + id
 
   private def modelToXML =
     <model size={ model.get._2.toString }>
-      <url>{ url + "/model" }</url>
+      <url>{ url + modelPath }</url>
     </model>
 
   private def documentationToXML =
     <documentation size={ documentation.get._2.toString }>
-      <url>{ url + "/documentation" }</url>
+      <url>{ url + documentationPath }</url>
     </documentation>
 
   def toXML: Elem =

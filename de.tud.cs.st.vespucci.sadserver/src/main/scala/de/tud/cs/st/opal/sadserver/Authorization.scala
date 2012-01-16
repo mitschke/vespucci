@@ -20,11 +20,13 @@ import org.dorest.server._
 
 trait RestrictToAdmins extends DigestAuthentication with DAO {
 
-  def authenticationRealm = "http://www.opal-project.de/vespucci_project"
+  def authenticationRealm = GlobalProperties.authenticationRealm
 
   def password(username: String) = {
+    val adminName = GlobalProperties.adminName
+    val adminPassword = GlobalProperties.adminPassword
     username match {
-      case "admin" => Some("password")
+      case adminName if username == adminName => Some(adminPassword)
       case _ => None
     }
   }
@@ -41,7 +43,7 @@ trait RestrictWriteToRegisteredUsers
   with DigestAuthentication
   with DAO {
 
-  def authenticationRealm = "http://www.opal-project.de/vespucci_project"
+  val authenticationRealm = GlobalProperties.authenticationRealm
 
   def password(username: String) = {
     findPassword(username)

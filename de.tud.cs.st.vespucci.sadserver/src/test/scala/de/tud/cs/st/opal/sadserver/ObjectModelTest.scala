@@ -10,7 +10,7 @@ import org.scalatest.matchers.ShouldMatchers
 class ObjectModelTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll {
   
   override def beforeAll(configMap: Map[String, Any]) {
-    println("Starting tests")
+    println("Starting ObjectModelTests")
   }
   
    "Description" should "be constructed correctly from XML" in {

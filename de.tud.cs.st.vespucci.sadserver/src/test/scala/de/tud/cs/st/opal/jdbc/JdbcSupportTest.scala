@@ -12,11 +12,14 @@ import org.scalatest.matchers.ShouldMatchers
 class SDBCTest extends FlatSpec
   with ShouldMatchers
   with BeforeAndAfterAll
-  with JdbcSupport
-  with H2DatabaseConnection {
+  with JdbcSupport {
+
+  import org.h2.jdbcx.JdbcConnectionPool
+  val cp = JdbcConnectionPool.create("jdbc:h2:mem:jdbcsupport;DB_CLOSE_DELAY=-1", "admin", "admin")
+  override def connection = cp.getConnection()
 
   override def beforeAll(configMap: Map[String, Any]) {
-    println("Starting tests")
+    println("Starting JdbcSupportTests")
   }
 
   "SDBC" should "create some table" in {
@@ -97,6 +100,13 @@ class SDBCTest extends FlatSpec
       println(ps.executeQueryWith("1").nextTuple(binaryStream, int))
     }
 
+  }
+
+  override def afterAll() {
+    withSession {
+      conn =>
+        conn.executeStatement("DROP ALL OBJECTS")
+    }
   }
 
 }
