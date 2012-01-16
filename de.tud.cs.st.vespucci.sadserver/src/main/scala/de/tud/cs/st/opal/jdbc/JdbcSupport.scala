@@ -66,13 +66,13 @@ trait JdbcSupport {
     def listTuples[A](a: ((ResultSet, Int) => A)) = { val list = MutableList[Tuple1[A]](); while (rs.next) { list += Tuple1(a(rs, 1)) }; list }
     def listTuples[A, B](a: ((ResultSet, Int) => A), b: ((ResultSet, Int) => B)) = { val list = MutableList[Tuple2[A, B]](); while (rs.next) { list += Tuple2(a(rs, 1), b(rs, 2)) }; list }
     def listTuples[A, B, C](a: ((ResultSet, Int) => A), b: ((ResultSet, Int) => B), c: ((ResultSet, Int) => C)) = { val list = MutableList[Tuple3[A, B, C]](); while (rs.next) { list += Tuple3(a(rs, 1), b(rs, 2), c(rs, 3)) }; list }
-    def nextTuple[T1](a1: ((ResultSet, Int) => T1)) = { if (rs.next) Some(Tuple(a1(rs, 1))) else None }
-    def nextTuple[T1, T2](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2)) = { if (rs.next) Some(Tuple(a1(rs, 1), a2(rs, 2))) else None }
-    def nextTuple[T1, T2, T3](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3)) = { if (rs.next) Some(Tuple(a1(rs, 1), a2(rs, 2), a3(rs, 3))) else None }
-    def nextTuple[T1, T2, T3, T4](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3), a4: ((ResultSet, Int) => T4)) = { if (rs.next) Some(Tuple(a1(rs, 1), a2(rs, 2), a3(rs, 3), a4(rs, 4))) else None }
-    def nextTuple[T1, T2, T3, T4, T5](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3), a4: ((ResultSet, Int) => T4), a5: ((ResultSet, Int) => T5)) = { if (rs.next) Some(Tuple(a1(rs, 1), a2(rs, 2), a3(rs, 3), a4(rs, 4), a5(rs, 5))) else None }
-    def nextTuple[T1, T2, T3, T4, T5, T6](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3), a4: ((ResultSet, Int) => T4), a5: ((ResultSet, Int) => T5), a6: ((ResultSet, Int) => T6)) = { if (rs.next) Some(Tuple(a1(rs, 1), a2(rs, 2), a3(rs, 3), a4(rs, 4), a5(rs, 5), a6(rs, 6))) else None }
-    def nextTuple[T1, T2, T3, T4, T5, T6, T7](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3), a4: ((ResultSet, Int) => T4), a5: ((ResultSet, Int) => T5), a6: ((ResultSet, Int) => T6), a7: ((ResultSet, Int) => T7)) = { if (rs.next) Some(Tuple(a1(rs, 1), a2(rs, 2), a3(rs, 3), a4(rs, 4), a5(rs, 5), a6(rs, 6), a7(rs, 7))) else None }
+    def nextTuple[T1](a1: ((ResultSet, Int) => T1)) = { if (rs.next) Some((a1(rs, 1))) else None }
+    def nextTuple[T1, T2](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2)) = { if (rs.next) Some((a1(rs, 1), a2(rs, 2))) else None }
+    def nextTuple[T1, T2, T3](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3)) = { if (rs.next) Some((a1(rs, 1), a2(rs, 2), a3(rs, 3))) else None }
+    def nextTuple[T1, T2, T3, T4](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3), a4: ((ResultSet, Int) => T4)) = { if (rs.next) Some((a1(rs, 1), a2(rs, 2), a3(rs, 3), a4(rs, 4))) else None }
+    def nextTuple[T1, T2, T3, T4, T5](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3), a4: ((ResultSet, Int) => T4), a5: ((ResultSet, Int) => T5)) = { if (rs.next) Some((a1(rs, 1), a2(rs, 2), a3(rs, 3), a4(rs, 4), a5(rs, 5))) else None }
+    def nextTuple[T1, T2, T3, T4, T5, T6](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3), a4: ((ResultSet, Int) => T4), a5: ((ResultSet, Int) => T5), a6: ((ResultSet, Int) => T6)) = { if (rs.next) Some((a1(rs, 1), a2(rs, 2), a3(rs, 3), a4(rs, 4), a5(rs, 5), a6(rs, 6))) else None }
+    def nextTuple[T1, T2, T3, T4, T5, T6, T7](a1: ((ResultSet, Int) => T1), a2: ((ResultSet, Int) => T2), a3: ((ResultSet, Int) => T3), a4: ((ResultSet, Int) => T4), a5: ((ResultSet, Int) => T5), a6: ((ResultSet, Int) => T6), a7: ((ResultSet, Int) => T7)) = { if (rs.next) Some((a1(rs, 1), a2(rs, 2), a3(rs, 3), a4(rs, 4), a5(rs, 5), a6(rs, 6), a7(rs, 7))) else None }
 
     def isEmpty() = { !rs.next }
   }
