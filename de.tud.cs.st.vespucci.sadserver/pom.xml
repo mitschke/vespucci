@@ -37,7 +37,7 @@
 			<artifactId>scala-library</artifactId>
 			<version>${scala.version}</version>
 		</dependency>
-		
+
 		<!-- DoRest -->
 		<dependency>
 			<groupId>org.dorest</groupId>
@@ -113,34 +113,26 @@
 				<groupId>org.scala-tools</groupId>
 				<artifactId>maven-scala-plugin</artifactId>
 				<version>2.15.2</version>
-
+				<configuration>
+					<scalaVersion>${scala.version}</scalaVersion>
+					<jvmArgs>
+						<jvmArg>-Xmx1024m</jvmArg>
+					</jvmArgs>
+					<args>
+						<arg>-unchecked</arg>
+						<arg>-deprecation</arg>
+						<arg>-explaintypes</arg>
+					</args>
+				</configuration>
 				<executions>
-					<!-- Enables usage of the fast scala compiler (FSC) in the POM -->
 					<execution>
 						<id>compileExecution</id>
 						<goals>
-							<goal>cc</goal>
-						</goals>
-						<phase>compile</phase>
-						<configuration>
-							<useFsc>true</useFsc>
-							<once>true</once>
-						</configuration>
-					</execution>
-
-					<!-- FSC is not used for test compilation. It could be used however 
-						by leveraging the compile goal with appropriate include / exclude settings -->
-					<execution>
-						<id>testCompileExecution</id>
-						<goals>
+							<goal>compile</goal>
 							<goal>testCompile</goal>
 						</goals>
 					</execution>
 				</executions>
-
-				<configuration>
-					<scalaVersion>${scala.version}</scalaVersion>
-				</configuration>
 			</plugin>
 
 			<!-- This plugin must be installed manually. See: https://github.com/teigen/maven-scalatest-plugin 
