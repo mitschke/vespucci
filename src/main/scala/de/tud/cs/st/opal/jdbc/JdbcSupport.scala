@@ -4,6 +4,11 @@ import java.sql.{ Connection, PreparedStatement, ResultSet, Types }
 
 import scala.collection.mutable.MutableList
 
+/**
+ * Some utility-methods and loan-patterns enable a tiny dsl to work with JDBC.
+ * 
+ * @author Mateusz Parzonka
+ */
 trait JdbcSupport {
   
   /**
@@ -42,8 +47,8 @@ trait JdbcSupport {
         case any: Double => ps.setDouble(i, any)
         case any: Float => ps.setFloat(i, any)
         case any: java.io.InputStream => ps.setBinaryStream(i, any)
-        case null => ps.setNull(i, Types.NULL)
         case any: java.io.Reader => ps.setCharacterStream(i, any)
+        case null => ps.setNull(i, Types.NULL)
         case SqlNullType(typeNr) => ps.setNull(i, typeNr)
         case _ => throw new RuntimeException("Argument type not known")
       }
