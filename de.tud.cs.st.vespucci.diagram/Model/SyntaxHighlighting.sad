@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://vespucci.editor/2011-06-01" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <ShapesDiagram xmi:id="_VoeR4OUpEeCIEKjUs-_gbQ">
+    <shapes xmi:type="Ensemble" xmi:id="_MtoaAOfrEeCIsdQ3hleN8Q" name="Syntax-Highlighting" description="package: de.tud.cs.st.vespucci.vespucci_model.diagram.sheet&#xD;&#xA;class:&#xD;&#xA;ChangedAbstractBasicTextPropertySection" query="derived">
+      <shapes xmi:type="Ensemble" xmi:id="_mFmH0OfrEeCIsdQ3hleN8Q" name="$1.doSyntaxHighlighting" description="This method calls all sub methods which are responsible for the keyword and string highlighting and bracket counting." query="method('de.tud.cs.st.vespucci.vespucci_model.diagram.sheet','ChangedAbstractBasicTextPropertySection$1','doSyntaxHighlighting','void',[])&#xA;"/>
+    </shapes>
+  </ShapesDiagram>
+  <notation:Diagram xmi:id="_VoeR4eUpEeCIEKjUs-_gbQ" type="Vespucci" element="_VoeR4OUpEeCIEKjUs-_gbQ" name="Syntaxhilighting.sad" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_MtpoIOfrEeCIsdQ3hleN8Q" type="2001" element="_MtoaAOfrEeCIsdQ3hleN8Q" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_MtpoIufrEeCIsdQ3hleN8Q" type="5001"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_MtqPMOfrEeCIsdQ3hleN8Q" type="5008"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_MtqPMefrEeCIsdQ3hleN8Q" type="7001">
+        <children xmi:type="notation:Shape" xmi:id="_mFmu4OfrEeCIsdQ3hleN8Q" type="2001" element="_mFmH0OfrEeCIsdQ3hleN8Q" fontName="Segoe UI">
+          <children xmi:type="notation:DecorationNode" xmi:id="_mFnV8OfrEeCIsdQ3hleN8Q" type="5001"/>
+          <children xmi:type="notation:DecorationNode" xmi:id="_mFnV8efrEeCIsdQ3hleN8Q" type="5008"/>
+          <children xmi:type="notation:BasicCompartment" xmi:id="_mFnV8ufrEeCIsdQ3hleN8Q" type="7001"/>
+          <children xmi:type="notation:BasicCompartment" xmi:id="_mFnV8-frEeCIsdQ3hleN8Q" type="7003">
+            <styles xmi:type="notation:SortingStyle" xmi:id="_mFnV9OfrEeCIsdQ3hleN8Q"/>
+            <styles xmi:type="notation:FilteringStyle" xmi:id="_mFnV9efrEeCIsdQ3hleN8Q"/>
+          </children>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mFmu4efrEeCIsdQ3hleN8Q" x="10" y="11" width="261" height="101"/>
+        </children>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_MtqPMufrEeCIsdQ3hleN8Q" type="7003">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_MtqPM-frEeCIsdQ3hleN8Q"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_MtqPNOfrEeCIsdQ3hleN8Q"/>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MtpoIefrEeCIsdQ3hleN8Q" x="20" y="20" width="301" height="221"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_VoeR4uUpEeCIEKjUs-_gbQ"/>
+  </notation:Diagram>
+</xmi:XMI>

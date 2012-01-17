@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	License (BSD Style License):
+	Copyright (c) 2010
+	Software Engineering
+	Department of Computer Science
+	Technische Universität Darmstadt
+	All rights reserved.
+	
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+	
+	- Redistributions of source code must retain the above copyright notice,
+	  this list of conditions and the following disclaimer.
+	- Redistributions in binary form must reproduce the above copyright notice,
+	  this list of conditions and the following disclaimer in the documentation
+	  and/or other materials provided with the distribution.
+	- Neither the name of the Software Technology Group or Technische 
+	  Universität Darmstadt nor the names of its contributors may be used to 
+	  endorse or promote products derived from this software without specific 
+	  prior written permission.
+	
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+	ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+	LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.	
+	
+	Author 	Ralf Mitschke
+				Michael Eichberg 
+-->
+<project name="Testing Architecture Conformance" default="check" basedir=".">
+
+	<property file="Architecture-build.properties">
+		<!-- The expected properties are:
+			
+			bin - the place where the project's ".class" files are stored
+						
+			scala.home - the home of the Scala 2.8 installation
+			opal.home - the home directory of the OPAL project
+			prolog.executable - the complete path to the SWI Prolog executable
+		 -->
+	</property>
+
+
+	<!-- Properties related to the installation of Scala -->
+	<condition property="scala.lib" value="${scala.home}/lib">
+		<not>
+			<isset property="scala.lib"/>
+		</not>
+	</condition>
+	<condition property="scala-library.jar" value="${scala.lib}/scala-library.jar">
+		<not>
+			<isset property="scala-library.jar"/>
+		</not>
+	</condition>
+
+	<!-- Properties related to the installation of Unison -->
+	<condition property="bat.home" value="${opal.home}/bat">
+		<not>
+			<isset property="bat.home"/>
+		</not>
+	</condition>
+	<condition property="bat.analyses" value="${bat.home}/src/analyses">
+		<not>
+			<isset property="bat.analyses"/>
+		</not>
+	</condition>
+	<condition property="bat.unisson" value="${bat.home}/src/analyses/unisson">
+		<not>
+			<isset property="bat.unisson"/>
+		</not>
+	</condition>
+	<condition property="opal.jar" value="${bat.home}/build/opal-0.5.0.jar">
+		<not>
+			<isset property="opal.jar"/>
+		</not>
+	</condition>
+
+	<property name="architecture.pl" value="DiagramConverter.sad.pl"/>
+	
+	<tempfile property="bytecode.representation" suffix=".pl" deleteonexit="true" prefix="Bytecode"/>
+
+	<path id="opal.classpath">
+		<pathelement location="${opal.jar}" />
+		<pathelement location="${scala-library.jar}"/>
+	</path>
+
+	<target 
+			name="generate_starter_for_windows" 
+			description="creates a windows bat file for startig Prolog with the bytecode representation"
+			depends="create_bytecode_representation">
+		<echo file="swipl-win.bat">cd "${basedir}" 
+"${prolog.executable}" -O -q -s "${bytecode.representation}" -p opal="${bat.unisson}" -g consult(opal('Ensembles.pl')),consult('${architecture.pl}').</echo>
+	</target>
+	
+	<target 
+			name="create_bytecode_representation" 
+			description="creates a Prolog based bytecode representation">
+		<taskdef name="bytecodeToProlog" classname="de.tud.cs.st.bat.ant.BytecodeToPrologTask">
+			<classpath>
+				<path refid="opal.classpath" />
+			</classpath>
+		</taskdef>
+
+		<bytecodeToProlog 
+				output="${bytecode.representation}" 
+				classpathRef="opal.classpath" 
+				combineoutput="true">
+
+			<fileset dir="${bin}">
+				<include name="**/*.class" />
+			</fileset>
+		</bytecodeToProlog>
+	</target>
+
+	<target 
+			name="check" 
+			depends="create_bytecode_representation" 
+			description="checks the conformance of the modeled and implemented architecture">
+
+		<exec dir="${basedir}/" executable="${prolog.executable}" spawn="false">
+			<arg value="-O" />
+			<arg value="-q" />
+			<arg value="-s" />
+			<arg value="${bytecode.representation}" />
+			<arg value="-p" />
+			<arg value="opal=${bat.unisson}" />
+			<arg value="-g" />
+			<arg value="consult(opal('Ensembles.pl')),consult('${architecture.pl}'),print_ensembles, print_violations" />
+			<arg value="-t" />
+			<arg value="halt" />
+		</exec>
+	</target>
+
+</project>

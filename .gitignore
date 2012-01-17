@@ -9,8 +9,6 @@ syntax: glob
 
 # eclipse conf file
 .settings
-.classpath
-.project
 .manager
 .scala_dependencies
 
@@ -46,3 +44,7 @@ build.log
 /src/test/resources/hibernate40/
 /src/main/resources/
 /src/test/resources/logback-test.xml
+
+*/bin/
+.DS_Store
+.metadata

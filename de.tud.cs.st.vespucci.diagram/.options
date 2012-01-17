@@ -1,0 +1,7 @@
+# Tracing options for the de.tud.cs.st.vespucci.diagram plug-in
+
+# Common issues
+de.tud.cs.st.vespucci.diagram/debug=false
+
+# Visual IDs
+de.tud.cs.st.vespucci.diagram/debug/visualID=false

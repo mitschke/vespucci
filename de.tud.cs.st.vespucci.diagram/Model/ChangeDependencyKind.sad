@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://vespucci.editor/2011-06-01" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <ShapesDiagram xmi:id="_G7zCEOUpEeCIEKjUs-_gbQ">
+    <shapes xmi:type="Ensemble" xmi:id="_gvqGAOh8EeCog_IibSihtg" name="SetDependencyKindEntries" description="Provides menu entries for the dynamic popup menu. Entries to be created are specified in an txt-file." query="class_with_members('de.tud.cs.st.vespucci.diagram.menuItems','SetDependencyKindEntries')&#xA;"/>
+    <shapes xmi:type="Ensemble" xmi:id="_inX1kOh8EeCog_IibSihtg" name="Set dependency kind handler" description="Handles commands changing the kind of a dependency." query="class_with_members('de.tud.cs.st.vespucci.diagram.handler','ChangeDependenciesKindHandler')&#xA; or class_with_members('de.tud.cs.st.vespucci.diagram.handler','ToggleDependenciesKindHandler')&#xA; or class_with_members('de.tud.cs.st.vespucci.diagram.handler','SetDependenciesKindHandler')&#xA;"/>
+  </ShapesDiagram>
+  <notation:Diagram xmi:id="_G70QMOUpEeCIEKjUs-_gbQ" type="Vespucci" element="_G7zCEOUpEeCIEKjUs-_gbQ" name="ToggleDependency.sad" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_gvtJUOh8EeCog_IibSihtg" type="2001" element="_gvqGAOh8EeCog_IibSihtg" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_gvtwYOh8EeCog_IibSihtg" type="5001"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_gvtwYeh8EeCog_IibSihtg" type="5008"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_gvuXcOh8EeCog_IibSihtg" type="7001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_gvuXceh8EeCog_IibSihtg" type="7003">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_gvuXcuh8EeCog_IibSihtg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_gvuXc-h8EeCog_IibSihtg"/>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gvtJUeh8EeCog_IibSihtg" x="60" y="24" width="181"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_ina44Oh8EeCog_IibSihtg" type="2001" element="_inX1kOh8EeCog_IibSihtg" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_inbf8Oh8EeCog_IibSihtg" type="5001"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_inbf8eh8EeCog_IibSihtg" type="5008"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_incHAOh8EeCog_IibSihtg" type="7001"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_incHAeh8EeCog_IibSihtg" type="7003">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_incHAuh8EeCog_IibSihtg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_incHA-h8EeCog_IibSihtg"/>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ina44eh8EeCog_IibSihtg" x="300" y="24" width="325" height="73"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_uzLOoOh9EeCog_IibSihtg" type="Note" fontName="Segoe UI" description="Also associates the commands to be executed when a user clicks on a menu entry.&#xD;&#xA;This dependency is resolved at runtime." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_uzND0Oh9EeCog_IibSihtg" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_uzNq4Oh9EeCog_IibSihtg" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="_uzLOoeh9EeCog_IibSihtg"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_uzLOouh9EeCog_IibSihtg"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_uzL1sOh9EeCog_IibSihtg" x="24" y="168" width="239" height="72"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="__8p4EOh9EeCog_IibSihtg" type="Note" fontName="Segoe UI" description="Called by the eclipse framework." fillColor="13369343" transparency="0" lineColor="6737151" lineWidth="1">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="__8rGMOh9EeCog_IibSihtg" type="DiagramName">
+        <element xsi:nil="true"/>
+      </children>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="__8rtQOh9EeCog_IibSihtg" type="Description">
+        <element xsi:nil="true"/>
+      </children>
+      <styles xmi:type="notation:TextStyle" xmi:id="__8qfIOh9EeCog_IibSihtg"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="__8qfIeh9EeCog_IibSihtg"/>
+      <element xsi:nil="true"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="__8qfIuh9EeCog_IibSihtg" x="360" y="168" width="197" height="29"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_G70QMeUpEeCIEKjUs-_gbQ"/>
+    <edges xmi:type="notation:Connector" xmi:id="_uzTxgOh9EeCog_IibSihtg" type="NoteAttachment" source="_gvtJUOh8EeCog_IibSihtg" target="_uzLOoOh9EeCog_IibSihtg" lineWidth="1">
+      <styles xmi:type="notation:ArrowStyle" xmi:id="_uzTxgeh9EeCog_IibSihtg"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="_uzTxguh9EeCog_IibSihtg"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_uzTxg-h9EeCog_IibSihtg" points="[0, 0, 0, -62]$[0, 62, 0, 0]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_HwHNUOh-EeCog_IibSihtg" id="(0.4972375690607735,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_HwH0YOh-EeCog_IibSihtg" id="(0.497907949790795,0.0)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="__8v-sOh9EeCog_IibSihtg" type="NoteAttachment" source="_ina44Oh8EeCog_IibSihtg" target="__8p4EOh9EeCog_IibSihtg" lineWidth="1">
+      <styles xmi:type="notation:ArrowStyle" xmi:id="__8v-seh9EeCog_IibSihtg"/>
+      <styles xmi:type="notation:LineTypeStyle" xmi:id="__8v-suh9EeCog_IibSihtg"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="__8v-s-h9EeCog_IibSihtg" points="[0, 0, 0, -60]$[0, 60, 0, 0]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_HwF_MOh-EeCog_IibSihtg" id="(0.49846153846153846,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_HwGmQOh-EeCog_IibSihtg" id="(0.49746192893401014,0.0)"/>
+    </edges>
+  </notation:Diagram>
+</xmi:XMI>
