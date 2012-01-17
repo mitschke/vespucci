@@ -38,13 +38,18 @@ build.log
 #SHITTY output not in target directory
 build.log
 
-.cache*
-/vads.h2.db
-/sads.h2.db
-/src/test/resources/hibernate40/
-/src/main/resources/
-/src/test/resources/logback-test.xml
-
-*/bin/
+#OSX
+target/
+Safari*OLD*
+.DS_Store
 .DS_Store
 .metadata
+Icon?
+
+#other
+*/bin/
+.cache*
+*.iml
+*.ipr
+*.iws
+*.prefs

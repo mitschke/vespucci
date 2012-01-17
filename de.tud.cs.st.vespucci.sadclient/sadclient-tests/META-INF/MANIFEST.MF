@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: sadclient-tests
+Bundle-SymbolicName: sadclient-tests;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.junit,
+ sadclient-plugin,
+ org.junit
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
