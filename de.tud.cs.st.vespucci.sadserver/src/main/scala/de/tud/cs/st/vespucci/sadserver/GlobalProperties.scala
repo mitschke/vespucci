@@ -1,4 +1,4 @@
-package de.tud.cs.st.opal.sadserver
+package de.tud.cs.st.vespucci.sadserver
 
 import sys.props
 

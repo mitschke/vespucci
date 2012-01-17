@@ -7,7 +7,7 @@
     </layout>
   </appender>
 
-  <logger name="de.tud.cs.st.opal.sadserver.DAO" level="TRACE"/>
+  <logger name="de.tud.cs.st.vespucci.sadserver.DAO" level="TRACE"/>
 
   <root level="TRACE">
     <appender-ref ref="STDOUT" />

@@ -1,4 +1,4 @@
-package de.tud.cs.st.opal.jdbc
+package de.tud.cs.st.vespucci.jdbc
 
 import java.sql.{ Connection, PreparedStatement, ResultSet, Types }
 

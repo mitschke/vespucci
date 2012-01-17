@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package de.tud.cs.st.opal.sadserver
+package de.tud.cs.st.vespucci.sadserver
 import org.dorest.server.jdk.Server
 import org.dorest.server.HandlerFactory
 import com.weiglewilczek.slf4s.Logging

@@ -13,11 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package de.tud.cs.st.opal.sadserver
+package de.tud.cs.st.vespucci.sadserver
 
 import java.io.{ Reader, InputStream }
 import scala.xml.Elem
-import de.tud.cs.st.opal.sadserver.GlobalProperties._
+import de.tud.cs.st.vespucci.sadserver.GlobalProperties._
 
 // Description(s)
 

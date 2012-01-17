@@ -13,10 +13,10 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package de.tud.cs.st.opal.sadserver
+package de.tud.cs.st.vespucci.sadserver
 
-import de.tud.cs.st.opal.jdbc.H2DatabaseConnection;
-import de.tud.cs.st.opal.jdbc.JdbcSupport;
+import de.tud.cs.st.vespucci.jdbc.H2DatabaseConnection;
+import de.tud.cs.st.vespucci.jdbc.JdbcSupport;
 import com.weiglewilczek.slf4s.Logger
 import java.io.{ InputStream, Reader }
 
@@ -27,7 +27,7 @@ object DAO extends DAO
  */
 trait DAO extends JdbcSupport with H2DatabaseConnection {
 
-  private val logger = Logger("de.tud.cs.st.opal.sadserver.DAO")
+  private val logger = Logger("de.tud.cs.st.vespucci.sadserver.DAO")
 
   def startDatabase() {
     logger.info("Starting database")
