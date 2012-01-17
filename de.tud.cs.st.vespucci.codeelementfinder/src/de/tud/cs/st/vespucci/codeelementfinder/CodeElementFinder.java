@@ -77,9 +77,9 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 
 public class CodeElementFinder {
 
-	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
-	
-	public static <T> void search(ICodeElement sourceElement, T passenger, IProject project, ICodeElementFoundProcessor<T> processor){
+	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.codeelementfinder";
+
+	public static void startSearch(ICodeElement sourceElement, IProject project, ICodeElementFoundProcessor processor){
 		SearchPattern searchPattern;
 		
 		//Set default SearchScope
@@ -117,11 +117,11 @@ public class CodeElementFinder {
 
 		searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
 
-		search(searchPattern, javaSearchScope, sourceElement, passenger, project, processor);
+		search(searchPattern, javaSearchScope, sourceElement, project, processor);
 
 	}
-		
-	private static <T> void search(SearchPattern searchPattern, final IJavaSearchScope javaSearchScope, final ICodeElement sourceElement, final T passenger, final IProject project, final ICodeElementFoundProcessor<T> processor) {
+
+	private static void search(SearchPattern searchPattern, final IJavaSearchScope javaSearchScope, final ICodeElement sourceElement, final IProject project, final ICodeElementFoundProcessor processor) {
 		
 		SearchRequestor requestor = new SearchRequestor() {
 			private boolean sucess = false;
@@ -129,9 +129,9 @@ public class CodeElementFinder {
 			@Override
 			public void acceptSearchMatch(SearchMatch match) throws CoreException {
 				if (sucess){
-					foundMatch(match, sourceElement, passenger, project, javaSearchScope, processor);
+					foundMatch(match, sourceElement, javaSearchScope, processor);
 				}else{
-					sucess = foundMatch(match, sourceElement, passenger, project, javaSearchScope, processor); 
+					sucess = foundMatch(match, sourceElement, javaSearchScope, processor); 
 				}
 				
 			}		
@@ -139,7 +139,7 @@ public class CodeElementFinder {
 			@Override
 			public void endReporting(){
 				if (!sucess){
-					notfoundMatch(sourceElement, passenger, project, processor);
+					notfoundMatch(sourceElement, project, processor);
 				}
 			}
 			
@@ -155,282 +155,225 @@ public class CodeElementFinder {
 		}
 	}
 
-	protected static<T> void notfoundMatch(ICodeElement sourceElement, T passenger, IProject project, ICodeElementFoundProcessor<T> processor) {
+
+	private static boolean foundMatch(SearchMatch match, ICodeElement sourceElement, IJavaSearchScope searchScope, ICodeElementFoundProcessor processor) {
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IComplexCodeElement)){
+			return foundMatch((IType) match.getElement(), (IComplexCodeElement) sourceElement, searchScope, processor);
+		}
+		// Find a class declaration and we were looking for it
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){	
+			return foundMatch((IType) match.getElement(), (IClassDeclaration) sourceElement, processor);
+		}	
+		// Find a class declaration and we were looking for a IMethodDeclaration
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IMethodDeclaration)){
+			return foundMatch((IType) match.getElement(), (IMethodDeclaration) sourceElement, processor);
+		}
+		// Find a class declaration and we were looking for a IFieldDeclaration
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IFieldDeclaration)){
+			return foundMatch((IType) match.getElement(), (IFieldDeclaration) sourceElement, processor);
+		}
+		// Find a class declaration and we were looking for a IStatement
+		if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){
+			return foundMatch((IType) match.getElement(), (IStatement) sourceElement, processor);
+		}
+		// Find a method and we were looking for a IMethodDeclaration
+		if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
+			return foundMatch((IMethod) match.getElement(), (IMethodDeclaration) sourceElement, processor);
+		}
+		// find a field declaration and we were looking for a IFieldDeclaration
+		if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
+			return foundMatch((IField) match.getElement(), (IFieldDeclaration) sourceElement, processor);
+		}
+		return false;
+	}
+
+
+	private static boolean foundMatch(IType type, IComplexCodeElement complexCodeElement, IJavaSearchScope searchScope, ICodeElementFoundProcessor processor) {
+		
+		complexCodeElement.setFoundPartInfos(complexCodeElement.getSimpleClassName(), searchScope);
+		
+		if (complexCodeElement.isWaitingAreaEmtpy()){
+			// manipulate ICSCE
+			
+			ICodeElement temp = complexCodeElement.getSpecialElement();
+			ICodeElement element = null;
+			
+			if (temp instanceof IClassDeclaration){
+				IClassDeclaration t = (IClassDeclaration) temp;
+				element = new ClassDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getTypeQualifier());
+			}else
+			if (temp instanceof IMethodDeclaration){
+				IMethodDeclaration t = (IMethodDeclaration) temp;
+				element = new MethodDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getMethodName(), t.getReturnTypeQualifier(), t.getParameterTypeQualifiers());
+			}else
+			if (temp instanceof IFieldDeclaration){
+				IFieldDeclaration t = (IFieldDeclaration) temp;
+				element = new FieldDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getFieldName(), t.getTypeQualifier());
+			}else
+			if (temp instanceof IStatement){
+				IStatement t = (IStatement) temp;
+				element = new Statement(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getLineNumber());
+			}
+			
+			if (element != null){
+				SearchPattern searchPattern = SearchPattern.createPattern(complexCodeElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+				
+				IJavaSearchScope newSearchScope = complexCodeElement.getSearchScopeOfLastFoundSimpleClassName();
+				
+				search(searchPattern, newSearchScope, element, type.getJavaProject().getProject(), processor);
+				return true;
+			}				
+			
+		}else{
+			complexCodeElement.setSimpleClassName(complexCodeElement.popFromWaitingArea());
+			
+			IJavaElement[] je = new IJavaElement[1];
+			je[0] = type;
+			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+			
+			SearchPattern searchPattern = SearchPattern.createPattern(complexCodeElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			
+			search(searchPattern, javaSearchScope, complexCodeElement, type.getJavaProject().getProject(), processor);
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean foundMatch(IType type, IClassDeclaration classDeclaration, ICodeElementFoundProcessor processor) {
+		if (classDeclaration.getTypeQualifier() != null){
+			if (type.getKey().equals(classDeclaration.getTypeQualifier())){
+				processor.processFoundCodeElement(type);
+				return true;
+			}
+		}else{
+			processor.processFoundCodeElement(type);
+			return true;
+		}
+
+		return false;
+	}
+
+	private static boolean foundMatch(IType type, IFieldDeclaration fieldDeclaration, ICodeElementFoundProcessor processor) {
+		SearchPattern searchPattern = SearchPattern.createPattern(fieldDeclaration.getFieldName(), IJavaSearchConstants.FIELD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+		
+		IJavaElement[] je = new IJavaElement[1];
+		je[0] = type;
+		IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+		
+		search(searchPattern, javaSearchScope, fieldDeclaration, type.getJavaProject().getProject(), processor);
+		
+		return true;
+	}
+
+	private static boolean foundMatch(IField field, IFieldDeclaration fieldDeclaration, ICodeElementFoundProcessor processor) {
+		try {
+			if (fieldDeclaration.getTypeQualifier().equals(Util.createTypQualifier(field.getTypeSignature(), field.getDeclaringType()))){
+				processor.processFoundCodeElement(field);
+				return true;
+			}
+		} catch (JavaModelException e) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
+		
+		// return false, if the match was not what we were searching for
+		return false;
+	}
+
+	private static boolean foundMatch(IType type, IMethodDeclaration methodeDeclaration, ICodeElementFoundProcessor processor) {
+		SearchPattern searchPattern = SearchPattern.createPattern(methodeDeclaration.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+		
+		IJavaElement[] je = new IJavaElement[1];
+		je[0] = type;
+		IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+		
+		search(searchPattern, javaSearchScope, methodeDeclaration, type.getJavaProject().getProject(), processor);
+		
+		return true;
+	}
+
+	private static boolean foundMatch(IMethod method, IMethodDeclaration methodDeclaration, ICodeElementFoundProcessor processor) {
+		try {
+			IType declaringType = method.getDeclaringType();
+			
+			// check if the returnType is the expected
+			if (methodDeclaration.getReturnTypeQualifier().equals(Util.createTypQualifier(method.getReturnType(), declaringType))){
+				// check if all parameterTypes are equal the expected
+				String[] parameterTypes = method.getParameterTypes();
+				String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
+				boolean equal = true;
+				for (int i = 0; i < parameterTypes.length; i++){
+					if (!expectedParameterTypes[i].equals(Util.createTypQualifier(parameterTypes[i], declaringType))){
+						equal = false;
+						break;
+					}
+				}
+				if (equal){
+					processor.processFoundCodeElement(method);
+					return true;
+				}
+			}
+		} catch (JavaModelException e) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
+		
+		
+		// return false, if the match was not the right hit	
+		return false;
+	}
+
+	private static boolean foundMatch(IType type, IStatement sourceCodeElement, ICodeElementFoundProcessor processor) {
+		processor.processFoundCodeElement(type, sourceCodeElement.getLineNumber());
+		return true;
+	}
+
+
+	private static void notfoundMatch(ICodeElement sourceElement, IProject project, ICodeElementFoundProcessor processor) {
 
 		if (sourceElement instanceof IComplexCodeElement){
 			IComplexCodeElement temp = (IComplexCodeElement) sourceElement;
 			
 			if (temp.alreadyFindSomePart()){
 				if (temp.isWaitingAreaEmtpy()){
-					processBadSearchResult(passenger, project, temp, processor);	
+					processBadSearchResult(project, temp, processor);	
 				}else {
 					// add WaitingArea Element
 					temp.setSimpleClassName(temp.getSimpleClassName() + "$" + temp.popFromWaitingArea());
-					search(temp, passenger, project, processor);
+					startSearch(temp, project, processor);
 				}
 			}else{
 				if (temp.getSimpleClassName().contains("$")){
-					temp.pushToWaitingArea(getLastDollarSequence(temp.getSimpleClassName()));
-					temp.setSimpleClassName(removeLastDollarSequence(temp.getSimpleClassName()));
+					temp.pushToWaitingArea(Util.getLastDollarSequence(temp.getSimpleClassName()));
+					temp.setSimpleClassName(Util.removeLastDollarSequence(temp.getSimpleClassName()));
 					
-					search(temp, passenger, project, processor);
+					startSearch(temp, project, processor);
 				}else{
-					processor.noMatchFound(sourceElement, passenger);
+					processor.noMatchFound(sourceElement);
 				}
 			}
-			
 		}else{
 			if (sourceElement.getSimpleClassName().contains("$")){
 				//create instance of IComplexeCodeElement
 				IComplexCodeElement temp = new ComplexCodeElement(sourceElement.getPackageIdentifier(),
-																	removeLastDollarSequence(sourceElement.getSimpleClassName()), 
+																	Util.removeLastDollarSequence(sourceElement.getSimpleClassName()), 
 																	sourceElement);
-				temp.pushToWaitingArea(getLastDollarSequence(sourceElement.getSimpleClassName()));	
-				search(temp, passenger, project, processor);
+				temp.pushToWaitingArea(Util.getLastDollarSequence(sourceElement.getSimpleClassName()));	
+				startSearch(temp, project, processor);
 			}else{
-				processor.noMatchFound(sourceElement, passenger);
-			}
+				processor.noMatchFound(sourceElement);			}
 		}
 		
 	}
 
-	private static <T> void processBadSearchResult(T passenger, IProject project, IComplexCodeElement temp, ICodeElementFoundProcessor<T> processor) {
+	private static void processBadSearchResult(IProject project, IComplexCodeElement temp, ICodeElementFoundProcessor processor) {
 		
 		if ((temp.getLastFoundSimpleClassName() != null)&&(temp.getSearchScopeOfLastFoundSimpleClassName() != null)){
 			IClassDeclaration te = new ClassDeclaration(temp.getPackageIdentifier(), temp.getLastFoundSimpleClassName(), null);
 			SearchPattern searchPattern = SearchPattern.createPattern(temp.getLastFoundSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 			
-			search(searchPattern, temp.getSearchScopeOfLastFoundSimpleClassName(), te, passenger, project, processor);
+			search(searchPattern, temp.getSearchScopeOfLastFoundSimpleClassName(), te, project, processor);
 		}
 	}
 
-	private static String removeLastDollarSequence(String simpleClassName) {
-		return simpleClassName.substring(0, simpleClassName.lastIndexOf("$"));
-	}
-	
-	private static String getLastDollarSequence(String simpleClassName) {
-		return simpleClassName.substring(simpleClassName.lastIndexOf("$") + 1);
-	}
-
-	protected static <T> boolean foundMatch(SearchMatch match, ICodeElement sourceElement, T passenger, IProject project, IJavaSearchScope searchScope, ICodeElementFoundProcessor<T> processor) {
-		if ((match.getElement() instanceof IType) && (sourceElement instanceof IComplexCodeElement)){
-			IComplexCodeElement complexCodeElement = (IComplexCodeElement) sourceElement;
-			
-			complexCodeElement.setFoundPartInfos(complexCodeElement.getSimpleClassName(), searchScope);
-			
-			
-			if (complexCodeElement.isWaitingAreaEmtpy()){
-				// manipulate ICSCE
-				
-				ICodeElement temp = complexCodeElement.getSpecialElement();
-				ICodeElement element = null;
-				
-				if (temp instanceof IClassDeclaration){
-					IClassDeclaration t = (IClassDeclaration) temp;
-					element = new ClassDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getTypeQualifier());
-				}else
-				if (temp instanceof IMethodDeclaration){
-					IMethodDeclaration t = (IMethodDeclaration) temp;
-					element = new MethodDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getMethodName(), t.getReturnTypeQualifier(), t.getParameterTypeQualifiers());
-				}else
-				if (temp instanceof IFieldDeclaration){
-					IFieldDeclaration t = (IFieldDeclaration) temp;
-					element = new FieldDeclaration(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getFieldName(), t.getTypeQualifier());
-				}else
-				if (temp instanceof IStatement){
-					IStatement t = (IStatement) temp;
-					element = new Statement(t.getPackageIdentifier(), complexCodeElement.getLastFoundSimpleClassName(), t.getLineNumber());
-				}
-				
-				if (element != null){
-					SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-					
-					IJavaSearchScope temp3 = complexCodeElement.getSearchScopeOfLastFoundSimpleClassName();
-					
-					search(searchPattern, temp3, element, passenger, project, processor);
-					return true;
-				}				
-				
-			}else{
-				complexCodeElement.setSimpleClassName(complexCodeElement.popFromWaitingArea());
-				
-				IJavaElement[] je = new IJavaElement[1];
-				je[0] = (IType) match.getElement();
-				IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
-				
-				SearchPattern searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-				
-				search(searchPattern, javaSearchScope, complexCodeElement, passenger, project, processor);
-				return true;
-			}
-			
-		}
-		// Find a class declaration and we were looking for it
-		if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){
-			IType type = (IType) match.getElement();
-			IClassDeclaration classDeclaration = (IClassDeclaration) sourceElement;
-			
-			if (classDeclaration.getTypeQualifier() != null){
-				if (type.getKey().equals(classDeclaration.getTypeQualifier())){
-					processor.processFoundCodeElement((IMember) match.getElement(), passenger, project);
-					return true;
-				}
-			}else{
-				processor.processFoundCodeElement((IMember) match.getElement(), passenger, project);
-				return true;
-			}
-
-			return false;
-		}	
-		// Find a class declaration and we were looking for a IMethodDeclaration
-		if ((match.getElement() instanceof IType) && (sourceElement instanceof IMethodDeclaration)){
-			IType type = (IType) match.getElement();
-			IMethodDeclaration methodeDeclaration = (IMethodDeclaration) sourceElement;
-			
-			SearchPattern searchPattern = SearchPattern.createPattern(methodeDeclaration.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-			
-			IJavaElement[] je = new IJavaElement[1];
-			je[0] = type;
-			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
-			
-			search(searchPattern, javaSearchScope, sourceElement, passenger, project, processor);
-			
-			return true;
-		}
-		// Find a class declaration and we were looking for a IFieldDeclaration
-		if ((match.getElement() instanceof IType) && (sourceElement instanceof IFieldDeclaration)){
-			IType type = (IType) match.getElement();
-			IFieldDeclaration fieldDeclaration = (IFieldDeclaration) sourceElement;
-
-			SearchPattern searchPattern = SearchPattern.createPattern(fieldDeclaration.getFieldName(), IJavaSearchConstants.FIELD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-			
-			IJavaElement[] je = new IJavaElement[1];
-			je[0] = type;
-			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
-			
-			search(searchPattern, javaSearchScope, sourceElement, passenger, project, processor);
-			
-			return true;
-		}
-		// Find a class declaration and we were looking for a IStatement
-		if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){
-			IStatement sourceCodeElement = (IStatement) sourceElement;
-
-			processor.processFoundCodeElement((IMember) match.getElement(), passenger, sourceCodeElement.getLineNumber(), project);
-			return true;
-		}
-		// Find a method and we were looking for a IMethodDeclaration
-		if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
-			IMethodDeclaration methodDeclaration = (IMethodDeclaration) sourceElement;
-			IMethod method = (IMethod) match.getElement();
-
-			try {
-				IType declaringType = method.getDeclaringType();
-				
-				//Debug
-				System.out.println("ReturnTypeQualifier: " + method.getReturnType() + " --> " + createTypQualifier(method.getReturnType(), declaringType));
-				
-				// check if the returnType is the expected
-				if (methodDeclaration.getReturnTypeQualifier().equals(createTypQualifier(method.getReturnType(), declaringType))){
-					// check if all parameterTypes are equal the expected
-					String[] parameterTypes = method.getParameterTypes();
-					String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
-					boolean equal = true;
-					for (int i = 0; i < parameterTypes.length; i++){
-						//Debug
-						System.out.println("\t ParameterTypeQualifier: " + parameterTypes[i] + " --> " + createTypQualifier(parameterTypes[i], declaringType));
-
-						if (!expectedParameterTypes[i].equals(createTypQualifier(parameterTypes[i], declaringType))){
-							equal = false;
-							break;
-						}
-					}
-					if (equal){
-						processor.processFoundCodeElement((IMember) match.getElement(), passenger, project);
-						return true;
-					}
-				}
-			} catch (JavaModelException e) {
-				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-				StatusManager.getManager().handle(is, StatusManager.LOG);
-			}
-			
-			
-			// return false, if the match was not the right hit	
-			return false;
-		}
-		// find a field declaration and we were looking for a IFieldDeclaration
-		if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
-			IField field = (IField) match.getElement();
-			IFieldDeclaration fieldDeclaration = (IFieldDeclaration) sourceElement;
-
-			try {
-				if (fieldDeclaration.getTypeQualifier().equals(createTypQualifier(field.getTypeSignature(), field.getDeclaringType()))){
-					processor.processFoundCodeElement((IMember) match.getElement(), passenger, project);
-					return true;
-				}
-			} catch (JavaModelException e) {
-				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-				StatusManager.getManager().handle(is, StatusManager.LOG);
-			}
-			
-			// return false, if the match was not what we were searching for
-			return false;
-		}
-		return false;
-	}
-	
-	private static Map<String,String> primitiveTypeTable;
-	
-	private static String createTypQualifier(String signatur, IType declaringType) {
-		if (primitiveTypeTable == null){
-			primitiveTypeTable = new HashMap<String, String>();
-			primitiveTypeTable.put("byte", "B");
-			primitiveTypeTable.put("char", "C");
-			primitiveTypeTable.put("double", "D");
-			primitiveTypeTable.put("float", "F");
-			primitiveTypeTable.put("int", "I");
-			primitiveTypeTable.put("long", "J");
-			primitiveTypeTable.put("short", "S");
-			primitiveTypeTable.put("boolean", "Z");
-			primitiveTypeTable.put("void", "V");
-		}
-		
-		String typeQualifier = "";
-		
-		// filter '[' we need them later
-		int dimensionOfArray = 0;
-		for (int i = 0; i < signatur.length(); i++){
-			if (signatur.charAt(i) == '[' ){
-				dimensionOfArray++;
-			}else{
-				break;
-			}
-		}
-		
-		String arraySymbols = signatur.substring(0, dimensionOfArray);
-		String innerTypQualifier = signatur.substring(dimensionOfArray);
-				
-		try {
-			innerTypQualifier = JavaModelUtil.getResolvedTypeName(innerTypQualifier, declaringType);
-			
-			if (innerTypQualifier.contains(".")){
-				// . --> /
-				innerTypQualifier = innerTypQualifier.replace('.', '/');
-				// add L at the beginning
-				innerTypQualifier = "L" + innerTypQualifier.replace('.', '/');
-			}else{
-				innerTypQualifier = primitiveTypeTable.get(innerTypQualifier);
-			}			
-			
-			// add the arraySymbols at the beginning and ';' at the end
-			typeQualifier = arraySymbols + innerTypQualifier + ";";
-			
-		} catch (Exception e) {
-			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		}
-		return typeQualifier;
-	}
-	
 }

@@ -49,26 +49,28 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
-public class CodeElementMarker implements ICodeElementFoundProcessor<String> {
+public class CodeElementMarker implements ICodeElementFoundProcessor {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
 		
 	private static Set<IMarker> markers = new HashSet<IMarker>();
 
-	protected static void markIStatement(IMember member, String description, int lineNumber, IProject project){
+	protected static void markIStatement(IMember member, String description, int lineNumber, int priority){
 		if ((lineNumber > -1) && (member.getResource() != null)){
+			IProject project = member.getJavaProject().getProject();
 			IFile file = project.getFile(member.getResource().getProjectRelativePath());
 			
-			addMarker(file, description, lineNumber, IMarker.PRIORITY_HIGH);
+			addMarker(file, description, lineNumber, priority);
 		}
 	}
 	
-	protected static void markIMember(IMember member, String description, IProject project) {
+	protected static void markIMember(IMember member, String description, int priority) {
 		if (member.getResource() != null){
 			try {
+				IProject project = member.getJavaProject().getProject();
 				IFile file = project.getFile(member.getResource().getProjectRelativePath());
 				
-				addMarker(file, description, member.getSourceRange().getOffset(), member.getSourceRange().getOffset(), IMarker.PRIORITY_HIGH);	
+				addMarker(file, description, member.getSourceRange().getOffset(), member.getSourceRange().getOffset(), priority);	
 				
 			} catch (JavaModelException e) {
 				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
@@ -134,20 +136,35 @@ public class CodeElementMarker implements ICodeElementFoundProcessor<String> {
 		}
 	}
 
+
+	private boolean sourceElement;
+	private String description; 
+	
+	public CodeElementMarker(boolean sourceElement, String description) {
+		this.sourceElement = sourceElement;
+		this.description = description;
+	}
+	
 	@Override
-	public void processFoundCodeElement(IMember member, String value, IProject project) {
-		markIMember(member, value, project);
+	public void processFoundCodeElement(IMember member) {
+		int priority = IMarker.PRIORITY_LOW;
+		if (sourceElement){
+			priority = IMarker.PRIORITY_HIGH;
+		}
+		markIMember(member, description, priority);	
 	}
 
 	@Override
-	public void processFoundCodeElement(IMember member, String value,
-			int lineNr, IProject project) {
-		markIStatement(member, value, lineNr, project);
-		
+	public void processFoundCodeElement(IMember member, int lineNr) {
+		int priority = IMarker.PRIORITY_LOW;
+		if (sourceElement){
+			priority = IMarker.PRIORITY_HIGH;
+		}
+		markIStatement(member, description, lineNr, priority);
 	}
 
 	@Override
-	public void noMatchFound(ICodeElement codeElement, String passenger) {
+	public void noMatchFound(ICodeElement codeElement) {
 
 	}
 }

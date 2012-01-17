@@ -66,13 +66,23 @@ public class Marker implements IResultProcessor {
 	private void markViolations() {
 		for (IViolation violation : violations) {
 			if (violation.getSourceElement() != null){
-				CodeElementFinder.search(violation.getSourceElement(), violation.getDescription(), project, new CodeElementMarker());
+				CodeElementFinder.startSearch(violation.getSourceElement(), project, new CodeElementMarker(true, createSourceViolationDescription(violation)));
 			}
 			if (violation.getTargetElement() != null){
-				CodeElementFinder.search(violation.getTargetElement(), violation.getDescription(), project, new CodeElementMarker());
+				CodeElementFinder.startSearch(violation.getTargetElement(), project, new CodeElementMarker(false, createTargetViolationDescription(violation)));
 			}			
 		}
 	}	
+
+	private String createSourceViolationDescription(IViolation violation) {
+		// TODO create real description out of the given IViolation
+		return violation.getDescription();
+	}
+
+	private String createTargetViolationDescription(IViolation violation) {
+		// TODO create real description out of the given IViolation
+		return violation.getDescription();
+	}
 
 	@Override
 	public boolean isInterested(Class<?> resultClass) {
