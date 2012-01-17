@@ -1,4 +1,3 @@
-package de.tud.cs.st.vespucci.codeelementfinder;
 /*
  *  License (BSD Style License):
  *   Copyright (c) 2011
@@ -32,12 +31,10 @@ package de.tud.cs.st.vespucci.codeelementfinder;
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
+package de.tud.cs.st.vespucci.codeelementfinder;
 
-
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -46,7 +43,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -60,7 +56,6 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.codeelementfinder.extra.IComplexCodeElement;
