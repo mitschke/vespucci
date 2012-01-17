@@ -30,8 +30,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import de.tud.cs.st.vespucci.sadclient.upload.UploadDialog;
-import de.tud.cs.st.vespucci.sadclient.upload.UploadWizard;
-import de.tud.cs.st.vespucci.sadclient.upload.UploadWizardPage;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
