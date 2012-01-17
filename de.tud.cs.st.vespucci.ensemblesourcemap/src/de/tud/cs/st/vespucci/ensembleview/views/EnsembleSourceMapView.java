@@ -3,6 +3,10 @@ package de.tud.cs.st.vespucci.ensembleview.views;
 
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -15,6 +19,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -99,18 +104,17 @@ public class EnsembleSourceMapView extends ViewPart {
 		@Override
 		public Image getColumnImage(Object element, int columnIndex) {
 			
-			//TODO: check if ImageDesriptor != null
 			if (columnIndex == 0){
 				if (element instanceof TreeElement){
 					if (((TreeElement<?>) element).getReference() instanceof IEnsemble){
-						return Activator.getImageDescriptor("icons/newpackfolder_wiz.gif").createImage();
+						return loadImage("icons/newpackfolder_wiz.gif");
 					}
 					if (((TreeElement<?>) element).getReference() instanceof String){
 						
 						if (((TreeElement<?>) element).getParent().getReference() instanceof IEnsemble){
-							return Activator.getImageDescriptor("icons/package_obj.gif").createImage();
+							return loadImage("icons/package_obj.gif");
 						}else{
-							return Activator.getImageDescriptor("icons/generate_class.gif").createImage();
+							return loadImage("icons/generate_class.gif");
 						}
 					}
 					
@@ -120,30 +124,39 @@ public class EnsembleSourceMapView extends ViewPart {
 			}
 			return null;
 		}
+		
+		private ImageDescriptor loadImageDescriptor(String fileLocation){
+			return Activator.getImageDescriptor(fileLocation);
+		}
+		
+		private Image loadImage(String fileLocation) {
+			ImageDescriptor imageDescriptor = loadImageDescriptor(fileLocation);
+			
+			if (imageDescriptor != null){
+				return Activator.getImageDescriptor(fileLocation).createImage();
+			}else{
+				return null;
+			}
+
+		}
+		
+
+		
 		@Override
 		public String getColumnText(Object element, int columnIndex) {
 			if (element instanceof TreeElement){
 				TreeElement<?> treeElement = (TreeElement<?>) element;
 				
 				if (columnIndex == 0){
-					String label = "";
 					if (treeElement.getReference() instanceof IEnsemble){
-						label = ((IEnsemble)treeElement.getReference()).getName();
+						return ((IEnsemble)treeElement.getReference()).getName();
 					}else if (treeElement.getReference() instanceof String){
-						label = (String) treeElement.getReference();
+						return (String) treeElement.getReference();
 					}
-					
+				}else if (columnIndex == 1){
 					if (treeElement.hasChildren()){
-						label += " [" +  String.valueOf(treeElement.getNumberOfLeafs()) + " ";
-						
-						if (treeElement.getNumberOfChildren() > 1){
-							label += "elements]";
-						}else{
-							label += "element]";
-						}
+						return String.valueOf(treeElement.getNumberOfLeafs());
 					}
-					
-					return label;
 				}
 				return "";
 			}else{
@@ -162,6 +175,10 @@ public class EnsembleSourceMapView extends ViewPart {
 	}
 
 	private ViewContentProvider viewContentProvider;
+
+	private IAction action1;
+
+	private IAction action2;
 	
 	/**
 	 * This is a callback that will allow us
@@ -179,7 +196,7 @@ public class EnsembleSourceMapView extends ViewPart {
 	      column1.setWidth(250);
 	      TreeColumn column2 = new TreeColumn(tree, SWT.RIGHT);
 	      column2.setAlignment(SWT.LEFT);
-	      column2.setText("Resource");
+	      column2.setText("Number of elements");
 	      column2.setWidth(160);
 	      TreeColumn column3 = new TreeColumn(tree, SWT.RIGHT);
 	      column3.setAlignment(SWT.LEFT);
@@ -195,6 +212,44 @@ public class EnsembleSourceMapView extends ViewPart {
 
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "Ttesd.viewer");
+		
+		// Adde collapse and Decollapse Buttons
+		makeActions();
+		contributeToActionBars();
+		
+	}
+	
+	private void makeActions() {
+		action1 = new Action() {
+			public void run() {
+				viewer.expandAll();
+			}
+		};
+		action1.setText("Expand All");
+		action1.setToolTipText("Expand All");
+		action1.setImageDescriptor(Activator.getImageDescriptor("icons/expandall.gif"));
+		
+		action2 = new Action() {
+			public void run() {
+				viewer.collapseAll();
+			}
+		};
+		action2.setText("Collapse All");
+		action2.setToolTipText("Collapse All");
+		action2.setImageDescriptor(Activator.getImageDescriptor("icons/collapse_all_mini.gif"));
+
+	}
+	
+
+	
+	private void contributeToActionBars() {
+		IActionBars bars = getViewSite().getActionBars();
+		fillLocalToolBar(bars.getToolBarManager());
+	}	
+
+	private void fillLocalToolBar(IToolBarManager manager) {
+		manager.add(action1);
+		manager.add(action2);
 	}
 
 	/**
