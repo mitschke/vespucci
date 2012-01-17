@@ -6,10 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.Icon;
-
-import org.eclipse.swt.widgets.Link;
-
 import de.tud.cs.st.vespucci.ensembleview.model.TreeElement;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;

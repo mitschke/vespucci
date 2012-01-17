@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -123,22 +122,33 @@ public class EnsembleSourceMapView extends ViewPart {
 		}
 		@Override
 		public String getColumnText(Object element, int columnIndex) {
-			if (columnIndex == 0){
-				if (element instanceof TreeElement){
-					TreeElement<?> treeElement = (TreeElement<?>) element;
-					
+			if (element instanceof TreeElement){
+				TreeElement<?> treeElement = (TreeElement<?>) element;
+				
+				if (columnIndex == 0){
+					String label = "";
 					if (treeElement.getReference() instanceof IEnsemble){
-						return ((IEnsemble)treeElement.getReference()).getName();
+						label = ((IEnsemble)treeElement.getReference()).getName();
+					}else if (treeElement.getReference() instanceof String){
+						label = (String) treeElement.getReference();
 					}
 					
-					if (treeElement.getReference() instanceof String){
-						return (String) treeElement.getReference();
+					if (treeElement.hasChildren()){
+						label += " [" +  String.valueOf(treeElement.getNumberOfLeafs()) + " ";
+						
+						if (treeElement.getNumberOfChildren() > 1){
+							label += "elements]";
+						}else{
+							label += "element]";
+						}
 					}
-					return element.toString();
+					
+					return label;
 				}
+				return "";
+			}else{
 				return element.toString();
 			}
-			return "";
 		}
 	}
 	class NameSorter extends ViewerSorter {
@@ -164,7 +174,7 @@ public class EnsembleSourceMapView extends ViewPart {
 		
 	      TreeColumn column1 = new TreeColumn(tree, SWT.LEFT);
 	      tree.setLinesVisible(true);
-	      column1.setAlignment(SWT.LEFT);
+	      column1.setAlignment(SWT.RIGHT);
 	      column1.setText("Ensemble/Source");
 	      column1.setWidth(250);
 	      TreeColumn column2 = new TreeColumn(tree, SWT.RIGHT);

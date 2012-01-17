@@ -35,6 +35,19 @@ public class TreeElement<A> {
 	public int getNumberOfChildren() {
 		return this.children.size();
 	}
+	
+	public int getNumberOfLeafs(){
+		int numberOfLeafs = 0;
+		if (hasChildren()){
+			for (TreeElement<?> child : children) {
+				numberOfLeafs += child.getNumberOfLeafs();
+			}
+		}else{
+			numberOfLeafs = 1;
+		}
+		
+		return numberOfLeafs;
+	}
 
 	public boolean hasParent() {
 
