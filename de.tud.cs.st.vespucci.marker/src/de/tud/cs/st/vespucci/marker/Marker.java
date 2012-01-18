@@ -33,46 +33,69 @@
  */
 package de.tud.cs.st.vespucci.marker;
 
-import java.util.Set;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
 
 import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
+import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
-import de.tud.cs.st.vespucci.interfaces.IViolationReport;
+import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.utilities.Util;
 
 /**
  * Mark Violations in a given project.
  */
-public class Marker implements IResultProcessor {
+public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 
 	private IProject project;
-	private Set<IViolation> violations;
-
+	private IViolationView violationView;
+	
 	@Override
 	public void processResult(Object result, IProject project) {
 		this.project = project;
-		IViolationReport violationReport = Util.adapt(result, IViolationReport.class);
-		if (violationReport != null){
-			this.violations = violationReport.getViolations();
-			if (violations != null){
-				markViolations();
-			}
+		
+		violationView = Util.adapt(result, IViolationView.class);
+		
+		if (violationView != null){
+			violationView.register(this);
 		}
+		
+		for (Iterator<IViolation> i = violationView.iterator(); i.hasNext();){
+			markIViolation(i.next());
+		}
+		
+	}
+	
+	@Override
+	public void added(IViolation element) {
+		markIViolation(element);
 	}
 
-	private void markViolations() {
-		for (IViolation violation : violations) {
-			if (violation.getSourceElement() != null){
-				CodeElementFinder.startSearch(violation.getSourceElement(), project, new CodeElementMarker(true, createSourceViolationDescription(violation)));
-			}
-			if (violation.getTargetElement() != null){
-				CodeElementFinder.startSearch(violation.getTargetElement(), project, new CodeElementMarker(false, createTargetViolationDescription(violation)));
-			}			
+	@Override
+	public void deleted(IViolation element) {
+		unmarkIViolation(element);
+	}
+
+	@Override
+	public void updated(IViolation oldValue, IViolation newValue) {
+		markIViolation(oldValue);
+		unmarkIViolation(newValue);
+	}
+
+	private void unmarkIViolation(IViolation violation) {
+		CodeElementMarker.unmarkIViolation(violation);
+	}
+
+	private void markIViolation(IViolation violation) {
+		if (violation.getSourceElement() != null){
+			CodeElementFinder.startSearch(violation.getSourceElement(), project, new CodeElementMarker(true, createSourceViolationDescription(violation), violation));
 		}
-	}	
+		if (violation.getTargetElement() != null){
+			CodeElementFinder.startSearch(violation.getTargetElement(), project, new CodeElementMarker(false, createTargetViolationDescription(violation), violation));
+		}	
+	}
 
 	private String createSourceViolationDescription(IViolation violation) {
 		// TODO create real description out of the given IViolation
@@ -86,12 +109,13 @@ public class Marker implements IResultProcessor {
 
 	@Override
 	public boolean isInterested(Class<?> resultClass) {
-		return IViolationReport.class.equals(resultClass);
+		return IViolationView.class.equals(resultClass);
 	}
 
 	@Override
 	public void cleanUp() {
 		CodeElementMarker.deleteAllMarkers();
+		//violationView.unregister(this);
 	}
 
 }

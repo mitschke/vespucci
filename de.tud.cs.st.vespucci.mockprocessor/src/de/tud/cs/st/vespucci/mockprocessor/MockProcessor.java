@@ -33,23 +33,22 @@
  */
 package de.tud.cs.st.vespucci.mockprocessor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
+import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.FieldDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
-import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
-import de.tud.cs.st.vespucci.information.interfaces.spi.CodeElement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Statement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Violation;
-import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationReport;
+import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationView;
+import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
-import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
-import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IStatement;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
-import de.tud.cs.st.vespucci.interfaces.IViolationReport;
+import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
@@ -134,18 +133,19 @@ public class MockProcessor implements IModelProcessor {
 				null, 
 				null);
 		
-		IViolationReport violationReport = new ViolationReport();
 		
-		violationReport.addViolation(firstViolation);
-		violationReport.addViolation(secondViolation);
-		violationReport.addViolation(thirdViolation);
+		Set<IViolation> violations = new HashSet<IViolation>();
 		
-		return violationReport;
+		violations.add(firstViolation);
+		violations.add(secondViolation);
+		violations.add(thirdViolation);
+				
+		return new ViolationView(violations);
 	}
 
 	@Override
 	public Class<?> resultClass() {
-		return IViolationReport.class;
+		return IViolationView.class;
 	}
 
 }

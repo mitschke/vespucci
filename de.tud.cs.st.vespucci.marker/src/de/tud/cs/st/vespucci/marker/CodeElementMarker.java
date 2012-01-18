@@ -33,8 +33,9 @@
  */
 package de.tud.cs.st.vespucci.marker;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -48,35 +49,38 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
+import de.tud.cs.st.vespucci.interfaces.IViolation;
 
 public class CodeElementMarker implements ICodeElementFoundProcessor {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
-		
-	private static Set<IMarker> markers = new HashSet<IMarker>();
-
-	protected static void markIStatement(IMember member, String description, int lineNumber, int priority){
+	
+	private static HashMap<IViolation, List<IMarker>> markers = new HashMap<IViolation, List<IMarker>>();
+	
+	protected static IMarker markIStatement(IMember member, String description, int lineNumber, int priority){
 		if ((lineNumber > -1) && (member.getResource() != null)){
 			IProject project = member.getJavaProject().getProject();
 			IFile file = project.getFile(member.getResource().getProjectRelativePath());
 			
-			addMarker(file, description, lineNumber, priority);
+			return addMarker(file, description, lineNumber, priority);
 		}
+		return null;
 	}
 	
-	protected static void markIMember(IMember member, String description, int priority) {
+	protected static IMarker markIMember(IMember member, String description, int priority) {
 		if (member.getResource() != null){
 			try {
 				IProject project = member.getJavaProject().getProject();
 				IFile file = project.getFile(member.getResource().getProjectRelativePath());
 				
-				addMarker(file, description, member.getSourceRange().getOffset(), member.getSourceRange().getOffset(), priority);	
+				return addMarker(file, description, member.getSourceRange().getOffset(), member.getSourceRange().getOffset(), priority);	
 				
 			} catch (JavaModelException e) {
 				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
-		}	
+		}
+		return null;	
 	}
 	
 	/**
@@ -85,20 +89,22 @@ public class CodeElementMarker implements ICodeElementFoundProcessor {
 	 * @param message message shown in the ProblemsView
 	 * @param lineNumber line which should be marked
 	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
+	 * @return the created marker if it was possible to create one, otherwise null will be returned
 	 */
-	private static void addMarker(IFile file, String message, int lineNumber, int severity) {
+	private static IMarker addMarker(IFile file, String message, int lineNumber, int severity) {
 		try {
 			IMarker marker = file.createMarker("org.eclipse.core.resources.problemmarker");
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, severity);
 			marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
 			marker.setAttribute(IMarker.TRANSIENT, true);
-			markers.add(marker);
+			return marker;
 		}
 		catch (CoreException e) {
 			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
+		return null;
 	}
 	
 	/**
@@ -108,8 +114,9 @@ public class CodeElementMarker implements ICodeElementFoundProcessor {
 	 * @param startPosition start position of the marker relative to the beginning of the file
 	 * @param endPosition end position of the marker relative to the beginning of the file
 	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
+	 * @return the created marker if it was possible to create one, otherwise null will be returned
 	 */
-	private static void addMarker(IFile file, String message, int startPositon, int endPosition, int severity) {
+	private static IMarker addMarker(IFile file, String message, int startPositon, int endPosition, int severity) {
 		try {
 			IMarker marker = file.createMarker("org.eclipse.core.resources.problemmarker");
 			marker.setAttribute(IMarker.MESSAGE, message);
@@ -117,32 +124,30 @@ public class CodeElementMarker implements ICodeElementFoundProcessor {
 			marker.setAttribute(IMarker.CHAR_START, startPositon);
 			marker.setAttribute(IMarker.CHAR_END, endPosition);
 			marker.setAttribute(IMarker.TRANSIENT, true);
-			markers.add(marker);
+			return marker;
 		}
 		catch (CoreException e) {
 			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
+		return null;
 	}
 	
 	protected static void deleteAllMarkers(){
-		for (IMarker marker : markers){
-			try {
-				marker.delete();
-			} catch (CoreException e) {
-				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-				StatusManager.getManager().handle(is, StatusManager.LOG);
-			}
+		for (IViolation violation : markers.keySet()) {
+			unmarkIViolation(violation);
 		}
 	}
 
 
 	private boolean sourceElement;
 	private String description; 
+	private IViolation violation;
 	
-	public CodeElementMarker(boolean sourceElement, String description) {
+	public CodeElementMarker(boolean sourceElement, String description, IViolation violation) {
 		this.sourceElement = sourceElement;
 		this.description = description;
+		this.violation = violation;
 	}
 	
 	@Override
@@ -151,7 +156,21 @@ public class CodeElementMarker implements ICodeElementFoundProcessor {
 		if (sourceElement){
 			priority = IMarker.PRIORITY_HIGH;
 		}
-		markIMember(member, description, priority);	
+		IMarker marker = markIMember(member, description, priority);
+		
+		saveMarker(marker);
+	}
+
+	private void saveMarker(IMarker marker) {
+		if (marker != null){
+			if (markers.containsKey(violation)){
+				markers.get(violation).add(marker);
+			}else{
+				List<IMarker> markerList = new LinkedList<IMarker>();
+				markerList.add(marker);
+				markers.put(violation, markerList);
+			}
+		}
 	}
 
 	@Override
@@ -160,11 +179,26 @@ public class CodeElementMarker implements ICodeElementFoundProcessor {
 		if (sourceElement){
 			priority = IMarker.PRIORITY_HIGH;
 		}
-		markIStatement(member, description, lineNr, priority);
+		IMarker marker = markIStatement(member, description, lineNr, priority);
+		
+		saveMarker(marker);
 	}
 
 	@Override
 	public void noMatchFound(ICodeElement codeElement) {
 
+	}
+
+	public static void unmarkIViolation(IViolation violation) {
+		if (markers.containsKey(violation)){
+			for (IMarker marker : markers.get(violation)) {
+				try {
+					marker.delete();
+				} catch (CoreException e) {
+					final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+					StatusManager.getManager().handle(is, StatusManager.LOG);
+				}
+			}
+		}
 	}
 }
