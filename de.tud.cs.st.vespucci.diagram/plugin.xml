@@ -996,6 +996,13 @@
                 type="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
           </propertyTester>
        </extension>
+       <extension
+             point="org.eclipse.gmf.runtime.emf.clipboard.core.clipboardSupport">
+          <factory
+                class="de.tud.cs.st.vespucci.diagram.ClipboardSupportFactory1"
+                priority="medium">
+          </factory>
+       </extension>
         <!-- gmf generator persistent region end -->
           
 

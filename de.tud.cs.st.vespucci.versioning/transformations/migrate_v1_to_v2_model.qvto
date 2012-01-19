@@ -33,7 +33,7 @@
  */
  
 /**
- * @author Dominic Scheurer
+ * @author Tanya Harizanova, Robert Cibulla
  *
  * This file transforms a Vespucci model of version 1 (prior to 2011-06-01) to
  * the newer version 2011-06-01.
@@ -43,7 +43,7 @@
  * --- DIAGRAM part ---
  */
 
-import VespucciConverter.Utils.TransformationHelperLibrary;
+import VespucciConverter.Utils.TransformationHelperLibraryV2;
 
 
 modeltype OldModel 'strict' uses 'http://vespucci.editor/2011-06-01';
@@ -81,7 +81,7 @@ when {self.metaClassName() = 'Dummy'} {
 mapping OldModel::Shape::toShape() : NewModel::Shape {	
 	name := self.name;
 	_query := self._query;
-	description := '<description>'; // NEW ATTRIBUTE
+	description := self.description;
 	
 	
 	sourceConnections += self.sourceConnections.map toExpected();
@@ -131,8 +131,8 @@ mapping OldModel::Connection::toConnection() : NewModel::Connection {
 		originalSource += os.late resolveone(NewModel::Shape);
 	};
 	
-	self.originalTarget->forEach(os) {
-		originalTarget += os.late resolveone(NewModel::Shape);
+	self.originalTarget->forEach(ot) {
+		originalTarget += ot.late resolveone(NewModel::Shape);
 	};
 	
 	source := self.source.late resolveone(NewModel::Shape);

@@ -38,12 +38,12 @@ import java.util.HashMap;
 
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
 
-import de.tud.cs.st.vespucci.vespucci_model_2011_06_01.*;
-import de.tud.cs.st.vespucci.vespucci_model_2011_06_01.impl.*;
+import de.tud.cs.st.vespucci.vespucci_model.*;
+import de.tud.cs.st.vespucci.vespucci_model.impl.*;
 
 
 /**
- * @author Dominic Scheurer
+ * @author Tanya Harizanova, Robert Cibulla
  * @version 1.0
  * 
  * Class which encapsulates static methods for usage in QVT
@@ -51,18 +51,18 @@ import de.tud.cs.st.vespucci.vespucci_model_2011_06_01.impl.*;
  * parts of the files being transformed, remembering the model
  * parts and returning them on demand.
  */
-public class TransformationHelperLibrary {
+public class TransformationHelperLibraryV2 {
 	/**
 	 * Maps the original model shapes to the resulting ones after the
 	 * transformation.
 	 */
-	private static HashMap<Shape, Shape> modelShapes = new HashMap<Shape, Shape>();
+	private static HashMap<de.tud.cs.st.vespucci.vespucci_model_2011_06_01.Shape, Shape> modelShapes = new HashMap<de.tud.cs.st.vespucci.vespucci_model_2011_06_01.Shape, Shape>();
 	
 	/**
 	 * Maps the original model connections to the resulting ones after the
 	 * transformation.
 	 */
-	private static HashMap<Connection, Connection> connections = new HashMap<Connection, Connection>();
+	private static HashMap<de.tud.cs.st.vespucci.vespucci_model_2011_06_01.Connection, Connection> connections = new HashMap<de.tud.cs.st.vespucci.vespucci_model_2011_06_01.Connection, Connection>();
 	
 	/**
 	 * Stores the ShapesDiagram model element for usage as reference in
@@ -76,7 +76,7 @@ public class TransformationHelperLibrary {
 	 * mandatory according to QVTO limitations).<br>
 	 * Must not be used!
 	 */
-	public TransformationHelperLibrary() {
+	public TransformationHelperLibraryV2() {
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class TransformationHelperLibrary {
 	 * @param self The original Shape
 	 */
 	@Operation(contextual=true)
-	public static void remember(Shape result, Shape self) {
+	public static void remember(Shape result, de.tud.cs.st.vespucci.vespucci_model_2011_06_01.Shape self) {
 		modelShapes.put(self, result);
 	}
 	
@@ -109,7 +109,7 @@ public class TransformationHelperLibrary {
 	 * @param self The original Connection
 	 */
 	@Operation(contextual=true)
-	public static void remember(Connection result, Connection self) {
+	public static void remember(Connection result, de.tud.cs.st.vespucci.vespucci_model_2011_06_01.Connection self) {
 		connections.put(self, result);
 	}
 	

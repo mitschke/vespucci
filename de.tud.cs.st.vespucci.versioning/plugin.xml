@@ -61,6 +61,32 @@
          </library>
       </unit>
    </extension>
+      <extension
+         point="org.eclipse.m2m.qvt.oml.javaBlackboxUnits">
+      <unit
+            name="TransformationHelperLibraryV2"
+            namespace="VespucciConverter.Utils">
+         <library
+               class="de.tud.cs.st.vespucci.versioning.blackboxes.TransformationHelperLibraryV2"
+               name="TransformationHelperV2">
+            <metamodel
+                  nsURI="http://www.eclipse.org/emf/2002/Ecore">
+            </metamodel>
+            <metamodel
+                  nsURI="http://vespucci.editor">
+            </metamodel>
+            <metamodel
+                  nsURI="http://vespucci.editor/2011-06-01">
+            </metamodel>
+            <metamodel
+                  nsURI="http://vespucci.editor/2011-11-29">
+            </metamodel>
+            <metamodel
+                  nsURI="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+            </metamodel>
+         </library>
+      </unit>
+   </extension>
    <extension
          point="org.eclipse.m2m.qvt.oml.runtime.qvtTransformation">
           <transformation

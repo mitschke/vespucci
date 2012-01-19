@@ -46,7 +46,7 @@
  */
 
 import VespucciVisualIDs;
-import VespucciConverter.Utils.TransformationHelperLibrary;
+import VespucciConverter.Utils.TransformationHelperV2;
 
 modeltype notation 'strict' uses 'http://www.eclipse.org/gmf/runtime/1.0.2/notation';
 modeltype ecore uses 'http://www.eclipse.org/emf/2002/Ecore';
@@ -108,12 +108,12 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 
 mapping notation::Node::toOuterEmpty() : notation::Node
 inherits notation::Node::toEmpty
-when { self.type = VID_Empty_Outer } {
+when { self.type = VID_Dummy_Outer } {
 }
 
 mapping notation::Node::toInnerEmpty() : notation::Node
 inherits notation::Node::toEmpty
-when { self.type = VID_Empty_Inner } {
+when { self.type = VID_Dummy_Inner } {
 }
 
 mapping notation::Node::toEmpty() : notation::Node {
