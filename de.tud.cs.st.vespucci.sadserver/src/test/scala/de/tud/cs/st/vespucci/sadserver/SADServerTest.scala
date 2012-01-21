@@ -32,7 +32,6 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   var id2: String = _
 
   val sad1 = XML.loadFile("src/test/resources/newDescription.xml")
-  val sad2 = XML.loadFile("src/test/resources/sad2.sad")
   val pdfEntity = Entity(new File("src/test/resources/test.pdf"), "application/pdf")
 
   val registeredUser = new DigestAuth("somebody", "password")
@@ -47,6 +46,37 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   val authDelete = SimpleClient.delete(acceptsXml, registeredUser) _
   val put = SimpleClient.put(acceptsXml) _
   val delete = SimpleClient.delete(acceptsXml) _
+  
+  "UserCollectionResource" should "return FORBIDDEN on POST for no credentials" in {
+    val response = SimpleClient.post(acceptsXml)(host + "/users", Entity(new File("src/test/resources/newUser.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal(401)
+  }
+  
+  it should "return FORBIDDEN on POST for wrong credentials" in {
+    val response = SimpleClient.post(acceptsXml, new DigestAuth("intruder", "letmein"))(host + "/users", Entity(new File("src/test/resources/newUser.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal(401)
+  }
+  
+  it should "return FORBIDDEN on POST for some user with right password" in {
+    val response = SimpleClient.post(acceptsXml, new DigestAuth("intruder", "password"))(host + "/users", Entity(new File("src/test/resources/newUser.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal(401)
+  }
+  
+  it should "return OK on POST for authorized" in {
+    val response = SimpleClient.post(acceptsXml, new DigestAuth("admin", "password"))(host + "/users", Entity(new File("src/test/resources/newUser.xml"), "application/xml", "UTF-8"))
+    response.statusCode should equal(201)
+  }
+  
+   it should "return FORBIDDEN on GET for unauthorized" in {
+    val response = get(host + "/users")
+    response.statusCode should equal(401)
+  }
+  
+  it should "return OK on GET for authorized" in {
+    val response = SimpleClient.get(acceptsXml, new DigestAuth("admin", "password"))(host + "/users")
+    response.statusCode should equal(200)
+
+  }
 
   "DescriptionCollectionResource" should "return 401 on unauthorized POST" in {
     val response = post(host + descriptionCollectionPath, Entity(sad1.toString))
@@ -299,19 +329,6 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     val response = get(host + descriptionCollectionPath)
     response.statusCode should equal { 200 }
     println(response.body)
-  }
-
-  // User(s) resource
-
-  "UserCollectionResource" should "return FORBIDDEN on GET for unauthorized" in {
-    val response = get(host + "/users")
-    response.statusCode should equal(401)
-  }
-
-  it should "return OK for authorized users" in {
-    val response = SimpleClient.get(acceptsXml, new DigestAuth("admin", "password"))(host + "/users")
-    response.statusCode should equal(200)
-
   }
 
   //  it should "let upload files" in {

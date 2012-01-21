@@ -26,11 +26,10 @@ trait RestrictToAdmins extends DigestAuthentication with DAO {
     val adminName = GlobalProperties.adminName
     val adminPassword = GlobalProperties.adminPassword
     username match {
-      case adminName if username == adminName => Some(adminPassword)
+      case username: String if username == adminName => Some(adminPassword)
       case _ => None
     }
   }
-
 }
 
 /**
