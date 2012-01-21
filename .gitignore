@@ -53,3 +53,5 @@ Icon?
 *.ipr
 *.iws
 *.prefs
+
+*.db
