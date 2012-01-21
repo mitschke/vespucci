@@ -34,13 +34,13 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
     withTransaction {
       conn =>
         conn.executeUpdate("""
-            CREATE TABLE users (
+            CREATE TABLE IF NOT EXISTS users (
             id UUID PRIMARY KEY, 
             name VARCHAR(100), 
             password VARCHAR(50))
             """)
         conn.executeUpdate("""
-            CREATE TABLE sads (
+            CREATE TABLE IF NOT EXISTS sads (
             id UUID PRIMARY KEY,
             name VARCHAR(100) NOT NULL, 
             type VARCHAR(100), 
@@ -49,9 +49,9 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
             documentation BLOB, 
             wip BOOLEAN)
             """)
-        conn.executeUpdate("""
-            INSERT INTO users VALUES('someid', 'somebody', 'password')
-            """)
+//        conn.executeUpdate("""
+//            INSERT INTO users VALUES('someid', 'somebody', 'password')
+//            """)
     }
   }
 
