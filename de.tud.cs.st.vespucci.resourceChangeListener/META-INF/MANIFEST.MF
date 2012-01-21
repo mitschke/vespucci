@@ -5,6 +5,9 @@ Bundle-SymbolicName: de.tud.cs.st.vespucci.resourceChangeListener
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.tud.cs.st.vespucci.resourcechangelistener.Activator
 Bundle-Vendor: TU Darmstadt
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ Lyrebird;bundle-version="0.1.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.core.resources,
+ org.eclipse.ui

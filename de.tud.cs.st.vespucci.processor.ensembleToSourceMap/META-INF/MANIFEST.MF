@@ -23,4 +23,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.filebuffers;bundle-version="3.5.200"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.ui.statushandlers
+Import-Package: org.eclipse.ui.statushandlers,
+ unisson.model;version="0.3.1"
