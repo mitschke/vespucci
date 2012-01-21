@@ -6,7 +6,6 @@ import org.eclipse.core.resources.IProject;
 import unisson.model.UnissonDatabase;
 import de.tud.cs.st.vespucci.database.architecture.provider.ArchitectureDatabaseProvider;
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
-import de.tud.cs.st.vespucci.interfaces.IViolationReport;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.utilities.Util;
 
@@ -19,7 +18,7 @@ public class ArchitectureConformanceModelProcessor implements IModelProcessor {
 
 	@Override
 	public Class<?> resultClass() {
-		return IViolationReport.class;
+		return IViolationView.class;
 	}
 
 	public static IViolationView getViolationView(Object diagramModel) {

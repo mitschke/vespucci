@@ -15,7 +15,8 @@ public class Util {
 	
 	private static Map<String,String> primitiveTypeTable;
 	
-	public static String createTypQualifier(String signatur, IType declaringType) {
+	public static String createTypQualifier(String signatur, IType declaringType) {		
+		
 		if (primitiveTypeTable == null){
 			primitiveTypeTable = new HashMap<String, String>();
 			primitiveTypeTable.put("byte", "B");
@@ -51,13 +52,14 @@ public class Util {
 				// . --> /
 				innerTypQualifier = innerTypQualifier.replace('.', '/');
 				// add L at the beginning
-				innerTypQualifier = "L" + innerTypQualifier.replace('.', '/');
+				innerTypQualifier = "L" + innerTypQualifier.replace('.', '/') + ";";
+				
 			}else{
 				innerTypQualifier = primitiveTypeTable.get(innerTypQualifier);
 			}			
 			
 			// add the arraySymbols at the beginning and ';' at the end
-			typeQualifier = arraySymbols + innerTypQualifier + ";";
+			typeQualifier = arraySymbols + innerTypQualifier;
 			
 		} catch (Exception e) {
 			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);

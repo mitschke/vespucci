@@ -1,8 +1,11 @@
 package de.tud.cs.st.vespucci.database.bytecode.provider;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +43,7 @@ public class BytecodeDatabaseProvider {
 	}
 
 	public BytecodeDatabaseProvider() {
-	
+
 	}
 
 	/**
@@ -108,7 +111,10 @@ public class BytecodeDatabaseProvider {
 		if (observers.containsKey(project))
 			return;
 
-		ClassFileObserver observer = new ClassFileObserver(database, new StateLocationCopyService(Activator.getDefault().getStateLocation(), ResourcesPlugin.getWorkspace().getRoot()));
+		ClassFileObserver observer = new ClassFileObserver(database,
+				new StateLocationCopyService(Activator.getDefault()
+						.getStateLocation(), ResourcesPlugin.getWorkspace()
+						.getRoot()));
 		VespucciChangeProvider.getInstance().registerClassFileObserver(project,
 				observer);
 		observers.put(project, observer);
@@ -135,11 +141,26 @@ public class BytecodeDatabaseProvider {
 	 */
 	private void fillDatabase(Database database, IProject project) {
 
+		StateLocationCopyService service = new StateLocationCopyService(
+				Activator.getDefault().getStateLocation(), ResourcesPlugin
+						.getWorkspace().getRoot());
+
+		addClassFiles(database, project, service);
+
+		// if the build path does not mention the jar it is questionable whether
+		// this in the scope
+		// addJarFiles(database, project);
+
+		addLibraryFiles(database, project, service);
+
+	}
+
+	private void addClassFiles(Database database, IProject project,
+			StateLocationCopyService service) {
+
 		List<IFile> classFiles = Util.getFilesOfProject(project,
 				Selection.CLASS);
-		
-		StateLocationCopyService service = new StateLocationCopyService(Activator.getDefault().getStateLocation(), ResourcesPlugin.getWorkspace().getRoot());
-		
+
 		for (IFile file : classFiles) {
 			try {
 				IFileStore store = FileBuffers.getFileStoreAtLocation(file
@@ -149,7 +170,7 @@ public class BytecodeDatabaseProvider {
 				database.addClassFile(stream);
 				stream.close();
 				service.makeShadowCopy(file);
-				
+
 			} catch (CoreException e) {
 				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						"unable to read resource: "
@@ -165,11 +186,103 @@ public class BytecodeDatabaseProvider {
 			} catch (Error e) {
 				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						"error while reading class file: "
-								+ file.getLocation().toString() + " - " + e.getMessage(), e);
+								+ file.getLocation().toString() + " - "
+								+ e.getMessage(), e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 
 			}
 		}
+	}
 
+	private void addDirectJarFiles(Database database, IProject project,
+			StateLocationCopyService service) {
+
+		List<IFile> jarFiles = Util.getFilesOfProject(project,
+				Selection.PROJECT_JAR);
+
+		for (IFile file : jarFiles) {
+			try {
+				IFileStore store = FileBuffers.getFileStoreAtLocation(file
+						.getLocation());
+
+				InputStream stream = store.openInputStream(EFS.NONE, null);
+
+				database.addArchive(stream);
+
+				stream.close();
+				service.makeShadowCopy(file);
+
+			} catch (CoreException e) {
+				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"unable to read resource: "
+								+ file.getLocation().toString(), e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+
+			} catch (IOException e) {
+				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"unable close stream for resource: "
+								+ file.getLocation().toString(), e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+
+			} catch (Error e) {
+				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"error while reading class file: "
+								+ file.getLocation().toString() + " - "
+								+ e.getMessage(), e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+
+			}
+		}
+	}
+
+	private void addLibraryFiles(Database database, IProject project,
+			StateLocationCopyService service) {
+
+		List<File> linkedLibraries = filterJreLibraries(Util.getLinkedLiberiesFiles(project));
+
+		for (File file : linkedLibraries) {
+			try {
+				InputStream stream = new FileInputStream(file);
+
+				database.addArchive(stream);
+
+				stream.close();
+
+			} catch (IOException e) {
+				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"unable close stream for resource: "
+								+ file.getAbsolutePath(), e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+
+			} catch (Error e) {
+				IStatus is = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"error while reading class file: "
+								+ file.getAbsolutePath() + " - "
+								+ e.getMessage(), e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
+
+			}
+		}
+	}
+
+	private List<File> filterJreLibraries(List<File> libraries) {
+
+		List<File> result = new LinkedList<File>();
+		// for now manually filter the libraries, scope of the analysis should
+		// be determined later by a configuration
+		for (File file : libraries) {
+			if (!("resources.jar".equals(file.getName())
+					|| "rt.jar".equals(file.getName())
+					|| "jsse.jar".equals(file.getName())
+					|| "jce.jar".equals(file.getName())
+					|| "charsets.jar".equals(file.getName())
+					|| "dnsns.jar".equals(file.getName())
+					|| "localedata.jar".equals(file.getName()) || "sunjce_provider.jar"
+						.equals(file.getName()))) {
+				result.add(file);
+			}
+
+		}
+		return result;
 	}
 }

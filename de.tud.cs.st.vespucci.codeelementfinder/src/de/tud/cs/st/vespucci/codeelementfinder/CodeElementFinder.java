@@ -75,6 +75,7 @@ public class CodeElementFinder {
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.codeelementfinder";
 
 	public static void startSearch(ICodeElement sourceElement, IProject project, ICodeElementFoundProcessor processor){
+
 		SearchPattern searchPattern;
 		
 		//Set default SearchScope
@@ -135,6 +136,7 @@ public class CodeElementFinder {
 			public void endReporting(){
 				if (!sucess){
 					notfoundMatch(sourceElement, project, processor);
+					System.out.println("nothing found");
 				}
 			}
 			
@@ -143,6 +145,7 @@ public class CodeElementFinder {
 	    // Search
 	    SearchEngine searchEngine = new SearchEngine();
 	    try {
+	    	
 			searchEngine.search(searchPattern, new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()}, javaSearchScope, requestor, null);
 		} catch (CoreException e) {
 			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
@@ -276,33 +279,55 @@ public class CodeElementFinder {
 	}
 
 	private static boolean foundMatch(IType type, IMethodDeclaration methodeDeclaration, ICodeElementFoundProcessor processor) {
-		SearchPattern searchPattern = SearchPattern.createPattern(methodeDeclaration.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-		
-		IJavaElement[] je = new IJavaElement[1];
-		je[0] = type;
-		IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
-		
-		search(searchPattern, javaSearchScope, methodeDeclaration, type.getJavaProject().getProject(), processor);
-		
-		return true;
+		if (!methodeDeclaration.getMethodName().equals("<init>")){
+			if (methodeDeclaration.getMethodName().contains("<")||methodeDeclaration.getMethodName().contains(">")){
+				// something with '<' '>' in MethodeName, SerachEngin is not able to work with it
+				processor.noMatchFound(methodeDeclaration);
+				return true;
+			}
+			SearchPattern searchPattern = SearchPattern.createPattern(methodeDeclaration.getMethodName(), IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			
+			IJavaElement[] je = new IJavaElement[1];
+			je[0] = type;
+			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+			
+			search(searchPattern, javaSearchScope, methodeDeclaration, type.getJavaProject().getProject(), processor);
+			
+			return true;
+		}else{
+					
+			SearchPattern searchPattern = SearchPattern.createPattern(methodeDeclaration.getSimpleClassName(), IJavaSearchConstants.CONSTRUCTOR, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			
+			IJavaElement[] je = new IJavaElement[1];
+			je[0] = type;
+			IJavaSearchScope javaSearchScope = SearchEngine.createJavaSearchScope(je);
+			
+			search(searchPattern, javaSearchScope, methodeDeclaration, type.getJavaProject().getProject(), processor);
+			
+			return true;
+		}
 	}
 
 	private static boolean foundMatch(IMethod method, IMethodDeclaration methodDeclaration, ICodeElementFoundProcessor processor) {
 		try {
 			IType declaringType = method.getDeclaringType();
-			
+
 			// check if the returnType is the expected
 			if (methodDeclaration.getReturnTypeQualifier().equals(Util.createTypQualifier(method.getReturnType(), declaringType))){
-				// check if all parameterTypes are equal the expected
-				String[] parameterTypes = method.getParameterTypes();
-				String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
 				boolean equal = true;
-				for (int i = 0; i < parameterTypes.length; i++){
-					if (!expectedParameterTypes[i].equals(Util.createTypQualifier(parameterTypes[i], declaringType))){
-						equal = false;
-						break;
+				
+					// check if all parameterTypes are equal the expected
+					String[] parameterTypes = method.getParameterTypes();
+					String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
+					
+					for (int i = 0; i < parameterTypes.length; i++){
+						if (!expectedParameterTypes[i].equals(Util.createTypQualifier(parameterTypes[i], declaringType))){
+							equal = false;
+							break;
+						}
 					}
-				}
+				
+
 				if (equal){
 					processor.processFoundCodeElement(method);
 					return true;
