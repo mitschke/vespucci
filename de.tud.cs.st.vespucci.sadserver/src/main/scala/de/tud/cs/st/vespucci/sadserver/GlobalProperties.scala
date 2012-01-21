@@ -4,7 +4,7 @@ import sys.props
 
 /**
  * Encapsulates global properties into a static point of access.
- * 
+ *
  * @author Mateusz Parzonka
  */
 object GlobalProperties {
@@ -15,7 +15,8 @@ object GlobalProperties {
   def authority = prop("authority")
   def port = prop("port").toInt
   def authenticationRealm = prop("authenticationRealm")
-  
+
+  // paths must be all stored in the form "/somePath"
   def rootPath = prop("rootPath")
   def descriptionCollectionPath = prop("descriptionCollectionPath")
   def userCollectionPath = prop("userCollectionPath")
@@ -30,11 +31,9 @@ object GlobalProperties {
     import java.io.File
     import java.io.FileInputStream
     val f = new File(filePath);
-    if (!f.exists()) {
-      System.err.println("No configuration file found.")
-      return
-    }
-    println("Loading configuration: " + f.getAbsolutePath() + ".");
+    if (!f.exists())
+      throw new GlobalPropertiesException("No configuration file found at path [" + f.getAbsolutePath() + "]")
+    println("Loading configuration file: " + f.getAbsolutePath() + ".");
     var fin: FileInputStream = null;
     try {
       fin = new FileInputStream(f);
@@ -46,8 +45,9 @@ object GlobalProperties {
     }
   }
 
-  def prop(key: String): String = props.get(base + key).getOrElse("")
+  def prop(key: String): String = props.get(base + key).getOrElse(
+    throw new GlobalPropertiesException("Property with name [%s] not found!" format base + key))
 
-  case class GlobalPropertiesException(key: String) extends Exception("Property with name [%s] not found!" format base + key)
+  case class GlobalPropertiesException(key: String) extends Exception(key)
 
 }
