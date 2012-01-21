@@ -14,7 +14,7 @@ import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 
 /**
- * TODO remove IViolationReport interface
+ * 
  * 
  * @author Ralf Mitschke
  *

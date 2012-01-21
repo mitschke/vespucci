@@ -166,7 +166,7 @@ public class Ensemble implements IEnsemble {
 		int result = 1;
 		result = prime * result
 				+ ((innerEnsemble == null) ? 0 : innerEnsemble.hashCode());
-		result = prime * result + ((shape == null) ? 0 : shape.getName().hashCode());
+		result = prime * result + ((shape == null) ? 0 : getName().hashCode());
 		return result;
 	}
 
