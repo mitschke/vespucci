@@ -27,7 +27,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     SADServer
   }
 
-  val host = "http://" + authority + ":" + port
+  val host = "http://" + authority + ":" + port + rootPath
   var id1: String = _
   var id2: String = _
 
