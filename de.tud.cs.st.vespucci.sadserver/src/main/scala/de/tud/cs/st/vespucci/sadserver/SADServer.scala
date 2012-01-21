@@ -42,27 +42,27 @@ object SADServer
   }
 
   this register new HandlerFactory[DescriptionCollectionResource] {
-    path { descriptionCollectionPath }
+    path { rootPath + descriptionCollectionPath }
     def create = new DescriptionCollectionResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionResource] {
-    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
+    path { rootPath+ descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
     def create = new DescriptionResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionModelResource] {
-    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
+    path { rootPath+ descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
     def create = new DescriptionModelResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionDocumentationResource] {
-    path { descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
+    path { rootPath+ descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
     def create = new DescriptionDocumentationResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[UserCollectionResource] {
-    path { userCollectionPath }
+    path { rootPath + userCollectionPath }
     def create = new UserCollectionResource with RestrictToAdmins
   }
 
@@ -169,6 +169,8 @@ class UserResource extends RESTInterface with DAO with XMLSupport {
  * Starts the SADServer as a configured stand-alone application.
  */
 object SADServerApp extends scala.App with Logging {
+  
+  GlobalProperties.loadPropertiesFile("sadserver.properties");
 
   SADServer
 
