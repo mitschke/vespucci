@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Table
+Bundle-SymbolicName: de.tud.cs.st.vespucci.ensembleview.table;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.tud.cs.st.vespucci.ensembleview.table.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ de.tud.cs.st.vespucci.diagram,
+ de.tud.cs.st.vespucci.utilities;bundle-version="1.0.0",
+ de.tud.cs.st.vespucci.codeelementfinder;bundle-version="1.0.0",
+ de.tud.cs.st.vespucci.interfaces;bundle-version="1.0.0",
+ de.tud.cs.st.vespucci.model;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.eclipse.jdt.core
