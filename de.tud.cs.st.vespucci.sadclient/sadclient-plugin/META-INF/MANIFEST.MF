@@ -11,3 +11,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: lib/packed-dependencies.jar,
  .
+Import-Package: org.eclipse.jface.databinding.swt
+Export-Package: de.tud.cs.st.vespucci.sadclient.model

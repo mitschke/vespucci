@@ -12,8 +12,8 @@
             name="SADClient"
             icon="icons/sample.gif"
             category="de.tud.cs.st.vespucci"
-            class="de.tud.cs.st.vespucci.sadclient.views.RemoteSadsView"
-            id="de.tud.cs.st.vespucci.sadclient.views.RemoteSadsView">
+            class="de.tud.cs.st.vespucci.sadclient.view.SADCollectionView"
+            id="de.tud.cs.st.vespucci.sadclient.view.SADCollectionView">
       </view>
    </extension>
    <extension
@@ -33,6 +33,20 @@
       <contexts
             file="contexts.xml">
       </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.tud.cs.st.vespucci.sadclient.preferences.SADClientPreferences"
+            id="de.tud.cs.st.vespucci.sadclient.preferences.SADClientPreferences"
+            name="SADClient">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.tud.cs.st.vespucci.sadclient.preferences.PreferenceInitializer">
+      </initializer>
    </extension>
 
 </plugin>

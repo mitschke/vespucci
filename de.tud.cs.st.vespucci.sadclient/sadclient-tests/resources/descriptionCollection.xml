@@ -1,0 +1,35 @@
+<descriptions>
+  <description id="e343c82f-9f3c-4e48-bdc3-faf3a3a99b34">
+    <url>http://localhost:9000/vespucci/sads/e343c82f-9f3c-4e48-bdc3-faf3a3a99b34</url>
+    <name>myName</name>
+    <type>myType</type>
+    <abstract>This is the abstract.</abstract>
+    <model size="173">
+      <url>http://localhost:9000/vespucci/sads/e343c82f-9f3c-4e48-bdc3-faf3a3a99b34/model</url>
+    </model>
+  </description>
+  <description id="578f3b61-ade2-4aa6-ad29-ac4efe0c32aa">
+    <url>http://localhost:9000/vespucci/sads/578f3b61-ade2-4aa6-ad29-ac4efe0c32aa</url>
+    <name>myName</name>
+    <type>myType</type>
+    <abstract>This is the abstract.</abstract>
+  </description>
+  <description id="2a23f142-dce2-4f3c-878e-d7e2997a7f55">
+    <url>http://localhost:9000/vespucci/sads/2a23f142-dce2-4f3c-878e-d7e2997a7f55</url>
+    <name>myName</name>
+    <type>myType</type>
+    <abstract>This is the abstract.</abstract>
+  </description>
+  <description id="2ad2899f-cb50-4654-ba68-b2a26723d7e4">
+    <url>http://localhost:9000/vespucci/sads/2ad2899f-cb50-4654-ba68-b2a26723d7e4</url>
+    <name>myName</name>
+    <type>myType</type>
+    <abstract>This is the abstract.</abstract>
+  </description>
+  <description id="3aa10742-6398-43da-b7ce-393ed3adaac5">
+    <url>http://localhost:9000/vespucci/sads/3aa10742-6398-43da-b7ce-393ed3adaac5</url>
+    <name>myName</name>
+    <type>myType</type>
+    <abstract>This is the abstract.</abstract>
+  </description>
+</descriptions>
