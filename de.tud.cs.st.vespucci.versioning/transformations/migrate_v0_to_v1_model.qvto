@@ -40,7 +40,7 @@
  *
  * It adds a new attribute "description" to the Shape class.
  * 
- * --- DIAGRAM part ---
+ * --- MODEL part ---
  */
 
 import VespucciConverter.Utils.TransformationHelperLibrary;
@@ -58,7 +58,7 @@ mapping OldModel::ShapesDiagram::toNew() : NewModel::ShapesDiagram {
 	shapes += self.shapes.map toEnsemble();
 	shapes += self.shapes.map toDummy();
 	
-	result.remember();
+	result.remember2011_06_01();
 }
 
 mapping OldModel::Shape::toEnsemble() : NewModel::Ensemble
@@ -90,7 +90,7 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	targetConnections += self.targetConnections.map toNotAllowed();
 	targetConnections += self.targetConnections.map toOutgoing();
 	
-	result.remember(self);
+	result.remember2011_06_01(self);
 }
 
 mapping OldModel::Connection::toExpected() : NewModel::Expected
@@ -134,5 +134,5 @@ mapping OldModel::Connection::toConnection() : NewModel::Connection {
 	
 	temp := self.temp;
 	
-	result.remember(self);
+	result.remember2011_06_01(self);
 }

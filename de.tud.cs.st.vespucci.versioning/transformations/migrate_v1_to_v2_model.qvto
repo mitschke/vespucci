@@ -35,15 +35,14 @@
 /**
  * @author Tanya Harizanova, Robert Cibulla
  *
- * This file transforms a Vespucci model of version 1 (prior to 2011-06-01) to
- * the newer version 2011-06-01.
+ *  This file transforms a Vespucci model of version 1 (prior to 2011-11-29) to
+ * the newer version 2011-11-29.
  *
- * It adds a new attribute "description" to the Shape class.
  * 
- * --- DIAGRAM part ---
+ * --- MODEL part ---
  */
 
-import VespucciConverter.Utils.TransformationHelperLibraryV2;
+import VespucciConverter.Utils.TransformationHelperLibrary;
 
 
 modeltype OldModel 'strict' uses 'http://vespucci.editor/2011-06-01';

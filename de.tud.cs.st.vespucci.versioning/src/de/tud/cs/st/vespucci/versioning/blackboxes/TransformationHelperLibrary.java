@@ -56,19 +56,43 @@ public class TransformationHelperLibrary {
 	 * Maps the original model shapes to the resulting ones after the
 	 * transformation.
 	 */
-	private static HashMap<Shape, Shape> modelShapes = new HashMap<Shape, Shape>();
+	private static HashMap<Shape, Shape> modelShapes2011_06_01 = new HashMap<Shape, Shape>();
+	
+	/**_________________________________________________________________
+	 * Maps the original model shapes to the resulting ones after the
+	 * transformation.
+	 */
+	private static HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.Shape> modelShapes = new HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.Shape>();
 	
 	/**
 	 * Maps the original model connections to the resulting ones after the
 	 * transformation.
 	 */
-	private static HashMap<Connection, Connection> connections = new HashMap<Connection, Connection>();
+	private static HashMap<Connection, Connection> connections2011_06_01 = new HashMap<Connection, Connection>();
 	
+	/**__________________________________________________________________
+	 * Maps the original model connections to the resulting ones after the
+	 * transformation.
+	 */
+	private static HashMap<Connection, de.tud.cs.st.vespucci.vespucci_model.Connection> connections = new HashMap<Connection, de.tud.cs.st.vespucci.vespucci_model.Connection>();
+	
+
 	/**
 	 * Stores the ShapesDiagram model element for usage as reference in
 	 * the diagram part.
 	 */
-	private static ShapesDiagram shapesDiagram;
+	private static ShapesDiagram shapesDiagram2011_06_01;
+	
+	
+
+	/**___________________________________________________________________
+	 * Stores the ShapesDiagram model element for usage as reference in
+	 * the diagram part.
+	 */
+	private static de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram shapesDiagram;
+	
+	
+	
 	
 	/**
 	 * Standard constructor. This is needed by QVTO, although
@@ -85,8 +109,8 @@ public class TransformationHelperLibrary {
 	 * @param self The shapesDiagram to remember.
 	 */
 	@Operation(contextual=true)
-	public static void remember(ShapesDiagram self) {
-		shapesDiagram = (ShapesDiagramImpl) self;
+	public static void remember2011_06_01(ShapesDiagram self) {
+		shapesDiagram2011_06_01 = self;
 	}
 	
 	/**
@@ -97,8 +121,8 @@ public class TransformationHelperLibrary {
 	 * @param self The original Shape
 	 */
 	@Operation(contextual=true)
-	public static void remember(Shape result, Shape self) {
-		modelShapes.put(self, result);
+	public static void remember2011_06_01(Shape result, Shape self) {
+		modelShapes2011_06_01.put(self, result);
 	}
 	
 	/**
@@ -109,9 +133,57 @@ public class TransformationHelperLibrary {
 	 * @param self The original Connection
 	 */
 	@Operation(contextual=true)
-	public static void remember(Connection result, Connection self) {
+	public static void remember2011_06_01(Connection result, Connection self) {
+		connections2011_06_01.put(self, result);
+	}
+	
+	/**___________________________________________________________________
+	 * Remembers a ShapesDiagram (model element).
+	 * 
+	 * @param self The shapesDiagram to remember.
+	 */
+	@Operation(contextual=true)
+	public static void remember(de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram self) {
+		shapesDiagram = self;
+	}
+	
+	/**
+	 * Remembers that <code>result</code> is the transformation result
+	 * of <code>self</code>.
+	 * 
+	 * @param result The resulting Connection (after transformation)
+	 * @param self The original Connection
+	 */
+	@Operation(contextual=true)
+	public static void remember(de.tud.cs.st.vespucci.vespucci_model.Connection result, Connection self) {
 		connections.put(self, result);
 	}
+	
+	
+	/**
+	 * Remembers that <code>result</code> is the transformation result
+	 * of <code>self</code>.
+	 * 
+	 * @param result The resulting Shape (after transformation)
+	 * @param self The original Shape
+	 */
+	@Operation(contextual=true)
+	public static void remember(de.tud.cs.st.vespucci.vespucci_model.Shape result, Shape self) {
+		modelShapes.put(self, result);
+	}	
+	
+	/**___________________________________________________________________
+	 * Returns the remembered ShapesDiagram (top model element)
+	 * 
+	 * @param self Not needed; seems to be QVTO limitation that this is there
+	 * @return Remembered ShapesDiagram
+	 */
+	@Operation(contextual=true)
+	public static ShapesDiagram getRememberedShapesDiagram2011_06_01(Object self) {
+		return shapesDiagram2011_06_01;
+	}
+	
+	
 	
 	/**
 	 * Returns the remembered ShapesDiagram (top model element)
@@ -120,9 +192,23 @@ public class TransformationHelperLibrary {
 	 * @return Remembered ShapesDiagram
 	 */
 	@Operation(contextual=true)
-	public static ShapesDiagram getRememberedShapesDiagram(Object self) {
+	public static de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram getRememberedShapesDiagram(Object self) {
 		return shapesDiagram;
 	}
+	
+	
+	
+	/**_________________________________________________________________
+	 * Returns the remembered transformation result of <code>self</code>
+	 * 
+	 * @param self The original Shape before the transformation
+	 * @return The remembered transformation result
+	 */
+	@Operation(contextual=true)
+	public static Shape getRememberedShape2011_06_01(Object self) {
+		return modelShapes2011_06_01.get(self);
+	}
+	
 	
 	/**
 	 * Returns the remembered transformation result of <code>self</code>
@@ -131,18 +217,18 @@ public class TransformationHelperLibrary {
 	 * @return The remembered transformation result
 	 */
 	@Operation(contextual=true)
-	public static Shape getRememberedShape(Object self) {
+	public static de.tud.cs.st.vespucci.vespucci_model.Shape getRememberedShape(Object self) {
 		return modelShapes.get(self);
 	}
 	
-	/**
+	/**____________________________________________________________________
 	 * Returns the remembered transformation result of <code>self</code>
 	 * 
 	 * @param self The original Connection before the transformation
 	 * @return The remembered transformation result
 	 */
 	@Operation(contextual=true)
-	public static Connection getRememberedConnection(Object self) {
-		return connections.get((Connection)self);
+	public static Connection getRememberedConnection2011_06_01(Object self) {
+		return connections2011_06_01.get((Connection)self);
 	}
 }

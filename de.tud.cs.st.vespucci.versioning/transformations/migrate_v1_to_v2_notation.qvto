@@ -35,22 +35,24 @@
 /**
  * @file
  *
- * @author Dominic Scheurer
+ * @author Tanya Harizanova, Robert Cibulla
  *
- * This file transforms a Vespucci model of version 1 (prior to 2011-06-01) to
- * the newer version 2011-06-01.
+ * This file transforms a Vespucci model of version 1 (prior to 2011-11-29) to
+ * the newer version 2011-11-29.
  *
  * It adds a new attribute "description" to the Shape class.
  *
- * --- MODEL part ---
+ * --- DIAGRAM part ---
  */
 
 import VespucciVisualIDs;
-import VespucciConverter.Utils.TransformationHelperV2;
+import VespucciConverter.Utils.TransformationHelperLibrary;
 
 modeltype notation 'strict' uses 'http://www.eclipse.org/gmf/runtime/1.0.2/notation';
 modeltype ecore uses 'http://www.eclipse.org/emf/2002/Ecore';
 
+//eventually needed
+//modeltype OldModel 'strict' uses 'http://vespucci.editor/2011-06-01';
 modeltype model 'strict' uses 'http://vespucci.editor/2011-11-29';
 
 transformation migrate_v1_to_v2_notation(in oldDiagram : notation, out newDiagram : notation);

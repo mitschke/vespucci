@@ -42,7 +42,7 @@
  *
  * It adds a new attribute "description" to the Shape class.
  *
- * --- MODEL part ---
+ * --- DIAGRAM part ---
  */
 
 import VespucciVisualIDs;
@@ -72,7 +72,7 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	type := self.type;
 	name := self.name;
 	measurementUnit := self.measurementUnit;
-	element := self.getRememberedShapesDiagram().oclAsType(EObject);
+	element := self.getRememberedShapesDiagram2011_06_01().oclAsType(EObject);
 		
 	// CHILDREN
 	children += self.children->map toEnsemble();
@@ -86,7 +86,7 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 		e.source := e.source.late resolveone(notation::View);
 		e.target := e.target.late resolveone(notation::View);
 
-		e.element := e.element.getRememberedConnection().oclAsType(EObject);
+		e.element := e.element.getRememberedConnection2011_06_01().oclAsType(EObject);
 	};
 	
 	edges->forEach(e | e.type = 'NoteAttachment') {
@@ -122,7 +122,7 @@ mapping notation::Node::toDummy() : notation::Node {
 	layoutConstraint := self.layoutConstraint;
 	children := self.children;
 	
-	element := self.element.getRememberedShape().oclAsType(EObject);
+	element := self.element.getRememberedShape2011_06_01().oclAsType(EObject);
 }
 
 mapping notation::Node::toEnsemble() : notation::Shape
@@ -199,5 +199,5 @@ mapping notation::Node::toShape() : notation::Shape {
 	fillColor := self.oclAsType(notation::Shape).fillColor;
 	
 	// Referred model element
-	element := self.element.getRememberedShape().oclAsType(EObject);
+	element := self.element.getRememberedShape2011_06_01().oclAsType(EObject);
 }

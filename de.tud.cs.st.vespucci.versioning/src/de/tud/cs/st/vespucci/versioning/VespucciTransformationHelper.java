@@ -225,7 +225,7 @@ public abstract class VespucciTransformationHelper {
 	 * 	Input objects for the transformation: Vespucci model part first, diagram part at the end.
 	 */
 	protected VespucciTransformationInput[] getModelTransformationInputs(EList<EObject> inputObjects) {
-		if (!(inputObjects.get(0) instanceof ShapesDiagramImpl)) {
+		if (!(inputObjects.get(0) instanceof de.tud.cs.st.vespucci.vespucci_model_2011_06_01.ShapesDiagram)) {
 			Collections.swap(inputObjects, 0, 1);
 		}
 		
