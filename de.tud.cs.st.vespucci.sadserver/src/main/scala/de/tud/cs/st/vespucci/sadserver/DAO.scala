@@ -49,9 +49,9 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
             documentation BLOB, 
             wip BOOLEAN)
             """)
-//        conn.executeUpdate("""
-//            INSERT INTO users VALUES('someid', 'somebody', 'password')
-//            """)
+      //        conn.executeUpdate("""
+      //            INSERT INTO users VALUES('someid', 'somebody', 'password')
+      //            """)
     }
   }
 
@@ -85,11 +85,11 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
         retrieved
     }
 
-  def updateDescription(id: String, description: Description): Description =
+  def updateDescription(description: Description): Description =
     withPreparedStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ? WHERE id = ?") {
       ps =>
-        ps.executeUpdateWith(description.name, description.`type`, description.`abstract`, description.wip, id)
-        logger.debug("Updated description [%s] using id [%s]" format (description, id))
+        ps.executeUpdateWith(description.name, description.`type`, description.`abstract`, description.wip, description.id)
+        logger.debug("Updated description [%s] using id [%s]" format (description, description.id))
         description
     }
 
@@ -198,9 +198,9 @@ trait DAO extends JdbcSupport with H2DatabaseConnection {
       logger.debug("Deleted user using id [%s]" format id)
       result
   }
-  
+
   def listUsers() = withQuery("SELECT * FROM users") {
-     rs =>
+    rs =>
       var list: List[User] = List[User]()
       while (rs.next) {
         list = {

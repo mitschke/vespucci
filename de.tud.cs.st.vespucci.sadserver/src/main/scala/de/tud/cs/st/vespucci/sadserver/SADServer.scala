@@ -96,6 +96,10 @@ class DescriptionResource extends RESTInterface with DAO with XMLSupport {
   get returns XML {
     findDescription(id).map(_.toXML)
   }
+  
+  put of XML returns XML {
+    updateDescription(Description(XMLRequestBody)).toXML
+  }
 
   delete {
     deleteDescription(id)
