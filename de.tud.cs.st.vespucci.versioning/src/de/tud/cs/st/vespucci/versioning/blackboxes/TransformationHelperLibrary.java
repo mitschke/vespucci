@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.versioning.blackboxes;
 
 import java.util.HashMap;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
 
 import de.tud.cs.st.vespucci.vespucci_model_2011_06_01.*;
@@ -230,5 +231,16 @@ public class TransformationHelperLibrary {
 	@Operation(contextual=true)
 	public static Connection getRememberedConnection2011_06_01(Object self) {
 		return connections2011_06_01.get((Connection)self);
+	}
+	
+	/**
+	 * Returns the remembered transformation result of <code>self</code>
+	 * 
+	 * @param self The original Connection before the transformation
+	 * @return The remembered transformation result
+	 */
+	@Operation(contextual=true)
+	public static de.tud.cs.st.vespucci.vespucci_model.Connection getRememberedConnection(Object self) {
+		return connections.get((Connection)self);
 	}
 }

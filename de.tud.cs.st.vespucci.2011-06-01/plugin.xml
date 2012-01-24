@@ -16,5 +16,12 @@
             class="de.tud.cs.st.vespucci.vespucci_model_2011_06_01.Vespucci_model_2011_06_01Package"
             genModel="model/vespucci.genmodel"/>
    </extension>
+   
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://vespucci.editor"
+            class="de.tud.cs.st.vespucci.vespucci_model_2011_06_01.Vespucci_model_2011_06_01Package"
+            genModel="model/vespucci.genmodel"/>
+   </extension>
 
 </plugin>
