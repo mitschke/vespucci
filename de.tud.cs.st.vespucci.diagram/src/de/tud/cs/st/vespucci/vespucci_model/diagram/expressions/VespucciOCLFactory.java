@@ -70,7 +70,7 @@ public class VespucciOCLFactory {
 	 * @generated
 	 */
 	protected VespucciOCLFactory() {
-		this.expressions = new de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression[18];
+		this.expressions = new de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciAbstractExpression[17];
 	}
 
 	/**
@@ -99,10 +99,9 @@ public class VespucciOCLFactory {
 					"not self.oclIsTypeOf(Empty)", //$NON-NLS-1$
 					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Empty))", //$NON-NLS-1$
 					"not self.oclIsTypeOf(Empty)", //$NON-NLS-1$
-					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Empty))", //$NON-NLS-1$
+					"(self <> oppositeEnd) ", //$NON-NLS-1$
 					"not self.oclIsTypeOf(Empty)", //$NON-NLS-1$
 					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Empty))", //$NON-NLS-1$
-					"not self.oclIsTypeOf(Empty)", //$NON-NLS-1$
 					"(self <> oppositeEnd) and (not self.oclIsTypeOf(Empty))", //$NON-NLS-1$
 					"not self.oclIsTypeOf(Empty)", //$NON-NLS-1$
 					"name.size()>0 and not name.oclIsUndefined()", //$NON-NLS-1$

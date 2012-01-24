@@ -263,7 +263,7 @@
         href="vespucci.ecore#//Connection/target"/>
     <creationConstraints>
       <sourceEnd
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
+          body="(self &lt;> oppositeEnd) "/>
       <targetEnd
           body="not self.oclIsTypeOf(Empty)"/>
     </creationConstraints>
@@ -296,8 +296,7 @@
     <creationConstraints>
       <sourceEnd
           body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
-      <targetEnd
-          body="not self.oclIsTypeOf(Empty)"/>
+  
     </creationConstraints>
   </links>
   <links>

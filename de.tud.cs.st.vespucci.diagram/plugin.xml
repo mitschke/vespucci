@@ -944,6 +944,7 @@
 			</contributionItemProvider>
 		</extension>
 		
+		<!--@author: Tabea Born -->
 		<?gmfgen generated="false"?>
 		<extension
  	point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
@@ -955,8 +956,9 @@
 		</Priority>
  
  		<popupContribution
+ 			id = "remove geoshapes format"
  			class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
- 		<popupPredefinedItem id="autoSizeAction" path="/formatMenu/sizeGroup" remove="true"/>
+ 		
  		<popupPredefinedItem id="lineWidthMenu" path="/formatMenu/" remove="true"/>
  		<popupPredefinedItem id="lineTypeMenu" path="/formatMenu/" remove="true"/>
  		<popupPredefinedItem id="arrowTypeMenu" path="/formatMenu/" remove="true"/>
@@ -996,13 +998,7 @@
                 type="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
           </propertyTester>
        </extension>
-       <extension
-             point="org.eclipse.gmf.runtime.emf.clipboard.core.clipboardSupport">
-          <factory
-                class="de.tud.cs.st.vespucci.diagram.ClipboardSupportFactory1"
-                priority="medium">
-          </factory>
-       </extension>
+    
         <!-- gmf generator persistent region end -->
           
 

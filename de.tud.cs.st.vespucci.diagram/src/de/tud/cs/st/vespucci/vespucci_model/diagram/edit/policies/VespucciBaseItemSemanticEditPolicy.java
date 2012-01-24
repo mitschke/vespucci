@@ -783,25 +783,6 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 						return false;
 					} // else fall-through
 				}
-				if (target == null) {
-					return true;
-				} else {
-					Map<String, EClassifier> env = Collections
-							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
-					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
-							.getExpression(
-									12,
-									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
-									target,
-									Collections.singletonMap(
-											"oppositeEnd", source)); //$NON-NLS-1$
-					if (false == targetVal instanceof Boolean
-							|| !((Boolean) targetVal).booleanValue()) {
-						return false;
-					} // else fall-through
-				}
 				return true;
 			} catch (Exception e) {
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
@@ -828,7 +809,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
-									13,
+									12,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 											.getShape(), env).evaluate(
 									source,
@@ -847,7 +828,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
 					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
-									14,
+									13,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 											.getShape(), env).evaluate(
 									target,

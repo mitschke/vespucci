@@ -26,7 +26,7 @@
     <rules
         name="ERROR if Ensemble name not NULL"
         id="EnsembleNameNotNullID"
-        rule="//@expressionProviders/@providers.0/@expressions.15"
+        rule="//@expressionProviders/@providers.0/@expressions.14"
         message="Ensemble name must be set!"
         category="//@audits/@categories.1">
       <target
@@ -39,7 +39,7 @@
     <rules
         name="ERROR if Ensemble name UNIQUE"
         id="EnsembleNameUniqueID"
-        rule="//@expressionProviders/@providers.0/@expressions.16"
+        rule="//@expressionProviders/@providers.0/@expressions.15"
         message="Ensemble must have unique name!"
         category="//@audits/@categories.1">
       <target
@@ -52,7 +52,7 @@
     <rules
         name="WARNING if Ensemble query not NULL"
         id="EnsembleQueryNotNullID"
-        rule="//@expressionProviders/@providers.0/@expressions.17"
+        rule="//@expressionProviders/@providers.0/@expressions.16"
         message="Ensemble query is not set! Default query is &quot;empty&quot;."
         severity="WARNING"
         category="//@audits/@categories.1">
@@ -301,7 +301,7 @@
     </topLevelNodes>
     <topLevelNodes
         visualID="2002"
-        editPartClassName="EmptyEditPart" 
+        editPartClassName="EmptyEditPart"
         itemSemanticEditPolicyClassName="EmptyItemSemanticEditPolicy"
         notationViewFactoryClassName="EmptyViewFactory"
         canonicalEditPolicyClassName="EmptyCanonicalEditPolicy"
@@ -783,8 +783,7 @@
         </modelFacet>
       </labels>
       <creationConstraints
-          sourceEnd="//@expressionProviders/@providers.0/@expressions.11"
-          targetEnd="//@expressionProviders/@providers.0/@expressions.12"/>
+          sourceEnd="//@expressionProviders/@providers.0/@expressions.11"/>
     </links>
     <links
         visualID="4009"
@@ -845,8 +844,8 @@
         </modelFacet>
       </labels>
       <creationConstraints
-          sourceEnd="//@expressionProviders/@providers.0/@expressions.13"
-          targetEnd="//@expressionProviders/@providers.0/@expressions.14"/>
+          sourceEnd="//@expressionProviders/@providers.0/@expressions.12"
+          targetEnd="//@expressionProviders/@providers.0/@expressions.13"/>
     </links>
     <compartments
         visualID="7001"
@@ -1922,16 +1921,13 @@
           body="not self.oclIsTypeOf(Empty)"/>
       <expressions
           xsi:type="gmfgen:GenConstraint"
-          body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
+          body="(self &lt;> oppositeEnd) "/>
       <expressions
           xsi:type="gmfgen:GenConstraint"
           body="not self.oclIsTypeOf(Empty)"/>
       <expressions
           xsi:type="gmfgen:GenConstraint"
           body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
-      <expressions
-          xsi:type="gmfgen:GenConstraint"
-          body="not self.oclIsTypeOf(Empty)"/>
       <expressions
           xsi:type="gmfgen:GenConstraint"
           body="(self &lt;> oppositeEnd) and (not self.oclIsTypeOf(Empty))"/>
