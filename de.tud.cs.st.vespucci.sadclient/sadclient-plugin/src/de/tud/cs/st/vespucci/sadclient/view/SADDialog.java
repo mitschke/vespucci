@@ -96,8 +96,7 @@ public class SADDialog extends Dialog {
     private Button btnModelDelete;
     private Button btnModelUpload;
     private Button btnModelDownload;
-    private ProgressBar progressBar;
-    private ProgressBar progressBar_1;
+    private ProgressBar progressModel;
 
     private StyledText txtDoc;
     private Button btnDocDelete;
@@ -123,13 +122,16 @@ public class SADDialog extends Dialog {
 		SAD.Model model = sad.getModel();
 
 		if (model != null) {
-		    txtModel.setText("" + model.getSize() + "b");
-		    btnModelDelete.setEnabled(true);
-		    btnModelDownload.setEnabled(true);
+		    progressModel.setMaximum(model.getSize());
+		    progressModel.setSelection(model.getSize());
+//		    txtModel.setText("" + model.getSize() + "b");
+//		    btnModelDelete.setEnabled(true);
+//		    btnModelDownload.setEnabled(true);
 		} else {
-		    txtModel.setText("None");
-		    btnModelDelete.setEnabled(false);
-		    btnModelDownload.setEnabled(false);
+//		    txtModel.setText("None");
+//		    btnModelDelete.setEnabled(false);
+//		    btnModelDownload.setEnabled(false);
+		    progressModel.setSelection(0);
 		}
 
 		SAD.Documentation documentation = sad.getDocumentation();
@@ -176,13 +178,16 @@ public class SADDialog extends Dialog {
 		SAD.Model model;
 		model = sad.getModel();
 		if (model != null) {
-		    txtModel.setText("" + model.getSize() + "b");
-		    btnModelDelete.setEnabled(true);
-		    btnModelDownload.setEnabled(true);
+//		    txtModel.setText("" + model.getSize() + "b");
+//		    btnModelDelete.setEnabled(true);
+//		    btnModelDownload.setEnabled(true);
+		    progressModel.setMaximum(model.getSize());
+		    progressModel.setSelection(model.getSize());
 		} else {
-		    txtModel.setText("None");
-		    btnModelDelete.setEnabled(false);
-		    btnModelDownload.setEnabled(false);
+//		    txtModel.setText("None");
+//		    btnModelDelete.setEnabled(false);
+//		    btnModelDownload.setEnabled(false);
+		    progressModel.setSelection(0);
 		}
 		parentViewer.refresh();
 	    }
@@ -321,16 +326,22 @@ public class SADDialog extends Dialog {
 	fd_grpModel.bottom = new FormAttachment(84, 0);
 	grpModel.setLayoutData(fd_grpModel);
 
-	txtModel = new StyledText(grpModel, SWT.BORDER);
-	txtModel.setToolTipText("Shows if a model was uploaded or not.");
-	txtModel.setLeftMargin(2);
-	txtModel.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
-	txtModel.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
-	txtModel.setDoubleClickEnabled(false);
-	GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-	gd.horizontalIndent = BORDER_MARGIN;
-	gd.verticalIndent = -1;
-	txtModel.setLayoutData(gd);
+	// TODO
+//	txtModel = new StyledText(grpModel, SWT.BORDER);
+//	txtModel.setToolTipText("Shows if a model was uploaded or not.");
+//	txtModel.setLeftMargin(2);
+//	txtModel.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
+//	txtModel.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
+//	txtModel.setDoubleClickEnabled(false);
+//	GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+//	gd.horizontalIndent = BORDER_MARGIN;
+//	gd.verticalIndent = -1;
+//	txtModel.setLayoutData(gd);
+	
+	progressModel = new ProgressBar(grpModel, SWT.SMOOTH);
+	progressModel.setForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
+	progressModel.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+	progressModel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 	btnModelDelete = new Button(grpModel, SWT.NONE);
 	btnModelDelete.setText("Delete");
@@ -350,7 +361,7 @@ public class SADDialog extends Dialog {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
 		controller.uploadModel(id, openUploadDialog(), new UpdateModelCallback(), new ProgressBarMonitor(
-			progressBar_1));
+			progressModel));
 	    }
 	});
 
@@ -360,24 +371,9 @@ public class SADDialog extends Dialog {
 	btnModelDownload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		controller.downloadModel(id, openDownloadDialog(id), new ProgressBarMonitor(progressBar_1));
+		controller.downloadModel(id, openDownloadDialog(id + ".sad"), new ProgressBarMonitor(progressModel));
 	    }
 	});
-
-	progressBar = new ProgressBar(container, SWT.SMOOTH);
-	FormData fd_progressBar = new FormData();
-	fd_progressBar.bottom = new FormAttachment(76, 20);
-	fd_progressBar.top = new FormAttachment(76, 0);
-	fd_progressBar.left = new FormAttachment(grpDescription, BORDER_MARGIN, SWT.LEFT);
-
-	progressBar_1 = new ProgressBar(grpDescription, SWT.NONE);
-	FormData fd_progressBar_1 = new FormData();
-	fd_progressBar_1.top = new FormAttachment(btnSave, 0, SWT.TOP);
-	fd_progressBar_1.left = new FormAttachment(txtName, 0, SWT.LEFT);
-	progressBar_1.setLayoutData(fd_progressBar_1);
-	fd_progressBar.right = new FormAttachment(25, BORDER_MARGIN);
-	progressBar.setLayoutData(fd_progressBar);
-	progressBar.setVisible(true);
 
 	// Documentation //
 	Group grpDocumentation = new Group(container, SWT.NONE);

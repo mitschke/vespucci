@@ -47,19 +47,17 @@ object SADServer
   }
 
   this register new HandlerFactory[DescriptionResource] {
-    path { rootPath+ descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
+    path { rootPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
     def create = new DescriptionResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionModelResource] {
-    path { rootPath+ descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
-    def create = new DescriptionModelResource
-    // FIXME
-//	    def create = new DescriptionModelResource with RestrictWriteToRegisteredUsers
+    path { rootPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
+    def create = new DescriptionModelResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionDocumentationResource] {
-    path { rootPath+ descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
+    path { rootPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
     def create = new DescriptionDocumentationResource with RestrictWriteToRegisteredUsers
   }
 
@@ -98,7 +96,7 @@ class DescriptionResource extends RESTInterface with DAO with XMLSupport {
   get returns XML {
     findDescription(id).map(_.toXML)
   }
-  
+
   put of XML returns XML {
     updateDescription(Description(XMLRequestBody)).toXML
   }
@@ -118,16 +116,7 @@ class DescriptionModelResource extends RESTInterface with DAO with StreamSupport
   }
 
   put of InputStream(MediaType.APPLICATION_XML) returns XML {
-    
-//      // FIXME debugging something here:
-//    println("Storing stream with id: " + id + " locally.")
-//    import org.apache.commons.io.IOUtils
-//    val outputStream = new java.io.FileOutputStream(new java.io.File("temp/puttedModel=[" + id + "].xml"));
-//    IOUtils.copy(inputStream, outputStream)
-//    outputStream.close()
-//    <downloaded/>
-    
-      if (updateModel(id, encodedInputStream)) <updated/> else None
+    if (updateModel(id, encodedInputStream)) <updated/> else None
   }
 
   delete {
@@ -184,7 +173,7 @@ class UserResource extends RESTInterface with DAO with XMLSupport {
  * Starts the SADServer as a configured stand-alone application.
  */
 object SADServerApp extends scala.App with Logging {
-  
+
   GlobalProperties.loadPropertiesFile("sadserver.properties");
 
   SADServer
