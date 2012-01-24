@@ -161,9 +161,9 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     response.statusCode should equal { 401 }
   }
 
-  it should "return 405 on authorized PUT" in {
+  it should "return 200 on authorized PUT" in {
     val response = authPut(host + descriptionCollectionPath + "/" + id1, Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
-    response.statusCode should equal { 405 }
+    response.statusCode should equal { 200 }
   }
 
   it should "return 401 on unauthorized POST" in {
