@@ -24,6 +24,18 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 	private HashMap<IPair<IEnsemble, ICodeElement>, Triple<IEnsemble, ICodeElement, IMember>> elements = new HashMap<IPair<IEnsemble, ICodeElement>, Triple<IEnsemble, ICodeElement, IMember>>();
 	private A dataModel;
 
+	public static Triple<IEnsemble, ICodeElement, IMember> transfer(Object obj){
+		if (obj instanceof Triple<?,?,?>){
+			Triple<?,?,?> temp = (Triple<?, ?, ?>) obj;
+			if ((temp.getFirst() instanceof IEnsemble)&&(temp.getSecond() instanceof ICodeElement)&&(temp.getThird() instanceof IMember)){
+				IEnsemble ensemble = (IEnsemble) temp.getFirst();
+				ICodeElement codeElement = (ICodeElement) temp.getSecond();
+				IMember member = (IMember) temp.getThird();
+				return new Triple<IEnsemble, ICodeElement, IMember>(ensemble, codeElement, member);
+			}
+		}
+		return null;
+	}
 
 	public DataManager(IEnsembleElementList incommingData, IProject project, A dataModel){
 		this.project = project;
@@ -39,14 +51,12 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 
 	private void initialDataImport(IEnsembleElementList incommingData) {
 		for (Iterator<IPair<IEnsemble, ICodeElement>> i = incommingData.iterator(); i.hasNext();){
-			//System.out.println("Input over iterator");
 			added(i.next());
 		}
 	}
 
 	@Override
 	public void added(IPair<IEnsemble, ICodeElement> element) {
-//		System.out.println("Looking for");
 //		Debug.printICodeElement(element.getSecond());
 		CodeElementFinder.startSearch(element.getSecond(), project, new CodeFinder(element));
 	}
@@ -84,12 +94,23 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 
 	@Override
 	public void deleted(IPair<IEnsemble, ICodeElement> element) {
-		if (elements.containsKey(element)){
-			Triple<IEnsemble, ICodeElement, IMember> data = elements.get(element);
-			elements.remove(element);
-			dataModel.deleted(data);
-			notifyObserver();
+		// given IPair is not the same (equal) instance as when the pair was added
+		for (IPair<IEnsemble, ICodeElement> key : elements.keySet()) {
+			if (elements.get(key).getSecond().equals(element.getSecond())){
+				System.out.println("Übereinstimmung gefunden");
+				Triple<IEnsemble, ICodeElement, IMember> data = elements.get(key);
+				elements.remove(element);
+				dataModel.deleted(data);
+				notifyObserver();
+				break;
+			}
 		}
+//		if (elements.containsKey(element)){
+//			Triple<IEnsemble, ICodeElement, IMember> data = elements.get(element);
+//			elements.remove(element);
+//			dataModel.deleted(data);
+//			notifyObserver();
+//		}
 	}
 
 	@Override
