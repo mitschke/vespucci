@@ -97,6 +97,7 @@ public class SADDialog extends Dialog {
     private Button btnModelUpload;
     private Button btnModelDownload;
     private ProgressBar progressBar;
+    private ProgressBar progressBar_1;
 
     private StyledText txtDoc;
     private Button btnDocDelete;
@@ -348,7 +349,8 @@ public class SADDialog extends Dialog {
 	btnModelUpload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		controller.uploadModel(id, openUploadDialog(), new UpdateModelCallback(), new ProgressBarMonitor(progressBar));
+		controller.uploadModel(id, openUploadDialog(), new UpdateModelCallback(), new ProgressBarMonitor(
+			progressBar_1));
 	    }
 	});
 
@@ -358,18 +360,24 @@ public class SADDialog extends Dialog {
 	btnModelDownload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		controller.downloadModel(id, openDownloadDialog(id), new ProgressBarMonitor(progressBar));
+		controller.downloadModel(id, openDownloadDialog(id), new ProgressBarMonitor(progressBar_1));
 	    }
 	});
 
 	progressBar = new ProgressBar(container, SWT.SMOOTH);
 	FormData fd_progressBar = new FormData();
+	fd_progressBar.bottom = new FormAttachment(76, 20);
 	fd_progressBar.top = new FormAttachment(76, 0);
 	fd_progressBar.left = new FormAttachment(grpDescription, BORDER_MARGIN, SWT.LEFT);
+
+	progressBar_1 = new ProgressBar(grpDescription, SWT.NONE);
+	FormData fd_progressBar_1 = new FormData();
+	fd_progressBar_1.top = new FormAttachment(btnSave, 0, SWT.TOP);
+	fd_progressBar_1.left = new FormAttachment(txtName, 0, SWT.LEFT);
+	progressBar_1.setLayoutData(fd_progressBar_1);
 	fd_progressBar.right = new FormAttachment(25, BORDER_MARGIN);
-	fd_progressBar.bottom = new FormAttachment(84, -BORDER_MARGIN);
 	progressBar.setLayoutData(fd_progressBar);
-	progressBar.setVisible(false);
+	progressBar.setVisible(true);
 
 	// Documentation //
 	Group grpDocumentation = new Group(container, SWT.NONE);
@@ -537,12 +545,11 @@ public class SADDialog extends Dialog {
 		@Override
 		public void run() {
 		    progressBar.setMaximum(totalWork);
-		    progressBar.setVisible(true);
+//		    progressBar.setVisible(true);
 		    System.out.println("BEGINNING TASK: " + name + " with total work " + totalWork);
 		}
 	    });
-	   
-	   
+
 	}
 
 	@Override
@@ -550,10 +557,11 @@ public class SADDialog extends Dialog {
 	    progressBar.getDisplay().asyncExec(new Runnable() {
 		@Override
 		public void run() {
+		    if (progressBar.isDisposed())
+			return;
 		    final int sel = progressBar.getSelection();
 		    progressBar.setSelection(sel + work);
 		    System.out.println("Accum work: " + progressBar.getSelection());
-		    progressBar.redraw();
 		}
 	    });
 	}
@@ -563,10 +571,10 @@ public class SADDialog extends Dialog {
 	    progressBar.getDisplay().asyncExec(new Runnable() {
 		@Override
 		public void run() {
-		    progressBar.setVisible(false);
+//		    progressBar.setVisible(false);
+		    System.out.println("Done.");
 		}
 	    });
-	    System.out.println("Done.");
 	}
 
     }
