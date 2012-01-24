@@ -53,7 +53,9 @@ object SADServer
 
   this register new HandlerFactory[DescriptionModelResource] {
     path { rootPath+ descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
-    def create = new DescriptionModelResource with RestrictWriteToRegisteredUsers
+    def create = new DescriptionModelResource
+    // FIXME
+//	    def create = new DescriptionModelResource with RestrictWriteToRegisteredUsers
   }
 
   this register new HandlerFactory[DescriptionDocumentationResource] {
@@ -116,7 +118,16 @@ class DescriptionModelResource extends RESTInterface with DAO with StreamSupport
   }
 
   put of InputStream(MediaType.APPLICATION_XML) returns XML {
-    if (updateModel(id, encodedInputStream)) <updated/> else None
+    
+//      // FIXME debugging something here:
+//    println("Storing stream with id: " + id + " locally.")
+//    import org.apache.commons.io.IOUtils
+//    val outputStream = new java.io.FileOutputStream(new java.io.File("temp/puttedModel=[" + id + "].xml"));
+//    IOUtils.copy(inputStream, outputStream)
+//    outputStream.close()
+//    <downloaded/>
+    
+      if (updateModel(id, encodedInputStream)) <updated/> else None
   }
 
   delete {

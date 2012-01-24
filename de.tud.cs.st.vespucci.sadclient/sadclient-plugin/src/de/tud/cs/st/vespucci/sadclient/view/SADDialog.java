@@ -348,7 +348,7 @@ public class SADDialog extends Dialog {
 	btnModelUpload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		controller.uploadModel(id, openUploadDialog(), new UpdateModelCallback(), new ProgressMonitor());
+		controller.uploadModel(id, openUploadDialog(), new UpdateModelCallback(), new ProgressBarMonitor(progressBar));
 	    }
 	});
 
@@ -358,7 +358,7 @@ public class SADDialog extends Dialog {
 	btnModelDownload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		controller.downloadModel(id, openDownloadDialog(id), new ProgressMonitor());
+		controller.downloadModel(id, openDownloadDialog(id), new ProgressBarMonitor(progressBar));
 	    }
 	});
 
@@ -552,6 +552,8 @@ public class SADDialog extends Dialog {
 		public void run() {
 		    final int sel = progressBar.getSelection();
 		    progressBar.setSelection(sel + work);
+		    System.out.println("Accum work: " + progressBar.getSelection());
+		    progressBar.redraw();
 		}
 	    });
 	}

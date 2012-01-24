@@ -167,8 +167,7 @@ public class Controller {
 	    @Override
 	    public SAD call() throws Exception {
 		sadClient.putModel(id, uploadFile, progressMonitor);
-//		return sadClient.getSAD(id);
-		return new SAD();
+		return sadClient.getSAD(id);
 	    }
 	}, callback));
     }
