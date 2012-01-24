@@ -188,6 +188,12 @@ public class UpdateSadFileHandler extends AbstractHandler {
 					job.setPriority(Job.SHORT);
 					job.setUser(true);
 					job.schedule();
+					try {
+						job.join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 					currentVersion = nextVersion;
 				}

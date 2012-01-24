@@ -36,11 +36,10 @@ package de.tud.cs.st.vespucci.versioning.blackboxes;
 
 import java.util.HashMap;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
 
 import de.tud.cs.st.vespucci.vespucci_model_2011_06_01.*;
-import de.tud.cs.st.vespucci.vespucci_model_2011_06_01.impl.*;
+
 
 
 /**
