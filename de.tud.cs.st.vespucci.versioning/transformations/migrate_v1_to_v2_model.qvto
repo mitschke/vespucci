@@ -88,12 +88,19 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	sourceConnections += self.sourceConnections.map toIncoming();
 	sourceConnections += self.sourceConnections.map toNotAllowed();
 	sourceConnections += self.sourceConnections.map toOutgoing();
+	sourceConnections += self.sourceConnections.map toViolation();
+	sourceConnections += self.sourceConnections.map toGlobalIncoming();
+	sourceConnections += self.sourceConnections.map toGlobalOutgoing();
+	
 	
 	targetConnections += self.targetConnections.map toExpected();
 	targetConnections += self.targetConnections.map toInAndOut();
 	targetConnections += self.targetConnections.map toIncoming();
 	targetConnections += self.targetConnections.map toNotAllowed();
 	targetConnections += self.targetConnections.map toOutgoing();
+	targetConnections += self.targetConnections.map toViolation();
+	targetConnections += self.targetConnections.map toGlobalIncoming();
+	targetConnections += self.targetConnections.map toGlobalOutgoing();
 	
 	result.remember(self);
 }
@@ -121,6 +128,21 @@ when {self.metaClassName() = 'NotAllowed'} {
 mapping OldModel::Connection::toOutgoing() : NewModel::Outgoing
 inherits OldModel::Connection::toConnection
 when {self.metaClassName() = 'Outgoing'} {
+}
+
+mapping OldModel::Connection::toViolation() : NewModel::Violation
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'Violation'} {
+}
+
+mapping OldModel::Connection::toGlobalIncoming() : NewModel::GlobalIncoming
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'GlobalIncoming'} {
+}
+
+mapping OldModel::Connection::toGlobalOutgoing() : NewModel::GlobalOutgoing
+inherits OldModel::Connection::toConnection
+when {self.metaClassName() = 'GlobalOutgoing'} {
 }
 
 mapping OldModel::Connection::toConnection() : NewModel::Connection {
