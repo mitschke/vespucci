@@ -44,12 +44,21 @@ package de.tud.cs.st.vespucci.sadclient.model;
  */
 public class SAD {
 
+    private String id;
     private String name;
     private String type;
     private String abstrct;
     private Model model;
     private Documentation documentation;
     private boolean wip;
+    
+    public String getId() {
+   	return id;
+       }
+
+       public void setId(String id) {
+   	this.id = id;
+       }
 
     public String getName() {
 	return name;
@@ -99,24 +108,7 @@ public class SAD {
 	this.wip = wip;
     }
 
-    @Override
-    public String toString() {
-	StringBuilder builder = new StringBuilder();
-	builder.append("SAD [name=");
-	builder.append(name);
-	builder.append(", type=");
-	builder.append(type);
-	builder.append(", abstrct=");
-	builder.append(abstrct);
-	builder.append(", model=");
-	builder.append(model);
-	builder.append(", documentation=");
-	builder.append(documentation);
-	builder.append(", wip=");
-	builder.append(wip);
-	builder.append("]");
-	return builder.toString();
-    }
+    
     
     @Override
     public int hashCode() {
@@ -124,6 +116,7 @@ public class SAD {
 	int result = 1;
 	result = prime * result + ((abstrct == null) ? 0 : abstrct.hashCode());
 	result = prime * result + ((documentation == null) ? 0 : documentation.hashCode());
+	result = prime * result + ((id == null) ? 0 : id.hashCode());
 	result = prime * result + ((model == null) ? 0 : model.hashCode());
 	result = prime * result + ((name == null) ? 0 : name.hashCode());
 	result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -150,6 +143,11 @@ public class SAD {
 		return false;
 	} else if (!documentation.equals(other.documentation))
 	    return false;
+	if (id == null) {
+	    if (other.id != null)
+		return false;
+	} else if (!id.equals(other.id))
+	    return false;
 	if (model == null) {
 	    if (other.model != null)
 		return false;
@@ -169,7 +167,32 @@ public class SAD {
 	    return false;
 	return true;
     }
-    
+
+
+
+    @Override
+    public String toString() {
+	StringBuilder builder = new StringBuilder();
+	builder.append("SAD [id=");
+	builder.append(id);
+	builder.append(", name=");
+	builder.append(name);
+	builder.append(", type=");
+	builder.append(type);
+	builder.append(", abstrct=");
+	builder.append(abstrct);
+	builder.append(", model=");
+	builder.append(model);
+	builder.append(", documentation=");
+	builder.append(documentation);
+	builder.append(", wip=");
+	builder.append(wip);
+	builder.append("]");
+	return builder.toString();
+    }
+
+
+
     public static class Model {
 
 	private int size;
@@ -254,6 +277,25 @@ public class SAD {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj)
+		return true;
+	    if (obj == null)
+		return false;
+	    if (getClass() != obj.getClass())
+		return false;
+	    Documentation other = (Documentation) obj;
+	    if (size != other.size)
+		return false;
+	    if (url == null) {
+		if (other.url != null)
+		    return false;
+	    } else if (!url.equals(other.url))
+		return false;
+	    return true;
+	}
+
+	@Override
 	public String toString() {
 	    StringBuilder builder = new StringBuilder();
 	    builder.append("Documentation [size=");
@@ -273,24 +315,6 @@ public class SAD {
 	    return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-	    if (this == obj)
-		return true;
-	    if (obj == null)
-		return false;
-	    if (getClass() != obj.getClass())
-		return false;
-	    Model other = (Model) obj;
-	    if (size != other.size)
-		return false;
-	    if (url == null) {
-		if (other.url != null)
-		    return false;
-	    } else if (!url.equals(other.url))
-		return false;
-	    return true;
-	}
 
     }
 

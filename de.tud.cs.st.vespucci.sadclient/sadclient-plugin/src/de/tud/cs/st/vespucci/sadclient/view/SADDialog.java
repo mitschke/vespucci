@@ -36,48 +36,55 @@
  */
 package de.tud.cs.st.vespucci.sadclient.view;
 
+import java.io.File;
+import java.util.concurrent.Future;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Widget;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.graphics.Point;
-
-import de.tud.cs.st.vespucci.sadclient.controller.Controller;
-import de.tud.cs.st.vespucci.sadclient.controller.ISADDialog;
-import de.tud.cs.st.vespucci.sadclient.model.SAD;
-
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.ModifyEvent;
+
+import de.tud.cs.st.vespucci.sadclient.concurrent.Callback;
+import de.tud.cs.st.vespucci.sadclient.controller.Controller;
+import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
 /**
  * 
+ * 
  * @author Mateusz Parzonka
- *
+ * 
  */
-public class SADDialog extends Dialog implements ISADDialog {
+public class SADDialog extends Dialog {
+
+    private final Viewer parentViewer;
 
     protected Object result;
     private Composite container;
-    private Controller listener;
+    final private Controller controller = Controller.getInstance();
 
+    final private String id;
     private Label lblName;
     private Label lblType;
     private Label lblAbstract;
@@ -89,6 +96,7 @@ public class SADDialog extends Dialog implements ISADDialog {
     private Button btnModelDelete;
     private Button btnModelUpload;
     private Button btnModelDownload;
+    private ProgressBar progressBar;
 
     private StyledText txtDoc;
     private Button btnDocDelete;
@@ -96,34 +104,25 @@ public class SADDialog extends Dialog implements ISADDialog {
     private Button btnDocDownload;
     private Button btnSave;
 
-    public SADDialog(Shell parent) {
-	super(parent);
-    }
-    
-    @Override
-    public void updateDescription(final SAD sad) {
-	container.getDisplay().asyncExec(new Runnable() {
-	    public void run() {
-		synchronized (sad) {
-		    txtName.setText(sad.getName());
-		    txtType.setText(sad.getType());
-		    txtAbstract.setText(sad.getAbstrct());
-		}
-		btnSave.setEnabled(false);
-	    }
-	});
+    public SADDialog(Viewer parent, String id) {
+	super(parent.getControl().getShell());
+	this.parentViewer = parent;
+	this.id = id;
     }
 
-    @Override
-    public void updateModel(final SAD sad) {
-	container.getDisplay().asyncExec(new Runnable() {
+    public void updateSAD(final SAD sad) {
+
+	container.getDisplay().syncExec(new Runnable() {
+
 	    public void run() {
-		SAD.Model model;
-		synchronized (sad) {
-		    model = sad.getModel();
-		}
+
+		txtName.setText(sad.getName());
+		txtType.setText(sad.getType());
+		txtAbstract.setText(sad.getAbstrct());
+		SAD.Model model = sad.getModel();
+
 		if (model != null) {
-		    txtModel.setText("" + model.getSize() + "k");
+		    txtModel.setText("" + model.getSize() + "b");
 		    btnModelDelete.setEnabled(true);
 		    btnModelDownload.setEnabled(true);
 		} else {
@@ -131,20 +130,10 @@ public class SADDialog extends Dialog implements ISADDialog {
 		    btnModelDelete.setEnabled(false);
 		    btnModelDownload.setEnabled(false);
 		}
-	    }
-	});
-    }
 
-    @Override
-    public void updateDocumentation(final SAD sad) {
-	container.getDisplay().asyncExec(new Runnable() {
-	    public void run() {
-		SAD.Documentation documentation;
-		synchronized (sad) {
-		    documentation = sad.getDocumentation();
-		}
+		SAD.Documentation documentation = sad.getDocumentation();
 		if (documentation != null) {
-		    txtDoc.setText("" + documentation.getSize() + "k");
+		    txtDoc.setText("" + documentation.getSize() + "b");
 		    btnDocDelete.setEnabled(true);
 		    btnDocDownload.setEnabled(true);
 		} else {
@@ -152,6 +141,68 @@ public class SADDialog extends Dialog implements ISADDialog {
 		    btnDocDelete.setEnabled(false);
 		    btnDocDownload.setEnabled(false);
 		}
+		System.out.println("SAD updated");
+	    }
+	});
+	container.getDisplay().asyncExec(new Runnable() {
+	    public void run() {
+		btnSave.setEnabled(false);
+		parentViewer.refresh();
+	    }
+	});
+    }
+
+    public void updateDescription(final SAD sad) {
+	container.getDisplay().syncExec(new Runnable() {
+	    public void run() {
+		txtName.setText(sad.getName());
+		txtType.setText(sad.getType());
+		txtAbstract.setText(sad.getAbstrct());
+		btnSave.setEnabled(false);
+	    }
+	});
+	container.getDisplay().asyncExec(new Runnable() {
+	    public void run() {
+		btnSave.setEnabled(false);
+		parentViewer.refresh();
+	    }
+	});
+    }
+
+    public void updateModel(final SAD sad) {
+	container.getDisplay().asyncExec(new Runnable() {
+	    public void run() {
+		SAD.Model model;
+		model = sad.getModel();
+		if (model != null) {
+		    txtModel.setText("" + model.getSize() + "b");
+		    btnModelDelete.setEnabled(true);
+		    btnModelDownload.setEnabled(true);
+		} else {
+		    txtModel.setText("None");
+		    btnModelDelete.setEnabled(false);
+		    btnModelDownload.setEnabled(false);
+		}
+		parentViewer.refresh();
+	    }
+	});
+    }
+
+    public void updateDocumentation(final SAD sad) {
+	container.getDisplay().asyncExec(new Runnable() {
+	    public void run() {
+		SAD.Documentation documentation;
+		documentation = sad.getDocumentation();
+		if (documentation != null) {
+		    txtDoc.setText("" + documentation.getSize() + "b");
+		    btnDocDelete.setEnabled(true);
+		    btnDocDownload.setEnabled(true);
+		} else {
+		    txtDoc.setText("None");
+		    btnDocDelete.setEnabled(false);
+		    btnDocDownload.setEnabled(false);
+		}
+		parentViewer.refresh();
 	    }
 	});
     }
@@ -166,20 +217,22 @@ public class SADDialog extends Dialog implements ISADDialog {
 
 	final int BORDER_MARGIN = 10;
 	final int GROUP_MARGIN = 5;
-	
+
 	/**
-	 * When one of the text fields of the description is changed, the save-mode is enabled. 
+	 * When one of the text fields of the description is changed, the
+	 * save-mode is enabled.
 	 */
 	final class DescriptionModifyListener implements ModifyListener {
-	    public void modifyText(ModifyEvent arg0) {
-		container.getDisplay().asyncExec(new Runnable() {
+	    public void modifyText(ModifyEvent event) {
+		container.getDisplay().syncExec(new Runnable() {
 		    public void run() {
+			System.out.println("Text modified.");
 			btnSave.setEnabled(true);
 		    }
 		});
 	    }
 	}
-	
+
 	container = (Composite) super.createDialogArea(parent);
 	container.setLayout(new FormLayout());
 
@@ -242,7 +295,8 @@ public class SADDialog extends Dialog implements ISADDialog {
 	btnSave.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		listener.saveDescription(container);
+		controller.saveDescription(id, txtName.getText(), txtType.getText(), txtAbstract.getText(),
+			new UpdateCallback());
 	    }
 	});
 
@@ -267,12 +321,10 @@ public class SADDialog extends Dialog implements ISADDialog {
 	grpModel.setLayoutData(fd_grpModel);
 
 	txtModel = new StyledText(grpModel, SWT.BORDER);
-	txtModel.setText("48k uploaded");
 	txtModel.setToolTipText("Shows if a model was uploaded or not.");
 	txtModel.setLeftMargin(2);
 	txtModel.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
 	txtModel.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
-	txtModel.setEditable(false);
 	txtModel.setDoubleClickEnabled(false);
 	GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 	gd.horizontalIndent = BORDER_MARGIN;
@@ -286,7 +338,7 @@ public class SADDialog extends Dialog implements ISADDialog {
 	btnModelDelete.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		listener.deleteModel(container);
+		controller.deleteModel(id, new UpdateModelCallback());
 	    }
 	});
 
@@ -296,7 +348,7 @@ public class SADDialog extends Dialog implements ISADDialog {
 	btnModelUpload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		listener.downloadModel(container);
+		controller.uploadModel(id, openUploadDialog(), new UpdateModelCallback(), new ProgressMonitor());
 	    }
 	});
 
@@ -306,9 +358,18 @@ public class SADDialog extends Dialog implements ISADDialog {
 	btnModelDownload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		listener.downloadModel(container);
+		controller.downloadModel(id, openDownloadDialog(id), new ProgressMonitor());
 	    }
 	});
+
+	progressBar = new ProgressBar(container, SWT.SMOOTH);
+	FormData fd_progressBar = new FormData();
+	fd_progressBar.top = new FormAttachment(76, 0);
+	fd_progressBar.left = new FormAttachment(grpDescription, BORDER_MARGIN, SWT.LEFT);
+	fd_progressBar.right = new FormAttachment(25, BORDER_MARGIN);
+	fd_progressBar.bottom = new FormAttachment(84, -BORDER_MARGIN);
+	progressBar.setLayoutData(fd_progressBar);
+	progressBar.setVisible(false);
 
 	// Documentation //
 	Group grpDocumentation = new Group(container, SWT.NONE);
@@ -322,12 +383,10 @@ public class SADDialog extends Dialog implements ISADDialog {
 	grpDocumentation.setLayoutData(fd_grpDocumentation);
 
 	txtDoc = new StyledText(grpDocumentation, SWT.BORDER);
-	txtDoc.setText("None");
 	txtDoc.setToolTipText("Shows if a documentation was uploaded or not.");
 	txtDoc.setLeftMargin(2);
 	txtDoc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
 	txtDoc.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
-	txtDoc.setEditable(false);
 	txtDoc.setDoubleClickEnabled(false);
 	GridData gdDoc = new GridData(GridData.FILL_HORIZONTAL);
 	gdDoc.horizontalIndent = BORDER_MARGIN;
@@ -340,7 +399,7 @@ public class SADDialog extends Dialog implements ISADDialog {
 	btnDocDelete.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		listener.deleteDocumentation(container);
+		controller.deleteDocumentation(id, new UpdateDocumentationCallback());
 	    }
 	});
 
@@ -350,7 +409,9 @@ public class SADDialog extends Dialog implements ISADDialog {
 	btnDocUpload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		listener.downloadDocumentation(container);
+		btnDocUpload.setText("Cancel");
+		controller.uploadDocumentation(id, openUploadDialog(), new UpdateDocumentationCallback(),
+			new ProgressMonitor());
 	    }
 	});
 
@@ -360,15 +421,151 @@ public class SADDialog extends Dialog implements ISADDialog {
 	btnDocDownload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		listener.downloadDocumentation(container);
+		controller.downloadDocumentation(id, openDownloadDialog(id), new ProgressMonitor());
 	    }
 	});
 
+	controller.getSAD(id, new UpdateCallback());
+
 	return container;
+    }
+
+    private File openUploadDialog() {
+	FileDialog fileDialog = new FileDialog(getShell());
+	fileDialog.setFilterExtensions(new String[] { "*.sad" });
+	fileDialog.setFilterNames(new String[] { "*.sad" });
+	fileDialog.setText("Please select a software architecture description file!");
+	String selectedFile = fileDialog.open();
+	if (selectedFile != null) {
+	    System.out.println(selectedFile + " was selected.");
+	    return new File(selectedFile);
+	}
+	return null;
+    }
+
+    private File openDownloadDialog(String basePath) {
+	DirectoryDialog directoryDialog = new DirectoryDialog(getShell());
+	directoryDialog.setText("Please select a download folder!‚");
+	String selectedFile = directoryDialog.open();
+	if (selectedFile != null) {
+	    System.out.println(selectedFile + " was selected.");
+	    return new File(selectedFile + "/" + basePath);
+	}
+	return null;
     }
 
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
 	createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CLOSE_LABEL, false);
+    }
+
+    public class UpdateCallback implements Callback<SAD> {
+	public void set(Future<SAD> future) {
+	    try {
+		System.out.println("Updating SAD");
+		SADDialog.this.updateSAD(future.get());
+	    } catch (Exception e) {
+		e.printStackTrace();
+		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);
+	    }
+	}
+    }
+
+    public class UpdateDescriptionCallback implements Callback<SAD> {
+	public void set(Future<SAD> future) {
+	    try {
+		SADDialog.this.updateDescription(future.get());
+	    } catch (Exception e) {
+		e.printStackTrace();
+		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);
+	    }
+	}
+    }
+
+    public class UpdateModelCallback implements Callback<SAD> {
+	public void set(Future<SAD> future) {
+	    try {
+		SADDialog.this.updateModel(future.get());
+	    } catch (Exception e) {
+		e.printStackTrace();
+		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);
+	    }
+	}
+    }
+
+    public class UpdateDocumentationCallback implements Callback<SAD> {
+	public void set(Future<SAD> future) {
+	    try {
+		SADDialog.this.updateDocumentation(future.get());
+	    } catch (Exception e) {
+		e.printStackTrace();
+		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);
+	    }
+	}
+    }
+
+    public class ProgressMonitor extends NullProgressMonitor {
+
+	@Override
+	public void beginTask(String name, int totalWork) {
+	    System.out.println("BEGINNING TASK: " + name + " with total work " + totalWork);
+	}
+
+	@Override
+	public void worked(int work) {
+	    System.out.println("Worked: " + work);
+	}
+
+	@Override
+	public void done() {
+	    System.out.println("Done.");
+	}
+
+    }
+
+    public class ProgressBarMonitor extends NullProgressMonitor {
+
+	private final ProgressBar progressBar;
+
+	public ProgressBarMonitor(ProgressBar progressBar) {
+	    this.progressBar = progressBar;
+	}
+
+	@Override
+	public void beginTask(final String name, final int totalWork) {
+	    progressBar.getDisplay().asyncExec(new Runnable() {
+		@Override
+		public void run() {
+		    progressBar.setMaximum(totalWork);
+		    progressBar.setVisible(true);
+		    System.out.println("BEGINNING TASK: " + name + " with total work " + totalWork);
+		}
+	    });
+	   
+	   
+	}
+
+	@Override
+	public void worked(final int work) {
+	    progressBar.getDisplay().asyncExec(new Runnable() {
+		@Override
+		public void run() {
+		    final int sel = progressBar.getSelection();
+		    progressBar.setSelection(sel + work);
+		}
+	    });
+	}
+
+	@Override
+	public void done() {
+	    progressBar.getDisplay().asyncExec(new Runnable() {
+		@Override
+		public void run() {
+		    progressBar.setVisible(false);
+		}
+	    });
+	    System.out.println("Done.");
+	}
+
     }
 }

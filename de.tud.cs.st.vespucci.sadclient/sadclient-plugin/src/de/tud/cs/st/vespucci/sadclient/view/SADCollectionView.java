@@ -83,15 +83,15 @@ public class SADCollectionView extends ViewPart {
 
     private TableViewer viewer;
     private Action action1;
-    private Action action2;
+    private Action actionRefresh;
     private Action doubleClickAction;
 
     // column numbers
-    private final static int NAME_COLUMN = 0;
-    private final static int TYPE_COLUMN = 1;
-    private final static int ABSTRACT_COLUMN = 2;
-    private final static int MODEL_COLUMN = 3;
-    private final static int DOCUMENTATION_COLUMN = 4;
+    private final static int MODEL_COLUMN = 0;
+    private final static int DOCUMENTATION_COLUMN = 1;
+    private final static int NAME_COLUMN = 2;
+    private final static int TYPE_COLUMN = 3;
+    private final static int ABSTRACT_COLUMN = 4;
 
     /*
      * The content provider class is responsible for providing objects to the
@@ -103,10 +103,7 @@ public class SADCollectionView extends ViewPart {
 
     class ViewContentProvider implements IStructuredContentProvider {
 
-	private Shell shell;
-
-	public ViewContentProvider(Shell shell) {
-	    this.shell = shell;
+	public ViewContentProvider() {
 	}
 
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
@@ -116,10 +113,13 @@ public class SADCollectionView extends ViewPart {
 	}
 
 	public Object[] getElements(Object parent) {
-	    return Controller.getInstance().getSADCollection(shell);
+	    return Controller.getInstance().getSADCollection();
 	}
     }
 
+    /**
+     *  Provides the labels for Model and Documentation, no labels for the other columns
+     */
     class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 	@Override
@@ -146,13 +146,13 @@ public class SADCollectionView extends ViewPart {
 		case MODEL_COLUMN:
 		    if (sad.getModel() != null)
 			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+		    break;
 		case DOCUMENTATION_COLUMN:
 		    if (sad.getDocumentation() != null)
 			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
 		}
 	    }
 	    return null;
-
 	}
     }
 
@@ -175,29 +175,28 @@ public class SADCollectionView extends ViewPart {
 	viewer.getTable().setHeaderVisible(true);
 	viewer.getTable().setLinesVisible(true);
 
-	createTableViewerColumn(NAME_COLUMN, "Name", 100);
-	createTableViewerColumn(TYPE_COLUMN, "Type", 100);
-	createTableViewerColumn(ABSTRACT_COLUMN, "Abstract", 100);
-	createTableViewerColumn(MODEL_COLUMN, "Model", 20);
-	createTableViewerColumn(DOCUMENTATION_COLUMN, "Documentation", 20);
+	createTableViewerColumn(MODEL_COLUMN, "Mdl", 24, false);
+	createTableViewerColumn(DOCUMENTATION_COLUMN, "Doc", 24, false);
+	createTableViewerColumn(NAME_COLUMN, "Name", 100, true);
+	createTableViewerColumn(TYPE_COLUMN, "Type", 100, true);
+	createTableViewerColumn(ABSTRACT_COLUMN, "Abstract", 100, true);
 
-	viewer.setContentProvider(new ViewContentProvider(viewer.getControl().getShell()));
+	viewer.setContentProvider(new ViewContentProvider());
 	viewer.setLabelProvider(new ViewLabelProvider());
 	viewer.setSorter(new NameSorter());
 	viewer.setInput(getViewSite());
 
-	// Create the help context id for the viewer's control
 	PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "java-tycho-view.viewer");
 	makeActions();
 	hookDoubleClickAction();
     }
 
-    private TableViewerColumn createTableViewerColumn(int colNumber, String title, int bound) {
+    private TableViewerColumn createTableViewerColumn(int colNumber, String title, int bound, boolean resizable) {
 	final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.VIRTUAL);
 	final TableColumn column = viewerColumn.getColumn();
 	column.setText(title);
 	column.setWidth(bound);
-	column.setResizable(true);
+	column.setResizable(resizable);
 	column.setMoveable(true);
 	column.addSelectionListener(getSelectionAdapter(column, colNumber));
 	return viewerColumn;
@@ -218,7 +217,7 @@ public class SADCollectionView extends ViewPart {
     }
 
     private void makeActions() {
-	
+
 	// action 1
 	action1 = new Action() {
 	    public void run() {
@@ -230,22 +229,24 @@ public class SADCollectionView extends ViewPart {
 	action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
 		.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 
-	action2 = new Action() {
+	// action 2
+	actionRefresh = new Action() {
 	    public void run() {
 		viewer.refresh();
 		showMessage("Refresh executed");
 	    }
 	};
-	
-	// action 2
-	action2.setText("Action 2");
-	action2.setToolTipText("Action 2 tooltip");
-	action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+	actionRefresh.setText("Refresh");
+	actionRefresh.setToolTipText("Updates the list of software architectures from the server.");
+	actionRefresh.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
 		.getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
+
 	doubleClickAction = new Action() {
 	    public void run() {
 		ISelection selection = viewer.getSelection();
 		Object obj = ((IStructuredSelection) selection).getFirstElement();
+		System.out.println("Selection class name:" + obj.getClass().getName());
+		System.out.println(obj);
 		showMessage("Double-click detected on3 " + obj.toString());
 	    }
 	};
@@ -254,20 +255,20 @@ public class SADCollectionView extends ViewPart {
 	IMenuManager menuManager = getViewSite().getActionBars().getMenuManager();
 	menuManager.add(action1);
 	menuManager.add(new Separator());
-	menuManager.add(action2);
+	menuManager.add(actionRefresh);
 
-	// local toolbar 
+	// local toolbar
 	IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
 	toolBarManager.add(action1);
-	toolBarManager.add(action2);
-	
+	toolBarManager.add(actionRefresh);
+
 	// local pulldown menu
 	MenuManager menuMgr = new MenuManager("#PopupMenu");
 	menuMgr.setRemoveAllWhenShown(true);
 	menuMgr.addMenuListener(new IMenuListener() {
 	    public void menuAboutToShow(IMenuManager manager) {
 		manager.add(action1);
-		manager.add(action2);
+		manager.add(actionRefresh);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	    }
@@ -275,12 +276,23 @@ public class SADCollectionView extends ViewPart {
 	Menu menu = menuMgr.createContextMenu(viewer.getControl());
 	viewer.getControl().setMenu(menu);
 	getSite().registerContextMenu(menuMgr, viewer);
+
     }
 
     private void hookDoubleClickAction() {
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    public void doubleClick(DoubleClickEvent event) {
-		doubleClickAction.run();
+		System.out.println("Selection printed: " + event.getSelection());
+		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+		Object object = selection.getFirstElement();
+		System.out.println("Type of selection: " + object.getClass());
+		if (object instanceof SAD) {
+		    Dialog dialog = new SADDialog(viewer, ((SAD) object).getId());
+		    dialog.open();
+		} else {
+		    System.err.println("Selection-type unknown!");
+		}
+
 	    }
 	});
     }
@@ -291,9 +303,8 @@ public class SADCollectionView extends ViewPart {
 	// UploadWizard wizard = new UploadWizard();
 	// WizardDialog dialog = new
 	// WizardDialog(viewer.getControl().getShell(), wizard);
-	Dialog dialog = new SADDialog(viewer.getControl().getShell());
-	dialog.open();
-	System.out.println(dialog.getReturnCode());
+	System.out.println("MESSAGE: " + message);
+
     }
 
     /**

@@ -50,15 +50,16 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 /**
- * Parses XML-responses from the SADServer.
+ * Parses XML-responses from the SADServer and constructs XML-request-contents.
  * 
  * @author Mateusz Parzonka
  * 
  */
-public class XMLParser {
+public class XMLProcessor {
 
     private final static String DESCRIPTIONS = "descriptions";
     private final static String DESCRIPTION = "description";
+    private final static String ID = "id";
     private final static String NAME = "name";
     private final static String TYPE = "type";
     private final static String ABSTRACT = "abstract";
@@ -67,20 +68,18 @@ public class XMLParser {
     private final static String SIZE = "size";
     private final static String URL = "url";
 
-    private XMLInputFactory inputFactory;
-
-    public XMLParser() {
-	inputFactory = XMLInputFactory.newInstance();
-    }
+    private final static XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 
     public SAD[] parseSADCollection(InputStream inputStream) throws XMLStreamException {
-
-	List<SAD> result = new ArrayList<SAD>();
-	XMLEventReader eventReader = inputFactory.createXMLEventReader(inputStream);
+	
+	List<SAD> sadCollection = new ArrayList<SAD>();
 	String current = null;
-	SAD model = null;
-	SAD.Model m = null;
+	SAD sad = null;
+	SAD.Model model = null;
 	SAD.Documentation documentation = null;
+
+	XMLEventReader eventReader = inputFactory.createXMLEventReader(inputStream);
+
 	while (eventReader.hasNext()) {
 	    XMLEvent event = eventReader.nextEvent();
 	    if (event.isStartElement()) {
@@ -89,35 +88,37 @@ public class XMLParser {
 		if (localPart.equals(DESCRIPTIONS)) {
 		    continue;
 		} else if (localPart.equals(DESCRIPTION)) {
-		    model = new SAD();
+		    sad = new SAD();
+		    Attribute idAttribute = startElement.getAttributeByName(new QName(ID));
+		    sad.setId(idAttribute.getValue());
 		    current = DESCRIPTION;
 		    continue;
 		} else if (localPart.equals(NAME)) {
-		    model.setName(eventReader.nextEvent().asCharacters().getData());
+		    sad.setName(eventReader.nextEvent().asCharacters().getData());
 		    continue;
 		} else if (localPart.equals(TYPE)) {
-		    model.setType(eventReader.nextEvent().asCharacters().getData());
+		    sad.setType(eventReader.nextEvent().asCharacters().getData());
 		    continue;
 		} else if (localPart.equals(ABSTRACT)) {
-		    model.setAbstrct(eventReader.nextEvent().asCharacters().getData());
+		    sad.setAbstrct(eventReader.nextEvent().asCharacters().getData());
 		    continue;
 		} else if (localPart.equals(MODEL)) {
-		    m = new SAD.Model();
+		    model = new SAD.Model();
 		    Attribute sizeAttribute = startElement.getAttributeByName(new QName(SIZE));
-		    m.setSize(Integer.parseInt(sizeAttribute.getValue()));
-		    model.setModel(m);
+		    model.setSize(Integer.parseInt(sizeAttribute.getValue()));
+		    sad.setModel(model);
 		    current = MODEL;
 		    continue;
 		} else if (localPart.equals(DOCUMENTATION)) {
 		    documentation = new SAD.Documentation();
 		    Attribute sizeAttribute = startElement.getAttributeByName(new QName(SIZE));
 		    documentation.setSize(Integer.parseInt(sizeAttribute.getValue()));
-		    model.setDocumentation(documentation);
+		    sad.setDocumentation(documentation);
 		    current = DOCUMENTATION;
 		    continue;
 		} else if (localPart.equals(URL)) {
 		    if (current.equals(MODEL)) {
-			m.setUrl(eventReader.nextEvent().asCharacters().getData());
+			model.setUrl(eventReader.nextEvent().asCharacters().getData());
 			continue;
 		    } else if (current.equals(DOCUMENTATION)) {
 			documentation.setUrl(eventReader.nextEvent().asCharacters().getData());
@@ -128,12 +129,87 @@ public class XMLParser {
 		EndElement endElement = event.asEndElement();
 		String localPart = endElement.getName().getLocalPart();
 		if (localPart.equals(DESCRIPTION)) {
-		    result.add(model);
-		    System.out.println(model);
+		    sadCollection.add(sad);
+		    System.out.println(sad);
 		    continue;
 		}
 	    }
 	}
-	return result.toArray(new SAD[0]);
+	return sadCollection.toArray(new SAD[0]);
+    }
+    
+    public SAD parseSAD(InputStream inputStream) throws XMLStreamException {
+	
+	String current = null;
+	SAD sad = null;
+	SAD.Model model = null;
+	SAD.Documentation documentation = null;
+
+	XMLEventReader eventReader = inputFactory.createXMLEventReader(inputStream);
+
+	while (eventReader.hasNext()) {
+	    XMLEvent event = eventReader.nextEvent();
+	    if (event.isStartElement()) {
+		StartElement startElement = event.asStartElement();
+		String localPart = startElement.getName().getLocalPart();
+		if (localPart.equals(DESCRIPTION)) {
+		    sad = new SAD();
+		    Attribute idAttribute = startElement.getAttributeByName(new QName(ID));
+		    sad.setId(idAttribute.getValue());
+		    current = DESCRIPTION;
+		    continue;
+		} else if (localPart.equals(NAME)) {
+		    sad.setName(eventReader.nextEvent().asCharacters().getData());
+		    continue;
+		} else if (localPart.equals(TYPE)) {
+		    sad.setType(eventReader.nextEvent().asCharacters().getData());
+		    continue;
+		} else if (localPart.equals(ABSTRACT)) {
+		    sad.setAbstrct(eventReader.nextEvent().asCharacters().getData());
+		    continue;
+		} else if (localPart.equals(MODEL)) {
+		    model = new SAD.Model();
+		    Attribute sizeAttribute = startElement.getAttributeByName(new QName(SIZE));
+		    model.setSize(Integer.parseInt(sizeAttribute.getValue()));
+		    sad.setModel(model);
+		    current = MODEL;
+		    continue;
+		} else if (localPart.equals(DOCUMENTATION)) {
+		    documentation = new SAD.Documentation();
+		    Attribute sizeAttribute = startElement.getAttributeByName(new QName(SIZE));
+		    documentation.setSize(Integer.parseInt(sizeAttribute.getValue()));
+		    sad.setDocumentation(documentation);
+		    current = DOCUMENTATION;
+		    continue;
+		} else if (localPart.equals(URL)) {
+		    if (current.equals(MODEL)) {
+			model.setUrl(eventReader.nextEvent().asCharacters().getData());
+			continue;
+		    } else if (current.equals(DOCUMENTATION)) {
+			documentation.setUrl(eventReader.nextEvent().asCharacters().getData());
+			continue;
+		    }
+		}
+	    } else if (event.isEndElement()) {
+		EndElement endElement = event.asEndElement();
+		String localPart = endElement.getName().getLocalPart();
+		if (localPart.equals(DESCRIPTION)) {
+		    System.out.println(sad);
+		    continue;
+		}
+	    }
+	}
+	return sad;
+    }
+
+    public String getXMLDescription(String id, String name, String type, String abstrct, boolean wip) {
+	StringBuilder sb = new StringBuilder();
+	sb.append("<description id=\"" + id + "\">");
+	sb.append("<name>").append(name).append("</name>");
+	sb.append("<type>").append(type).append("</type>");
+	sb.append("<abstract>").append(abstrct).append("</abstract>");
+	sb.append("<wip>").append(wip).append("</wip>");
+	sb.append("</description>");
+	return sb.toString();
     }
 }

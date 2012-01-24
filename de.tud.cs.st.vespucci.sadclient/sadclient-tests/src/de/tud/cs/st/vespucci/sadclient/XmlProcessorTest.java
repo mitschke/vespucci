@@ -11,14 +11,14 @@ import javax.xml.stream.XMLStreamException;
 import org.junit.Test;
 
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
-import de.tud.cs.st.vespucci.sadclient.model.XMLParser;
+import de.tud.cs.st.vespucci.sadclient.model.XMLProcessor;
 
-public class XmlParserTest {
+public class XmlProcessorTest {
 
     @Test
     public void someTest() throws FileNotFoundException, XMLStreamException {
 
-	XMLParser parser = new XMLParser();
+	XMLProcessor parser = new XMLProcessor();
 	InputStream inputStream = new BufferedInputStream(new FileInputStream(new File(
 		"resources/descriptionCollection.xml")));
 	
