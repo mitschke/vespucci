@@ -44,7 +44,8 @@ import de.tud.cs.st.vespucci.vespucci_model_2011_06_01.*;
 
 /**
  * @author Dominic Scheurer
- * @version 1.0
+ * @author Tanya Harizanova, Robert Cibulla //modified
+ * @version 1.1
  * 
  * Class which encapsulates static methods for usage in QVT
  * transformations. Serves as a bridge between model and diagram

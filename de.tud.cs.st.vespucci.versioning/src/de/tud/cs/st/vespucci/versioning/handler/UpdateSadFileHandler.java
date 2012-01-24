@@ -188,10 +188,12 @@ public class UpdateSadFileHandler extends AbstractHandler {
 					job.setPriority(Job.SHORT);
 					job.setUser(true);
 					job.schedule();
+					
+					//Wait for updating to finish before populating the Diagram Editor to avoid loading failures
+					//New since version 2011-11-29
 					try {
 						job.join();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
