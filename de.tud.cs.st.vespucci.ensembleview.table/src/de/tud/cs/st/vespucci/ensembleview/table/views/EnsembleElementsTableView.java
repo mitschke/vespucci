@@ -1,27 +1,29 @@
 package de.tud.cs.st.vespucci.ensembleview.table.views;
 
-
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -45,19 +47,90 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 
 	public static EnsembleElementsTableView Table;
 	
-	private TableViewer viewer;
-	private ViewContentProvider contentProvider;
-	private LabelProvider labelProvider;
-	
-	public void setDataManager(DataManager<TableModel> dataManager){
-		dataManager.register(this);
-		contentProvider.setDataModel(dataManager.getDataModel());
-		viewer.setLabelProvider(labelProvider);
-		viewer.setContentProvider(contentProvider);
-		viewer.refresh();
+	private TableViewer tableViewer;
+	private TableContentProvider contentProvider;
+
+	public EnsembleElementsTableView() {
+		this.contentProvider = new TableContentProvider();
+		EnsembleElementsTableView.Table = this;
 	}
 	
-	class ViewContentProvider implements IStructuredContentProvider {
+	public void addDataManager(DataManager<TableModel> dataManager){
+		dataManager.register(this);
+		contentProvider.setDataModel(dataManager.getDataModel());
+		tableViewer.setLabelProvider(new TableLabelProvider());
+		tableViewer.refresh();
+	}
+	
+	public void createPartControl(Composite parent) {
+		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		tableViewer.setContentProvider(contentProvider);
+		tableViewer.setLabelProvider(new TableLabelProvider());
+		tableViewer.setSorter(new ViewerSorter());
+		tableViewer.setInput(getViewSite());
+		
+		tableViewer.getTable().setHeaderVisible(true);
+		tableViewer.getTable().setLinesVisible(true);
+
+		tableViewer.addDoubleClickListener(new IDoubleClickListener(){
+			public void doubleClick(DoubleClickEvent event){
+				if (event.getSelection() instanceof StructuredSelection){
+					StructuredSelection ts = (StructuredSelection)event.getSelection();
+					Triple<IEnsemble, ICodeElement, IMember> tripel = DataManager.transfer(ts.getFirstElement());
+					if (tripel != null){
+						IFile ifile = ResourcesPlugin.getWorkspace().getRoot()
+								.getFile(tripel.getThird().getResource().getFullPath());
+						IWorkbenchPage dpage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+						if (dpage != null) {
+							try {
+								//IDE.openEditor(dpage, ifile,true);
+							}catch (Exception e) {
+								// log exception
+							}
+						}
+					}
+				}
+			}
+	});
+
+		TableViewerColumn viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		viewerNameColumn.getColumn().setText("Ensemble");
+		viewerNameColumn.getColumn().setWidth(100);
+		
+		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		viewerNameColumn.getColumn().setText("Element");
+		viewerNameColumn.getColumn().setWidth(100);
+		
+		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		viewerNameColumn.getColumn().setText("Resource");
+		viewerNameColumn.getColumn().setWidth(100);
+
+		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		viewerNameColumn.getColumn().setText("Path");
+		viewerNameColumn.getColumn().setWidth(100);
+	}
+
+	
+	/**
+	 * Passing the focus request to the viewer's control.
+	 */
+	public void setFocus() {
+		tableViewer.getControl().setFocus();
+	}
+	
+	@Override
+	public void update() {
+		tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
+		    @Override
+		    public void run() {
+		        tableViewer.refresh();
+		    }
+		});
+	}
+	
+	
+	
+	class TableContentProvider implements IStructuredContentProvider {
 		
 		private TableModel tableModel;
 		
@@ -78,70 +151,17 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 		}
 	}
 	
-	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
+	class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 		public String getColumnText(Object obj, int index) {
-			if (obj instanceof Triple<?,?,?>){
-				Triple<?,?,?> temp = (Triple<?, ?, ?>) obj;
-				if ((temp.getFirst() instanceof IEnsemble)&&(temp.getSecond() instanceof ICodeElement)&&(temp.getThird() instanceof IMember)){
-					IEnsemble ensemble = (IEnsemble) temp.getFirst();
-					ICodeElement codeElement = (ICodeElement) temp.getSecond();
-					IMember member = (IMember) temp.getThird();
-					switch (index) {
-					case 0:
-						return ensemble.getName();
-					case 1:
-						return codeElement.getSimpleClassName();
-					case 2:
-						if (member instanceof IType){
-							return ((IType) member).getElementName();
-						}
-						if (member instanceof IField){
-							try {
-								return ((IField) member).getElementName() + " : " + ((IField) member).getTypeSignature();
-							} catch (JavaModelException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-						if (member instanceof IMethod){
-							try {
-								return ((IMethod) member).getElementName() + " : " + ((IMethod) member).getSignature();
-							} catch (JavaModelException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-						return member.getResource().getName();
-					case 3:
-						return member.getPath().toOSString();
-					default:
-						return "";
-					}
-				}
-			}
-
-//			if (obj instanceof Triple){
-//				Object third = ((Triple<?,?,?>) obj).getThird();
-//				if (third instanceof IMember){
-//					return ((IMember) third).getElementName();
-//				}
-//			}
-		return getText(obj);
+			return TableModel.createText(DataManager.transfer(obj), index);
 		}
-		
-		private ImageDescriptor loadImageDescriptor(String fileLocation){
-			return Activator.getImageDescriptor(fileLocation);
-		}
-		
+				
 		private Image loadImage(String fileLocation) {
-			ImageDescriptor imageDescriptor = loadImageDescriptor(fileLocation);
-			
+			ImageDescriptor imageDescriptor = Activator.getImageDescriptor(fileLocation);
 			if (imageDescriptor != null){
-				return Activator.getImageDescriptor(fileLocation).createImage();
-			}else{
-				return null;
+				return imageDescriptor.createImage();
 			}
-
+			return null;
 		}
 		
 		public Image getColumnImage(Object obj, int index) {
@@ -161,88 +181,11 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 						return loadImage("icons/field_private_obj.gif");
 					}
 				default:
-					break;
 				}
 			}
-			
-
 			return null;
 		}
-		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().
-					getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-		}
-	}
-	
-	class NameSorter extends ViewerSorter {
+
 	}
 
-	/**
-	 * The constructor.
-	 */
-	public EnsembleElementsTableView() {
-		this.contentProvider = new ViewContentProvider();
-		this.labelProvider = new ViewLabelProvider();
-		EnsembleElementsTableView.Table = this;
-	}
-
-	/**
-	 * This is a callback that will allow us
-	 * to create the viewer and initialize it.
-	 */
-	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(contentProvider);
-		viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setSorter(new ViewerSorter());
-		viewer.setInput(getViewSite());
-		
-		viewer.getTable().setHeaderVisible(true);
-		viewer.getTable().setLinesVisible(true);
-
-		TableViewerColumn viewerNameColumn = new TableViewerColumn(viewer, SWT.NONE);
-		viewerNameColumn.getColumn().setText("Ensemble");
-		viewerNameColumn.getColumn().setWidth(100);
-		
-
-		
-		viewerNameColumn = new TableViewerColumn(viewer, SWT.NONE);
-		viewerNameColumn.getColumn().setText("Element");
-		viewerNameColumn.getColumn().setWidth(100);
-
-
-		
-		viewerNameColumn = new TableViewerColumn(viewer, SWT.NONE);
-		viewerNameColumn.getColumn().setText("Resource");
-		viewerNameColumn.getColumn().setWidth(100);
-
-		viewerNameColumn = new TableViewerColumn(viewer, SWT.NONE);
-		viewerNameColumn.getColumn().setText("Path");
-		viewerNameColumn.getColumn().setWidth(100);
-		
-
-		
-	}
-
-	
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
-	public void setFocus() {
-		viewer.getControl().setFocus();
-	}
-	
-	@Override
-	public void update() {
-		viewer.getTable().getDisplay().asyncExec(new Runnable() {
-		    @Override
-		    public void run() {
-		        viewer.refresh();
-		    }
-		});
-	}
-	
-
-	
-	
 }
