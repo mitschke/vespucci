@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.marker;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -190,13 +191,15 @@ public class CodeElementMarker implements ICodeElementFoundProcessor {
 	}
 
 	public static void unmarkIViolation(IViolation violation) {
-		if (markers.containsKey(violation)){
-			for (IMarker marker : markers.get(violation)) {
-				try {
-					marker.delete();
-				} catch (CoreException e) {
-					final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-					StatusManager.getManager().handle(is, StatusManager.LOG);
+		for (Entry<IViolation, List<IMarker>> entry : markers.entrySet()) {
+			if (entry.getKey().equals(violation)){
+				for (IMarker marker : markers.get(violation)) {
+					try {
+						marker.delete();
+					} catch (CoreException e) {
+						final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+						StatusManager.getManager().handle(is, StatusManager.LOG);
+					}
 				}
 			}
 		}

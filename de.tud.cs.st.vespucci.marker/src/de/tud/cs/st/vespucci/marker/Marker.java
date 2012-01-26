@@ -98,13 +98,12 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 	}
 
 	private String createSourceViolationDescription(IViolation violation) {
-		// TODO create real description out of the given IViolation
+		// TODO : create displayed description for marker here
 		return "";
 	}
 
 	private String createTargetViolationDescription(IViolation violation) {
-		// TODO create real description out of the given IViolation
-		return "";
+		return createSourceViolationDescription(violation);
 	}
 
 	@Override
