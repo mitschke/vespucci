@@ -60,11 +60,6 @@ public class Violation implements IViolation{
 	}
 
 	@Override
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
 	public ICodeElement getSourceElement() {
 		return sourceElement;
 	}
@@ -87,6 +82,18 @@ public class Violation implements IViolation{
 	@Override
 	public IConstraint getConstraint() {
 		return constraint;
+	}
+
+	@Override
+	public String getViolatingKind() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDiagramFile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
