@@ -17,10 +17,14 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
@@ -108,19 +112,59 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 
 		TableViewerColumn viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Ensemble");
-		viewerNameColumn.getColumn().setWidth(100);
+		viewerNameColumn.getColumn().setWidth(200);
+		addColumnListener(viewerNameColumn.getColumn(), 0);
 
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Element");
-		viewerNameColumn.getColumn().setWidth(100);
-
+		viewerNameColumn.getColumn().setWidth(200);
+		addColumnListener(viewerNameColumn.getColumn(), 1);
+		
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Resource");
 		viewerNameColumn.getColumn().setWidth(100);
-
+		addColumnListener(viewerNameColumn.getColumn(), 2);
+		
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Path");
-		viewerNameColumn.getColumn().setWidth(100);
+		viewerNameColumn.getColumn().setWidth(200);
+		addColumnListener(viewerNameColumn.getColumn(), 3);
+	}
+	
+	private void addColumnListener(final TableColumn tableColumn, final int column){
+		tableColumn.addSelectionListener(new SelectionListener() {
+			
+			int sortDirection = SWT.NONE;
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				switch (sortDirection){
+				case SWT.NONE:
+					sortDirection = SWT.UP;
+					tableColumn.getParent().setSortColumn(tableColumn);
+					tableColumn.getParent().setSortDirection(SWT.UP);
+					tableViewer.setComparator(new TableColumnComparator(1, column));
+					break;
+				case SWT.UP:
+					sortDirection = SWT.DOWN;
+					tableColumn.getParent().setSortColumn(tableColumn);
+					tableColumn.getParent().setSortDirection(SWT.DOWN);
+					tableViewer.setComparator(new TableColumnComparator(-1, column));
+					break;
+				case SWT.DOWN:
+					sortDirection = SWT.NONE;
+					tableColumn.getParent().setSortColumn(tableColumn);
+					tableColumn.getParent().setSortDirection(SWT.NONE);
+					tableViewer.setComparator(new TableColumnComparator(0, column));
+					break;
+				}
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
 	}
 
 
@@ -199,6 +243,25 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 			return null;
 		}
 
+	}
+	
+	class TableColumnComparator extends ViewerSorter{
+		
+		private int sortDirection;
+		private int column;
+		
+		public TableColumnComparator (int sortDirection, int column){
+			this.sortDirection = sortDirection;
+			this.column = column;
+		}
+		
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			
+			Triple<IEnsemble, ICodeElement, IMember> element1 = DataManager.transfer(e1);
+			Triple<IEnsemble, ICodeElement, IMember> element2 = DataManager.transfer(e2);
+			
+			return sortDirection * TableModel.createText(element1, column).compareToIgnoreCase(TableModel.createText(element2, column));
+		}
 	}
 
 }

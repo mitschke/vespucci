@@ -137,7 +137,6 @@ public class CodeElementFinder {
 			public void endReporting(){
 				if (!sucess){
 					notfoundMatch(sourceElement, project, processor);
-					System.out.println("nothing found");
 				}
 			}
 			
