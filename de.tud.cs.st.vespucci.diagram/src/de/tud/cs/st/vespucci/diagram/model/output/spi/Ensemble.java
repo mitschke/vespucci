@@ -192,5 +192,10 @@ public class Ensemble implements IEnsemble {
 			return false;
 		return true;
 	}
+
+	@Override
+	public IEnsemble getParent() {
+		return null;
+	}
 	
 }
