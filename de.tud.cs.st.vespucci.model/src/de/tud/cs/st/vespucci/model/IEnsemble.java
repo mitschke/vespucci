@@ -43,7 +43,7 @@ import java.util.Set;
 public interface IEnsemble {
 
 	//could be null
-//	IEnsemble getParent();
+	IEnsemble getParent();
 	
 	String getDescription();
 
