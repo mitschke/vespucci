@@ -2,6 +2,7 @@ package de.tud.cs.st.vespucci.codeelementfinder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -15,32 +16,44 @@ public class Util {
 	
 	private static Map<String,String> primitiveTypeTable;
 	
+	
+	public static String createSimpleTypeText(String typQualifier){
+		String label= "";
+		
+		int dimensionOfArray = numberOfArraySymbol(typQualifier);
+		
+		String innerTypQualifier = typQualifier.substring(dimensionOfArray);
+		if (innerTypQualifier.contains("/")){
+			innerTypQualifier = innerTypQualifier.substring(innerTypQualifier.lastIndexOf("/") + 1, innerTypQualifier.lastIndexOf(";"));
+			label = innerTypQualifier;
+		}else{
+			if (primitiveTypeTable == null){
+				fillPrimitiveTypeTable();
+			}
+			
+			for (Entry<String, String> entry : primitiveTypeTable.entrySet()) {
+				if (entry.getValue().equals(innerTypQualifier)){
+					label = entry.getKey();
+					break;
+				}
+			}
+		}
+		while (dimensionOfArray > 0){
+			label += "[]";
+			dimensionOfArray--;
+		}
+		return label;
+	}
+	
 	public static String createTypQualifier(String signatur, IType declaringType) {		
 		
 		if (primitiveTypeTable == null){
-			primitiveTypeTable = new HashMap<String, String>();
-			primitiveTypeTable.put("byte", "B");
-			primitiveTypeTable.put("char", "C");
-			primitiveTypeTable.put("double", "D");
-			primitiveTypeTable.put("float", "F");
-			primitiveTypeTable.put("int", "I");
-			primitiveTypeTable.put("long", "J");
-			primitiveTypeTable.put("short", "S");
-			primitiveTypeTable.put("boolean", "Z");
-			primitiveTypeTable.put("void", "V");
+			fillPrimitiveTypeTable();
 		}
 		
 		String typeQualifier = "";
 		
-		// filter '[' we need them later
-		int dimensionOfArray = 0;
-		for (int i = 0; i < signatur.length(); i++){
-			if (signatur.charAt(i) == '[' ){
-				dimensionOfArray++;
-			}else{
-				break;
-			}
-		}
+		int dimensionOfArray = numberOfArraySymbol(signatur);
 		
 		String arraySymbols = signatur.substring(0, dimensionOfArray);
 		String innerTypQualifier = signatur.substring(dimensionOfArray);
@@ -66,6 +79,32 @@ public class Util {
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return typeQualifier;
+	}
+
+	private static int numberOfArraySymbol(String signatur) {
+		// filter '[' we need them later
+		int dimensionOfArray = 0;
+		for (int i = 0; i < signatur.length(); i++){
+			if (signatur.charAt(i) == '[' ){
+				dimensionOfArray++;
+			}else{
+				break;
+			}
+		}
+		return dimensionOfArray;
+	}
+
+	private static void fillPrimitiveTypeTable() {
+		primitiveTypeTable = new HashMap<String, String>();
+		primitiveTypeTable.put("byte", "B");
+		primitiveTypeTable.put("char", "C");
+		primitiveTypeTable.put("double", "D");
+		primitiveTypeTable.put("float", "F");
+		primitiveTypeTable.put("int", "I");
+		primitiveTypeTable.put("long", "J");
+		primitiveTypeTable.put("short", "S");
+		primitiveTypeTable.put("boolean", "Z");
+		primitiveTypeTable.put("void", "V");
 	}
 	
 	public static String removeLastDollarSequence(String simpleClassName) {

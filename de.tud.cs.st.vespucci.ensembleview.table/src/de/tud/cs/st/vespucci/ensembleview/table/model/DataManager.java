@@ -94,23 +94,28 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 
 	@Override
 	public void deleted(IPair<IEnsemble, ICodeElement> element) {
+		
 		// given IPair is not the same (equal) instance as when the pair was added
 		for (IPair<IEnsemble, ICodeElement> key : elements.keySet()) {
+			// Equals of IType doesn
+//			if (key.equals(element)){
+//				System.out.println("Übereinstimmung gefunden");
+//				Triple<IEnsemble, ICodeElement, IMember> data = elements.get(key);
+//				elements.remove(key);
+//				dataModel.deleted(data);
+//				notifyObserver();
+//				break;
+//			}
 			if (elements.get(key).getSecond().equals(element.getSecond())){
 				System.out.println("Übereinstimmung gefunden");
 				Triple<IEnsemble, ICodeElement, IMember> data = elements.get(key);
-				elements.remove(element);
+				elements.remove(key);
 				dataModel.deleted(data);
 				notifyObserver();
 				break;
 			}
 		}
-//		if (elements.containsKey(element)){
-//			Triple<IEnsemble, ICodeElement, IMember> data = elements.get(element);
-//			elements.remove(element);
-//			dataModel.deleted(data);
-//			notifyObserver();
-//		}
+
 	}
 
 	@Override
