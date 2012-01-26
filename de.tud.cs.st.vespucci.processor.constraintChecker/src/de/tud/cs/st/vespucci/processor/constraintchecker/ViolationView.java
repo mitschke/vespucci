@@ -9,8 +9,10 @@ import sae.Observer;
 import sae.collections.Conversions;
 import sae.collections.QueryResult;
 import scala.collection.immutable.List;
+import de.tud.cs.st.vespucci.interfaces.IDataView;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 
 /**
@@ -85,6 +87,11 @@ public class ViolationView implements IViolationView, Observer<IViolation>
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.updated(arg0, arg1);
 		}
+	}
+
+	@Override
+	public IDataView<IViolationSummary> getSummaryView() {
+		return new SummaryView();
 	}
 
 }
