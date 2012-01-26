@@ -106,7 +106,7 @@ public class ArchitectureDatabaseProvider {
 		
 		if(!fileProcessor.isModel(modelFile))
 		{
-			fileProcessor.registerModel(modelFile);
+			fileProcessor.addConstraintModel(modelFile);
 			fileProcessor.architectureDiagramAdded(modelFile);
 		}
 		else
@@ -121,7 +121,7 @@ public class ArchitectureDatabaseProvider {
 		
 		ArchitectureFileProcessor fileProcessor = observers.get(project);
 		fileProcessor.architectureDiagramRemoved(modelFile);
-		fileProcessor.unregisterModel(modelFile);
+		fileProcessor.deleteConstraintModel(modelFile);
 	}
 	
 	
@@ -140,7 +140,7 @@ public class ArchitectureDatabaseProvider {
 		ArchitectureFileProcessor fileProcessor = observers.get(project);
 		if(!fileProcessor.isGlobalModel(modelFile))
 		{
-			fileProcessor.setGlobalModel(modelFile);
+			fileProcessor.setEnsembleRepository(modelFile);
 			fileProcessor.architectureDiagramAdded(modelFile);
 		}
 		else {

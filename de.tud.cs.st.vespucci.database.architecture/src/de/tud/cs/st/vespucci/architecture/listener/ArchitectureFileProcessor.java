@@ -17,11 +17,12 @@ import de.tud.cs.st.vespucci.utilities.StateLocationCopyService;
 import de.tud.cs.st.vespucci.utilities.Util;
 
 /**
- * Files may be added and removed from the database via this class.
- * All Files that are currently in the database are marked as registered in this Processor.
- *  
+ * Files may be added and removed from the database via this class. All Files
+ * that are currently in the database are marked as registered in this
+ * Processor.
+ * 
  * @author Ralf Mitschke
- *
+ * 
  */
 public class ArchitectureFileProcessor implements IArchitectureObserver {
 
@@ -33,7 +34,7 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 
 	private Set<String> registeredModels = new HashSet<String>();
 
-	private String globalModel = null;
+	private String ensembleRepository = null;
 
 	public ArchitectureFileProcessor(UnissonDatabase database,
 			StateLocationCopyService copyService, String pluginId) {
@@ -44,90 +45,49 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 
 	@Override
 	public void architectureDiagramAdded(IResource resource) {
-		if (!isRegisteredModel(resource))
-			return;
-
-		IArchitectureModel model = Util.adapt(resource,
-				IArchitectureModel.class);
-		try {
-			copyService.makeShadowCopy(resource);
-		} catch (CoreException e) {
-			IStatus is = new Status(IStatus.ERROR, pluginId,
-					"unable to create a shadow copy of resource: "
-							+ resource.getLocation().toString(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		}
-		if (isGlobalModel(resource))
-			database.addGlobalModel(model);
-		else
-			// we already checked that this is a registered model so no need to
-			// check this twice
-			database.addModel(model);
+		// we always add models explicitly via
+		// addConstraintModel/setEnsembleRepository
+		// not via event from workspace
 	}
 
 	@Override
 	public void architectureDiagramRemoved(IResource resource) {
 		if (!isRegisteredModel(resource))
 			return;
-
-		IArchitectureModel model = Util.adapt(resource,
-				IArchitectureModel.class);
 		if (isGlobalModel(resource))
-			database.removeGlobalModel(model);
-		else
-			// we already checked that this is a registered model so no need to
-			// check this twice
-			database.removeModel(model);
-		try {
-			copyService.deleteShadowCopy(resource);
-		} catch (CoreException e) {
-			IStatus is = new Status(IStatus.ERROR, pluginId,
-					"unable to create a shadow copy of resource: "
-							+ resource.getLocation().toString(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		}
+			doDatabaseDelete(resource, true);
+		if (isRegisteredModel(resource))
+			doDatabaseDelete(resource, false);
+		doShadowFileDelete(resource);
 	}
 
 	@Override
 	public void architectureDiagramChanged(IResource resource) {
 		if (!isRegisteredModel(resource))
 			return;
+		if (isGlobalModel(resource))
+			doDatabaseUpdate(resource, true);
 
-		IFile oldModelFile = copyService.getShadowCopyFile(resource);
-		try {
-			IArchitectureModel oldArchitectureModel = Util.adapt(oldModelFile,
-					IArchitectureModel.class);
-			IArchitectureModel newArchitectureModel = Util.adapt(resource,
-					IArchitectureModel.class);
-			if (isGlobalModel(resource))
-				database.updateGlobalModel(oldArchitectureModel,
-						newArchitectureModel);
-			else
-				// we already checked that this is a registered model so no need
-				// to check this twice
-				database.updateModel(oldArchitectureModel, newArchitectureModel);
-			database.updateModel(oldArchitectureModel, newArchitectureModel);
-			copyService.makeShadowCopy(resource);
-
-		} catch (CoreException e) {
-			IStatus is = new Status(IStatus.ERROR, pluginId,
-					"unable to create a shadow copy of resource: "
-							+ resource.getLocation().toString(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		}
-
+		if (isModel(resource))
+			doDatabaseUpdate(resource, false);
+		doShadowFileUpdate(resource);
 	}
 
-	public void registerModel(IResource resource) {
+	public void addConstraintModel(IResource resource) {
+		doDatabaseAddition(resource, false);
+		doShadowFileAddition(resource);
 		registeredModels.add(resource.getFullPath().toString());
 	}
 
-	public void unregisterModel(IResource resource) {
+	public void deleteConstraintModel(IResource resource) {
+		doDatabaseDelete(resource, false);
+		doShadowFileDelete(resource);
 		registeredModels.remove(resource.getFullPath().toString());
 	}
 
-	public void setGlobalModel(IResource resource) {
-		globalModel = resource.getFullPath().toString();
+	public void setEnsembleRepository(IResource resource) {
+		doDatabaseAddition(resource, true);
+		ensembleRepository = resource.getFullPath().toString();
 	}
 
 	public boolean isRegisteredModel(IResource resource) {
@@ -135,10 +95,97 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 	}
 
 	public boolean isGlobalModel(IResource resource) {
-		return resource.getFullPath().toString().equals(globalModel);
+		return resource.getFullPath().toString().equals(ensembleRepository);
 	}
 
 	public boolean isModel(IResource resource) {
 		return registeredModels.contains(resource.getFullPath().toString());
+	}
+
+	/**
+	 * perform an update on the database for the given resource. This method
+	 * assumes the model was already added once to the database and a shadow
+	 * copy is present.
+	 * 
+	 */
+	private void doDatabaseUpdate(IResource resource, boolean asRepository) {
+		IFile oldModelFile = copyService.getShadowCopyFile(resource);
+		IArchitectureModel oldArchitectureModel = Util.adapt(oldModelFile,
+				IArchitectureModel.class);
+		IArchitectureModel newArchitectureModel = Util.adapt(resource,
+				IArchitectureModel.class);
+		if (asRepository) {
+			database.updateGlobalModel(oldArchitectureModel,
+					newArchitectureModel);
+		} else {
+			database.updateModel(oldArchitectureModel, newArchitectureModel);
+		}
+	}
+
+	private void doShadowFileUpdate(IResource resource) {
+		try {
+			copyService.makeShadowCopy(resource);
+		} catch (CoreException e) {
+			IStatus is = new Status(IStatus.ERROR, pluginId,
+					"unable to create a shadow copy of resource: "
+							+ resource.getLocation().toString(), e);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
+	}
+
+	/**
+	 * perform an update on the database for the given resource. This method
+	 * assumes the resource was never added to the database
+	 */
+	private void doDatabaseAddition(IResource resource, boolean asRepository) {
+		IArchitectureModel model = Util.adapt(resource,
+				IArchitectureModel.class);
+		if (asRepository) {
+			database.addGlobalModel(model);
+
+		} else {
+			database.addModel(model);
+		}
+
+	}
+
+	private void doShadowFileAddition(IResource resource) {
+		try {
+			// always make a copy before adding to the database
+			copyService.makeShadowCopy(resource);
+		} catch (CoreException e) {
+			IStatus is = new Status(IStatus.ERROR, pluginId,
+					"unable to create a shadow copy of resource: "
+							+ resource.getLocation().toString(), e);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
+	}
+
+	/**
+	 * perform an update on the database for the given resource. This method
+	 * assumes the resource was never added to the database
+	 */
+	private void doDatabaseDelete(IResource resource, boolean asRepository) {
+		IArchitectureModel model = Util.adapt(resource,
+				IArchitectureModel.class);
+		if (asRepository) {
+			database.addGlobalModel(model);
+
+		} else {
+			database.addModel(model);
+		}
+
+	}
+
+	private void doShadowFileDelete(IResource resource) {
+		try {
+			// always make a copy before adding to the database
+			copyService.deleteShadowCopy(resource);
+		} catch (CoreException e) {
+			IStatus is = new Status(IStatus.ERROR, pluginId,
+					"unable to create a shadow copy of resource: "
+							+ resource.getLocation().toString(), e);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
 	}
 }
