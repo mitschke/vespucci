@@ -40,7 +40,7 @@ public class EnsembleElementModelProcessor implements IModelProcessor {
 				diagramFile, project);
 
 		LazyView<Tuple2<IEnsemble, SourceElement<Object>>> global_ensemble_elements = database
-				.global_ensemble_elements();
+				.leaf_ensemble_elements();
 
 		EnsembleElementListView ensembleElementListView = new EnsembleElementListView(
 				createEnsembleToCodeProjection(global_ensemble_elements));
