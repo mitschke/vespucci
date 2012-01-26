@@ -42,6 +42,9 @@ import java.util.Set;
  */
 public interface IEnsemble {
 
+	//could be null
+//	IEnsemble getParent();
+	
 	String getDescription();
 
 	String getName();
