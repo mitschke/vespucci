@@ -3,12 +3,9 @@ package de.tud.cs.st.vespucci.ensembleview.table.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 
+import de.tud.cs.st.vespucci.codeelementfinder.Util;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
@@ -65,44 +62,40 @@ public class TableModel implements IDataModel{
 			Triple<IEnsemble, ICodeElement, IMember> value) {
 		
 		ICodeElement codeElement = value.getSecond();
-		IMember member = value.getThird();
-		
-		if ((codeElement instanceof IClassDeclaration)&&(member instanceof IType)){
-			return ((IType)member).getElementName()+":" + ((IType)member).getTypeQualifiedName();
-		}
-		if ((codeElement instanceof IMethodDeclaration)&&(member instanceof IMethod)){
-			String returnTyp = "";
-			try{
-				returnTyp = ((IMethod)member).getReturnType(); 
-			} catch (JavaModelException e) {
-			}
-			return ((IMethod)member).getElementName()+":" + returnTyp;
-		}
-		if ((codeElement instanceof IFieldDeclaration)&&(member instanceof IField)){
-			String typ = "";
-			try{
-				typ = ((IField)member).getTypeSignature(); 
-			} catch (JavaModelException e) {
-			}
-			return ((IField)member).getElementName()+":" + typ;
-		}
 		if (codeElement instanceof IClassDeclaration){
-			return ((IClassDeclaration)codeElement).getSimpleClassName()+":" + ((IClassDeclaration)codeElement).getTypeQualifier();
+			return ((IClassDeclaration)codeElement).getSimpleClassName();
 		}
 		if (codeElement instanceof IMethodDeclaration){
-			return ((IMethodDeclaration)codeElement).getMethodName()+":";
+			IMethodDeclaration methodDeclaration = (IMethodDeclaration)codeElement;
+			String label = methodDeclaration.getMethodName()+"(";
+			for (int i = 0; i < methodDeclaration.getParameterTypeQualifiers().length; i++) {
+				label += Util.createSimpleTypeText(methodDeclaration.getParameterTypeQualifiers()[i]);
+				if (i < methodDeclaration.getParameterTypeQualifiers().length-1){
+					label += ", ";
+				}
+			}
+			label += ")"+" : " + Util.createSimpleTypeText(((IMethodDeclaration)codeElement).getReturnTypeQualifier());;
+			return label;
 		}
 		if (codeElement instanceof IFieldDeclaration){
-			return ((IFieldDeclaration)codeElement).getFieldName()+":";
+			return ((IFieldDeclaration)codeElement).getFieldName()+" : " + Util.createSimpleTypeText(((IFieldDeclaration)codeElement).getTypeQualifier());
 		}
-		
-		// the right part was not found. member is some parent element
+
 		return "";
 	}
 
 	private static String createEnsembleText(
 			Triple<IEnsemble, ICodeElement, IMember> value) {
-		return value.getFirst().getName();
+		
+		IEnsemble ensemble = value.getFirst();
+		String label =  ensemble.getName();
+		
+		while (ensemble.getParent() != null){
+			ensemble = ensemble.getParent();
+			label = ensemble.getName() + "." + label;
+		}
+		
+		return label;
 	}
 
 }

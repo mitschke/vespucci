@@ -13,4 +13,5 @@ Require-Bundle: org.eclipse.ui,
  de.tud.cs.st.vespucci.model;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.jdt.core
+Import-Package: org.eclipse.jdt.core,
+ org.eclipse.ui.ide
