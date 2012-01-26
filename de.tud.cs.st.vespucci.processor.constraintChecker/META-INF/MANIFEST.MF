@@ -13,9 +13,9 @@ Import-Package: de.tud.cs.st.vespucci.database.architecture.provider,
  de.tud.cs.st.vespucci.interfaces,
  de.tud.cs.st.vespucci.utilities,
  org.eclipse.core.resources,
- sae;version="0.3.1",
- sae.collections;version="0.3.1",
+ sae;version="0.4.0",
+ sae.collections;version="0.4.0",
  scala;version="2.9.0",
  scala.collection;version="2.9.0",
  scala.collection.immutable;version="2.9.0",
- unisson.model;version="0.3.1"
+ unisson.model;version="0.4.0"
