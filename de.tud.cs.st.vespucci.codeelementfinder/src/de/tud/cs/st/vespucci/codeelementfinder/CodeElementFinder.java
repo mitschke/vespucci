@@ -91,7 +91,8 @@ public class CodeElementFinder {
 				for (IJavaElement javaElement : packageFragmentRoot.getChildren()) {
 					if (javaElement instanceof IPackageFragment){
 						IPackageFragment candidatePackage = (IPackageFragment) javaElement;
-						if (candidatePackage.getElementName().equals(sourceElement.getPackageIdentifier())){
+						//System.getProperty("file.separator") instead of "/"
+						if (candidatePackage.getElementName().equals(sourceElement.getPackageIdentifier().replace("/", "."))){
 							packages.add(candidatePackage);
 						}
 					}
