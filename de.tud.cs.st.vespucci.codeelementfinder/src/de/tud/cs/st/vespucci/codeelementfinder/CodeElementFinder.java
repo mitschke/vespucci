@@ -33,6 +33,7 @@
  */
 package de.tud.cs.st.vespucci.codeelementfinder;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,6 +57,7 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
+import org.eclipse.jdt.internal.core.search.JavaSearchScope;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.codeelementfinder.extra.IComplexCodeElement;
@@ -72,42 +74,55 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 
 public class CodeElementFinder {
 
+	private static int i = 0;
+	
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.codeelementfinder";
 
+	private static HashMap<String, IJavaSearchScope>  helper = new HashMap<String, IJavaSearchScope>();
+	
 	public static void startSearch(ICodeElement sourceElement, IProject project, ICodeElementFoundProcessor processor){
-
+		System.out.println(i);
+		i++;
 		SearchPattern searchPattern;
-		
+
 		//Set default SearchScope
 		IJavaSearchScope javaSearchScope = SearchEngine.createWorkspaceScope();
-		
-		//Try to get better SearchScope
-	    try {
-	    	IJavaProject javaProject= JavaCore.create(project);
-	    	IPackageFragmentRoot[] packageFragmentRoots = javaProject.getPackageFragmentRoots();
-	    	
-	    	List<IJavaElement> packages = new LinkedList<IJavaElement>();
-	    	for (IPackageFragmentRoot packageFragmentRoot : packageFragmentRoots) {
-				for (IJavaElement javaElement : packageFragmentRoot.getChildren()) {
-					if (javaElement instanceof IPackageFragment){
-						IPackageFragment candidatePackage = (IPackageFragment) javaElement;
-						//System.getProperty("file.separator") instead of "/"
-						if (candidatePackage.getElementName().equals(sourceElement.getPackageIdentifier().replace("/", "."))){
-							packages.add(candidatePackage);
+
+		if (helper.containsKey(sourceElement.getPackageIdentifier())){
+			javaSearchScope = helper.get(sourceElement.getPackageIdentifier()); 
+			System.out.println("effizient");
+		}else{
+			System.out.println("böse");
+			//Try to get better SearchScope
+			try {
+				IJavaProject javaProject= JavaCore.create(project);
+				IPackageFragmentRoot[] packageFragmentRoots = javaProject.getPackageFragmentRoots();
+
+				List<IJavaElement> packages = new LinkedList<IJavaElement>();
+				for (IPackageFragmentRoot packageFragmentRoot : packageFragmentRoots) {
+					for (IJavaElement javaElement : packageFragmentRoot.getChildren()) {
+						if (javaElement instanceof IPackageFragment){
+							IPackageFragment candidatePackage = (IPackageFragment) javaElement;
+							//System.getProperty("file.separator") instead of "/"
+							if (candidatePackage.getElementName().equals(sourceElement.getPackageIdentifier().replace("/", "."))){
+								packages.add(candidatePackage);
+							}
 						}
 					}
 				}
-			}
 
-	    	
-	    	IJavaElement[] javaElements = new IJavaElement[packages.size()];
-	    	for (int i = 0; i < packages.size(); i++) {
-				javaElements[i] = packages.get(i);
+
+				IJavaElement[] javaElements = new IJavaElement[packages.size()];
+				for (int i = 0; i < packages.size(); i++) {
+					javaElements[i] = packages.get(i);
+				}
+				javaSearchScope = SearchEngine.createJavaSearchScope(javaElements);
+
+				helper.put(sourceElement.getPackageIdentifier(), javaSearchScope);
+			} catch (JavaModelException e) {
+				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
-			javaSearchScope = SearchEngine.createJavaSearchScope(javaElements);
-		} catch (JavaModelException e) {
-			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 	    
 	    // start initial search
