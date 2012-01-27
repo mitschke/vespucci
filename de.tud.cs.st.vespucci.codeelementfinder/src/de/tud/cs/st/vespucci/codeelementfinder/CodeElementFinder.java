@@ -118,6 +118,9 @@ public class CodeElementFinder {
 
 	}
 
+	
+	// TODO make the search process more verbose by not using a recursion cycle from endReporting -> notfoundMatch -> startSearch
+	// but rather an imperativ statement of if(!search.sucess) startNewSearch
 	private static void search(SearchPattern searchPattern, final IJavaSearchScope javaSearchScope, final ICodeElement sourceElement, final IProject project, final ICodeElementFoundProcessor processor) {
 		
 		SearchRequestor requestor = new SearchRequestor() {
@@ -147,6 +150,8 @@ public class CodeElementFinder {
 	    try {
 	    	
 			searchEngine.search(searchPattern, new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()}, javaSearchScope, requestor, null);
+			
+			
 		} catch (CoreException e) {
 			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
@@ -320,6 +325,8 @@ public class CodeElementFinder {
 					String[] parameterTypes = method.getParameterTypes();
 					String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
 					
+					if(expectedParameterTypes.length != parameterTypes.length)
+						return false;
 					for (int i = 0; i < parameterTypes.length; i++){
 						if (!expectedParameterTypes[i].equals(Util.createTypQualifier(parameterTypes[i], declaringType))){
 							equal = false;
