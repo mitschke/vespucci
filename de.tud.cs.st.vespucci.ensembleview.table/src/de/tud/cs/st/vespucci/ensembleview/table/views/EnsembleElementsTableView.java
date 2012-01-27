@@ -114,6 +114,8 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 		viewerNameColumn.getColumn().setText("Ensemble");
 		viewerNameColumn.getColumn().setWidth(200);
 		addColumnListener(viewerNameColumn.getColumn(), 0);
+		
+		tableViewer.setComparator(new TableColumnComparator(1, 0));
 
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Element");
@@ -138,8 +140,12 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				if ((column == 0)&&(sortDirection == SWT.NONE)){
+					sortDirection = SWT.UP;
+				}
+				
 				switch (sortDirection){
-				case SWT.NONE:
+				case SWT.NONE: case SWT.DOWN:
 					sortDirection = SWT.UP;
 					tableColumn.getParent().setSortColumn(tableColumn);
 					tableColumn.getParent().setSortDirection(SWT.UP);
@@ -150,12 +156,6 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 					tableColumn.getParent().setSortColumn(tableColumn);
 					tableColumn.getParent().setSortDirection(SWT.DOWN);
 					tableViewer.setComparator(new TableColumnComparator(-1, column));
-					break;
-				case SWT.DOWN:
-					sortDirection = SWT.NONE;
-					tableColumn.getParent().setSortColumn(tableColumn);
-					tableColumn.getParent().setSortDirection(SWT.NONE);
-					tableViewer.setComparator(new TableColumnComparator(0, column));
 					break;
 				}
 			}
@@ -247,6 +247,8 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 	
 	class TableColumnComparator extends ViewerSorter{
 		
+		private static final int numOfColumns = 4;
+		
 		private int sortDirection;
 		private int column;
 		
@@ -259,8 +261,15 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 			
 			Triple<IEnsemble, ICodeElement, IMember> element1 = DataManager.transfer(e1);
 			Triple<IEnsemble, ICodeElement, IMember> element2 = DataManager.transfer(e2);
-			
-			return sortDirection * TableModel.createText(element1, column).compareToIgnoreCase(TableModel.createText(element2, column));
+			int tempOrder = 0;
+			for (int i = column; i < numOfColumns; i++){
+				tempOrder = sortDirection * TableModel.createText(element1, i).compareToIgnoreCase(TableModel.createText(element2, i));
+				
+				if (tempOrder != 0){
+					break;
+				}
+			}
+			return tempOrder;
 		}
 	}
 
