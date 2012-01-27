@@ -58,13 +58,17 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 		
 		violationView = Util.adapt(result, IViolationView.class);
 		
-		if (violationView != null){
-			violationView.register(this);
+		if (violationView == null){
+			return;
 		}
+		
+		violationView.register(this);
 		
 		for (Iterator<IViolation> i = violationView.iterator(); i.hasNext();){
 			markIViolation(i.next());
 		}
+		
+		new ViolationSummaryMarker(violationView.getSummaryView());
 		
 	}
 	

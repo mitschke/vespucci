@@ -42,12 +42,16 @@ import de.tud.cs.st.vespucci.information.interfaces.spi.FieldDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Statement;
 import de.tud.cs.st.vespucci.information.interfaces.spi.Violation;
+import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationSummary;
+import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationSummaryView;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ViolationView;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IDataView;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IStatement;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.model.IConstraint;
@@ -140,7 +144,11 @@ public class MockProcessor implements IModelProcessor {
 		violations.add(secondViolation);
 		violations.add(thirdViolation);
 				
-		return new ViolationView(violations);
+		Set<IViolationSummary> set = new HashSet<IViolationSummary>();
+		set.add(new ViolationSummary("/CaseStudy/src/caseStudy.sad"));
+		IDataView<IViolationSummary> temp = new ViolationSummaryView(set);
+	
+		return new ViolationView(violations, temp);
 	}
 
 	@Override

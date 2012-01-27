@@ -12,9 +12,11 @@ import de.tud.cs.st.vespucci.interfaces.IViolationView;
 public class ViolationView implements IViolationView {
 
 	private Set<IViolation> violations;
+	private IDataView<IViolationSummary> dataView;
 	
-	public ViolationView(Set<IViolation> violations){
+	public ViolationView(Set<IViolation> violations, IDataView<IViolationSummary> dataView){
 		this.violations = violations;
+		this.dataView = dataView;
 	}
 	
 	@Override
@@ -42,8 +44,7 @@ public class ViolationView implements IViolationView {
 
 	@Override
 	public IDataView<IViolationSummary> getSummaryView() {
-		// TODO Auto-generated method stub
-		return null;
+		return dataView;
 	}
 
 }
