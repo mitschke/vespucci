@@ -11,7 +11,27 @@ public class SummaryView implements IDataView<IViolationSummary>{
 	@Override
 	public Iterator<IViolationSummary> iterator() {
 		// TODO Auto-generated method stub
-		return null;
+		return new Iterator<IViolationSummary>() {
+
+			@Override
+			public boolean hasNext() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public IViolationSummary next() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void remove() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		};
 	}
 
 	@Override
