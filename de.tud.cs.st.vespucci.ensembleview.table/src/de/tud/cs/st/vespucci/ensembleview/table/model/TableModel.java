@@ -50,11 +50,17 @@ public class TableModel implements IDataModel{
 
 	private static String createPathText(
 			Triple<IEnsemble, ICodeElement, IMember> value) {
-		return value.getThird().getPath().toOSString();
+		if (value.getThird() == null){
+			return "";
+		}
+		return value.getThird().getPath().toPortableString();
 	}
 
 	private static String createResourceText(
 			Triple<IEnsemble, ICodeElement, IMember> value) {
+		if (value.getThird().getResource() == null){
+			return "";
+		}
 		return value.getThird().getResource().getName();
 	}
 
