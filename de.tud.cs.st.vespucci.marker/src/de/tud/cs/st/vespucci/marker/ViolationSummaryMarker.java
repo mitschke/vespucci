@@ -57,7 +57,7 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 	private IMarker addMarker(IViolationSummary element, String description) {
 		try {
 
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(element.getDiagramFile()));
+			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromPortableString(element.getDiagramFile()));
 			IMarker marker = file.createMarker("org.eclipse.core.resources.problemmarker");
 			marker.setAttribute(IMarker.MESSAGE, description);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.PRIORITY_NORMAL);
