@@ -79,18 +79,7 @@ public class EnsembleElementModelProcessor implements IModelProcessor {
 					@Override
 					public IPair<IEnsemble, ICodeElement> apply(
 							final Tuple2<IEnsemble, SourceElement<Object>> arg0) {
-						return new IPair<IEnsemble, ICodeElement>() {
-
-							@Override
-							public IEnsemble getFirst() {
-								return arg0._1;
-							}
-
-							@Override
-							public ICodeElement getSecond() {
-								return arg0._2;
-							}
-						};
+						return new EnsembleElementPair(arg0);
 					}
 
 				}, view);
