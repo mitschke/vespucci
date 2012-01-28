@@ -172,25 +172,25 @@ public class Vespucci_modelValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_UniqueID(shape, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(shape, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(shape, diagnostics, context);
-		if (result || diagnostics != null) result &= validateShape_ViolationOnly(shape, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_notAllowedOnly(shape, diagnostics, context);
 		return result;
 	}
 
 	/**
-	 * The cached validation expression for the ViolationOnly constraint of '<em>Shape</em>'.
+	 * The cached validation expression for the notAllowedOnly constraint of '<em>Shape</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected static final String SHAPE__VIOLATION_ONLY__EEXPRESSION = "self.targetConnections->forAll(x : Connection, y : Connection | (x <> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(Violation)) implies y.oclIsTypeOf(Violation))";
+	protected static final String SHAPE__NOT_ALLOWED_ONLY__EEXPRESSION = "self.targetConnections->forAll(x : Connection, y : Connection | (x <> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(NotAllowed)) implies y.oclIsTypeOf(NotAllowed))";
 
 	/**
-	 * Validates the ViolationOnly constraint of '<em>Shape</em>'.
+	 * Validates the notAllowedOnly constraint of '<em>Shape</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateShape_ViolationOnly(Shape shape, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateShape_notAllowedOnly(Shape shape, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return
 			validate
 				(Vespucci_modelPackage.Literals.SHAPE,
@@ -198,8 +198,8 @@ public class Vespucci_modelValidator extends EObjectValidator {
 				 diagnostics,
 				 context,
 				 "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
-				 "ViolationOnly",
-				 SHAPE__VIOLATION_ONLY__EEXPRESSION,
+				 "notAllowedOnly",
+				 SHAPE__NOT_ALLOWED_ONLY__EEXPRESSION,
 				 Diagnostic.ERROR,
 				 DIAGNOSTIC_SOURCE,
 				 0);
@@ -220,7 +220,7 @@ public class Vespucci_modelValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_UniqueID(empty, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(empty, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(empty, diagnostics, context);
-		if (result || diagnostics != null) result &= validateShape_ViolationOnly(empty, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_notAllowedOnly(empty, diagnostics, context);
 		return result;
 	}
 
@@ -239,7 +239,7 @@ public class Vespucci_modelValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_UniqueID(ensemble, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(ensemble, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(ensemble, diagnostics, context);
-		if (result || diagnostics != null) result &= validateShape_ViolationOnly(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_notAllowedOnly(ensemble, diagnostics, context);
 		return result;
 	}
 

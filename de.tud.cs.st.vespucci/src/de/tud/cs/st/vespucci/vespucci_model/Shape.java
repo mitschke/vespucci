@@ -59,8 +59,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='ViolationOnly'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot ViolationOnly='self.targetConnections->forAll(x : Connection, y : Connection | (x <> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(Violation)) implies y.oclIsTypeOf(Violation))'"
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='notAllowedOnly'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot notAllowedOnly='self.targetConnections->forAll(x : Connection, y : Connection | (x <> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(NotAllowed)) implies y.oclIsTypeOf(NotAllowed))'"
  * @generated
  */
 public interface Shape extends EObject {

@@ -16,10 +16,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Shape">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="ViolationOnly"/>
+      <details key="constraints" value="notAllowedOnly"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="ViolationOnly" value="self.targetConnections->forAll(x : Connection, y : Connection | (x &lt;> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(Violation)) implies y.oclIsTypeOf(Violation))"/>
+      <details key="notAllowedOnly" value="self.targetConnections->forAll(x : Connection, y : Connection | (x &lt;> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(NotAllowed)) implies y.oclIsTypeOf(NotAllowed))"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourceConnections" upperBound="-1"
         eType="#//Connection" volatile="true" transient="true" derived="true" resolveProxies="false"/>
