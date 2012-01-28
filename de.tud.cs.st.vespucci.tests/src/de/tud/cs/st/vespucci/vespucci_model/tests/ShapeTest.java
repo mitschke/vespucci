@@ -44,6 +44,13 @@ import junit.textui.TestRunner;
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Shape</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are tested:
+ * <ul>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections() <em>Source Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections() <em>Target Connections</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public class ShapeTest extends TestCase {
@@ -115,6 +122,32 @@ public class ShapeTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections() <em>Source Connections</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections()
+	 * @generated
+	 */
+	public void testGetSourceConnections() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections() <em>Target Connections</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections()
+	 * @generated
+	 */
+	public void testGetTargetConnections() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 } //ShapeTest

@@ -10,6 +10,7 @@
       fileExtensions="sam" ecorePackage="vespucci.ecore#/">
     <genClasses ecoreClass="vespucci.ecore#//ShapesDiagram">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//ShapesDiagram/shapes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//ShapesDiagram/connections"/>
     </genClasses>
     <genClasses ecoreClass="vespucci.ecore#//Shape">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/sourceConnections"/>
@@ -19,6 +20,8 @@
           propertyMultiLine="true" ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/description"/>
       <genFeatures createChild="false" propertyCategory="" propertyDescription=""
           ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/query"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/diagramReference"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/ensembleReference"/>
     </genClasses>
     <genClasses ecoreClass="vespucci.ecore#//Empty"/>
     <genClasses ecoreClass="vespucci.ecore#//Ensemble">

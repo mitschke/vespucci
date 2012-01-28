@@ -110,13 +110,22 @@ public interface Vespucci_modelPackage extends EPackage {
 	int SHAPES_DIAGRAM__SHAPES = 0;
 
 	/**
+	 * The feature id for the '<em><b>Connections</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SHAPES_DIAGRAM__CONNECTIONS = 1;
+
+	/**
 	 * The number of structural features of the '<em>Shapes Diagram</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPES_DIAGRAM_FEATURE_COUNT = 1;
+	int SHAPES_DIAGRAM_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl <em>Shape</em>}' class.
@@ -129,7 +138,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int SHAPE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Source Connections</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Source Connections</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -138,7 +147,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int SHAPE__SOURCE_CONNECTIONS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Target Connections</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Target Connections</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -174,13 +183,31 @@ public interface Vespucci_modelPackage extends EPackage {
 	int SHAPE__QUERY = 4;
 
 	/**
+	 * The feature id for the '<em><b>Diagram Reference</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SHAPE__DIAGRAM_REFERENCE = 5;
+
+	/**
+	 * The feature id for the '<em><b>Ensemble Reference</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SHAPE__ENSEMBLE_REFERENCE = 6;
+
+	/**
 	 * The number of structural features of the '<em>Shape</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPE_FEATURE_COUNT = 5;
+	int SHAPE_FEATURE_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.EmptyImpl <em>Empty</em>}' class.
@@ -193,7 +220,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int EMPTY = 2;
 
 	/**
-	 * The feature id for the '<em><b>Source Connections</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Source Connections</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -202,7 +229,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int EMPTY__SOURCE_CONNECTIONS = SHAPE__SOURCE_CONNECTIONS;
 
 	/**
-	 * The feature id for the '<em><b>Target Connections</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Target Connections</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -238,6 +265,24 @@ public interface Vespucci_modelPackage extends EPackage {
 	int EMPTY__QUERY = SHAPE__QUERY;
 
 	/**
+	 * The feature id for the '<em><b>Diagram Reference</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EMPTY__DIAGRAM_REFERENCE = SHAPE__DIAGRAM_REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Ensemble Reference</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EMPTY__ENSEMBLE_REFERENCE = SHAPE__ENSEMBLE_REFERENCE;
+
+	/**
 	 * The number of structural features of the '<em>Empty</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -257,7 +302,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int ENSEMBLE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Source Connections</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Source Connections</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -266,7 +311,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	int ENSEMBLE__SOURCE_CONNECTIONS = SHAPE__SOURCE_CONNECTIONS;
 
 	/**
-	 * The feature id for the '<em><b>Target Connections</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Target Connections</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -300,6 +345,24 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int ENSEMBLE__QUERY = SHAPE__QUERY;
+
+	/**
+	 * The feature id for the '<em><b>Diagram Reference</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENSEMBLE__DIAGRAM_REFERENCE = SHAPE__DIAGRAM_REFERENCE;
+
+	/**
+	 * The feature id for the '<em><b>Ensemble Reference</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENSEMBLE__ENSEMBLE_REFERENCE = SHAPE__ENSEMBLE_REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Shapes</b></em>' containment reference list.
@@ -999,6 +1062,17 @@ public interface Vespucci_modelPackage extends EPackage {
 	EReference getShapesDiagram_Shapes();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getConnections <em>Connections</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Connections</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getConnections()
+	 * @see #getShapesDiagram()
+	 * @generated
+	 */
+	EReference getShapesDiagram_Connections();
+
+	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Shape <em>Shape</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1009,10 +1083,10 @@ public interface Vespucci_modelPackage extends EPackage {
 	EClass getShape();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections <em>Source Connections</em>}'.
+	 * Returns the meta object for the reference list '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections <em>Source Connections</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Source Connections</em>'.
+	 * @return the meta object for the reference list '<em>Source Connections</em>'.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections()
 	 * @see #getShape()
 	 * @generated
@@ -1020,10 +1094,10 @@ public interface Vespucci_modelPackage extends EPackage {
 	EReference getShape_SourceConnections();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections <em>Target Connections</em>}'.
+	 * Returns the meta object for the reference list '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections <em>Target Connections</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Target Connections</em>'.
+	 * @return the meta object for the reference list '<em>Target Connections</em>'.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections()
 	 * @see #getShape()
 	 * @generated
@@ -1062,6 +1136,28 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getShape_Query();
+
+	/**
+	 * Returns the meta object for the container reference '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference <em>Diagram Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Diagram Reference</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference()
+	 * @see #getShape()
+	 * @generated
+	 */
+	EReference getShape_DiagramReference();
+
+	/**
+	 * Returns the meta object for the container reference '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getEnsembleReference <em>Ensemble Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Ensemble Reference</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getEnsembleReference()
+	 * @see #getShape()
+	 * @generated
+	 */
+	EReference getShape_EnsembleReference();
 
 	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Empty <em>Empty</em>}'.
@@ -1291,6 +1387,14 @@ public interface Vespucci_modelPackage extends EPackage {
 		EReference SHAPES_DIAGRAM__SHAPES = eINSTANCE.getShapesDiagram_Shapes();
 
 		/**
+		 * The meta object literal for the '<em><b>Connections</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SHAPES_DIAGRAM__CONNECTIONS = eINSTANCE.getShapesDiagram_Connections();
+
+		/**
 		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl <em>Shape</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1301,7 +1405,7 @@ public interface Vespucci_modelPackage extends EPackage {
 		EClass SHAPE = eINSTANCE.getShape();
 
 		/**
-		 * The meta object literal for the '<em><b>Source Connections</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Source Connections</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1309,7 +1413,7 @@ public interface Vespucci_modelPackage extends EPackage {
 		EReference SHAPE__SOURCE_CONNECTIONS = eINSTANCE.getShape_SourceConnections();
 
 		/**
-		 * The meta object literal for the '<em><b>Target Connections</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Target Connections</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1339,6 +1443,22 @@ public interface Vespucci_modelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute SHAPE__QUERY = eINSTANCE.getShape_Query();
+
+		/**
+		 * The meta object literal for the '<em><b>Diagram Reference</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SHAPE__DIAGRAM_REFERENCE = eINSTANCE.getShape_DiagramReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Ensemble Reference</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SHAPE__ENSEMBLE_REFERENCE = eINSTANCE.getShape_EnsembleReference();
 
 		/**
 		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.EmptyImpl <em>Empty</em>}' class.

@@ -63,7 +63,7 @@ public class InAndOutCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	private final de.tud.cs.st.vespucci.vespucci_model.Shape container;
+	private final de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container;
 
 	/**
 	 * @generated
@@ -120,7 +120,7 @@ public class InAndOutCreateCommand extends EditElementCommand {
 
 		final de.tud.cs.st.vespucci.vespucci_model.InAndOut newElement = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
 				.createInAndOut();
-		getContainer().getTargetConnections().add(newElement);
+		getContainer().getConnections().add(newElement);
 
 		newElement.setSource(getSource());
 		newElement.setTarget(getTarget());
@@ -180,7 +180,7 @@ public class InAndOutCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	public de.tud.cs.st.vespucci.vespucci_model.Shape getContainer() {
+	public de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram getContainer() {
 		return container;
 	}
 
@@ -190,15 +190,15 @@ public class InAndOutCreateCommand extends EditElementCommand {
 	 * 
 	 * @generated
 	 */
-	private static de.tud.cs.st.vespucci.vespucci_model.Shape deduceContainer(
+	private static de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram deduceContainer(
 			EObject source, EObject target) {
 		// Find container element for the new link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.Shape) {
-				return (de.tud.cs.st.vespucci.vespucci_model.Shape) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
+				return (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
 			}
 		}
 		return null;

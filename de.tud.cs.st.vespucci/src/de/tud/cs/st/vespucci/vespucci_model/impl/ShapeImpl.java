@@ -37,10 +37,14 @@
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -53,7 +57,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -68,32 +74,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getName <em>Name</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getQuery <em>Query</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getDiagramReference <em>Diagram Reference</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getEnsembleReference <em>Ensemble Reference</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class ShapeImpl extends EObjectImpl implements Shape {
-	/**
-	 * The cached value of the '{@link #getSourceConnections() <em>Source Connections</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSourceConnections()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Connection> sourceConnections;
-
-	/**
-	 * The cached value of the '{@link #getTargetConnections() <em>Target Connections</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTargetConnections()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Connection> targetConnections;
-
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -173,30 +161,77 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 		return Vespucci_modelPackage.Literals.SHAPE;
 	}
 
-	/**
+	/**Filters the connections and shows the derived source list
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
+	 * @author Robert Cibulla
+	 * @return EList<Connection> - Returns all <code>Connections</code> which point from another <code>Shape</code> to this 
+
+one.
 	 */
 	public EList<Connection> getSourceConnections() {
-		if (sourceConnections == null) {
-			sourceConnections = new EObjectContainmentEList<Connection>(Connection.class, this, Vespucci_modelPackage.SHAPE__SOURCE_CONNECTIONS);
+		//get DiagramReference:
+		ShapesDiagram tempDiagramReference = this.getDiagramReferencePriv();
+		//temporary Arraylist to collect valid Connections
+		List<Connection> tempConnections = new ArrayList<Connection>();
+		//collect all Connections where the current shape is the Target:
+		for(Connection connection : tempDiagramReference.getConnections()){
+			if(connection.getTarget().equals(this))
+				tempConnections.add(connection);
 		}
-		return sourceConnections;
+		return new EcoreEList.UnmodifiableEList<Connection>(this, 
+
+Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS, tempConnections.size(), tempConnections.toArray());
 	}
 
-	/**
+	/**Filters the connections and shows the derived target list
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
+	 * @author Robert Cibulla
+	 * @return EList<Connection> Returns all <code>Connections</code> which point from this <code>Shape</code> to another.
 	 */
 	public EList<Connection> getTargetConnections() {
-		if (targetConnections == null) {
-			targetConnections = new EObjectContainmentEList<Connection>(Connection.class, this, Vespucci_modelPackage.SHAPE__TARGET_CONNECTIONS);
+		//get DiagramReference:
+		ShapesDiagram tempDiagramReference = this.getDiagramReferencePriv();
+		//temporary Arraylist to collect valid Connections
+		List<Connection> tempConnections = new ArrayList<Connection>();
+		//collect all Connections where the current shape is the Source:
+		for(Connection connection : tempDiagramReference.getConnections()){
+			if(connection.getSource().equals(this))
+				tempConnections.add(connection);
 		}
-		return targetConnections;
-	}
+		return new EcoreEList.UnmodifiableEList<Connection>(this, 
 
+Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS, tempConnections.size(), tempConnections.toArray());
+	}
+	
+	/**
+	 *
+	 * 
+	 * @generated NOT
+	 * @author Robert Cibulla
+	 * @return ShapesDiagram
+	 */
+	private ShapesDiagram getDiagramReferencePriv(){
+		//temporary variables used to navigate to top node
+		ShapesDiagram tempDiagramReference = this.getDiagramReference();
+		Ensemble tempEnsembleReference = this.getEnsembleReference();
+		//test whether the current Shape is persisted in the ShapesDiagram
+		if(tempDiagramReference == null){
+			//if not, navigate to the top level:
+			while(tempEnsembleReference != null){
+				if(tempEnsembleReference.getDiagramReference() == null)
+					tempEnsembleReference = tempEnsembleReference.getEnsembleReference();
+				else{
+					tempDiagramReference = tempEnsembleReference.getDiagramReference();
+					tempEnsembleReference = null;
+					}
+				}
+		}
+		return tempDiagramReference;
+	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -265,15 +300,102 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ShapesDiagram getDiagramReference() {
+		if (eContainerFeatureID() != Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE) return null;
+		return (ShapesDiagram)eContainer();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetDiagramReference(ShapesDiagram newDiagramReference, NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject)newDiagramReference, Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDiagramReference(ShapesDiagram newDiagramReference) {
+		if (newDiagramReference != eInternalContainer() || (eContainerFeatureID() != Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE && newDiagramReference != null)) {
+			if (EcoreUtil.isAncestor(this, newDiagramReference))
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+			NotificationChain msgs = null;
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			if (newDiagramReference != null)
+				msgs = ((InternalEObject)newDiagramReference).eInverseAdd(this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES, ShapesDiagram.class, msgs);
+			msgs = basicSetDiagramReference(newDiagramReference, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE, newDiagramReference, newDiagramReference));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Ensemble getEnsembleReference() {
+		if (eContainerFeatureID() != Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE) return null;
+		return (Ensemble)eContainer();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetDiagramReference((ShapesDiagram)otherEnd, msgs);
+			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return eBasicSetContainer(otherEnd, Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPE__SOURCE_CONNECTIONS:
-				return ((InternalEList<?>)getSourceConnections()).basicRemove(otherEnd, msgs);
-			case Vespucci_modelPackage.SHAPE__TARGET_CONNECTIONS:
-				return ((InternalEList<?>)getTargetConnections()).basicRemove(otherEnd, msgs);
+			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
+				return basicSetDiagramReference(null, msgs);
+			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
+				return eBasicSetContainer(null, Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
+		switch (eContainerFeatureID()) {
+			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
+				return eInternalContainer().eInverseRemove(this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES, ShapesDiagram.class, msgs);
+			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
+				return eInternalContainer().eInverseRemove(this, Vespucci_modelPackage.ENSEMBLE__SHAPES, Ensemble.class, msgs);
+		}
+		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
 
 	/**
@@ -294,6 +416,10 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 				return getDescription();
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				return getQuery();
+			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
+				return getDiagramReference();
+			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
+				return getEnsembleReference();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -324,6 +450,9 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				setQuery((String)newValue);
 				return;
+			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
+				setDiagramReference((ShapesDiagram)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -351,6 +480,9 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				setQuery(QUERY_EDEFAULT);
 				return;
+			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
+				setDiagramReference((ShapesDiagram)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -364,15 +496,19 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Vespucci_modelPackage.SHAPE__SOURCE_CONNECTIONS:
-				return sourceConnections != null && !sourceConnections.isEmpty();
+				return !getSourceConnections().isEmpty();
 			case Vespucci_modelPackage.SHAPE__TARGET_CONNECTIONS:
-				return targetConnections != null && !targetConnections.isEmpty();
+				return !getTargetConnections().isEmpty();
 			case Vespucci_modelPackage.SHAPE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
+			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
+				return getDiagramReference() != null;
+			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
+				return getEnsembleReference() != null;
 		}
 		return super.eIsSet(featureID);
 	}

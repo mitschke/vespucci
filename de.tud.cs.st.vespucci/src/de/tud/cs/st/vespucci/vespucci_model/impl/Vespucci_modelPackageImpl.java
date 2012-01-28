@@ -253,6 +253,15 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getShapesDiagram_Connections() {
+		return (EReference)shapesDiagramEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getShape() {
 		return shapeEClass;
 	}
@@ -300,6 +309,24 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 */
 	public EAttribute getShape_Query() {
 		return (EAttribute)shapeEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getShape_DiagramReference() {
+		return (EReference)shapeEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getShape_EnsembleReference() {
+		return (EReference)shapeEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -494,6 +521,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		// Create classes and their features
 		shapesDiagramEClass = createEClass(SHAPES_DIAGRAM);
 		createEReference(shapesDiagramEClass, SHAPES_DIAGRAM__SHAPES);
+		createEReference(shapesDiagramEClass, SHAPES_DIAGRAM__CONNECTIONS);
 
 		shapeEClass = createEClass(SHAPE);
 		createEReference(shapeEClass, SHAPE__SOURCE_CONNECTIONS);
@@ -501,6 +529,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		createEAttribute(shapeEClass, SHAPE__NAME);
 		createEAttribute(shapeEClass, SHAPE__DESCRIPTION);
 		createEAttribute(shapeEClass, SHAPE__QUERY);
+		createEReference(shapeEClass, SHAPE__DIAGRAM_REFERENCE);
+		createEReference(shapeEClass, SHAPE__ENSEMBLE_REFERENCE);
 
 		emptyEClass = createEClass(EMPTY);
 
@@ -573,19 +603,22 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(shapesDiagramEClass, ShapesDiagram.class, "ShapesDiagram", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getShapesDiagram_Shapes(), this.getShape(), null, "shapes", null, 0, -1, ShapesDiagram.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getShapesDiagram_Shapes(), this.getShape(), this.getShape_DiagramReference(), "shapes", null, 0, -1, ShapesDiagram.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getShapesDiagram_Connections(), this.getConnection(), null, "connections", null, 0, -1, ShapesDiagram.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(shapeEClass, Shape.class, "Shape", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getShape_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getShape_TargetConnections(), this.getConnection(), null, "targetConnections", null, 0, -1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getShape_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, Shape.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getShape_TargetConnections(), this.getConnection(), null, "targetConnections", null, 0, -1, Shape.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getShape_Name(), ecorePackage.getEString(), "name", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getShape_Description(), ecorePackage.getEString(), "description", "<description>", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getShape_Query(), ecorePackage.getEString(), "query", "empty", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getShape_DiagramReference(), this.getShapesDiagram(), this.getShapesDiagram_Shapes(), "diagramReference", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getShape_EnsembleReference(), this.getEnsemble(), this.getEnsemble_Shapes(), "ensembleReference", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(emptyEClass, Empty.class, "Empty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(ensembleEClass, Ensemble.class, "Ensemble", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEnsemble_Shapes(), this.getShape(), null, "shapes", null, 0, -1, Ensemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEnsemble_Shapes(), this.getShape(), this.getShape_EnsembleReference(), "shapes", null, 0, -1, Ensemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(connectionEClass, Connection.class, "Connection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getConnection_Source(), this.getShape(), null, "source", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -49,6 +49,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getShapes <em>Shapes</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getConnections <em>Connections</em>}</li>
  * </ul>
  * </p>
  *
@@ -60,6 +61,7 @@ public interface ShapesDiagram extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Shapes</b></em>' containment reference list.
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
+	 * It is bidirectional and its opposite is '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference <em>Diagram Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Shapes</em>' containment reference list isn't clear,
@@ -68,9 +70,26 @@ public interface ShapesDiagram extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Shapes</em>' containment reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShapesDiagram_Shapes()
-	 * @model containment="true"
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference
+	 * @model opposite="diagramReference" containment="true"
 	 * @generated
 	 */
 	EList<Shape> getShapes();
+
+	/**
+	 * Returns the value of the '<em><b>Connections</b></em>' containment reference list.
+	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Connection}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Connections</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Connections</em>' containment reference list.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShapesDiagram_Connections()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Connection> getConnections();
 
 } // ShapesDiagram

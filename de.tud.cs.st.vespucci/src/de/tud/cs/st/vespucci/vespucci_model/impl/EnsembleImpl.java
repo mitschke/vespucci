@@ -49,6 +49,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -102,9 +103,24 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	 */
 	public EList<Shape> getShapes() {
 		if (shapes == null) {
-			shapes = new EObjectContainmentEList<Shape>(Shape.class, this, Vespucci_modelPackage.ENSEMBLE__SHAPES);
+			shapes = new EObjectContainmentWithInverseEList<Shape>(Shape.class, this, Vespucci_modelPackage.ENSEMBLE__SHAPES, Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE);
 		}
 		return shapes;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getShapes()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**

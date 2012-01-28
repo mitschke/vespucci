@@ -55,11 +55,49 @@ main() {
 }
 
 mapping OldModel::ShapesDiagram::toNew() : NewModel::ShapesDiagram {
-	shapes += self.shapes.map toEnsemble();
-	shapes += self.shapes.map toEmpty();
-	
+
+	self.shapes->forEach(s){
+		s.allSubobjectsOfType(Expected).oclAsType(Expected)->forEach(c){
+			connections += c.map toExpected();
+		};
+		
+		s.allSubobjectsOfType(InAndOut).oclAsType(InAndOut)->forEach(c){
+			connections += c.map toInAndOut();
+		};
+		
+		s.allSubobjectsOfType(Incoming).oclAsType(Incoming)->forEach(c){
+			connections += c.map toIncoming();
+		};
+		
+		s.allSubobjectsOfType(NotAllowed).oclAsType(NotAllowed)->forEach(c){
+			connections += c.map toNotAllowed();
+		};
+		
+		s.allSubobjectsOfType(Outgoing).oclAsType(Outgoing)->forEach(c){
+			connections += c.map toOutgoing();
+		};
+		
+		s.allSubobjectsOfType(Violation).oclAsType(Violation)->forEach(c){
+			connections += c.map toViolation();
+		};
+		
+		s.allSubobjectsOfType(GlobalIncoming).oclAsType(GlobalIncoming)->forEach(c){
+			log("Current Connection: ", c);
+			connections += c.map toGlobalIncoming();
+		};
+		
+		s.allSubobjectsOfType(GlobalOutgoing).oclAsType(GlobalOutgoing)->forEach(c){
+			connections += c.map toGlobalOutgoing();
+		};
+		
+		shapes += self.shapes.map toEnsemble();
+		shapes += self.shapes.map toEmpty();
+			
+	};	
+
 	result.remember();
 }
+
 
 mapping OldModel::Shape::toEnsemble() : NewModel::Ensemble
 inherits OldModel::Shape::toShape
@@ -81,29 +119,11 @@ mapping OldModel::Shape::toShape() : NewModel::Shape {
 	name := self.name;
 	_query := self._query;
 	description := self.description;
-	
-	
-	sourceConnections += self.sourceConnections.map toExpected();
-	sourceConnections += self.sourceConnections.map toInAndOut();
-	sourceConnections += self.sourceConnections.map toIncoming();
-	sourceConnections += self.sourceConnections.map toNotAllowed();
-	sourceConnections += self.sourceConnections.map toOutgoing();
-	sourceConnections += self.sourceConnections.map toViolation();
-	sourceConnections += self.sourceConnections.map toGlobalIncoming();
-	sourceConnections += self.sourceConnections.map toGlobalOutgoing();
-	
-	
-	targetConnections += self.targetConnections.map toExpected();
-	targetConnections += self.targetConnections.map toInAndOut();
-	targetConnections += self.targetConnections.map toIncoming();
-	targetConnections += self.targetConnections.map toNotAllowed();
-	targetConnections += self.targetConnections.map toOutgoing();
-	targetConnections += self.targetConnections.map toViolation();
-	targetConnections += self.targetConnections.map toGlobalIncoming();
-	targetConnections += self.targetConnections.map toGlobalOutgoing();
-	
+	//TODO Set diagramReference and ensembleReference
 	result.remember(self);
+	
 }
+
 
 mapping OldModel::Connection::toExpected() : NewModel::Expected
 inherits OldModel::Connection::toConnection

@@ -36,6 +36,7 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
@@ -52,6 +53,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -62,6 +64,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl#getShapes <em>Shapes</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl#getConnections <em>Connections</em>}</li>
  * </ul>
  * </p>
  *
@@ -77,7 +80,15 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	 * @ordered
 	 */
 	protected EList<Shape> shapes;
-
+	/**
+	 * The cached value of the '{@link #getConnections() <em>Connections</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConnections()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Connection> connections;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -104,9 +115,36 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	 */
 	public EList<Shape> getShapes() {
 		if (shapes == null) {
-			shapes = new EObjectContainmentEList<Shape>(Shape.class, this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES);
+			shapes = new EObjectContainmentWithInverseEList<Shape>(Shape.class, this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES, Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE);
 		}
 		return shapes;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<Connection> getConnections() {
+		if (connections == null) {
+			connections = new EObjectContainmentEList<Connection>(Connection.class, this, Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS);
+		}
+		return connections;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getShapes()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -119,6 +157,8 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 		switch (featureID) {
 			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
 				return ((InternalEList<?>)getShapes()).basicRemove(otherEnd, msgs);
+			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+				return ((InternalEList<?>)getConnections()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -133,6 +173,8 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 		switch (featureID) {
 			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
 				return getShapes();
+			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+				return getConnections();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -150,6 +192,10 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 				getShapes().clear();
 				getShapes().addAll((Collection<? extends Shape>)newValue);
 				return;
+			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+				getConnections().clear();
+				getConnections().addAll((Collection<? extends Connection>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -165,6 +211,9 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
 				getShapes().clear();
 				return;
+			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+				getConnections().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -179,6 +228,8 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 		switch (featureID) {
 			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
 				return shapes != null && !shapes.isEmpty();
+			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+				return connections != null && !connections.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

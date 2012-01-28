@@ -53,6 +53,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getName <em>Name</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDescription <em>Description</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getQuery <em>Query</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference <em>Diagram Reference</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getEnsembleReference <em>Ensemble Reference</em>}</li>
  * </ul>
  * </p>
  *
@@ -63,7 +65,7 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Shape extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Source Connections</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Source Connections</b></em>' reference list.
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Connection}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -71,15 +73,15 @@ public interface Shape extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Source Connections</em>' containment reference list.
+	 * @return the value of the '<em>Source Connections</em>' reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_SourceConnections()
-	 * @model containment="true"
+	 * @model resolveProxies="false" transient="true" volatile="true" derived="true"
 	 * @generated
 	 */
 	EList<Connection> getSourceConnections();
 
 	/**
-	 * Returns the value of the '<em><b>Target Connections</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Target Connections</b></em>' reference list.
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Connection}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -87,9 +89,9 @@ public interface Shape extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Target Connections</em>' containment reference list.
+	 * @return the value of the '<em>Target Connections</em>' reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_TargetConnections()
-	 * @model containment="true"
+	 * @model resolveProxies="false" transient="true" volatile="true" derived="true"
 	 * @generated
 	 */
 	EList<Connection> getTargetConnections();
@@ -173,5 +175,50 @@ public interface Shape extends EObject {
 	 * @generated
 	 */
 	void setQuery(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Diagram Reference</b></em>' container reference.
+	 * It is bidirectional and its opposite is '{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getShapes <em>Shapes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Diagram Reference</em>' container reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Diagram Reference</em>' container reference.
+	 * @see #setDiagramReference(ShapesDiagram)
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_DiagramReference()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getShapes
+	 * @model opposite="shapes" transient="false"
+	 * @generated
+	 */
+	ShapesDiagram getDiagramReference();
+
+	/**
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference <em>Diagram Reference</em>}' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Diagram Reference</em>' container reference.
+	 * @see #getDiagramReference()
+	 * @generated
+	 */
+	void setDiagramReference(ShapesDiagram value);
+
+	/**
+	 * Returns the value of the '<em><b>Ensemble Reference</b></em>' container reference.
+	 * It is bidirectional and its opposite is '{@link de.tud.cs.st.vespucci.vespucci_model.Ensemble#getShapes <em>Shapes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Ensemble Reference</em>' container reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Ensemble Reference</em>' container reference.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_EnsembleReference()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Ensemble#getShapes
+	 * @model opposite="shapes" transient="false" changeable="false"
+	 * @generated
+	 */
+	Ensemble getEnsembleReference();
 
 } // Shape

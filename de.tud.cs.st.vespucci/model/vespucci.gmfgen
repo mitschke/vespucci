@@ -376,9 +376,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Incoming"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -438,9 +438,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Outgoing"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -501,9 +501,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/InAndOut"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -563,9 +563,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/NotAllowed"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -625,9 +625,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Expected"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -687,9 +687,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/GlobalIncoming"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -749,9 +749,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/GlobalOutgoing"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -810,9 +810,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Violation"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Shape/targetConnections"/>
+            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature

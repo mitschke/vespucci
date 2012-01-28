@@ -96,10 +96,10 @@ public class GlobalOutgoingReorientCommand extends EditElementCommand {
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink()
 				.getTarget();
-		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
+		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
+		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) getLink()
 				.eContainer();
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
 				.getLinkConstraints().canExistGlobalOutgoing_4007(container,
@@ -115,10 +115,10 @@ public class GlobalOutgoingReorientCommand extends EditElementCommand {
 		}
 		de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink()
 				.getSource();
-		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
+		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape container = (de.tud.cs.st.vespucci.vespucci_model.Shape) getLink()
+		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) getLink()
 				.eContainer();
 		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy
 				.getLinkConstraints().canExistGlobalOutgoing_4007(container,

@@ -62,6 +62,9 @@ public class Vespucci_modelTests extends TestSuite {
 	 */
 	public static Test suite() {
 		TestSuite suite = new Vespucci_modelTests("vespucci_model Tests");
+		suite.addTestSuite(ShapeTest.class);
+		suite.addTestSuite(EmptyTest.class);
+		suite.addTestSuite(EnsembleTest.class);
 		return suite;
 	}
 
