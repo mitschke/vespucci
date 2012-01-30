@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -92,8 +93,8 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 									IMarker marker = file.createMarker(IMarker.TEXT);
 									marker.setAttribute(IMarker.MESSAGE, "");
 									marker.setAttribute(IMarker.SEVERITY, IMarker.PRIORITY_NORMAL);
-									marker.setAttribute(IMarker.CHAR_START, tripel.getThird().getSourceRange().getOffset());
-									marker.setAttribute(IMarker.CHAR_END, tripel.getThird().getSourceRange().getOffset());
+									marker.setAttribute(IMarker.CHAR_START, tripel.getThird().getNameRange().getOffset());
+									marker.setAttribute(IMarker.CHAR_END, tripel.getThird().getNameRange().getOffset());
 									marker.setAttribute(IMarker.TRANSIENT, true);
 
 									IDE.openEditor(editorPage, marker, true);
