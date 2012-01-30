@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -84,25 +83,28 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 					if (tripel != null){
 						IWorkbenchPage editorPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 						if (editorPage != null) {
-							
-							try {
-								IProject project = tripel.getThird().getJavaProject().getProject();
-								IFile file = project.getFile(tripel.getThird().getResource().getProjectRelativePath());
-								
-								IMarker marker = file.createMarker(IMarker.TEXT);
-								marker.setAttribute(IMarker.MESSAGE, "");
-								marker.setAttribute(IMarker.SEVERITY, IMarker.PRIORITY_NORMAL);
-								marker.setAttribute(IMarker.CHAR_START, tripel.getThird().getSourceRange().getOffset());
-								marker.setAttribute(IMarker.CHAR_END, tripel.getThird().getSourceRange().getOffset());
-								marker.setAttribute(IMarker.TRANSIENT, true);
-								
-								IDE.openEditor(editorPage, marker, true);
-								
-								marker.delete();
-							}
-							catch (CoreException e) {
-								final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-								StatusManager.getManager().handle(is, StatusManager.LOG);
+
+							if (tripel.getThird().getResource() != null){
+								try {
+									IProject project = tripel.getThird().getJavaProject().getProject();
+									IFile file = project.getFile(tripel.getThird().getResource().getProjectRelativePath());
+
+									IMarker marker = file.createMarker(IMarker.TEXT);
+									marker.setAttribute(IMarker.MESSAGE, "");
+									marker.setAttribute(IMarker.SEVERITY, IMarker.PRIORITY_NORMAL);
+									marker.setAttribute(IMarker.CHAR_START, tripel.getThird().getSourceRange().getOffset());
+									marker.setAttribute(IMarker.CHAR_END, tripel.getThird().getSourceRange().getOffset());
+									marker.setAttribute(IMarker.TRANSIENT, true);
+
+									IDE.openEditor(editorPage, marker, true);
+
+									marker.delete();
+								}catch (CoreException e) {
+									final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+									StatusManager.getManager().handle(is, StatusManager.LOG);
+								}
+							}else{
+								// TODO: Make possible to jump to code of external jars with attached source code
 							}
 						}
 					}
@@ -175,17 +177,21 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 		tableViewer.getControl().setFocus();
 	}
 
+	static boolean idle = true;
+	
 	@Override
 	public void update() {
-		tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				tableViewer.refresh();
-			}
-		});
+		if (idle){
+			tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					tableViewer.refresh();
+					idle = true;
+				}
+			});
+			idle = false;
+		}
 	}
-
-
 
 	class TableContentProvider implements IStructuredContentProvider {
 
@@ -221,28 +227,44 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 			return null;
 		}
 
+		private Image package_icon_cache = null;
+		private Image class_icon_cache = null;
+		private Image method_icon_cache = null;
+		private Image field_icon_cache = null;
+		
 		public Image getColumnImage(Object obj, int index) {
 			Triple<IEnsemble, ICodeElement, IMember> triple = DataManager.transfer(obj);
 			if (triple != null){
 				switch (index) {
 				case 0:
-					return loadImage("icons/newpackfolder_wiz.gif");
+					if (package_icon_cache == null){
+						package_icon_cache = loadImage("icons/newpackfolder_wiz.gif");
+					}
+					return package_icon_cache; 
 				case 1:
 					if (triple.getSecond() instanceof IClassDeclaration){
-						return loadImage("icons/class.gif");
+						if (class_icon_cache == null){
+							class_icon_cache = loadImage("icons/class.gif");
+						}
+						return class_icon_cache;
 					}
 					if (triple.getSecond() instanceof IMethodDeclaration){
-						return loadImage("icons/method.gif");
+						if (method_icon_cache == null){
+							method_icon_cache = loadImage("icons/method.gif");
+						}
+						return method_icon_cache;
 					}
 					if (triple.getSecond() instanceof IFieldDeclaration){
-						return loadImage("icons/field.gif");
+						if (field_icon_cache == null){
+							field_icon_cache = loadImage("icons/field.gif");
+						}
+						return field_icon_cache;
 					}
 				default:
 				}
 			}
 			return null;
 		}
-
 	}
 	
 	class TableColumnComparator extends ViewerSorter{

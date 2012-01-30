@@ -55,9 +55,13 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 		}
 	}
 
+	static int start = 0;
+	
 	@Override
 	public void added(IPair<IEnsemble, ICodeElement> element) {
+		start++;
 //		Debug.printICodeElement(element.getSecond());
+		System.out.println("start adding Element: " + start);
 		CodeElementFinder.startSearch(element.getSecond(), project, new CodeFinder(element));
 	}
 	
@@ -73,7 +77,7 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 		public void processFoundCodeElement(IMember member) {
 //			System.out.println("Found");
 //			Debug.printICodeElement(element.getSecond());
-			
+			System.out.println("found Element: " + start);
 			Triple<IEnsemble, ICodeElement, IMember> data = new Triple<IEnsemble, ICodeElement, IMember>(element.getFirst(), element.getSecond(), member);
 			elements.put(element, data);
 			dataModel.added(data);

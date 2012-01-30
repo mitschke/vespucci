@@ -81,8 +81,6 @@ public class CodeElementFinder {
 	private static HashMap<String, IJavaSearchScope>  helper = new HashMap<String, IJavaSearchScope>();
 	
 	public static void startSearch(ICodeElement sourceElement, IProject project, ICodeElementFoundProcessor processor){
-		System.out.println(i);
-		i++;
 		SearchPattern searchPattern;
 
 		//Set default SearchScope
@@ -90,9 +88,7 @@ public class CodeElementFinder {
 
 		if (helper.containsKey(sourceElement.getPackageIdentifier())){
 			javaSearchScope = helper.get(sourceElement.getPackageIdentifier()); 
-			System.out.println("effizient");
 		}else{
-			System.out.println("böse");
 			//Try to get better SearchScope
 			try {
 				IJavaProject javaProject= JavaCore.create(project);
