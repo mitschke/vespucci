@@ -74,7 +74,7 @@ public class CodeElementMarker implements ICodeElementFoundProcessor {
 				IProject project = member.getJavaProject().getProject();
 				IFile file = project.getFile(member.getResource().getProjectRelativePath());
 				
-				return addMarker(file, description, member.getSourceRange().getOffset(), member.getSourceRange().getOffset(), priority);	
+				return addMarker(file, description, member.getNameRange().getOffset(), member.getNameRange().getOffset(), priority);	
 				
 			} catch (JavaModelException e) {
 				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);

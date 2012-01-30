@@ -118,6 +118,7 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 	@Override
 	public void cleanUp() {
 		CodeElementMarker.deleteAllMarkers();
+		ViolationSummaryMarker.deleteAllMarkers();
 		//violationView.unregister(this);
 	}
 
