@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://vespucci.editor/2011-06-01" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
-  <ShapesDiagram xmi:id="_o_MrMRkMEeG8764jHqDYog"/>
-  <notation:Diagram xmi:id="_pCLGsBkMEeG8764jHqDYog" type="Vespucci" element="_o_MrMRkMEeG8764jHqDYog" name="default.sad" measurementUnit="Pixel">
-    <styles xmi:type="notation:DiagramStyle" xmi:id="_pCLGsRkMEeG8764jHqDYog"/>
-  </notation:Diagram>
-</xmi:XMI>

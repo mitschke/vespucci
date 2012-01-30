@@ -398,6 +398,51 @@
               href="vespucci.ecore#//Ensemble"/>
         </target>
       </audits>
+      <audits
+          name="WARNING if Ensemble query has invalid parenthesis count"
+          description="Ensemble query invalid parenthesis count."
+          id="EnsembleQueryValidParenthesisID"
+          severity="WARNING"
+          message="Ensemble query invalid parenthesis count.">
+        <rule
+            body="ValidParenthesisCount"
+            language="java"/>
+        <target
+            xsi:type="gmfmap:DomainElementTarget">
+          <element
+              href="vespucci.ecore#//Ensemble"/>
+        </target>
+      </audits>
+      <audits
+          name="WARNING if Ensemble query contains incomplete Prolog string"
+          description="Ensemble query contains incomplete Prolog strings."
+          id="EnsembleQueryCompletePrologStringsID"
+          severity="WARNING"
+          message="Ensemble query invalid parenthesis count.">
+        <rule
+            body="CompletePrologString"
+            language="java"/>
+        <target
+            xsi:type="gmfmap:DomainElementTarget">
+          <element
+              href="vespucci.ecore#//Ensemble"/>
+        </target>
+      </audits>
+      <audits
+          name="WARNING if Ensemble query has invalid bracket count"
+          description="Ensemble query invalid bracket count."
+          id="EnsembleQueryValidBracketID"
+          severity="WARNING"
+          message="Ensemble query has invalid bracket count.">
+        <rule
+            body="ValidBracketCount"
+            language="java"/>
+        <target
+            xsi:type="gmfmap:DomainElementTarget">
+          <element
+              href="vespucci.ecore#//Ensemble"/>
+        </target>
+      </audits>
     </childContainers>
     <childContainers
         id="ConnectionsConstraintsID"

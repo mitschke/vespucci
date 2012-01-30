@@ -17,12 +17,12 @@
         id="EnsembleConstraintsID"
         name="All constraints about Ensemble."
         path="//@audits/@categories.0 //@audits/@categories.1"
-        audits="//@audits/@rules.0 //@audits/@rules.1 //@audits/@rules.2 //@audits/@rules.3"/>
+        audits="//@audits/@rules.0 //@audits/@rules.1 //@audits/@rules.2 //@audits/@rules.3 //@audits/@rules.4 //@audits/@rules.5 //@audits/@rules.6"/>
     <categories
         id="ConnectionsConstraintsID"
         name="All constraints about Connections."
         path="//@audits/@categories.0 //@audits/@categories.2"
-        audits="//@audits/@rules.4"/>
+        audits="//@audits/@rules.7"/>
     <rules
         name="ERROR if Ensemble name not NULL"
         id="EnsembleNameNotNullID"
@@ -78,10 +78,55 @@
       </target>
     </rules>
     <rules
+        name="WARNING if Ensemble query has invalid parenthesis count"
+        description="Ensemble query invalid parenthesis count."
+        id="EnsembleQueryValidParenthesisID"
+        rule="//@expressionProviders/@providers.1/@expressions.1"
+        message="Ensemble query invalid parenthesis count."
+        severity="WARNING"
+        category="//@audits/@categories.1">
+      <target
+          xsi:type="gmfgen:GenDomainElementTarget"
+          contextSelector="//@audits/@clientContexts.0">
+        <element
+            href="vespucci.genmodel#//vespucci_model/Ensemble"/>
+      </target>
+    </rules>
+    <rules
+        name="WARNING if Ensemble query contains incomplete Prolog string"
+        description="Ensemble query contains incomplete Prolog strings."
+        id="EnsembleQueryCompletePrologStringsID"
+        rule="//@expressionProviders/@providers.1/@expressions.2"
+        message="Ensemble query invalid parenthesis count."
+        severity="WARNING"
+        category="//@audits/@categories.1">
+      <target
+          xsi:type="gmfgen:GenDomainElementTarget"
+          contextSelector="//@audits/@clientContexts.0">
+        <element
+            href="vespucci.genmodel#//vespucci_model/Ensemble"/>
+      </target>
+    </rules>
+    <rules
+        name="WARNING if Ensemble query has invalid bracket count"
+        description="Ensemble query invalid bracket count."
+        id="EnsembleQueryValidBracketID"
+        rule="//@expressionProviders/@providers.1/@expressions.3"
+        message="Ensemble query has invalid bracket count."
+        severity="WARNING"
+        category="//@audits/@categories.1">
+      <target
+          xsi:type="gmfgen:GenDomainElementTarget"
+          contextSelector="//@audits/@clientContexts.0">
+        <element
+            href="vespucci.genmodel#//vespucci_model/Ensemble"/>
+      </target>
+    </rules>
+    <rules
         name="invalid constraint-dependency"
         description="Dependencies must be derived from a set of valid keywords."
         id="DependencyInvalidID"
-        rule="//@expressionProviders/@providers.1/@expressions.1"
+        rule="//@expressionProviders/@providers.1/@expressions.4"
         message="Dependency kind is invalid."
         category="//@audits/@categories.2">
       <target
@@ -92,7 +137,7 @@
       </target>
     </rules>
     <clientContexts
-        ruleTargets="//@audits/@rules.0/@target //@audits/@rules.1/@target //@audits/@rules.2/@target //@audits/@rules.3/@target //@audits/@rules.4/@target"/>
+        ruleTargets="//@audits/@rules.0/@target //@audits/@rules.1/@target //@audits/@rules.2/@target //@audits/@rules.3/@target //@audits/@rules.4/@target //@audits/@rules.5/@target //@audits/@rules.6/@target //@audits/@rules.7/@target"/>
   </audits>
   <diagram
       visualID="1000"
@@ -1949,6 +1994,15 @@
       <expressions
           xsi:type="gmfgen:GenConstraint"
           body="NonLeafEnsembleMustBeDerived"/>
+      <expressions
+          xsi:type="gmfgen:GenConstraint"
+          body="ValidParenthesisCount"/>
+      <expressions
+          xsi:type="gmfgen:GenConstraint"
+          body="CompletePrologString"/>
+      <expressions
+          xsi:type="gmfgen:GenConstraint"
+          body="ValidBracketCount"/>
       <expressions
           xsi:type="gmfgen:GenConstraint"
           body="ValidConstraintDependency"/>

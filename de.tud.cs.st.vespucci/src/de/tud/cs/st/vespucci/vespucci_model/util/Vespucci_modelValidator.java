@@ -173,6 +173,8 @@ public class Vespucci_modelValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(shape, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(shape, diagnostics, context);
 		if (result || diagnostics != null) result &= validateShape_notAllowedOnly(shape, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_testSourceConnections(shape, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_testTargetConnections(shape, diagnostics, context);
 		return result;
 	}
 
@@ -206,6 +208,64 @@ public class Vespucci_modelValidator extends EObjectValidator {
 	}
 
 	/**
+	 * The cached validation expression for the testSourceConnections constraint of '<em>Shape</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected static final String SHAPE__TEST_SOURCE_CONNECTIONS__EEXPRESSION = "self.sourceConnections->isEmpty()";
+
+	/**
+	 * Validates the testSourceConnections constraint of '<em>Shape</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateShape_testSourceConnections(Shape shape, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return
+			validate
+				(Vespucci_modelPackage.Literals.SHAPE,
+				 shape,
+				 diagnostics,
+				 context,
+				 "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
+				 "testSourceConnections",
+				 SHAPE__TEST_SOURCE_CONNECTIONS__EEXPRESSION,
+				 Diagnostic.ERROR,
+				 DIAGNOSTIC_SOURCE,
+				 0);
+	}
+
+	/**
+	 * The cached validation expression for the testTargetConnections constraint of '<em>Shape</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected static final String SHAPE__TEST_TARGET_CONNECTIONS__EEXPRESSION = "self.targetConnections->isEmpty()";
+
+	/**
+	 * Validates the testTargetConnections constraint of '<em>Shape</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateShape_testTargetConnections(Shape shape, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return
+			validate
+				(Vespucci_modelPackage.Literals.SHAPE,
+				 shape,
+				 diagnostics,
+				 context,
+				 "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
+				 "testTargetConnections",
+				 SHAPE__TEST_TARGET_CONNECTIONS__EEXPRESSION,
+				 Diagnostic.ERROR,
+				 DIAGNOSTIC_SOURCE,
+				 0);
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -221,6 +281,8 @@ public class Vespucci_modelValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(empty, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(empty, diagnostics, context);
 		if (result || diagnostics != null) result &= validateShape_notAllowedOnly(empty, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_testSourceConnections(empty, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_testTargetConnections(empty, diagnostics, context);
 		return result;
 	}
 
@@ -240,6 +302,8 @@ public class Vespucci_modelValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(ensemble, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(ensemble, diagnostics, context);
 		if (result || diagnostics != null) result &= validateShape_notAllowedOnly(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_testSourceConnections(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validateShape_testTargetConnections(ensemble, diagnostics, context);
 		return result;
 	}
 

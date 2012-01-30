@@ -156,10 +156,151 @@ public class VespucciValidationProvider {
 	 * @generated
 	 */
 	public static class Adapter5 extends AbstractModelConstraint {
+
+		/**
+		 * Checks if the brackets in an Ensemble Query are complete.
+		 * 
+		 * @author Theo Kischka
+		 * @generated NOT
+		 * @return Success-Status, if validation successful; Failure otherwise.
+		 */
+		public IStatus validate(IValidationContext ctx) {
+			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
+					.getTarget();
+			String query = context.getQuery();
+
+			// alle Klammern innerhalb Prolog-Strings rausfiltern (z.B. im Ensemblenamen)
+			query = filterPrologStringsRek(query);
+
+			if (!checkBrackets(query, '(', ')')) {
+				return ctx
+						.createFailureStatus("Invalid parenthesis count in Ensemble query.");
+			}
+			return ctx.createSuccessStatus();
+		}
+
+		/**
+		 * Returns true, if brackets are typed properly.
+		 * 
+		 * @generated NOT
+		 */
+		protected static boolean checkBrackets(String query,
+				char openingBracket, char closingBracket) {
+			Stack<Character> openBrackets = new Stack<Character>();
+
+			for (int i = 0; i < query.length(); i++) {
+				char c = query.charAt(i);
+
+				if (c == openingBracket) {
+					openBrackets.push(c);
+				}
+				if (c == closingBracket) {
+					if (openBrackets.isEmpty()) {
+						return false;
+					} else {
+						openBrackets.pop();
+					}
+				}
+			}
+
+			if (!openBrackets.isEmpty()) {
+				return false;
+			}
+			return true;
+		}
+
+		/**
+		 * Filters everything between two 's within a string out.
+		 * 
+		 * @generated NOT
+		 */
+		protected static String filterPrologStringsRek(String s) {
+			int beginIndex = s.indexOf('\'');
+			int endIndex = s.length() - 1;
+			if (beginIndex == -1) {
+				return s;
+			} else {
+				endIndex = s.replaceFirst("'", " ").indexOf('\'');
+				if (endIndex == -1) {
+					return s;
+				} else {
+					return s.substring(0, beginIndex)
+							+ filterPrologStringsRek(s.substring(endIndex,
+									s.length()));
+				}
+			}
+		}
+	}
+
+	/**
+	 * @generated
+	 */
+	public static class Adapter6 extends AbstractModelConstraint {
+
+		/**
+		 * Checks if Ensemble query prolog strings are complete.
+		 * E.g.: package('de.tud.cs.se.flashcards.ui') is correct while
+		 * package(de.tud.cs.se.flashcards.ui') is not.
+		 * 
+		 * @author Theo Kischka
+		 * @generated NOT
+		 * @return Success-Status, if validation successful; Failure otherwise.
+		 */
+		public IStatus validate(IValidationContext ctx) {
+			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
+					.getTarget();
+			String query = context.getQuery();
+			boolean stringOpen = false;
+
+			for (int i = 0; i < query.length(); i++) {
+				char c = query.charAt(i);
+				if (c == '\'') {
+					stringOpen = !stringOpen;
+				}
+			}
+			if (stringOpen) {
+				return ctx.createFailureStatus("Missing ' in Ensemble query.");
+			}
+			return ctx.createSuccessStatus();
+		}
+	}
+
+	/**
+	 * @generated
+	 */
+	public static class Adapter7 extends AbstractModelConstraint {
+
+		/**
+		 * @author Theo Kischka
+		 * @author Thomas Schulz
+		 * @generated NOT
+		 * @return Success-Status, if validation successful; Failure otherwise.
+		 */
+		public IStatus validate(IValidationContext ctx) {
+			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
+					.getTarget();
+			String query = context.getQuery();
+
+			// alle Klammern innerhalb Prolog-Strings rausfiltern (z.B. im Ensemblenamen)
+			query = Adapter5.filterPrologStringsRek(query);
+
+			if (!Adapter5.checkBrackets(query, '[', ']')) {
+				return ctx
+						.createFailureStatus("Invalid brackets count in Ensemble query.");
+			}
+			return ctx.createSuccessStatus();
+		}
+	}
+
+
+	/**
+	 * @generated
+	 */
+	public static class Adapter8 extends AbstractModelConstraint {
 		// TODO change the name Adapter5 to a more expressive name (CAUTION: Refactoring may affect code generator!)
 		private static ResourceBundle pluginProperties = ResourceBundle
 				.getBundle("plugin");
-
+	
 		/**
 		 * Checks if given dependency kind for constrain is valid.
 		 * 
@@ -176,7 +317,7 @@ public class VespucciValidationProvider {
 			if (context == null) {
 				return Status.OK_STATUS;
 			}
-
+	
 			/**
 			 * Valid names for dependencies read from the resource-file.
 			 */
@@ -185,10 +326,10 @@ public class VespucciValidationProvider {
 							FrameworkUtil.getBundle(Adapter5.class)
 									.getSymbolicName(), pluginProperties
 									.getString("validDependenciesFile"));
-
+	
 			final String[] dependencies = context.split(", ");
 			boolean valid = false;
-
+	
 			// check all dependencies
 			for (final String dep : dependencies) {
 				// probe for all valid names
@@ -207,6 +348,7 @@ public class VespucciValidationProvider {
 			return ctx.createSuccessStatus();
 		}
 	}
+
 
 	/**
 	 * @generated

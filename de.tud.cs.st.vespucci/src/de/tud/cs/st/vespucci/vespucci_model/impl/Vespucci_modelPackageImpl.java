@@ -674,7 +674,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		  (shapeEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "notAllowedOnly"
+			 "constraints", "notAllowedOnly testSourceConnections testTargetConnections"
 		   });	
 	}
 
@@ -690,7 +690,9 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		  (shapeEClass, 
 		   source, 
 		   new String[] {
-			 "notAllowedOnly", "self.targetConnections->forAll(x : Connection, y : Connection | (x <> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(NotAllowed)) implies y.oclIsTypeOf(NotAllowed))"
+			 "notAllowedOnly", "self.targetConnections->forAll(x : Connection, y : Connection | (x <> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(NotAllowed)) implies y.oclIsTypeOf(NotAllowed))",
+			 "testSourceConnections", "self.sourceConnections->isEmpty()",
+			 "testTargetConnections", "self.targetConnections->isEmpty()"
 		   });
 	}
 

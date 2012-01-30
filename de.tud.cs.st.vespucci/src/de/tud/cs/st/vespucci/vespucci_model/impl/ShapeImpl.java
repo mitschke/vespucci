@@ -161,64 +161,60 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 		return Vespucci_modelPackage.Literals.SHAPE;
 	}
 
-	/**Filters the connections and shows the derived source list
+	/**Filters the connections and shows the derived source list.
+	 * Returns all <code>Connections</code> which point from another <code>Shape</code> to this one.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 * @author Robert Cibulla
-	 * @return EList<Connection> - Returns all <code>Connections</code> which point from another <code>Shape</code> to this 
-
-one.
+	 * @return EList<Connection>
 	 */
 	public EList<Connection> getSourceConnections() {
 		//get DiagramReference:
 		ShapesDiagram tempDiagramReference = this.getDiagramReferencePriv();
 		//temporary Arraylist to collect valid Connections
-		List<Connection> tempConnections = new ArrayList<Connection>();
+		List<Connection> connections = new ArrayList<Connection>();
 		//collect all Connections where the current shape is the Target:
-		for(Connection connection : tempDiagramReference.getConnections()){
-			if(connection.getTarget().equals(this))
-				tempConnections.add(connection);
+		for(Connection conn : tempDiagramReference.getConnections()){
+			checkForTemp(true, conn, connections);
 		}
 		return new EcoreEList.UnmodifiableEList<Connection>(this, 
-
-Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS, tempConnections.size(), tempConnections.toArray());
+				Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS, connections.size(), connections.toArray());
 	}
 
-	/**Filters the connections and shows the derived target list
+	/**Filters the connections and shows the derived target list.
+	 * Returns all <code>Connections</code> which point from this <code>Shape</code> to another.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 * @author Robert Cibulla
-	 * @return EList<Connection> Returns all <code>Connections</code> which point from this <code>Shape</code> to another.
+	 * @return EList<Connection> 
 	 */
 	public EList<Connection> getTargetConnections() {
 		//get DiagramReference:
 		ShapesDiagram tempDiagramReference = this.getDiagramReferencePriv();
 		//temporary Arraylist to collect valid Connections
-		List<Connection> tempConnections = new ArrayList<Connection>();
+		List<Connection> connections = new ArrayList<Connection>();
 		//collect all Connections where the current shape is the Source:
-		for(Connection connection : tempDiagramReference.getConnections()){
-			if(connection.getSource().equals(this))
-				tempConnections.add(connection);
+		for(Connection conn : tempDiagramReference.getConnections()){
+			checkForTemp(false, conn, connections);
 		}
 		return new EcoreEList.UnmodifiableEList<Connection>(this, 
-
-Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS, tempConnections.size(), tempConnections.toArray());
+				Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS, connections.size(), connections.toArray());
 	}
 	
 	/**
-	 *
+	 *Private method to get the ShapesDiagram reference.
 	 * 
 	 * @generated NOT
 	 * @author Robert Cibulla
-	 * @return ShapesDiagram
+	 * @return ShapesDiagram - reference to the ShapesDiagram
 	 */
 	private ShapesDiagram getDiagramReferencePriv(){
 		//temporary variables used to navigate to top node
 		ShapesDiagram tempDiagramReference = this.getDiagramReference();
 		Ensemble tempEnsembleReference = this.getEnsembleReference();
-		//test whether the current Shape is persisted in the ShapesDiagram
+		//test whether the current Shape is directly persisted in the ShapesDiagram
 		if(tempDiagramReference == null){
 			//if not, navigate to the top level:
 			while(tempEnsembleReference != null){
@@ -232,6 +228,35 @@ Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS, tempConnections.size()
 		}
 		return tempDiagramReference;
 	}
+	
+	/**
+	 * @generated NOT
+	 * @author Robert Cibulla
+	 * @return boolean 
+	 */
+	private void checkForTemp(boolean source, Connection con, List<Connection> connections){
+		//decide whether method is used in for getSourceConnections or getTargetConnections
+		if(source){
+			//check if connection is either temporary or temporary on the wrong end (empty OriginalSource/-Target)
+			if(!con.isTemp() || (con.getOriginalTarget() != null && con.getOriginalTarget().isEmpty())){
+				if(con.getTarget().equals(this))
+					connections.add(con);
+			} else {
+				if(con.getOriginalTarget().get(0).equals(this))
+					connections.add(con);
+			}
+		} else {
+			//check if connection is either temporary or temporary on the wrong end (empty OriginalSource/-Target)
+			if(!con.isTemp() || (con.getOriginalSource() != null && con.getOriginalSource().isEmpty())){
+				if(con.getSource().equals(this))
+					connections.add(con);
+			} else {
+				if(con.getOriginalSource().get(0).equals(this))
+					connections.add(con);
+			}
+		}
+	}
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

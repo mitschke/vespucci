@@ -682,10 +682,40 @@
             <message><![CDATA[Queries of non leaf ensemble must be derived ]]></message>
             <target class="vespucci_model.Ensemble"/>
          </constraint>
+                  <constraint id="EnsembleQueryValidParenthesisID"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter5"
+            name="WARNING if Ensemble query has invalid parenthesis count"
+            mode="Batch"
+            severity="WARNING" statusCode="200">
+            
+            <description><![CDATA[Ensemble query invalid parenthesis count.]]></description>
+            <message><![CDATA[Ensemble query invalid parenthesis count.]]></message>
+            <target class="vespucci_model.Ensemble"/>
+         </constraint>
+                  <constraint id="EnsembleQueryCompletePrologStringsID"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter6"
+            name="WARNING if Ensemble query contains incomplete Prolog string"
+            mode="Batch"
+            severity="WARNING" statusCode="200">
+            
+            <description><![CDATA[Ensemble query contains incomplete Prolog strings.]]></description>
+            <message><![CDATA[Ensemble query invalid parenthesis count.]]></message>
+            <target class="vespucci_model.Ensemble"/>
+         </constraint>
+                  <constraint id="EnsembleQueryValidBracketID"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter7"
+            name="WARNING if Ensemble query has invalid bracket count"
+            mode="Batch"
+            severity="WARNING" statusCode="200">
+            
+            <description><![CDATA[Ensemble query invalid bracket count.]]></description>
+            <message><![CDATA[Ensemble query has invalid bracket count.]]></message>
+            <target class="vespucci_model.Ensemble"/>
+         </constraint>
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/ConnectionsConstraintsID">
                   <constraint id="DependencyInvalidID"
-            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter5"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter8"
             name="invalid constraint-dependency"
             mode="Batch"
             severity="ERROR" statusCode="200">
@@ -708,6 +738,9 @@
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleNameUniqueID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryNotNullID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.NonLeafEnsembleMustBeDerivedID"/>
+                  <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryValidParenthesisID"/>
+                  <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryCompletePrologStringsID"/>
+                  <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryValidBracketID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.DependencyInvalidID"/>
                </binding>
 
