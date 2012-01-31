@@ -299,7 +299,7 @@ public class VespucciValidationProvider {
 	 * @generated
 	 */
 	public static class Adapter8 extends AbstractModelConstraint {
-		// TODO change the name Adapter5 to a more expressive name (CAUTION: Refactoring may affect code generator!)
+		// TODO change the name Adapter8 to a more expressive name (CAUTION: Refactoring may affect code generator!)
 		private static ResourceBundle pluginProperties = ResourceBundle
 				.getBundle("plugin");
 	
@@ -325,7 +325,7 @@ public class VespucciValidationProvider {
 			 */
 			final String[] validDependencies = KeywordReader
 					.readAndParseResourceFile(
-							FrameworkUtil.getBundle(Adapter5.class)
+							FrameworkUtil.getBundle(Adapter8.class)
 									.getSymbolicName(), pluginProperties
 									.getString("validDependenciesFile"));
 	

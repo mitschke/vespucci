@@ -48,12 +48,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.qvt.oml.runtime,
  org.eclipse.m2m.qvt.oml.runtime.ui;bundle-version="2.1.1",
  org.eclipse.m2m.qvt.oml,
- de.tud.cs.st.vespucci.versioning,
- de.tud.cs.st.vespucci.exceptions;bundle-version="1.0.0"
+ de.tud.cs.st.vespucci.versioning
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.debug.core,
+Import-Package: de.tud.cs.st.vespucci.exceptions,
+ org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.jdt.internal.corext.util,
  org.eclipse.m2m.qvt.oml.util
