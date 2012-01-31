@@ -170,18 +170,12 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 * @return EList<Connection>
 	 */
 	public EList<Connection> getSourceConnections() {
-		//get DiagramReference:
-		ShapesDiagram tempDiagramReference = this.getDiagramReferencePriv();
-		//temporary Arraylist to collect valid Connections
-		List<Connection> connections = new ArrayList<Connection>();
-		//collect all Connections where the current shape is the Target:
-		for(Connection conn : tempDiagramReference.getConnections()){
-			checkForTemp(true, conn, connections);
-		}
+		List<Connection> connections = getConnectionsHelper(true);
 		return new EcoreEList.UnmodifiableEList<Connection>(this, 
 				Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS, connections.size(), connections.toArray());
 	}
-
+	
+	
 	/**Filters the connections and shows the derived target list.
 	 * Returns all <code>Connections</code> which point from this <code>Shape</code> to another.
 	 * <!-- begin-user-doc -->
@@ -191,16 +185,29 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 * @return EList<Connection> 
 	 */
 	public EList<Connection> getTargetConnections() {
+		List<Connection> connections = getConnectionsHelper(false);
+		return new EcoreEList.UnmodifiableEList<Connection>(this, 
+				Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS, connections.size(), connections.toArray());
+	}
+	
+	
+	/**
+	 * Helper method to collect connections.
+	 * @author Robert Cibulla
+	 * @generated NOT
+	 * @param boolean source - determines whether source or target connections are collected.
+	 * return List<Connection>;
+	 */
+	private List<Connection> getConnectionsHelper(boolean source){
 		//get DiagramReference:
 		ShapesDiagram tempDiagramReference = this.getDiagramReferencePriv();
 		//temporary Arraylist to collect valid Connections
 		List<Connection> connections = new ArrayList<Connection>();
-		//collect all Connections where the current shape is the Source:
+		//collect all Connections where the current shape is the Target:
 		for(Connection conn : tempDiagramReference.getConnections()){
-			checkForTemp(false, conn, connections);
+			checkForTemp(source, conn, connections);
 		}
-		return new EcoreEList.UnmodifiableEList<Connection>(this, 
-				Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS, connections.size(), connections.toArray());
+		return connections;
 	}
 	
 	/**
