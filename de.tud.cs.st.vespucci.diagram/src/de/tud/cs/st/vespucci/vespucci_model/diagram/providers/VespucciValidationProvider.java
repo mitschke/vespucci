@@ -141,6 +141,8 @@ public class VespucciValidationProvider {
 		public IStatus validate(final IValidationContext ctx) {
 			final de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
 					.getTarget();
+			//adjust easy case where query is empty:
+			context.adjustQueryIfNonLeaf();
 			if (context.getShapes().size() == 0) {
 				return ctx.createSuccessStatus();
 			}

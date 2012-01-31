@@ -73,4 +73,6 @@ public interface Ensemble extends Shape {
 	 */
 	EList<Shape> getShapes();
 
+	void adjustQueryIfNonLeaf();
+
 } // Ensemble

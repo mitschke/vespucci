@@ -145,8 +145,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
-				return getShapes();
+			case Vespucci_modelPackage.ENSEMBLE__SHAPES:{
+				return getShapes();}
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -195,6 +195,17 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 				return shapes != null && !shapes.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+	
+	/**
+	 * Autoadjusts nonleaf-query to derived if empty
+	 * @generated NOT
+	 * @author Robert Cibulla
+	 */
+	public void adjustQueryIfNonLeaf(){
+		if(query.compareTo("empty") == 0 && !getShapes().isEmpty()){
+			query = "derived";
+		}
 	}
 
 } //EnsembleImpl
