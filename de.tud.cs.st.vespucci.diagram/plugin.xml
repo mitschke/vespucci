@@ -699,7 +699,7 @@
             severity="WARNING" statusCode="200">
             
             <description><![CDATA[Ensemble query contains incomplete Prolog strings.]]></description>
-            <message><![CDATA[Ensemble query invalid parenthesis count.]]></message>
+            <message><![CDATA[Missing ' in Ensemble query.]]></message>
             <target class="vespucci_model.Ensemble"/>
          </constraint>
                   <constraint id="EnsembleQueryValidBracketID"
@@ -708,8 +708,8 @@
             mode="Batch"
             severity="WARNING" statusCode="200">
             
-            <description><![CDATA[Ensemble query invalid bracket count.]]></description>
-            <message><![CDATA[Ensemble query has invalid bracket count.]]></message>
+            <description><![CDATA[Ensemble query has invalid bracket count.]]></description>
+            <message><![CDATA[Invalid brackets count in Ensemble query.]]></message>
             <target class="vespucci_model.Ensemble"/>
          </constraint>
                   </constraints>

@@ -418,7 +418,7 @@
           description="Ensemble query contains incomplete Prolog strings."
           id="EnsembleQueryCompletePrologStringsID"
           severity="WARNING"
-          message="Ensemble query invalid parenthesis count.">
+          message="Missing ' in Ensemble query.">
         <rule
             body="CompletePrologString"
             language="java"/>
@@ -430,10 +430,10 @@
       </audits>
       <audits
           name="WARNING if Ensemble query has invalid bracket count"
-          description="Ensemble query invalid bracket count."
+          description="Ensemble query has invalid bracket count."
           id="EnsembleQueryValidBracketID"
           severity="WARNING"
-          message="Ensemble query has invalid bracket count.">
+          message="Invalid brackets count in Ensemble query.">
         <rule
             body="ValidBracketCount"
             language="java"/>

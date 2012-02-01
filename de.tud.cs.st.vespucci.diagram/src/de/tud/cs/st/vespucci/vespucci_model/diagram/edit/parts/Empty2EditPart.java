@@ -95,7 +95,8 @@ public class Empty2EditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
+		installEditPolicy(
+				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.Empty2ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		installEditPolicy(REQ_DIRECT_EDIT, new EditDropPolicy());

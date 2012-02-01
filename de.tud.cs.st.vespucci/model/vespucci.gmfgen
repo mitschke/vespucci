@@ -97,7 +97,7 @@
         description="Ensemble query contains incomplete Prolog strings."
         id="EnsembleQueryCompletePrologStringsID"
         rule="//@expressionProviders/@providers.1/@expressions.2"
-        message="Ensemble query invalid parenthesis count."
+        message="Missing ' in Ensemble query."
         severity="WARNING"
         category="//@audits/@categories.1">
       <target
@@ -109,10 +109,10 @@
     </rules>
     <rules
         name="WARNING if Ensemble query has invalid bracket count"
-        description="Ensemble query invalid bracket count."
+        description="Ensemble query has invalid bracket count."
         id="EnsembleQueryValidBracketID"
         rule="//@expressionProviders/@providers.1/@expressions.3"
-        message="Ensemble query has invalid bracket count."
+        message="Invalid brackets count in Ensemble query."
         severity="WARNING"
         category="//@audits/@categories.1">
       <target

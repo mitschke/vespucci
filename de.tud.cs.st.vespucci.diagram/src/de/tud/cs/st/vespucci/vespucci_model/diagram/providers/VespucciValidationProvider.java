@@ -294,7 +294,6 @@ public class VespucciValidationProvider {
 		}
 	}
 
-
 	/**
 	 * @generated
 	 */
@@ -302,7 +301,7 @@ public class VespucciValidationProvider {
 		// TODO change the name Adapter8 to a more expressive name (CAUTION: Refactoring may affect code generator!)
 		private static ResourceBundle pluginProperties = ResourceBundle
 				.getBundle("plugin");
-	
+
 		/**
 		 * Checks if given dependency kind for constrain is valid.
 		 * 
@@ -319,7 +318,7 @@ public class VespucciValidationProvider {
 			if (context == null) {
 				return Status.OK_STATUS;
 			}
-	
+
 			/**
 			 * Valid names for dependencies read from the resource-file.
 			 */
@@ -328,10 +327,10 @@ public class VespucciValidationProvider {
 							FrameworkUtil.getBundle(Adapter8.class)
 									.getSymbolicName(), pluginProperties
 									.getString("validDependenciesFile"));
-	
+
 			final String[] dependencies = context.split(", ");
 			boolean valid = false;
-	
+
 			// check all dependencies
 			for (final String dep : dependencies) {
 				// probe for all valid names
@@ -350,7 +349,6 @@ public class VespucciValidationProvider {
 			return ctx.createSuccessStatus();
 		}
 	}
-
 
 	/**
 	 * @generated
