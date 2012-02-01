@@ -200,12 +200,12 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 */
 	private List<Connection> getConnectionsHelper(boolean source){
 		//get DiagramReference:
-		ShapesDiagram tempDiagramReference = this.getDiagramReferencePriv();
+		ShapesDiagram tempDiagramReference = getDiagramReferenceHelper();
 		//temporary Arraylist to collect valid Connections
 		List<Connection> connections = new ArrayList<Connection>();
 		//collect all Connections where the current shape is the Target:
 		for(Connection conn : tempDiagramReference.getConnections()){
-			checkForTemp(source, conn, connections);
+			connectionsIgnoreTemp(source, conn, connections);
 		}
 		return connections;
 	}
@@ -217,7 +217,7 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 * @author Robert Cibulla
 	 * @return ShapesDiagram - reference to the ShapesDiagram
 	 */
-	private ShapesDiagram getDiagramReferencePriv(){
+	private ShapesDiagram getDiagramReferenceHelper(){
 		//temporary variables used to navigate to top node
 		ShapesDiagram tempDiagramReference = this.getDiagramReference();
 		Ensemble tempEnsembleReference = this.getEnsembleReference();
@@ -237,11 +237,11 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	}
 	
 	/**
+	 * Collects the connections and dissolves temporary connection references.
 	 * @generated NOT
 	 * @author Robert Cibulla
-	 * @return boolean 
 	 */
-	private void checkForTemp(boolean source, Connection con, List<Connection> connections){
+	private void connectionsIgnoreTemp(boolean source, Connection con, List<Connection> connections){
 		//decide whether method is used in for getSourceConnections or getTargetConnections
 		if(source){
 			//check if connection is either temporary or temporary on the wrong end (empty OriginalSource/-Target)

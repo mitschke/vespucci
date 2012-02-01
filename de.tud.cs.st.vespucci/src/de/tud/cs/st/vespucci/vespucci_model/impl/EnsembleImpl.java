@@ -203,8 +203,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	 * @author Robert Cibulla
 	 */
 	public void adjustQueryIfNonLeaf(){
-		if(query.compareTo("empty") == 0 && !getShapes().isEmpty()){
-			query = "derived";
+		if(getQuery().compareTo("empty") == 0 && !getShapes().isEmpty()){
+			setQuery("derived");
 		}
 	}
 
