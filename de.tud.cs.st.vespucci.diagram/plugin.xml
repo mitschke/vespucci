@@ -35,6 +35,13 @@
 -->
 <plugin>
 
+   <extension point="org.eclipse.ui.views">
+        <view id="org.eclipse.ui.articles.views.labelview"
+             name="Global Repository"
+          class="de.tud.cs.st.vespucci.diagram.global_repository.view.GlobalRepositoryView"
+          icon="icons/global_repository/global_rep.gif"/>
+	</extension>
+
    <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
       <?gmfgen generated="true"?>
       <fileTypes type="text" extension="sad"/>

@@ -291,7 +291,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider
 			VespucciDocumentProvider
 					.checkConversionNeeded(((FileEditorInput) element)
 							.getFile());
-
+			
 			final Diagram diagram = DiagramIOUtil.load(domain, storage, true,
 					getProgressMonitor());
 			document.setContent(diagram);
