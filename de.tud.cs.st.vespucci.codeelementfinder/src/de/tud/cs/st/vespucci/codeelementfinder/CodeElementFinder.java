@@ -1,5 +1,5 @@
 /*
- *  License (BSD Style License):
+*  License (BSD Style License):
  *   Copyright (c) 2011
  *   Software Technology Group
  *   Department of Computer Science
@@ -57,7 +57,6 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
-import org.eclipse.jdt.internal.core.search.JavaSearchScope;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.codeelementfinder.extra.IComplexCodeElement;
@@ -74,11 +73,11 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 
 public class CodeElementFinder {
 
-	private static int i = 0;
-	
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.codeelementfinder";
 
 	private static HashMap<String, IJavaSearchScope>  helper = new HashMap<String, IJavaSearchScope>();
+	private static HashMap<String, SearchMatch> cache_class = new HashMap<String, SearchMatch>();
+	
 	
 	public static void startSearch(ICodeElement sourceElement, IProject project, ICodeElementFoundProcessor processor){
 		SearchPattern searchPattern;
@@ -107,7 +106,6 @@ public class CodeElementFinder {
 					}
 				}
 
-
 				IJavaElement[] javaElements = new IJavaElement[packages.size()];
 				for (int i = 0; i < packages.size(); i++) {
 					javaElements[i] = packages.get(i);
@@ -121,12 +119,14 @@ public class CodeElementFinder {
 			}
 		}
 	    
-	    // start initial search
-
-		searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
-
-		search(searchPattern, javaSearchScope, sourceElement, project, processor);
-
+		if (cache_class.containsKey(sourceElement.getPackageIdentifier()+sourceElement.getSimpleClassName())){
+			foundMatch(cache_class.get(sourceElement.getPackageIdentifier()+sourceElement.getSimpleClassName()), sourceElement, javaSearchScope, processor);
+		}else{
+		    // start initial search
+			
+			searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
+			search(searchPattern, javaSearchScope, sourceElement, project, processor);
+		}
 	}
 
 	
@@ -171,6 +171,10 @@ public class CodeElementFinder {
 
 
 	private static boolean foundMatch(SearchMatch match, ICodeElement sourceElement, IJavaSearchScope searchScope, ICodeElementFoundProcessor processor) {
+		if (!(cache_class.containsKey(sourceElement.getPackageIdentifier()+sourceElement.getSimpleClassName()))){
+			cache_class.put(sourceElement.getPackageIdentifier()+sourceElement.getSimpleClassName(), match);
+		}
+		
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IComplexCodeElement)){
 			return foundMatch((IType) match.getElement(), (IComplexCodeElement) sourceElement, searchScope, processor);
 		}
