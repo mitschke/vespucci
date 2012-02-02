@@ -44,19 +44,27 @@ import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.gmf.runtime.emf.core.util.EMFCoreUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.model.output.spi.ArchitectureModel;
+import de.tud.cs.st.vespucci.diagram.model.output.spi.ConversionUtils;
+import de.tud.cs.st.vespucci.diagram.model.output.spi.EmptyEnsemble;
 import de.tud.cs.st.vespucci.diagram.model.output.spi.Ensemble;
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
+import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.utilities.Util;
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
@@ -96,10 +104,25 @@ public class AdapterIFile implements IAdapterFactory {
 			Set<IEnsemble> ensembles = new HashSet<IEnsemble>();
 
 			for (Shape shape : diagram.getShapes()) {
-				ensembles.add(new Ensemble(shape));
+				ensembles.add(ConversionUtils.createEnsemble(shape));
+
+				for (Connection connection : shape.getTargetConnections()) {
+
+					if (connection.getTarget().eIsProxy())
+						createWarningForProxiesMarker(diagramFile, connection);
+
+				}
 			}
 
-			return new ArchitectureModel(ensembles, diagramFile.getFullPath().toPortableString());
+			Set<IConstraint> contraints = new HashSet<IConstraint>();
+			for (IEnsemble ensemble : ensembles) {
+				for (IConstraint constraint : ensemble.getTargetConnections()) {
+
+					contraints.add(constraint);
+				}
+			}
+			return new ArchitectureModel(ensembles, contraints, diagramFile
+					.getFullPath().toPortableString());
 		}
 
 		return null;
@@ -121,10 +144,11 @@ public class AdapterIFile implements IAdapterFactory {
 				if (diagramResource.getContents().get(i) instanceof ShapesDiagram) {
 					final EObject eObject = diagramResource.getContents()
 							.get(i);
+					diagramStream.close();
 					return (ShapesDiagram) eObject;
 				}
 			}
-			diagramStream.close();
+			
 			throw new FileNotFoundException(
 					"ShapesDiagram could not be found in Document.");
 
@@ -142,6 +166,36 @@ public class AdapterIFile implements IAdapterFactory {
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return null;
+	}
+
+	private static void createWarningForProxiesMarker(IFile file,
+			Connection element) {
+
+		if(!file.exists())
+			return;
+		
+		if(ResourcesPlugin.getWorkspace().isTreeLocked())
+			return;
+		
+		String elementId = element.eResource().getURIFragment(element);
+
+		String location = EMFCoreUtil.getQualifiedName(element, true);
+
+		IMarker marker = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciMarkerNavigationProvider
+				.addMarker(
+						file,
+						elementId,
+						location,
+						"Diagram contains proxy references. Proxies are omited from procesing",
+						IStatus.WARNING);
+		try {
+			marker.setAttribute(IMarker.TRANSIENT, true);
+		} catch (CoreException e) {
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+					.getInstance().logError(
+							"Failed to create validation marker", e); //$NON-NLS-1$
+		}
+
 	}
 
 	@Override

@@ -56,12 +56,12 @@ public class Constraint implements IConstraint {
 
 	@Override
 	public IEnsemble getSource() {
-		return new Ensemble(connection.getSource());
+		return ConversionUtils.createEnsemble(connection.getSource());
 	}
 
 	@Override
 	public IEnsemble getTarget() {
-		return new Ensemble(connection.getTarget());
+		return ConversionUtils.createEnsemble(connection.getTarget());
 	}
 
 	/* (non-Javadoc)
