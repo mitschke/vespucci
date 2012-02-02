@@ -65,18 +65,28 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 	public void architectureDiagramChanged(IResource resource) {
 		if (!isRegisteredModel(resource))
 			return;
-		if (isGlobalModel(resource))
+		// we need to deregister the model during the update in order allow events on the resource
+		
+		if (isGlobalModel(resource)){
+			String ensembleRepository = this.ensembleRepository;
 			doDatabaseUpdate(resource, true);
+			this.ensembleRepository = ensembleRepository;
+		}
 
 		if (isModel(resource))
+		{			
+			deRegisterModel(resource);
 			doDatabaseUpdate(resource, false);
+			registerModel(resource);
+		}
+ 
 		doShadowFileUpdate(resource);
 	}
 
 	public void addConstraintModel(IResource resource) {
 		doDatabaseAddition(resource, false);
 		doShadowFileAddition(resource);
-		registeredModels.add(resource.getFullPath().toString());
+		
 	}
 
 	public void deleteConstraintModel(IResource resource) {
@@ -109,6 +119,7 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 	 * 
 	 */
 	private void doDatabaseUpdate(IResource resource, boolean asRepository) {
+		
 		IFile oldModelFile = copyService.getShadowCopyFile(resource);
 		IArchitectureModel oldArchitectureModel = Util.adapt(oldModelFile,
 				IArchitectureModel.class);
@@ -187,5 +198,16 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 							+ resource.getLocation().toString(), e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
+	}
+	
+	
+	private void registerModel(IResource resource)
+	{
+		registeredModels.add(resource.getFullPath().toString());
+	}
+	
+	private void deRegisterModel(IResource resource)
+	{
+		registeredModels.remove(resource.getFullPath().toString());
 	}
 }
