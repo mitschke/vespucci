@@ -67,6 +67,7 @@ public class ResourceChangeListener implements IResourceChangeListener {
 			return;
 		
 		IResourceDelta delta = event.getDelta();
+
 		try {
 			delta.accept(visitor);
 		} catch (CoreException e) {
