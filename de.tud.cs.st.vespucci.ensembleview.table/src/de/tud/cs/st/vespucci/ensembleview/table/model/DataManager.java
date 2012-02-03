@@ -8,8 +8,6 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IMember;
 
-import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
-import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
 import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
@@ -24,14 +22,12 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 	private HashMap<IPair<IEnsemble, ICodeElement>, Triple<IEnsemble, ICodeElement, IMember>> elements = new HashMap<IPair<IEnsemble, ICodeElement>, Triple<IEnsemble, ICodeElement, IMember>>();
 	private A dataModel;
 
-	public static Triple<IEnsemble, ICodeElement, IMember> transfer(Object obj){
-		if (obj instanceof Triple<?,?,?>){
-			Triple<?,?,?> temp = (Triple<?, ?, ?>) obj;
-			if ((temp.getFirst() instanceof IEnsemble)&&(temp.getSecond() instanceof ICodeElement)&&(temp.getThird() instanceof IMember)){
-				IEnsemble ensemble = (IEnsemble) temp.getFirst();
-				ICodeElement codeElement = (ICodeElement) temp.getSecond();
-				IMember member = (IMember) temp.getThird();
-				return new Triple<IEnsemble, ICodeElement, IMember>(ensemble, codeElement, member);
+	@SuppressWarnings("unchecked")
+	public static IPair<IEnsemble, ICodeElement> transfer(Object obj){
+		if (obj instanceof IPair<?,?>){
+			IPair<?,?> temp = (IPair<?,?>) obj;
+			if ((temp.getFirst() instanceof IEnsemble)&&(temp.getSecond() instanceof ICodeElement)){
+				return (IPair<IEnsemble, ICodeElement>) temp;
 			}
 		}
 		return null;
@@ -59,41 +55,8 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 	
 	@Override
 	public void added(IPair<IEnsemble, ICodeElement> element) {
-		start++;
-//		Debug.printICodeElement(element.getSecond());
-		System.out.println("start adding Element: " + start);
-		CodeElementFinder.startSearch(element.getSecond(), project, new CodeFinder(element));
-	}
-	
-	class CodeFinder implements ICodeElementFoundProcessor{
-
-		private IPair<IEnsemble, ICodeElement> element;
-		
-		public CodeFinder(IPair<IEnsemble, ICodeElement> element){
-			this.element = element;
-		}
-
-		@Override
-		public void processFoundCodeElement(IMember member) {
-//			System.out.println("Found");
-//			Debug.printICodeElement(element.getSecond());
-			System.out.println("found Element: " + start);
-			Triple<IEnsemble, ICodeElement, IMember> data = new Triple<IEnsemble, ICodeElement, IMember>(element.getFirst(), element.getSecond(), member);
-			elements.put(element, data);
-			dataModel.added(data);
-			notifyObserver();
-		}
-
-		@Override
-		public void processFoundCodeElement(IMember member, int lineNr) {
-			//unused in this ResultProcessor
-		}
-
-		@Override
-		public void noMatchFound(ICodeElement codeElement) {
-			//unused in this ResultProcessor
-		}
-		
+		dataModel.added(element);
+		notifyObserver();
 	}
 
 	@Override
@@ -134,6 +97,10 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 		for (IDataManagerObserver observer : this.observer) {
 			observer.update();
 		}
+	}
+
+	public IProject getProject() {
+		return project;
 	}
 
 }

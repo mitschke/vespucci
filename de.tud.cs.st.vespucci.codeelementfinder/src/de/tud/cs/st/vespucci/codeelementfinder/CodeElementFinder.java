@@ -123,8 +123,7 @@ public class CodeElementFinder {
 			foundMatch(cache_class.get(sourceElement.getPackageIdentifier()+sourceElement.getSimpleClassName()), sourceElement, javaSearchScope, processor);
 		}else{
 		    // start initial search
-			
-			searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
+			searchPattern = SearchPattern.createPattern(sourceElement.getSimpleClassName(), IJavaSearchConstants.CLASS_AND_INTERFACE, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);		
 			search(searchPattern, javaSearchScope, sourceElement, project, processor);
 		}
 	}
@@ -403,7 +402,8 @@ public class CodeElementFinder {
 				temp.pushToWaitingArea(Util.getLastDollarSequence(sourceElement.getSimpleClassName()));	
 				startSearch(temp, project, processor);
 			}else{
-				processor.noMatchFound(sourceElement);			}
+				processor.noMatchFound(sourceElement);			
+			}
 		}
 		
 	}
