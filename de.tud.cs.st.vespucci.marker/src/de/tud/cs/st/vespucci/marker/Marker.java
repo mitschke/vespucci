@@ -33,6 +33,8 @@
  */
 package de.tud.cs.st.vespucci.marker;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
@@ -51,10 +53,12 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 
 	private IProject project;
 	private IViolationView violationView;
+	private DescriptionFab descFab;
 	
 	@Override
 	public void processResult(Object result, IProject project) {
 		this.project = project;
+		this.descFab = new DescriptionFab();
 		
 		violationView = Util.adapt(result, IViolationView.class);
 		
@@ -102,8 +106,9 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 	}
 
 	private String createSourceViolationDescription(IViolation violation) {
-		// TODO : create displayed description for marker here
-		return "";
+				
+		return this.descFab.getDescription(violation);
+
 	}
 
 	private String createTargetViolationDescription(IViolation violation) {

@@ -22,10 +22,11 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
 	
 	private static HashMap<IViolationSummary, IMarker> markers = new HashMap<IViolationSummary, IMarker>();
+
+	private DescriptionFab descFab;
 	
 	private String createViolationSummaryDescription(IViolationSummary element) {
-		// TODO : create displayed description for marker here
-		return "";
+		return descFab.getDescription(element);
 	}
 	
 	public ViolationSummaryMarker(IDataView<IViolationSummary> dataView){
@@ -34,6 +35,7 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 		}
 		
 		dataView.register(this);
+		this.descFab = new DescriptionFab();
 		
 		for (Iterator<IViolationSummary> i = dataView.iterator(); i.hasNext();){
 			added(i.next());
