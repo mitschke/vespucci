@@ -53,6 +53,8 @@ public class ChangeDeltaVisitor implements IResourceDeltaVisitor {
 			return false;
 		}
 
+		if((delta.getFlags() & IResourceDelta.CONTENT) == 0)
+			return false;
 		
 		if (isClassFileExtension(resource.getFileExtension())) {
 			switch (delta.getKind()) {
@@ -90,7 +92,7 @@ public class ChangeDeltaVisitor implements IResourceDeltaVisitor {
 				IStatus is = new Status(
 						IStatus.ERROR,
 						de.tud.cs.st.vespucci.change.listener.Activator.PLUGIN_ID,
-						"unknown delta kind for class file: "
+						"unknown delta kind for architecture file: "
 								+ Integer.toString(delta.getKind()));
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 
