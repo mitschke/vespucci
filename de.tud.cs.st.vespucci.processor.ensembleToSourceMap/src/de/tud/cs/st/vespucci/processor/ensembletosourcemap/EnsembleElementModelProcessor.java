@@ -1,7 +1,5 @@
 package de.tud.cs.st.vespucci.processor.ensembletosourcemap;
 
-import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 
@@ -45,12 +43,13 @@ public class EnsembleElementModelProcessor implements IModelProcessor {
 		EnsembleElementListView ensembleElementListView = new EnsembleElementListView(
 				createEnsembleToCodeProjection(global_ensemble_elements));
 
-		Iterator<IPair<IEnsemble, ICodeElement>> iterator = ensembleElementListView
-				.iterator();
-		while (iterator.hasNext()) {
-			IPair<IEnsemble, ICodeElement> next = iterator.next();
-			System.out.println(next.getFirst() + " :: " + next.getSecond());
-		}
+		/* Debug Code */
+		// Iterator<IPair<IEnsemble, ICodeElement>> iterator =
+		// ensembleElementListView.iterator();
+		// while (iterator.hasNext()) {
+		// IPair<IEnsemble, ICodeElement> next = iterator.next();
+		// System.out.println(next.getFirst() + " :: " + next.getSecond());
+		// }
 
 		return ensembleElementListView;
 	}
