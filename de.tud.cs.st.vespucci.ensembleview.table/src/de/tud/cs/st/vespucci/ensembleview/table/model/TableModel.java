@@ -10,14 +10,15 @@ import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public class TableModel implements IDataModel{
 
-	private Set<Triple<IEnsemble, ICodeElement, IMember>> data = new HashSet<Triple<IEnsemble, ICodeElement, IMember>>();
+	private Set<IPair<IEnsemble, ICodeElement>> data = new HashSet<IPair<IEnsemble, ICodeElement>>();
 	
 	@Override
-	public void added(Triple<IEnsemble, ICodeElement, IMember> element) {
+	public void added(IPair<IEnsemble, ICodeElement> element) {
 		data.add(element);
 	}
 
@@ -30,7 +31,7 @@ public class TableModel implements IDataModel{
 		return data.toArray();
 	}
 	
-	public static String createText(Triple<IEnsemble, ICodeElement, IMember> value, int column){
+	public static String createText(IPair<IEnsemble, ICodeElement> value, int column){
 		if (value == null){
 			return "";
 		}
@@ -38,34 +39,21 @@ public class TableModel implements IDataModel{
 		case 0:
 			return createEnsembleText(value);
 		case 1:
-			return createCodeElementText(value);
+			return createClassText(value);
 		case 2:
-			return createResourceText(value);
-		case 3:
-			return createPathText(value);
+			return createCodeElementText(value);
 		default:
 			return "";
 		}
 	}
 
-	private static String createPathText(
-			Triple<IEnsemble, ICodeElement, IMember> value) {
-		if (value.getThird() == null){
-			return "";
-		}
-		return value.getThird().getPath().toPortableString();
-	}
-
-	private static String createResourceText(
-			Triple<IEnsemble, ICodeElement, IMember> value) {
-		if (value.getThird().getResource() == null){
-			return "";
-		}
-		return value.getThird().getResource().getName();
+	private static String createClassText(
+			IPair<IEnsemble, ICodeElement> value) {
+		return value.getSecond().getSimpleClassName();
 	}
 
 	private static String createCodeElementText(
-			Triple<IEnsemble, ICodeElement, IMember> value) {
+			IPair<IEnsemble, ICodeElement> value) {
 		
 		ICodeElement codeElement = value.getSecond();
 		if (codeElement instanceof IClassDeclaration){
@@ -91,7 +79,7 @@ public class TableModel implements IDataModel{
 	}
 
 	private static String createEnsembleText(
-			Triple<IEnsemble, ICodeElement, IMember> value) {
+			IPair<IEnsemble, ICodeElement> value) {
 		
 		IEnsemble ensemble = value.getFirst();
 		String label =  ensemble.getName();
