@@ -8,6 +8,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.ISourceRange;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -26,6 +28,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
@@ -82,6 +86,18 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 					StructuredSelection ts = (StructuredSelection)event.getSelection();
 					Triple<IEnsemble, ICodeElement, IMember> tripel = DataManager.transfer(ts.getFirstElement());
 					if (tripel != null){
+						
+						//IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart();
+						try {
+							JavaUI.openInEditor(tripel.getThird(), true, true);
+						} catch (PartInitException e) {
+							final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+							StatusManager.getManager().handle(is, StatusManager.LOG);
+						} catch (JavaModelException e) {
+							final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+							StatusManager.getManager().handle(is, StatusManager.LOG);
+						}
+						/*
 						IWorkbenchPage editorPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 						if (editorPage != null) {
 
@@ -108,6 +124,7 @@ public class EnsembleElementsTableView extends ViewPart implements IDataManagerO
 								// TODO: Make possible to jump to code of external jars with attached source code
 							}
 						}
+						*/
 					}
 				}
 			}
