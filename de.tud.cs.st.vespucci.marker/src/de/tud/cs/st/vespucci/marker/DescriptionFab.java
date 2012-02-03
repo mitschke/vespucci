@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import de.tud.cs.st.vespucci.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 
 public class DescriptionFab {
 	
@@ -21,6 +22,24 @@ public class DescriptionFab {
 	
 		Method genMethod = this.descMap.get(violation.getViolatingKind());
 		return callMethod(violation, genMethod);
+	}
+	
+	public String getDescription(IViolationSummary violationSummmary){
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("There are ");
+		sb.append(violationSummmary.numberOfViolations());
+		sb.append("from Ensemble ");
+		sb.append(violationSummmary.getSourceEnsemble());
+		sb.append(" to Ensemble ");
+		sb.append(violationSummmary.getTargetEnsemble());
+		// Optional:
+		sb.append(" (Contraint Type: )");
+		sb.append(violationSummmary.getConstraint().getDependencyKind());
+		sb.append(")");
+		
+		return sb.toString();
 	}
 
 	private String callMethod(IViolation violation,
