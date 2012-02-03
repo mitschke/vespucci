@@ -36,8 +36,11 @@ package de.tud.cs.st.vespucci.diagram.model.output.spi;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
+
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * 
@@ -165,7 +168,10 @@ public class Ensemble implements IEnsemble {
 
 	@Override
 	public IEnsemble getParent() {
-		return null;
+		EObject container = shape.eContainer();
+		if( container == null)
+			return null;
+		return (container instanceof Shape) ? ConversionUtils.createEnsemble((Shape)container) : null;
 	}
 
 }
