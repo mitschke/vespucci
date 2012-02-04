@@ -26,6 +26,7 @@ object GlobalProperties {
   def databaseUrl = prop("databaseUrl")
   def adminName = prop("adminName")
   def adminPassword = prop("adminPassword")
+  def adminPort = prop("adminPort")
 
   def loadPropertiesFile(filePath: String) {
     import java.io.File
