@@ -3,8 +3,6 @@ package de.tud.cs.st.vespucci.ensembleview.table.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.jdt.core.IMember;
-
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
