@@ -19,7 +19,7 @@ public class TableModel implements IDataModel{
 	}
 
 	@Override
-	public void deleted(Triple<IEnsemble, ICodeElement, IMember> element) {
+	public void deleted(IPair<IEnsemble, ICodeElement> element) {
 		data.remove(element);
 	}
 	

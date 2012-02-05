@@ -1,12 +1,10 @@
 package de.tud.cs.st.vespucci.ensembleview.table.model;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IMember;
 
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
@@ -19,7 +17,6 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 	private IEnsembleElementList incommingData;
 	private IProject project;
 	private Set<IDataManagerObserver> observer = new HashSet<IDataManagerObserver>();
-	private HashMap<IPair<IEnsemble, ICodeElement>, Triple<IEnsemble, ICodeElement, IMember>> elements = new HashMap<IPair<IEnsemble, ICodeElement>, Triple<IEnsemble, ICodeElement, IMember>>();
 	private A dataModel;
 
 	@SuppressWarnings("unchecked")
@@ -61,12 +58,8 @@ public class DataManager<A extends IDataModel> implements IDataViewObserver<IPai
 
 	@Override
 	public void deleted(IPair<IEnsemble, ICodeElement> element) {
-		if (elements.containsKey(element)){
-			Triple<IEnsemble, ICodeElement, IMember> data = elements.get(element);
-			elements.remove(element);
-			dataModel.deleted(data);
-			notifyObserver();
-		}
+		dataModel.deleted(element);
+		notifyObserver();
 	}
 
 	@Override

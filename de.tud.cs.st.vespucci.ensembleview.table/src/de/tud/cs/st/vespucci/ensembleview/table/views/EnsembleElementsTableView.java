@@ -200,7 +200,7 @@ public class EnsembleElementsTableView extends ViewPart implements
 
 	@Override
 	public void update() {
-		if (idle) {
+		//if (idle) {
 			tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
 				@Override
 				public void run() {
@@ -208,8 +208,8 @@ public class EnsembleElementsTableView extends ViewPart implements
 					idle = true;
 				}
 			});
-			idle = false;
-		}
+		//	idle = false;
+		//}
 	}
 
 	private final ViewerFilter classDeclarationFilter = new ViewerFilter() {
