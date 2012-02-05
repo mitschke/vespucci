@@ -15,10 +15,11 @@
  */
 package de.tud.cs.st.vespucci.sadserver
 
-import de.tud.cs.st.vespucci.jdbc.H2DatabaseConnection;
-import de.tud.cs.st.vespucci.jdbc.JdbcSupport;
+import de.tud.cs.st.vespucci.jdbc.H2DatabaseConnection
+import de.tud.cs.st.vespucci.jdbc.JdbcSupport
 import com.weiglewilczek.slf4s.Logger
 import java.io.{ InputStream, Reader }
+import java.sql.ResultSet
 
 object DatabaseAccess extends DatabaseAccess
 
@@ -49,9 +50,13 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             documentation BLOB, 
             wip BOOLEAN)
             """)
-      //        conn.executeUpdate("""
-      //            INSERT INTO users VALUES('someid', 'somebody', 'password')
-      //            """)
+
+        // TODO creating a temporary user, remove this in production code!
+        val result: ResultSet = conn.executeQuery("SELECT * FROM users WHERE name = 'somebody'")
+        if (result.isEmpty())
+          conn.executeUpdate("INSERT INTO users VALUES('someid', 'somebody', 'password')")
+        result.close()
+        
     }
   }
 
