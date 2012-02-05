@@ -35,7 +35,7 @@ object SADServer
   logger.debug("Starting Software Architecture Description Server...")
 
   startDatabase()
-
+  
   this register new HandlerFactory[RootResource] {
     path { rootPath }
     def create = new RootResource
@@ -166,16 +166,14 @@ class UserResource extends RESTInterface with DAO with XMLSupport {
   delete {
     deleteUser(id)
   }
-
+  
 }
 
 /**
  * Starts the SADServer as a configured stand-alone application.
  */
-object SADServerApp extends scala.App with Logging {
-
-  GlobalProperties.loadPropertiesFile("sadserver.properties");
+object SADServerApp extends scala.App {
 
   SADServer
-
+  
 }

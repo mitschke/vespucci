@@ -9,6 +9,9 @@ import sys.props
  */
 object GlobalProperties {
 
+  // all properties are loaded immediately
+  loadPropertiesFile("sadserver.properties")
+  
   //  private val base = this.getClass().getPackage().getName() + "."
   private val base = "de.tud.cs.st.vespucci.sadserver."
 
@@ -26,7 +29,8 @@ object GlobalProperties {
   def databaseUrl = prop("databaseUrl")
   def adminName = prop("adminName")
   def adminPassword = prop("adminPassword")
-  def adminPort = prop("adminPort")
+  def adminPort = prop("adminPort").toInt
+  def shutdownDelay = prop("shutdownDelay").toInt
 
   def loadPropertiesFile(filePath: String) {
     import java.io.File
