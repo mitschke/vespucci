@@ -29,7 +29,7 @@ import GlobalProperties.{ port, rootPath, userCollectionPath, descriptionCollect
  */
 object SADServer
   extends Server(port)
-  with DAO
+  with DatabaseAccess
   with ShutdownListener
   with Logging {
 
@@ -78,7 +78,7 @@ class RootResource extends RESTInterface with HTMLSupport {
 
 }
 
-class DescriptionCollectionResource extends RESTInterface with DAO with XMLSupport {
+class DescriptionCollectionResource extends RESTInterface with DatabaseAccess with XMLSupport {
 
   get returns XML {
     listDescriptions.toXML
@@ -90,7 +90,7 @@ class DescriptionCollectionResource extends RESTInterface with DAO with XMLSuppo
 
 }
 
-class DescriptionResource extends RESTInterface with DAO with XMLSupport {
+class DescriptionResource extends RESTInterface with DatabaseAccess with XMLSupport {
 
   var id: String = _
 
@@ -108,7 +108,7 @@ class DescriptionResource extends RESTInterface with DAO with XMLSupport {
 
 }
 
-class DescriptionModelResource extends RESTInterface with DAO with StreamSupport with XMLSupport {
+class DescriptionModelResource extends RESTInterface with DatabaseAccess with StreamSupport with XMLSupport {
 
   var id: String = _
 
@@ -126,7 +126,7 @@ class DescriptionModelResource extends RESTInterface with DAO with StreamSupport
 
 }
 
-class DescriptionDocumentationResource extends RESTInterface with DAO with StreamSupport with XMLSupport {
+class DescriptionDocumentationResource extends RESTInterface with DatabaseAccess with StreamSupport with XMLSupport {
 
   var id: String = _
 
@@ -144,7 +144,7 @@ class DescriptionDocumentationResource extends RESTInterface with DAO with Strea
 
 }
 
-class UserCollectionResource extends RESTInterface with DAO with XMLSupport {
+class UserCollectionResource extends RESTInterface with DatabaseAccess with XMLSupport {
 
   get returns XML {
     listUsers.toXML
@@ -156,7 +156,7 @@ class UserCollectionResource extends RESTInterface with DAO with XMLSupport {
 
 }
 
-class UserResource extends RESTInterface with DAO with XMLSupport {
+class UserResource extends RESTInterface with DatabaseAccess with XMLSupport {
 
   var id: String = _
 

@@ -20,12 +20,12 @@ import de.tud.cs.st.vespucci.jdbc.JdbcSupport;
 import com.weiglewilczek.slf4s.Logger
 import java.io.{ InputStream, Reader }
 
-object DAO extends DAO
+object DatabaseAccess extends DatabaseAccess
 
 /**
  * @author Mateusz Parzonka
  */
-trait DAO extends JdbcSupport with H2DatabaseConnection {
+trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
 
   private val logger = Logger("de.tud.cs.st.vespucci.sadserver.DAO")
 

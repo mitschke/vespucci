@@ -18,7 +18,7 @@ package de.tud.cs.st.vespucci.sadserver
 import org.dorest.server.auth._
 import org.dorest.server._
 
-trait RestrictToAdmins extends DigestAuthentication with DAO {
+trait RestrictToAdmins extends DigestAuthentication with DatabaseAccess {
 
   def authenticationRealm = GlobalProperties.authenticationRealm
 
@@ -40,7 +40,7 @@ trait RestrictToAdmins extends DigestAuthentication with DAO {
 trait RestrictWriteToRegisteredUsers
   extends SuperHandler
   with DigestAuthentication
-  with DAO {
+  with DatabaseAccess {
 
   val authenticationRealm = GlobalProperties.authenticationRealm
 
