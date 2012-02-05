@@ -30,6 +30,7 @@ import GlobalProperties.{ port, rootPath, userCollectionPath, descriptionCollect
 object SADServer
   extends Server(port)
   with DAO
+  with ShutdownListener
   with Logging {
 
   logger.debug("Starting Software Architecture Description Server...")
