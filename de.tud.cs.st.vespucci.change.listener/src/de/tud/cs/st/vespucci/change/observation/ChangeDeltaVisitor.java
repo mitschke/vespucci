@@ -53,7 +53,7 @@ public class ChangeDeltaVisitor implements IResourceDeltaVisitor {
 			return false;
 		}
 
-		if((delta.getFlags() & IResourceDelta.CONTENT) == 0)
+		if( (delta.getKind() == IResourceDelta.CHANGED) && (delta.getFlags() & IResourceDelta.CONTENT) == 0)
 			return false;
 		
 		if (isClassFileExtension(resource.getFileExtension())) {
