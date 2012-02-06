@@ -25,10 +25,6 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 
 	private DescriptionFab descFab;
 	
-	private String createViolationSummaryDescription(IViolationSummary element) {
-		return descFab.getDescription(element);
-	}
-	
 	public ViolationSummaryMarker(IDataView<IViolationSummary> dataView){
 		if (dataView == null){
 			return;
@@ -42,6 +38,11 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 		}
 		
 	}
+	
+	private String createViolationSummaryDescription(IViolationSummary element) {
+		return descFab.getDescription(element);
+	}
+	
 	
 	@Override
 	public void added(IViolationSummary element) {

@@ -129,23 +129,28 @@ public class EnsembleElementsTableView extends ViewPart implements
 			}
 		});
 
+		tableViewer.setComparator(new TableColumnComparator(1, 0));
+		
 		TableViewerColumn viewerNameColumn = new TableViewerColumn(tableViewer,
 				SWT.NONE);
 		viewerNameColumn.getColumn().setText("Ensemble");
 		viewerNameColumn.getColumn().setWidth(200);
 		addColumnListener(viewerNameColumn.getColumn(), 0);
 
-		tableViewer.setComparator(new TableColumnComparator(1, 0));
-
+		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		viewerNameColumn.getColumn().setText("Package");
+		viewerNameColumn.getColumn().setWidth(100);
+		addColumnListener(viewerNameColumn.getColumn(), 1);
+		
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Class");
 		viewerNameColumn.getColumn().setWidth(100);
-		addColumnListener(viewerNameColumn.getColumn(), 1);
+		addColumnListener(viewerNameColumn.getColumn(), 2);
 
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Element");
 		viewerNameColumn.getColumn().setWidth(200);
-		addColumnListener(viewerNameColumn.getColumn(), 2);
+		addColumnListener(viewerNameColumn.getColumn(), 3);
 		
 		addActions(tableViewer);
 

@@ -28,26 +28,32 @@ class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 		return null;
 	}
 
-	private Image package_icon_cache = null;
+	private Image ensemble_icon_cache = null;
 	private Image class_icon_cache = null;
 	private Image method_icon_cache = null;
 	private Image field_icon_cache = null;
+	private Image package_icon_cache = null;
 	
 	public Image getColumnImage(Object obj, int index) {
 		IPair<IEnsemble, ICodeElement> pair = DataManager.transfer(obj);
 		if (pair != null){
 			switch (index) {
 			case 0:
+				if (ensemble_icon_cache == null){
+					ensemble_icon_cache = loadImage("icons/newpackfolder_wiz.gif");
+				}
+				return ensemble_icon_cache;
+			case 1:
 				if (package_icon_cache == null){
-					package_icon_cache = loadImage("icons/newpackfolder_wiz.gif");
+					package_icon_cache = loadImage("icons/package_obj.gif");
 				}
 				return package_icon_cache;
-			case 1:
+			case 2:
 				if (class_icon_cache == null){
 					class_icon_cache = loadImage("icons/class.gif");
 				}
 				return class_icon_cache;
-			case 2:
+			case 3:
 				if (pair.getSecond() instanceof IClassDeclaration){
 					if (class_icon_cache == null){
 						class_icon_cache = loadImage("icons/class.gif");
@@ -80,12 +86,18 @@ class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 		case 0:
 			return createEnsembleText(value);
 		case 1:
-			return createClassText(value);
+			return createPackageText(value);
 		case 2:
+			return createClassText(value);
+		case 3:
 			return createCodeElementText(value);
 		default:
 			return "";
 		}
+	}
+
+	private static String createPackageText(IPair<IEnsemble, ICodeElement> value) {
+		return value.getSecond().getPackageIdentifier().replaceAll("/", ".");
 	}
 
 	private static String createClassText(
