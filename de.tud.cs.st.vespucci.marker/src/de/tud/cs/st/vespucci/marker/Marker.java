@@ -53,12 +53,12 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 
 	private IProject project;
 	private IViolationView violationView;
-	private DescriptionFab descFab;
+	private DescriptionFactory descFab;
 	
 	@Override
 	public void processResult(Object result, IProject project) {
 		this.project = project;
-		this.descFab = new DescriptionFab();
+		this.descFab = new DescriptionFactory();
 		
 		violationView = Util.adapt(result, IViolationView.class);
 		
