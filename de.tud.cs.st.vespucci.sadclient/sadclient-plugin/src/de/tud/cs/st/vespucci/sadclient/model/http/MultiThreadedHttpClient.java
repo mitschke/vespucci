@@ -60,6 +60,7 @@ public class MultiThreadedHttpClient {
 	params.setParameter(CoreProtocolPNames.HTTP_ELEMENT_CHARSET, CHARSET);
 	params.setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, CHARSET);
 	params.setParameter(CoreProtocolPNames.USER_AGENT, Activator.PLUGIN_ID);
+	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
 	List<Header> defaultHeaders = new ArrayList<Header>();
 	defaultHeaders.add(new BasicHeader("accept", "application/xml"));
 	params.setParameter(ClientPNames.DEFAULT_HEADERS, defaultHeaders);
@@ -141,14 +142,14 @@ public class MultiThreadedHttpClient {
 
     public HttpResponse put(String urlSuffix, File file, String mimeType, IProgressMonitor progressMonitor) {
 	System.out.println("Putted file " + file + " has size " + file.length() + " bytes.");
-	HttpEntity upstreamEntity = new FileEntityWithProgress(file, mimeType, progressMonitor);
+	HttpEntity upstreamEntity = new FileEntity(file, mimeType);
 	HttpResponse response = put(urlSuffix, upstreamEntity);
 	try {
 	    EntityUtils.consume(upstreamEntity);
 	} catch (IOException e) {
 	    throw new HttpClientException(e);
 	}
-	expectStatusCode(response, 200);
+//	expectStatusCode(response, 200);
 	return response;
     }
 
@@ -162,7 +163,8 @@ public class MultiThreadedHttpClient {
 	} catch (Exception e) {
 	    throw new HttpClientException(e);
 	}
-	expectStatusCode(response, 200);
+	System.out.println("StatusCode received: [" + response.getStatusLine().getStatusCode() + "]");
+//	expectStatusCode(response, 200);
 	return response;
     }
 
