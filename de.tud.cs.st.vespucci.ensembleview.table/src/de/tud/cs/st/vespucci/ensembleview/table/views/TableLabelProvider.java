@@ -78,6 +78,19 @@ class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 		return null;
 	}
 
+	public static Integer createElementTypQualifier(ICodeElement element){
+		if (element instanceof IClassDeclaration){
+			return 1;
+		}
+		if (element instanceof IFieldDeclaration){
+			return 2;
+		}
+		if (element instanceof IMethodDeclaration){
+			return 3;
+		}
+		return 0;
+	}
+	
 	public static String createText(IPair<IEnsemble, ICodeElement> value, int column){
 		if (value == null){
 			return "";

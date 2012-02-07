@@ -26,6 +26,16 @@ class TableColumnComparator extends ViewerSorter{
 		IPair<IEnsemble, ICodeElement> element2 = DataManager.transfer(e2);
 		int tempOrder = 0;
 		for (int i = column; i < numOfColumns; i++){
+			// Special case for sorting element column
+			// sorted at first by type of element and afterwards by spelling
+			if (i == 3){
+				tempOrder = TableLabelProvider.createElementTypQualifier(element1.getSecond()).compareTo(TableLabelProvider.createElementTypQualifier(element2.getSecond()));
+				
+				if (tempOrder != 0){
+					break;
+				}
+			}
+			
 			tempOrder = sortDirection * TableLabelProvider.createText(element1, i).compareToIgnoreCase(TableLabelProvider.createText(element2, i));
 			
 			if (tempOrder != 0){
