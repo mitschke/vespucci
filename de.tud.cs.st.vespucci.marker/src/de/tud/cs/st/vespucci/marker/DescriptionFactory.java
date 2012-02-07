@@ -1,7 +1,5 @@
 package de.tud.cs.st.vespucci.marker;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import de.tud.cs.st.vespucci.interfaces.IViolation;
