@@ -43,14 +43,6 @@ public class EnsembleElementModelProcessor implements IModelProcessor {
 		EnsembleElementListView ensembleElementListView = new EnsembleElementListView(
 				createEnsembleToCodeProjection(global_ensemble_elements));
 
-		/* Debug Code */
-		// Iterator<IPair<IEnsemble, ICodeElement>> iterator =
-		// ensembleElementListView.iterator();
-		// while (iterator.hasNext()) {
-		// IPair<IEnsemble, ICodeElement> next = iterator.next();
-		// System.out.println(next.getFirst() + " :: " + next.getSecond());
-		// }
-
 		return ensembleElementListView;
 	}
 
