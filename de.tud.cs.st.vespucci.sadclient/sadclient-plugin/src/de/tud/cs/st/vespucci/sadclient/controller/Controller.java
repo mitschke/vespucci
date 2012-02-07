@@ -43,6 +43,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 
 import de.tud.cs.st.vespucci.sadclient.concurrent.Callback;
 import de.tud.cs.st.vespucci.sadclient.concurrent.RunnableWithCallback;
@@ -163,13 +166,15 @@ public class Controller {
      */
     public void uploadModel(final String id, final File uploadFile, final Callback<SAD> callback,
 	    final IProgressMonitor progressMonitor) {
-	pool.execute(new RunnableWithCallback<SAD>(new Callable<SAD>() {
+	Job job = new Job("Upload Model") {
 	    @Override
-	    public SAD call() throws Exception {
+	    protected IStatus run(IProgressMonitor monitor) {
 		sadClient.putModel(id, uploadFile, progressMonitor);
-		return sadClient.getSAD(id);
+		return Status.OK_STATUS;
 	    }
-	}, callback));
+	};
+	job.setUser(true);
+	job.schedule();
     }
 
     /**
@@ -192,7 +197,8 @@ public class Controller {
 
     // Documentation
 
-    public void downloadDocumentation(final String id, final File downloadLocation, final IProgressMonitor progressMonitor) {
+    public void downloadDocumentation(final String id, final File downloadLocation,
+	    final IProgressMonitor progressMonitor) {
 	pool.execute(new Runnable() {
 	    @Override
 	    public void run() {
