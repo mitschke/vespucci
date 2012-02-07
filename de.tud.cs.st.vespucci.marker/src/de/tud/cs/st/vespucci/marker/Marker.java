@@ -32,9 +32,6 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 package de.tud.cs.st.vespucci.marker;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
