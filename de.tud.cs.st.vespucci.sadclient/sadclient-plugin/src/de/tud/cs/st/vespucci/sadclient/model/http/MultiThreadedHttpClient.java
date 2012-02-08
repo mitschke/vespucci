@@ -19,6 +19,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.params.AuthPolicy;
 import org.apache.http.client.params.ClientPNames;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -28,6 +31,8 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -38,6 +43,8 @@ import de.tud.cs.st.vespucci.sadclient.Activator;
  * {@link ThreadSafeClientConnManager} and enables progress. The HTTP-methods
  * expect successful termination of the client call and will throw an
  * RequestException when the server responds non-okay.
+ * 
+ * TODO  The client is not multithreaded anymore so rename the whole thing when a valid solution found
  * 
  * @author Mateusz Parzonka
  * 
@@ -55,21 +62,25 @@ public class MultiThreadedHttpClient {
 	super();
 	this.urlRoot = urlRoot;
 
+	SchemeRegistry schemeRegistry = new SchemeRegistry();
+	schemeRegistry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
 	// standard client params
 	HttpParams params = new BasicHttpParams();
 	params.setParameter(CoreProtocolPNames.HTTP_ELEMENT_CHARSET, CHARSET);
 	params.setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, CHARSET);
 	params.setParameter(CoreProtocolPNames.USER_AGENT, Activator.PLUGIN_ID);
-	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
+	// The SADServer's underlying server implementation (sun) does not allow us to use this handshake,
+	// since it always returns "continue"
+	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
 	List<Header> defaultHeaders = new ArrayList<Header>();
 	defaultHeaders.add(new BasicHeader("accept", "application/xml"));
 	params.setParameter(ClientPNames.DEFAULT_HEADERS, defaultHeaders);
 
-	ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager();
+//	ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
+//	cm.setMaxTotal(200);
+//	cm.setDefaultMaxPerRoute(20);
 
-	client = new DefaultHttpClient(cm, params);
-	// cm.setDefaultMaxPerRoute(100);
-	// cm.setMaxTotal(100);
+	client = new DefaultHttpClient(params);
     }
 
     /**
@@ -149,22 +160,30 @@ public class MultiThreadedHttpClient {
 	} catch (IOException e) {
 	    throw new HttpClientException(e);
 	}
-//	expectStatusCode(response, 200);
+	// expectStatusCode(response, 200);
 	return response;
     }
 
     public HttpResponse put(String urlSuffix, HttpEntity entity) {
 	HttpResponse response = null;
 	try {
-	    final HttpPut put = new HttpPut(urlRoot + urlSuffix);
+	    // sending a short put to trigger authentication and storing httpcontext.
+	    HttpPut put = new HttpPut(urlRoot + urlSuffix);
+	    HttpContext localContext = new BasicHttpContext();
+	    HttpEntity smallEntity = new StringEntity("someBytes", "application/xml", "UTF-8");
+	    put.setEntity(smallEntity);
+	    response = client.execute(put, localContext);
+	    EntityUtils.consume(smallEntity);
+	    consume(response);
+	    put = new HttpPut(urlRoot + urlSuffix);
 	    put.setEntity(entity);
-	    response = client.execute(put);
+	    response = client.execute(put, localContext);
 	    EntityUtils.consume(entity);
 	} catch (Exception e) {
 	    throw new HttpClientException(e);
 	}
 	System.out.println("StatusCode received: [" + response.getStatusLine().getStatusCode() + "]");
-//	expectStatusCode(response, 200);
+	// expectStatusCode(response, 200);
 	return response;
     }
 
