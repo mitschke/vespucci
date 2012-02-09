@@ -71,7 +71,7 @@ public class MultiThreadedHttpClient {
 	params.setParameter(CoreProtocolPNames.USER_AGENT, Activator.PLUGIN_ID);
 	// The SADServer's underlying server implementation (sun) does not allow us to use this handshake,
 	// since it always returns "continue"
-	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
+	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
 	List<Header> defaultHeaders = new ArrayList<Header>();
 	defaultHeaders.add(new BasicHeader("accept", "application/xml"));
 	params.setParameter(ClientPNames.DEFAULT_HEADERS, defaultHeaders);
@@ -169,15 +169,15 @@ public class MultiThreadedHttpClient {
 	try {
 	    // sending a short put to trigger authentication and storing httpcontext.
 	    HttpPut put = new HttpPut(urlRoot + urlSuffix);
-	    HttpContext localContext = new BasicHttpContext();
-	    HttpEntity smallEntity = new StringEntity("someBytes", "application/xml", "UTF-8");
-	    put.setEntity(smallEntity);
-	    response = client.execute(put, localContext);
-	    EntityUtils.consume(smallEntity);
-	    consume(response);
-	    put = new HttpPut(urlRoot + urlSuffix);
+//	    HttpContext localContext = new BasicHttpContext();
+//	    HttpEntity smallEntity = new StringEntity("someBytes", "application/xml", "UTF-8");
+//	    put.setEntity(smallEntity);
+//	    response = client.execute(put, localContext);
+//	    EntityUtils.consume(smallEntity);
+//	    consume(response);
+//	    put = new HttpPut(urlRoot + urlSuffix);
 	    put.setEntity(entity);
-	    response = client.execute(put, localContext);
+	    response = client.execute(put);
 	    EntityUtils.consume(entity);
 	} catch (Exception e) {
 	    throw new HttpClientException(e);
