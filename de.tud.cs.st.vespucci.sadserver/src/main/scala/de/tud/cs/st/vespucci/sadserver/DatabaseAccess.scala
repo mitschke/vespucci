@@ -120,7 +120,6 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getBoolean("wip")) +: list
         }
       }
-      println(list)
       new DescriptionCollection(list)
   }
 
@@ -215,7 +214,6 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("password")) +: list
         }
       }
-      println(list)
       new UserCollection(list)
   }
 
