@@ -15,6 +15,7 @@
  */
 package de.tud.cs.st.vespucci.sadserver
 import org.dorest.server.jdk.Server
+import org.dorest.server.servlet.JettyServer
 import org.dorest.server.HandlerFactory
 import com.weiglewilczek.slf4s.Logging
 import org.dorest.server.rest._
@@ -28,7 +29,7 @@ import GlobalProperties.{ port, rootPath, userCollectionPath, descriptionCollect
  * @author Mateusz Parzonka
  */
 object SADServer
-  extends Server(port)
+  extends JettyServer(port)
   with DatabaseAccess
   with ShutdownListener
   with Logging {
@@ -37,7 +38,7 @@ object SADServer
 
   startDatabase()
   
-  this register new HandlerFactory[RootResource] {
+ this register new HandlerFactory[RootResource]  {
     path { rootPath }
     def create = new RootResource
   }
