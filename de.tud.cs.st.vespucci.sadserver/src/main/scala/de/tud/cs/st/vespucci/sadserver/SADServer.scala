@@ -68,7 +68,6 @@ object SADServer
     def create = new UserCollectionResource with RestrictToAdmins
   }
 
-  start()
 }
 
 import org.dorest.server.rest._
