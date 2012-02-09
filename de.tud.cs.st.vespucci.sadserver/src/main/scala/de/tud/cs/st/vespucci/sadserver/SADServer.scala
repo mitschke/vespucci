@@ -17,12 +17,12 @@ package de.tud.cs.st.vespucci.sadserver
 import org.dorest.server.jdk.Server
 import org.dorest.server.servlet.JettyServer
 import org.dorest.server.HandlerFactory
-import com.weiglewilczek.slf4s.Logging
 import org.dorest.server.rest._
 import org.dorest.server.rest.representation.stream.StreamSupport
 import org.dorest.server.MediaType
-
 import GlobalProperties.{ port, rootPath, userCollectionPath, descriptionCollectionPath, modelPath, documentationPath }
+import org.dorest.server.rest._
+import org.dorest.server.log.Logging
 /**
  * Software Architecture Description Server
  *
@@ -34,7 +34,7 @@ object SADServer
   with ShutdownListener
   with Logging {
 
-  logger.debug("Starting Software Architecture Description Server...")
+  logger.info("Starting Software Architecture Description Server...")
 
   startDatabase()
   
@@ -70,7 +70,7 @@ object SADServer
 
 }
 
-import org.dorest.server.rest._
+
 
 class RootResource extends RESTInterface with HTMLSupport {
 

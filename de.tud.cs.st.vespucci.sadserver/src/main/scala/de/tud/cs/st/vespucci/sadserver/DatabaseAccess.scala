@@ -17,9 +17,9 @@ package de.tud.cs.st.vespucci.sadserver
 
 import de.tud.cs.st.vespucci.jdbc.H2DatabaseConnection
 import de.tud.cs.st.vespucci.jdbc.JdbcSupport
-import com.weiglewilczek.slf4s.Logger
 import java.io.{ InputStream, Reader }
 import java.sql.ResultSet
+import org.dorest.server.log.Logger
 
 object DatabaseAccess extends DatabaseAccess
 
@@ -31,7 +31,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
   private val logger = Logger("de.tud.cs.st.vespucci.sadserver.DatabaseAccess")
 
   def startDatabase() {
-    logger.info("Starting database")
+    logger.info("Opening database...")
     withTransaction {
       conn =>
         conn.executeUpdate("""
