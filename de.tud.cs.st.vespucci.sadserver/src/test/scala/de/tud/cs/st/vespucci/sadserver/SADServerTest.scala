@@ -46,32 +46,32 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   val authDelete = SimpleClient.delete(acceptsXml, registeredUser) _
   val put = SimpleClient.put(acceptsXml) _
   val delete = SimpleClient.delete(acceptsXml) _
-  
+
   "UserCollectionResource" should "return FORBIDDEN on POST for no credentials" in {
     val response = SimpleClient.post(acceptsXml)(host + "/users", Entity(new File("src/test/resources/newUser.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal(401)
   }
-  
+
   it should "return FORBIDDEN on POST for wrong credentials" in {
     val response = SimpleClient.post(acceptsXml, new DigestAuth("intruder", "letmein"))(host + "/users", Entity(new File("src/test/resources/newUser.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal(401)
   }
-  
+
   it should "return FORBIDDEN on POST for some user with right password" in {
     val response = SimpleClient.post(acceptsXml, new DigestAuth("intruder", "password"))(host + "/users", Entity(new File("src/test/resources/newUser.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal(401)
   }
-  
+
   it should "return OK on POST for authorized" in {
     val response = SimpleClient.post(acceptsXml, new DigestAuth("admin", "password"))(host + "/users", Entity(new File("src/test/resources/newUser.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal(201)
   }
-  
-   it should "return FORBIDDEN on GET for unauthorized" in {
+
+  it should "return FORBIDDEN on GET for unauthorized" in {
     val response = get(host + "/users")
     response.statusCode should equal(401)
   }
-  
+
   it should "return OK on GET for authorized" in {
     val response = SimpleClient.get(acceptsXml, new DigestAuth("admin", "password"))(host + "/users")
     response.statusCode should equal(200)
@@ -277,30 +277,26 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     response.statusCode should equal { 401 }
   }
 
-  // TODO this test fails because of broken pipe or because of other strange error. 
-  // The test has no high priority, so we ignore it for the moment.
-  //  it should "return 405 on authorized POST" in {
-  //    val response = authPost(host + descriptionCollectionPath + "/" + id1 + documentationPath, pdfEntity)
-  //    response.statusCode should equal { 405 }
-  //    response.contentType should equal { "application/pdf; charset=UTF-8" }
-  //  }
+  it should "return 405 on authorized POST" in {
+    val response = authPost(host + descriptionCollectionPath + "/" + id1 + documentationPath, pdfEntity)
+    response.statusCode should equal { 405 }
+  }
 
   it should "return 200 on GET when documentation is set and PDF expected" in {
     val response = SimpleClient.get(Map("Accept" -> "application/pdf"))(host + descriptionCollectionPath + "/" + id1 + documentationPath)
     response.statusCode should equal { 200 }
     response.contentType should equal { "application/pdf; charset=UTF-8" }
     org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("temp/server/model_pdfExpected.pdf"), response.bytes)
-
   }
 
-  // TODO somehow acceptance of multiple document-kinds is not recognized properly. Lets fixit later.
-  //  it should "return 200 on GET when documentation is set and PDF, XML expected" in {
-  //    val response = SimpleClient.get(Map("Accept" -> "application/pdf, application/xml"))(host + descriptionCollectionPath + "/" + id1 + documentationPath)
-  //    response.statusCode should equal { 200 }
-  //    response.contentType should equal { "application/pdf; charset=UTF-8" }
-  //    org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("temp/server/model_pdfXmlExpected.pdf"), response.bytes)
-  //
-  //  }
+  // FIXME somehow acceptance of multiple document-kinds is not recognized properly. Lets fixit later.
+  //    it should "return 200 on GET when documentation is set and PDF, XML expected" in {
+  //      val response = SimpleClient.get(Map("Accept" -> "application/pdf, application/xml"))(host + descriptionCollectionPath + "/" + id1 + documentationPath)
+  //      response.statusCode should equal { 200 }
+  //      response.contentType should equal { "application/pdf; charset=UTF-8" }
+  //      org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("temp/server/model_pdfXmlExpected.pdf"), response.bytes)
+  //  
+  //    }
 
   it should "return 401 on unauthorized DELETE" in {
     val response = delete(host + descriptionCollectionPath + "/" + id1 + documentationPath)
