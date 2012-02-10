@@ -14,15 +14,15 @@
    limitations under the License.
  */
 package de.tud.cs.st.vespucci.sadserver
-import org.dorest.server.jdk.Server
-import org.dorest.server.servlet.JettyServer
+import org.dorest.server.jdk.JDKServer
 import org.dorest.server.HandlerFactory
 import org.dorest.server.rest._
-import org.dorest.server.rest.representation.stream.StreamSupport
 import org.dorest.server.MediaType
 import GlobalProperties.{ port, rootPath, userCollectionPath, descriptionCollectionPath, modelPath, documentationPath }
 import org.dorest.server.rest._
 import org.dorest.server.log.Logging
+import org.dorest.server.servlet.JettyServer
+import org.dorest.server.rest.representation.stream.StreamSupport
 /**
  * Software Architecture Description Server
  *

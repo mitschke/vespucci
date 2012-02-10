@@ -37,7 +37,7 @@ trait ShutdownListener {
    */
   def stop(shutdownDelay: Int)
 
-  val shutdownListener = new Server(adminPort) with Logging {
+  val shutdownListener = new JDKServer(adminPort) {
 
     this register new HandlerFactory[ShutdownResource] {
       path { rootPath + "/shutdown" }
