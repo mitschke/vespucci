@@ -48,7 +48,7 @@ trait RestrictWriteToRegisteredUsers
     findPassword(username)
   }
 
-  abstract override def processRequest(requestBody: java.io.InputStream) = {
+  abstract override def processRequest(requestBody: => java.io.InputStream) = {
     method match {
       case GET => super[SuperHandler].processRequest(requestBody)
       case _ => super[DigestAuthentication].processRequest(requestBody)
@@ -57,5 +57,5 @@ trait RestrictWriteToRegisteredUsers
 }
 
 trait SuperHandler extends Handler {
-  abstract override def processRequest(requestBody: java.io.InputStream): Response = super.processRequest(requestBody)
+  abstract override def processRequest(requestBody: => java.io.InputStream): Response = super.processRequest(requestBody)
 }
