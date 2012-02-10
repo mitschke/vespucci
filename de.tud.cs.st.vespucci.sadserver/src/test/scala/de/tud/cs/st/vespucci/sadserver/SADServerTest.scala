@@ -10,7 +10,6 @@ import org.dorest.client.Entity
 import org.dorest.client.{ BasicAuth, DigestAuth }
 import scala.sys.SystemProperties
 import scala.xml.XML.loadString
-import com.weiglewilczek.slf4s.Logging
 import java.io._
 
 import GlobalProperties.{ authority, port, rootPath, userCollectionPath, descriptionCollectionPath, modelPath, documentationPath }

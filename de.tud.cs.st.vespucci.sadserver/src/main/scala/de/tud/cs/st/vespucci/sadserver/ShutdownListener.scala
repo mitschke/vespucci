@@ -14,14 +14,14 @@
    limitations under the License.
  */
 package de.tud.cs.st.vespucci.sadserver
-import com.weiglewilczek.slf4s.Logging
-import org.dorest.server.jdk.Server
+import org.dorest.server.jdk.JDKServer
 import GlobalProperties.{ adminPort, rootPath, shutdownDelay }
 import org.dorest.server.HandlerFactory
 import org.dorest.server.rest.HTMLSupport
 import org.dorest.server.rest.RESTInterface
 import scala.xml.XML
 import org.dorest.server.rest.XMLSupport
+import org.dorest.server.log.Logger
 
 /**
  * Implements a simple DoRest-server which listens on a separate port for shutdown requests.
@@ -29,11 +29,13 @@ import org.dorest.server.rest.XMLSupport
  * @author Mateusz Parzonka
  */
 trait ShutdownListener {
+  
+  private[this] val logger = Logger(classOf[ShutdownListener])
 
   /**
    * A mixin is stoppable with given shutdown delay (seconds)
    */
-  def stop(shutdownDelay: Integer)
+  def stop(shutdownDelay: Int)
 
   val shutdownListener = new Server(adminPort) with Logging {
 
