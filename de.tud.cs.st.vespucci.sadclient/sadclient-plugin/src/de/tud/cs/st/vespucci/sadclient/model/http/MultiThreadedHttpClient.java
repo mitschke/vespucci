@@ -76,11 +76,11 @@ public class MultiThreadedHttpClient {
 	defaultHeaders.add(new BasicHeader("accept", "application/xml"));
 	params.setParameter(ClientPNames.DEFAULT_HEADERS, defaultHeaders);
 
-//	ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
+	ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
 //	cm.setMaxTotal(200);
 //	cm.setDefaultMaxPerRoute(20);
 
-	client = new DefaultHttpClient(params);
+	client = new DefaultHttpClient(cm, params);
     }
 
     /**
@@ -153,7 +153,7 @@ public class MultiThreadedHttpClient {
 
     public HttpResponse put(String urlSuffix, File file, String mimeType, IProgressMonitor progressMonitor) {
 	System.out.println("Putted file " + file + " has size " + file.length() + " bytes.");
-	HttpEntity upstreamEntity = new FileEntity(file, mimeType);
+	HttpEntity upstreamEntity = new FileEntityWithProgress(file, mimeType, progressMonitor);
 	HttpResponse response = put(urlSuffix, upstreamEntity);
 	try {
 	    EntityUtils.consume(upstreamEntity);
