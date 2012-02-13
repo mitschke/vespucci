@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="de.tud.cs.st.vespucci.ensembleview.table"
+            class="de.tud.cs.st.vespucci.unmodeled_elements.view.UnmodeledElementsTableView"
+            icon="icons/Vespucci_modelDiagramFile.gif"
+            id="de.tud.cs.st.vespucci.unmodeled_elements.table"
+            name="Unmodeled Code Elements">
+      </view>
+   </extension>
+   <extension
+         point="de.tud.cs.st.vespucci.diagram.resultProcessors">
+      <resultProcessor
+            ResultProcessor="de.tud.cs.st.vespucci.unmodeled_elements.view.UnmodeledElementsVisualizer">
+      </resultProcessor>
+   </extension>
+
+</plugin>
