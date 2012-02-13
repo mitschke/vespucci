@@ -35,6 +35,7 @@ package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * 
@@ -44,7 +45,7 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
 public class Constraint implements IConstraint {
 
 	private de.tud.cs.st.vespucci.vespucci_model.Connection connection;
-	
+
 	public Constraint(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
 		this.connection = connection;
 	}
@@ -64,13 +65,92 @@ public class Constraint implements IConstraint {
 		return ConversionUtils.createEnsemble(connection.getTarget());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "Constraint(" + getSource().getName() + ", "
 				+ getTarget().getName() + ")";
+	}
+
+	Shape source = connection.getSource();
+
+	Shape target = connection.getSource();
+
+	String kind = connection.getName();
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		if (connection != null) {
+
+			String kind = connection.getName();
+
+			result = prime * result + ((kind == null) ? 0 : kind.hashCode());
+
+			Shape source = connection.getSource();
+			if (source != null)
+				result = prime
+						* result
+						+ ((source.getName() == null) ? 0 : source.getName()
+								.hashCode());
+			Shape target = connection.getSource();
+			if (target != null)
+				result = prime
+						* result
+						+ ((target.getName() == null) ? 0 : target.getName()
+								.hashCode());
+		}
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Constraint other = (Constraint) obj;
+		if (connection == null) {
+			if (other.connection != null)
+				return false;
+		} else {
+			Shape source = connection.getSource();
+			Shape target = connection.getSource();
+			String kind = connection.getName();
+			if (kind == null) {
+				if (other.kind != null)
+					return false;
+			} else if (!kind.equals(other.kind))
+				return false;
+			if (source == null) {
+				if (other.source != null)
+					return false;
+			} else if (!source.getName().equals(other.source.getName()))
+				return false;
+			if (target == null) {
+				if (other.target != null)
+					return false;
+			} else if (!target.getName().equals(other.target.getName()))
+				return false;
+		}
+		return true;
 	}
 
 }

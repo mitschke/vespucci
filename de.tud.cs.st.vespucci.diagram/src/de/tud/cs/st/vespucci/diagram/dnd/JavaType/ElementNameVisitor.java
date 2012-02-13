@@ -35,8 +35,6 @@ package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
 import java.util.ArrayList;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -46,7 +44,6 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.util.ISourceAttribute;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
@@ -112,23 +109,8 @@ public class ElementNameVisitor extends AbstractVisitor {
 	}
 
 	@Override
-	public Object visit(final ISourceAttribute sourceAttribute) {
-		return sourceAttribute.getSourceFileName().toString();
-	}
-
-	@Override
 	public Object visit(final IClassFile classFile) {
 		return Resolver.resolveFullyQualifiedClassName(classFile);
-	}
-
-	@Override
-	public Object visit(final IFile file) {
-		return file.getName();
-	}
-
-	@Override
-	public Object visit(final IFolder folder) {
-		return folder.getName();
 	}
 
 	@Override

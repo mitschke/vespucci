@@ -33,12 +33,8 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd.JavaType;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -52,15 +48,16 @@ import org.eclipse.jdt.core.util.ISourceAttribute;
 import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
-import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
- * This abstract class is the super class of all visitors. The main purpose lies in the invocation
- * of the correct and
- * highly polymorphic function "visit" of each visitor.
+ * This abstract class is the super class of all visitors. The abstract class
+ * provides a the method invokeCorrectMethod to invoke the correct overloaded
+ * visit function of the concrete visitor. All visit functions are implemented
+ * to call getDefaultResultObject, hence selective overriding is supported.
  * 
  * @author Dominic Scheurer
  * @author Thomas Schulz
+ * @author Ralf Mitschke
  * 
  */
 public abstract class AbstractVisitor implements IEclipseObjectVisitor {
@@ -74,72 +71,30 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 	 */
 	public Object invokeCorrectMethod(final Object element) {
 
-		final String className = this.getClass().getName();
+		if (!(element instanceof IJavaElement))
+			return false;
 
-		try {
+		final IJavaElement javaElement = (IJavaElement) element;
 
-			if ((element instanceof IPackageFragment || element instanceof IPackageFragmentRoot)
-					&& isLocatedInJarFile((IJavaElement) element)) {
-				// unfortunately, getClass().getInterfaces doesn't return any interfaces if element
-				// is:
-				// 1. a package in a JAR-archive [IPackageFragment]
-				// 2. the JAR itself [IPackageFragmentRoot]
-				final IJavaElement elementInJar = (IJavaElement) element;
-				// This workaround is necessary because every possible element is an instance of
-				// IJavaElement s.t. polymorphism doesn't work
-				final ArrayList listOfJavaElements = new ArrayList<IJavaElement>();
-				listOfJavaElements.add(elementInJar);
-				final Class currentClass = listOfJavaElements.getClass();
-				final Method correctVisitMethod = getClass().getMethod("visit", currentClass);
-				final Object invocation = correctVisitMethod.invoke(this, new Object[] { listOfJavaElements });
-
-				return invocation;
-			}
-
-			final Class currentClass = element.getClass();
-			final Class[] elementInterfaces = currentClass.getInterfaces();
-
-			if (elementInterfaces.length == 0) {
-				throw getIllegalArgumentException(element);
-			}
-
-			// For the considered classes, the first interface is the public interface
-			// of interest. Thus, it is avoided to depend on eclipse internal packages.
-			final Class firstPublicInterface = elementInterfaces[0];
-			final Class[] correctClass = new Class[] { firstPublicInterface };
-			final Method correctVisitMethod = getClass().getMethod("visit", correctClass);
-			final Object invocation = correctVisitMethod.invoke(this, new Object[] { element });
-
-			return invocation;
-		} catch (final SecurityException exception) {
-			throw getIllegalArgumentException(element);
-		} catch (final NoSuchMethodException exception) {
-			throw getIllegalArgumentException(element);
-		} catch (final IllegalArgumentException exception) {
-			throw getIllegalArgumentException(element);
-		} catch (final IllegalAccessException exception) {
-			throw getIllegalArgumentException(element);
-		} catch (final InvocationTargetException exception) {
-			throw getIllegalArgumentException(element);
-		} catch (final NullPointerException exception) {
-			throw new VespucciUnexpectedException("Method name must not be null.", exception);
+		switch (javaElement.getElementType()) {
+		case IJavaElement.CLASS_FILE:
+			return visit((IClassFile) element);
+		case IJavaElement.COMPILATION_UNIT:
+			return visit((ICompilationUnit) element);
+		case IJavaElement.FIELD:
+			return visit((IField) element);
+		case IJavaElement.METHOD:
+			return visit((IMethod) element);
+		case IJavaElement.PACKAGE_FRAGMENT:
+			return visit((IPackageFragment) element);
+		case IJavaElement.PACKAGE_FRAGMENT_ROOT:
+			return visit((IPackageFragmentRoot) element);
+		case IJavaElement.JAVA_PROJECT:
+			return visit((IProject) element);
+		case IJavaElement.TYPE:
+			return visit((IType) element);
 		}
-	}
-
-	/**
-	 * @param element
-	 * @return Returns true only if element is located in JAR-File
-	 */
-	@SuppressWarnings("restriction")
-	protected static boolean isLocatedInJarFile(final IJavaElement element) {
-		IJavaElement parent = element;
-		while (parent != null) {
-			if (parent instanceof JarPackageFragmentRoot) {
-				return true;
-			}
-			parent = parent.getParent();
-		}
-		return false;
+		throw getIllegalArgumentException(element);
 	}
 
 	@Override
@@ -178,23 +133,8 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 	}
 
 	@Override
-	public Object visit(final ISourceAttribute sourceAttribute) {
-		return doDefaultAction(sourceAttribute);
-	}
-
-	@Override
 	public Object visit(final IClassFile classFile) {
 		return doDefaultAction(classFile);
-	}
-
-	@Override
-	public Object visit(final IFile file) {
-		return doDefaultAction(file);
-	}
-
-	@Override
-	public Object visit(final IFolder folder) {
-		return doDefaultAction(folder);
 	}
 
 	@Override
@@ -216,6 +156,7 @@ public abstract class AbstractVisitor implements IEclipseObjectVisitor {
 	 * @return Returns the specific VespucciException.
 	 */
 	protected RuntimeException getIllegalArgumentException(final Object argument) {
-		return new VespucciIllegalArgumentException(String.format("Given argument [%s] not supported.", argument));
+		return new VespucciIllegalArgumentException(String.format(
+				"Given argument [%s] not supported.", argument));
 	}
 }

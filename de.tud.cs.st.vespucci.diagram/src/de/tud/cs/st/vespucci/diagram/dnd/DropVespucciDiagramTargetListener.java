@@ -44,7 +44,7 @@ import org.eclipse.gef.requests.DirectEditRequest;
 import org.eclipse.gef.requests.LocationRequest;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.DND;
 
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
@@ -91,10 +91,11 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 	 * @return Returns true only if the drop is resolvable.
 	 */
 	private boolean canBeDropped() {
-		if (getTargetEditPart() == null) {
-
-			// all EditPart for which DnD should work
-		} else if (getTargetEditPart() instanceof EnsembleEditPart || getTargetEditPart() instanceof Ensemble2EditPart
+		if (getTargetEditPart() == null)
+			return false;
+		
+		// all EditPart for which DnD should work
+		if (getTargetEditPart() instanceof EnsembleEditPart || getTargetEditPart() instanceof Ensemble2EditPart
 				|| getTargetEditPart() instanceof ShapesDiagramEditPart) {
 			return Resolver.isResolvable(getTargetRequest().getExtendedData().values());
 		}
@@ -106,8 +107,12 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 	 */
 	protected void setDrop() {
 		final ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
+		if(selection == null)
+			return;
+		if( !(selection instanceof IStructuredSelection))
+			return;
 		final Map<String, Object> m = new HashMap<String, Object>();
-		for (final Object o : ((TreeSelection) selection).toList()) {
+		for (final Object o : ((IStructuredSelection) selection).toList()) {
 			m.put(o.toString(), o);
 		}
 		getTargetRequest().setExtendedData(m);

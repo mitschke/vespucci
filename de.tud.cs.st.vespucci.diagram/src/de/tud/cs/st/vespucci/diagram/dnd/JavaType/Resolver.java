@@ -48,8 +48,8 @@ import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 
 /**
- * This class provides static methods to resolve information from Vespucci diagrams mainly used to
- * create queries and names of ensembles.
+ * This class provides static methods to resolve information from Vespucci
+ * diagrams mainly used to create queries and names of ensembles.
  * 
  * 
  * @author Benjamin Lück
@@ -67,17 +67,19 @@ public class Resolver {
 	private Resolver() {
 	}
 
-	private static String getFullyQualifiedName(final String type, final IType jdtDeclaringType) {
+	private static String getFullyQualifiedName(final String type,
+			final IType jdtDeclaringType) {
 		try {
 			return JavaModelUtil.getResolvedTypeName(type, jdtDeclaringType);
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Could not access type [%s]", jdtDeclaringType), e);
+			throw new VespucciUnexpectedException(String.format(
+					"Could not access type [%s]", jdtDeclaringType), e);
 		}
 	}
 
 	/**
-	 * Getting the package name (FQN) from a IMethod, IPackageFragment, ICompilationUnit, IField and
-	 * IType.
+	 * Getting the package name (FQN) from a IMethod, IPackageFragment,
+	 * ICompilationUnit, IField and IType.
 	 * 
 	 * @param element
 	 *            The named IJavaElement.
@@ -110,8 +112,8 @@ public class Resolver {
 	/**
 	 * @param element
 	 *            The java element, whose class name shall be resolved.
-	 * @return Returns the class name without preceding "&#60PACKAGENAME>.". Java file ending will
-	 *         be removed.
+	 * @return Returns the class name without preceding "&#60PACKAGENAME>.".
+	 *         Java file ending will be removed.
 	 */
 	public static String resolveClassName(final Object element) {
 		String classname = resolveFullyQualifiedClassName(element);
@@ -134,21 +136,25 @@ public class Resolver {
 	 */
 	public static String resolveReturnType(final IMethod method) {
 		try {
-			return getFullyQualifiedName(method.getReturnType(), method.getDeclaringType());
+			return getFullyQualifiedName(method.getReturnType(),
+					method.getDeclaringType());
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Failed to resolve return type of [%s]", method), e);
+			throw new VespucciUnexpectedException(String.format(
+					"Failed to resolve return type of [%s]", method), e);
 		}
 	}
 
 	/**
 	 * @param method
-	 * @return Returns the parameters from the given method as a list of strings.
+	 * @return Returns the parameters from the given method as a list of
+	 *         strings.
 	 */
 	public static List<String> getParameterTypesFromMethod(final IMethod method) {
 		final List<String> parameters = new ArrayList<String>();
 
 		for (final String type : method.getParameterTypes()) {
-			parameters.add(getFullyQualifiedName(type, method.getDeclaringType()));
+			parameters.add(getFullyQualifiedName(type,
+					method.getDeclaringType()));
 		}
 
 		return parameters;
@@ -167,7 +173,9 @@ public class Resolver {
 				return method.getElementName();
 			}
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Couldn't determine if method [%s] is a constructor.", method), e);
+			throw new VespucciUnexpectedException(String.format(
+					"Couldn't determine if method [%s] is a constructor.",
+					method), e);
 		}
 	}
 
@@ -177,9 +185,11 @@ public class Resolver {
 	 */
 	public static String getFullyQualifiedFieldTypeName(final IField field) {
 		try {
-			return getFullyQualifiedName(field.getTypeSignature(), field.getDeclaringType());
+			return getFullyQualifiedName(field.getTypeSignature(),
+					field.getDeclaringType());
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Failed to resolve field type of [%s].", field), e);
+			throw new VespucciUnexpectedException(String.format(
+					"Failed to resolve field type of [%s].", field), e);
 		}
 
 	}
@@ -193,14 +203,15 @@ public class Resolver {
 	}
 
 	/**
-	 * Gets all packages from a IPackageFragmentRoot; e.g. a src-folder or a JAR-file which is in
-	 * the project referenced libraries.
+	 * Gets all packages from a IPackageFragmentRoot; e.g. a src-folder or a
+	 * JAR-file which is in the project referenced libraries.
 	 * 
 	 * @param packageRoot
 	 *            The package root
 	 * @return Returns a list of packages contained in given package root.
 	 */
-	public static List<String> getPackagesFromPFR(final IPackageFragmentRoot packageRoot) {
+	public static List<String> getPackagesFromPFR(
+			final IPackageFragmentRoot packageRoot) {
 		final List<String> packages = new ArrayList<String>();
 
 		try {
@@ -210,7 +221,8 @@ public class Resolver {
 
 				final String fqPackageName;
 
-				fqPackageName = resolveFullyQualifiedPackageName(childPackage).trim();
+				fqPackageName = resolveFullyQualifiedPackageName(childPackage)
+						.trim();
 
 				if (fqPackageName.length() > 0) {
 					packages.add(fqPackageName);
@@ -219,7 +231,8 @@ public class Resolver {
 			return packages;
 
 		} catch (final JavaModelException e) {
-			throw new VespucciUnexpectedException(String.format("Failed to get child packages from package root [%s].",
+			throw new VespucciUnexpectedException(String.format(
+					"Failed to get child packages from package root [%s].",
 					packageRoot), e);
 		}
 	}
