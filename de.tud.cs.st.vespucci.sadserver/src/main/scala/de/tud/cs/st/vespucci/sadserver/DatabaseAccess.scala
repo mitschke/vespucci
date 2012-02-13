@@ -56,7 +56,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
         if (result.isEmpty())
           conn.executeUpdate("INSERT INTO users VALUES('someid', 'somebody', 'password')")
         result.close()
-        
+
     }
   }
 
@@ -82,7 +82,9 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("abstract"),
             if (rs.getString("model") != null) Some(rs.getCharacterStream("model") -> rs.getInt(5)) else None,
             if (rs.getString("documentation") != null) Some(rs.getBinaryStream("documentation") -> rs.getInt(7)) else None,
-            rs.getBoolean("wip")));
+            rs.getBoolean("wip"),
+            1L) // FIXME
+          );
         } else {
           None
         }
@@ -117,7 +119,9 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("abstract"),
             if (rs.getString("model") != null) Some(rs.getCharacterStream("model") -> rs.getInt(6)) else None,
             if (rs.getString("documentation") != null) Some(rs.getBinaryStream("documentation") -> rs.getInt(8)) else None,
-            rs.getBoolean("wip")) +: list
+            rs.getBoolean("wip"),
+            1L // FIXME
+          ) +: list
         }
       }
       new DescriptionCollection(list)
@@ -176,6 +180,22 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
       logger.debug("Deleted documentation [%s]" format id)
       result
   }
+
+  // SAD - Update
+
+  def updateSAD(description: Description) =
+    withTransaction {
+      conn =>
+        
+//        conn.prepareStatement("SELECT timestamp FROM sads WHERE id = ?")
+//        .executeQueryWith(description.id).nextValue(long) match {
+//          Some(modified: Long) if modified < 
+//        }
+          
+        conn.prepareStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ? WHERE id = ?")
+          .executeQueryWith(description.name, description.`type`, description.`abstract`, description.wip, description.id)
+
+    }
 
   // User-CRUD and authentification
 

@@ -18,6 +18,7 @@ class ObjectModelTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAl
   "Description" should "be constructed correctly from XML" in {
     val desc = Description(scala.xml.XML.loadFile("src/test/resources/existingDescription.xml"))
     desc.id should equal { "f81d4fae-7dec-11d0-a765-00a0c91e6bf6" }
+    desc.modified should equal { 1329100582695L }
     desc.name should equal { "myName" }
     desc.`type` should equal { "myType" }
     println(desc.toXML)

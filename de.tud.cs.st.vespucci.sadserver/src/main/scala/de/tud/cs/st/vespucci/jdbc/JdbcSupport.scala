@@ -81,6 +81,7 @@ trait JdbcSupport {
   def string = ((rs: ResultSet, i: Int) => rs.getString(i))
   def varchar = string
   def int = ((rs: ResultSet, i: Int) => rs.getInt(i))
+  def long = ((rs: ResultSet, i: Int) => rs.getLong(i))
   def integer = ((rs: ResultSet, i: Int) => rs.getInt(i))
   def characterStream = ((rs: ResultSet, i: Int) => rs.getCharacterStream(i))
   def clob = characterStream

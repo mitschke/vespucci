@@ -34,7 +34,8 @@ object Description {
       parse("abstract"),
       None,
       None,
-      { val parsed = (xml \\ "wip").text; if (!parsed.isEmpty) parsed.toBoolean else false })
+      { val parsed = (xml \\ "wip").text; if (!parsed.isEmpty) parsed.toBoolean else false },
+      { val parsed = (xml \ "@modified").text; if (parsed.isEmpty) 0 else parsed.toLong })
   }
 }
 
@@ -45,7 +46,8 @@ case class Description(
   val `abstract`: String,
   val model: Option[(Reader, Int)],
   val documentation: Option[(InputStream, Int)],
-  val wip: Boolean) {
+  val wip: Boolean,
+  val modified: Long) {
 
   val url: String = "http://" + authority + ":" + port + rootPath + descriptionCollectionPath + "/" + id
 
@@ -60,7 +62,7 @@ case class Description(
     </documentation>
 
   def toXML: Elem =
-    <description id={ id }>
+    <description id={ id } modified={ modified.toString }>
       <url>{ url }</url>
       <name>{ name }</name>
       <type>{ `type` }</type>
