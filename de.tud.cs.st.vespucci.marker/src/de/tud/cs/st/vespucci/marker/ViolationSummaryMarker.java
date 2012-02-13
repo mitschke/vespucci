@@ -23,7 +23,7 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 	
 	private static HashMap<IViolationSummary, IMarker> markers = new HashMap<IViolationSummary, IMarker>();
 
-	private DescriptionFab descFab;
+	private DescriptionFactory descFab;
 	
 	public ViolationSummaryMarker(IDataView<IViolationSummary> dataView){
 		if (dataView == null){
@@ -31,7 +31,7 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 		}
 		
 		dataView.register(this);
-		this.descFab = new DescriptionFab();
+		this.descFab = new DescriptionFactory();
 		
 		for (Iterator<IViolationSummary> i = dataView.iterator(); i.hasNext();){
 			added(i.next());
