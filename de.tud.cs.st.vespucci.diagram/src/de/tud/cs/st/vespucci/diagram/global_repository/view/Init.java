@@ -44,7 +44,7 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 /**
  * 
  * @author Tanya Harizanova
- *
+ * A dummy class for creating an Array with Ensembles
  */
  public final  class Init {
 	
@@ -78,6 +78,9 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 		//TODO: innere Klassen erstellen
 		//inner.
 		//outer.eContents().add(inner);
+		
+		
+		
 		
 		Ensemble d = new EnsembleImpl();
 		d.setName("d");

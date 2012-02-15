@@ -37,26 +37,34 @@ package de.tud.cs.st.vespucci.diagram.global_repository.view;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.PlatformUI;
 
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 
 /**
  * 
  * @author Tabea Born, Christian Knapp
- *
+ * 
  */
 public class GRLabelProvider extends LabelProvider {
-	
-	private static final String ENSEMBLE_IMAGE = "icons/obj16/Ensemble.gif";
-	
+
+	Image img = new Image(null, getClass().getResourceAsStream("/icons/obj16/Ensemble.gif"));
+
+	/**
+	 * returns the name of the specific ensemble
+	 */
 	@Override
-	public String getText(Object element){
-		// TODO entsprechende Methode einfügen
+	public String getText(Object ensemble) {
+		if (ensemble instanceof Ensemble) {
+			return ((Ensemble) ensemble).getName();
+		}
 		return null;
 	}
-	
+
+	/**
+	 * the Image for the Ensembles in the list
+	 */
 	@Override
-	public Image getImage(Object element){
-		return PlatformUI.getWorkbench().getSharedImages().getImage(ENSEMBLE_IMAGE);
+	public Image getImage(Object element) {
+		return img;
 	}
 }

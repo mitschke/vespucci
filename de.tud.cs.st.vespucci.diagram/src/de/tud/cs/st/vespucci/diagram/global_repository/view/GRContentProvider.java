@@ -38,6 +38,8 @@ package de.tud.cs.st.vespucci.diagram.global_repository.view;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+
 /**
  * 
  * @author Tabea Born, Christian Knapp
@@ -57,9 +59,15 @@ public class GRContentProvider implements ITreeContentProvider {
 
 	}
 
+	/**
+	 * TODO
+	 * gets the children of an Ensemble an put it in the right place in the tree
+	 */
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		// TODO entsprechende Methode einfügen
+		if(hasChildren(parentElement) == true){
+
+		}
 		return null;
 	}
 
@@ -74,9 +82,15 @@ public class GRContentProvider implements ITreeContentProvider {
 		return null;
 	}
 
+	/**
+	 * TODO
+	 * check if the choosen Ensemble has children
+	 */
 	@Override
-	public boolean hasChildren(Object element) {
-		// TODO entsprechende Methode einfügen
+	public boolean hasChildren(Object ensemble) {
+		if(ensemble instanceof Ensemble){
+		//	return true;
+		}
 		return false;
 	}
 

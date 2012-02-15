@@ -60,6 +60,9 @@ public class GlobalRepositoryView  extends ViewPart{
 	private TreeViewer viewer;
 	private Action addItemAction, deleteItemAction, editAction;
 	
+	/**
+	 * creates a Tree structured List in the current view (Global Repository)
+	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		 createActions();
@@ -101,6 +104,10 @@ public class GlobalRepositoryView  extends ViewPart{
            //set image icon for this action
            deleteItemAction.setImageDescriptor(ImageDescriptor.createFromImage(getImage(DELETE_IMAGE)));
 
+           /**
+            * Creates a new window for editing selected Ensembles
+            * TODO
+            */
            editAction = new Action("Edit") {
                    public void run() {
                            EditWindow edwin = new EditWindow();
