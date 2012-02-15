@@ -37,38 +37,47 @@ package de.tud.cs.st.vespucci.diagram.global_repository.view;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
 
 /**
- * @author Tanya Harizanova, Tabea Born, Christian Knapp
+ * @author Tanya Harizanova
+ * @author Tabea Born
+ * @author Christian Knapp
  * View class makes the Global Repository View
  */
 
 public class GlobalRepositoryView  extends ViewPart{
 	
-	//TODO: EditImage
 	private static final String ADD_IMAGE = "icons/global_repository/AddEnsemble.gif";
 	private static final String DELETE_IMAGE="icons/global_repository/DeleteEnsemble.gif";
-	private static final String EDIT_IMAGE="icons/global_repository/SelectAllEnsemble.gif";
-	private Label label;
+	private static final String EDIT_IMAGE="icons/global_repository/EditEnsemble.gif";
+	private TreeViewer viewer;
 	private Action addItemAction, deleteItemAction, editAction;
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		 label = new Label(parent, 0);
 		 createActions();
 		 createToolbar();
-         label.setText("Hello Vespucci!");
+		 viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		 viewer.setContentProvider(new GRContentProvider());
+		 viewer.setLabelProvider(new GRLabelProvider());
+		 //Expand the tree
+		 viewer.setAutoExpandLevel(2);
+		 //Provide the input to the ContentProvider
+		 viewer.setInput(new Init());
+		 
+         
          }
 
 	@Override
 	public void setFocus() {
-		label.setFocus();
+		viewer.getControl().setFocus();
 		
 	}
     /**
@@ -94,7 +103,10 @@ public class GlobalRepositoryView  extends ViewPart{
 
            editAction = new Action("Edit") {
                    public void run() {
-                           //edit();
+                           EditWindow edwin = new EditWindow();
+                           edwin.setBlockOnOpen(true);
+                           edwin.open();
+                           edwin.close();
                    }
            };
            //set image icon for this action

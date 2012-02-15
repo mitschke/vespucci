@@ -36,22 +36,18 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -82,7 +78,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EnsembleImpl() {
+	//TODO:protected  
+	public EnsembleImpl() {
 		super();
 	}
 
