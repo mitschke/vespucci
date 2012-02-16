@@ -38,10 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.BorderLayout;
-import org.eclipse.draw2d.FlowLayout;
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
@@ -65,10 +62,11 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
-import de.tud.cs.st.vespucci.diagram.dnd.EditDropPolicy;
+
+import de.tud.cs.st.vespucci.diagram.dnd.IJavaElementDropConstants;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaElementEnsembleDropPolicy;
 
 /**
  * @generated
@@ -102,11 +100,14 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
+		installEditPolicy(
+				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
-		installEditPolicy(REQ_DIRECT_EDIT, new EditDropPolicy());
-		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
+		installEditPolicy(IJavaElementDropConstants.REQ_DROP_EXTEND_ENSEMBLE, new JavaElementEnsembleDropPolicy());
+
+		// XXX need an SCR to runtime to have another abstract superclass that
+		// would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
 	}
 
@@ -117,7 +118,8 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy lep = new org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy() {
 
 			protected EditPolicy createChildEditPolicy(EditPart child) {
-				EditPolicy result = child.getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
+				EditPolicy result = child
+						.getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
 				if (result == null) {
 					result = new NonResizableEditPolicy();
 				}
@@ -160,19 +162,24 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		}
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart) {
 			((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart) childEditPart)
-					.setLabel(getPrimaryShape().getFigureEnsembleDescriptionFigure());
+					.setLabel(getPrimaryShape()
+							.getFigureEnsembleDescriptionFigure());
 			return true;
 		}
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
-			IFigure pane = getPrimaryShape().getFigureEnsembleCompartmentFigure();
-			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			IFigure pane = getPrimaryShape()
+					.getFigureEnsembleCompartmentFigure();
+			setupContentPane(pane); // FIXME each comparment should handle his
+									// content pane in his own way
 			pane.add(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;
 		}
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) {
-			IFigure pane = getPrimaryShape().getFigureEnsembleDescriptionCompartmentFigure();
-			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			IFigure pane = getPrimaryShape()
+					.getFigureEnsembleDescriptionCompartmentFigure();
+			setupContentPane(pane); // FIXME each comparment should handle his
+									// content pane in his own way
 			pane.add(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;
@@ -191,15 +198,19 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 			return true;
 		}
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {
-			IFigure pane = getPrimaryShape().getFigureEnsembleCompartmentFigure();
-			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			IFigure pane = getPrimaryShape()
+					.getFigureEnsembleCompartmentFigure();
+			setupContentPane(pane); // FIXME each comparment should handle his
+									// content pane in his own way
 			pane.remove(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;
 		}
 		if (childEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) {
-			IFigure pane = getPrimaryShape().getFigureEnsembleDescriptionCompartmentFigure();
-			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
+			IFigure pane = getPrimaryShape()
+					.getFigureEnsembleDescriptionCompartmentFigure();
+			setupContentPane(pane); // FIXME each comparment should handle his
+									// content pane in his own way
 			pane.remove(((de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) childEditPart)
 					.getFigure());
 			return true;
@@ -235,7 +246,8 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 			return getPrimaryShape().getFigureEnsembleCompartmentFigure();
 		}
 		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart) {
-			return getPrimaryShape().getFigureEnsembleDescriptionCompartmentFigure();
+			return getPrimaryShape()
+					.getFigureEnsembleDescriptionCompartmentFigure();
 		}
 		return getContentPane();
 	}
@@ -251,8 +263,8 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	/**
 	 * Creates figure for this edit part.
 	 * 
-	 * Body of this method does not depend on settings in generation model
-	 * so you may safely remove <i>generated</i> tag and modify it.
+	 * Body of this method does not depend on settings in generation model so
+	 * you may safely remove <i>generated</i> tag and modify it.
 	 * 
 	 * @generated
 	 */
@@ -266,9 +278,11 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * Default implementation treats passed figure as content pane.
-	 * Respects layout one may have set for generated figure.
-	 * @param nodeShape instance of generated figure class
+	 * Default implementation treats passed figure as content pane. Respects
+	 * layout one may have set for generated figure.
+	 * 
+	 * @param nodeShape
+	 *            instance of generated figure class
 	 * @generated
 	 */
 	protected IFigure setupContentPane(IFigure nodeShape) {
@@ -353,7 +367,8 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public List<IElementType> getMARelTypesOnSourceAndTarget(IGraphicalEditPart targetEditPart) {
+	public List<IElementType> getMARelTypesOnSourceAndTarget(
+			IGraphicalEditPart targetEditPart) {
 		LinkedList<IElementType> types = new LinkedList<IElementType>();
 		if (targetEditPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart) {
 			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Incoming_4005);
@@ -603,7 +618,8 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 			BorderLayout layoutThis = new BorderLayout();
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8),
+					getMapMode().DPtoLP(8)));
 			createContents();
 		}
 
@@ -624,37 +640,49 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 
 			RectangleFigure ensembleDescriptionCompartmentContainerFigure0 = new RectangleFigure();
 
-			this.add(ensembleDescriptionCompartmentContainerFigure0, BorderLayout.CENTER);
+			this.add(ensembleDescriptionCompartmentContainerFigure0,
+					BorderLayout.CENTER);
 
 			BorderLayout layoutEnsembleDescriptionCompartmentContainerFigure0 = new BorderLayout();
-			ensembleDescriptionCompartmentContainerFigure0.setLayoutManager(layoutEnsembleDescriptionCompartmentContainerFigure0);
+			ensembleDescriptionCompartmentContainerFigure0
+					.setLayoutManager(layoutEnsembleDescriptionCompartmentContainerFigure0);
 
 			fFigureEnsembleDescriptionCompartmentFigure = new RectangleFigure();
 
-			ensembleDescriptionCompartmentContainerFigure0.add(fFigureEnsembleDescriptionCompartmentFigure, BorderLayout.TOP);
+			ensembleDescriptionCompartmentContainerFigure0.add(
+					fFigureEnsembleDescriptionCompartmentFigure,
+					BorderLayout.TOP);
 
 			BorderLayout layoutFFigureEnsembleDescriptionCompartmentFigure = new BorderLayout();
-			fFigureEnsembleDescriptionCompartmentFigure.setLayoutManager(layoutFFigureEnsembleDescriptionCompartmentFigure);
+			fFigureEnsembleDescriptionCompartmentFigure
+					.setLayoutManager(layoutFFigureEnsembleDescriptionCompartmentFigure);
 
 			WrappingLabel ensemblePlaceholderLabelFigure2 = new WrappingLabel();
 			ensemblePlaceholderLabelFigure2.setText(" ");
 
-			ensemblePlaceholderLabelFigure2.setFont(ENSEMBLEPLACEHOLDERLABELFIGURE2_FONT);
+			ensemblePlaceholderLabelFigure2
+					.setFont(ENSEMBLEPLACEHOLDERLABELFIGURE2_FONT);
 
-			ensemblePlaceholderLabelFigure2.setMaximumSize(new Dimension(getMapMode().DPtoLP(10), getMapMode().DPtoLP(0)));
+			ensemblePlaceholderLabelFigure2.setMaximumSize(new Dimension(
+					getMapMode().DPtoLP(10), getMapMode().DPtoLP(0)));
 
-			fFigureEnsembleDescriptionCompartmentFigure.add(ensemblePlaceholderLabelFigure2, BorderLayout.BOTTOM);
+			fFigureEnsembleDescriptionCompartmentFigure.add(
+					ensemblePlaceholderLabelFigure2, BorderLayout.BOTTOM);
 
 			fFigureEnsembleDescriptionFigure = new WrappingLabel();
 			fFigureEnsembleDescriptionFigure.setText("");
 
-			fFigureEnsembleDescriptionCompartmentFigure.add(fFigureEnsembleDescriptionFigure, BorderLayout.TOP);
+			fFigureEnsembleDescriptionCompartmentFigure.add(
+					fFigureEnsembleDescriptionFigure, BorderLayout.TOP);
 
 			fFigureEnsembleCompartmentFigure = new RectangleFigure();
-			fFigureEnsembleCompartmentFigure.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK);
-			fFigureEnsembleCompartmentFigure.setMinimumSize(new Dimension(getMapMode().DPtoLP(20), getMapMode().DPtoLP(25)));
+			fFigureEnsembleCompartmentFigure
+					.setBackgroundColor(FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK);
+			fFigureEnsembleCompartmentFigure.setMinimumSize(new Dimension(
+					getMapMode().DPtoLP(20), getMapMode().DPtoLP(25)));
 
-			ensembleDescriptionCompartmentContainerFigure0.add(fFigureEnsembleCompartmentFigure, BorderLayout.CENTER);
+			ensembleDescriptionCompartmentContainerFigure0.add(
+					fFigureEnsembleCompartmentFigure, BorderLayout.CENTER);
 
 		}
 
@@ -669,7 +697,7 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 		 * @generated NOT
 		 * @author Dominic Scheurer
 		 * 
-		 * Changed to support multiline descriptions
+		 *         Changed to support multiline descriptions
 		 */
 		public WrappingLabel getFigureEnsembleDescriptionFigure() {
 			fFigureEnsembleDescriptionFigure.setTextWrap(true);
@@ -702,12 +730,14 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	static final Font ENSEMBLEPLACEHOLDERLABELFIGURE2_FONT = new Font(Display.getCurrent(), Display.getDefault().getSystemFont()
-			.getFontData()[0].getName(), 5, SWT.NORMAL);
+	static final Font ENSEMBLEPLACEHOLDERLABELFIGURE2_FONT = new Font(
+			Display.getCurrent(), Display.getDefault().getSystemFont()
+					.getFontData()[0].getName(), 5, SWT.NORMAL);
 
 	/**
 	 * @generated
 	 */
-	static final Color FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK = new Color(null, 175, 238, 238);
+	static final Color FFIGUREENSEMBLECOMPARTMENTFIGURE_BACK = new Color(null,
+			175, 238, 238);
 
 }

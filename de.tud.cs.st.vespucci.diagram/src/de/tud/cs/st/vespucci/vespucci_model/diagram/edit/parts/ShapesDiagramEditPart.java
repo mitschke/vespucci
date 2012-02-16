@@ -35,19 +35,20 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.handles.MoveHandle;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.NonResizableLabelEditPolicy;
 import org.eclipse.gmf.runtime.notation.View;
 
-import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
-import de.tud.cs.st.vespucci.diagram.dnd.CreationNewEnsembleEditPolicy;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaElementDiagramDropPolicy;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaElementDiagramDropPolicy;
+import de.tud.cs.st.vespucci.diagram.dnd.IJavaElementDropConstants;
 
 /**
  * @generated
@@ -75,6 +76,7 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 	 * Turn off messes POP-UP BAR
 	 * @generated NOT
 	 * @author Tam-Minh Nguyen
+	 * @author Ralf Mitschke
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
@@ -82,9 +84,8 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramCanonicalEditPolicy());
-		//installEditPolicy(CreateEnsembleDropTargetListener.REQ_DROPNEWENSEMBLE	, new CreationNewEnsembleEditPolicy());
-		//installEditPolicy(EditPolicyRoles.CREATION_ROLE	, new CreationEditPolicy());
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE, new CreationNewEnsembleEditPolicy());
+		installEditPolicy(REQ_DIRECT_EDIT, new JavaElementDiagramDropPolicy());
+		installEditPolicy(IJavaElementDropConstants.REQ_DROP_NEW_ENSEMBLE, new JavaElementDiagramDropPolicy());
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 

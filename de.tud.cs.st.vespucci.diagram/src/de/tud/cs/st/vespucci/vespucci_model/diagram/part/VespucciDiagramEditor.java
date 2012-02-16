@@ -33,27 +33,14 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.URI;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFileState;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IPathVariableManager;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
-import org.eclipse.core.resources.IResourceVisitor;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -64,10 +51,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.content.IContentDescription;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -116,8 +100,8 @@ import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
-import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaElementDiagramDropTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaElementEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.processing.IModelSaveAction;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
@@ -639,9 +623,12 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements IGot
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
-		// adds 2 TransferDropTargetListener to the diagram view. for handling DnD out of the Package Explorer
-		getDiagramGraphicalViewer().addDropTargetListener(new DropVespucciDiagramTargetListener(getDiagramGraphicalViewer()));
-		getDiagramGraphicalViewer().addDropTargetListener(new CreateEnsembleDropTargetListener(getDiagramGraphicalViewer()));
+		// adds a TransferDropTargetListener to the diagram view for handling DnD of JavaElements either JDT or SAE elements
+		// TODO currently DND relies on precedence of the listeners.
+		// i.e. if the ensemble listener does not allow the drop then the diagram listener is asked
+		getDiagramGraphicalViewer().addDropTargetListener(new JavaElementEnsembleDropTargetListener(getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(new JavaElementDiagramDropTargetListener(getDiagramGraphicalViewer()));
+		
 	}
 
 	/**

@@ -33,166 +33,24 @@
  */
 package de.tud.cs.st.vespucci.diagram.dnd;
 
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jdt.core.IClassFile;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.IJavaElement;
 
-import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
 /**
- * A Class which provides static tools for supporting DnD.
+ * Static helper methods for building Vespucci queries from Elipse {@link IJavaElement}s
+ * or SAE {@link ICodeElement}s
  * 
+ * @author Ralf Mitschke
  * @author Malte Viering
  * @author Benjamin Lück
  * @author Alexander Weitzmann
  * @author Thomas Schulz
  */
-public class QueryBuilder {
-
-	// constants for the querybuilder
-	private static final String PACKAGE = "package";
-	private static final String CLASS_WITH_MEMBERS = "class_with_members";
-	private static final String METHOD = "method";
-	private static final String FIELD = "field";
-	private static final String QUERY_DELIMITER = " or ";
-	private static final String DERIVED = "derived";
-	private static final String STANDARD_SHAPENAME = "A dynamic name";
-	private static final Object EMPTY = "empty";
-
-	private static String createClassQueryFromClassFile(Object draggedElement) {
-		String classQuery;
-		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
-		final String classname = Resolver.resolveClassName(draggedElement);
-
-		classQuery = String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
-
-		return classQuery;
-	}
-
-	private static String createClassQueryFromCompilationUnit(final Object draggedElement) {
-		String classQuery;
-		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
-		final String classname = Resolver.resolveClassName(draggedElement);
-
-		classQuery = String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
-
-		return classQuery;
-	}
-
-	private static String createFieldQuery(final Object draggedElement) {
-		final IField iField = (IField) draggedElement;
-		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
-		final String classname = Resolver.resolveClassName(draggedElement);
-		final String fieldname = iField.getElementName();
-		final String type = Resolver.getFullyQualifiedFieldTypeName(iField);
-
-		return String.format("%s('%s','%s','%s','%s')", FIELD, packagename, classname, fieldname, type);
-	}
-
-	private static List<String> createJARQuery(final Object draggedElement) {
-		final LinkedList<String> queryList = new LinkedList<String>();
-		final List<String> packages = Resolver.getPackagesFromPFR((IPackageFragmentRoot) draggedElement);
-		for (final String s : packages) {
-			final String jarQuery = String.format("%s('%s')", PACKAGE, s);
-			queryList.add(jarQuery);
-		}
-		return queryList;
-	}
-
-	private static String createMethodQuery(final Object draggedElement) {
-		final IMethod iMethod = (IMethod) draggedElement;
-		final String packagename = Resolver.resolveFullyQualifiedPackageName(draggedElement);
-		final String classname = Resolver.resolveClassName(draggedElement);
-		final String methodname = Resolver.getMethodName(iMethod);
-		final List<String> para = Resolver.getParameterTypesFromMethod(iMethod);
-		final String returntype = Resolver.resolveReturnType(iMethod);
-
-		final StringBuffer sbPara = new StringBuffer();
-		sbPara.append("[");
-		final Iterator<String> it = para.iterator();
-		while (it.hasNext()) {
-			final String s = it.next();
-			if (it.hasNext()) {
-				sbPara.append("'" + s + "'" + ",");
-			} else {
-				sbPara.append("'" + s + "'");
-			}
-		}
-		sbPara.append("]");
-
-		return String.format("%s('%s','%s','%s','%s',%s)", METHOD, packagename, classname, methodname, returntype,
-				sbPara.toString());
-	}
-
-	/**
-	 * Getting the first known object name, else return {@link #STANDARD_SHAPENAME}.
-	 * 
-	 * @param extendedData
-	 * @return name as string
-	 * @author BenjaminL
-	 */
-	public static String createNameforNewEnsemble(final Map<?, ?> extendedData) {
-		// getting the first known object name
-		for (final Object key : extendedData.keySet()) {
-			final Object o = extendedData.get(key);
-
-			final String name = Resolver.getElementNameFromObject(o);
-			if (!name.equals("")) {
-				return name;
-			}
-		}
-		return STANDARD_SHAPENAME;
-	}
-
-	private static String createPackageQuery(final Object draggedElement) {
-		return String.format("%s('%s')", PACKAGE, Resolver.resolveFullyQualifiedPackageName(draggedElement));
-	}
-
-	/**
-	 * Creates a List that contains for all Java Files in map an entry: e.g.: <LI>package:
-	 * package(&#60PACKAGENAME>) <LI>
-	 * class: class_with_members(&#60PACKAGENAME>,&#60PACKAGENAME>.&#60CLASSNAME>)<LI>method:
-	 * method(&#60PACKAGENAME>,&#60PACKAGENAME>.&#60CLASSNAME>,'&#60init>' OR
-	 * &#60METHODNAME>,&#60RETURNTYPES>,&#60PARAMETERTYPES>) <LI>field:
-	 * field(&#60PACKAGENAME>,&#60PACKAGENAME>.&#60CLASSNAME>,&#60FIELDNAME>,&#60FIELDTYPE>)
-	 * 
-	 * @param eventData
-	 *            Extended data from the DnD event request.
-	 * @return query Returns the query for the dropped files.
-	 * @author Benjamin Lück
-	 */
-	private static List<String> createQueryFromDNDobjects(final Map<String, Object> eventData) {
-		final LinkedList<String> list = new LinkedList<String>();
-		for (final String key : eventData.keySet()) {
-			final Object draggedElement = eventData.get(key);
-
-			if (draggedElement instanceof IPackageFragment) {
-				list.add(createPackageQuery(draggedElement));
-			} else if (draggedElement instanceof ICompilationUnit) {
-				list.add(createClassQueryFromCompilationUnit(draggedElement));
-			} else if (draggedElement instanceof IClassFile) {
-				list.add(createClassQueryFromClassFile(draggedElement));
-			} else if (draggedElement instanceof IMethod) {
-				list.add(createMethodQuery(draggedElement));
-			} else if (draggedElement instanceof IType) {
-				list.add(createTypeQuery(draggedElement));
-			} else if (draggedElement instanceof IField) {
-				list.add(createFieldQuery(draggedElement));
-			} else if (draggedElement instanceof IPackageFragmentRoot) {
-				list.addAll(createJARQuery(draggedElement));
-			}
-		}
-		return list;
-	}
+public class QueryBuilder implements IQueryBuilderConstants {
 
 	/**
 	 * 
@@ -200,69 +58,92 @@ public class QueryBuilder {
 	 * @return Returns the Query created from the data of a drop event.
 	 * @author BenjaminL
 	 */
-	public static String createQueryFromRequestData(final Map<String, Object> data) {
+	public static String createQueryFromRequestData(
+			final Map<String, Object> data) {
 		return createQueryFromRequestData(data, "");
 	}
 
 	/**
-	 * Creates a new Query from the data of the drop event under consideration of the old Query.
+	 * Creates a new Query from the data of the drop event by extending the old
+	 * Query. A derived query is never extended, but returned as is.
 	 * 
 	 * @param data
 	 * @param oldQuery
 	 *            Old Query of the model element.
 	 * @return Returns the created query.
+	 * @author Ralf Mitschke
 	 * @author BenjaminL
 	 */
-	public static String createQueryFromRequestData(final Map<String, Object> data, final String oldQuery) {
-		String newQuery = oldQuery;
+	public static String createQueryFromRequestData(
+			@SuppressWarnings("rawtypes") final Map data, final String oldQuery) {
 
-		if (newQuery == null || (newQuery.equals(EMPTY) && data.size() > 0)) {
-			newQuery = "";
-		} else if (newQuery.trim().toLowerCase().equals(DERIVED)) {
-			return newQuery;
-		} else if (newQuery.trim().length() > 0) {
-			newQuery += QUERY_DELIMITER;
-		}
+		@SuppressWarnings("unchecked")
+		List<ICodeElement> codeElements = (List<ICodeElement>) data
+				.get(IJavaElementDropConstants.DROP_DATA_ICODEELEMENT);
 
-		final List<String> queries = createQueryFromDNDobjects(data);
+		@SuppressWarnings("unchecked")
+		List<IJavaElement> javaElements = (List<IJavaElement>) data
+				.get(IJavaElementDropConstants.DROP_DATA_IJAVAELEMENT);
 
-		// extending the old Query
-		if (queries != null) {
-			for (final String query : queries) {
-				newQuery += String.format("%s\n%s", query, QUERY_DELIMITER);
-			}
-		}
+		if (oldQuery != null && oldQuery.trim().equals(DERIVED_QUERY))
+			return oldQuery;
 
-		// delete last query delimiter
-		if (newQuery.endsWith(QUERY_DELIMITER)) {
-			newQuery = newQuery.substring(0, newQuery.length() - QUERY_DELIMITER.length() - 1);
-		}
+		// shortcut sanity check, this would happen anyway using
+		// concatenateQueries(..)
+		if (codeElements.isEmpty() && javaElements.isEmpty())
+			return oldQuery;
 
-		if (newQuery.equals("")) {
-			return newQuery;
-		} else {
-			return newQuery + "\n";
-		}
+		String codeElementExtension = CodeElementQueryBuilder.createQueryFromICodeElements(codeElements);
+		String javaElementExtension = JavaElementQueryBuilder.createQueryFromIJavaElements(javaElements);
+
+		return concatenateQueries(oldQuery,
+				concatenateQueries(codeElementExtension, javaElementExtension));
 	}
 
-	private static String createTypeQuery(final Object draggedElement) {
-		final IType type = (IType) draggedElement;
-		final ICompilationUnit cU = type.getCompilationUnit();
-		final IClassFile cF = type.getClassFile();
-		if (cU != null) {
-			final String packagename = Resolver.resolveFullyQualifiedPackageName(cU);
-			final String classname = Resolver.resolveClassName(type);
-			return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
-		} else {
-			final String packagename = Resolver.resolveFullyQualifiedPackageName(cF);
-			final String classname = Resolver.resolveClassName(type);
-			return String.format("%s('%s','%s')", CLASS_WITH_MEMBERS, packagename, classname);
-		}
 
+	/**
+	 * Concatenates two queries using "or". If either query is empty the other
+	 * is returned.
+	 * 
+	 * @param q1
+	 * @param q2
+	 * @return
+	 */
+	protected static String concatenateQueries(String q1, String q2) {
+		if (isEmpty(q1))
+			return q2;
+		if (isEmpty(q2))
+			return q1;
+		return String.format("%s\n%s\n%s", q1, QUERY_DELIMITER, q2);
 	}
 
-	private QueryBuilder() {
-
+	/**
+	 * Returns true if the query is empty, which means:<br>
+	 * - the query is null<br>
+	 * - the query is the empty String<br>
+	 * - the query conforms to "empty"
+	 * 
+	 * @param query
+	 * @return
+	 */
+	private static boolean isEmpty(String query) {
+		return query == null || query.isEmpty()
+				|| query.trim().equals(EMPTY_QUERY);
 	}
 
+	/**
+	 * Concatenates two queries using "or". If either query is empty the other
+	 * is returned.
+	 * 
+	 * @param q1
+	 * @param q2
+	 * @return
+	 */
+	protected static String concatenateParameters(String s1, String s2) {
+		if (s1 == null || s1.isEmpty())
+			return s2;
+		if (s2 == null || s2.isEmpty())
+			return s1;
+		return s1 + PARAMETER_DELIMITER + s2;
+	}
 }
