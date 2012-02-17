@@ -33,6 +33,7 @@
  */
 package de.tud.cs.st.vespucci.diagram.processing;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 
 public interface IResultProcessor {
@@ -42,12 +43,12 @@ public interface IResultProcessor {
 	 * Use generic <code>Adapted.getAdapted(adaptable, targetClass)</code> for converting Object result,
 	 * see linked article for further notice<br>
 	 * @param result 
-	 * @param project The Project the processors work on
+	 * @param diagramFile The Diagram the processors work on
 	 * @return The result of the processor
 	 * @see <a href="http://www.eclipse.org/articles/article.php?file=Article-Adapters/index.html">Eclipse Corner Article: Adapters</a>
 	 * 
 	 */
-	void processResult(Object result, IProject project);
+	void processResult(Object result, IFile diagramFile);
 	
 	/**
 	 * Checks if the ResultProcessor is interested in a result of the given typ
@@ -58,4 +59,5 @@ public interface IResultProcessor {
 	boolean isInterested(Class<?> resultClass);
 
 	void cleanUp();
+
 }

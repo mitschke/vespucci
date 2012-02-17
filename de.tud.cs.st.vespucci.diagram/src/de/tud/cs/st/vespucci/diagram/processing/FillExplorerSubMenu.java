@@ -108,7 +108,7 @@ public class FillExplorerSubMenu extends ContributionItem {
 							for (IResultProcessor resultProcessor : resultProcessors) {
 								if (resultProcessor.isInterested(processor.getProcessor().resultClass())){
 									resultProcessor.cleanUp();
-									resultProcessor.processResult(result, diagramFile.getProject());
+									resultProcessor.processResult(result, diagramFile);
 								}
 							}
 							
