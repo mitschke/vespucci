@@ -78,22 +78,22 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
     withPreparedStatement("SELECT name, type, abstract, modelName, model, length(model), documentationName, documentation, length(documentation), wip, modified FROM SADs WHERE id = ?") {
       ps =>
         val rs = ps.executeQueryWith(id)
-        val retrieved = if (rs.next) {
-          Some(new Description(
-            id,
-            rs.getString("name"),
-            rs.getString("type"),
-            rs.getString("abstract"),
-            if (rs.getString("model") != null) Some(Model(rs.getBinaryStream("model"), rs.getString("modelName") , rs.getInt(6))) else None,
-            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), rs.getString("documentationName"), rs.getInt(9))) else None,
-            rs.getBoolean("wip"),
-            rs.getTimestamp("modified").getTime()));
-        } else {
-          None
-        }
+        val retrieved = if (rs.next) Some(description(id, rs)) else None
         logger.debug("Retrieved description [%s] using id [%s]" format (retrieved, id))
         retrieved
     }
+
+  def description(id: String, rs: ResultSet) = {
+    new Description(
+      id,
+      rs.getString("name"),
+      rs.getString("type"),
+      rs.getString("abstract"),
+      if (rs.getString("model") != null) Some(Model(rs.getBinaryStream("model"), rs.getString("modelName"), rs.getInt("length(model)"))) else None,
+      if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), rs.getString("documentationName"), rs.getInt("length(documentation)"))) else None,
+      rs.getBoolean("wip"),
+      rs.getTimestamp("modified").getTime())
+  }
 
   def updateDescription(description: Description): Description =
     withPreparedStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ? WHERE id = ?") {
@@ -114,18 +114,8 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
     rs =>
       var list: List[Description] = List[Description]()
       while (rs.next) {
-        list = {
-          new Description(
-            rs.getString("id"),
-            rs.getString("name"),
-            rs.getString("type"),
-            rs.getString("abstract"),
-            if (rs.getString("model") != null) Some(Model(rs.getBinaryStream("model"), rs.getString("modelName"), rs.getInt(7))) else None,
-            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), rs.getString("documentationName"), rs.getInt(10))) else None,
-            rs.getBoolean("wip"),
-            rs.getTimestamp("modified").getTime()
-            ) +: list
-        }
+        val id = rs.getString("id")
+        list = description(id, rs) +: list
       }
       new DescriptionCollection(list)
   }
@@ -150,7 +140,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
       result
   }
 
-  def deleteModel(id: String) = withPreparedStatement("UPDATE sads SET model = NULL WHERE id = ?") {
+  def deleteModel(id: String) = withPreparedStatement("UPDATE sads SET modelName = NULL, model = NULL WHERE id = ?") {
     ps =>
       val result = ps.executeUpdateWith(id) == 1
       logger.debug("Deleted model [%s]" format id)
@@ -177,7 +167,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
       result
   }
 
-  def deleteDocumentation(id: String) = withPreparedStatement("UPDATE sads SET documentation = NULL WHERE id = ?") {
+  def deleteDocumentation(id: String) = withPreparedStatement("UPDATE sads SET documentationName = NULL, documentation = NULL WHERE id = ?") {
     ps =>
       val result = ps.executeUpdateWith(id) == 1
       logger.debug("Deleted documentation [%s]" format id)
@@ -189,15 +179,15 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
   def updateSAD(description: Description): Description =
     withTransaction {
       conn =>
-        
+
         val modified: Timestamp = conn.prepareStatement("SELECT modified FROM sads WHERE id = ?")
           .executeQueryWith(description.id).nextValue(timestamp).get
-        
+
         if (modified.before(new Timestamp(description.modified))) {
 
           conn.prepareStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ?, modified = ? WHERE id = ?")
             .executeUpdateWith(description.name, description.`type`, description.`abstract`, description.wip, currentTimestamp, description.id)
-            logger.warn("Updated description [%s]" format description.id)
+          logger.warn("Updated description [%s]" format description.id)
 
           description.model match {
             case Some(model: Model) if model.size > 0 =>
@@ -223,7 +213,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             case None => logger.warn("Left documentation [%s] unchanged" format description.id)
           }
           description
-          
+
         } else {
           logger.error("Edit collision") // TODO
           null
