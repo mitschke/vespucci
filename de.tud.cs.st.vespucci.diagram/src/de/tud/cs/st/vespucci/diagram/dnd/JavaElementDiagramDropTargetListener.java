@@ -41,16 +41,30 @@ public class JavaElementDiagramDropTargetListener extends
 
 	@Override
 	protected Request createTargetRequest() {
+		// The hint is required during element creation and may not be null.
 		PreferencesHint hint = VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT;
 
 		ViewAndElementDescriptor viewAndElementDescriptor = new CreateViewAndElementRequest.ViewAndElementDescriptor(
 				new CreateElementRequestAdapter(new CreateElementRequest(
 						VespucciElementTypes.Ensemble_2001)), Node.class,
 				"2001", hint);
+		/*
+		 * Important Note! The viewAndElementDescriptor is required during the
+		 * creation and not correctly filled if other constructors of
+		 * CreateViewAndElementRequest are used. Especially the semanticHint =
+		 * "2001" must be set for the diagram element factory to know that it is
+		 * responsible for providing elements of the chosen type.
+		 */
 		Request request = new CreateViewAndElementRequest(
 				viewAndElementDescriptor);
 
+		/*
+		 * our own creation policy will fill in ensemble name and query, hence
+		 * we use our own request type, to ensure that only our policy will
+		 * process the request.
+		 */
 		request.setType(IJavaElementDropConstants.REQ_DROP_NEW_ENSEMBLE);
+
 		addTransferedSelectionToRequest(request);
 		return request;
 	}
