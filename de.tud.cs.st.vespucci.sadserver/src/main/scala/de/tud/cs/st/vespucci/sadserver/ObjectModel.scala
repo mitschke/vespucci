@@ -18,6 +18,7 @@ package de.tud.cs.st.vespucci.sadserver
 import java.io.{ Reader, InputStream }
 import scala.xml.Elem
 import de.tud.cs.st.vespucci.sadserver.GlobalProperties._
+import scala.xml.NodeSeq
 
 // Description(s)
 
@@ -32,34 +33,24 @@ object Description {
       parse("name"),
       parse("type"),
       parse("abstract"),
-      None,
-      None,
+      { val parsed = (xml \\ "model"); if (parsed.isEmpty) None else Some(Model(null, (parsed \ "@name").text, (parsed \ "@size").text.toInt)) },
+      { val parsed = (xml \\ "documentation"); if (parsed.isEmpty) None else Some(Documentation(null, (parsed \ "@name").text, (parsed \ "@size").text.toInt)) },
       { val parsed = (xml \\ "wip").text; if (!parsed.isEmpty) parsed.toBoolean else false },
       { val parsed = (xml \ "@modified").text; if (parsed.isEmpty) 0 else parsed.toLong })
   }
 }
 
 case class Description(
-  val id: String,
-  val name: String,
-  val `type`: String,
-  val `abstract`: String,
-  val model: Option[(Reader, Int)],
-  val documentation: Option[(InputStream, Int)],
-  val wip: Boolean,
-  val modified: Long) {
+  var id: String,
+  var name: String,
+  var `type`: String,
+  var `abstract`: String,
+  var model: Option[Model],
+  var documentation: Option[Documentation],
+  var wip: Boolean,
+  var modified: Long) {
 
-  val url: String = "http://" + authority + ":" + port + rootPath + descriptionCollectionPath + "/" + id
-
-  private def modelToXML =
-    <model size={ model.get._2.toString }>
-      <url>{ url + modelPath }</url>
-    </model>
-
-  private def documentationToXML =
-    <documentation size={ documentation.get._2.toString }>
-      <url>{ url + documentationPath }</url>
-    </documentation>
+  def url: String = "http://" + authority + ":" + port + rootPath + descriptionCollectionPath + "/" + id
 
   def toXML: Elem =
     <description id={ id } modified={ modified.toString }>
@@ -67,10 +58,25 @@ case class Description(
       <name>{ name }</name>
       <type>{ `type` }</type>
       <abstract>{ `abstract` }</abstract>
-      { if (model.isDefined) modelToXML }
-      { if (documentation.isDefined) documentationToXML }
+      { if (model.isDefined) model.get.toXml }
+      { if (documentation.isDefined) documentation.get.toXml }
     </description>
+
 }
+
+ case class Model(var model: Reader, var name: String, var size: Int) {
+    def toXml: Elem =
+      <model name={ name } size={ size.toString }>
+        <url>not set</url>
+      </model>
+  }
+  
+  case class Documentation(var documentation: InputStream, var name: String, var size: Int) {
+    def toXml: Elem =
+      <model name={ name } size={ size.toString }>
+        <url>not set</url>
+      </model>
+  }
 
 case class DescriptionCollection(val descriptionList: List[Description]) {
 
@@ -108,3 +114,4 @@ case class UserCollection(val userList: List[User]) {
       { for (user <- userList) yield user.toXML }
     </users>
 }
+

@@ -20,6 +20,7 @@ import de.tud.cs.st.vespucci.jdbc.JdbcSupport
 import java.io.{ InputStream, Reader }
 import java.sql.ResultSet
 import org.dorest.server.log.Logger
+import java.sql.Timestamp
 
 object DatabaseAccess extends DatabaseAccess
 
@@ -45,10 +46,13 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             id UUID PRIMARY KEY,
             name VARCHAR(100) NOT NULL, 
             type VARCHAR(100), 
-            abstract VARCHAR(150), 
+            abstract VARCHAR(150),
+            modelName VARCHAR (100),
             model BLOB, 
+            documentationName VARCHAR (100),
             documentation BLOB, 
-            wip BOOLEAN)
+            wip BOOLEAN,
+            modified TIMESTAMP)
             """)
 
         // TODO creating a temporary user, remove this in production code!
@@ -63,15 +67,15 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
   // Description-CRUD
 
   def createDescription(description: Description) =
-    withPreparedStatement("INSERT INTO sads VALUES(?, ?, ?, ?, NULL, NULL, ?)") {
+    withPreparedStatement("INSERT INTO sads VALUES(?, ?, ?, ?, NULL, NULL, NULL, NULL, ?, ?)") {
       ps =>
-        ps.executeUpdateWith(description.id, description.name, description.`type`, description.`abstract`, description.wip)
+        ps.executeUpdateWith(description.id, description.name, description.`type`, description.`abstract`, description.wip, currentTimestamp)
         logger.debug("Created [%s]" format description)
         description
     }
 
   def findDescription(id: String): Option[Description] =
-    withPreparedStatement("SELECT name, type, abstract, model, length(model), documentation, length(documentation), wip FROM SADs WHERE id = ?") {
+    withPreparedStatement("SELECT name, type, abstract, model, length(model), documentation, length(documentation), wip, modified FROM SADs WHERE id = ?") {
       ps =>
         val rs = ps.executeQueryWith(id)
         val retrieved = if (rs.next) {
@@ -80,11 +84,10 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("name"),
             rs.getString("type"),
             rs.getString("abstract"),
-            if (rs.getString("model") != null) Some(rs.getCharacterStream("model") -> rs.getInt(5)) else None,
-            if (rs.getString("documentation") != null) Some(rs.getBinaryStream("documentation") -> rs.getInt(7)) else None,
+            if (rs.getString("model") != null) Some(Model(rs.getCharacterStream("model"), "", rs.getInt(5))) else None, // FIXME
+            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), "", rs.getInt(7))) else None, // FIXME
             rs.getBoolean("wip"),
-            1L) // FIXME
-          );
+            rs.getTimestamp("modified").getTime()));
         } else {
           None
         }
@@ -107,7 +110,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
       result
   }
 
-  def listDescriptions = withQuery("SELECT id, name, type, abstract, model, length(model), documentation, length(documentation), wip FROM SADs") {
+  def listDescriptions = withQuery("SELECT id, name, type, abstract, modelName, model, length(model), documentationName, documentation, length(documentation), wip, modified FROM SADs") {
     rs =>
       var list: List[Description] = List[Description]()
       while (rs.next) {
@@ -117,11 +120,11 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("name"),
             rs.getString("type"),
             rs.getString("abstract"),
-            if (rs.getString("model") != null) Some(rs.getCharacterStream("model") -> rs.getInt(6)) else None,
-            if (rs.getString("documentation") != null) Some(rs.getBinaryStream("documentation") -> rs.getInt(8)) else None,
+            if (rs.getString("model") != null) Some(Model(rs.getCharacterStream("model"), "", rs.getInt(7))) else None, // FIXME
+            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), "", rs.getInt(10))) else None, // FIXME
             rs.getBoolean("wip"),
-            1L // FIXME
-          ) +: list
+            rs.getTimestamp("modified").getTime()
+            ) +: list
         }
       }
       new DescriptionCollection(list)
@@ -246,5 +249,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
   }
 
   def adminPassword(username: String) = withQuery("SELECT password FROM users WHERE username = 'admin'") { _ nextValue (string) }
+
+  def currentTimestamp: Timestamp = new Timestamp(System.currentTimeMillis())
 
 }
