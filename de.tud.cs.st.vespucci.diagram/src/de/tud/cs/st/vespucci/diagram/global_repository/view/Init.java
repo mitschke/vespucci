@@ -75,10 +75,8 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 		c.setDescription("description");
 		c.setQuery("empty");
 		
-		//TODO: innere Klassen erstellen
-		//inner.
-		//outer.eContents().add(inner);
-		
+		inner.getShapes().add(c);
+		outer.getShapes().add(inner);
 		
 		
 		

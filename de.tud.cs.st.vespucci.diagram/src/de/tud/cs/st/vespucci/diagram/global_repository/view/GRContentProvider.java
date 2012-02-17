@@ -64,9 +64,10 @@ public class GRContentProvider implements ITreeContentProvider {
 	 * gets the children of an Ensemble an put it in the right place in the tree
 	 */
 	@Override
-	public Object[] getChildren(Object parentElement) {
-		if(hasChildren(parentElement) == true){
-
+	public Object[] getChildren(Object ensemble) {
+		if(hasChildren(ensemble) == true){
+			return ((Ensemble) ensemble).getShapes().toArray();
+			
 		}
 		return null;
 	}
@@ -89,7 +90,10 @@ public class GRContentProvider implements ITreeContentProvider {
 	@Override
 	public boolean hasChildren(Object ensemble) {
 		if(ensemble instanceof Ensemble){
-		//	return true;
+			if(((Ensemble) ensemble).getShapes() == null){
+				return false;
+			}
+			return true;
 		}
 		return false;
 	}
