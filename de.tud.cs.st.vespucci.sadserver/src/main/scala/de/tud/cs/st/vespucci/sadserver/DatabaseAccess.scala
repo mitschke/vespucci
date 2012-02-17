@@ -75,7 +75,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
     }
 
   def findDescription(id: String): Option[Description] =
-    withPreparedStatement("SELECT name, type, abstract, model, length(model), documentation, length(documentation), wip, modified FROM SADs WHERE id = ?") {
+    withPreparedStatement("SELECT name, type, abstract, modelName, model, length(model), documentationName, documentation, length(documentation), wip, modified FROM SADs WHERE id = ?") {
       ps =>
         val rs = ps.executeQueryWith(id)
         val retrieved = if (rs.next) {
@@ -84,8 +84,8 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("name"),
             rs.getString("type"),
             rs.getString("abstract"),
-            if (rs.getString("model") != null) Some(Model(rs.getCharacterStream("model"), "", rs.getInt(5))) else None,
-            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), "", rs.getInt(7))) else None,
+            if (rs.getString("model") != null) Some(Model(rs.getBinaryStream("model"), rs.getString("modelName") , rs.getInt(6))) else None,
+            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), rs.getString("documentationName"), rs.getInt(9))) else None,
             rs.getBoolean("wip"),
             rs.getTimestamp("modified").getTime()));
         } else {
@@ -120,8 +120,8 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("name"),
             rs.getString("type"),
             rs.getString("abstract"),
-            if (rs.getString("model") != null) Some(Model(rs.getCharacterStream("model"), "", rs.getInt(7))) else None,
-            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), "", rs.getInt(10))) else None,
+            if (rs.getString("model") != null) Some(Model(rs.getBinaryStream("model"), rs.getString("modelName"), rs.getInt(7))) else None,
+            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), rs.getString("documentationName"), rs.getInt(10))) else None,
             rs.getBoolean("wip"),
             rs.getTimestamp("modified").getTime()
             ) +: list
@@ -186,7 +186,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
 
   // SAD - Update
 
-  def updateSAD(description: Description) =
+  def updateSAD(description: Description): Description =
     withTransaction {
       conn =>
         
@@ -202,7 +202,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
           description.model match {
             case Some(model: Model) if model.size > 0 =>
               conn.prepareStatement("UPDATE sads SET model = ?, modelName = ? WHERE id = ?")
-                .executeUpdateWith(model.model, model.name, description.id)
+                .executeUpdateWith(model.data, model.name, description.id)
               logger.warn("Updated model [%s]" format description.id)
             case Some(model: Model) if model.size == 0 =>
               conn.prepareStatement("UPDATE sads SET model = NULL, modelName = NULL WHERE id = ?")
@@ -214,7 +214,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
           description.documentation match {
             case Some(documentation: Documentation) if documentation.size > 0 =>
               conn.prepareStatement("UPDATE sads SET documentation = ?, documentationName = ? WHERE id = ?")
-                .executeUpdateWith(documentation.size, documentation.size, description.id)
+                .executeUpdateWith(documentation.data, documentation.name, description.id)
               logger.warn("Updated documentation [%s]" format description.id)
             case Some(documentation: Documentation) if documentation.size == 0 =>
               conn.prepareStatement("UPDATE sads SET documentation = NULL, documentationName = NULL WHERE id = ?")
@@ -222,9 +222,11 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
               logger.warn("Deleted documentation [%s]" format description.id)
             case None => logger.warn("Left documentation [%s] unchanged" format description.id)
           }
-
+          description
+          
         } else {
           logger.error("Edit collision") // TODO
+          null
         }
 
     }

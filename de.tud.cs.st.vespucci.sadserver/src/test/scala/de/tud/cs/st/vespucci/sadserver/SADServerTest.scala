@@ -30,7 +30,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   var id1: String = _
   var id2: String = _
 
-  val sad1 = XML.loadFile("src/test/resources/newDescription.xml")
+  val sad1 = XML.loadFile("src/test/resources/sad1.sad")
   val pdfEntity = Entity(new File("src/test/resources/test.pdf"), "application/pdf")
 
   val registeredUser = new DigestAuth("somebody", "password")
@@ -189,7 +189,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     val response = get(host + descriptionCollectionPath + "/" + id2)
     response.statusCode should equal { 404 }
   }
-  
+
   it should "return update then name when PUT" in {
     val path = host + descriptionCollectionPath + "/" + id1
     val description = Description(XML.loadString(get(path).body))
@@ -264,7 +264,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     val response = authPut(host + descriptionCollectionPath + "/" + id1 + modelPath, Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal { 200 }
   }
-  
+
   "DescriptionRessource" should "allow deletion of model using PUT" in {
     val path = host + descriptionCollectionPath + "/" + id1
     get(path + "/model").statusCode should equal { 200 } // model exists
@@ -275,6 +275,30 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     val descriptionPart = Part(description.toXML.toString)
     authPut(path, Entity("description" -> descriptionPart)).statusCode should equal { 200 }
     get(path + "/model").statusCode should equal { 404 } // model is deleted
+  }
+
+  "DescriptionRessource" should "allow insertion of model using PUT" in {
+    val path = host + descriptionCollectionPath + "/" + id1
+    get(path + "/model").statusCode should equal { 404 } // model is deleted
+    val description = Description(XML.loadString(get(path).body))
+    description.model.isDefined should equal { false }
+
+    val sad = new File("src/test/resources/sad1.sad")
+    val model = new Model()
+    model.name = sad.getName()
+    model.name should equal { "sad1.sad" }
+    model.size = sad.length().toInt
+
+    description.model = Some(model)
+
+    description.modified = description.modified + 1000
+    val descriptionPart = Part(description.toXML.toString)
+    val modelPart = Part(sad, "application/xml")
+    authPut(path, Entity("description" -> descriptionPart, "model" -> modelPart)).statusCode should equal { 200 }
+
+    get(path + "/model").statusCode should equal { 200 } // model is stored
+    val updatedDescription = Description(XML.loadString(get(path).body))
+    updatedDescription.model.get.name should equal { "sad1.sad" }
   }
 
   // DocumentationResource

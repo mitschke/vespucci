@@ -16,7 +16,6 @@
 package de.tud.cs.st.vespucci.sadserver
 import org.dorest.server.jdk.JDKServer
 import org.dorest.server.log.Logging
-import org.dorest.server.rest.representation.multipart.MultipartSupport
 import org.dorest.server.rest.representation.stream.StreamSupport
 import org.dorest.server.rest._
 import org.dorest.server.rest._
@@ -29,7 +28,8 @@ import GlobalProperties.modelPath
 import GlobalProperties.port
 import GlobalProperties.rootPath
 import GlobalProperties.userCollectionPath
-import org.dorest.server.rest.representation.multipart.Data
+import org.dorest.server.rest.representation.multipart.{ Data, FormField }
+import org.dorest.server.rest.representation.multipart.MultipartSupport
 /**
  * Software Architecture Description Server
  *
@@ -108,16 +108,15 @@ class DescriptionResource extends RESTInterface with DatabaseAccess with XMLSupp
   }
 
   put of Multipart returns XML {
-    import org.dorest.server.rest.representation.multipart.{ Data, FormField }
     var description: Description = null
     for (part <- multipartIterator) {
       part match {
-        case part @ FormField("description") =>
-          description = Description(scala.xml.XML.loadString(part.content))
+        case part @ FormField("description") => description = Description(scala.xml.XML.loadString(part.content))
+        case part @ Data("model", MediaType.APPLICATION_XML) => description.model map (_.data = part.openStream)
+        case part @ Data("documentation", MediaType.APPLICATION_XML) => description.documentation map (_.data = part.openStream)
       }
     }
-    updateSAD(description)
-    <ok/>
+    updateSAD(description).toXML
   }
 
   delete {
