@@ -15,14 +15,21 @@
  */
 package de.tud.cs.st.vespucci.sadserver
 import org.dorest.server.jdk.JDKServer
-import org.dorest.server.HandlerFactory
-import org.dorest.server.rest._
-import org.dorest.server.MediaType
-import GlobalProperties.{ port, rootPath, userCollectionPath, descriptionCollectionPath, modelPath, documentationPath }
-import org.dorest.server.rest._
 import org.dorest.server.log.Logging
-import org.dorest.server.servlet.JettyServer
+import org.dorest.server.rest.representation.multipart.MultipartSupport
 import org.dorest.server.rest.representation.stream.StreamSupport
+import org.dorest.server.rest._
+import org.dorest.server.rest._
+import org.dorest.server.servlet.JettyServer
+import org.dorest.server.HandlerFactory
+import org.dorest.server.MediaType
+import GlobalProperties.descriptionCollectionPath
+import GlobalProperties.documentationPath
+import GlobalProperties.modelPath
+import GlobalProperties.port
+import GlobalProperties.rootPath
+import GlobalProperties.userCollectionPath
+import org.dorest.server.rest.representation.multipart.Data
 /**
  * Software Architecture Description Server
  *
@@ -37,8 +44,8 @@ object SADServer
   logger.info("Starting Software Architecture Description Server...")
 
   startDatabase()
-  
- this register new HandlerFactory[RootResource]  {
+
+  this register new HandlerFactory[RootResource] {
     path { rootPath }
     def create = new RootResource
   }
@@ -70,8 +77,6 @@ object SADServer
 
 }
 
-
-
 class RootResource extends RESTInterface with HTMLSupport {
 
   get returns HTML { "Hello!" }
@@ -90,7 +95,7 @@ class DescriptionCollectionResource extends RESTInterface with DatabaseAccess wi
 
 }
 
-class DescriptionResource extends RESTInterface with DatabaseAccess with XMLSupport {
+class DescriptionResource extends RESTInterface with DatabaseAccess with XMLSupport with MultipartSupport {
 
   var id: String = _
 
@@ -100,6 +105,19 @@ class DescriptionResource extends RESTInterface with DatabaseAccess with XMLSupp
 
   put of XML returns XML {
     updateDescription(Description(XMLRequestBody)).toXML
+  }
+
+  put of Multipart returns XML {
+    import org.dorest.server.rest.representation.multipart.{ Data, FormField }
+    var description: Description = null
+    for (part <- multipartIterator) {
+      part match {
+        case part @ FormField("description") =>
+          description = Description(scala.xml.XML.loadString(part.content))
+      }
+    }
+    updateSAD(description)
+    <ok/>
   }
 
   delete {
@@ -167,7 +185,7 @@ class UserResource extends RESTInterface with DatabaseAccess with XMLSupport {
   delete {
     deleteUser(id)
   }
-  
+
 }
 
 /**
@@ -176,5 +194,5 @@ class UserResource extends RESTInterface with DatabaseAccess with XMLSupport {
 object SADServerApp extends scala.App {
 
   SADServer
-  
+
 }

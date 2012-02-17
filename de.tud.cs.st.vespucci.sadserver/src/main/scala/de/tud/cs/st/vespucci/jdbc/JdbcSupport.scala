@@ -46,11 +46,13 @@ trait JdbcSupport {
         case any: Boolean => ps.setBoolean(i, any)
         case any: Double => ps.setDouble(i, any)
         case any: Float => ps.setFloat(i, any)
+        case any: Long => ps.setLong(i, any)
         case any: java.io.InputStream => ps.setBinaryStream(i, any)
         case any: java.io.Reader => ps.setCharacterStream(i, any)
+        case any: java.sql.Timestamp => ps.setTimestamp(i, any)
         case null => ps.setNull(i, Types.NULL)
         case SqlNullType(typeNr) => ps.setNull(i, typeNr)
-        case _ => throw new RuntimeException("Argument type not known")
+        case any => throw new RuntimeException("JdbcSupport: Argument type [%s] not known" format any.toString)
       }
     }
   }
@@ -88,6 +90,7 @@ trait JdbcSupport {
   def binaryStream = ((rs: ResultSet, i: Int) => rs.getBinaryStream(i))
   def blob = binaryStream
   def boolean = ((rs: ResultSet, i: Int) => rs.getBoolean(i))
+  def timestamp = ((rs: ResultSet, i: Int) => rs.getTimestamp(i))
 
   def withSession[T](session: Connection => T): T = {
     val conn = connection
@@ -137,7 +140,7 @@ trait JdbcSupport {
         conn.close
     }
   }
-
+  
   def withQuery[T](sql: String)(session: ResultSet => T): T = {
     val conn = connection
     conn.setAutoCommit(true)

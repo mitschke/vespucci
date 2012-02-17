@@ -84,8 +84,8 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("name"),
             rs.getString("type"),
             rs.getString("abstract"),
-            if (rs.getString("model") != null) Some(Model(rs.getCharacterStream("model"), "", rs.getInt(5))) else None, // FIXME
-            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), "", rs.getInt(7))) else None, // FIXME
+            if (rs.getString("model") != null) Some(Model(rs.getCharacterStream("model"), "", rs.getInt(5))) else None,
+            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), "", rs.getInt(7))) else None,
             rs.getBoolean("wip"),
             rs.getTimestamp("modified").getTime()));
         } else {
@@ -120,8 +120,8 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             rs.getString("name"),
             rs.getString("type"),
             rs.getString("abstract"),
-            if (rs.getString("model") != null) Some(Model(rs.getCharacterStream("model"), "", rs.getInt(7))) else None, // FIXME
-            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), "", rs.getInt(10))) else None, // FIXME
+            if (rs.getString("model") != null) Some(Model(rs.getCharacterStream("model"), "", rs.getInt(7))) else None,
+            if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), "", rs.getInt(10))) else None,
             rs.getBoolean("wip"),
             rs.getTimestamp("modified").getTime()
             ) +: list
@@ -190,13 +190,42 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
     withTransaction {
       conn =>
         
-//        conn.prepareStatement("SELECT timestamp FROM sads WHERE id = ?")
-//        .executeQueryWith(description.id).nextValue(long) match {
-//          Some(modified: Long) if modified < 
-//        }
-          
-        conn.prepareStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ? WHERE id = ?")
-          .executeQueryWith(description.name, description.`type`, description.`abstract`, description.wip, description.id)
+        val modified: Timestamp = conn.prepareStatement("SELECT modified FROM sads WHERE id = ?")
+          .executeQueryWith(description.id).nextValue(timestamp).get
+        
+        if (modified.before(new Timestamp(description.modified))) {
+
+          conn.prepareStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ?, modified = ? WHERE id = ?")
+            .executeUpdateWith(description.name, description.`type`, description.`abstract`, description.wip, currentTimestamp, description.id)
+            logger.warn("Updated description [%s]" format description.id)
+
+          description.model match {
+            case Some(model: Model) if model.size > 0 =>
+              conn.prepareStatement("UPDATE sads SET model = ?, modelName = ? WHERE id = ?")
+                .executeUpdateWith(model.model, model.name, description.id)
+              logger.warn("Updated model [%s]" format description.id)
+            case Some(model: Model) if model.size == 0 =>
+              conn.prepareStatement("UPDATE sads SET model = NULL, modelName = NULL WHERE id = ?")
+                .executeUpdateWith(description.id)
+              logger.warn("Deleted model [%s]" format description.id)
+            case None => logger.warn("Left model [%s] unchanged" format description.id)
+          }
+
+          description.documentation match {
+            case Some(documentation: Documentation) if documentation.size > 0 =>
+              conn.prepareStatement("UPDATE sads SET documentation = ?, documentationName = ? WHERE id = ?")
+                .executeUpdateWith(documentation.size, documentation.size, description.id)
+              logger.warn("Updated documentation [%s]" format description.id)
+            case Some(documentation: Documentation) if documentation.size == 0 =>
+              conn.prepareStatement("UPDATE sads SET documentation = NULL, documentationName = NULL WHERE id = ?")
+                .executeUpdateWith(description.id)
+              logger.warn("Deleted documentation [%s]" format description.id)
+            case None => logger.warn("Left documentation [%s] unchanged" format description.id)
+          }
+
+        } else {
+          logger.error("Edit collision") // TODO
+        }
 
     }
 

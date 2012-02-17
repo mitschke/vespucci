@@ -6,7 +6,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.ShouldMatchers
 import org.dorest.client.SimpleClient
-import org.dorest.client.Entity
+import org.dorest.client._
 import org.dorest.client.{ BasicAuth, DigestAuth }
 import scala.sys.SystemProperties
 import scala.xml.XML.loadString
@@ -189,6 +189,17 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     val response = get(host + descriptionCollectionPath + "/" + id2)
     response.statusCode should equal { 404 }
   }
+  
+  it should "return update then name when PUT" in {
+    val path = host + descriptionCollectionPath + "/" + id1
+    val description = Description(XML.loadString(get(path).body))
+    description.name = "foo"
+    description.modified = description.modified + 1000
+    val descriptionPart = Part(description.toXML.toString, "application/xml")
+    val putResponse = authPut(path, Entity("description" -> descriptionPart))
+    putResponse.statusCode should equal { 200 }
+    Description(XML.loadString(get(path).body)).name should equal { "foo" }
+  }
 
   // ModelResource
 
@@ -252,6 +263,18 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   it should "return 200 on authorized PUT again" in {
     val response = authPut(host + descriptionCollectionPath + "/" + id1 + modelPath, Entity(new File("src/test/resources/test_utf-8.xml"), "application/xml", "UTF-8"))
     response.statusCode should equal { 200 }
+  }
+  
+  "DescriptionRessource" should "allow deletion of model using PUT" in {
+    val path = host + descriptionCollectionPath + "/" + id1
+    get(path + "/model").statusCode should equal { 200 } // model exists
+    val description = Description(XML.loadString(get(path).body))
+    description.model.isDefined should equal { true }
+    description.model.get.size = 0 // we set the model to size of 0
+    description.modified = description.modified + 1000
+    val descriptionPart = Part(description.toXML.toString)
+    authPut(path, Entity("description" -> descriptionPart)).statusCode should equal { 200 }
+    get(path + "/model").statusCode should equal { 404 } // model is deleted
   }
 
   // DocumentationResource
