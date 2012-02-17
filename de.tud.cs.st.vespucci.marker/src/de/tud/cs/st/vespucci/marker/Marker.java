@@ -34,6 +34,7 @@
 package de.tud.cs.st.vespucci.marker;
 import java.util.Iterator;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 
 import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
@@ -53,8 +54,8 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 	private DescriptionFactory descFab;
 	
 	@Override
-	public void processResult(Object result, IProject project) {
-		this.project = project;
+	public void processResult(Object result, IFile file) {
+		this.project = file.getProject();
 		this.descFab = new DescriptionFactory();
 		
 		violationView = Util.adapt(result, IViolationView.class);
