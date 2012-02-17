@@ -4,7 +4,16 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
+import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
+import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
+import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest.ViewAndElementDescriptor;
+import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
+import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.swt.dnd.DND;
+
+import de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes;
 
 /**
  * This listener allows dropping java elements on the diagram itself.
@@ -32,8 +41,16 @@ public class JavaElementDiagramDropTargetListener extends
 
 	@Override
 	protected Request createTargetRequest() {
-		Request request = new Request(
-				IJavaElementDropConstants.REQ_DROP_NEW_ENSEMBLE);
+		PreferencesHint hint = VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT;
+
+		ViewAndElementDescriptor viewAndElementDescriptor = new CreateViewAndElementRequest.ViewAndElementDescriptor(
+				new CreateElementRequestAdapter(new CreateElementRequest(
+						VespucciElementTypes.Ensemble_2001)), Node.class,
+				"2001", hint);
+		Request request = new CreateViewAndElementRequest(
+				viewAndElementDescriptor);
+
+		request.setType(IJavaElementDropConstants.REQ_DROP_NEW_ENSEMBLE);
 		addTransferedSelectionToRequest(request);
 		return request;
 	}

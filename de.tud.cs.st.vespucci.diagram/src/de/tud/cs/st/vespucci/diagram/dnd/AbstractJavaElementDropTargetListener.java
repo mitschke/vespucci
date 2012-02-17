@@ -42,6 +42,8 @@ import java.util.Map;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
+import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.LocationRequest;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
@@ -72,6 +74,12 @@ public abstract class AbstractJavaElementDropTargetListener extends
 
 	@Override
 	protected void updateTargetRequest() {
+		if (getTargetRequest() instanceof LocationRequest) {
+			((LocationRequest) getTargetRequest())
+					.setLocation(getDropLocation());
+		} else if (getTargetRequest() instanceof CreateRequest) {
+			((CreateRequest) getTargetRequest()).setLocation(getDropLocation());
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -105,10 +113,8 @@ public abstract class AbstractJavaElementDropTargetListener extends
 
 		@SuppressWarnings("rawtypes")
 		Map data = new HashMap(2);
-		data.put(IJavaElementDropConstants.DROP_DATA_ICODEELEMENT,
-				codeElements);
-		data.put(IJavaElementDropConstants.DROP_DATA_IJAVAELEMENT,
-				javaElements);
+		data.put(IJavaElementDropConstants.DROP_DATA_ICODEELEMENT, codeElements);
+		data.put(IJavaElementDropConstants.DROP_DATA_IJAVAELEMENT, javaElements);
 
 		request.setExtendedData(data);
 	}
