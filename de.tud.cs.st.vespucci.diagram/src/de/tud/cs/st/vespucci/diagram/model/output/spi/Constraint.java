@@ -48,6 +48,13 @@ public class Constraint implements IConstraint {
 
 	public Constraint(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
 		this.connection = connection;
+		
+		source = connection.getSource();
+
+		target = connection.getSource();
+
+		kind = connection.getName();
+		
 	}
 
 	@Override
@@ -76,11 +83,11 @@ public class Constraint implements IConstraint {
 				+ getTarget().getName() + ")";
 	}
 
-	Shape source = connection.getSource();
+	Shape source;
 
-	Shape target = connection.getSource();
+	Shape target;
 
-	String kind = connection.getName();
+	String kind;
 
 	/*
 	 * (non-Javadoc)

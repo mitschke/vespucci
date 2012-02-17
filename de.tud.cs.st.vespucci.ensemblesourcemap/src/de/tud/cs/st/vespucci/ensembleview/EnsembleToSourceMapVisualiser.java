@@ -1,5 +1,6 @@
 package de.tud.cs.st.vespucci.ensembleview;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -16,7 +17,7 @@ public class EnsembleToSourceMapVisualiser implements IResultProcessor {
 	public static final String ID = "de.tud.cs.st.vespucci.ensembleview";
 	
 	@Override
-	public void processResult(Object result, IProject project) {
+	public void processResult(Object result, IFile file) {
 		IEnsembleElementList ensembleElementList = Util.adapt(result, IEnsembleElementList.class);
 		if (ensembleElementList != null){
 			EnsembleSourceProject temp = new EnsembleSourceProject(ensembleElementList);

@@ -1,5 +1,6 @@
 package de.tud.cs.st.vespucci.unmodeled_elements.view;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -17,7 +18,7 @@ public class UnmodeledElementsVisualizer implements IResultProcessor {
 	public static final String ViewId = "de.tud.cs.st.vespucci.unmodeled_elements.table";
 
 	@Override
-	public void processResult(Object result, IProject project) {
+	public void processResult(Object result, IFile file) {
 		IUnmodeledElementView elements = Util.adapt(result,
 				IUnmodeledElementView.class);
 		if (elements != null) {
@@ -33,8 +34,8 @@ public class UnmodeledElementsVisualizer implements IResultProcessor {
 							.getActivePage().showView(ViewId);
 
 				}
-				view.addEntry(project, elements);
-				view.displayProject(project);
+				view.addEntry(file.getProject(), elements);
+				view.displayProject(file.getProject());
 			} catch (PartInitException e) {
 				final IStatus is = new Status(IStatus.ERROR, ViewId,
 						e.getMessage(), e);

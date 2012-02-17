@@ -1,6 +1,6 @@
 package de.tud.cs.st.vespucci.ensembleview.table;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PartInitException;
@@ -19,14 +19,14 @@ public class EnsembleElementsVisualizer implements IResultProcessor{
 	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.ensembleview.table";
 	
 	@Override
-	public void processResult(Object result, IProject project) {
+	public void processResult(Object result, IFile diagramFile) {
 		IEnsembleElementList ensembleElementList = Util.adapt(result, IEnsembleElementList.class);
 		if (ensembleElementList != null){	
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 						.getActivePage().showView(PLUGIN_ID);		
 				
-				DataManager<TableModel> dataManager = new DataManager<TableModel>(ensembleElementList, project, new TableModel());
+				DataManager<TableModel> dataManager = new DataManager<TableModel>(ensembleElementList, diagramFile.getProject(), new TableModel());
 				EnsembleElementsTableView.Table.addDataManager(dataManager);
 				
 			} catch (PartInitException e) {
