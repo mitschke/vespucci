@@ -19,6 +19,11 @@ import java.io.{ Reader, InputStream }
 import scala.xml.Elem
 import de.tud.cs.st.vespucci.sadserver.GlobalProperties._
 import scala.xml.NodeSeq
+import org.dorest.server.rest.representation.multipart.MultipartIterator
+import org.dorest.server.rest.representation.multipart.FormField
+import org.dorest.server.rest.representation.multipart.Data
+import org.dorest.server.MediaType
+import java.util.UUID.randomUUID
 
 // Description(s)
 
@@ -26,10 +31,22 @@ import scala.xml.NodeSeq
  * @author Mateusz Parzonka
  */
 object Description {
+  def apply(): Description = Description(randomUUID.toString, "untitled", "", "", None, None, false, 0)
+  def apply(multipartIterator: MultipartIterator): Description = {
+    var description: Description = null
+    for (part <- multipartIterator) {
+      part match {
+        case part @ FormField("description") => description = Description(scala.xml.XML.loadString(part.content))
+        case part @ Data("model", MediaType.APPLICATION_XML) => description.model map (_.data = part.openStream)
+        case part @ Data("documentation", MediaType.APPLICATION_PDF) => description.documentation map (_.data = part.openStream)
+      }
+    }
+    description
+  }
   def apply(xml: Elem): Description = {
     def parse(s: String): String = (xml \\ s).text
     new Description(
-      { val parsed = (xml \ "@id").text; if (parsed.isEmpty) java.util.UUID.randomUUID().toString else parsed },
+      { val parsed = (xml \ "@id").text; if (parsed.isEmpty) randomUUID.toString else parsed },
       parse("name"),
       parse("type"),
       parse("abstract"),
@@ -38,6 +55,7 @@ object Description {
       { val parsed = (xml \\ "wip").text; if (!parsed.isEmpty) parsed.toBoolean else false },
       { val parsed = (xml \ "@modified").text; if (parsed.isEmpty) 0 else parsed.toLong })
   }
+  def apply(xml: String): Description = Description(scala.xml.XML.loadString(xml))
 }
 
 case class Description(
@@ -64,19 +82,23 @@ case class Description(
 
 }
 
- case class Model(var model: Reader, var name: String, var size: Int) {
-    def toXml: Elem =
-      <model name={ name } size={ size.toString }>
-        <url>not set</url>
-      </model>
-  }
-  
-  case class Documentation(var documentation: InputStream, var name: String, var size: Int) {
-    def toXml: Elem =
-      <model name={ name } size={ size.toString }>
-        <url>not set</url>
-      </model>
-  }
+case class Model(var data: InputStream, var name: String, var size: Int) {
+  def this(data: Data) = this(data.openStream, data.fileName, data.contentLength)
+  def this() = this(null, "", 0)
+  def toXml: Elem =
+    <model name={ name } size={ size.toString }>
+      <url>not set</url>
+    </model>
+}
+
+case class Documentation(var data: InputStream, var name: String, var size: Int) {
+  def this(data: Data) = this(data.openStream, data.fileName, data.contentLength)
+  def this() = this(null, "", 0)
+  def toXml: Elem =
+    <documentation name={ name } size={ size.toString }>
+      <url>not set</url>
+    </documentation>
+}
 
 case class DescriptionCollection(val descriptionList: List[Description]) {
 
@@ -113,5 +135,11 @@ case class UserCollection(val userList: List[User]) {
     <users>
       { for (user <- userList) yield user.toXML }
     </users>
+}
+
+case class Transaction(xml: Elem) {
+  def this(xml: String) = this(scala.xml.XML.loadString(xml))
+  def parse(s: String): String = (xml \\ s).text
+  val url = parse("url")
 }
 

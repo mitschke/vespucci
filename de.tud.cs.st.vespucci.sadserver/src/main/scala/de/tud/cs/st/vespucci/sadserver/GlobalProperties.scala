@@ -11,7 +11,7 @@ object GlobalProperties {
 
   // all properties are loaded immediately
   loadPropertiesFile("sadserver.properties")
-  
+
   //  private val base = this.getClass().getPackage().getName() + "."
   private val base = "de.tud.cs.st.vespucci.sadserver."
 
@@ -25,6 +25,7 @@ object GlobalProperties {
   def userCollectionPath = prop("userCollectionPath")
   def modelPath = prop("modelPath")
   def documentationPath = prop("documentationPath")
+  def transactionalPath = "/transaction"
 
   def databaseUrl = prop("databaseUrl")
   def adminName = prop("adminName")
@@ -52,6 +53,16 @@ object GlobalProperties {
 
   def prop(key: String): String = props.get(base + key).getOrElse(
     throw new GlobalPropertiesException("Property with name [%s] not found!" format base + key))
+
+    /**
+     * Constructs the url http://authority:port/rootPath/path1/path2/.../pathn
+     */
+  def url(path: String*) = {
+    val sb = new StringBuilder
+    sb.append("http://").append(authority).append(":").append(port).append(rootPath)
+    path.foreach(sb.append(_))
+    sb.toString
+  }
 
   case class GlobalPropertiesException(key: String) extends Exception(key)
 

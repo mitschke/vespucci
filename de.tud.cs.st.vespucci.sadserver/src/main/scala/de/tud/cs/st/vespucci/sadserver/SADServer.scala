@@ -18,7 +18,6 @@ import org.dorest.server.jdk.JDKServer
 import org.dorest.server.log.Logging
 import org.dorest.server.rest.representation.stream.StreamSupport
 import org.dorest.server.rest._
-import org.dorest.server.rest._
 import org.dorest.server.servlet.JettyServer
 import org.dorest.server.HandlerFactory
 import org.dorest.server.MediaType
@@ -28,6 +27,7 @@ import GlobalProperties.modelPath
 import GlobalProperties.port
 import GlobalProperties.rootPath
 import GlobalProperties.userCollectionPath
+import GlobalProperties.transactionalPath
 import org.dorest.server.rest.representation.multipart.{ Data, FormField }
 import org.dorest.server.rest.representation.multipart.MultipartSupport
 /**
@@ -40,8 +40,8 @@ object SADServer
   with DatabaseAccess
   with ShutdownListener
   with Logging {
-
-  logger.info("Starting Software Architecture Description Server...")
+  
+ logger.info("Starting Software Architecture Description Server...")
 
   startDatabase()
 
@@ -70,11 +70,32 @@ object SADServer
     def create = new DescriptionDocumentationResource with RestrictWriteToRegisteredUsers
   }
 
+  //
+  this register new HandlerFactory[TransactionalDescriptionCollectionResource] {
+    path { rootPath + transactionalPath + descriptionCollectionPath }
+    def create = new TransactionalDescriptionCollectionResource with RestrictWriteToRegisteredUsers
+  }
+
+  this register new HandlerFactory[TempDescriptionResource] {
+    path { rootPath + transactionalPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
+    def create = new TempDescriptionResource with RestrictWriteToRegisteredUsers
+  }
+
+  this register new HandlerFactory[TempModelResource] {
+    path { rootPath + transactionalPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
+    def create = new TempModelResource with RestrictWriteToRegisteredUsers
+  }
+
+  //  this register new HandlerFactory[TempDocumentationResource] {
+  //    path { rootPath + transactionalPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
+  //    def create = new TempDocumentationResource with RestrictWriteToRegisteredUsers
+  //  }
+
+  //
   this register new HandlerFactory[UserCollectionResource] {
     path { rootPath + userCollectionPath }
     def create = new UserCollectionResource with RestrictToAdmins
   }
-
 }
 
 class RootResource extends RESTInterface with HTMLSupport {
@@ -83,14 +104,10 @@ class RootResource extends RESTInterface with HTMLSupport {
 
 }
 
-class DescriptionCollectionResource extends RESTInterface with DatabaseAccess with XMLSupport {
+class DescriptionCollectionResource extends RESTInterface with DatabaseAccess with TempDescription with XMLSupport with MultipartSupport {
 
   get returns XML {
     listDescriptions.toXML
-  }
-
-  post of XML returns XML {
-    createDescription(Description(XMLRequestBody)).toXML
   }
 
 }
@@ -101,22 +118,6 @@ class DescriptionResource extends RESTInterface with DatabaseAccess with XMLSupp
 
   get returns XML {
     findDescription(id).map(_.toXML)
-  }
-
-  put of XML returns XML {
-    updateDescription(Description(XMLRequestBody)).toXML
-  }
-
-  put of Multipart returns XML {
-    var description: Description = null
-    for (part <- multipartIterator) {
-      part match {
-        case part @ FormField("description") => description = Description(scala.xml.XML.loadString(part.content))
-        case part @ Data("model", MediaType.APPLICATION_XML) => description.model map (_.data = part.openStream)
-        case part @ Data("documentation", MediaType.APPLICATION_XML) => description.documentation map (_.data = part.openStream)
-      }
-    }
-    updateSAD(description).toXML
   }
 
   delete {
@@ -133,14 +134,6 @@ class DescriptionModelResource extends RESTInterface with DatabaseAccess with St
     findModel(id)
   }
 
-  put of InputStream(MediaType.APPLICATION_XML) returns XML {
-    if (updateModel(id, encodedInputStream)) <updated/> else None
-  }
-
-  delete {
-    deleteModel(id)
-  }
-
 }
 
 class DescriptionDocumentationResource extends RESTInterface with DatabaseAccess with StreamSupport with XMLSupport {
@@ -151,15 +144,78 @@ class DescriptionDocumentationResource extends RESTInterface with DatabaseAccess
     findDocumentation(id)
   }
 
-  put of InputStream(MediaType.APPLICATION_PDF) returns XML {
-    if (updateDocumentation(id, inputStream)) <updated/> else None
-  }
+}
 
-  delete {
-    deleteDocumentation(id)
+////////////////////////////////////////////////////////Obj///////////////////////////////////////////////////////
+
+class TransactionalDescriptionCollectionResource extends RESTInterface with DatabaseAccess with TempDescription with XMLSupport with MultipartSupport {
+
+  post of XML returns XML {
+    XMLRequestBody match {
+      case <id>{ id }</id> => findDescription(id.toString) match {
+        case Some(description) => <url>{ createTemp(description) }</url>
+        case None => None
+      }
+      case _ => <url>{ createTemp(Description()) }</url>
+    }
   }
 
 }
+
+class TempDescriptionResource extends RESTInterface with TempDescription with DatabaseAccess with XMLSupport {
+
+  var id: String = _
+
+  /** stores the SAD to the database */
+  post of XML returns XML {
+    println("Committing...")
+    deleteTemp(id).map(storeSAD(_).toXML)
+  }
+
+  /** updates the text fields of the SAD*/
+  put of XML returns XML {
+    val newDesc = Description(XMLRequestBody)
+    getTemp(id).map(tempDesc => {
+      tempDesc.name = newDesc.name
+      tempDesc.`type` = newDesc.`type`
+      tempDesc.`abstract` = newDesc.`abstract`
+      tempDesc.toXML
+    })
+  }
+
+  delete {
+    deleteTemp(id); true
+  }
+
+}
+
+class TempModelResource extends RESTInterface with TempDescription with MultipartSupport with XMLSupport {
+
+  var id: String = _
+
+  put of Multipart returns XML {
+    getTemp(id).map(d => {
+      d.model = Some(new Model(dataPart(MediaType.APPLICATION_XML)))
+      d.toXML
+    })
+  }
+
+}
+
+class TempDocumentationResource extends RESTInterface with TempDescription with MultipartSupport with XMLSupport {
+
+  var id: String = _
+
+  put of Multipart returns XML {
+    getTemp(id).map(d => {
+      d.documentation = Some(new Documentation(dataPart(MediaType.APPLICATION_PDF)))
+      d.toXML
+    })
+  }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class UserCollectionResource extends RESTInterface with DatabaseAccess with XMLSupport {
 

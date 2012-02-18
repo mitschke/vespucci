@@ -21,6 +21,7 @@ import java.io.{ InputStream, Reader }
 import java.sql.ResultSet
 import org.dorest.server.log.Logger
 import java.sql.Timestamp
+import java.sql.Connection
 
 object DatabaseAccess extends DatabaseAccess
 
@@ -66,24 +67,16 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
 
   // Description-CRUD
 
-  def createDescription(description: Description) =
-    withPreparedStatement("INSERT INTO sads VALUES(?, ?, ?, ?, NULL, NULL, NULL, NULL, ?, ?)") {
-      ps =>
-        ps.executeUpdateWith(description.id, description.name, description.`type`, description.`abstract`, description.wip, currentTimestamp)
-        logger.debug("Created [%s]" format description)
-        description
-    }
-
   def findDescription(id: String): Option[Description] =
     withPreparedStatement("SELECT name, type, abstract, modelName, model, length(model), documentationName, documentation, length(documentation), wip, modified FROM SADs WHERE id = ?") {
       ps =>
         val rs = ps.executeQueryWith(id)
         val retrieved = if (rs.next) Some(description(id, rs)) else None
-        logger.debug("Retrieved description [%s] using id [%s]" format (retrieved, id))
+        logger.info("Retrieved description [%s] using id [%s]" format (retrieved, id))
         retrieved
     }
 
-  def description(id: String, rs: ResultSet) = {
+  private[this] def description(id: String, rs: ResultSet) = {
     new Description(
       id,
       rs.getString("name"),
@@ -94,14 +87,6 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
       rs.getBoolean("wip"),
       rs.getTimestamp("modified").getTime())
   }
-
-  def updateDescription(description: Description): Description =
-    withPreparedStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ? WHERE id = ?") {
-      ps =>
-        ps.executeUpdateWith(description.name, description.`type`, description.`abstract`, description.wip, description.id)
-        logger.debug("Updated description [%s] using id [%s]" format (description, description.id))
-        description
-    }
 
   def deleteDescription(id: String) = withPreparedStatement("DELETE FROM sads WHERE id = ?") {
     ps =>
@@ -133,20 +118,6 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
       model
   }
 
-  def updateModel(id: String, blob: InputStream) = withPreparedStatement("UPDATE sads SET model = ? WHERE id IS ?") {
-    ps =>
-      val result = ps.executeUpdateWith(blob, id) == 1
-      logger.debug("Updated model to [%s] using id [%s] => success=%s" format (blob, id, result))
-      result
-  }
-
-  def deleteModel(id: String) = withPreparedStatement("UPDATE sads SET modelName = NULL, model = NULL WHERE id = ?") {
-    ps =>
-      val result = ps.executeUpdateWith(id) == 1
-      logger.debug("Deleted model [%s]" format id)
-      result
-  }
-
   // Documentation-RUD
 
   def findDocumentation(id: String) = withPreparedStatement("SELECT documentation, length(documentation) FROM sads WHERE id = ?") {
@@ -160,65 +131,36 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
       documentation
   }
 
-  def updateDocumentation(id: String, blob: InputStream) = withPreparedStatement("UPDATE sads SET documentation = ? WHERE id IS ?") {
-    ps =>
-      val result = ps.executeUpdateWith(blob, id) == 1
-      logger.debug("Updated documentation to [%s] using id [%s] => success=%s" format (blob, id, result))
-      result
-  }
-
-  def deleteDocumentation(id: String) = withPreparedStatement("UPDATE sads SET documentationName = NULL, documentation = NULL WHERE id = ?") {
-    ps =>
-      val result = ps.executeUpdateWith(id) == 1
-      logger.debug("Deleted documentation [%s]" format id)
-      result
-  }
-
   // SAD - Update
 
-  def updateSAD(description: Description): Description =
+  def storeSAD(description: Description): Description =
     withTransaction {
+
       conn =>
 
-        val modified: Timestamp = conn.prepareStatement("SELECT modified FROM sads WHERE id = ?")
-          .executeQueryWith(description.id).nextValue(timestamp).get
+        val modelName = if (description.model.isDefined) description.model.get.name else null
+        val model = if (description.model.isDefined) description.model.get.data else null
+        val documentationName = if (description.documentation.isDefined) description.documentation.get.name else null
+        val documentation = if (description.documentation.isDefined) description.documentation.get.data else null
 
-        if (modified.before(new Timestamp(description.modified))) {
-
-          conn.prepareStatement("UPDATE sads SET name = ?, type = ?, abstract = ?, wip = ?, modified = ? WHERE id = ?")
-            .executeUpdateWith(description.name, description.`type`, description.`abstract`, description.wip, currentTimestamp, description.id)
-          logger.warn("Updated description [%s]" format description.id)
-
-          description.model match {
-            case Some(model: Model) if model.size > 0 =>
-              conn.prepareStatement("UPDATE sads SET model = ?, modelName = ? WHERE id = ?")
-                .executeUpdateWith(model.data, model.name, description.id)
-              logger.warn("Updated model [%s]" format description.id)
-            case Some(model: Model) if model.size == 0 =>
-              conn.prepareStatement("UPDATE sads SET model = NULL, modelName = NULL WHERE id = ?")
-                .executeUpdateWith(description.id)
-              logger.warn("Deleted model [%s]" format description.id)
-            case None => logger.warn("Left model [%s] unchanged" format description.id)
-          }
-
-          description.documentation match {
-            case Some(documentation: Documentation) if documentation.size > 0 =>
-              conn.prepareStatement("UPDATE sads SET documentation = ?, documentationName = ? WHERE id = ?")
-                .executeUpdateWith(documentation.data, documentation.name, description.id)
-              logger.warn("Updated documentation [%s]" format description.id)
-            case Some(documentation: Documentation) if documentation.size == 0 =>
-              conn.prepareStatement("UPDATE sads SET documentation = NULL, documentationName = NULL WHERE id = ?")
-                .executeUpdateWith(description.id)
-              logger.warn("Deleted documentation [%s]" format description.id)
-            case None => logger.warn("Left documentation [%s] unchanged" format description.id)
-          }
-          description
-
-        } else {
-          logger.error("Edit collision") // TODO
-          null
+        def execute(statement: String) {
+          conn.prepareStatement(statement).executeUpdateWith(description.name, description.`type`, description.`abstract`,
+            modelName, model, documentationName, documentation, description.wip, currentTimestamp)
         }
 
+        val remoteModified = new Timestamp(description.modified)
+        conn.prepareStatement("SELECT modified FROM sads WHERE id = ?")
+          .executeQueryWith(description.id).nextValue(timestamp) match {
+            case None =>
+              execute("INSERT INTO sads VALUES('%s', ?, ?, ?, ?, ?, ?, ?, ?, ?)" format description.id)
+              logger.info("Created new SAD [%s]" format description)
+            case Some(modified: Timestamp) if (modified.after(remoteModified)) =>
+              throw new RuntimeException("Edit collision") // TODO
+            case Some(modified: Timestamp) =>
+              execute("UPDATE sads SET name = ?, type = ?, abstract = ?, modelName = ?, model = ?, documentationName = ?, documentation = ?, wip = ?, modified = ? WHERE id = '%s'" format description.id)
+              logger.info("Updated SAD [%s]" format description)
+          }
+        description
     }
 
   // User-CRUD and authentification
