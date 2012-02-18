@@ -1,9 +1,7 @@
 package de.tud.cs.st.vespucci.unmodeled_elements.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -62,8 +60,6 @@ public class UnmodeledElementsTableView extends ViewPart implements
 	public UnmodeledElementsTableView() {
 		entries = new HashMap<IProject, IDataView<ICodeElement>>();
 	}
-	
-	
 
 	@Override
 	public void displayProject(IProject project) {
@@ -97,7 +93,7 @@ public class UnmodeledElementsTableView extends ViewPart implements
 	}
 
 	public void createPartControl(Composite parent) {
-		
+
 		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION);
 		tableViewer.setContentProvider(new CodeElementContentProvider());
@@ -186,66 +182,20 @@ public class UnmodeledElementsTableView extends ViewPart implements
 
 		tableViewer.setComparator(new TableViewComparator());
 
-		Transfer[] transferTypes = new Transfer[] { LocalSelectionTransfer
+		final Transfer[] transferTypes = new Transfer[] { LocalSelectionTransfer
 				.getTransfer() };
-		tableViewer.addDragSupport(DND.DROP_COPY, transferTypes,
+		tableViewer.addDragSupport(DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE, transferTypes,
 				new DragSourceListener() {
 
 					@Override
-					public void dragStart(DragSourceEvent event) {
-
+					public void dragStart(final DragSourceEvent event) {
+						LocalSelectionTransfer.getTransfer().setSelection(
+								tableViewer.getSelection());
 					}
 
 					@Override
 					public void dragSetData(final DragSourceEvent event) {
-						if (!(tableViewer.getSelection() instanceof StructuredSelection)) {
-							event.doit = false;
-							return;
-						}
-						StructuredSelection selection = (StructuredSelection) tableViewer
-								.getSelection();
-
-						if (selection.isEmpty()) {
-							event.doit = false;
-							return;
-						}
-
-						final List<IMember> elements = new ArrayList<IMember>(
-								selection.size());
-
-						for (@SuppressWarnings("rawtypes")
-						Iterator iterator = selection.iterator(); iterator
-								.hasNext();) {
-							ICodeElement element = (ICodeElement) iterator
-									.next();
-
-							CodeElementFinder.startSearch(element,
-									displayedProject,
-									new ICodeElementFoundProcessor() {
-
-										@Override
-										public void processFoundCodeElement(
-												IMember member, int lineNr) {
-											// unused in this case
-										}
-
-										@Override
-										public void processFoundCodeElement(
-												IMember member) {
-											elements.add(member);
-										}
-
-										@Override
-										public void noMatchFound(
-												ICodeElement codeElement) {
-											event.doit = false;
-										}
-									});
-
-						}
-
-						LocalSelectionTransfer.getTransfer().setSelection(
-								new StructuredSelection(elements));
+						 
 					}
 
 					@Override
