@@ -5,6 +5,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
 import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.gef.requests.LocationRequest;
 import org.eclipse.swt.dnd.DND;
 
 /**
@@ -57,5 +58,13 @@ public class JavaElementEnsembleDropTargetListener extends
 		super.handleDragOver();
 		if (getCurrentEvent().detail != DND.DROP_NONE)
 			getCurrentEvent().detail = DND.DROP_COPY;
+	}
+
+	@Override
+	protected void updateTargetRequest() {
+		if (getTargetRequest() instanceof LocationRequest) {
+			((LocationRequest) getTargetRequest())
+					.setLocation(getDropLocation());
+		}
 	}
 }

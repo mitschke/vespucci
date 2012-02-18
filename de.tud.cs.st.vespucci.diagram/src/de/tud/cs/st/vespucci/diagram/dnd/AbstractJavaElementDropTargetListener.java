@@ -42,8 +42,6 @@ import java.util.Map;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
-import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.LocationRequest;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
@@ -70,16 +68,6 @@ public abstract class AbstractJavaElementDropTargetListener extends
 	 */
 	public AbstractJavaElementDropTargetListener(final EditPartViewer viewer) {
 		super(viewer, LocalSelectionTransfer.getTransfer());
-	}
-
-	@Override
-	protected void updateTargetRequest() {
-		if (getTargetRequest() instanceof LocationRequest) {
-			((LocationRequest) getTargetRequest())
-					.setLocation(getDropLocation());
-		} else if (getTargetRequest() instanceof CreateRequest) {
-			((CreateRequest) getTargetRequest()).setLocation(getDropLocation());
-		}
 	}
 
 	@SuppressWarnings("unchecked")

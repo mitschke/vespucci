@@ -4,6 +4,7 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
+import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
 import org.eclipse.gmf.runtime.diagram.core.preferences.PreferencesHint;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
@@ -55,7 +56,7 @@ public class JavaElementDiagramDropTargetListener extends
 		 * "2001" must be set for the diagram element factory to know that it is
 		 * responsible for providing elements of the chosen type.
 		 */
-		Request request = new CreateViewAndElementRequest(
+		CreateViewAndElementRequest request = new CreateViewAndElementRequest(
 				viewAndElementDescriptor);
 
 		/*
@@ -65,6 +66,8 @@ public class JavaElementDiagramDropTargetListener extends
 		 */
 		request.setType(IJavaElementDropConstants.REQ_DROP_NEW_ENSEMBLE);
 
+		request.setLocation(getDropLocation());
+		
 		addTransferedSelectionToRequest(request);
 		return request;
 	}
@@ -80,5 +83,13 @@ public class JavaElementDiagramDropTargetListener extends
 		super.handleDragOver();
 		if (getCurrentEvent().detail != DND.DROP_NONE)
 			getCurrentEvent().detail = DND.DROP_LINK;
+	}
+
+	@Override
+	protected void updateTargetRequest() {
+		if (getTargetRequest() instanceof CreateRequest) {
+			((CreateRequest) getTargetRequest()).setLocation(getDropLocation());
+		}
+
 	}
 }
