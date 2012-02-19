@@ -69,6 +69,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import de.tud.cs.st.vespucci.sadclient.concurrent.Callback;
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 /**
  * 
@@ -92,17 +94,18 @@ public class SADDialog extends Dialog {
     private Text txtType;
     private Text txtAbstract;
 
-    private StyledText txtModel;
-    private Button btnModelDelete;
-    private Button btnModelUpload;
+    private Label lblModel;
+    private Text txtModelLocation;
+    private Button btnModelBrowse;
     private Button btnModelDownload;
     private ProgressBar progressModel;
 
     private StyledText txtDoc;
+    private Label lblDoc;
     private Button btnDocDelete;
-    private Button btnDocUpload;
     private Button btnDocDownload;
     private Button btnSave;
+    private Composite composite;
 
     public SADDialog(Viewer parent, String id) {
 	super(parent.getControl().getShell());
@@ -124,24 +127,20 @@ public class SADDialog extends Dialog {
 		if (model != null) {
 		    progressModel.setMaximum(model.getSize());
 		    progressModel.setSelection(model.getSize());
-//		    txtModel.setText("" + model.getSize() + "b");
-//		    btnModelDelete.setEnabled(true);
-//		    btnModelDownload.setEnabled(true);
+		    lblModel.setText("Keep existing (Currently '" + model.getName() + "')");
+		    btnModelDownload.setEnabled(true);
 		} else {
-//		    txtModel.setText("None");
-//		    btnModelDelete.setEnabled(false);
-//		    btnModelDownload.setEnabled(false);
+		    lblModel.setText("Keep existing (Nothing uploaded)");
+		    btnModelDownload.setEnabled(false);
 		    progressModel.setSelection(0);
 		}
 
-		SAD.Documentation documentation = sad.getDocumentation();
-		if (documentation != null) {
-		    txtDoc.setText("" + documentation.getSize() + "b");
-		    btnDocDelete.setEnabled(true);
+		SAD.Documentation doc = sad.getDocumentation();
+		if (doc != null) {
+		    lblDoc.setText("Keep existing (Currently '" + doc.getName() + "')");
 		    btnDocDownload.setEnabled(true);
 		} else {
-		    txtDoc.setText("None");
-		    btnDocDelete.setEnabled(false);
+		    lblDoc.setText("Keep existing (Nothing uploaded)");
 		    btnDocDownload.setEnabled(false);
 		}
 		System.out.println("SAD updated");
@@ -178,15 +177,15 @@ public class SADDialog extends Dialog {
 		SAD.Model model;
 		model = sad.getModel();
 		if (model != null) {
-//		    txtModel.setText("" + model.getSize() + "b");
-//		    btnModelDelete.setEnabled(true);
-//		    btnModelDownload.setEnabled(true);
+		    // txtModel.setText("" + model.getSize() + "b");
+		    // btnModelDelete.setEnabled(true);
+		    // btnModelDownload.setEnabled(true);
 		    progressModel.setMaximum(model.getSize());
 		    progressModel.setSelection(model.getSize());
 		} else {
-//		    txtModel.setText("None");
-//		    btnModelDelete.setEnabled(false);
-//		    btnModelDownload.setEnabled(false);
+		    // txtModel.setText("None");
+		    // btnModelDelete.setEnabled(false);
+		    // btnModelDownload.setEnabled(false);
 		    progressModel.setSelection(0);
 		}
 		parentViewer.refresh();
@@ -215,7 +214,7 @@ public class SADDialog extends Dialog {
 
     @Override
     protected Point getInitialSize() {
-	return new Point(460, 450);
+	return new Point(500, 570);
     }
 
     @Override
@@ -223,6 +222,12 @@ public class SADDialog extends Dialog {
 
 	final int BORDER_MARGIN = 10;
 	final int GROUP_MARGIN = 5;
+	final int LEFT_TAB = 15;
+	final int LINE_MARGIN = 12;
+
+	final int DESCRIPTION_SPACE = 50;
+	final int MODEL_SPACE = 75;
+	final int DOCUMENTATION_SPACE = 100;
 
 	/**
 	 * When one of the text fields of the description is changed, the
@@ -243,15 +248,14 @@ public class SADDialog extends Dialog {
 	container.setLayout(new FormLayout());
 
 	// Description //
-	Group grpDescription = new Group(container, SWT.SHADOW_IN);
-	grpDescription.setText("Description");
+	Composite grpDescription = new Composite(container, SWT.NONE);
 	grpDescription.setLayout(new FormLayout());
 
 	FormData fd_grpDescription = new FormData();
 	fd_grpDescription.top = new FormAttachment(0, BORDER_MARGIN);
 	fd_grpDescription.left = new FormAttachment(0, BORDER_MARGIN);
 	fd_grpDescription.right = new FormAttachment(100, -BORDER_MARGIN);
-	fd_grpDescription.bottom = new FormAttachment(68);
+	fd_grpDescription.bottom = new FormAttachment(DESCRIPTION_SPACE);
 	grpDescription.setLayoutData(fd_grpDescription);
 
 	lblName = new Label(grpDescription, SWT.NONE);
@@ -259,173 +263,137 @@ public class SADDialog extends Dialog {
 	fd_lblName.top = new FormAttachment(0, BORDER_MARGIN);
 	fd_lblName.left = new FormAttachment(0, BORDER_MARGIN);
 	lblName.setLayoutData(fd_lblName);
-	lblName.setText("Name");
+	lblName.setText("Name:");
 
 	txtName = new Text(grpDescription, SWT.BORDER);
 	FormData fd_txtName = new FormData();
 	fd_txtName.bottom = new FormAttachment(lblName, 0, SWT.BOTTOM);
-	fd_txtName.left = new FormAttachment(25, BORDER_MARGIN);
+	fd_txtName.left = new FormAttachment(LEFT_TAB, BORDER_MARGIN);
 	fd_txtName.right = new FormAttachment(100, -BORDER_MARGIN);
 	txtName.setLayoutData(fd_txtName);
 	txtName.addModifyListener(new DescriptionModifyListener());
 
 	lblType = new Label(grpDescription, SWT.NONE);
 	FormData fd_lblType = new FormData();
-	fd_lblType.top = new FormAttachment(lblName, BORDER_MARGIN);
+	fd_lblType.top = new FormAttachment(lblName, LINE_MARGIN);
 	fd_lblType.left = new FormAttachment(0, BORDER_MARGIN);
 	lblType.setLayoutData(fd_lblType);
-	lblType.setText("Type");
+	lblType.setText("Type:");
 
 	txtType = new Text(grpDescription, SWT.BORDER);
 	FormData fd_txtType = new FormData();
 	fd_txtType.bottom = new FormAttachment(lblType, 0, SWT.BOTTOM);
-	fd_txtType.left = new FormAttachment(25, BORDER_MARGIN);
+	fd_txtType.left = new FormAttachment(LEFT_TAB, BORDER_MARGIN);
 	fd_txtType.right = new FormAttachment(100, -BORDER_MARGIN);
 	txtType.setLayoutData(fd_txtType);
 	txtType.addModifyListener(new DescriptionModifyListener());
 
 	lblAbstract = new Label(grpDescription, SWT.NONE);
 	FormData fd_lblAbstract = new FormData();
-	fd_lblAbstract.top = new FormAttachment(lblType, BORDER_MARGIN);
+	fd_lblAbstract.top = new FormAttachment(lblType, LINE_MARGIN);
 	fd_lblAbstract.left = new FormAttachment(0, BORDER_MARGIN);
 	lblAbstract.setLayoutData(fd_lblAbstract);
-	lblAbstract.setText("Abstract");
-
-	btnSave = new Button(grpDescription, SWT.NONE);
-	FormData fd_btnSave = new FormData();
-	fd_btnSave.left = new FormAttachment(75, 0);
-	fd_btnSave.right = new FormAttachment(100, -10);
-	fd_btnSave.bottom = new FormAttachment(100, -5);
-	btnSave.setLayoutData(fd_btnSave);
-	btnSave.setText("Save");
-	btnSave.addMouseListener(new MouseAdapter() {
-	    @Override
-	    public void mouseUp(MouseEvent e) {
-		controller.saveDescription(id, txtName.getText(), txtType.getText(), txtAbstract.getText(),
-			new UpdateCallback());
-	    }
-	});
+	lblAbstract.setText("Abstract:");
 
 	txtAbstract = new Text(grpDescription, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 	FormData fd_txtAbstract = new FormData();
 	fd_txtAbstract.top = new FormAttachment(lblAbstract, -19);
-	fd_txtAbstract.left = new FormAttachment(25, BORDER_MARGIN);
+	fd_txtAbstract.left = new FormAttachment(LEFT_TAB, BORDER_MARGIN);
 	fd_txtAbstract.right = new FormAttachment(100, -BORDER_MARGIN);
-	fd_txtAbstract.bottom = new FormAttachment(btnSave, -5);
+	fd_txtAbstract.bottom = new FormAttachment(100, -BORDER_MARGIN);
 	txtAbstract.setLayoutData(fd_txtAbstract);
 	txtAbstract.addModifyListener(new DescriptionModifyListener());
 
-	// Model //
+	// ////////////////////////////////////////// Model
+	// ////////////////////////////////////////
 	Group grpModel = new Group(container, SWT.NONE);
 	grpModel.setText("Model");
-	grpModel.setLayout(new GridLayout(4, true));
+	grpModel.setLayout(new FormLayout());
+
 	FormData fd_grpModel = new FormData();
-	fd_grpModel.top = new FormAttachment(grpDescription, GROUP_MARGIN);
-	fd_grpModel.left = new FormAttachment(grpDescription, 0, SWT.LEFT);
-	fd_grpModel.right = new FormAttachment(grpDescription, 0, SWT.RIGHT);
-	fd_grpModel.bottom = new FormAttachment(84, 0);
+	fd_grpModel.top = new FormAttachment(grpDescription, BORDER_MARGIN);
+	fd_grpModel.left = new FormAttachment(0, BORDER_MARGIN);
+	fd_grpModel.right = new FormAttachment(100, -BORDER_MARGIN);
+	fd_grpModel.bottom = new FormAttachment(MODEL_SPACE);
 	grpModel.setLayoutData(fd_grpModel);
 
-	// TODO
-//	txtModel = new StyledText(grpModel, SWT.BORDER);
-//	txtModel.setToolTipText("Shows if a model was uploaded or not.");
-//	txtModel.setLeftMargin(2);
-//	txtModel.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
-//	txtModel.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
-//	txtModel.setDoubleClickEnabled(false);
-//	GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-//	gd.horizontalIndent = BORDER_MARGIN;
-//	gd.verticalIndent = -1;
-//	txtModel.setLayoutData(gd);
-	
-	progressModel = new ProgressBar(grpModel, SWT.SMOOTH);
-	progressModel.setForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
-	progressModel.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-	progressModel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	//
+	Button radioKeep = new Button(grpModel, SWT.RADIO);
+	radioKeep.addSelectionListener(new SelectionAdapter() {
+	    @Override
+	    public void widgetSelected(SelectionEvent e) {
+	    }
+	});
+	FormData fd_radio = new FormData();
+	fd_radio.top = new FormAttachment(0, BORDER_MARGIN);
+	fd_radio.left = new FormAttachment(0, BORDER_MARGIN);
+	radioKeep.setLayoutData(fd_radio);
+	radioKeep.setText("Keep existing (currently 'someModel1.sad')");
 
-	btnModelDelete = new Button(grpModel, SWT.NONE);
-	btnModelDelete.setText("Delete");
-	btnModelDelete.setToolTipText("Deletes the remotely stored model.");
-	btnModelDelete.setLayoutData(new GridData(GridData.CENTER | GridData.FILL_HORIZONTAL));
-	btnModelDelete.addMouseListener(new MouseAdapter() {
+	Button btnModelDownload = new Button(grpModel, SWT.NONE);
+	btnModelDownload.setText("Download");
+	btnModelDownload.setToolTipText("Downloads the file to disk.");
+	FormData fd_btnModelDownload = new FormData();
+	fd_btnModelDownload.top = new FormAttachment(grpModel, 6);
+	fd_btnModelDownload.left = new FormAttachment(75, BORDER_MARGIN);
+	fd_btnModelDownload.right = new FormAttachment(100, -BORDER_MARGIN);
+	btnModelDownload.setLayoutData(fd_btnModelDownload);
+	btnModelDownload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
 		controller.deleteModel(id, new UpdateModelCallback());
 	    }
 	});
 
-	btnModelUpload = new Button(grpModel, SWT.NONE);
-	btnModelUpload.setText("Upload");
-	btnModelUpload.setLayoutData(new GridData(GridData.CENTER | GridData.FILL_HORIZONTAL));
-	btnModelUpload.addMouseListener(new MouseAdapter() {
+	//
+	Button radioUpload = new Button(grpModel, SWT.RADIO);
+	radioUpload.addSelectionListener(new SelectionAdapter() {
 	    @Override
-	    public void mouseUp(MouseEvent e) {
-		controller.uploadModel(id, openUploadDialog(), new UpdateModelCallback(), new ProgressBarMonitor(
-			progressModel));
+	    public void widgetSelected(SelectionEvent e) {
 	    }
 	});
+	fd_radio = new FormData();
+	fd_radio.top = new FormAttachment(radioKeep, BORDER_MARGIN);
+	fd_radio.left = new FormAttachment(0, BORDER_MARGIN);
+	radioUpload.setLayoutData(fd_radio);
+	radioUpload.setText("Upload new file:");
 
-	btnModelDownload = new Button(grpModel, SWT.NONE);
-	btnModelDownload.setText("Download");
-	btnModelDownload.setLayoutData(new GridData(GridData.CENTER | GridData.FILL_HORIZONTAL));
-	btnModelDownload.addMouseListener(new MouseAdapter() {
+	//
+	Button radioDelete = new Button(grpModel, SWT.RADIO);
+	radioDelete.addSelectionListener(new SelectionAdapter() {
 	    @Override
-	    public void mouseUp(MouseEvent e) {
-		controller.downloadModel(id, openDownloadDialog(id + ".sad"), new ProgressBarMonitor(progressModel));
+	    public void widgetSelected(SelectionEvent e) {
 	    }
 	});
+	fd_radio = new FormData();
+	fd_radio.top = new FormAttachment(radioUpload, LINE_MARGIN);
+	fd_radio.left = new FormAttachment(0, BORDER_MARGIN);
+	radioDelete.setLayoutData(fd_radio);
+	radioDelete.setText("Delete existing");
 
-	// Documentation //
-	Group grpDocumentation = new Group(container, SWT.NONE);
-	grpDocumentation.setText("Documentation");
-	grpDocumentation.setLayout(new GridLayout(4, true));
-	FormData fd_grpDocumentation = new FormData();
-	fd_grpDocumentation.top = new FormAttachment(grpModel, GROUP_MARGIN);
-	fd_grpDocumentation.left = new FormAttachment(grpModel, 0, SWT.LEFT);
-	fd_grpDocumentation.right = new FormAttachment(grpModel, 0, SWT.RIGHT);
-	fd_grpDocumentation.bottom = new FormAttachment(100, 0);
-	grpDocumentation.setLayoutData(fd_grpDocumentation);
+	// TODO
+	txtModelLocation = new Text(grpModel, SWT.BORDER);
+	txtModelLocation.setEnabled(false);
+	FormData fd_txtModelLocation = new FormData();
+	fd_txtModelLocation.top = new FormAttachment(radioKeep, 8);
+	fd_txtModelLocation.left = new FormAttachment(28);
+	fd_txtModelLocation.right = new FormAttachment(75);
+	txtModelLocation.setLayoutData(fd_txtModelLocation);
+	txtModelLocation.addModifyListener(new DescriptionModifyListener());
 
-	txtDoc = new StyledText(grpDocumentation, SWT.BORDER);
-	txtDoc.setToolTipText("Shows if a documentation was uploaded or not.");
-	txtDoc.setLeftMargin(2);
-	txtDoc.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
-	txtDoc.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
-	txtDoc.setDoubleClickEnabled(false);
-	GridData gdDoc = new GridData(GridData.FILL_HORIZONTAL);
-	gdDoc.horizontalIndent = BORDER_MARGIN;
-	gdDoc.verticalIndent = -1;
-	txtDoc.setLayoutData(gdDoc);
-
-	btnDocDelete = new Button(grpDocumentation, SWT.NONE);
-	btnDocDelete.setText("Delete");
-	btnDocDelete.setLayoutData(new GridData(GridData.CENTER | GridData.FILL_HORIZONTAL));
-	btnDocDelete.addMouseListener(new MouseAdapter() {
+	btnModelBrowse = new Button(grpModel, SWT.NONE);
+	btnModelBrowse.setEnabled(false);
+	btnModelBrowse.setText("Browse...");
+	btnModelBrowse.setToolTipText("Choose a file to be uploaded.");
+	FormData fd_btnModelBrowse = new FormData();
+	fd_btnModelBrowse.top = new FormAttachment(radioKeep, 4);
+	fd_btnModelBrowse.left = new FormAttachment(75, BORDER_MARGIN);
+	fd_btnModelBrowse.right = new FormAttachment(100, -BORDER_MARGIN);
+	btnModelBrowse.setLayoutData(fd_btnModelBrowse);
+	btnModelBrowse.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		controller.deleteDocumentation(id, new UpdateDocumentationCallback());
-	    }
-	});
-
-	btnDocUpload = new Button(grpDocumentation, SWT.NONE);
-	btnDocUpload.setText("Upload");
-	btnDocUpload.setLayoutData(new GridData(GridData.CENTER | GridData.FILL_HORIZONTAL));
-	btnDocUpload.addMouseListener(new MouseAdapter() {
-	    @Override
-	    public void mouseUp(MouseEvent e) {
-		btnDocUpload.setText("Cancel");
-		controller.uploadDocumentation(id, openUploadDialog(), new UpdateDocumentationCallback(),
-			new ProgressMonitor());
-	    }
-	});
-
-	btnDocDownload = new Button(grpDocumentation, SWT.NONE);
-	btnDocDownload.setText("Download");
-	btnDocDownload.setLayoutData(new GridData(GridData.CENTER | GridData.FILL_HORIZONTAL));
-	btnDocDownload.addMouseListener(new MouseAdapter() {
-	    @Override
-	    public void mouseUp(MouseEvent e) {
-		controller.downloadDocumentation(id, openDownloadDialog(id), new ProgressMonitor());
+		controller.deleteModel(id, new UpdateModelCallback());
 	    }
 	});
 
@@ -460,7 +428,18 @@ public class SADDialog extends Dialog {
 
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-	createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CLOSE_LABEL, false);
+	Button button = createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+	button.addSelectionListener(new SelectionAdapter() {
+	    @Override
+	    public void widgetSelected(SelectionEvent e) {
+	    }
+	});
+	button = createButton(parent, IDialogConstants.FINISH_ID, IDialogConstants.FINISH_LABEL, false);
+	button.addSelectionListener(new SelectionAdapter() {
+	    @Override
+	    public void widgetSelected(SelectionEvent e) {
+	    }
+	});
     }
 
     public class UpdateCallback implements Callback<SAD> {
@@ -541,7 +520,7 @@ public class SADDialog extends Dialog {
 		@Override
 		public void run() {
 		    progressBar.setMaximum(totalWork);
-//		    progressBar.setVisible(true);
+		    // progressBar.setVisible(true);
 		    System.out.println("BEGINNING TASK: " + name + " with total work " + totalWork);
 		}
 	    });
@@ -567,7 +546,7 @@ public class SADDialog extends Dialog {
 	    progressBar.getDisplay().asyncExec(new Runnable() {
 		@Override
 		public void run() {
-//		    progressBar.setVisible(false);
+		    // progressBar.setVisible(false);
 		    System.out.println("Done.");
 		}
 	    });

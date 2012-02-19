@@ -196,7 +196,16 @@ public class SAD {
     public static class Model {
 
 	private int size;
+	private String name;
 	private String url;
+	
+	public String getName() {
+	    return name;
+	}
+
+	public void setName(String name) {
+	    this.name = name;
+	}
 
 	public int getSize() {
 	    return size;
@@ -258,6 +267,7 @@ public class SAD {
     public static class Documentation {
 
 	private int size;
+	private String name;
 	private String url;
 
 	public int getSize() {
@@ -266,6 +276,14 @@ public class SAD {
 
 	public void setSize(int size) {
 	    this.size = size;
+	}
+	
+	public String getName() {
+	    return name;
+	}
+
+	public void setName(String name) {
+	    this.name = name;
 	}
 
 	public String getUrl() {
