@@ -146,9 +146,14 @@ class DescriptionDocumentationResource extends RESTInterface with DatabaseAccess
 class TransactionalDescriptionCollectionResource extends RESTInterface with DatabaseAccess with TempDescription with XMLSupport with MultipartSupport {
 
   post of XML returns XML {
-    XMLRequestBody match {
-      case <id>{ id }</id> => findDescription(id.toString).map(description => <url>{ createTemp(description) }</url>)
-      case _ => <url>{ createTemp(Description()) }</url>
+    Transaction(XMLRequestBody) match {
+      case transaction if transaction.resourceId.isDefined =>
+        findDescription(transaction.resourceId.get).map(description =>
+          transaction.url = Some(createTemp(description)))
+        transaction.toXML
+      case transaction =>
+        transaction.url = Some(createTemp(Description()))
+        transaction.toXML
     }
   }
 

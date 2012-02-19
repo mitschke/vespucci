@@ -53,7 +53,8 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
   val delete = SimpleClient.delete(acceptsXml) _
 
   def getDescription(id: String) = Description(get(host + descriptionCollectionPath + "/" + id1).body)
-  def startTransaction(id: String): String = new Transaction(beginTransaction((<id>{ id }</id>).toString).body).url
+  def startTransaction(id: String): String = new Transaction(beginTransaction({
+    val t = new Transaction(); t.resourceId = Some(id); t.toXML }.toString).body).url.get
   def beginTransaction(string: String) = authPost(host + transactionalPath + descriptionCollectionPath, Entity(string, "application/xml", "UTF-8"))
   def updateDescription(transactionUrl: String, description: Description) =
     authPut(transactionUrl, Entity(description.toXML.toString, "application/xml", "UTF-8"))
@@ -109,7 +110,7 @@ class SADServerTest extends FlatSpec with ShouldMatchers with BeforeAndAfterAll 
     Description(sad1.toString).name should equal { "myName" }
     val response = beginTransaction(sad1.toString)
     response.statusCode should equal(201)
-    transactionUrl = new Transaction(response.body).url
+    transactionUrl = new Transaction(response.body).url.get
     id1 = Description(response.body).id
   }
 
