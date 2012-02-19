@@ -17,7 +17,7 @@ package de.tud.cs.st.vespucci.sadserver
 
 import java.io.{ Reader, InputStream }
 import scala.xml.Elem
-import de.tud.cs.st.vespucci.sadserver.GlobalProperties._
+import GlobalProperties._
 import scala.xml.NodeSeq
 import org.dorest.server.rest.representation.multipart.MultipartIterator
 import org.dorest.server.rest.representation.multipart.FormField
@@ -32,17 +32,6 @@ import java.util.UUID.randomUUID
  */
 object Description {
   def apply(): Description = Description(randomUUID.toString, "untitled", "", "", None, None, false, 0)
-  def apply(multipartIterator: MultipartIterator): Description = {
-    var description: Description = null
-    for (part <- multipartIterator) {
-      part match {
-        case part @ FormField("description") => description = Description(scala.xml.XML.loadString(part.content))
-        case part @ Data("model", MediaType.APPLICATION_XML) => description.model map (_.data = part.openStream)
-        case part @ Data("documentation", MediaType.APPLICATION_PDF) => description.documentation map (_.data = part.openStream)
-      }
-    }
-    description
-  }
   def apply(xml: Elem): Description = {
     def parse(s: String): String = (xml \\ s).text
     new Description(
