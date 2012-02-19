@@ -47,11 +47,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import de.tud.cs.st.vespucci.sadclient.Activator;
 import de.tud.cs.st.vespucci.sadclient.concurrent.Callback;
 import de.tud.cs.st.vespucci.sadclient.concurrent.RunnableWithCallback;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 import de.tud.cs.st.vespucci.sadclient.model.SADClient;
 import de.tud.cs.st.vespucci.sadclient.model.SADClientException;
+import de.tud.cs.st.vespucci.sadclient.model.Transaction;
+import de.tud.cs.st.vespucci.sadclient.model.http.MultiThreadedHttpClient;
 
 /**
  * The me Responsible for starting computations in a separate thread.
@@ -65,6 +68,8 @@ public class Controller {
     final private SADClient sadClient;
     private ExecutorService pool;
     private Future<SAD[]> sadCollectionFuture;
+
+    private MultiThreadedHttpClient client;
 
     private Controller() {
 	pool = Executors.newFixedThreadPool(4);
@@ -125,20 +130,6 @@ public class Controller {
 	pool.execute(new RunnableWithCallback<SAD>(new Callable<SAD>() {
 	    @Override
 	    public SAD call() throws Exception {
-		return sadClient.getSAD(id);
-	    }
-	}, callback));
-    }
-
-    public void saveDescription(final String id, final String name, final String type, final String abstrct,
-	    final Callback<SAD> callback) {
-	System.out.println("Calling saveDescription with id " + id + " and callback " + callback);
-
-	// getSADCollectionFromServer();
-	pool.execute(new RunnableWithCallback<SAD>(new Callable<SAD>() {
-	    @Override
-	    public SAD call() throws Exception {
-		sadClient.putSAD(id, name, type, abstrct);
 		return sadClient.getSAD(id);
 	    }
 	}, callback));
@@ -243,6 +234,46 @@ public class Controller {
 		return sadClient.getSAD(id);
 	    }
 	}, callback));
+    }
+
+    public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
+	    final File modelFile, final boolean deleteDoc, final File docFile, final Callback<SAD> callback) {
+	Job job = new Job("Upload Model") {
+	    @Override
+	    protected IStatus run(IProgressMonitor monitor) {
+		String transactionId = null;
+		try {
+		   Transaction transaction = sadClient.startTransaction(sad.getId());
+		   System.out.println(transaction);
+		   transactionId = transaction.getTransactionId();
+		    try {
+			if (descriptionChanged) {
+			    sadClient.putSAD(transactionId, sad);
+			}
+			if (deleteModel) {
+			    sadClient.deleteModel(transactionId);
+			} else if (modelFile != null) {
+			    sadClient.putModel(transactionId, modelFile, monitor);
+			}
+			if (deleteDoc) {
+			    sadClient.deleteDocumentation(transactionId);
+			} else if (docFile != null) {
+			    sadClient.putDocumentation(transactionId, docFile, monitor);
+			}
+			sadClient.commitTransaction(transactionId);
+		    } catch (Exception e) {
+			sadClient.rollbackTransaction(transactionId);
+			 return new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Edit collision!");
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+
+		return new Status(IStatus.OK, Activator.PLUGIN_ID, "OK");
+	    }
+	};
+	job.setUser(true);
+	job.schedule();
     }
 
 }

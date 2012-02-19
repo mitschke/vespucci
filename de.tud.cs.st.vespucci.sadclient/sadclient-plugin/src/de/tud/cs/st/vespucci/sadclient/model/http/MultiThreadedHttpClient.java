@@ -52,16 +52,13 @@ import de.tud.cs.st.vespucci.sadclient.Activator;
 public class MultiThreadedHttpClient {
 
     private final DefaultHttpClient client;
-    private final String urlRoot;
     private final static String CHARSET = "UTF-8";
 
     /**
      * The client will use no authentication.
      */
-    public MultiThreadedHttpClient(String urlRoot) {
+    public MultiThreadedHttpClient() {
 	super();
-	this.urlRoot = urlRoot;
-
 	SchemeRegistry schemeRegistry = new SchemeRegistry();
 	schemeRegistry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
 	// standard client params
@@ -77,8 +74,8 @@ public class MultiThreadedHttpClient {
 	params.setParameter(ClientPNames.DEFAULT_HEADERS, defaultHeaders);
 
 	ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
-//	cm.setMaxTotal(200);
-//	cm.setDefaultMaxPerRoute(20);
+	cm.setMaxTotal(200);
+	cm.setDefaultMaxPerRoute(20);
 
 	client = new DefaultHttpClient(cm, params);
     }
@@ -90,8 +87,8 @@ public class MultiThreadedHttpClient {
      * @param userName
      * @param password
      */
-    public MultiThreadedHttpClient(String urlRoot, String userName, String password) {
-	this(urlRoot);
+    public MultiThreadedHttpClient(String userName, String password) {
+	this();
 	CredentialsProvider credsProvider = new BasicCredentialsProvider();
 	client.setCredentialsProvider(credsProvider);
 	credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
@@ -100,10 +97,10 @@ public class MultiThreadedHttpClient {
 	client.getParams().setParameter(AuthPNames.TARGET_AUTH_PREF, authPrefs);
     }
 
-    public HttpResponse get(String urlSuffix) {
+    public HttpResponse get(String url) {
 	HttpResponse response = null;
 	try {
-	    final HttpGet get = new HttpGet(urlRoot + urlSuffix);
+	    final HttpGet get = new HttpGet(url);
 	    response = client.execute(get);
 	} catch (Exception e) {
 	    throw new HttpClientException(e);
@@ -112,10 +109,10 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
-    public HttpResponse get(String urlSuffix, String acceptedContentType) {
+    public HttpResponse get(String url, String acceptedContentType) {
 	HttpResponse response = null;
 	try {
-	    final HttpGet get = new HttpGet(urlRoot + urlSuffix);
+	    final HttpGet get = new HttpGet(url);
 	    get.setHeader("accept", acceptedContentType);
 	    response = client.execute(get);
 	} catch (Exception e) {
@@ -125,10 +122,10 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
-    public HttpResponse get(String urlSuffix, String acceptedContentType, IProgressMonitor progressMonitor) {
+    public HttpResponse get(String url, String acceptedContentType, IProgressMonitor progressMonitor) {
 	HttpResponse response = null;
 	try {
-	    final HttpGet get = new HttpGet(urlRoot + urlSuffix);
+	    final HttpGet get = new HttpGet(url);
 	    get.setHeader("accept", acceptedContentType);
 	    response = client.execute(get);
 	    HttpEntityWithProgress.attachProgressMonitor(response, progressMonitor);
@@ -139,22 +136,22 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
-    public HttpResponse put(String urlSuffix, String string, String mimeType) {
+    public HttpResponse put(String url, String string, String mimeType) {
 	try {
-	    return put(urlSuffix, new StringEntity(string, mimeType, CHARSET));
+	    return put(url, new StringEntity(string, mimeType, CHARSET));
 	} catch (UnsupportedEncodingException e) {
 	    throw new HttpClientException(e);
 	}
     }
 
-    public HttpResponse put(String urlSuffix, File file, String mimeType) {
-	return put(urlSuffix, new FileEntity(file, mimeType));
+    public HttpResponse put(String url, File file, String mimeType) {
+	return put(url, new FileEntity(file, mimeType));
     }
 
-    public HttpResponse put(String urlSuffix, File file, String mimeType, IProgressMonitor progressMonitor) {
+    public HttpResponse put(String url, File file, String mimeType, IProgressMonitor progressMonitor) {
 	System.out.println("Putted file " + file + " has size " + file.length() + " bytes.");
 	HttpEntity upstreamEntity = new FileEntityWithProgress(file, mimeType, progressMonitor);
-	HttpResponse response = put(urlSuffix, upstreamEntity);
+	HttpResponse response = put(url, upstreamEntity);
 	try {
 	    EntityUtils.consume(upstreamEntity);
 	} catch (IOException e) {
@@ -164,65 +161,65 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
-    public HttpResponse put(String urlSuffix, HttpEntity entity) {
+    public HttpResponse put(String url, HttpEntity entity) {
 	HttpResponse response = null;
 	try {
 	    // sending a short put to trigger authentication and storing httpcontext.
-	    HttpPut put = new HttpPut(urlRoot + urlSuffix);
+	    HttpPut put = new HttpPut(url);
 //	    HttpContext localContext = new BasicHttpContext();
 //	    HttpEntity smallEntity = new StringEntity("someBytes", "application/xml", "UTF-8");
 //	    put.setEntity(smallEntity);
 //	    response = client.execute(put, localContext);
 //	    EntityUtils.consume(smallEntity);
 //	    consume(response);
-//	    put = new HttpPut(urlRoot + urlSuffix);
+//	    put = new HttpPut(url);
 	    put.setEntity(entity);
 	    response = client.execute(put);
 	    EntityUtils.consume(entity);
-	} catch (Exception e) {
+	} catch (IOException e) {
 	    throw new HttpClientException(e);
 	}
 	System.out.println("StatusCode received: [" + response.getStatusLine().getStatusCode() + "]");
-	// expectStatusCode(response, 200);
+	 expectStatusCode(response, 200);
 	return response;
     }
 
-    public HttpResponse post(String urlSuffix, String string, String mimeType) {
+    public HttpResponse post(String url, String string, String mimeType) {
 	try {
-	    return post(urlSuffix, new StringEntity(string, mimeType, CHARSET));
+	    return post(url, new StringEntity(string, mimeType, CHARSET));
 	} catch (UnsupportedEncodingException e) {
 	    throw new HttpClientException(e);
 	}
     }
 
-    public HttpResponse post(String urlSuffix, File file, String mimeType) {
-	return post(urlSuffix, new FileEntity(file, mimeType));
+    public HttpResponse post(String url, File file, String mimeType) {
+	return post(url, new FileEntity(file, mimeType));
     }
 
-    public HttpResponse post(String urlSuffix, File file, String mimeType, IProgressMonitor progressMonitor) {
-	HttpResponse response = post(urlSuffix, new FileEntity(file, mimeType));
+    public HttpResponse post(String url, File file, String mimeType, IProgressMonitor progressMonitor) {
+	HttpResponse response = post(url, new FileEntity(file, mimeType));
 	HttpEntityWithProgress.attachProgressMonitor(response, progressMonitor);
 	return response;
     }
 
-    public HttpResponse post(String urlSuffix, HttpEntity entity) {
+    public HttpResponse post(String url, HttpEntity entity) {
 	HttpResponse response = null;
 	try {
-	    final HttpPost post = new HttpPost(urlRoot + urlSuffix);
+	    final HttpPost post = new HttpPost(url);
 	    post.setEntity(entity);
 	    response = client.execute(post);
 	    EntityUtils.consume(entity);
 	} catch (Exception e) {
 	    throw new HttpClientException(e);
 	}
-	expectStatusCode(response, 204);
+	expectStatusCode(response, 200, 201);
 	return response;
     }
 
-    public HttpResponse delete(String urlSuffix) {
+    public HttpResponse delete(String url) {
 	HttpResponse response = null;
 	try {
-	    final HttpDelete delete = new HttpDelete(urlRoot + urlSuffix);
+	    final HttpDelete delete = new HttpDelete(url);
 	    response = client.execute(delete);
 	} catch (Exception e) {
 	    throw new HttpClientException(e);

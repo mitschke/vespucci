@@ -36,29 +36,45 @@
  */
 package de.tud.cs.st.vespucci.sadclient.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Mutable data-class modeling a Software-Architecture-Description.
  * 
  * @author Mateusz Parzonka
  * 
  */
+@XmlRootElement(name = "description")
 public class SAD {
 
     private String id;
+   private String modified;
     private String name;
-    private String type;
+    private String type;    
     private String abstrct;
     private Model model;
     private Documentation documentation;
     private boolean wip;
     
-    public String getId() {
-   	return id;
-       }
+    @XmlAttribute 
+    public String getModified() {
+        return modified;
+    }
 
-       public void setId(String id) {
-   	this.id = id;
-       }
+    public void setModified(String modified) {
+        this.modified = modified;
+    }
+    
+    @XmlAttribute 
+    public String getId() {
+	return id;
+    }
+
+    public void setId(String id) {
+	this.id = id;
+    }
 
     public String getName() {
 	return name;
@@ -92,6 +108,7 @@ public class SAD {
 	this.type = type;
     }
 
+    @XmlElement(name = "abstract")  
     public String getAbstrct() {
 	return abstrct;
     }
@@ -108,8 +125,6 @@ public class SAD {
 	this.wip = wip;
     }
 
-    
-    
     @Override
     public int hashCode() {
 	final int prime = 31;
@@ -168,8 +183,6 @@ public class SAD {
 	return true;
     }
 
-
-
     @Override
     public String toString() {
 	StringBuilder builder = new StringBuilder();
@@ -191,14 +204,14 @@ public class SAD {
 	return builder.toString();
     }
 
-
-
+    @XmlRootElement(name = "model")
     public static class Model {
 
 	private int size;
 	private String name;
 	private String url;
-	
+
+	@XmlAttribute 
 	public String getName() {
 	    return name;
 	}
@@ -207,6 +220,7 @@ public class SAD {
 	    this.name = name;
 	}
 
+	@XmlAttribute 
 	public int getSize() {
 	    return size;
 	}
@@ -263,21 +277,24 @@ public class SAD {
 	}
 
     }
-
+    
+    @XmlRootElement(name = "description")
     public static class Documentation {
 
 	private int size;
 	private String name;
 	private String url;
 
+	@XmlAttribute 
 	public int getSize() {
 	    return size;
 	}
-
+	
 	public void setSize(int size) {
 	    this.size = size;
 	}
-	
+
+	@XmlAttribute 
 	public String getName() {
 	    return name;
 	}
@@ -323,7 +340,7 @@ public class SAD {
 	    builder.append("]");
 	    return builder.toString();
 	}
-	
+
 	@Override
 	public int hashCode() {
 	    final int prime = 31;
@@ -332,7 +349,6 @@ public class SAD {
 	    result = prime * result + ((url == null) ? 0 : url.hashCode());
 	    return result;
 	}
-
 
     }
 

@@ -94,18 +94,21 @@ public class SADDialog extends Dialog {
     private Text txtType;
     private Text txtAbstract;
 
-    private Label lblModel;
     private Text txtModelLocation;
     private Button btnModelBrowse;
     private Button btnModelDownload;
     private ProgressBar progressModel;
+    private Button radioModelKeep;
+    private Button radioModelUpload;
+    private Button radioModelDelete;
 
     private StyledText txtDoc;
-    private Label lblDoc;
     private Button btnDocDelete;
     private Button btnDocDownload;
-    private Button btnSave;
+    private boolean textChanged;
     private Composite composite;
+    
+    private SAD sad;
 
     public SADDialog(Viewer parent, String id) {
 	super(parent.getControl().getShell());
@@ -118,6 +121,8 @@ public class SADDialog extends Dialog {
 	container.getDisplay().syncExec(new Runnable() {
 
 	    public void run() {
+		
+		System.out.println("Opening SAD: " + sad);
 
 		txtName.setText(sad.getName());
 		txtType.setText(sad.getType());
@@ -125,88 +130,30 @@ public class SADDialog extends Dialog {
 		SAD.Model model = sad.getModel();
 
 		if (model != null) {
-		    progressModel.setMaximum(model.getSize());
-		    progressModel.setSelection(model.getSize());
-		    lblModel.setText("Keep existing (Currently '" + model.getName() + "')");
+//		    progressModel.setMaximum(model.getSize());
+//		    progressModel.setSelection(model.getSize());
+		    radioModelKeep.setText("Keep existing (Currently '" + model.getName() + "')");
 		    btnModelDownload.setEnabled(true);
 		} else {
-		    lblModel.setText("Keep existing (Nothing uploaded)");
+		    radioModelKeep.setText("Keep existing (Nothing uploaded)");
 		    btnModelDownload.setEnabled(false);
-		    progressModel.setSelection(0);
+//		    progressModel.setSelection(0);
 		}
 
 		SAD.Documentation doc = sad.getDocumentation();
 		if (doc != null) {
-		    lblDoc.setText("Keep existing (Currently '" + doc.getName() + "')");
-		    btnDocDownload.setEnabled(true);
+//		    radioModelKeep.setText("Keep existing (Currently '" + doc.getName() + "')"); TODO
+//		    btnDocDownload.setEnabled(true);
 		} else {
-		    lblDoc.setText("Keep existing (Nothing uploaded)");
-		    btnDocDownload.setEnabled(false);
+//		    radioModelKeep.setText("Keep existing (Nothing uploaded)"); TODO
+//		    btnDocDownload.setEnabled(false);
 		}
-		System.out.println("SAD updated");
+		
+		SADDialog.this.sad = sad;
 	    }
 	});
 	container.getDisplay().asyncExec(new Runnable() {
 	    public void run() {
-		btnSave.setEnabled(false);
-		parentViewer.refresh();
-	    }
-	});
-    }
-
-    public void updateDescription(final SAD sad) {
-	container.getDisplay().syncExec(new Runnable() {
-	    public void run() {
-		txtName.setText(sad.getName());
-		txtType.setText(sad.getType());
-		txtAbstract.setText(sad.getAbstrct());
-		btnSave.setEnabled(false);
-	    }
-	});
-	container.getDisplay().asyncExec(new Runnable() {
-	    public void run() {
-		btnSave.setEnabled(false);
-		parentViewer.refresh();
-	    }
-	});
-    }
-
-    public void updateModel(final SAD sad) {
-	container.getDisplay().asyncExec(new Runnable() {
-	    public void run() {
-		SAD.Model model;
-		model = sad.getModel();
-		if (model != null) {
-		    // txtModel.setText("" + model.getSize() + "b");
-		    // btnModelDelete.setEnabled(true);
-		    // btnModelDownload.setEnabled(true);
-		    progressModel.setMaximum(model.getSize());
-		    progressModel.setSelection(model.getSize());
-		} else {
-		    // txtModel.setText("None");
-		    // btnModelDelete.setEnabled(false);
-		    // btnModelDownload.setEnabled(false);
-		    progressModel.setSelection(0);
-		}
-		parentViewer.refresh();
-	    }
-	});
-    }
-
-    public void updateDocumentation(final SAD sad) {
-	container.getDisplay().asyncExec(new Runnable() {
-	    public void run() {
-		SAD.Documentation documentation;
-		documentation = sad.getDocumentation();
-		if (documentation != null) {
-		    txtDoc.setText("" + documentation.getSize() + "b");
-		    btnDocDelete.setEnabled(true);
-		    btnDocDownload.setEnabled(true);
-		} else {
-		    txtDoc.setText("None");
-		    btnDocDelete.setEnabled(false);
-		    btnDocDownload.setEnabled(false);
-		}
 		parentViewer.refresh();
 	    }
 	});
@@ -237,8 +184,7 @@ public class SADDialog extends Dialog {
 	    public void modifyText(ModifyEvent event) {
 		container.getDisplay().syncExec(new Runnable() {
 		    public void run() {
-			System.out.println("Text modified.");
-			btnSave.setEnabled(true);
+			textChanged = true;
 		    }
 		});
 	    }
@@ -318,19 +264,19 @@ public class SADDialog extends Dialog {
 	grpModel.setLayoutData(fd_grpModel);
 
 	//
-	Button radioKeep = new Button(grpModel, SWT.RADIO);
-	radioKeep.addSelectionListener(new SelectionAdapter() {
+	radioModelKeep = new Button(grpModel, SWT.RADIO);
+	radioModelKeep.addSelectionListener(new SelectionAdapter() {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 	    }
 	});
-	FormData fd_radio = new FormData();
-	fd_radio.top = new FormAttachment(0, BORDER_MARGIN);
-	fd_radio.left = new FormAttachment(0, BORDER_MARGIN);
-	radioKeep.setLayoutData(fd_radio);
-	radioKeep.setText("Keep existing (currently 'someModel1.sad')");
+	FormData fd_radioModel = new FormData();
+	fd_radioModel.top = new FormAttachment(0, BORDER_MARGIN);
+	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
+	radioModelKeep.setLayoutData(fd_radioModel);
+	radioModelKeep.setText("Keep existing (currently 'someModel1.sad')");
 
-	Button btnModelDownload = new Button(grpModel, SWT.NONE);
+	btnModelDownload = new Button(grpModel, SWT.NONE);
 	btnModelDownload.setText("Download");
 	btnModelDownload.setToolTipText("Downloads the file to disk.");
 	FormData fd_btnModelDownload = new FormData();
@@ -341,41 +287,40 @@ public class SADDialog extends Dialog {
 	btnModelDownload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		controller.deleteModel(id, new UpdateModelCallback());
 	    }
 	});
 
 	//
-	Button radioUpload = new Button(grpModel, SWT.RADIO);
-	radioUpload.addSelectionListener(new SelectionAdapter() {
+	radioModelUpload = new Button(grpModel, SWT.RADIO);
+	radioModelUpload.addSelectionListener(new SelectionAdapter() {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 	    }
 	});
-	fd_radio = new FormData();
-	fd_radio.top = new FormAttachment(radioKeep, BORDER_MARGIN);
-	fd_radio.left = new FormAttachment(0, BORDER_MARGIN);
-	radioUpload.setLayoutData(fd_radio);
-	radioUpload.setText("Upload new file:");
+	fd_radioModel = new FormData();
+	fd_radioModel.top = new FormAttachment(radioModelKeep, BORDER_MARGIN);
+	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
+	radioModelUpload.setLayoutData(fd_radioModel);
+	radioModelUpload.setText("Upload new file:");
 
 	//
-	Button radioDelete = new Button(grpModel, SWT.RADIO);
-	radioDelete.addSelectionListener(new SelectionAdapter() {
+	radioModelDelete = new Button(grpModel, SWT.RADIO);
+	radioModelDelete.addSelectionListener(new SelectionAdapter() {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 	    }
 	});
-	fd_radio = new FormData();
-	fd_radio.top = new FormAttachment(radioUpload, LINE_MARGIN);
-	fd_radio.left = new FormAttachment(0, BORDER_MARGIN);
-	radioDelete.setLayoutData(fd_radio);
-	radioDelete.setText("Delete existing");
+	fd_radioModel = new FormData();
+	fd_radioModel.top = new FormAttachment(radioModelUpload, LINE_MARGIN);
+	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
+	radioModelDelete.setLayoutData(fd_radioModel);
+	radioModelDelete.setText("Delete existing");
 
 	// TODO
 	txtModelLocation = new Text(grpModel, SWT.BORDER);
 	txtModelLocation.setEnabled(false);
 	FormData fd_txtModelLocation = new FormData();
-	fd_txtModelLocation.top = new FormAttachment(radioKeep, 8);
+	fd_txtModelLocation.top = new FormAttachment(radioModelKeep, 8);
 	fd_txtModelLocation.left = new FormAttachment(28);
 	fd_txtModelLocation.right = new FormAttachment(75);
 	txtModelLocation.setLayoutData(fd_txtModelLocation);
@@ -386,14 +331,13 @@ public class SADDialog extends Dialog {
 	btnModelBrowse.setText("Browse...");
 	btnModelBrowse.setToolTipText("Choose a file to be uploaded.");
 	FormData fd_btnModelBrowse = new FormData();
-	fd_btnModelBrowse.top = new FormAttachment(radioKeep, 4);
+	fd_btnModelBrowse.top = new FormAttachment(radioModelKeep, 4);
 	fd_btnModelBrowse.left = new FormAttachment(75, BORDER_MARGIN);
 	fd_btnModelBrowse.right = new FormAttachment(100, -BORDER_MARGIN);
 	btnModelBrowse.setLayoutData(fd_btnModelBrowse);
 	btnModelBrowse.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
-		controller.deleteModel(id, new UpdateModelCallback());
 	    }
 	});
 
@@ -438,6 +382,16 @@ public class SADDialog extends Dialog {
 	button.addSelectionListener(new SelectionAdapter() {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
+		if (true) {
+		    sad.setName(txtName.getText());
+		    sad.setType(txtType.getText());
+		    sad.setAbstrct(txtAbstract.getText());
+		}
+		File modelFile = null;
+		if (radioModelUpload.getSelection())
+		    modelFile = new File(txtModelLocation.getText());
+		
+		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile, false, null, new UpdateCallback());
 	    }
 	});
     }
@@ -447,39 +401,6 @@ public class SADDialog extends Dialog {
 	    try {
 		System.out.println("Updating SAD");
 		SADDialog.this.updateSAD(future.get());
-	    } catch (Exception e) {
-		e.printStackTrace();
-		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);
-	    }
-	}
-    }
-
-    public class UpdateDescriptionCallback implements Callback<SAD> {
-	public void set(Future<SAD> future) {
-	    try {
-		SADDialog.this.updateDescription(future.get());
-	    } catch (Exception e) {
-		e.printStackTrace();
-		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);
-	    }
-	}
-    }
-
-    public class UpdateModelCallback implements Callback<SAD> {
-	public void set(Future<SAD> future) {
-	    try {
-		SADDialog.this.updateModel(future.get());
-	    } catch (Exception e) {
-		e.printStackTrace();
-		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);
-	    }
-	}
-    }
-
-    public class UpdateDocumentationCallback implements Callback<SAD> {
-	public void set(Future<SAD> future) {
-	    try {
-		SADDialog.this.updateDocumentation(future.get());
 	    } catch (Exception e) {
 		e.printStackTrace();
 		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);

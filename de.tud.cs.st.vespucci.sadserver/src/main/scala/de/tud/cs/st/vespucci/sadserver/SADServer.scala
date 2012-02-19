@@ -147,12 +147,13 @@ class TransactionalDescriptionCollectionResource extends RESTInterface with Data
 
   post of XML returns XML {
     Transaction(XMLRequestBody) match {
-      case transaction if transaction.resourceId.isDefined =>
+      case transaction if transaction.resourceId.isDefined => {
         findDescription(transaction.resourceId.get).map(description =>
-          transaction.url = Some(createTemp(description)))
+          transaction.transactionId = Some(createTemp(description)))
         transaction.toXML
+      }
       case transaction =>
-        transaction.url = Some(createTemp(Description()))
+        transaction.transactionId = Some(createTemp(Description()))
         transaction.toXML
     }
   }

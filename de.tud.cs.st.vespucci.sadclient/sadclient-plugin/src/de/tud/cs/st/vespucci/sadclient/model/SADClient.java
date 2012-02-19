@@ -56,17 +56,22 @@ import de.tud.cs.st.vespucci.sadclient.model.http.MultiThreadedHttpClient;
 public class SADClient {
 
     private MultiThreadedHttpClient client;
-    private final static String COLLECTION = "sads";
+    private final static String ROOT = "http://localhost:9000/vespucci";
+    private final static String TRANSACTION = "/transaction";
+    private final static String COLLECTION = "/sads";
     private final static String MODEL = "model";
-    private final static String DOCUMENTATION = "documentation";
+    private final static String DOCUMENTATION = "/documentation";
     private final static String XML = "application/xml";
     private final static String PDF = "application/pdf";
+
+    private final JaxBProcessor processor;
 
     // public List<SADModel> getDescriptionCollection() {
 
     public SADClient() {
 	super();
-	client = new MultiThreadedHttpClient("http://localhost:9000/vespucci/", "somebody", "password");
+	client = new MultiThreadedHttpClient("somebody", "password");
+	processor = new JaxBProcessor();
     }
 
     // SAD-collection //
@@ -74,7 +79,7 @@ public class SADClient {
     public SAD[] getSADCollection() throws SADClientException {
 	System.out.println("Trying to get SADs");
 	SAD[] result = null;
-	HttpResponse response = client.get(COLLECTION);
+	HttpResponse response = client.get(SADUrl());
 	try {
 	    result = new XMLProcessor().parseSADCollection(response.getEntity().getContent());
 	} catch (Exception e) {
@@ -99,16 +104,29 @@ public class SADClient {
 	return result;
     }
 
-    public void putSAD(String id, String name, String type, String abstrct) throws SADClientException {
-	System.out.println("Calling putSAD in client with id " + id);
-	String xml = new XMLProcessor().getXMLDescription(id, name, type, abstrct, false);
-	HttpResponse response = client.put(SADUrl(id), xml, XML);
+    public Transaction startTransaction(String id) throws Exception {
+	Transaction transaction = new Transaction("SAD", null, id, null);
+	HttpResponse response = client.post(SADTransactionUrl(), processor.getXML(transaction), XML);
+	transaction = processor.getTransaction(response.getEntity().getContent());
+	client.consume(response);
+	return transaction;
+    }
+
+    public void commitTransaction(String transactionid) {
+	Transaction transaction = new Transaction();
+	transaction.setTransactionUrl(SADTransactionUrl(transactionid));
+	client.post(transaction.getTransactionUrl(), processor.getXML(transaction), XML);
+    }
+
+    public void putSAD(String transactionId, SAD sad) throws SADClientException {
+	System.out.println("Sending call to update description at " + SADTransactionUrl(transactionId) + " with " + sad);
+	HttpResponse response = client.put(SADTransactionUrl(transactionId), processor.getXML(sad), XML);
 	client.consume(response);
     }
 
-    public void deleteSAD(String id) throws SADClientException {
-	System.out.println("Calling deleteSAD in client with id " + id);
-	HttpResponse response = client.delete(SADUrl(id));
+    public void rollbackTransaction(String transactionId) throws SADClientException {
+	System.out.println("Deleting transaction at " + SADTransactionUrl(transactionId));
+	HttpResponse response = client.delete(SADTransactionUrl(transactionId));
 	client.consume(response);
     }
 
@@ -127,9 +145,15 @@ public class SADClient {
 	client.consume(response);
     }
 
-    public void deleteModel(String id) {
-	System.out.println("Calling deleteModel in client with id " + id);
-	HttpResponse response = client.delete(ModelUrl(id));
+    public void deleteModel(String url) {
+	System.out.println("Calling deleteModel at url " + url);
+	HttpResponse response = client.delete(url + "/" + MODEL);
+	client.consume(response);
+    }
+
+    public void deleteDocumentation(String url) {
+	System.out.println("Calling deleteDocumentation at url " + url);
+	HttpResponse response = client.delete(url + "/" + DOCUMENTATION);
 	client.consume(response);
     }
 
@@ -148,28 +172,34 @@ public class SADClient {
 	client.consume(response);
     }
 
-    public void deleteDocumentation(String id) {
-	System.out.println("Calling deleteDocumentation in client with id " + id);
-	HttpResponse response = client.delete(DocumentationUrl(id));
-	client.consume(response);
-    }
-
     // URLs //
+    
+    private static String SADUrl() {
+   	return ROOT + COLLECTION;
+       }
 
     private static String SADUrl(String id) {
-	return COLLECTION + "/" + id;
+	return ROOT + COLLECTION + "/" + id;
+    }
+
+    private static String SADTransactionUrl() {
+	return ROOT + TRANSACTION + COLLECTION;
+    }
+
+    private static String SADTransactionUrl(String transactionId) {
+	return ROOT + TRANSACTION + COLLECTION + "/" + transactionId;
     }
 
     private static String ModelUrl(String id) {
-	return COLLECTION + "/" + id + "/" + MODEL;
+	return ROOT + COLLECTION + "/" + id + MODEL;
     }
 
     private static String DocumentationUrl(String id) {
-	return COLLECTION + "/" + id + "/" + DOCUMENTATION;
+	return ROOT + COLLECTION + "/" + id + DOCUMENTATION;
     }
 
     // Helper //
-    
+
     private static void writeContents(HttpResponse response, File file) {
 	try {
 	    IOUtils.copy(response.getEntity().getContent(), new FileOutputStream(file));

@@ -128,7 +128,20 @@ case class UserCollection(val userList: List[User]) {
 
 case class Transaction(xml: Elem) {
   def this(xml: String) = this(scala.xml.XML.loadString(xml))
-  def parse(s: String): String = (xml \\ s).text
-  val url = parse("url")
+  def this() = this("<transaction/>")
+  def parse(s: String): Option[String] = { val parsed = (xml \\ s); if (parsed.isEmpty) None else Some(parsed.text.toString) }
+  var transactionResource = parse("transactionResource")
+  var resourceId = parse("resourceId")
+  var transactionId = parse("transactionId")
+  def url =  transactionId.map("http://" + authority + ":" + port + rootPath + transactionalPath + descriptionCollectionPath + "/" + _)
+
+  def toXML: scala.xml.Elem = {
+    <transaction>
+      { if (transactionResource.isDefined) <transactionResource>{ transactionResource.get }</transactionResource> }
+      { if (resourceId.isDefined) <resourceId>{ resourceId.get }</resourceId> }
+      { if (transactionId.isDefined) <transactionId>{ transactionId.get }</transactionId> }
+      { if (transactionId.isDefined) <transactionUrl>{ url.get }</transactionUrl> }
+    </transaction>
+  }
 }
 
