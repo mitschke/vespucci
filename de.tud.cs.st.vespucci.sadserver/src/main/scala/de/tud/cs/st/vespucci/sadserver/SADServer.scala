@@ -40,8 +40,8 @@ object SADServer
   with DatabaseAccess
   with ShutdownListener
   with Logging {
-  
- logger.info("Starting Software Architecture Description Server...")
+
+  logger.info("Starting Software Architecture Description Server...")
 
   startDatabase()
 
@@ -50,46 +50,41 @@ object SADServer
     def create = new RootResource
   }
 
+  // Description Resource //
   this register new HandlerFactory[DescriptionCollectionResource] {
     path { rootPath + descriptionCollectionPath }
     def create = new DescriptionCollectionResource with RestrictWriteToRegisteredUsers
   }
-
   this register new HandlerFactory[DescriptionResource] {
     path { rootPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
     def create = new DescriptionResource with RestrictWriteToRegisteredUsers
   }
-
   this register new HandlerFactory[DescriptionModelResource] {
     path { rootPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
-    def create = new DescriptionModelResource with RestrictWriteToRegisteredUsers
+    def create = new DescriptionModelResource
   }
-
   this register new HandlerFactory[DescriptionDocumentationResource] {
     path { rootPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
-    def create = new DescriptionDocumentationResource with RestrictWriteToRegisteredUsers
+    def create = new DescriptionDocumentationResource
   }
 
-  //
+  // Transactional Descriptions //
   this register new HandlerFactory[TransactionalDescriptionCollectionResource] {
     path { rootPath + transactionalPath + descriptionCollectionPath }
     def create = new TransactionalDescriptionCollectionResource with RestrictWriteToRegisteredUsers
   }
-
   this register new HandlerFactory[TempDescriptionResource] {
     path { rootPath + transactionalPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
     def create = new TempDescriptionResource with RestrictWriteToRegisteredUsers
   }
-
   this register new HandlerFactory[TempModelResource] {
     path { rootPath + transactionalPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: modelPath }
     def create = new TempModelResource with RestrictWriteToRegisteredUsers
   }
-
-  //  this register new HandlerFactory[TempDocumentationResource] {
-  //    path { rootPath + transactionalPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
-  //    def create = new TempDocumentationResource with RestrictWriteToRegisteredUsers
-  //  }
+  this register new HandlerFactory[TempDocumentationResource] {
+    path { rootPath + transactionalPath + descriptionCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) :: documentationPath }
+    def create = new TempDocumentationResource with RestrictWriteToRegisteredUsers
+  }
 
   //
   this register new HandlerFactory[UserCollectionResource] {
@@ -146,16 +141,13 @@ class DescriptionDocumentationResource extends RESTInterface with DatabaseAccess
 
 }
 
-////////////////////////////////////////////////////////Obj///////////////////////////////////////////////////////
+//////////////////////////////////////////////// TransactionResource /////////////////////////////////////////////
 
 class TransactionalDescriptionCollectionResource extends RESTInterface with DatabaseAccess with TempDescription with XMLSupport with MultipartSupport {
 
   post of XML returns XML {
     XMLRequestBody match {
-      case <id>{ id }</id> => findDescription(id.toString) match {
-        case Some(description) => <url>{ createTemp(description) }</url>
-        case None => None
-      }
+      case <id>{ id }</id> => findDescription(id.toString).map(description => <url>{ createTemp(description) }</url>)
       case _ => <url>{ createTemp(Description()) }</url>
     }
   }
