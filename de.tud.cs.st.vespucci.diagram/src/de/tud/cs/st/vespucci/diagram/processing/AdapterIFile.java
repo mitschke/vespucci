@@ -96,7 +96,7 @@ public class AdapterIFile implements IAdapterFactory {
 		return null;
 	}
 
-	private IArchitectureModel createArchitectureModel(IFile diagramFile) {
+	private static IArchitectureModel createArchitectureModel(IFile diagramFile) {
 
 		ShapesDiagram diagram = Util.adapt(diagramFile, ShapesDiagram.class);
 
@@ -122,13 +122,13 @@ public class AdapterIFile implements IAdapterFactory {
 				}
 			}
 			return new ArchitectureModel(ensembles, contraints, diagramFile
-					.getFullPath().toPortableString());
+					.getFullPath().makeAbsolute().toPortableString());
 		}
 
 		return null;
 	}
 
-	private ShapesDiagram createDiagram(IFile diagramFile) {
+	private static ShapesDiagram createDiagram(IFile diagramFile) {
 
 		final XMIResourceImpl diagramResource = new XMIResourceImpl();
 
