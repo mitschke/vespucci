@@ -60,6 +60,7 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 		if (markers.containsKey(element)){
 			try {
 				markers.get(element).delete();
+				markers.remove(element);
 			} catch (CoreException e) {
 				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
