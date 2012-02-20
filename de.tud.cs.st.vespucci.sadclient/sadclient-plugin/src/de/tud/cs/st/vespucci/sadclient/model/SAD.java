@@ -50,24 +50,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SAD {
 
     private String id;
-   private String modified;
+    private String modified;
     private String name;
-    private String type;    
+    private String type;
     private String abstrct;
     private Model model;
     private Documentation documentation;
     private boolean wip;
-    
-    @XmlAttribute 
+
+    @XmlAttribute
     public String getModified() {
-        return modified;
+	return modified;
     }
 
     public void setModified(String modified) {
-        this.modified = modified;
+	this.modified = modified;
     }
-    
-    @XmlAttribute 
+
+    @XmlAttribute
     public String getId() {
 	return id;
     }
@@ -108,7 +108,7 @@ public class SAD {
 	this.type = type;
     }
 
-    @XmlElement(name = "abstract")  
+    @XmlElement(name = "abstract")
     public String getAbstrct() {
 	return abstrct;
     }
@@ -211,7 +211,7 @@ public class SAD {
 	private String name;
 	private String url;
 
-	@XmlAttribute 
+	@XmlAttribute
 	public String getName() {
 	    return name;
 	}
@@ -220,7 +220,7 @@ public class SAD {
 	    this.name = name;
 	}
 
-	@XmlAttribute 
+	@XmlAttribute
 	public int getSize() {
 	    return size;
 	}
@@ -277,7 +277,7 @@ public class SAD {
 	}
 
     }
-    
+
     @XmlRootElement(name = "description")
     public static class Documentation {
 
@@ -285,16 +285,16 @@ public class SAD {
 	private String name;
 	private String url;
 
-	@XmlAttribute 
+	@XmlAttribute
 	public int getSize() {
 	    return size;
 	}
-	
+
 	public void setSize(int size) {
 	    this.size = size;
 	}
 
-	@XmlAttribute 
+	@XmlAttribute
 	public String getName() {
 	    return name;
 	}

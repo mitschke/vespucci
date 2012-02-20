@@ -37,13 +37,11 @@
 package de.tud.cs.st.vespucci.sadclient.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.apache.commons.io.IOUtils;
 
 import de.tud.cs.st.vespucci.sadclient.model.http.MultiThreadedHttpClient;
 
@@ -64,14 +62,14 @@ public class SADClient {
     private final static String XML = "application/xml";
     private final static String PDF = "application/pdf";
 
-    private final JaxBProcessor processor;
+    private final XmlProcessor xmlProcessor;
 
     // public List<SADModel> getDescriptionCollection() {
 
     public SADClient() {
 	super();
 	client = new MultiThreadedHttpClient("somebody", "password");
-	processor = new JaxBProcessor();
+	xmlProcessor = new XmlProcessor();
     }
 
     // SAD-collection //
@@ -81,7 +79,7 @@ public class SADClient {
 	SAD[] result = null;
 	HttpResponse response = client.get(SADUrl());
 	try {
-	    result = new XMLProcessor().parseSADCollection(response.getEntity().getContent());
+	    result = xmlProcessor.getSADCollection(response.getEntity().getContent());
 	} catch (Exception e) {
 	    throw new SADClientException(e);
 	}
@@ -96,7 +94,7 @@ public class SADClient {
 	SAD result = null;
 	HttpResponse response = client.get(SADUrl(id));
 	try {
-	    result = new XMLProcessor().parseSAD(response.getEntity().getContent());
+	    result = xmlProcessor.getSAD(response.getEntity().getContent());
 	} catch (Exception e) {
 	    throw new SADClientException(e);
 	}
@@ -106,8 +104,8 @@ public class SADClient {
 
     public Transaction startTransaction(String id) throws Exception {
 	Transaction transaction = new Transaction("SAD", null, id, null);
-	HttpResponse response = client.post(SADTransactionUrl(), processor.getXML(transaction), XML);
-	transaction = processor.getTransaction(response.getEntity().getContent());
+	HttpResponse response = client.post(SADTransactionUrl(), xmlProcessor.getXML(transaction), XML);
+	transaction = xmlProcessor.getTransaction(response.getEntity().getContent());
 	client.consume(response);
 	return transaction;
     }
@@ -115,12 +113,12 @@ public class SADClient {
     public void commitTransaction(String transactionid) {
 	Transaction transaction = new Transaction();
 	transaction.setTransactionUrl(SADTransactionUrl(transactionid));
-	client.post(transaction.getTransactionUrl(), processor.getXML(transaction), XML);
+	client.post(transaction.getTransactionUrl(), xmlProcessor.getXML(transaction), XML);
     }
 
     public void putSAD(String transactionId, SAD sad) throws SADClientException {
 	System.out.println("Sending call to update description at " + SADTransactionUrl(transactionId) + " with " + sad);
-	HttpResponse response = client.put(SADTransactionUrl(transactionId), processor.getXML(sad), XML);
+	HttpResponse response = client.put(SADTransactionUrl(transactionId), xmlProcessor.getXML(sad), XML);
 	client.consume(response);
     }
 

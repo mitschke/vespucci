@@ -69,8 +69,6 @@ public class Controller {
     private ExecutorService pool;
     private Future<SAD[]> sadCollectionFuture;
 
-    private MultiThreadedHttpClient client;
-
     private Controller() {
 	pool = Executors.newFixedThreadPool(4);
 	sadClient = new SADClient();
