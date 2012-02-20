@@ -276,8 +276,7 @@ public class SADDialog extends Dialog {
 	fd_radioModel.top = new FormAttachment(0, BORDER_MARGIN);
 	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
 	radioModelKeep.setLayoutData(fd_radioModel);
-	radioModelKeep.setText("Keep existing (currently 'someModel1.sad')");
-
+	radioModelKeep.setText("Keep existing (currently '                             ')");
 	btnModelDownload = new Button(grpModel, SWT.NONE);
 	btnModelDownload.setText("Download");
 	btnModelDownload.setToolTipText("Downloads the file to disk.");
@@ -312,18 +311,6 @@ public class SADDialog extends Dialog {
 	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
 	radioModelUpload.setLayoutData(fd_radioModel);
 	radioModelUpload.setText("Upload new file:");
-	radioModelUpload.addSelectionListener(new SelectionAdapter() {
-	    @Override
-	    public void widgetSelected(SelectionEvent e) {
-		container.getDisplay().asyncExec(new Runnable() {
-		    @Override
-		    public void run() {
-			System.out.println("Selecting file to upload");
-			txtModelLocation.setText(openUploadDialog().getAbsolutePath());
-		    }
-		});
-	    }
-	});
 
 	//
 	radioModelDelete = new Button(grpModel, SWT.RADIO);
@@ -340,7 +327,6 @@ public class SADDialog extends Dialog {
 
 	// TODO
 	txtModelLocation = new Text(grpModel, SWT.BORDER);
-	txtModelLocation.setEnabled(false);
 	FormData fd_txtModelLocation = new FormData();
 	fd_txtModelLocation.top = new FormAttachment(radioModelKeep, 8);
 	fd_txtModelLocation.left = new FormAttachment(28);
@@ -349,7 +335,7 @@ public class SADDialog extends Dialog {
 	txtModelLocation.addModifyListener(new DescriptionModifyListener());
 
 	btnModelBrowse = new Button(grpModel, SWT.NONE);
-	btnModelBrowse.setEnabled(false);
+	btnModelBrowse.setEnabled(true);
 	btnModelBrowse.setText("Browse...");
 	btnModelBrowse.setToolTipText("Choose a file to be uploaded.");
 	FormData fd_btnModelBrowse = new FormData();
@@ -360,6 +346,15 @@ public class SADDialog extends Dialog {
 	btnModelBrowse.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
+		container.getDisplay().asyncExec(new Runnable() {
+		    @Override
+		    public void run() {
+			System.out.println("Selecting file to upload");
+			File uploadLocation = openUploadDialog("sad");
+			if (uploadLocation != null)
+			    txtModelLocation.setText(uploadLocation.getAbsolutePath());
+		    }
+		});
 	    }
 	});
 
@@ -368,14 +363,13 @@ public class SADDialog extends Dialog {
 	return container;
     }
 
-    private File openUploadDialog() {
+    private File openUploadDialog(String fileType) {
 	FileDialog fileDialog = new FileDialog(getShell());
-	fileDialog.setFilterExtensions(new String[] { "*.sad" });
-	fileDialog.setFilterNames(new String[] { "*.sad" });
-	fileDialog.setText("Please select a software architecture description file!");
+	fileDialog.setFilterExtensions(new String[] { "*." + fileType });
+	fileDialog.setFilterNames(new String[] { "*." + fileType });
+	fileDialog.setText("Please select a " + fileType + "-file to upload!");
 	String selectedFile = fileDialog.open();
 	if (selectedFile != null) {
-	    System.out.println(selectedFile + " was selected.");
 	    return new File(selectedFile);
 	}
 	return null;
@@ -427,6 +421,7 @@ public class SADDialog extends Dialog {
 
 		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile, false, null,
 			new UpdateCallback());
+		getShell().dispose();
 	    }
 	});
     }

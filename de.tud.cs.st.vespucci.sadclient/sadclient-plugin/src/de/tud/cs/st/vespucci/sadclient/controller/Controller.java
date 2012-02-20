@@ -170,7 +170,7 @@ public class Controller {
 
     public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
 	    final File modelFile, final boolean deleteDoc, final File docFile, final Callback<SAD> callback) {
-	Job job = new Job("Storing SAD") {
+	Job job = new Job("Uploading changes SADServer...") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		String transactionId = null;
