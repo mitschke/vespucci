@@ -145,38 +145,56 @@ public class VespucciChangeProvider {
 
 	}
 
-	protected void fireArchitectureFileAdded(IProject project,
-			IResource resource) {
+	protected void fireArchitectureFileAdded(final IProject project,
+			final IResource resource) {
 		if (!diagramObservers.containsKey(project))
 			return;
-		Set<IArchitectureObserver> projectObservers = diagramObservers
-				.get(project);
-		for (IArchitectureObserver observer : projectObservers) {
-			observer.architectureDiagramAdded(project);
-		}
+		
+		WorkspaceJob job = new ArchitectureFileWorkspaceJob("sad diagram changed", project) {
+
+			@Override
+			protected void notifyObserver(IArchitectureObserver observer) {
+				observer.architectureDiagramAdded(resource);
+			}
+			
+		};
+
+		job.schedule();
 	}
 
-	protected void fireArchitectureFileRemoved(IProject project,
-			IResource resource) {
+	protected void fireArchitectureFileRemoved(final IProject project,
+			final IResource resource) {
 		if (!diagramObservers.containsKey(project))
 			return;
-		Set<IArchitectureObserver> projectObservers = diagramObservers
-				.get(project);
-		for (IArchitectureObserver observer : projectObservers) {
-			observer.architectureDiagramRemoved(resource);
-		}
+
+		WorkspaceJob job = new ArchitectureFileWorkspaceJob("sad diagram changed", project) {
+
+			@Override
+			protected void notifyObserver(IArchitectureObserver observer) {
+				observer.architectureDiagramRemoved(resource);
+			}
+			
+		};
+
+		job.schedule();
 	}
 
-	protected void fireArchitectureFileChanged(IProject project,
-			IResource resource) {
+	protected void fireArchitectureFileChanged(final IProject project,
+			final IResource resource) {
 		if (!diagramObservers.containsKey(project))
 			return;
-		Set<IArchitectureObserver> projectObservers = diagramObservers
-				.get(project);
-		for (IArchitectureObserver observer : projectObservers) {
-			observer.architectureDiagramChanged(resource);
-		}
+		
 
+		WorkspaceJob job = new ArchitectureFileWorkspaceJob("sad diagram changed", project) {
+
+			@Override
+			protected void notifyObserver(IArchitectureObserver observer) {
+				observer.architectureDiagramChanged(resource);
+			}
+			
+		};
+
+		job.schedule();
 	}
 	
 	
@@ -204,6 +222,33 @@ public class VespucciChangeProvider {
 		}
 		
 		protected abstract void notifyObserver(IClassFileObserver observer);
+		
+	}
+	
+	private abstract class ArchitectureFileWorkspaceJob extends WorkspaceJob {
+
+		private final IProject project;
+		
+		public ArchitectureFileWorkspaceJob(String name, IProject project) {
+			super(name);
+			this.project = project;
+		}
+
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor)
+				throws CoreException {
+			monitor.beginTask(getName(), diagramObservers.size());
+			Set<IArchitectureObserver> projectObservers = diagramObservers
+					.get(project);
+			for (IArchitectureObserver observer : projectObservers) {
+				notifyObserver(observer);
+				monitor.worked(1);
+			}
+			monitor.done();
+			return Status.OK_STATUS;
+		}
+		
+		protected abstract void notifyObserver(IArchitectureObserver observer);
 		
 	}
 }

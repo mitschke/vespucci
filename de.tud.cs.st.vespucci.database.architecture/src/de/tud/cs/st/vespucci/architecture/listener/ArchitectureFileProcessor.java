@@ -86,7 +86,7 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 	public void addConstraintModel(IResource resource) {
 		doDatabaseAddition(resource, false);
 		doShadowFileAddition(resource);
-		
+		registeredModels.add(resource.getFullPath().toString());
 	}
 
 	public void deleteConstraintModel(IResource resource) {
