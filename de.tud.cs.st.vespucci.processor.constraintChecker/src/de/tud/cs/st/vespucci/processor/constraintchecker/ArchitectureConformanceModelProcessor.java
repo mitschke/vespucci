@@ -29,7 +29,9 @@ public class ArchitectureConformanceModelProcessor implements IModelProcessor {
 
 		UnissonDatabase db = ArchitectureDatabaseProvider.getInstance().getArchitectureDatabase(project);
 		
-		ViolationView violationView = new ViolationView(db.violations());
+		SummaryView summaryView = new SummaryView(db.violation_summary());
+		
+		ViolationView violationView = new ViolationView(db.violations(), summaryView);
 		
 		ArchitectureDatabaseProvider.getInstance().initializeDatabase(project);
 		

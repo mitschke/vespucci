@@ -8,7 +8,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.tud.cs.st.vespucci.database.architecture.provider,
+Import-Package: com.google.common.collect;version="0.0.0.r09",
+ de.tud.cs.st.vespucci.database.architecture.provider,
  de.tud.cs.st.vespucci.diagram.processing,
  de.tud.cs.st.vespucci.interfaces,
  de.tud.cs.st.vespucci.utilities,

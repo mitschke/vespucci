@@ -26,11 +26,14 @@ public class ViolationView implements IViolationView, Observer<IViolation>
 
 	private LazyView<IViolation> violations;
 	
+	private IDataView<IViolationSummary> summaryView;
+	
 	private Set<IDataViewObserver<IViolation>> observers;
 
 	
-	public ViolationView(LazyView<IViolation> violations) {
+	public ViolationView(LazyView<IViolation> violations, IDataView<IViolationSummary> summaryView) {
 		this.violations = violations;
+		this.summaryView = summaryView;
 		observers = new HashSet<IDataViewObserver<IViolation>>();
 		this.violations.addObserver(this);
 	}
@@ -62,7 +65,8 @@ public class ViolationView implements IViolationView, Observer<IViolation>
 
 	@Override
 	public void added(IViolation arg0) {
-		System.out.println("added: " + arg0);
+		
+		//System.out.println("  added: " + arg0);
 		
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.added(arg0);
@@ -72,7 +76,7 @@ public class ViolationView implements IViolationView, Observer<IViolation>
 	@Override
 	public void removed(IViolation arg0) {
 		
-		System.out.println("removed: " + arg0);
+		//System.out.println("removed: " + arg0);
 		
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.deleted(arg0);
@@ -81,8 +85,8 @@ public class ViolationView implements IViolationView, Observer<IViolation>
 
 	@Override
 	public void updated(IViolation arg0, IViolation arg1) {
-		
-		System.out.println("updated: " + arg0);
+
+		//System.out.println("updated: " + arg0 + " => " + arg1);
 		
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.updated(arg0, arg1);
@@ -91,7 +95,7 @@ public class ViolationView implements IViolationView, Observer<IViolation>
 
 	@Override
 	public IDataView<IViolationSummary> getSummaryView() {
-		return new SummaryView();
+		return summaryView;
 	}
 
 }
