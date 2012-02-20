@@ -198,6 +198,10 @@ class TempModelResource extends RESTInterface with TempDescription with Multipar
     })
   }
 
+  delete {
+    getTemp(id).map(_.model = None)
+    true
+  }
 }
 
 class TempDocumentationResource extends RESTInterface with TempDescription with MultipartSupport with XMLSupport {
@@ -209,6 +213,11 @@ class TempDocumentationResource extends RESTInterface with TempDescription with 
       d.documentation = Some(new Documentation(dataPart(MediaType.APPLICATION_PDF)))
       d.toXML
     })
+  }
+
+  delete {
+    getTemp(id).map(_.documentation = None)
+    true
   }
 
 }

@@ -155,7 +155,9 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
               execute("INSERT INTO sads VALUES('%s', ?, ?, ?, ?, ?, ?, ?, ?, ?)" format description.id)
               logger.info("Created new SAD [%s]" format description)
             case Some(modified: Timestamp) if (modified.after(remoteModified)) =>
-              throw new RuntimeException("Edit collision") // TODO
+              val message = "Conflict. Stored version is from %s, but your version is from %s".format(modified.toString, remoteModified.toString())
+              logger.warn(message)
+              throw new RuntimeException(message) // TODO
             case Some(modified: Timestamp) =>
               execute("UPDATE sads SET name = ?, type = ?, abstract = ?, modelName = ?, model = ?, documentationName = ?, documentation = ?, wip = ?, modified = ? WHERE id = '%s'" format description.id)
               logger.info("Updated SAD [%s]" format description)

@@ -278,7 +278,7 @@ public class SAD {
 
     }
 
-    @XmlRootElement(name = "description")
+    @XmlRootElement(name = "documentation")
     public static class Documentation {
 
 	private int size;

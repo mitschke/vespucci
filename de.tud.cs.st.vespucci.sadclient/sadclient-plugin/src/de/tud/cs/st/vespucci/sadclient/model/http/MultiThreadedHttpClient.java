@@ -24,6 +24,9 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -31,12 +34,11 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import de.tud.cs.st.vespucci.sadclient.Activator;
+
 
 /**
  * Thread-safe wrapper around the {@link DefaultHttpClient} using a
@@ -160,6 +162,22 @@ public class MultiThreadedHttpClient {
 	// expectStatusCode(response, 200);
 	return response;
     }
+    
+    public HttpResponse putAsMultipart(String url, String fieldName, File file, String mimeType, IProgressMonitor progressMonitor) {
+   	MultipartEntity multipartEntity = new MultipartEntity();
+   	ContentBody contentBody = new FileBody(file, mimeType, "UTF-8");
+   	multipartEntity.addPart(fieldName, contentBody);
+//   	HttpEntity upstreamEntity = new FileEntityWithProgress(file, mimeType, progressMonitor);
+   	HttpEntity upstreamEntity = multipartEntity;
+   	HttpResponse response = put(url, upstreamEntity);
+   	try {
+   	    EntityUtils.consume(upstreamEntity);
+   	} catch (IOException e) {
+   	    throw new HttpClientException(e);
+   	}
+   	// expectStatusCode(response, 200);
+   	return response;
+       }
 
     public HttpResponse put(String url, HttpEntity entity) {
 	HttpResponse response = null;

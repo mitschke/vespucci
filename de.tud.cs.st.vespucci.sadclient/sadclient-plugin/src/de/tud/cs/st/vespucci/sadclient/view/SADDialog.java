@@ -107,7 +107,7 @@ public class SADDialog extends Dialog {
     private Button btnDocDownload;
     private boolean textChanged;
     private Composite composite;
-    
+
     private SAD sad;
 
     public SADDialog(Viewer parent, String id) {
@@ -121,7 +121,7 @@ public class SADDialog extends Dialog {
 	container.getDisplay().syncExec(new Runnable() {
 
 	    public void run() {
-		
+
 		System.out.println("Opening SAD: " + sad);
 
 		txtName.setText(sad.getName());
@@ -130,25 +130,27 @@ public class SADDialog extends Dialog {
 		SAD.Model model = sad.getModel();
 
 		if (model != null) {
-//		    progressModel.setMaximum(model.getSize());
-//		    progressModel.setSelection(model.getSize());
+		    // progressModel.setMaximum(model.getSize());
+		    // progressModel.setSelection(model.getSize());
 		    radioModelKeep.setText("Keep existing (Currently '" + model.getName() + "')");
 		    btnModelDownload.setEnabled(true);
 		} else {
 		    radioModelKeep.setText("Keep existing (Nothing uploaded)");
 		    btnModelDownload.setEnabled(false);
-//		    progressModel.setSelection(0);
+		    // progressModel.setSelection(0);
 		}
 
 		SAD.Documentation doc = sad.getDocumentation();
 		if (doc != null) {
-//		    radioModelKeep.setText("Keep existing (Currently '" + doc.getName() + "')"); TODO
-//		    btnDocDownload.setEnabled(true);
+		    // radioModelKeep.setText("Keep existing (Currently '" +
+		    // doc.getName() + "')"); TODO
+		    // btnDocDownload.setEnabled(true);
 		} else {
-//		    radioModelKeep.setText("Keep existing (Nothing uploaded)"); TODO
-//		    btnDocDownload.setEnabled(false);
+		    // radioModelKeep.setText("Keep existing (Nothing uploaded)");
+		    // TODO
+		    // btnDocDownload.setEnabled(false);
 		}
-		
+
 		SADDialog.this.sad = sad;
 	    }
 	});
@@ -302,6 +304,18 @@ public class SADDialog extends Dialog {
 	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
 	radioModelUpload.setLayoutData(fd_radioModel);
 	radioModelUpload.setText("Upload new file:");
+	radioModelUpload.addSelectionListener(new SelectionAdapter() {
+	    @Override
+	    public void widgetSelected(SelectionEvent e) {
+		container.getDisplay().asyncExec(new Runnable() {
+		    @Override
+		    public void run() {
+			System.out.println("Selecting file to upload");
+			txtModelLocation.setText(openUploadDialog().getAbsolutePath());
+		    }
+		});
+	    }
+	});
 
 	//
 	radioModelDelete = new Button(grpModel, SWT.RADIO);
@@ -390,8 +404,9 @@ public class SADDialog extends Dialog {
 		File modelFile = null;
 		if (radioModelUpload.getSelection())
 		    modelFile = new File(txtModelLocation.getText());
-		
-		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile, false, null, new UpdateCallback());
+
+		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile, false, null,
+			new UpdateCallback());
 	    }
 	});
     }

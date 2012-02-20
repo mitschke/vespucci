@@ -81,12 +81,8 @@ public class XmlProcessor {
 	}
     }
 
-    public SAD getSAD(InputStream inputStream) {
-	try {
+    public SAD getSAD(InputStream inputStream) throws JAXBException {
 	    return (SAD) sadUnmarshaller.unmarshal(inputStream);
-	} catch (JAXBException e) {
-	    return null;
-	}
     }
 
     public String getXML(SAD sad) {
@@ -109,13 +105,8 @@ public class XmlProcessor {
 	}
     }
 
-    public SAD[] getSADCollection(InputStream inputStream) {
-	try {
+    public SAD[] getSADCollection(InputStream inputStream) throws JAXBException {
 	    return ((SADCollection) sadCollectionUnmarshaller.unmarshal(inputStream)).getSads().toArray(new SAD[0]);
-	} catch (JAXBException e) {
-	    e.printStackTrace();
-	    throw new RuntimeException(e);
-	}
     }
 
 }

@@ -54,7 +54,6 @@ import de.tud.cs.st.vespucci.sadclient.model.SAD;
 import de.tud.cs.st.vespucci.sadclient.model.SADClient;
 import de.tud.cs.st.vespucci.sadclient.model.SADClientException;
 import de.tud.cs.st.vespucci.sadclient.model.Transaction;
-import de.tud.cs.st.vespucci.sadclient.model.http.MultiThreadedHttpClient;
 
 /**
  * The me Responsible for starting computations in a separate thread.
@@ -246,7 +245,7 @@ public class Controller {
 		   transactionId = transaction.getTransactionId();
 		    try {
 			if (descriptionChanged) {
-			    sadClient.putSAD(transactionId, sad);
+			    sadClient.storeSAD(transactionId, sad);
 			}
 			if (deleteModel) {
 			    sadClient.deleteModel(transactionId);
@@ -261,7 +260,7 @@ public class Controller {
 			sadClient.commitTransaction(transactionId);
 		    } catch (Exception e) {
 			sadClient.rollbackTransaction(transactionId);
-			 return new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Edit collision!");
+			 return new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage());
 		    }
 		} catch (Exception e) {
 		    e.printStackTrace();
