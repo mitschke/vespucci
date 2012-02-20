@@ -27,7 +27,7 @@ public class StateLocationCopyService {
 	/**
 	 * @return the stateLocation
 	 */
-	protected IPath getStateLocation() {
+	public IPath getStateLocation() {
 		return stateLocation;
 	}
 
