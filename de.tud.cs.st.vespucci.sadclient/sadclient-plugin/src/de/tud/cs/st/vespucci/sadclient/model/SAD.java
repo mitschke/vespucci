@@ -50,13 +50,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SAD {
 
     private String id;
-    private String modified;
-    private String name;
-    private String type;
-    private String abstrct;
+    private String modified = "";
+    private String name = "";
+    private String type = "";
+    private String abstrct = "";
     private Model model;
     private Documentation documentation;
-    private boolean wip;
+    private boolean wip = false;
 
     @XmlAttribute
     public String getModified() {

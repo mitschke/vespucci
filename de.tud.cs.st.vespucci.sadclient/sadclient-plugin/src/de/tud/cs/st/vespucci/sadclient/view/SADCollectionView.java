@@ -36,6 +36,9 @@
  */
 package de.tud.cs.st.vespucci.sadclient.view;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -43,6 +46,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -60,14 +64,13 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import de.tud.cs.st.vespucci.sadclient.Activator;
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
@@ -82,7 +85,7 @@ public class SADCollectionView extends ViewPart {
     public static final String ID = "de.tud.cs.st.vespucci.sadclient.views.SADCollectionView";
 
     private TableViewer viewer;
-    private Action action1;
+    private Action actionCreate;
     private Action actionRefresh;
     private Action doubleClickAction;
 
@@ -118,7 +121,8 @@ public class SADCollectionView extends ViewPart {
     }
 
     /**
-     *  Provides the labels for Model and Documentation, no labels for the other columns
+     * Provides the labels for Model and Documentation, no labels for the other
+     * columns
      */
     class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 
@@ -219,21 +223,22 @@ public class SADCollectionView extends ViewPart {
     private void makeActions() {
 
 	// action 1
-	action1 = new Action() {
+	actionCreate = new Action() {
 	    public void run() {
-		showMessage("Action 1 executed");
+		Dialog dialog = new SADDialog(viewer, new SAD());
+		dialog.open();
 	    }
 	};
-	action1.setText("Action 1");
-	action1.setToolTipText("Action 1 tooltip");
-	action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-		.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+	actionCreate.setText("Create new SAD");
+	actionCreate.setToolTipText("Creates a new SAD.");
+	actionCreate.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+		.getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 
-	// action 2
+	//
+
 	actionRefresh = new Action() {
 	    public void run() {
 		viewer.refresh();
-		showMessage("Refresh executed");
 	    }
 	};
 	actionRefresh.setText("Refresh");
@@ -253,13 +258,12 @@ public class SADCollectionView extends ViewPart {
 
 	// local pulldown menu
 	IMenuManager menuManager = getViewSite().getActionBars().getMenuManager();
-	menuManager.add(action1);
-	menuManager.add(new Separator());
+	menuManager.add(actionCreate);
 	menuManager.add(actionRefresh);
 
 	// local toolbar
 	IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
-	toolBarManager.add(action1);
+	toolBarManager.add(actionCreate);
 	toolBarManager.add(actionRefresh);
 
 	// local pulldown menu
@@ -267,7 +271,7 @@ public class SADCollectionView extends ViewPart {
 	menuMgr.setRemoveAllWhenShown(true);
 	menuMgr.addMenuListener(new IMenuListener() {
 	    public void menuAboutToShow(IMenuManager manager) {
-		manager.add(action1);
+		manager.add(actionCreate);
 		manager.add(actionRefresh);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -287,7 +291,7 @@ public class SADCollectionView extends ViewPart {
 		Object object = selection.getFirstElement();
 		System.out.println("Type of selection: " + object.getClass());
 		if (object instanceof SAD) {
-		    Dialog dialog = new SADDialog(viewer, ((SAD) object).getId());
+		    Dialog dialog = new SADDialog(viewer, (SAD) object);
 		    dialog.open();
 		} else {
 		    System.err.println("Selection-type unknown!");

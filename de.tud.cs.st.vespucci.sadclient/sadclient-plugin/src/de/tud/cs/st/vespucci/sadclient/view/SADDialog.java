@@ -82,7 +82,6 @@ public class SADDialog extends Dialog {
     private Composite container;
     final private Controller controller = Controller.getInstance();
 
-    final private String id;
     private Text txtName;
     private Text txtType;
     private Text txtAbstract;
@@ -119,12 +118,12 @@ public class SADDialog extends Dialog {
     final int MODEL_SPACE = 75;
     final int DOCUMENTATION_SPACE = 100;
 
-    private SAD sad;
+    private final SAD sad;
 
-    public SADDialog(Viewer parent, String id) {
+    public SADDialog(Viewer parent, SAD sad) {
 	super(parent.getControl().getShell());
 	this.parentViewer = parent;
-	this.id = id;
+	this.sad = sad;
     }
 
     @Override
@@ -132,7 +131,7 @@ public class SADDialog extends Dialog {
 	return new Point(650, 570);
     }
 
-    public void updateSAD(final SAD sad) {
+    public void updateSAD() {
 
 	container.getDisplay().syncExec(new Runnable() {
 
@@ -160,7 +159,6 @@ public class SADDialog extends Dialog {
 		    btnDocumentationDownload.setEnabled(false);
 		}
 
-		SADDialog.this.sad = sad;
 	    }
 	});
 	container.getDisplay().asyncExec(new Runnable() {
@@ -287,7 +285,7 @@ public class SADDialog extends Dialog {
 
 	radioDocumentationDelete = createDeleteRadio(grpDocumentation, radioDocumentationUpload);
 
-	controller.getSAD(id, new UpdateCallback());
+	updateSAD();
 
 	return container;
     }
@@ -447,21 +445,9 @@ public class SADDialog extends Dialog {
 		    documentationFile = new File(txtDocumentationLocation.getText());
 
 		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile,
-			radioDocumentationDelete.getSelection(), documentationFile, new UpdateCallback());
+			radioDocumentationDelete.getSelection(), documentationFile, null);
 	    }
 	});
-    }
-
-    public class UpdateCallback implements Callback<SAD> {
-	public void set(Future<SAD> future) {
-	    try {
-		System.out.println("Updating SAD");
-		SADDialog.this.updateSAD(future.get());
-	    } catch (Exception e) {
-		e.printStackTrace();
-		IconAndMessageDialogs.showErrorDialog(getShell(), "There was a problem updating the view: " + e);
-	    }
-	}
     }
 
     public class ProgressMonitor extends NullProgressMonitor {
