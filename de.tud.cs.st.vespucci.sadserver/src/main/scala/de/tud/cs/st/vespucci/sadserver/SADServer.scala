@@ -177,6 +177,7 @@ class TempDescriptionResource extends RESTInterface with TempDescription with Da
       tempDesc.name = newDesc.name
       tempDesc.`type` = newDesc.`type`
       tempDesc.`abstract` = newDesc.`abstract`
+      tempDesc.wip = newDesc.wip
       tempDesc.toXML
     })
   }

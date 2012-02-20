@@ -49,31 +49,27 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import de.tud.cs.st.vespucci.sadclient.concurrent.Callback;
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
 /**
- * 
+ * Dialog for managing SADs.
  * 
  * @author Mateusz Parzonka
  * 
@@ -99,6 +95,14 @@ public class SADDialog extends Dialog {
     private Button radioModelUpload;
     private Button radioModelDelete;
 
+    private Text txtDocumentationLocation;
+    private Button btnDocumentationBrowse;
+    private Button btnDocumentationDownload;
+    private ProgressBar progressDocumentation;
+    private Button radioDocumentationKeep;
+    private Button radioDocumentationUpload;
+    private Button radioDocumentationDelete;
+
     private StyledText txtDoc;
     private Button btnDocDelete;
     private Button btnDocDownload;
@@ -108,6 +112,7 @@ public class SADDialog extends Dialog {
     final int BORDER_MARGIN = 10;
     final int GROUP_MARGIN = 5;
     final int LEFT_TAB = 15;
+    final int RIGHT_TAB = 80;
     final int LINE_MARGIN = 12;
 
     final int DESCRIPTION_SPACE = 50;
@@ -122,13 +127,16 @@ public class SADDialog extends Dialog {
 	this.id = id;
     }
 
+    @Override
+    protected Point getInitialSize() {
+	return new Point(650, 570);
+    }
+
     public void updateSAD(final SAD sad) {
 
 	container.getDisplay().syncExec(new Runnable() {
 
 	    public void run() {
-
-		System.out.println("Opening SAD: " + sad);
 
 		txtName.setText(sad.getName());
 		txtType.setText(sad.getType());
@@ -136,25 +144,20 @@ public class SADDialog extends Dialog {
 		SAD.Model model = sad.getModel();
 
 		if (model != null) {
-		    // progressModel.setMaximum(model.getSize());
-		    // progressModel.setSelection(model.getSize());
 		    radioModelKeep.setText("Keep existing (Currently '" + model.getName() + "')");
 		    btnModelDownload.setEnabled(true);
 		} else {
 		    radioModelKeep.setText("Keep existing (Nothing uploaded)");
 		    btnModelDownload.setEnabled(false);
-		    // progressModel.setSelection(0);
 		}
 
-		SAD.Documentation doc = sad.getDocumentation();
-		if (doc != null) {
-		    // radioModelKeep.setText("Keep existing (Currently '" +
-		    // doc.getName() + "')"); TODO
-		    // btnDocDownload.setEnabled(true);
+		SAD.Documentation documentation = sad.getDocumentation();
+		if (documentation != null) {
+		    radioDocumentationKeep.setText("Keep existing (Currently '" + documentation.getName() + "')");
+		    btnDocumentationDownload.setEnabled(true);
 		} else {
-		    // radioModelKeep.setText("Keep existing (Nothing uploaded)");
-		    // TODO
-		    // btnDocDownload.setEnabled(false);
+		    radioDocumentationKeep.setText("Keep existing (Nothing uploaded)");
+		    btnDocumentationDownload.setEnabled(false);
 		}
 
 		SADDialog.this.sad = sad;
@@ -165,11 +168,6 @@ public class SADDialog extends Dialog {
 		parentViewer.refresh();
 	    }
 	});
-    }
-
-    @Override
-    protected Point getInitialSize() {
-	return new Point(500, 570);
     }
 
     @Override
@@ -249,11 +247,9 @@ public class SADDialog extends Dialog {
 	txtAbstract.setLayoutData(fd_txtAbstract);
 	txtAbstract.addModifyListener(new DescriptionModifyListener());
 
-	// ////////////////////////////////////////// Model
-	// ////////////////////////////////////////
-	Group grpModel = createGroup("Model",grpDescription, MODEL_SPACE);
+	// Model //
+	Group grpModel = createGroup("Model", grpDescription, MODEL_SPACE);
 
-	// Model
 	radioModelKeep = createRadioKeep(grpModel);
 	btnModelDownload = createDownloadButton(grpModel, new Runnable() {
 	    @Override
@@ -267,50 +263,76 @@ public class SADDialog extends Dialog {
 	radioModelUpload = createRadioUpload(grpModel, radioModelKeep);
 	txtModelLocation = createLocationText(grpModel, radioModelKeep);
 	btnModelBrowse = createBrowseButton(grpModel, radioModelKeep, "sad", txtModelLocation);
-	
+
 	radioModelDelete = createDeleteRadio(grpModel, radioModelUpload);
+
+	// Documenation //
 	
-	// /////////////////////////////////////////////////////////////////////////////////////////////
+	Group grpDocumentation = createGroup("Documentation", grpModel, 100);
+
+	radioDocumentationKeep = createRadioKeep(grpDocumentation);
+	btnDocumentationDownload = createDownloadButton(grpDocumentation, new Runnable() {
+	    @Override
+	    public void run() {
+		File downloadLocation = selectFileDialog("pdf", sad.getDocumentation().getName());
+		if (downloadLocation != null)
+		    controller.downloadDocumentation(sad.getId(), downloadLocation);
+	    }
+	});
+
+	radioDocumentationUpload = createRadioUpload(grpDocumentation, radioDocumentationKeep);
+	txtDocumentationLocation = createLocationText(grpDocumentation, radioDocumentationKeep);
+	btnDocumentationBrowse = createBrowseButton(grpDocumentation, radioDocumentationKeep, "pdf",
+		txtDocumentationLocation);
+
+	radioDocumentationDelete = createDeleteRadio(grpDocumentation, radioDocumentationUpload);
 
 	controller.getSAD(id, new UpdateCallback());
 
 	return container;
     }
 
+    /**
+     * Creates a group using the topmost container as parent.
+     * @param groupName
+     * @param compositeAtTop
+     * @param bottomMargin
+     * @return
+     */
     private Group createGroup(String groupName, Composite compositeAtTop, int bottomMargin) {
-	Group grpModel = new Group(container, SWT.NONE);
-	grpModel.setText(groupName);
-	grpModel.setLayout(new FormLayout());
-	FormData fd_grpModel = new FormData();
-	fd_grpModel.top = new FormAttachment(compositeAtTop, BORDER_MARGIN);
-	fd_grpModel.left = new FormAttachment(0, BORDER_MARGIN);
-	fd_grpModel.right = new FormAttachment(100, -BORDER_MARGIN);
-	fd_grpModel.bottom = new FormAttachment(bottomMargin);
-	grpModel.setLayoutData(fd_grpModel);
-	return grpModel;
+	Group group = new Group(container, SWT.NONE);
+	group.setText(groupName);
+	group.setLayout(new FormLayout());
+	FormData formData = new FormData();
+	formData.top = new FormAttachment(compositeAtTop, BORDER_MARGIN);
+	formData.left = new FormAttachment(0, BORDER_MARGIN);
+	formData.right = new FormAttachment(100, -BORDER_MARGIN);
+	formData.bottom = new FormAttachment(bottomMargin);
+	group.setLayoutData(formData);
+	return group;
     }
 
-    private Text createLocationText(Group group, Control controlAtTop) {
-	Text txtModelLocation = new Text(group, SWT.BORDER);
-	FormData fd_txtModelLocation = new FormData();
-	fd_txtModelLocation.top = new FormAttachment(controlAtTop, 8);
-	fd_txtModelLocation.left = new FormAttachment(28);
-	fd_txtModelLocation.right = new FormAttachment(75);
-	txtModelLocation.setLayoutData(fd_txtModelLocation);
+    private Text createLocationText(Group parent, Control controlAtTop) {
+	Text txtModelLocation = new Text(parent, SWT.BORDER);
+	FormData formData = new FormData();
+	formData.top = new FormAttachment(controlAtTop, 8);
+	formData.left = new FormAttachment(28);
+	formData.right = new FormAttachment(RIGHT_TAB);
+	txtModelLocation.setLayoutData(formData);
 	return txtModelLocation;
     }
 
-    private Button createBrowseButton(Group group, Control controlAtTop, final String fileType, final Text textForPath) {
-	Button btnModelBrowse = new Button(group, SWT.NONE);
-	btnModelBrowse.setEnabled(true);
-	btnModelBrowse.setText("Browse...");
-	btnModelBrowse.setToolTipText("Choose a file to be uploaded.");
-	FormData fd_btnModelBrowse = new FormData();
-	fd_btnModelBrowse.top = new FormAttachment(controlAtTop, 4);
-	fd_btnModelBrowse.left = new FormAttachment(75, BORDER_MARGIN);
-	fd_btnModelBrowse.right = new FormAttachment(100, -BORDER_MARGIN);
-	btnModelBrowse.setLayoutData(fd_btnModelBrowse);
-	btnModelBrowse.addMouseListener(new MouseAdapter() {
+    private Button createBrowseButton(Group parent, Control controlAtTop, final String fileType, final Text textForPath) {
+	Button button = new Button(parent, SWT.NONE);
+	button.setEnabled(true);
+	button.setText("Browse...");
+	button.setToolTipText("Choose a file to be uploaded.");
+	FormData formData = new FormData();
+	formData.top = new FormAttachment(controlAtTop, 4);
+	formData.left = new FormAttachment(RIGHT_TAB, BORDER_MARGIN);
+	formData.right = new FormAttachment(100, -BORDER_MARGIN);
+	button.setLayoutData(formData);
+	button.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
 		container.getDisplay().asyncExec(new Runnable() {
@@ -323,38 +345,38 @@ public class SADDialog extends Dialog {
 		});
 	    }
 	});
-	return btnModelBrowse;
+	return button;
     }
 
-    private Button createDeleteRadio(Group group, Control controlAtTop) {
-	FormData fd_radioModel;
-	Button radioModelDelete = new Button(group, SWT.RADIO);
-	fd_radioModel = new FormData();
-	fd_radioModel.top = new FormAttachment(radioModelUpload, LINE_MARGIN);
-	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
-	radioModelDelete.setLayoutData(fd_radioModel);
+    private Button createDeleteRadio(Group parent, Control controlAtTop) {
+	FormData formData;
+	Button radioModelDelete = new Button(parent, SWT.RADIO);
+	formData = new FormData();
+	formData.top = new FormAttachment(controlAtTop, LINE_MARGIN);
+	formData.left = new FormAttachment(0, BORDER_MARGIN);
+	radioModelDelete.setLayoutData(formData);
 	radioModelDelete.setText("Delete existing");
 	return radioModelDelete;
     }
 
-    private Button createRadioUpload(Group group, Control controlAtTop) {
-	FormData fd_radioModel;
-	Button radioModelUpload = new Button(group, SWT.RADIO);
-	fd_radioModel = new FormData();
-	fd_radioModel.top = new FormAttachment(radioModelKeep, BORDER_MARGIN);
-	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
-	radioModelUpload.setLayoutData(fd_radioModel);
+    private Button createRadioUpload(Group parent, Control controlAtTop) {
+	FormData formData;
+	Button radioModelUpload = new Button(parent, SWT.RADIO);
+	formData = new FormData();
+	formData.top = new FormAttachment(controlAtTop, BORDER_MARGIN);
+	formData.left = new FormAttachment(0, BORDER_MARGIN);
+	radioModelUpload.setLayoutData(formData);
 	radioModelUpload.setText("Upload new file: ");
 	return radioModelUpload;
     }
 
-    private Button createDownloadButton(Group group, final Runnable runnable) {
-	Button btnModelDownload = new Button(group, SWT.NONE);
+    private Button createDownloadButton(Group parent, final Runnable runnable) {
+	Button btnModelDownload = new Button(parent, SWT.NONE);
 	btnModelDownload.setText("Download");
 	btnModelDownload.setToolTipText("Downloads the file to disk.");
 	FormData fd_btnModelDownload = new FormData();
 	fd_btnModelDownload.top = new FormAttachment(0, 6);
-	fd_btnModelDownload.left = new FormAttachment(75, BORDER_MARGIN);
+	fd_btnModelDownload.left = new FormAttachment(RIGHT_TAB, BORDER_MARGIN);
 	fd_btnModelDownload.right = new FormAttachment(100, -BORDER_MARGIN);
 	btnModelDownload.setLayoutData(fd_btnModelDownload);
 	btnModelDownload.addMouseListener(new MouseAdapter() {
@@ -366,13 +388,15 @@ public class SADDialog extends Dialog {
 	return btnModelDownload;
     }
 
-    private Button createRadioKeep(Group grpModel) {
-	Button radioButton = new Button(grpModel, SWT.RADIO);
-	FormData fd_radioModel = new FormData();
-	fd_radioModel.top = new FormAttachment(0, BORDER_MARGIN);
-	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
-	radioButton.setLayoutData(fd_radioModel);
-	radioButton.setText("Keep existing (currently '                             ')");
+    private Button createRadioKeep(Group parent) {
+	Button radioButton = new Button(parent, SWT.RADIO);
+	radioButton.setSelection(true);
+	FormData formData = new FormData();
+	formData.top = new FormAttachment(0, BORDER_MARGIN);
+	formData.left = new FormAttachment(0, BORDER_MARGIN);
+	radioButton.setLayoutData(formData);
+	radioButton
+		.setText("Keep existing (currently '                                                                             ')");
 	return radioButton;
     }
 
@@ -400,41 +424,30 @@ public class SADDialog extends Dialog {
 	return null;
     }
 
-    private File openDownloadDialog(String basePath) {
-	DirectoryDialog directoryDialog = new DirectoryDialog(getShell());
-	directoryDialog.setText("Please select a download folder!‚");
-	String selectedDirectory = directoryDialog.open();
-	if (selectedDirectory != null) {
-	    System.out.println(selectedDirectory + " was selected.");
-	    return new File(selectedDirectory + "/" + basePath);
-	}
-	return null;
-    }
-
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
 	Button button = createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-	button.addSelectionListener(new SelectionAdapter() {
+	
+	button = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+	
+	button.addMouseListener(new MouseAdapter() {
 	    @Override
-	    public void widgetSelected(SelectionEvent e) {
-	    }
-	});
-	button = createButton(parent, IDialogConstants.FINISH_ID, IDialogConstants.FINISH_LABEL, false);
-	button.addSelectionListener(new SelectionAdapter() {
-	    @Override
-	    public void widgetSelected(SelectionEvent e) {
-		if (true) {
+	    public void mouseUp(MouseEvent e) {
+		if (textChanged) {
 		    sad.setName(txtName.getText());
 		    sad.setType(txtType.getText());
 		    sad.setAbstrct(txtAbstract.getText());
+		    sad.setWip(false); // TODO
 		}
 		File modelFile = null;
 		if (radioModelUpload.getSelection())
 		    modelFile = new File(txtModelLocation.getText());
+		File documentationFile = null;
+		if (radioDocumentationUpload.getSelection())
+		    documentationFile = new File(txtDocumentationLocation.getText());
 
-		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile, false, null,
-			new UpdateCallback());
-		getShell().dispose();
+		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile,
+			radioDocumentationDelete.getSelection(), documentationFile, new UpdateCallback());
 	    }
 	});
     }

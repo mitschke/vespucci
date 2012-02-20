@@ -59,7 +59,7 @@ public class SADClient {
     private final static String TRANSACTION = "/transaction";
     private final static String COLLECTION = "/sads";
     private final static String MODEL = "model";
-    private final static String DOCUMENTATION = "/documentation";
+    private final static String DOCUMENTATION = "documentation";
     private final static String XML = "application/xml";
     private final static String PDF = "application/pdf";
 
