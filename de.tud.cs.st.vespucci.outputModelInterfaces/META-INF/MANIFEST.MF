@@ -5,4 +5,4 @@ Bundle-SymbolicName: de.tud.cs.st.vespucci.interfaces
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.tud.cs.st.vespucci.interfaces
-Require-Bundle: de.tud.cs.st.vespucci.model;bundle-version="1.0.0"
+Import-Package: de.tud.cs.st.vespucci.model
