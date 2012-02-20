@@ -292,9 +292,9 @@ public class SADDialog extends Dialog {
 		container.getDisplay().asyncExec(new Runnable() {
 		    @Override
 		    public void run() {
-			System.out.println("Selecting file to upload");
-			File downloadLocation = openDownloadDialog(sad.getModel().getName());
-			controller.downloadModel(sad.getId(), downloadLocation);
+			File downloadLocation = selectFileDialog("sad", sad.getModel().getName());
+			if (downloadLocation != null)
+			    controller.downloadModel(sad.getId(), downloadLocation);
 		    }
 		});
 	    }
@@ -376,6 +376,18 @@ public class SADDialog extends Dialog {
 	String selectedFile = fileDialog.open();
 	if (selectedFile != null) {
 	    System.out.println(selectedFile + " was selected.");
+	    return new File(selectedFile);
+	}
+	return null;
+    }
+
+    private File selectFileDialog(String fileType, String presetfileName) {
+	FileDialog fileDialog = new FileDialog(getShell(), SWT.SAVE);
+	fileDialog.setText("Please enter a file name!");
+	fileDialog.setFileName(presetfileName);
+	fileDialog.setOverwrite(true);
+	String selectedFile = fileDialog.open();
+	if (selectedFile != null) {
 	    return new File(selectedFile);
 	}
 	return null;
