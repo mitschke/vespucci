@@ -87,9 +87,6 @@ public class SADDialog extends Dialog {
     final private Controller controller = Controller.getInstance();
 
     final private String id;
-    private Label lblName;
-    private Label lblType;
-    private Label lblAbstract;
     private Text txtName;
     private Text txtType;
     private Text txtAbstract;
@@ -107,6 +104,15 @@ public class SADDialog extends Dialog {
     private Button btnDocDownload;
     private boolean textChanged;
     private Composite composite;
+
+    final int BORDER_MARGIN = 10;
+    final int GROUP_MARGIN = 5;
+    final int LEFT_TAB = 15;
+    final int LINE_MARGIN = 12;
+
+    final int DESCRIPTION_SPACE = 50;
+    final int MODEL_SPACE = 75;
+    final int DOCUMENTATION_SPACE = 100;
 
     private SAD sad;
 
@@ -169,15 +175,6 @@ public class SADDialog extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
 
-	final int BORDER_MARGIN = 10;
-	final int GROUP_MARGIN = 5;
-	final int LEFT_TAB = 15;
-	final int LINE_MARGIN = 12;
-
-	final int DESCRIPTION_SPACE = 50;
-	final int MODEL_SPACE = 75;
-	final int DOCUMENTATION_SPACE = 100;
-
 	/**
 	 * When one of the text fields of the description is changed, the
 	 * save-mode is enabled.
@@ -206,7 +203,7 @@ public class SADDialog extends Dialog {
 	fd_grpDescription.bottom = new FormAttachment(DESCRIPTION_SPACE);
 	grpDescription.setLayoutData(fd_grpDescription);
 
-	lblName = new Label(grpDescription, SWT.NONE);
+	Label lblName = new Label(grpDescription, SWT.NONE);
 	FormData fd_lblName = new FormData();
 	fd_lblName.top = new FormAttachment(0, BORDER_MARGIN);
 	fd_lblName.left = new FormAttachment(0, BORDER_MARGIN);
@@ -221,7 +218,7 @@ public class SADDialog extends Dialog {
 	txtName.setLayoutData(fd_txtName);
 	txtName.addModifyListener(new DescriptionModifyListener());
 
-	lblType = new Label(grpDescription, SWT.NONE);
+	Label lblType = new Label(grpDescription, SWT.NONE);
 	FormData fd_lblType = new FormData();
 	fd_lblType.top = new FormAttachment(lblName, LINE_MARGIN);
 	fd_lblType.left = new FormAttachment(0, BORDER_MARGIN);
@@ -236,7 +233,7 @@ public class SADDialog extends Dialog {
 	txtType.setLayoutData(fd_txtType);
 	txtType.addModifyListener(new DescriptionModifyListener());
 
-	lblAbstract = new Label(grpDescription, SWT.NONE);
+	Label lblAbstract = new Label(grpDescription, SWT.NONE);
 	FormData fd_lblAbstract = new FormData();
 	fd_lblAbstract.top = new FormAttachment(lblType, LINE_MARGIN);
 	fd_lblAbstract.left = new FormAttachment(0, BORDER_MARGIN);
@@ -254,92 +251,62 @@ public class SADDialog extends Dialog {
 
 	// ////////////////////////////////////////// Model
 	// ////////////////////////////////////////
-	Group grpModel = new Group(container, SWT.NONE);
-	grpModel.setText("Model");
-	grpModel.setLayout(new FormLayout());
+	Group grpModel = createGroup("Model",grpDescription, MODEL_SPACE);
 
+	// Model
+	radioModelKeep = createRadioKeep(grpModel);
+	btnModelDownload = createDownloadButton(grpModel, new Runnable() {
+	    @Override
+	    public void run() {
+		File downloadLocation = selectFileDialog("sad", sad.getModel().getName());
+		if (downloadLocation != null)
+		    controller.downloadModel(sad.getId(), downloadLocation);
+	    }
+	});
+
+	radioModelUpload = createRadioUpload(grpModel, radioModelKeep);
+	txtModelLocation = createLocationText(grpModel, radioModelKeep);
+	btnModelBrowse = createBrowseButton(grpModel, radioModelKeep, "sad", txtModelLocation);
+	
+	radioModelDelete = createDeleteRadio(grpModel, radioModelUpload);
+	
+	// /////////////////////////////////////////////////////////////////////////////////////////////
+
+	controller.getSAD(id, new UpdateCallback());
+
+	return container;
+    }
+
+    private Group createGroup(String groupName, Composite compositeAtTop, int bottomMargin) {
+	Group grpModel = new Group(container, SWT.NONE);
+	grpModel.setText(groupName);
+	grpModel.setLayout(new FormLayout());
 	FormData fd_grpModel = new FormData();
-	fd_grpModel.top = new FormAttachment(grpDescription, BORDER_MARGIN);
+	fd_grpModel.top = new FormAttachment(compositeAtTop, BORDER_MARGIN);
 	fd_grpModel.left = new FormAttachment(0, BORDER_MARGIN);
 	fd_grpModel.right = new FormAttachment(100, -BORDER_MARGIN);
-	fd_grpModel.bottom = new FormAttachment(MODEL_SPACE);
+	fd_grpModel.bottom = new FormAttachment(bottomMargin);
 	grpModel.setLayoutData(fd_grpModel);
+	return grpModel;
+    }
 
-	//
-	radioModelKeep = new Button(grpModel, SWT.RADIO);
-	radioModelKeep.addSelectionListener(new SelectionAdapter() {
-	    @Override
-	    public void widgetSelected(SelectionEvent e) {
-	    }
-	});
-	FormData fd_radioModel = new FormData();
-	fd_radioModel.top = new FormAttachment(0, BORDER_MARGIN);
-	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
-	radioModelKeep.setLayoutData(fd_radioModel);
-	radioModelKeep.setText("Keep existing (currently '                             ')");
-	btnModelDownload = new Button(grpModel, SWT.NONE);
-	btnModelDownload.setText("Download");
-	btnModelDownload.setToolTipText("Downloads the file to disk.");
-	FormData fd_btnModelDownload = new FormData();
-	fd_btnModelDownload.top = new FormAttachment(grpModel, 6);
-	fd_btnModelDownload.left = new FormAttachment(75, BORDER_MARGIN);
-	fd_btnModelDownload.right = new FormAttachment(100, -BORDER_MARGIN);
-	btnModelDownload.setLayoutData(fd_btnModelDownload);
-	btnModelDownload.addMouseListener(new MouseAdapter() {
-	    @Override
-	    public void mouseUp(MouseEvent e) {
-		container.getDisplay().asyncExec(new Runnable() {
-		    @Override
-		    public void run() {
-			File downloadLocation = selectFileDialog("sad", sad.getModel().getName());
-			if (downloadLocation != null)
-			    controller.downloadModel(sad.getId(), downloadLocation);
-		    }
-		});
-	    }
-	});
-
-	//
-	radioModelUpload = new Button(grpModel, SWT.RADIO);
-	radioModelUpload.addSelectionListener(new SelectionAdapter() {
-	    @Override
-	    public void widgetSelected(SelectionEvent e) {
-	    }
-	});
-	fd_radioModel = new FormData();
-	fd_radioModel.top = new FormAttachment(radioModelKeep, BORDER_MARGIN);
-	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
-	radioModelUpload.setLayoutData(fd_radioModel);
-	radioModelUpload.setText("Upload new file:");
-
-	//
-	radioModelDelete = new Button(grpModel, SWT.RADIO);
-	radioModelDelete.addSelectionListener(new SelectionAdapter() {
-	    @Override
-	    public void widgetSelected(SelectionEvent e) {
-	    }
-	});
-	fd_radioModel = new FormData();
-	fd_radioModel.top = new FormAttachment(radioModelUpload, LINE_MARGIN);
-	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
-	radioModelDelete.setLayoutData(fd_radioModel);
-	radioModelDelete.setText("Delete existing");
-
-	// TODO
-	txtModelLocation = new Text(grpModel, SWT.BORDER);
+    private Text createLocationText(Group group, Control controlAtTop) {
+	Text txtModelLocation = new Text(group, SWT.BORDER);
 	FormData fd_txtModelLocation = new FormData();
-	fd_txtModelLocation.top = new FormAttachment(radioModelKeep, 8);
+	fd_txtModelLocation.top = new FormAttachment(controlAtTop, 8);
 	fd_txtModelLocation.left = new FormAttachment(28);
 	fd_txtModelLocation.right = new FormAttachment(75);
 	txtModelLocation.setLayoutData(fd_txtModelLocation);
-	txtModelLocation.addModifyListener(new DescriptionModifyListener());
+	return txtModelLocation;
+    }
 
-	btnModelBrowse = new Button(grpModel, SWT.NONE);
+    private Button createBrowseButton(Group group, Control controlAtTop, final String fileType, final Text textForPath) {
+	Button btnModelBrowse = new Button(group, SWT.NONE);
 	btnModelBrowse.setEnabled(true);
 	btnModelBrowse.setText("Browse...");
 	btnModelBrowse.setToolTipText("Choose a file to be uploaded.");
 	FormData fd_btnModelBrowse = new FormData();
-	fd_btnModelBrowse.top = new FormAttachment(radioModelKeep, 4);
+	fd_btnModelBrowse.top = new FormAttachment(controlAtTop, 4);
 	fd_btnModelBrowse.left = new FormAttachment(75, BORDER_MARGIN);
 	fd_btnModelBrowse.right = new FormAttachment(100, -BORDER_MARGIN);
 	btnModelBrowse.setLayoutData(fd_btnModelBrowse);
@@ -349,18 +316,64 @@ public class SADDialog extends Dialog {
 		container.getDisplay().asyncExec(new Runnable() {
 		    @Override
 		    public void run() {
-			System.out.println("Selecting file to upload");
-			File uploadLocation = openUploadDialog("sad");
+			File uploadLocation = openUploadDialog(fileType);
 			if (uploadLocation != null)
-			    txtModelLocation.setText(uploadLocation.getAbsolutePath());
+			    textForPath.setText(uploadLocation.getAbsolutePath());
 		    }
 		});
 	    }
 	});
+	return btnModelBrowse;
+    }
 
-	controller.getSAD(id, new UpdateCallback());
+    private Button createDeleteRadio(Group group, Control controlAtTop) {
+	FormData fd_radioModel;
+	Button radioModelDelete = new Button(group, SWT.RADIO);
+	fd_radioModel = new FormData();
+	fd_radioModel.top = new FormAttachment(radioModelUpload, LINE_MARGIN);
+	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
+	radioModelDelete.setLayoutData(fd_radioModel);
+	radioModelDelete.setText("Delete existing");
+	return radioModelDelete;
+    }
 
-	return container;
+    private Button createRadioUpload(Group group, Control controlAtTop) {
+	FormData fd_radioModel;
+	Button radioModelUpload = new Button(group, SWT.RADIO);
+	fd_radioModel = new FormData();
+	fd_radioModel.top = new FormAttachment(radioModelKeep, BORDER_MARGIN);
+	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
+	radioModelUpload.setLayoutData(fd_radioModel);
+	radioModelUpload.setText("Upload new file: ");
+	return radioModelUpload;
+    }
+
+    private Button createDownloadButton(Group group, final Runnable runnable) {
+	Button btnModelDownload = new Button(group, SWT.NONE);
+	btnModelDownload.setText("Download");
+	btnModelDownload.setToolTipText("Downloads the file to disk.");
+	FormData fd_btnModelDownload = new FormData();
+	fd_btnModelDownload.top = new FormAttachment(0, 6);
+	fd_btnModelDownload.left = new FormAttachment(75, BORDER_MARGIN);
+	fd_btnModelDownload.right = new FormAttachment(100, -BORDER_MARGIN);
+	btnModelDownload.setLayoutData(fd_btnModelDownload);
+	btnModelDownload.addMouseListener(new MouseAdapter() {
+	    @Override
+	    public void mouseUp(MouseEvent e) {
+		container.getDisplay().asyncExec(runnable);
+	    }
+	});
+	return btnModelDownload;
+    }
+
+    private Button createRadioKeep(Group grpModel) {
+	Button radioButton = new Button(grpModel, SWT.RADIO);
+	FormData fd_radioModel = new FormData();
+	fd_radioModel.top = new FormAttachment(0, BORDER_MARGIN);
+	fd_radioModel.left = new FormAttachment(0, BORDER_MARGIN);
+	radioButton.setLayoutData(fd_radioModel);
+	radioButton.setText("Keep existing (currently '                             ')");
+	return radioButton;
     }
 
     private File openUploadDialog(String fileType) {
