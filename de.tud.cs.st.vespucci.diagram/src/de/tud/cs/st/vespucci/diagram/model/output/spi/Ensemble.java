@@ -132,15 +132,14 @@ public class Ensemble implements IEnsemble {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((innerEnsemble == null) ? 0 : innerEnsemble.hashCode());
+		int result = prime;
+		//result = prime * result + ((innerEnsemble == null) ? 0 : innerEnsemble.hashCode());
 		if (shape != null && getName() == null)
 			System.out.println("help");
 		result = prime * result + ((shape == null) ? 0 : getName().hashCode());
 		return result;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -159,10 +158,10 @@ public class Ensemble implements IEnsemble {
 			return false;
 		if (!other.getName().equals(this.shape.getName()))
 			return false;
-		if (other.getInnerEnsembles() == null)
-			return false;
-		if (!other.getInnerEnsembles().equals(this.getInnerEnsembles()))
-			return false;
+		//if (other.getInnerEnsembles() == null)
+		//	return false;
+		//if (!other.getInnerEnsembles().equals(this.getInnerEnsembles()))
+		//	return false;
 		return true;
 	}
 
