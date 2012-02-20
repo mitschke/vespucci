@@ -38,6 +38,7 @@ package de.tud.cs.st.vespucci.sadclient.model;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -129,12 +130,14 @@ public class SADClient {
 
     // Model //
 
-    public void getModel(String id, File downloadLocation, IProgressMonitor progressMonitor) {
-	System.out.println("Calling getModel in client with id " + id);
-	HttpResponse response = client.get(ModelUrl(id), XML, progressMonitor);
-	writeContents(response, downloadLocation);
-	client.consume(response);
-    }
+    public byte[] getModel(String id, File downloadLocation, IProgressMonitor progressMonitor) throws Exception {
+   	System.out.println("Calling getModel in client with id " + id + " to download at " + downloadLocation.getAbsolutePath());
+   	HttpResponse response = client.get(ModelUrl(id), XML, progressMonitor);
+   	byte[] bytes = IOUtils.toByteArray(response.getEntity().getContent());
+   	System.out.println("Lenth of model: " + bytes.length);
+   	client.consume(response);
+   	return bytes;
+       }
 
     public void putModel(String transactionId, File file, IProgressMonitor progressMonitor) {
 	System.out.println("Calling putModel in client with id " + transactionId);
@@ -156,10 +159,12 @@ public class SADClient {
 
     // Documentation //
 
-    public void getDocumentation(String id, File downloadLocation, IProgressMonitor progressMonitor) {
+    public byte[] getDocumentation(String id, File downloadLocation, IProgressMonitor progressMonitor) throws Exception {
 	System.out.println("Calling getDocumentation in client with id " + id);
 	HttpResponse response = client.get(DocumentationUrl(id), PDF, progressMonitor);
+	byte[] bytes = IOUtils.toByteArray(response.getEntity().getContent());
 	client.consume(response);
+	return bytes;
     }
 
     public void putDocumentation(String transactionId, File file, IProgressMonitor progressMonitor) {
@@ -187,11 +192,11 @@ public class SADClient {
     }
 
     private static String ModelUrl(String id) {
-	return ROOT + COLLECTION + "/" + id + MODEL;
+	return ROOT + COLLECTION + "/" + id + "/" + MODEL;
     }
 
     private static String DocumentationUrl(String id) {
-	return ROOT + COLLECTION + "/" + id + DOCUMENTATION;
+	return ROOT + COLLECTION + "/" + id + "/" + DOCUMENTATION;
     }
 
     // Helper //

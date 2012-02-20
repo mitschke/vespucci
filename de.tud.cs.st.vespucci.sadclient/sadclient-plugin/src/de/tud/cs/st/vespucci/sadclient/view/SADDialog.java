@@ -289,6 +289,14 @@ public class SADDialog extends Dialog {
 	btnModelDownload.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
+		container.getDisplay().asyncExec(new Runnable() {
+		    @Override
+		    public void run() {
+			System.out.println("Selecting file to upload");
+			File downloadLocation = openDownloadDialog(sad.getModel().getName());
+			controller.downloadModel(sad.getId(), downloadLocation);
+		    }
+		});
 	    }
 	});
 
@@ -376,10 +384,10 @@ public class SADDialog extends Dialog {
     private File openDownloadDialog(String basePath) {
 	DirectoryDialog directoryDialog = new DirectoryDialog(getShell());
 	directoryDialog.setText("Please select a download folder!‚");
-	String selectedFile = directoryDialog.open();
-	if (selectedFile != null) {
-	    System.out.println(selectedFile + " was selected.");
-	    return new File(selectedFile + "/" + basePath);
+	String selectedDirectory = directoryDialog.open();
+	if (selectedDirectory != null) {
+	    System.out.println(selectedDirectory + " was selected.");
+	    return new File(selectedDirectory + "/" + basePath);
 	}
 	return null;
     }

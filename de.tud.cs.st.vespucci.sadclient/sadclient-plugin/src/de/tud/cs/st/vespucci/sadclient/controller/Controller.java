@@ -37,11 +37,13 @@
 package de.tud.cs.st.vespucci.sadclient.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -132,117 +134,50 @@ public class Controller {
 	}, callback));
     }
 
-    // Model
-
-    public void downloadModel(final String id, final File downloadLocation, final IProgressMonitor progressMonitor) {
-	pool.execute(new Runnable() {
-	    @Override
-	    public void run() {
-		sadClient.getModel(id, downloadLocation, progressMonitor);
-	    }
-	});
-    }
-
-    /**
-     * Uploads the model with the specified id, keeps updating the progress
-     * handler and finally updates the view via given callback.
-     * 
-     * @param id
-     * @param uploadFile
-     * @param callback
-     * @param progressMonitor
-     */
-    public void uploadModel(final String id, final File uploadFile, final Callback<SAD> callback,
-	    final IProgressMonitor progressMonitor) {
-	Job job = new Job("Upload Model") {
+    public void downloadModel(final String id, final File downloadLocation) {
+	Job job = new Job("Download Model") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
-		sadClient.putModel(id, uploadFile, progressMonitor);
-		return Status.OK_STATUS;
+		try {
+		    IOUtils.write(sadClient.getModel(id, downloadLocation, monitor), new FileOutputStream(
+			    downloadLocation));
+		} catch (Exception e) {
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage());
+		}
+		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Model downloaded.");
 	    }
 	};
 	job.setUser(true);
 	job.schedule();
     }
 
-    /**
-     * Deletes the model of the SAD and updates the view which called the
-     * operation (non-blocking).
-     * 
-     * @param id
-     * @param file
-     * @param callback
-     */
-    public void deleteModel(final String id, final Callback<SAD> callback) {
-	pool.execute(new RunnableWithCallback<SAD>(new Callable<SAD>() {
+    public void downloadDocumentation(final String id, final File downloadLocation) {
+	Job job = new Job("Download Documentation") {
 	    @Override
-	    public SAD call() throws Exception {
-		sadClient.deleteModel(id);
-		return sadClient.getSAD(id);
+	    protected IStatus run(IProgressMonitor monitor) {
+		try {
+		    IOUtils.write(sadClient.getDocumentation(id, downloadLocation, monitor), new FileOutputStream(
+			    downloadLocation));
+		} catch (Exception e) {
+		    new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage());
+		}
+		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Documentation downloaded.");
 	    }
-	}, callback));
-    }
-
-    // Documentation
-
-    public void downloadDocumentation(final String id, final File downloadLocation,
-	    final IProgressMonitor progressMonitor) {
-	pool.execute(new Runnable() {
-	    @Override
-	    public void run() {
-		sadClient.getDocumentation(id, downloadLocation, progressMonitor);
-	    }
-	});
-    }
-
-    /**
-     * Uploads the documentation with the specified id, keeps updating the
-     * progress handler and finally updates the view via given callback.
-     * 
-     * @param id
-     * @param uploadFile
-     * @param callback
-     * @param progressMonitor
-     */
-    public void uploadDocumentation(final String id, final File uploadFile, final Callback<SAD> callback,
-	    final IProgressMonitor progressMonitor) {
-	pool.execute(new RunnableWithCallback<SAD>(new Callable<SAD>() {
-	    @Override
-	    public SAD call() throws Exception {
-		sadClient.putDocumentation(id, uploadFile, progressMonitor);
-		return sadClient.getSAD(id);
-	    }
-	}, callback));
-    }
-
-    /**
-     * Deletes the documentation of the SAD and updates the view which called
-     * the operation (non-blocking).
-     * 
-     * @param id
-     * @param file
-     * @param callback
-     */
-    public void deleteDocumentation(final String id, final Callback<SAD> callback) {
-	pool.execute(new RunnableWithCallback<SAD>(new Callable<SAD>() {
-	    @Override
-	    public SAD call() throws Exception {
-		sadClient.deleteDocumentation(id);
-		return sadClient.getSAD(id);
-	    }
-	}, callback));
+	};
+	job.setUser(true);
+	job.schedule();
     }
 
     public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
 	    final File modelFile, final boolean deleteDoc, final File docFile, final Callback<SAD> callback) {
-	Job job = new Job("Upload Model") {
+	Job job = new Job("Storing SAD") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		String transactionId = null;
 		try {
-		   Transaction transaction = sadClient.startTransaction(sad.getId());
-		   System.out.println(transaction);
-		   transactionId = transaction.getTransactionId();
+		    Transaction transaction = sadClient.startTransaction(sad.getId());
+		    System.out.println(transaction);
+		    transactionId = transaction.getTransactionId();
 		    try {
 			if (descriptionChanged) {
 			    sadClient.storeSAD(transactionId, sad);
@@ -260,7 +195,7 @@ public class Controller {
 			sadClient.commitTransaction(transactionId);
 		    } catch (Exception e) {
 			sadClient.rollbackTransaction(transactionId);
-			 return new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage());
+			return new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage());
 		    }
 		} catch (Exception e) {
 		    e.printStackTrace();

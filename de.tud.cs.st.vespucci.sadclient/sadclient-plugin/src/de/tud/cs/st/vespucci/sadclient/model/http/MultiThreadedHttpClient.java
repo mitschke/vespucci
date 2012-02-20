@@ -12,6 +12,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.auth.params.AuthPNames;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -39,14 +40,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import de.tud.cs.st.vespucci.sadclient.Activator;
 
-
 /**
  * Thread-safe wrapper around the {@link DefaultHttpClient} using a
  * {@link ThreadSafeClientConnManager} and enables progress. The HTTP-methods
  * expect successful termination of the client call and will throw an
  * RequestException when the server responds non-okay.
  * 
- * TODO  The client is not multithreaded anymore so rename the whole thing when a valid solution found
+ * TODO The client is not multithreaded anymore so rename the whole thing when a
+ * valid solution found
  * 
  * @author Mateusz Parzonka
  * 
@@ -68,7 +69,8 @@ public class MultiThreadedHttpClient {
 	params.setParameter(CoreProtocolPNames.HTTP_ELEMENT_CHARSET, CHARSET);
 	params.setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, CHARSET);
 	params.setParameter(CoreProtocolPNames.USER_AGENT, Activator.PLUGIN_ID);
-	// The SADServer's underlying server implementation (sun) does not allow us to use this handshake,
+	// The SADServer's underlying server implementation (sun) does not allow
+	// us to use this handshake,
 	// since it always returns "continue"
 	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
 	List<Header> defaultHeaders = new ArrayList<Header>();
@@ -124,16 +126,12 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
-    public HttpResponse get(String url, String acceptedContentType, IProgressMonitor progressMonitor) {
+    public HttpResponse get(String url, String acceptedContentType, IProgressMonitor progressMonitor) throws ClientProtocolException, IOException {
 	HttpResponse response = null;
-	try {
-	    final HttpGet get = new HttpGet(url);
-	    get.setHeader("accept", acceptedContentType);
-	    response = client.execute(get);
-	    HttpEntityWithProgress.attachProgressMonitor(response, progressMonitor);
-	} catch (Exception e) {
-	    throw new HttpClientException(e);
-	}
+	final HttpGet get = new HttpGet(url);
+	get.setHeader("accept", acceptedContentType);
+	response = client.execute(get);
+//	HttpEntityWithProgress.attachProgressMonitor(response, progressMonitor);
 	expectStatusCode(response, 200);
 	return response;
     }
@@ -162,35 +160,39 @@ public class MultiThreadedHttpClient {
 	// expectStatusCode(response, 200);
 	return response;
     }
-    
-    public HttpResponse putAsMultipart(String url, String fieldName, File file, String mimeType, IProgressMonitor progressMonitor) {
-   	MultipartEntity multipartEntity = new MultipartEntity();
-   	ContentBody contentBody = new FileBody(file, mimeType, "UTF-8");
-   	multipartEntity.addPart(fieldName, contentBody);
-//   	HttpEntity upstreamEntity = new FileEntityWithProgress(file, mimeType, progressMonitor);
-   	HttpEntity upstreamEntity = multipartEntity;
-   	HttpResponse response = put(url, upstreamEntity);
-   	try {
-   	    EntityUtils.consume(upstreamEntity);
-   	} catch (IOException e) {
-   	    throw new HttpClientException(e);
-   	}
-   	// expectStatusCode(response, 200);
-   	return response;
-       }
+
+    public HttpResponse putAsMultipart(String url, String fieldName, File file, String mimeType,
+	    IProgressMonitor progressMonitor) {
+	MultipartEntity multipartEntity = new MultipartEntity();
+	ContentBody contentBody = new FileBody(file, mimeType, "UTF-8");
+	multipartEntity.addPart(fieldName, contentBody);
+	// HttpEntity upstreamEntity = new FileEntityWithProgress(file,
+	// mimeType, progressMonitor);
+	HttpEntity upstreamEntity = multipartEntity;
+	HttpResponse response = put(url, upstreamEntity);
+	try {
+	    EntityUtils.consume(upstreamEntity);
+	} catch (IOException e) {
+	    throw new HttpClientException(e);
+	}
+	// expectStatusCode(response, 200);
+	return response;
+    }
 
     public HttpResponse put(String url, HttpEntity entity) {
 	HttpResponse response = null;
 	try {
-	    // sending a short put to trigger authentication and storing httpcontext.
+	    // sending a short put to trigger authentication and storing
+	    // httpcontext.
 	    HttpPut put = new HttpPut(url);
-//	    HttpContext localContext = new BasicHttpContext();
-//	    HttpEntity smallEntity = new StringEntity("someBytes", "application/xml", "UTF-8");
-//	    put.setEntity(smallEntity);
-//	    response = client.execute(put, localContext);
-//	    EntityUtils.consume(smallEntity);
-//	    consume(response);
-//	    put = new HttpPut(url);
+	    // HttpContext localContext = new BasicHttpContext();
+	    // HttpEntity smallEntity = new StringEntity("someBytes",
+	    // "application/xml", "UTF-8");
+	    // put.setEntity(smallEntity);
+	    // response = client.execute(put, localContext);
+	    // EntityUtils.consume(smallEntity);
+	    // consume(response);
+	    // put = new HttpPut(url);
 	    put.setEntity(entity);
 	    response = client.execute(put);
 	    EntityUtils.consume(entity);
@@ -198,7 +200,7 @@ public class MultiThreadedHttpClient {
 	    throw new HttpClientException(e);
 	}
 	System.out.println("StatusCode received: [" + response.getStatusLine().getStatusCode() + "]");
-	 expectStatusCode(response, 200);
+	expectStatusCode(response, 200);
 	return response;
     }
 
