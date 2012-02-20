@@ -12,6 +12,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import unisson.model.UnissonDatabase;
 import de.tud.cs.st.vespucci.change.observation.IArchitectureObserver;
+import de.tud.cs.st.vespucci.database.architecture.ShadowArchitectureDecorator;
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.utilities.StateLocationCopyService;
 import de.tud.cs.st.vespucci.utilities.Util;
@@ -65,21 +66,21 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 	public void architectureDiagramChanged(IResource resource) {
 		if (!isRegisteredModel(resource))
 			return;
-		// we need to deregister the model during the update in order allow events on the resource
-		
-		if (isGlobalModel(resource)){
+		// we need to deregister the model during the update in order allow
+		// events on the resource
+
+		if (isGlobalModel(resource)) {
 			String ensembleRepository = this.ensembleRepository;
 			doDatabaseUpdate(resource, true);
 			this.ensembleRepository = ensembleRepository;
 		}
 
-		if (isModel(resource))
-		{			
+		if (isModel(resource)) {
 			deRegisterModel(resource);
 			doDatabaseUpdate(resource, false);
 			registerModel(resource);
 		}
- 
+
 		doShadowFileUpdate(resource);
 	}
 
@@ -119,10 +120,12 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 	 * 
 	 */
 	private void doDatabaseUpdate(IResource resource, boolean asRepository) {
-		
+
 		IFile oldModelFile = copyService.getShadowCopyFile(resource);
-		IArchitectureModel oldArchitectureModel = Util.adapt(oldModelFile,
+		IArchitectureModel shadowArchitectureModel = Util.adapt(oldModelFile,
 				IArchitectureModel.class);
+		IArchitectureModel oldArchitectureModel = new ShadowArchitectureDecorator(
+				shadowArchitectureModel, copyService.getStateLocation());
 		IArchitectureModel newArchitectureModel = Util.adapt(resource,
 				IArchitectureModel.class);
 		if (asRepository) {
@@ -199,15 +202,13 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 	}
-	
-	
-	private void registerModel(IResource resource)
-	{
+
+	private void registerModel(IResource resource) {
 		registeredModels.add(resource.getFullPath().toString());
 	}
-	
-	private void deRegisterModel(IResource resource)
-	{
+
+	private void deRegisterModel(IResource resource) {
 		registeredModels.remove(resource.getFullPath().toString());
 	}
+
 }
