@@ -84,16 +84,15 @@ public class GRContentProvider implements ITreeContentProvider {
 	}
 
 	/**
-	 * TODO
+	 * 
 	 * check if the choosen Ensemble has children
 	 */
 	@Override
 	public boolean hasChildren(Object ensemble) {
 		if(ensemble instanceof Ensemble){
-			if(((Ensemble) ensemble).getShapes() == null){
-				return false;
+			if(((Ensemble) ensemble).getShapes() != null && ((Ensemble) ensemble).getShapes().size() != 0);{
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
