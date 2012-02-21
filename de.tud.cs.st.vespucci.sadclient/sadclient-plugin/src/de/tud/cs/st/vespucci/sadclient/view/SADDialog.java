@@ -37,7 +37,6 @@
 package de.tud.cs.st.vespucci.sadclient.view;
 
 import java.io.File;
-import java.util.concurrent.Future;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
@@ -64,7 +63,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Text;
 
-import de.tud.cs.st.vespucci.sadclient.concurrent.Callback;
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
@@ -74,6 +72,7 @@ import de.tud.cs.st.vespucci.sadclient.model.SAD;
  * @author Mateusz Parzonka
  * 
  */
+@SuppressWarnings("unused")
 public class SADDialog extends Dialog {
 
     private final Viewer parentViewer;
@@ -265,7 +264,7 @@ public class SADDialog extends Dialog {
 	radioModelDelete = createDeleteRadio(grpModel, radioModelUpload);
 
 	// Documenation //
-	
+
 	Group grpDocumentation = createGroup("Documentation", grpModel, 100);
 
 	radioDocumentationKeep = createRadioKeep(grpDocumentation);
@@ -292,6 +291,7 @@ public class SADDialog extends Dialog {
 
     /**
      * Creates a group using the topmost container as parent.
+     * 
      * @param groupName
      * @param compositeAtTop
      * @param bottomMargin
@@ -425,29 +425,27 @@ public class SADDialog extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
 	Button button = createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-	
 	button = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-	
-	button.addMouseListener(new MouseAdapter() {
-	    @Override
-	    public void mouseUp(MouseEvent e) {
-		if (textChanged) {
-		    sad.setName(txtName.getText());
-		    sad.setType(txtType.getText());
-		    sad.setAbstrct(txtAbstract.getText());
-		    sad.setWip(false); // TODO
-		}
-		File modelFile = null;
-		if (radioModelUpload.getSelection())
-		    modelFile = new File(txtModelLocation.getText());
-		File documentationFile = null;
-		if (radioDocumentationUpload.getSelection())
-		    documentationFile = new File(txtDocumentationLocation.getText());
+    }
 
-		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile,
-			radioDocumentationDelete.getSelection(), documentationFile, parentViewer);
-	    }
-	});
+    @Override
+    protected void okPressed() {
+	if (textChanged) {
+	    sad.setName(txtName.getText());
+	    sad.setType(txtType.getText());
+	    sad.setAbstrct(txtAbstract.getText());
+	    sad.setWip(false); // TODO
+	}
+	File modelFile = null;
+	if (radioModelUpload.getSelection())
+	    modelFile = new File(txtModelLocation.getText());
+	File documentationFile = null;
+	if (radioDocumentationUpload.getSelection())
+	    documentationFile = new File(txtDocumentationLocation.getText());
+
+	controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile,
+		radioDocumentationDelete.getSelection(), documentationFile, parentViewer);
+	super.okPressed();
     }
 
     public class ProgressMonitor extends NullProgressMonitor {
