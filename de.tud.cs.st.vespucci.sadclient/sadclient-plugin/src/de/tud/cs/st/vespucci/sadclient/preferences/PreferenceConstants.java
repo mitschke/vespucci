@@ -50,6 +50,8 @@ public class PreferenceConstants {
 
 	public static final String P_CHOICE = "choicePreference";
 
-	public static final String P_STRING = "stringPreference";
+	public static final String P_USERNAME= "UserName";
+	
+	public static final String P_PASSWORD = "Password";
 	
 }

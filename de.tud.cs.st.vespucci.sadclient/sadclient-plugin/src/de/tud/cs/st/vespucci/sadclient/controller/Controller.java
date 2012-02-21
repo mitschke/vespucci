@@ -56,6 +56,8 @@ import de.tud.cs.st.vespucci.sadclient.model.SAD;
 import de.tud.cs.st.vespucci.sadclient.model.SADClient;
 import de.tud.cs.st.vespucci.sadclient.model.SADClientException;
 import de.tud.cs.st.vespucci.sadclient.model.Transaction;
+import de.tud.cs.st.vespucci.sadclient.model.http.RequestException;
+import de.tud.cs.st.vespucci.sadclient.view.IconAndMessageDialogs;
 
 /**
  * The me Responsible for starting computations in a separate thread.
@@ -171,6 +173,7 @@ public class Controller {
     public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
 	    final File modelFile, final boolean deleteDoc, final File docFile, final Callback<SAD> callback) {
 	Job job = new Job("Uploading changes SADServer...") {
+	Job job = new Job("Uploading changes to SADServer...") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		String transactionId = null;
@@ -193,12 +196,14 @@ public class Controller {
 			    sadClient.putDocumentation(transactionId, docFile, monitor);
 			}
 			sadClient.commitTransaction(transactionId);
-		    } catch (Exception e) {
+		    } catch (RequestException e) {
 			sadClient.rollbackTransaction(transactionId);
-			return new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage());
+			throw e;
 		    }
 		} catch (Exception e) {
+		    IconAndMessageDialogs.showErrorDialog("Upload to SADServer failed.", e.getMessage());
 		    e.printStackTrace();
+		    return new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage());
 		}
 
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "OK");

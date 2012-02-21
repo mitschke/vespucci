@@ -36,9 +36,6 @@
  */
 package de.tud.cs.st.vespucci.sadclient.view;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -46,7 +43,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -70,7 +66,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import de.tud.cs.st.vespucci.sadclient.Activator;
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
@@ -229,13 +224,12 @@ public class SADCollectionView extends ViewPart {
 		dialog.open();
 	    }
 	};
-	actionCreate.setText("Create new SAD");
+	actionCreate.setText("Create SAD");
 	actionCreate.setToolTipText("Creates a new SAD.");
 	actionCreate.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
 		.getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 
 	//
-
 	actionRefresh = new Action() {
 	    public void run() {
 		viewer.refresh();
