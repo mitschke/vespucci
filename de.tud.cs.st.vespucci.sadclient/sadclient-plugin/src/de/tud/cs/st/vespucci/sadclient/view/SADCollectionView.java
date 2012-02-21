@@ -72,6 +72,8 @@ import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
 /**
+ * A collection of SADs is represented as Eclipse View.
+ *  
  * @author Mateusz Parzonka
  */
 public class SADCollectionView extends ViewPart {
@@ -91,16 +93,17 @@ public class SADCollectionView extends ViewPart {
     private final static int TYPE_COLUMN = 3;
     private final static int ABSTRACT_COLUMN = 4;
 
+    /**
+     * Returns a collection of SADs.
+     */
     class ViewContentProvider implements IStructuredContentProvider {
 
-	public ViewContentProvider() {
-	}
-
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-
+	    // do nothing
 	}
 
 	public void dispose() {
+	    // do nothing
 	}
 
 	public Object[] getElements(Object parent) {
@@ -110,7 +113,7 @@ public class SADCollectionView extends ViewPart {
 
     /**
      * Provides the labels for Model and Documentation, no labels for the other
-     * columns
+     * columns.
      */
     class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 
@@ -149,18 +152,9 @@ public class SADCollectionView extends ViewPart {
     }
 
     class NameSorter extends ViewerSorter {
+	// TODO implement sortable table if needed
     }
 
-    /**
-     * The constructor.
-     */
-    public SADCollectionView() {
-    }
-
-    /**
-     * This is a callback that will allow us to create the viewer and initialize
-     * it.
-     */
     @Override
     public void createPartControl(Composite parent) {
 	viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.VIRTUAL);
@@ -178,9 +172,8 @@ public class SADCollectionView extends ViewPart {
 	viewer.setSorter(new NameSorter());
 	viewer.setInput(getViewSite());
 
-	PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "java-tycho-view.viewer");
-	makeActions();
-	hookDoubleClickAction();
+	createActions();
+	addListeners();
     }
 
     private TableViewerColumn createTableViewerColumn(int colNumber, String title, int bound, boolean resizable) {
@@ -205,7 +198,7 @@ public class SADCollectionView extends ViewPart {
 	return selectionAdapter;
     }
 
-    private void makeActions() {
+    private void createActions() {
 
 	// create
 	final Action actionCreate = new Action() {
@@ -271,7 +264,10 @@ public class SADCollectionView extends ViewPart {
 	getSite().registerContextMenu(menuMgr, viewer);
     }
 
-    private void hookDoubleClickAction() {
+    /**
+     * Listen for selections in the table and for doubeclicks opening the {@link SADDialog}.
+     */
+    private void addListeners() {
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    public void doubleClick(DoubleClickEvent event) {
 		if (selectedSAD != null) {
@@ -293,9 +289,6 @@ public class SADCollectionView extends ViewPart {
 	});
     }
 
-    /**
-     * Passing the focus request to the viewer's control.
-     */
     public void setFocus() {
 	viewer.getControl().setFocus();
     }

@@ -155,20 +155,6 @@ public class MultiThreadedHttpClient {
 	return put(url, new FileEntity(file, mimeType));
     }
 
-    public HttpResponse put(String url, File file, String mimeType, IProgressMonitor progressMonitor)
-	    throws RequestException {
-	System.out.println("Putted file " + file + " has size " + file.length() + " bytes.");
-	HttpEntity upstreamEntity = new FileEntityWithProgress(file, mimeType, progressMonitor);
-	HttpResponse response = put(url, upstreamEntity);
-	try {
-	    EntityUtils.consume(upstreamEntity);
-	} catch (IOException e) {
-	    throw new RequestException(e);
-	}
-	// expectStatusCode(response, 200);
-	return response;
-    }
-
     public HttpResponse putAsMultipart(String url, String fieldName, File file, String mimeType,
 	    IProgressMonitor progressMonitor) throws RequestException {
 	MultipartEntity multipartEntity = new MultipartEntity();
@@ -227,7 +213,6 @@ public class MultiThreadedHttpClient {
     public HttpResponse post(String url, File file, String mimeType, IProgressMonitor progressMonitor)
 	    throws RequestException {
 	HttpResponse response = post(url, new FileEntity(file, mimeType));
-	HttpEntityWithProgress.attachProgressMonitor(response, progressMonitor);
 	return response;
     }
 

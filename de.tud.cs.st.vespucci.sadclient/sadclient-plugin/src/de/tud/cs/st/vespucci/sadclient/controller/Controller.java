@@ -53,13 +53,12 @@ import org.eclipse.jface.viewers.Viewer;
 import de.tud.cs.st.vespucci.sadclient.Activator;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 import de.tud.cs.st.vespucci.sadclient.model.SADClient;
-import de.tud.cs.st.vespucci.sadclient.model.SADClientException;
 import de.tud.cs.st.vespucci.sadclient.model.Transaction;
 import de.tud.cs.st.vespucci.sadclient.model.http.RequestException;
 import de.tud.cs.st.vespucci.sadclient.view.IconAndMessageDialogs;
 
 /**
- * The me Responsible for starting computations in a separate thread.
+ * Gets called by the views and orchestrates {@link SADClient}.
  * 
  * @author Mateusz Parzonka
  * 
@@ -72,7 +71,6 @@ public class Controller {
     private Future<SAD[]> sadCollectionFuture;
 
     private Controller() {
-	pool = Executors.newFixedThreadPool(4);
 	sadClient = new SADClient();
     }
 
@@ -92,23 +90,15 @@ public class Controller {
      */
     public void stop() {
 	pool.shutdown();
+	sadClient.shutdown();
     }
 
-    /**
-     * Returns
-     * 
-     * @param shell
-     * @return
-     * @throws Exception
-     * @throws InterruptedException
-     * @throws SADClientException
-     */
     public SAD[] getSADCollection() {
 	getSADCollectionFromServer();
 	try {
 	    return sadCollectionFuture.get();
 	} catch (Exception e) {
-	    throw new SADClientException(e);
+	    throw new RuntimeException(e);
 	}
     }
 
@@ -184,7 +174,6 @@ public class Controller {
 		String transactionId = null;
 		try {
 		    Transaction transaction = sadClient.startTransaction(sad.getId());
-		    System.out.println(transaction);
 		    transactionId = transaction.getTransactionId();
 		    try {
 			if (descriptionChanged) {

@@ -50,7 +50,7 @@ import de.tud.cs.st.vespucci.sadclient.model.http.RequestException;
 import de.tud.cs.st.vespucci.sadclient.preferences.PreferenceConstants;
 
 /**
- * Retrieves SADs from the server via REST.
+ * Interacts with the SADServer via a RESTful interface.
  * 
  * @author Mateusz Parzonka
  * 
@@ -80,32 +80,30 @@ public class SADClient {
 
     // SAD-collection //
 
-    public SAD[] getSADCollection() throws SADClientException {
+    public SAD[] getSADCollection() throws RequestException {
 	SAD[] result = null;
-	HttpResponse response = null;
+	HttpResponse response = client.get(SADUrl());
 	try {
-	    response = client.get(SADUrl());
 	    result = xmlProcessor.getSADCollection(response.getEntity().getContent());
 	    client.consume(response);
-	    return result;
 	} catch (Exception e) {
-	    throw new SADClientException(e);
+	    throw new RequestException(e);
 	}
+	return result;
     }
 
     // SAD //
 
-    public SAD getSAD(String id) {
+    public SAD getSAD(String id) throws RequestException {
 	SAD result = null;
-	HttpResponse response = null;
+	HttpResponse response = client.get(SADUrl(id));
 	try {
-	    response = client.get(SADUrl(id));
 	    result = xmlProcessor.getSAD(response.getEntity().getContent());
 	    client.consume(response);
-	    return result;
 	} catch (Exception e) {
-	    throw new SADClientException(e);
+	    throw new RequestException(e);
 	}
+	return result;
     }
 
     public Transaction startTransaction(String id) throws Exception {
@@ -116,6 +114,16 @@ public class SADClient {
 	return transaction;
     }
 
+    public void rollbackTransaction(String transactionId) {
+	HttpResponse response = null;
+	try {
+	    response = client.delete(SADTransactionUrl(transactionId));
+	    client.consume(response);
+	} catch (RequestException e) {
+	    // do nothing
+	}
+    }
+
     public void commitTransaction(String transactionid) throws RequestException {
 	Transaction transaction = new Transaction();
 	transaction.setTransactionUrl(SADTransactionUrl(transactionid));
@@ -123,27 +131,13 @@ public class SADClient {
     }
 
     public void storeSAD(String transactionId, SAD sad) throws RequestException {
-	System.out
-		.println("Sending call to update description at " + SADTransactionUrl(transactionId) + " with " + sad);
 	HttpResponse response = client.put(SADTransactionUrl(transactionId), xmlProcessor.getXML(sad), XML);
 	client.consume(response);
-    }
-
-    public void rollbackTransaction(String transactionId) {
-	HttpResponse response = null;
-	try {
-	    response = client.delete(SADTransactionUrl(transactionId));
-	    client.consume(response);
-	} catch (RequestException e) {
-	}
-
     }
 
     // Model //
 
     public byte[] getModel(String id, File downloadLocation, IProgressMonitor progressMonitor) throws RequestException {
-	System.out.println("Calling getModel in client with id " + id + " to download at "
-		+ downloadLocation.getAbsolutePath());
 	HttpResponse response = client.get(ModelUrl(id), XML, progressMonitor);
 	byte[] bytes;
 	try {
@@ -151,32 +145,27 @@ public class SADClient {
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
 	}
-	System.out.println("Lenth of model: " + bytes.length);
 	client.consume(response);
 	return bytes;
     }
 
     public void putModel(String transactionId, File file, IProgressMonitor progressMonitor) throws RequestException {
-	System.out.println("Calling putModel in client with id " + transactionId);
 	HttpResponse response = client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + MODEL, "model", file,
 		XML, progressMonitor);
 	client.consume(response);
     }
 
     public void deleteSAD(String id) throws RequestException {
-	System.out.println("Calling deleteSAD with id " + id);
 	HttpResponse response = client.delete(SADUrl(id));
 	client.consume(response);
     }
 
     public void deleteModel(String transactionId) throws RequestException {
-	System.out.println("Calling deleteModel with id " + transactionId);
 	HttpResponse response = client.delete(SADTransactionUrl(transactionId) + "/" + MODEL);
 	client.consume(response);
     }
 
     public void deleteDocumentation(String transactionId) throws RequestException {
-	System.out.println("Calling deleteDocumentation with id " + transactionId);
 	HttpResponse response = client.delete(SADTransactionUrl(transactionId) + "/" + DOCUMENTATION);
 	client.consume(response);
     }
@@ -184,7 +173,6 @@ public class SADClient {
     // Documentation //
 
     public byte[] getDocumentation(String id, File downloadLocation, IProgressMonitor progressMonitor) throws Exception {
-	System.out.println("Calling getDocumentation in client with id " + id);
 	HttpResponse response = client.get(DocumentationUrl(id), PDF, progressMonitor);
 	byte[] bytes = IOUtils.toByteArray(response.getEntity().getContent());
 	client.consume(response);
@@ -193,7 +181,6 @@ public class SADClient {
 
     public void putDocumentation(String transactionId, File file, IProgressMonitor progressMonitor)
 	    throws RequestException {
-	System.out.println("Calling putDocumentation in client with id " + transactionId);
 	HttpResponse response = client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + DOCUMENTATION,
 		"documentation", file, PDF, progressMonitor);
 	client.consume(response);
@@ -257,6 +244,13 @@ public class SADClient {
 
     private static String getPassword() {
 	return Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_PASSWORD);
+    }
+
+    /**
+     * Initiated by the plugin activator.
+     */
+    public void shutdown() {
+	client.shutdown();
     }
 
 }
