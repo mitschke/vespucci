@@ -109,7 +109,7 @@ public class SADDialog extends Dialog {
 
     final int BORDER_MARGIN = 10;
     final int GROUP_MARGIN = 5;
-    final int LEFT_TAB = 15;
+    final int LEFT_TAB = 12;
     final int RIGHT_TAB = 80;
     final int LINE_MARGIN = 12;
 
@@ -257,8 +257,8 @@ public class SADDialog extends Dialog {
 	    }
 	});
 
-	radioModelUpload = createRadioUpload(grpModel, radioModelKeep);
 	txtModelLocation = createLocationText(grpModel, radioModelKeep);
+	radioModelUpload = createRadioUpload(grpModel, radioModelKeep, "sad", txtModelLocation);
 	btnModelBrowse = createBrowseButton(grpModel, radioModelKeep, "sad", txtModelLocation);
 
 	radioModelDelete = createDeleteRadio(grpModel, radioModelUpload);
@@ -277,8 +277,9 @@ public class SADDialog extends Dialog {
 	    }
 	});
 
-	radioDocumentationUpload = createRadioUpload(grpDocumentation, radioDocumentationKeep);
 	txtDocumentationLocation = createLocationText(grpDocumentation, radioDocumentationKeep);
+	radioDocumentationUpload = createRadioUpload(grpDocumentation, radioDocumentationKeep, "pdf",
+		txtDocumentationLocation);
 	btnDocumentationBrowse = createBrowseButton(grpDocumentation, radioDocumentationKeep, "pdf",
 		txtDocumentationLocation);
 
@@ -314,7 +315,7 @@ public class SADDialog extends Dialog {
 	Text txtModelLocation = new Text(parent, SWT.BORDER);
 	FormData formData = new FormData();
 	formData.top = new FormAttachment(controlAtTop, 8);
-	formData.left = new FormAttachment(20);
+	formData.left = new FormAttachment(22);
 	formData.right = new FormAttachment(RIGHT_TAB);
 	txtModelLocation.setLayoutData(formData);
 	return txtModelLocation;
@@ -357,15 +358,30 @@ public class SADDialog extends Dialog {
 	return radioModelDelete;
     }
 
-    private Button createRadioUpload(Group parent, Control controlAtTop) {
+    private Button createRadioUpload(Group parent, Control controlAtTop, final String fileType, final Text textForPath) {
 	FormData formData;
-	Button radioModelUpload = new Button(parent, SWT.RADIO);
+	Button button = new Button(parent, SWT.RADIO);
 	formData = new FormData();
 	formData.top = new FormAttachment(controlAtTop, BORDER_MARGIN);
 	formData.left = new FormAttachment(0, BORDER_MARGIN);
-	radioModelUpload.setLayoutData(formData);
-	radioModelUpload.setText("Upload new file: ");
-	return radioModelUpload;
+	button.setLayoutData(formData);
+	button.setText("Upload new file: ");
+	button.addMouseListener(new MouseAdapter() {
+	    @Override
+	    public void mouseUp(MouseEvent e) {
+		container.getDisplay().asyncExec(new Runnable() {
+		    @Override
+		    public void run() {
+			if (textForPath.getText().equals("")) {
+			    File uploadLocation = openUploadDialog(fileType);
+			    if (uploadLocation != null)
+				textForPath.setText(uploadLocation.getAbsolutePath());
+			}
+		    }
+		});
+	    }
+	});
+	return button;
     }
 
     private Button createDownloadButton(Group parent, final Runnable runnable) {
