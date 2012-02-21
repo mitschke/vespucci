@@ -172,7 +172,6 @@ public class Controller {
 
     public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
 	    final File modelFile, final boolean deleteDoc, final File docFile, final Callback<SAD> callback) {
-	Job job = new Job("Uploading changes SADServer...") {
 	Job job = new Job("Uploading changes to SADServer...") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
@@ -182,6 +181,7 @@ public class Controller {
 		    System.out.println(transaction);
 		    transactionId = transaction.getTransactionId();
 		    try {
+			Thread.sleep(3000);
 			if (descriptionChanged) {
 			    sadClient.storeSAD(transactionId, sad);
 			}

@@ -50,8 +50,10 @@ public class PreferenceConstants {
 
 	public static final String P_CHOICE = "choicePreference";
 
-	public static final String P_USERNAME= "UserName";
+	public static final String P_USERNAME= "UserNamePreference";
 	
-	public static final String P_PASSWORD = "Password";
+	public static final String P_PASSWORD = "PasswordPreference";
+
+	public static final String P_SERVER = "ServerPreference";
 	
 }

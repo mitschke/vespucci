@@ -58,7 +58,7 @@ import de.tud.cs.st.vespucci.sadclient.preferences.PreferenceConstants;
 public class SADClient {
 
     private MultiThreadedHttpClient client;
-    private final static String ROOT = "http://localhost:9000/vespucci";
+    private volatile static String root = null;
     private final static String TRANSACTION = "/transaction";
     private final static String COLLECTION = "/sads";
     private final static String MODEL = "model";
@@ -73,8 +73,9 @@ public class SADClient {
     public SADClient() {
 	super();
 	xmlProcessor = new XmlProcessor();
+	root = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SERVER);
 	client = new MultiThreadedHttpClient(getUsername(), getPassword());
-	registerCredentialsListener();
+	registerPreferenceListeners();
     }
 
     // SAD-collection //
@@ -85,12 +86,11 @@ public class SADClient {
 	try {
 	    response = client.get(SADUrl());
 	    result = xmlProcessor.getSADCollection(response.getEntity().getContent());
+	    client.consume(response);
+	    return result;
 	} catch (Exception e) {
 	    throw new SADClientException(e);
-	} finally {
-	    client.consume(response);
 	}
-	return result;
     }
 
     // SAD //
@@ -101,12 +101,11 @@ public class SADClient {
 	try {
 	    response = client.get(SADUrl(id));
 	    result = xmlProcessor.getSAD(response.getEntity().getContent());
+	    client.consume(response);
+	    return result;
 	} catch (Exception e) {
 	    throw new SADClientException(e);
-	} finally {
-	    client.consume(response);
 	}
-	return result;
     }
 
     public Transaction startTransaction(String id) throws Exception {
@@ -134,11 +133,10 @@ public class SADClient {
 	HttpResponse response = null;
 	try {
 	    response = client.delete(SADTransactionUrl(transactionId));
-	} catch (RequestException e) {
-	    
-	} finally {
 	    client.consume(response);
+	} catch (RequestException e) {
 	}
+
     }
 
     // Model //
@@ -198,32 +196,32 @@ public class SADClient {
     // URLs //
 
     private static String SADUrl() {
-	return ROOT + COLLECTION;
+	return root + COLLECTION;
     }
 
     private static String SADUrl(String id) {
-	return ROOT + COLLECTION + "/" + id;
+	return root + COLLECTION + "/" + id;
     }
 
     private static String SADTransactionUrl() {
-	return ROOT + TRANSACTION + COLLECTION;
+	return root + TRANSACTION + COLLECTION;
     }
 
     private static String SADTransactionUrl(String transactionId) {
-	return ROOT + TRANSACTION + COLLECTION + "/" + transactionId;
+	return root + TRANSACTION + COLLECTION + "/" + transactionId;
     }
 
     private static String ModelUrl(String id) {
-	return ROOT + COLLECTION + "/" + id + "/" + MODEL;
+	return root + COLLECTION + "/" + id + "/" + MODEL;
     }
 
     private static String DocumentationUrl(String id) {
-	return ROOT + COLLECTION + "/" + id + "/" + DOCUMENTATION;
+	return root + COLLECTION + "/" + id + "/" + DOCUMENTATION;
     }
 
     // Helper //
 
-    private void registerCredentialsListener() {
+    private void registerPreferenceListeners() {
 	Activator.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
 	    @Override
 	    public void propertyChange(PropertyChangeEvent event) {
@@ -231,6 +229,14 @@ public class SADClient {
 			|| event.getProperty() == PreferenceConstants.P_PASSWORD) {
 		    client.shutdown();
 		    client = new MultiThreadedHttpClient(getUsername(), getPassword());
+		}
+	    }
+	});
+	Activator.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
+	    @Override
+	    public void propertyChange(PropertyChangeEvent event) {
+		if (event.getProperty() == PreferenceConstants.P_SERVER) {
+		    root = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SERVER);
 		}
 	    }
 	});
