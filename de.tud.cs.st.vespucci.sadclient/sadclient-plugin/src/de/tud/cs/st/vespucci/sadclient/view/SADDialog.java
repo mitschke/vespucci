@@ -314,7 +314,7 @@ public class SADDialog extends Dialog {
 	Text txtModelLocation = new Text(parent, SWT.BORDER);
 	FormData formData = new FormData();
 	formData.top = new FormAttachment(controlAtTop, 8);
-	formData.left = new FormAttachment(28);
+	formData.left = new FormAttachment(20);
 	formData.right = new FormAttachment(RIGHT_TAB);
 	txtModelLocation.setLayoutData(formData);
 	return txtModelLocation;
@@ -448,70 +448,4 @@ public class SADDialog extends Dialog {
 	super.okPressed();
     }
 
-    public class ProgressMonitor extends NullProgressMonitor {
-
-	@Override
-	public void beginTask(String name, int totalWork) {
-	    System.out.println("BEGINNING TASK: " + name + " with total work " + totalWork);
-	}
-
-	@Override
-	public void worked(int work) {
-	    System.out.println("Worked: " + work);
-	}
-
-	@Override
-	public void done() {
-	    System.out.println("Done.");
-	}
-
-    }
-
-    public class ProgressBarMonitor extends NullProgressMonitor {
-
-	private final ProgressBar progressBar;
-
-	public ProgressBarMonitor(ProgressBar progressBar) {
-	    this.progressBar = progressBar;
-	}
-
-	@Override
-	public void beginTask(final String name, final int totalWork) {
-	    progressBar.getDisplay().asyncExec(new Runnable() {
-		@Override
-		public void run() {
-		    progressBar.setMaximum(totalWork);
-		    // progressBar.setVisible(true);
-		    System.out.println("BEGINNING TASK: " + name + " with total work " + totalWork);
-		}
-	    });
-
-	}
-
-	@Override
-	public void worked(final int work) {
-	    progressBar.getDisplay().asyncExec(new Runnable() {
-		@Override
-		public void run() {
-		    if (progressBar.isDisposed())
-			return;
-		    final int sel = progressBar.getSelection();
-		    progressBar.setSelection(sel + work);
-		    System.out.println("Accum work: " + progressBar.getSelection());
-		}
-	    });
-	}
-
-	@Override
-	public void done() {
-	    progressBar.getDisplay().asyncExec(new Runnable() {
-		@Override
-		public void run() {
-		    // progressBar.setVisible(false);
-		    System.out.println("Done.");
-		}
-	    });
-	}
-
-    }
 }
