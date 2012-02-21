@@ -10,7 +10,7 @@
       </category>
       <view
             name="SADClient"
-            icon="icons/sample.gif"
+            icon="images/sadclient.gif"
             category="de.tud.cs.st.vespucci"
             class="de.tud.cs.st.vespucci.sadclient.view.SADCollectionView"
             id="de.tud.cs.st.vespucci.sadclient.view.SADCollectionView">
