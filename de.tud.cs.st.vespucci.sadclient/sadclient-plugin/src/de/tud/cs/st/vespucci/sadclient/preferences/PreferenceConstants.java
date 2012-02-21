@@ -44,12 +44,6 @@ package de.tud.cs.st.vespucci.sadclient.preferences;
  */
 public class PreferenceConstants {
 
-	public static final String P_PATH = "pathPreference";
-
-	public static final String P_BOOLEAN = "booleanPreference";
-
-	public static final String P_CHOICE = "choicePreference";
-
 	public static final String P_USERNAME= "UserNamePreference";
 	
 	public static final String P_PASSWORD = "PasswordPreference";

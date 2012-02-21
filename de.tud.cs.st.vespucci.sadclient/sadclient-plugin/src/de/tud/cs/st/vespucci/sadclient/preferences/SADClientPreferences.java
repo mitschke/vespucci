@@ -72,7 +72,6 @@ public class SADClientPreferences extends FieldEditorPreferencePage implements I
      * editor knows how to save and restore itself.
      */
     public void createFieldEditors() {
-	addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, "&Directory preference:", getFieldEditorParent()));
 	
 	addField(new StringFieldEditor(PreferenceConstants.P_SERVER, "S&erver:", getFieldEditorParent()));
 	

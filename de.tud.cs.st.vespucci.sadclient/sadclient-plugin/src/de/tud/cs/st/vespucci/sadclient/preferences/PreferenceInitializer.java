@@ -49,7 +49,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
     public void initializeDefaultPreferences() {
 	IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-	store.setDefault(PreferenceConstants.P_BOOLEAN, true);
 	store.setDefault(PreferenceConstants.P_SERVER, "http://localhost:9000/vespucci"); // FIXME change in production code
 	store.setDefault(PreferenceConstants.P_USERNAME, "");
 	store.setDefault(PreferenceConstants.P_PASSWORD, "");
