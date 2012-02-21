@@ -55,6 +55,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -73,7 +74,7 @@ import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
 /**
  * A collection of SADs is represented as Eclipse View.
- *  
+ * 
  * @author Mateusz Parzonka
  */
 public class SADCollectionView extends ViewPart {
@@ -84,6 +85,7 @@ public class SADCollectionView extends ViewPart {
     public static final String ID = "de.tud.cs.st.vespucci.sadclient.view.SADCollectionView";
 
     private TableViewer viewer;
+    private TableViewerComparator comparator;
     private SAD selectedSAD = null;
 
     // column numbers
@@ -93,70 +95,9 @@ public class SADCollectionView extends ViewPart {
     private final static int TYPE_COLUMN = 3;
     private final static int ABSTRACT_COLUMN = 4;
 
-    /**
-     * Returns a collection of SADs.
-     */
-    class ViewContentProvider implements IStructuredContentProvider {
-
-	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-	    // do nothing
-	}
-
-	public void dispose() {
-	    // do nothing
-	}
-
-	public Object[] getElements(Object parent) {
-	    return Controller.getInstance().getSADCollection();
-	}
-    }
-
-    /**
-     * Provides the labels for Model and Documentation, no labels for the other
-     * columns.
-     */
-    class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
-
-	@Override
-	public String getColumnText(Object obj, int index) {
-	    if (obj instanceof SAD) {
-		SAD sad = (SAD) obj;
-		switch (index) {
-		case NAME_COLUMN:
-		    return sad.getName();
-		case TYPE_COLUMN:
-		    return sad.getType();
-		case ABSTRACT_COLUMN:
-		    return sad.getAbstrct();
-		}
-	    }
-	    return "";
-	}
-
-	@Override
-	public Image getColumnImage(Object obj, int index) {
-	    if (obj instanceof SAD) {
-		SAD sad = (SAD) obj;
-		switch (index) {
-		case MODEL_COLUMN:
-		    if (sad.getModel() != null)
-			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-		    break;
-		case DOCUMENTATION_COLUMN:
-		    if (sad.getDocumentation() != null)
-			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
-		}
-	    }
-	    return null;
-	}
-    }
-
-    class NameSorter extends ViewerSorter {
-	// TODO implement sortable table if needed
-    }
-
     @Override
     public void createPartControl(Composite parent) {
+	
 	viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.VIRTUAL);
 	viewer.getTable().setHeaderVisible(true);
 	viewer.getTable().setLinesVisible(true);
@@ -169,7 +110,8 @@ public class SADCollectionView extends ViewPart {
 
 	viewer.setContentProvider(new ViewContentProvider());
 	viewer.setLabelProvider(new ViewLabelProvider());
-	viewer.setSorter(new NameSorter());
+	comparator = new TableViewerComparator();
+	viewer.setComparator(comparator);
 	viewer.setInput(getViewSite());
 
 	createActions();
@@ -191,6 +133,9 @@ public class SADCollectionView extends ViewPart {
 	SelectionAdapter selectionAdapter = new SelectionAdapter() {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
+		comparator.setColumn(index);
+		int dir = comparator.getDirection();
+		viewer.getTable().setSortDirection(dir);
 		viewer.getTable().setSortColumn(column);
 		viewer.refresh();
 	    }
@@ -265,7 +210,8 @@ public class SADCollectionView extends ViewPart {
     }
 
     /**
-     * Listen for selections in the table and for doubeclicks opening the {@link SADDialog}.
+     * Listen for selections in the table and for doubeclicks opening the
+     * {@link SADDialog}.
      */
     private void addListeners() {
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -288,6 +234,135 @@ public class SADCollectionView extends ViewPart {
 	    }
 	});
     }
+    
+    /**
+     * Returns a collection of SADs.
+     */
+    class ViewContentProvider implements IStructuredContentProvider {
+
+	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+	    // do nothing
+	}
+
+	public void dispose() {
+	    // do nothing
+	}
+
+	public Object[] getElements(Object parent) {
+	    return Controller.getInstance().getSADCollection();
+	}
+    }
+
+    /**
+     * Provides the labels for Model and Documentation, no labels for the other
+     * columns.
+     */
+    class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
+
+	@Override
+	public String getColumnText(Object obj, int index) {
+	    if (obj instanceof SAD) {
+		SAD sad = (SAD) obj;
+		switch (index) {
+		case NAME_COLUMN:
+		    return sad.getName();
+		case TYPE_COLUMN:
+		    return sad.getType();
+		case ABSTRACT_COLUMN:
+		    return sad.getAbstrct();
+		}
+	    }
+	    return "";
+	}
+
+	@Override
+	public Image getColumnImage(Object obj, int index) {
+	    if (obj instanceof SAD) {
+		SAD sad = (SAD) obj;
+		switch (index) {
+		case MODEL_COLUMN:
+		    if (sad.getModel() != null)
+			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+		    break;
+		case DOCUMENTATION_COLUMN:
+		    if (sad.getDocumentation() != null)
+			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
+		}
+	    }
+	    return null;
+	}
+    }
+    
+    /**
+     * Sorts columns lexically. Model and documentation -columns are sorted not-null first. 
+     */
+    public class TableViewerComparator extends ViewerComparator {
+   	private int columnIndex;
+   	private static final int DESCENDING = 1;
+   	private int direction = DESCENDING;
+
+   	public TableViewerComparator() {
+   	    this.columnIndex = 0;
+   	    direction = DESCENDING;
+   	}
+
+   	public int getDirection() {
+   	    return direction == DESCENDING ? SWT.DOWN : SWT.UP;
+   	}
+
+   	public void setColumn(int column) {
+   	    if (column == this.columnIndex) {
+   		// Same column as last sort; toggle the direction
+   		direction = 1 - direction;
+   	    } else {
+   		// New column; do an ascending sort
+   		this.columnIndex = column;
+   		direction = DESCENDING;
+   	    }
+   	}
+
+   	@Override
+   	public int compare(Viewer viewer, Object e1, Object e2) {
+   	    SAD s1 = (SAD) e1;
+   	    SAD s2 = (SAD) e2;
+   	    int compare = 0;
+   	    switch (columnIndex) {
+   	    case MODEL_COLUMN:
+   		compare = compareNull(s1.getModel(), s2.getModel());
+   		break;
+   	    case DOCUMENTATION_COLUMN:
+   		compare = compareNull(s1.getDocumentation(), s2.getDocumentation());
+   		break;
+   	    case NAME_COLUMN:
+   		compare = s1.getName().compareToIgnoreCase(s2.getName());
+   		break;
+   	    case TYPE_COLUMN:
+   		compare = s1.getType().compareToIgnoreCase(s2.getType());
+   		break;
+   	    case ABSTRACT_COLUMN:
+   		compare = s1.getAbstrct().compareToIgnoreCase(s2.getAbstrct());
+   		break;
+   	    default:
+   		compare = 0;
+   	    }
+   	    return direction == DESCENDING ? -compare : compare;
+   	}
+
+       }
+
+       /**
+        * Sorts null before not-null.
+        */
+       private static int compareNull(Object o1, Object o2) {
+   	if (o1 == null && o2 == null) {
+   	    return 0;
+   	}
+   	if (o1 == null)
+   	    return -1;
+   	if (o2 == null)
+   	    return 1;
+   	return 0;
+       }
 
     public void setFocus() {
 	viewer.getControl().setFocus();
