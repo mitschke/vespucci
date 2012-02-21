@@ -163,6 +163,12 @@ public class SADClient {
 	client.consume(response);
     }
 
+    public void deleteSAD(String id) throws RequestException {
+	System.out.println("Calling deleteSAD with id " + id);
+	HttpResponse response = client.delete(SADUrl(id));
+	client.consume(response);
+    }
+
     public void deleteModel(String transactionId) throws RequestException {
 	System.out.println("Calling deleteModel with id " + transactionId);
 	HttpResponse response = client.delete(SADTransactionUrl(transactionId) + "/" + MODEL);
@@ -221,6 +227,9 @@ public class SADClient {
 
     // Helper //
 
+    /**
+     * Registers listeners for changes of credentials and server.
+     */
     private void registerPreferenceListeners() {
 	Activator.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
 	    @Override

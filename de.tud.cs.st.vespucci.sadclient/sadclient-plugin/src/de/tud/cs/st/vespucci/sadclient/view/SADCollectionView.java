@@ -43,13 +43,15 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -77,12 +79,10 @@ public class SADCollectionView extends ViewPart {
     /**
      * The ID of the view as specified by the extension.
      */
-    public static final String ID = "de.tud.cs.st.vespucci.sadclient.views.SADCollectionView";
+    public static final String ID = "de.tud.cs.st.vespucci.sadclient.view.SADCollectionView";
 
     private TableViewer viewer;
-    private Action actionCreate;
-    private Action actionRefresh;
-    private Action doubleClickAction;
+    private SAD selectedSAD = null;
 
     // column numbers
     private final static int MODEL_COLUMN = 0;
@@ -91,21 +91,13 @@ public class SADCollectionView extends ViewPart {
     private final static int TYPE_COLUMN = 3;
     private final static int ABSTRACT_COLUMN = 4;
 
-    /*
-     * The content provider class is responsible for providing objects to the
-     * view. It can wrap existing objects in adapters or simply return objects
-     * as-is. These objects may be sensitive to the current input of the view,
-     * or ignore it and always show the same content (like Task List, for
-     * example).
-     */
-
     class ViewContentProvider implements IStructuredContentProvider {
 
 	public ViewContentProvider() {
 	}
 
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-	    
+
 	}
 
 	public void dispose() {
@@ -179,7 +171,7 @@ public class SADCollectionView extends ViewPart {
 	createTableViewerColumn(DOCUMENTATION_COLUMN, "Doc", 24, false);
 	createTableViewerColumn(NAME_COLUMN, "Name", 100, true);
 	createTableViewerColumn(TYPE_COLUMN, "Type", 100, true);
-	createTableViewerColumn(ABSTRACT_COLUMN, "Abstract", 100, true);
+	createTableViewerColumn(ABSTRACT_COLUMN, "Abstract", 300, true);
 
 	viewer.setContentProvider(new ViewContentProvider());
 	viewer.setLabelProvider(new ViewLabelProvider());
@@ -206,9 +198,6 @@ public class SADCollectionView extends ViewPart {
 	SelectionAdapter selectionAdapter = new SelectionAdapter() {
 	    @Override
 	    public void widgetSelected(SelectionEvent e) {
-		// comparator.setColumn(index);
-		// int dir = comparator.getDirection();
-		// viewer.getTable().setSortDirection(dir);
 		viewer.getTable().setSortColumn(column);
 		viewer.refresh();
 	    }
@@ -218,8 +207,8 @@ public class SADCollectionView extends ViewPart {
 
     private void makeActions() {
 
-	// action 1
-	actionCreate = new Action() {
+	// create
+	final Action actionCreate = new Action() {
 	    public void run() {
 		Dialog dialog = new SADDialog(viewer, new SAD());
 		dialog.open();
@@ -230,8 +219,21 @@ public class SADCollectionView extends ViewPart {
 	actionCreate.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
 		.getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 
-	//
-	actionRefresh = new Action() {
+	// delete
+	final Action actionDelete = new Action() {
+	    public void run() {
+		if (MessageDialog.openConfirm(viewer.getControl().getShell(), "Delete SAD",
+			"Do you really want to delete the selected SAD?"))
+		    Controller.getInstance().deleteSAD(selectedSAD, viewer);
+	    }
+	};
+	actionDelete.setText("Delete");
+	actionDelete.setToolTipText("Deletes the selected SAD.");
+	actionDelete.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+		.getImageDescriptor(ISharedImages.IMG_ETOOL_DELETE));
+
+	// refresh
+	final Action actionRefresh = new Action() {
 	    public void run() {
 		viewer.refresh();
 	    }
@@ -241,27 +243,19 @@ public class SADCollectionView extends ViewPart {
 	actionRefresh.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
 		.getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
 
-	doubleClickAction = new Action() {
-	    public void run() {
-		ISelection selection = viewer.getSelection();
-		Object obj = ((IStructuredSelection) selection).getFirstElement();
-		System.out.println("Selection class name:" + obj.getClass().getName());
-		System.out.println(obj);
-		showMessage("Double-click detected on3 " + obj.toString());
-	    }
-	};
-
-	// local pulldown menu
+	// pulldown menu
 	IMenuManager menuManager = getViewSite().getActionBars().getMenuManager();
 	menuManager.add(actionCreate);
 	menuManager.add(actionRefresh);
 
-	// local toolbar
+	// toolbar
 	IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
 	toolBarManager.add(actionCreate);
+	toolBarManager.add(actionDelete);
+	toolBarManager.add(new Separator());
 	toolBarManager.add(actionRefresh);
 
-	// local pulldown menu
+	// popup menu
 	MenuManager menuMgr = new MenuManager("#PopupMenu");
 	menuMgr.setRemoveAllWhenShown(true);
 	menuMgr.addMenuListener(new IMenuListener() {
@@ -275,35 +269,28 @@ public class SADCollectionView extends ViewPart {
 	Menu menu = menuMgr.createContextMenu(viewer.getControl());
 	viewer.getControl().setMenu(menu);
 	getSite().registerContextMenu(menuMgr, viewer);
-
     }
 
     private void hookDoubleClickAction() {
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    public void doubleClick(DoubleClickEvent event) {
-		System.out.println("Selection printed: " + event.getSelection());
-		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-		Object object = selection.getFirstElement();
-		System.out.println("Type of selection: " + object.getClass());
-		if (object instanceof SAD) {
-		    Dialog dialog = new SADDialog(viewer, (SAD) object);
+		if (selectedSAD != null) {
+		    Dialog dialog = new SADDialog(viewer, selectedSAD);
 		    dialog.open();
-		} else {
-		    System.err.println("Selection-type unknown!");
 		}
-
 	    }
 	});
-    }
-
-    private void showMessage(String message) {
-	// MessageDialog.openInformation(viewer.getControl().getShell(),
-	// "SADClient", message);
-	// UploadWizard wizard = new UploadWizard();
-	// WizardDialog dialog = new
-	// WizardDialog(viewer.getControl().getShell(), wizard);
-	System.out.println("MESSAGE: " + message);
-
+	viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+	    public void selectionChanged(SelectionChangedEvent event) {
+		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+		Object object = selection.getFirstElement();
+		if (object instanceof SAD) {
+		    selectedSAD = (SAD) object;
+		} else {
+		    System.err.println("SADTableViewer: Selection-type unknown!");
+		}
+	    }
+	});
     }
 
     /**
@@ -312,7 +299,5 @@ public class SADCollectionView extends ViewPart {
     public void setFocus() {
 	viewer.getControl().setFocus();
     }
-    
-    
-   
+
 }

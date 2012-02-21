@@ -125,6 +125,23 @@ public class Controller {
 	});
     }
 
+    public void deleteSAD(final SAD sad, final Viewer viewer) {
+	Job job = new Job("SAD deletion") {
+	    @Override
+	    protected IStatus run(IProgressMonitor monitor) {
+		try {
+		    sadClient.deleteSAD(sad.getId());
+		} catch (RequestException e) {
+		    IconAndMessageDialogs.showErrorDialog("SAD delete failed.", e.getMessage());
+		}
+		refresh(viewer);
+		return new Status(IStatus.OK, Activator.PLUGIN_ID, "SAD deleted.");
+	    }
+	};
+	job.setUser(true);
+	job.schedule();
+    }
+
     public void downloadModel(final String id, final File downloadLocation) {
 	Job job = new Job("Download Model") {
 	    @Override
@@ -133,7 +150,7 @@ public class Controller {
 		    IOUtils.write(sadClient.getModel(id, downloadLocation, monitor), new FileOutputStream(
 			    downloadLocation));
 		} catch (Exception e) {
-		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage());
+		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
 		}
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Model downloaded.");
 	    }
@@ -150,7 +167,7 @@ public class Controller {
 		    IOUtils.write(sadClient.getDocumentation(id, downloadLocation, monitor), new FileOutputStream(
 			    downloadLocation));
 		} catch (Exception e) {
-		    new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage());
+		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
 		}
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Documentation downloaded.");
 	    }
@@ -190,21 +207,24 @@ public class Controller {
 		    }
 		} catch (Exception e) {
 		    IconAndMessageDialogs.showErrorDialog("Upload to SADServer failed.", e.getMessage());
-		    e.printStackTrace();
-		    return new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage());
 		}
 
-		viewer.getControl().getDisplay().asyncExec(new Runnable() {
-		    @Override
-		    public void run() {
-			viewer.refresh();
-		    }
-		});
+		refresh(viewer);
+
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "OK");
 	    }
 	};
 	job.setUser(true);
 	job.schedule();
+    }
+
+    private static void refresh(final Viewer viewer) {
+	viewer.getControl().getDisplay().asyncExec(new Runnable() {
+	    @Override
+	    public void run() {
+		viewer.refresh();
+	    }
+	});
     }
 
 }

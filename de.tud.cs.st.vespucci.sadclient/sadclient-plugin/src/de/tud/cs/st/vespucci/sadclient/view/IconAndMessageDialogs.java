@@ -16,15 +16,17 @@ import de.tud.cs.st.vespucci.sadclient.Activator;
  * 
  */
 public class IconAndMessageDialogs {
-
-    public static void showErrorDialog(final String message, final String reason) {
+    
+    public static IStatus showErrorDialog(final String message, final String reason) {
+	final IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, reason);
 	PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 	    public void run() {
-		ErrorDialog errorDialog = new ErrorDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), "Error", message, new Status(IStatus.ERROR,
-			Activator.PLUGIN_ID, reason), IStatus.ERROR);
+		ErrorDialog errorDialog = new ErrorDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+			"Error", message, status, IStatus.ERROR);
 		errorDialog.open();
 	    }
 	});
+	return status;
     }
 
 }
