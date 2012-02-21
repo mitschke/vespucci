@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -13,13 +15,16 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.auth.params.AuthPNames;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.params.AuthPolicy;
 import org.apache.http.client.params.ClientPNames;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -33,8 +38,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -55,33 +62,48 @@ import de.tud.cs.st.vespucci.sadclient.Activator;
 public class MultiThreadedHttpClient {
 
     private final DefaultHttpClient client;
-    private final static String CHARSET = "UTF-8";
+    private final static String DEFAULT_CHARSET = "UTF-8";
+    private final IdleConnectionMonitor idleConnectionMonitor;
+    private HttpContext context;
 
     /**
      * The client will use no authentication.
      */
     public MultiThreadedHttpClient() {
 	super();
+	context = new BasicHttpContext();
 	SchemeRegistry schemeRegistry = new SchemeRegistry();
 	schemeRegistry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
 	// standard client params
 	HttpParams params = new BasicHttpParams();
-	params.setParameter(CoreProtocolPNames.HTTP_ELEMENT_CHARSET, CHARSET);
-	params.setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, CHARSET);
+	params.setParameter(CoreProtocolPNames.HTTP_ELEMENT_CHARSET, DEFAULT_CHARSET);
+	params.setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, DEFAULT_CHARSET);
 	params.setParameter(CoreProtocolPNames.USER_AGENT, Activator.PLUGIN_ID);
-	// The SADServer's underlying server implementation (sun) does not allow
-	// us to use this handshake,
-	// since it always returns "continue"
-	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
+	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true); // prevents
+									   // premature
+									   // body
+									   // transmits
+	params.setParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, false);
+	params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 10000); // we
+									     // try
+									     // to
+									     // connect
+									     // for
+									     // 10
+									     // sec
 	List<Header> defaultHeaders = new ArrayList<Header>();
 	defaultHeaders.add(new BasicHeader("accept", "application/xml"));
 	params.setParameter(ClientPNames.DEFAULT_HEADERS, defaultHeaders);
 
 	ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
-	cm.setMaxTotal(200);
+	cm.setMaxTotal(20);
 	cm.setDefaultMaxPerRoute(20);
 
 	client = new DefaultHttpClient(cm, params);
+
+	idleConnectionMonitor = new IdleConnectionMonitor(cm);
+	idleConnectionMonitor.setDaemon(true);
+	idleConnectionMonitor.start();
     }
 
     /**
@@ -99,14 +121,13 @@ public class MultiThreadedHttpClient {
 	List<String> authPrefs = new ArrayList<String>(1);
 	authPrefs.add(AuthPolicy.DIGEST);
 	client.getParams().setParameter(AuthPNames.TARGET_AUTH_PREF, authPrefs);
-
     }
 
     public HttpResponse get(String url) throws RequestException {
 	HttpResponse response = null;
 	try {
 	    final HttpGet get = new HttpGet(url);
-	    response = client.execute(get);
+	    response = executeWithContext(get);
 	} catch (Exception e) {
 	    throw new HttpClientException(e);
 	}
@@ -119,7 +140,7 @@ public class MultiThreadedHttpClient {
 	try {
 	    final HttpGet get = new HttpGet(url);
 	    get.setHeader("accept", acceptedContentType);
-	    response = client.execute(get);
+	    response = executeWithContext(get);
 	} catch (Exception e) {
 	    throw new HttpClientException(e);
 	}
@@ -133,7 +154,7 @@ public class MultiThreadedHttpClient {
 	final HttpGet get = new HttpGet(url);
 	get.setHeader("accept", acceptedContentType);
 	try {
-	    response = client.execute(get);
+	    response = executeWithContext(get);
 	    // HttpEntityWithProgress.attachProgressMonitor(response,
 	    // progressMonitor);
 	} catch (Exception e) {
@@ -145,7 +166,7 @@ public class MultiThreadedHttpClient {
 
     public HttpResponse put(String url, String string, String mimeType) throws RequestException {
 	try {
-	    return put(url, new StringEntity(string, mimeType, CHARSET));
+	    return put(url, new StringEntity(string, mimeType, DEFAULT_CHARSET));
 	} catch (UnsupportedEncodingException e) {
 	    throw new RequestException(e);
 	}
@@ -160,8 +181,6 @@ public class MultiThreadedHttpClient {
 	MultipartEntity multipartEntity = new MultipartEntity();
 	ContentBody contentBody = new FileBody(file, mimeType, "UTF-8");
 	multipartEntity.addPart(fieldName, contentBody);
-	// HttpEntity upstreamEntity = new FileEntityWithProgress(file,
-	// mimeType, progressMonitor);
 	HttpEntity upstreamEntity = multipartEntity;
 	HttpResponse response = put(url, upstreamEntity);
 	try {
@@ -169,28 +188,30 @@ public class MultiThreadedHttpClient {
 	} catch (IOException e) {
 	    throw new RequestException(e);
 	}
-	// expectStatusCode(response, 200);
+	expectStatusCode(response, 200, 201, 204);
 	return response;
     }
 
     public HttpResponse put(String url, HttpEntity entity) throws RequestException {
 	HttpResponse response = null;
+	HttpPut put = null;
 	try {
 	    // sending a short put to trigger authentication and storing
 	    // httpcontext.
-	    HttpPut put = new HttpPut(url);
+	    put = new HttpPut(url);
 	    // HttpContext localContext = new BasicHttpContext();
 	    // HttpEntity smallEntity = new StringEntity("someBytes",
 	    // "application/xml", "UTF-8");
 	    // put.setEntity(smallEntity);
-	    // response = client.execute(put, localContext);
+	    // response = excute(put, localContext);
 	    // EntityUtils.consume(smallEntity);
 	    // consume(response);
 	    // put = new HttpPut(url);
 	    put.setEntity(entity);
-	    response = client.execute(put);
+	    response = executeWithContext(put);
 	    EntityUtils.consume(entity);
 	} catch (IOException e) {
+	    put.abort();
 	    throw new RequestException(e);
 	}
 	System.out.println("StatusCode received: [" + response.getStatusLine().getStatusCode() + "]");
@@ -200,7 +221,7 @@ public class MultiThreadedHttpClient {
 
     public HttpResponse post(String url, String string, String mimeType) throws RequestException {
 	try {
-	    return post(url, new StringEntity(string, mimeType, CHARSET));
+	    return post(url, new StringEntity(string, mimeType, DEFAULT_CHARSET));
 	} catch (UnsupportedEncodingException e) {
 	    throw new RequestException(e);
 	}
@@ -221,7 +242,7 @@ public class MultiThreadedHttpClient {
 	try {
 	    final HttpPost post = new HttpPost(url);
 	    post.setEntity(entity);
-	    response = client.execute(post);
+	    response = executeWithContext(post);
 	    EntityUtils.consume(entity);
 	} catch (Exception e) {
 	    throw new RequestException(e);
@@ -234,7 +255,7 @@ public class MultiThreadedHttpClient {
 	HttpResponse response = null;
 	try {
 	    final HttpDelete delete = new HttpDelete(url);
-	    response = client.execute(delete);
+	    response = executeWithContext(delete);
 	} catch (Exception e) {
 	    throw new RequestException(e);
 	}
@@ -263,8 +284,7 @@ public class MultiThreadedHttpClient {
 	    if (actualStatusCode == expectedStatusCode)
 		return;
 	}
-	
-	
+
 	// we close the connection, and eat any IO exceptions
 	String body = null;
 	try {
@@ -277,7 +297,51 @@ public class MultiThreadedHttpClient {
     }
 
     public void shutdown() {
+	idleConnectionMonitor.shutdown();
 	client.getConnectionManager().shutdown();
+    }
+
+    private HttpResponse executeWithContext(HttpUriRequest request) throws ClientProtocolException, IOException {
+	return client.execute(request, context);
+    }
+
+    /**
+     * Closes expired connections and releases idle connections.
+     */
+    public static class IdleConnectionMonitor extends Thread {
+
+	private final ClientConnectionManager cm;
+	private volatile boolean shutdown;
+
+	public IdleConnectionMonitor(ClientConnectionManager cm) {
+	    super();
+	    this.cm = cm;
+	}
+
+	@Override
+	public void run() {
+	    try {
+		while (!shutdown) {
+		    synchronized (this) {
+			Thread.sleep(10000);
+			// Close expired connections
+			cm.closeExpiredConnections();
+			// Close connections that have been idle to long
+			cm.closeIdleConnections(60, TimeUnit.SECONDS);
+		    }
+		}
+	    } catch (InterruptedException ex) {
+		// terminate
+	    }
+	}
+
+	public void shutdown() {
+	    shutdown = true;
+	    synchronized (this) {
+		notifyAll();
+	    }
+	}
+
     }
 
 }

@@ -85,9 +85,10 @@ public class SADClient {
 	HttpResponse response = client.get(SADUrl());
 	try {
 	    result = xmlProcessor.getSADCollection(response.getEntity().getContent());
-	    client.consume(response);
 	} catch (Exception e) {
 	    throw new RequestException(e);
+	} finally {
+	    client.consume(response);
 	}
 	return result;
     }
@@ -99,18 +100,24 @@ public class SADClient {
 	HttpResponse response = client.get(SADUrl(id));
 	try {
 	    result = xmlProcessor.getSAD(response.getEntity().getContent());
-	    client.consume(response);
 	} catch (Exception e) {
 	    throw new RequestException(e);
+	} finally {
+	    client.consume(response);
 	}
 	return result;
     }
 
-    public Transaction startTransaction(String id) throws Exception {
+    public Transaction startTransaction(String id) throws RequestException {
 	Transaction transaction = new Transaction("SAD", null, id, null);
 	HttpResponse response = client.post(SADTransactionUrl(), xmlProcessor.getXML(transaction), XML);
-	transaction = xmlProcessor.getTransaction(response.getEntity().getContent());
-	client.consume(response);
+	try {
+	    transaction = xmlProcessor.getTransaction(response.getEntity().getContent());
+	} catch (Exception e) {
+	    throw new RequestException(e);
+	} finally {
+	    client.consume(response);
+	}
 	return transaction;
     }
 
@@ -118,16 +125,17 @@ public class SADClient {
 	HttpResponse response = null;
 	try {
 	    response = client.delete(SADTransactionUrl(transactionId));
-	    client.consume(response);
 	} catch (RequestException e) {
 	    // do nothing
+	} finally {
+	    client.consume(response);
 	}
     }
 
     public void commitTransaction(String transactionid) throws RequestException {
 	Transaction transaction = new Transaction();
 	transaction.setTransactionUrl(SADTransactionUrl(transactionid));
-	client.post(transaction.getTransactionUrl(), xmlProcessor.getXML(transaction), XML);
+	consume(client.post(transaction.getTransactionUrl(), xmlProcessor.getXML(transaction), XML));
     }
 
     public void storeSAD(String transactionId, SAD sad) throws RequestException {
@@ -144,45 +152,52 @@ public class SADClient {
 	    bytes = IOUtils.toByteArray(response.getEntity().getContent());
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
+	} finally {
+	    client.consume(response);
 	}
-	client.consume(response);
 	return bytes;
     }
 
     public void putModel(String transactionId, File file, IProgressMonitor progressMonitor) throws RequestException {
-	HttpResponse response = client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + MODEL, "model", file,
-		XML, progressMonitor);
-	client.consume(response);
+	consume(client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + MODEL, "model", file, XML,
+		progressMonitor));
     }
 
     public void deleteSAD(String id) throws RequestException {
-	HttpResponse response = client.delete(SADUrl(id));
-	client.consume(response);
+	consume(client.delete(SADUrl(id)));
     }
 
     public void deleteModel(String transactionId) throws RequestException {
-	HttpResponse response = client.delete(SADTransactionUrl(transactionId) + "/" + MODEL);
-	client.consume(response);
+	consume(client.delete(SADTransactionUrl(transactionId) + "/" + MODEL));
     }
 
     public void deleteDocumentation(String transactionId) throws RequestException {
-	HttpResponse response = client.delete(SADTransactionUrl(transactionId) + "/" + DOCUMENTATION);
-	client.consume(response);
+	consume(client.delete(SADTransactionUrl(transactionId) + "/" + DOCUMENTATION));
     }
 
     // Documentation //
 
-    public byte[] getDocumentation(String id, File downloadLocation, IProgressMonitor progressMonitor) throws Exception {
+    public byte[] getDocumentation(String id, File downloadLocation, IProgressMonitor progressMonitor)
+	    throws RequestException {
 	HttpResponse response = client.get(DocumentationUrl(id), PDF, progressMonitor);
-	byte[] bytes = IOUtils.toByteArray(response.getEntity().getContent());
-	client.consume(response);
+	byte[] bytes;
+	try {
+	    bytes = IOUtils.toByteArray(response.getEntity().getContent());
+	} catch (Exception e) {
+	    throw new RequestException(e);
+	} finally {
+	    client.consume(response);
+	}
 	return bytes;
     }
 
     public void putDocumentation(String transactionId, File file, IProgressMonitor progressMonitor)
 	    throws RequestException {
-	HttpResponse response = client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + DOCUMENTATION,
-		"documentation", file, PDF, progressMonitor);
+	consume(client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + DOCUMENTATION, "documentation", file,
+		PDF, progressMonitor));
+    }
+
+    private void consume(HttpResponse response) {
 	client.consume(response);
     }
 
