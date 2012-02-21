@@ -105,6 +105,7 @@ public class SADCollectionView extends ViewPart {
 	}
 
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+	    
 	}
 
 	public void dispose() {
@@ -311,4 +312,7 @@ public class SADCollectionView extends ViewPart {
     public void setFocus() {
 	viewer.getControl().setFocus();
     }
+    
+    
+   
 }

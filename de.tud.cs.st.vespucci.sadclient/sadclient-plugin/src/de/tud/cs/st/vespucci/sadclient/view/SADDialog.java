@@ -445,7 +445,7 @@ public class SADDialog extends Dialog {
 		    documentationFile = new File(txtDocumentationLocation.getText());
 
 		controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile,
-			radioDocumentationDelete.getSelection(), documentationFile, null);
+			radioDocumentationDelete.getSelection(), documentationFile, parentViewer);
 	    }
 	});
     }

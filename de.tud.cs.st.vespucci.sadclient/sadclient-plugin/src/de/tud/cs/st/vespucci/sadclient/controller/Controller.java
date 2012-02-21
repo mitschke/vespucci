@@ -48,10 +48,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.viewers.Viewer;
 
 import de.tud.cs.st.vespucci.sadclient.Activator;
-import de.tud.cs.st.vespucci.sadclient.concurrent.Callback;
-import de.tud.cs.st.vespucci.sadclient.concurrent.RunnableWithCallback;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 import de.tud.cs.st.vespucci.sadclient.model.SADClient;
 import de.tud.cs.st.vespucci.sadclient.model.SADClientException;
@@ -126,16 +125,6 @@ public class Controller {
 	});
     }
 
-    public void getSAD(final String id, Callback<SAD> callback) {
-	System.out.println("Calling getSAD with id " + id + " and callback " + callback);
-	pool.execute(new RunnableWithCallback<SAD>(new Callable<SAD>() {
-	    @Override
-	    public SAD call() throws Exception {
-		return sadClient.getSAD(id);
-	    }
-	}, callback));
-    }
-
     public void downloadModel(final String id, final File downloadLocation) {
 	Job job = new Job("Download Model") {
 	    @Override
@@ -171,8 +160,8 @@ public class Controller {
     }
 
     public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
-	    final File modelFile, final boolean deleteDoc, final File docFile, final Callback<SAD> callback) {
-	Job job = new Job("Uploading changes to SADServer...") {
+	    final File modelFile, final boolean deleteDoc, final File docFile, final Viewer viewer) {
+	Job job = new Job("Uploading to SADServer...") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		String transactionId = null;
@@ -181,7 +170,6 @@ public class Controller {
 		    System.out.println(transaction);
 		    transactionId = transaction.getTransactionId();
 		    try {
-			Thread.sleep(3000);
 			if (descriptionChanged) {
 			    sadClient.storeSAD(transactionId, sad);
 			}
@@ -206,6 +194,12 @@ public class Controller {
 		    return new Status(IStatus.WARNING, Activator.PLUGIN_ID, e.getMessage());
 		}
 
+		viewer.getControl().getDisplay().asyncExec(new Runnable() {
+		    @Override
+		    public void run() {
+			viewer.refresh();
+		    }
+		});
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "OK");
 	    }
 	};
