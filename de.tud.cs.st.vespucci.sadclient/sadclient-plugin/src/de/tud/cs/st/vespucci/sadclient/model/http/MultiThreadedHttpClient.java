@@ -178,7 +178,7 @@ public class MultiThreadedHttpClient {
 
     public HttpResponse putAsMultipart(String url, String fieldName, File file, String mimeType,
 	    IProgressMonitor progressMonitor) throws RequestException {
-	MultipartEntity multipartEntity = new MultipartEntity();
+	MultipartEntity multipartEntity = new MultipartEntityWithProgress(progressMonitor);
 	ContentBody contentBody = new FileBody(file, mimeType, "UTF-8");
 	multipartEntity.addPart(fieldName, contentBody);
 	HttpEntity upstreamEntity = multipartEntity;

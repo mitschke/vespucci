@@ -263,7 +263,7 @@ public class SADDialog extends Dialog {
 
 	radioModelDelete = createDeleteRadio(grpModel, radioModelUpload);
 
-	// Documenation //
+	// Documentation //
 
 	Group grpDocumentation = createGroup("Documentation", grpModel, 100);
 
@@ -459,7 +459,7 @@ public class SADDialog extends Dialog {
 	if (radioDocumentationUpload.getSelection())
 	    documentationFile = new File(txtDocumentationLocation.getText());
 
-	controller.storeSAD(true, sad, radioModelDelete.getSelection(), modelFile,
+	controller.storeSAD(textChanged, sad, radioModelDelete.getSelection(), modelFile,
 		radioDocumentationDelete.getSelection(), documentationFile, parentViewer);
 	super.okPressed();
     }

@@ -133,7 +133,7 @@ public class Controller {
     }
 
     public void downloadModel(final String id, final File downloadLocation) {
-	Job job = new Job("Download Model") {
+	Job job = new Job("Model Download") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		try {
@@ -150,7 +150,7 @@ public class Controller {
     }
 
     public void downloadDocumentation(final String id, final File downloadLocation) {
-	Job job = new Job("Download Documentation") {
+	Job job = new Job("Documentation Download") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		try {
@@ -168,43 +168,88 @@ public class Controller {
 
     public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
 	    final File modelFile, final boolean deleteDoc, final File docFile, final Viewer viewer) {
-	Job job = new Job("Uploading to SADServer...") {
-	    @Override
-	    protected IStatus run(IProgressMonitor monitor) {
-		String transactionId = null;
-		try {
-		    Transaction transaction = sadClient.startTransaction(sad.getId());
-		    transactionId = transaction.getTransactionId();
+
+	final int amount = getAmountOfWork(descriptionChanged, sad, deleteModel, modelFile, deleteDoc, docFile);
+	System.out.println("Amount of work: " + amount);
+	if (amount > 0) {
+	    Job job = new Job("SAD Update") {
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+		    String transactionId = null;
 		    try {
-			if (descriptionChanged) {
-			    sadClient.storeSAD(transactionId, sad);
+			Transaction transaction = sadClient.startTransaction(sad.getId());
+			transactionId = transaction.getTransactionId();
+			monitor.beginTask("Uploading changes...", amount);
+			try {
+			    if (descriptionChanged) {
+				monitor.subTask("Updating description...");
+				sadClient.storeSAD(transactionId, sad);
+			    }
+			    if (deleteModel) {
+				monitor.subTask("Deleting model...");
+				sadClient.deleteModel(transactionId);
+			    } else if (modelFile != null) {
+				monitor.subTask("Uploading model file...");
+				sadClient.putModel(transactionId, modelFile, monitor);
+			    }
+			    if (deleteDoc) {
+				monitor.subTask("Deleting documentation...");
+				sadClient.deleteDocumentation(transactionId);
+			    } else if (docFile != null) {
+				monitor.subTask("Uploading documentation file...");
+				sadClient.putDocumentation(transactionId, docFile, monitor);
+			    }
+			    monitor.subTask("Finishing update...");
+			    sadClient.commitTransaction(transactionId);
+			    monitor.done();
+			} catch (RequestException e) {
+			    sadClient.rollbackTransaction(transactionId);
+			    throw e;
 			}
-			if (deleteModel) {
-			    sadClient.deleteModel(transactionId);
-			} else if (modelFile != null) {
-			    sadClient.putModel(transactionId, modelFile, monitor);
-			}
-			if (deleteDoc) {
-			    sadClient.deleteDocumentation(transactionId);
-			} else if (docFile != null) {
-			    sadClient.putDocumentation(transactionId, docFile, monitor);
-			}
-			sadClient.commitTransaction(transactionId);
-		    } catch (RequestException e) {
-			sadClient.rollbackTransaction(transactionId);
-			throw e;
+		    } catch (Exception e) {
+			IconAndMessageDialogs.showErrorDialog("Upload to SADServer failed.", e.getMessage());
 		    }
-		} catch (Exception e) {
-		    IconAndMessageDialogs.showErrorDialog("Upload to SADServer failed.", e.getMessage());
+
+		    refresh(viewer);
+
+		    return new Status(IStatus.OK, Activator.PLUGIN_ID, "OK");
 		}
+	    };
+	    job.setUser(true);
+	    job.schedule();
+	}
+    }
 
-		refresh(viewer);
+    /**
+     * Returns the total number of bytes to be transferred. Returns 0 when no work has to be done.
+     * @param descriptionChanged
+     * @param sad
+     * @param deleteModel
+     * @param modelFile
+     * @param deleteDoc
+     * @param docFile
+     * @return
+     */
+    private static int getAmountOfWork(boolean descriptionChanged, SAD sad, boolean deleteModel, File modelFile,
+	    boolean deleteDoc, File docFile) {
+	int amount = 0;
+	if (descriptionChanged) {
+	    amount += sad.getName().getBytes().length;
+	    amount += sad.getType().getBytes().length;
+	    amount += sad.getAbstrct().getBytes().length;
+	}
+	amount += getAmountOfWork(deleteModel, modelFile);
+	amount += getAmountOfWork(deleteDoc, docFile);
+	return amount;
+    }
 
-		return new Status(IStatus.OK, Activator.PLUGIN_ID, "OK");
-	    }
-	};
-	job.setUser(true);
-	job.schedule();
+    private static int getAmountOfWork(boolean delete, File file) {
+	int amount = 0;
+	if (delete)
+	    amount += 1;
+	else if (file != null && file.exists() && !file.isDirectory())
+	    amount += file.length();
+	return amount;
     }
 
     private static void refresh(final Viewer viewer) {
