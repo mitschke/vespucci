@@ -160,11 +160,6 @@ public class SADDialog extends Dialog {
 
 	    }
 	});
-	container.getDisplay().asyncExec(new Runnable() {
-	    public void run() {
-		parentViewer.refresh();
-	    }
-	});
     }
 
     @Override
