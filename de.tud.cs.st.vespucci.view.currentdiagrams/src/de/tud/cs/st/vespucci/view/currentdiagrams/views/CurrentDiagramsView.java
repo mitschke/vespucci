@@ -129,6 +129,7 @@ public class CurrentDiagramsView extends ViewPart {
 					Object obj = iterator.next();
 					IPair<IViolationView, IFile> temp = transfer(obj);
 					temp.getFirst().dispose();
+					de.tud.cs.st.vespucci.marker.Marker.disposeDataView(temp.getFirst()); 
 					Table.contentProvider.removeData(temp);
 					Table.refresh();
 				}

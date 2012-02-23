@@ -14,3 +14,4 @@ Import-Package: de.tud.cs.st.vespucci.model,
  org.eclipse.jdt.internal.corext.util,
  org.eclipse.ui,
  org.eclipse.ui.statushandlers
+Export-Package: de.tud.cs.st.vespucci.marker

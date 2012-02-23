@@ -49,8 +49,17 @@ import de.tud.cs.st.vespucci.utilities.Util;
  */
 public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 
+	private static Marker marker = null;
+	
+	public Marker(){
+		marker = this;
+	}
+	
+	public static void disposeDataView(IViolationView violationView){
+		violationView.unregister(marker);
+	}
+	
 	private IProject project;
-	private IViolationView violationView;
 	private DescriptionFactory descFab;
 	
 	@Override
@@ -58,7 +67,7 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 		this.project = file.getProject();
 		this.descFab = new DescriptionFactory();
 		
-		violationView = Util.adapt(result, IViolationView.class);
+		IViolationView violationView = Util.adapt(result, IViolationView.class);
 		
 		if (violationView == null){
 			return;
@@ -120,8 +129,8 @@ public class Marker implements IResultProcessor, IDataViewObserver<IViolation> {
 
 	@Override
 	public void cleanUp() {
-		CodeElementMarker.deleteAllMarkers();
-		ViolationSummaryMarker.deleteAllMarkers();
+		//CodeElementMarker.deleteAllMarkers();
+		//ViolationSummaryMarker.deleteAllMarkers();
 		//violationView.unregister(this);
 	}
 
