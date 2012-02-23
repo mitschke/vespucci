@@ -91,6 +91,11 @@ object SADServer
     path { rootPath + userCollectionPath }
     def create = new UserCollectionResource with RestrictToAdmins
   }
+
+  this register new HandlerFactory[UserResource] {
+    path { rootPath + userCollectionPath :: "/" :: StringValue((desc, id) => desc.id = id) }
+    def create = new UserResource with RestrictToAdmins
+  }
 }
 
 class RootResource extends RESTInterface with HTMLSupport {
