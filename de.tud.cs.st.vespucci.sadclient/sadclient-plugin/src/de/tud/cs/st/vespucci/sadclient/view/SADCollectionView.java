@@ -86,6 +86,7 @@ public class SADCollectionView extends ViewPart {
     private TableViewer viewer;
     private TableViewerComparator comparator;
     private SAD selectedSAD = null;
+    private boolean refreshFromCache; // true, when viewer#refresh does not expect the current state from the server
 
     // column numbers
     private final static int MODEL_COLUMN = 0;
@@ -96,7 +97,7 @@ public class SADCollectionView extends ViewPart {
 
     @Override
     public void createPartControl(Composite parent) {
-	
+
 	viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.VIRTUAL);
 	viewer.getTable().setHeaderVisible(true);
 	viewer.getTable().setLinesVisible(true);
@@ -136,6 +137,7 @@ public class SADCollectionView extends ViewPart {
 		int dir = comparator.getDirection();
 		viewer.getTable().setSortDirection(dir);
 		viewer.getTable().setSortColumn(column);
+		refreshFromCache = true;
 		viewer.refresh();
 	    }
 	};
@@ -216,6 +218,8 @@ public class SADCollectionView extends ViewPart {
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    public void doubleClick(DoubleClickEvent event) {
 		if (selectedSAD != null) {
+		    System.out.println("DB-Clicksource:" + event.getSource());
+		    System.out.println("DB-Clickviewer:" + event.getViewer());
 		    Dialog dialog = new SADDialog(viewer, selectedSAD);
 		    dialog.open();
 		}
@@ -233,11 +237,13 @@ public class SADCollectionView extends ViewPart {
 	    }
 	});
     }
-    
+
     /**
      * Returns a collection of SADs.
      */
     class ViewContentProvider implements IStructuredContentProvider {
+
+	private Object[] cache = new Object[0];
 
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 	    // do nothing
@@ -248,7 +254,13 @@ public class SADCollectionView extends ViewPart {
 	}
 
 	public Object[] getElements(Object parent) {
-	    return Controller.getInstance().getSADCollection();
+	    if (refreshFromCache) {
+		refreshFromCache = false;
+		return cache;
+	    } else {
+		cache = Controller.getInstance().getSADCollection();
+		return cache;
+	    }
 	}
     }
 
@@ -291,77 +303,78 @@ public class SADCollectionView extends ViewPart {
 	    return null;
 	}
     }
-    
+
     /**
-     * Sorts columns lexically. Model and documentation -columns are sorted not-null first. 
+     * Sorts columns lexically. Model and documentation -columns are sorted
+     * not-null first.
      */
     public class TableViewerComparator extends ViewerComparator {
-   	private int columnIndex;
-   	private static final int DESCENDING = 1;
-   	private int direction = DESCENDING;
+	private int columnIndex;
+	private static final int DESCENDING = 1;
+	private int direction = DESCENDING;
 
-   	public TableViewerComparator() {
-   	    this.columnIndex = 0;
-   	    direction = DESCENDING;
-   	}
+	public TableViewerComparator() {
+	    this.columnIndex = 0;
+	    direction = DESCENDING;
+	}
 
-   	public int getDirection() {
-   	    return direction == DESCENDING ? SWT.DOWN : SWT.UP;
-   	}
+	public int getDirection() {
+	    return direction == DESCENDING ? SWT.DOWN : SWT.UP;
+	}
 
-   	public void setColumn(int column) {
-   	    if (column == this.columnIndex) {
-   		// Same column as last sort; toggle the direction
-   		direction = 1 - direction;
-   	    } else {
-   		// New column; do an ascending sort
-   		this.columnIndex = column;
-   		direction = DESCENDING;
-   	    }
-   	}
+	public void setColumn(int column) {
+	    if (column == this.columnIndex) {
+		// Same column as last sort; toggle the direction
+		direction = 1 - direction;
+	    } else {
+		// New column; do an ascending sort
+		this.columnIndex = column;
+		direction = DESCENDING;
+	    }
+	}
 
-   	@Override
-   	public int compare(Viewer viewer, Object e1, Object e2) {
-   	    SAD s1 = (SAD) e1;
-   	    SAD s2 = (SAD) e2;
-   	    int compare = 0;
-   	    switch (columnIndex) {
-   	    case MODEL_COLUMN:
-   		compare = compareNull(s1.getModel(), s2.getModel());
-   		break;
-   	    case DOCUMENTATION_COLUMN:
-   		compare = compareNull(s1.getDocumentation(), s2.getDocumentation());
-   		break;
-   	    case NAME_COLUMN:
-   		compare = s1.getName().compareToIgnoreCase(s2.getName());
-   		break;
-   	    case TYPE_COLUMN:
-   		compare = s1.getType().compareToIgnoreCase(s2.getType());
-   		break;
-   	    case ABSTRACT_COLUMN:
-   		compare = s1.getAbstrct().compareToIgnoreCase(s2.getAbstrct());
-   		break;
-   	    default:
-   		compare = 0;
-   	    }
-   	    return direction == DESCENDING ? -compare : compare;
-   	}
+	@Override
+	public int compare(Viewer viewer, Object e1, Object e2) {
+	    SAD s1 = (SAD) e1;
+	    SAD s2 = (SAD) e2;
+	    int compare = 0;
+	    switch (columnIndex) {
+	    case MODEL_COLUMN:
+		compare = compareNull(s1.getModel(), s2.getModel());
+		break;
+	    case DOCUMENTATION_COLUMN:
+		compare = compareNull(s1.getDocumentation(), s2.getDocumentation());
+		break;
+	    case NAME_COLUMN:
+		compare = s1.getName().compareToIgnoreCase(s2.getName());
+		break;
+	    case TYPE_COLUMN:
+		compare = s1.getType().compareToIgnoreCase(s2.getType());
+		break;
+	    case ABSTRACT_COLUMN:
+		compare = s1.getAbstrct().compareToIgnoreCase(s2.getAbstrct());
+		break;
+	    default:
+		compare = 0;
+	    }
+	    return direction == DESCENDING ? -compare : compare;
+	}
 
-       }
+    }
 
-       /**
-        * Sorts null before not-null.
-        */
-       private static int compareNull(Object o1, Object o2) {
-   	if (o1 == null && o2 == null) {
-   	    return 0;
-   	}
-   	if (o1 == null)
-   	    return -1;
-   	if (o2 == null)
-   	    return 1;
-   	return 0;
-       }
+    /**
+     * Sorts null before not-null.
+     */
+    private static int compareNull(Object o1, Object o2) {
+	if (o1 == null && o2 == null) {
+	    return 0;
+	}
+	if (o1 == null)
+	    return -1;
+	if (o2 == null)
+	    return 1;
+	return 0;
+    }
 
     public void setFocus() {
 	viewer.getControl().setFocus();
