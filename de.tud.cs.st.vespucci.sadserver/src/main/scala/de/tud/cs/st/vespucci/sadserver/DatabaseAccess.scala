@@ -68,7 +68,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
   // Description-CRUD
 
   def findDescription(id: String): Option[Description] =
-    withPreparedStatement("SELECT name, type, abstract, modelName, model, length(model), documentationName, documentation, length(documentation), wip, modified FROM SADs WHERE id = ?") {
+    withPreparedStatement("SELECT name, type, abstract, modelName, model, documentationName, documentation, wip, modified FROM SADs WHERE id = ?") {
       ps =>
         val rs = ps.executeQueryWith(id)
         val retrieved = if (rs.next) Some(description(id, rs)) else None
@@ -82,8 +82,8 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
       rs.getString("name"),
       rs.getString("type"),
       rs.getString("abstract"),
-      if (rs.getString("model") != null) Some(Model(rs.getBinaryStream("model"), rs.getString("modelName"), rs.getInt("length(model)"))) else None,
-      if (rs.getString("documentation") != null) Some(Documentation(rs.getBinaryStream("documentation"), rs.getString("documentationName"), rs.getInt("length(documentation)"))) else None,
+      if (rs.getString("modelName") != null) Some(Model(rs.getBinaryStream("model"), rs.getString("modelName"))) else None,
+      if (rs.getString("documentationName") != null) Some(Documentation(rs.getBinaryStream("documentation"), rs.getString("documentationName"))) else None,
       rs.getBoolean("wip"),
       rs.getTimestamp("modified").getTime())
   }

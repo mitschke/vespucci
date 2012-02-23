@@ -39,8 +39,8 @@ object Description {
       parse("name"),
       parse("type"),
       parse("abstract"),
-      { val parsed = (xml \\ "model"); if (parsed.isEmpty) None else Some(Model(null, (parsed \ "@name").text, (parsed \ "@size").text.toInt)) },
-      { val parsed = (xml \\ "documentation"); if (parsed.isEmpty) None else Some(Documentation(null, (parsed \ "@name").text, (parsed \ "@size").text.toInt)) },
+      { val parsed = (xml \\ "model"); if (parsed.isEmpty) None else Some(Model(null, (parsed \ "@name").text)) },
+      { val parsed = (xml \\ "documentation"); if (parsed.isEmpty) None else Some(Documentation(null, (parsed \ "@name").text)) },
       { val parsed = (xml \\ "wip").text; if (!parsed.isEmpty) parsed.toBoolean else false },
       { val parsed = (xml \ "@modified").text; if (parsed.isEmpty) 0 else parsed.toLong })
   }
@@ -71,20 +71,20 @@ case class Description(
 
 }
 
-case class Model(var data: InputStream, var name: String, var size: Int) {
-  def this(data: Data) = this(data.openStream, data.fileName, data.contentLength)
-  def this() = this(null, "", 0)
+case class Model(var data: InputStream, var name: String) {
+  def this(data: Data) = this(data.openStream, data.fileName)
+  def this() = this(null, "")
   def toXml: Elem =
-    <model name={ name } size={ size.toString }>
+    <model name={ name }>
       <url>not set</url>
     </model>
 }
 
-case class Documentation(var data: InputStream, var name: String, var size: Int) {
-  def this(data: Data) = this(data.openStream, data.fileName, data.contentLength)
-  def this() = this(null, "", 0)
+case class Documentation(var data: InputStream, var name: String) {
+  def this(data: Data) = this(data.openStream, data.fileName)
+  def this() = this(null, "")
   def toXml: Elem =
-    <documentation name={ name } size={ size.toString }>
+    <documentation name={ name }>
       <url>not set</url>
     </documentation>
 }
