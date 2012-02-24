@@ -48,13 +48,13 @@ public class Constraint implements IConstraint {
 
 	public Constraint(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
 		this.connection = connection;
-		
+
 		source = connection.getSource();
 
 		target = connection.getSource();
 
 		kind = connection.getName();
-		
+
 	}
 
 	@Override
@@ -149,13 +149,23 @@ public class Constraint implements IConstraint {
 			if (source == null) {
 				if (other.source != null)
 					return false;
-			} else if (!source.getName().equals(other.source.getName()))
-				return false;
+
+			} else {
+				String sourceName = source.getName() != null ? source.getName()
+						: "";
+				if (!sourceName.equals(other.source.getName()))
+					return false;
+			}
 			if (target == null) {
 				if (other.target != null)
 					return false;
-			} else if (!target.getName().equals(other.target.getName()))
-				return false;
+			} else {
+				String targetName = target.getName() != null ? target.getName()
+						: "";
+
+				if (!targetName.equals(other.target.getName()))
+					return false;
+			}
 		}
 		return true;
 	}
