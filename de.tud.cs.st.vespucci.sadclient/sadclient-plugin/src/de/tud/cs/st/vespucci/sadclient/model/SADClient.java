@@ -74,7 +74,8 @@ public class SADClient {
 	super();
 	xmlProcessor = new XmlProcessor();
 	root = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SERVER);
-	client = new MultiThreadedHttpClient(getUsername(), getPassword());
+	client = new MultiThreadedHttpClient();
+	client.setCredentials(getUsername(), getPassword());
 	registerPreferenceListeners();
     }
 
@@ -238,8 +239,7 @@ public class SADClient {
 	    public void propertyChange(PropertyChangeEvent event) {
 		if (event.getProperty() == PreferenceConstants.P_USERNAME
 			|| event.getProperty() == PreferenceConstants.P_PASSWORD) {
-		    client.shutdown();
-		    client = new MultiThreadedHttpClient(getUsername(), getPassword());
+		    client.setCredentials(getUsername(), getPassword());
 		}
 	    }
 	});

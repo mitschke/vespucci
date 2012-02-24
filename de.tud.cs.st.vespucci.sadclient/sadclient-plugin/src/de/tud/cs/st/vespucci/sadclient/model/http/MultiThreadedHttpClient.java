@@ -62,14 +62,14 @@ public class MultiThreadedHttpClient {
 
     private final DefaultHttpClient client;
     private final ConnectionCleaner connectionCleaner;
-    private final HttpContext context;
+    private HttpContext context;
 
     /**
      * The client will use no authentication.
      */
     public MultiThreadedHttpClient() {
 	super();
-	context = new BasicHttpContext();
+
 	SchemeRegistry schemeRegistry = new SchemeRegistry();
 	schemeRegistry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
 
@@ -93,21 +93,14 @@ public class MultiThreadedHttpClient {
 	connectionCleaner = startConnectionCleaner(cm);
     }
 
-    /**
-     * The client will use Http Digest Authentication with the provided
-     * credentials.
-     * 
-     * @param userName
-     * @param password
-     */
-    public MultiThreadedHttpClient(String userName, String password) {
-	this();
+    public void setCredentials(String userName, String password) {
 	CredentialsProvider credsProvider = new BasicCredentialsProvider();
 	client.setCredentialsProvider(credsProvider);
 	credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
 	List<String> authPrefs = new ArrayList<String>(1);
 	authPrefs.add(AuthPolicy.DIGEST);
 	client.getParams().setParameter(AuthPNames.TARGET_AUTH_PREF, authPrefs);
+	context = new BasicHttpContext();
     }
 
     /**
