@@ -18,6 +18,8 @@ package de.tud.cs.st.vespucci.sadserver
 import scala.collection.mutable.ConcurrentMap
 import java.util.concurrent.ConcurrentHashMap
 import java.util.UUID.randomUUID
+import org.dorest.server.log.Logger
+import scala.collection.JavaConversions._
 
 import GlobalProperties._
 
@@ -27,13 +29,14 @@ import GlobalProperties._
  * @author Mateusz Parzonka
  */
 object TempDescription {
-  import scala.collection.JavaConversions._
+
+  private val logger = Logger(classOf[DatabaseAccess])
 
   val map: ConcurrentMap[String, (Long, Description)] = new ConcurrentHashMap[String, (Long, Description)]()
 
   val lifetime = 5 * 60 * 1000 // 5 minutes
 
-  val cleaner = new Thread() {
+  val cleaner = new Thread("TempDescriptionCleaner") {
     override def run() {
       while (true) {
         clean()
@@ -45,7 +48,14 @@ object TempDescription {
   cleaner.start()
 
   def clean(): Unit = {
-    for ((id, (time, description)) <- map if (currentTime - time) > lifetime) map.-=(id)
+    var i = 0
+    for (
+      (id, (time, description)) <- map if (currentTime - time) > lifetime
+    ) {
+      map.-=(id)
+      i = i + 1
+    }
+    logger.debug("Collected and cleared %d forgotten descriptions." format i)
   }
 
   def currentTime = System.currentTimeMillis
