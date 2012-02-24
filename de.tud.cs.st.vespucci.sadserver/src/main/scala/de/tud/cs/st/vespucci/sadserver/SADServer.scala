@@ -86,7 +86,7 @@ object SADServer
     def create = new TempDocumentationResource with RestrictWriteToRegisteredUsers
   }
 
-  //
+  // Users //
   this register new HandlerFactory[UserCollectionResource] {
     path { rootPath + userCollectionPath }
     def create = new UserCollectionResource with RestrictToAdmins
@@ -146,7 +146,7 @@ class DescriptionDocumentationResource extends RESTInterface with DatabaseAccess
 
 }
 
-//////////////////////////////////////////////// TransactionResource /////////////////////////////////////////////
+// TransactionResource //
 
 class TransactionalDescriptionCollectionResource extends RESTInterface with DatabaseAccess with TempDescription with XMLSupport with MultipartSupport {
 
@@ -228,7 +228,7 @@ class TempDocumentationResource extends RESTInterface with TempDescription with 
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Users //
 
 class UserCollectionResource extends RESTInterface with DatabaseAccess with XMLSupport {
 
