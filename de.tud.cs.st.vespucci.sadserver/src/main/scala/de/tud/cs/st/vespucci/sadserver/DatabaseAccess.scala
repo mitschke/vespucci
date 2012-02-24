@@ -32,7 +32,7 @@ object DatabaseAccess extends DatabaseAccess
  */
 trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
 
-  private val logger = Logger("de.tud.cs.st.vespucci.sadserver.DatabaseAccess")
+  private val logger = Logger(classOf[DatabaseAccess])
 
   def startDatabase() {
     logger.info("Opening database...")
