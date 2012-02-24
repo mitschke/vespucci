@@ -277,8 +277,11 @@ public class BytecodeDatabaseProvider {
 					|| "jce.jar".equals(file.getName())
 					|| "charsets.jar".equals(file.getName())
 					|| "dnsns.jar".equals(file.getName())
-					|| "localedata.jar".equals(file.getName()) || "sunjce_provider.jar"
-						.equals(file.getName()))) {
+					|| "localedata.jar".equals(file.getName()) 
+					|| "sunjce_provider.jar".equals(file.getName())
+					|| "sunmscapi.jar".equals(file.getName())
+					|| "sunpkcs11.jar".equals(file.getName())
+						)) {
 				result.add(file);
 			}
 

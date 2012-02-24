@@ -16,3 +16,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.jdt.core,
  org.eclipse.jdt.ui,
  org.eclipse.ui.ide
+Bundle-ClassPath: .,
+ swing2swt.jar

@@ -118,7 +118,7 @@ class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 		return value.getSecond().getSimpleClassName();
 	}
 
-	private static String createCodeElementText(
+	public static String createCodeElementText(
 			IPair<IEnsemble, ICodeElement> value) {
 		
 		ICodeElement codeElement = value.getSecond();

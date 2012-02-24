@@ -19,10 +19,17 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
@@ -41,7 +48,7 @@ import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public class EnsembleElementsTableView extends ViewPart implements
-		IDataManagerObserver {
+IDataManagerObserver {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -68,8 +75,44 @@ public class EnsembleElementsTableView extends ViewPart implements
 	}
 
 	public void createPartControl(Composite parent) {
+		composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		GridData gd_composite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_composite.heightHint = 26;
+		composite.setLayoutData(gd_composite);
+		
+		t_Ensemble = new Text(composite, SWT.BORDER);
+		t_Ensemble.setLayoutData(new RowData(166, SWT.DEFAULT));
+//		t_Ensemble.setLayoutData(new RowData(138, SWT.DEFAULT));
+
+		
+		t_Package = new Text(composite, SWT.BORDER);
+		t_Package.setLayoutData(new RowData(153, SWT.DEFAULT));
+		
+		t_Class = new Text(composite, SWT.BORDER);
+		t_Class.setLayoutData(new RowData(166, SWT.DEFAULT));
+		
+		t_Element = new Text(composite, SWT.BORDER);
+		t_Element.setLayoutData(new RowData(156, SWT.DEFAULT));
+
+
+
 		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION);
+		Table table = tableViewer.getTable();
+		org.eclipse.swt.layout.GridLayout layout = new org.eclipse.swt.layout.GridLayout(1, true);
+		parent.setLayout(layout);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalSpan = 5;
+		table.setLayoutData(gridData);
+		table.setBounds(0, 27, 806, 442);
+
 		tableViewer.setContentProvider(contentProvider);
 		tableViewer.setLabelProvider(new TableLabelProvider());
 		tableViewer.setSorter(new ViewerSorter());
@@ -91,69 +134,107 @@ public class EnsembleElementsTableView extends ViewPart implements
 								dataManager.getProject(),
 								new ICodeElementFoundProcessor() {
 
-									@Override
-									public void processFoundCodeElement(
-											IMember member, int lineNr) {
-										// unused in this case
-									}
+							@Override
+							public void processFoundCodeElement(
+									IMember member, int lineNr) {
+								// unused in this case
+							}
 
-									@Override
-									public void processFoundCodeElement(
-											IMember member) {
-										try {
-											JavaUI.openInEditor(member, true,
-													true);
-										} catch (PartInitException e) {
-											final IStatus is = new Status(
-													IStatus.ERROR, PLUGIN_ID, e
-															.getMessage(), e);
-											StatusManager.getManager().handle(
-													is, StatusManager.LOG);
-										} catch (JavaModelException e) {
-											final IStatus is = new Status(
-													IStatus.ERROR, PLUGIN_ID, e
-															.getMessage(), e);
-											StatusManager.getManager().handle(
-													is, StatusManager.LOG);
-										}
-									}
+							@Override
+							public void processFoundCodeElement(
+									IMember member) {
+								try {
+									JavaUI.openInEditor(member, true,
+											true);
+								} catch (PartInitException e) {
+									final IStatus is = new Status(
+											IStatus.ERROR, PLUGIN_ID, e
+											.getMessage(), e);
+									StatusManager.getManager().handle(
+											is, StatusManager.LOG);
+								} catch (JavaModelException e) {
+									final IStatus is = new Status(
+											IStatus.ERROR, PLUGIN_ID, e
+											.getMessage(), e);
+									StatusManager.getManager().handle(
+											is, StatusManager.LOG);
+								}
+							}
 
-									@Override
-									public void noMatchFound(
-											ICodeElement codeElement) {
-										// unused in this case
-									}
-								});
+							@Override
+							public void noMatchFound(
+									ICodeElement codeElement) {
+								// unused in this case
+							}
+						});
 					}
 				}
 			}
 		});
 
 		tableViewer.setComparator(new TableColumnComparator(1, 0));
-		
+
 		TableViewerColumn viewerNameColumn = new TableViewerColumn(tableViewer,
 				SWT.NONE);
 		viewerNameColumn.getColumn().setText("Ensemble");
-		viewerNameColumn.getColumn().setWidth(200);
+		viewerNameColumn.getColumn().setWidth(176);
 		addColumnListener(viewerNameColumn.getColumn(), 0);
 
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Package");
-		viewerNameColumn.getColumn().setWidth(100);
+		viewerNameColumn.getColumn().setWidth(180);
 		addColumnListener(viewerNameColumn.getColumn(), 1);
-		
+
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Class");
-		viewerNameColumn.getColumn().setWidth(100);
+		viewerNameColumn.getColumn().setWidth(188);
 		addColumnListener(viewerNameColumn.getColumn(), 2);
 
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Element");
 		viewerNameColumn.getColumn().setWidth(200);
 		addColumnListener(viewerNameColumn.getColumn(), 3);
+
+		
+		for (TableColumn column : tableViewer.getTable().getColumns()) {
+			column.addControlListener(new ControlListener() {
+				
+				@Override
+				public void controlResized(ControlEvent e) {
+					resizeTextFields();
+				}
+				
+				@Override
+				public void controlMoved(ControlEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
 		
 		addActions(tableViewer);
+		
+		setSerachFieldListener();
+		resizeTextFields();
 
+	}
+	
+	private void setSerachFieldListener() {
+		t_Ensemble.addModifyListener(new SearchFieldModifyListener(tableViewer, 0));
+		t_Package.addModifyListener(new SearchFieldModifyListener(tableViewer, 1));
+		t_Class.addModifyListener(new SearchFieldModifyListener(tableViewer, 2));
+		t_Element.addModifyListener(new SearchFieldModifyListener(tableViewer, 3));
+	}
+
+	private void resizeTextFields(){
+		TableColumn[] columns = tableViewer.getTable().getColumns();
+		
+		
+//		t_Ensemble.setBounds(0, 0, columns[0].getWidth(), 50);
+//		t_Package.setBounds(columns[0].getWidth(), 0, columns[1].getWidth(), 50);
+//		t_Class.setBounds(columns[1].getWidth(), 0, columns[2].getWidth(), 50);
+//		t_Element.setBounds(columns[2].getWidth(), 0, columns[3].getWidth(), 50);
+		
 	}
 
 	private void addColumnListener(final TableColumn tableColumn,
@@ -205,16 +286,18 @@ public class EnsembleElementsTableView extends ViewPart implements
 
 	@Override
 	public void update() {
-		//if (idle) {
-			tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					tableViewer.refresh();
-					idle = true;
-				}
-			});
-		//	idle = false;
-		//}
+		// if (idle) {
+		tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				// dont refresh All
+
+				tableViewer.refresh();
+				idle = true;
+			}
+		});
+		// idle = false;
+		// }
 	}
 
 	private final ViewerFilter classDeclarationFilter = new ViewerFilter() {
@@ -223,7 +306,8 @@ public class EnsembleElementsTableView extends ViewPart implements
 		@Override
 		public boolean select(Viewer viewer, Object parentElement,
 				Object element) {
-			if( element == null ) return false;
+			if (element == null)
+				return false;
 			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IClassDeclaration);
 		}
 	};
@@ -234,7 +318,8 @@ public class EnsembleElementsTableView extends ViewPart implements
 		@Override
 		public boolean select(Viewer viewer, Object parentElement,
 				Object element) {
-			if( element == null ) return false;
+			if (element == null)
+				return false;
 			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IMethodDeclaration);
 		}
 	};
@@ -245,69 +330,84 @@ public class EnsembleElementsTableView extends ViewPart implements
 		@Override
 		public boolean select(Viewer viewer, Object parentElement,
 				Object element) {
-			if( element == null ) return false;
+			if (element == null)
+				return false;
 			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IFieldDeclaration);
 		}
 	};
+	private Composite composite;
+	private Text t_Ensemble;
+	private Text t_Package;
+	private Text t_Class;
+	private Text t_Element;
 
-	private void addActions(final TableViewer tableViewer){
+	private void addActions(final TableViewer tableViewer) {
 		IActionBars actionBars = getViewSite().getActionBars();
 		IMenuManager viewMenu = actionBars.getMenuManager();
-		Action setClassDeclarationsToFiltered = new Action("Show class declarations", IAction.AS_CHECK_BOX) {
+		Action setClassDeclarationsToFiltered = new Action(
+				"Show class declarations", IAction.AS_CHECK_BOX) {
 
-			/* (non-Javadoc)
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
 			public void run() {
-				if(!isChecked())
-					tableViewer.setFilters(addFilter(tableViewer.getFilters(), classDeclarationFilter));
+				if (!isChecked())
+					tableViewer.setFilters(addFilter(tableViewer.getFilters(),
+							classDeclarationFilter));
 				else
-					tableViewer.setFilters(removeFilter(tableViewer.getFilters(), classDeclarationFilter));
+					tableViewer.setFilters(removeFilter(
+							tableViewer.getFilters(), classDeclarationFilter));
 			}
-			
 
-			
 		};
 		setClassDeclarationsToFiltered.setChecked(true);
 		viewMenu.add(setClassDeclarationsToFiltered);
-		Action setMethodDeclarationsToFiltered = new Action("Show method declarations", IAction.AS_CHECK_BOX) {
+		Action setMethodDeclarationsToFiltered = new Action(
+				"Show method declarations", IAction.AS_CHECK_BOX) {
 
-			/* (non-Javadoc)
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
 			public void run() {
-				if(!isChecked())
-					tableViewer.setFilters(addFilter(tableViewer.getFilters(), methodDeclarationFilter));
+				if (!isChecked())
+					tableViewer.setFilters(addFilter(tableViewer.getFilters(),
+							methodDeclarationFilter));
 				else
-					tableViewer.setFilters(removeFilter(tableViewer.getFilters(), methodDeclarationFilter));
+					tableViewer.setFilters(removeFilter(
+							tableViewer.getFilters(), methodDeclarationFilter));
 			}
-			
 
-			
 		};
 		setMethodDeclarationsToFiltered.setChecked(true);
 		viewMenu.add(setMethodDeclarationsToFiltered);
-		Action setFieldDeclarationsToFiltered = new Action("Show field declarations", IAction.AS_CHECK_BOX) {
+		Action setFieldDeclarationsToFiltered = new Action(
+				"Show field declarations", IAction.AS_CHECK_BOX) {
 
-			/* (non-Javadoc)
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
 			public void run() {
-				if(!isChecked())
-					tableViewer.setFilters(addFilter(tableViewer.getFilters(), fieldDeclarationFilter));
+				if (!isChecked())
+					tableViewer.setFilters(addFilter(tableViewer.getFilters(),
+							fieldDeclarationFilter));
 				else
-					tableViewer.setFilters(removeFilter(tableViewer.getFilters(), fieldDeclarationFilter));
+					tableViewer.setFilters(removeFilter(
+							tableViewer.getFilters(), fieldDeclarationFilter));
 			}
-			
 
-			
 		};
 		setFieldDeclarationsToFiltered.setChecked(true);
 		viewMenu.add(setFieldDeclarationsToFiltered);
-		
+
 	}
 
 	private static ViewerFilter[] addFilter(ViewerFilter[] oldFilters,
@@ -320,7 +420,7 @@ public class EnsembleElementsTableView extends ViewPart implements
 
 	private static ViewerFilter[] removeFilter(ViewerFilter[] oldFilters,
 			ViewerFilter filter) {
-		if( oldFilters.length == 0)
+		if (oldFilters.length == 0)
 			return oldFilters;
 		ViewerFilter[] newFilters = new ViewerFilter[oldFilters.length - 1];
 		int offset = 0;
