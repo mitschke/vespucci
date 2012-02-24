@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.http.protocol.BasicHttpContext;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -41,6 +40,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -49,22 +49,20 @@ import de.tud.cs.st.vespucci.sadclient.Activator;
 
 /**
  * Thread-safe wrapper around the {@link DefaultHttpClient} using a
- * {@link ThreadSafeClientConnManager} and enables progress. The HTTP-methods
- * expect successful termination of the client call and will throw an
- * RequestException when the server responds non-okay.
- * 
- * TODO The client is not multithreaded anymore so rename the whole thing when a
- * valid solution found
+ * {@link ThreadSafeClientConnManager} and enabled progress monitoring. The
+ * HTTP-methods expect successful termination of the client call and will throw
+ * an RequestException if the server sends an error response.
  * 
  * @author Mateusz Parzonka
  * 
  */
 public class MultiThreadedHttpClient {
 
-    private final DefaultHttpClient client;
     private final static String DEFAULT_CHARSET = "UTF-8";
-    private final IdleConnectionMonitor idleConnectionMonitor;
-    private HttpContext context;
+
+    private final DefaultHttpClient client;
+    private final ConnectionCleaner connectionCleaner;
+    private final HttpContext context;
 
     /**
      * The client will use no authentication.
@@ -74,23 +72,15 @@ public class MultiThreadedHttpClient {
 	context = new BasicHttpContext();
 	SchemeRegistry schemeRegistry = new SchemeRegistry();
 	schemeRegistry.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
-	// standard client params
+
 	HttpParams params = new BasicHttpParams();
 	params.setParameter(CoreProtocolPNames.HTTP_ELEMENT_CHARSET, DEFAULT_CHARSET);
 	params.setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, DEFAULT_CHARSET);
 	params.setParameter(CoreProtocolPNames.USER_AGENT, Activator.PLUGIN_ID);
-	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true); // prevents
-									   // premature
-									   // body
-									   // transmits
+	params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
 	params.setParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, false);
-	params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 10000); // we
-									     // try
-									     // to
-									     // connect
-									     // for
-									     // 10
-									     // sec
+	params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 10000);
+
 	List<Header> defaultHeaders = new ArrayList<Header>();
 	defaultHeaders.add(new BasicHeader("accept", "application/xml"));
 	params.setParameter(ClientPNames.DEFAULT_HEADERS, defaultHeaders);
@@ -100,10 +90,7 @@ public class MultiThreadedHttpClient {
 	cm.setDefaultMaxPerRoute(20);
 
 	client = new DefaultHttpClient(cm, params);
-
-	idleConnectionMonitor = new IdleConnectionMonitor(cm);
-	idleConnectionMonitor.setDaemon(true);
-	idleConnectionMonitor.start();
+	connectionCleaner = startConnectionCleaner(cm);
     }
 
     /**
@@ -123,6 +110,13 @@ public class MultiThreadedHttpClient {
 	client.getParams().setParameter(AuthPNames.TARGET_AUTH_PREF, authPrefs);
     }
 
+    /**
+     * Gets a response.
+     * 
+     * @param url
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse get(String url) throws RequestException {
 	HttpResponse response = null;
 	try {
@@ -135,6 +129,14 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
+    /**
+     * Gets a response of certain accepted content type.
+     * 
+     * @param url
+     * @param acceptedContentType
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse get(String url, String acceptedContentType) throws RequestException {
 	HttpResponse response = null;
 	try {
@@ -148,6 +150,16 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
+    /**
+     * Gets a response of certain accepted content type with provided progress
+     * monitor.
+     * 
+     * @param url
+     * @param acceptedContentType
+     * @param progressMonitor
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse get(String url, String acceptedContentType, IProgressMonitor progressMonitor)
 	    throws RequestException {
 	HttpResponse response = null;
@@ -155,8 +167,6 @@ public class MultiThreadedHttpClient {
 	get.setHeader("accept", acceptedContentType);
 	try {
 	    response = executeWithContext(get);
-	    // HttpEntityWithProgress.attachProgressMonitor(response,
-	    // progressMonitor);
 	} catch (Exception e) {
 	    throw new RequestException(e);
 	}
@@ -164,6 +174,15 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
+    /**
+     * Puts a string with mime type.
+     * 
+     * @param url
+     * @param string
+     * @param mimeType
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse put(String url, String string, String mimeType) throws RequestException {
 	try {
 	    return put(url, new StringEntity(string, mimeType, DEFAULT_CHARSET));
@@ -172,10 +191,31 @@ public class MultiThreadedHttpClient {
 	}
     }
 
+    /**
+     * Puts a file with mime type.
+     * 
+     * @param url
+     * @param file
+     * @param mimeType
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse put(String url, File file, String mimeType) throws RequestException {
 	return put(url, new FileEntity(file, mimeType));
     }
 
+    /**
+     * Puts a single file associated with a fieldName and mime type as
+     * multipart/form-data.
+     * 
+     * @param url
+     * @param fieldName
+     * @param file
+     * @param mimeType
+     * @param progressMonitor
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse putAsMultipart(String url, String fieldName, File file, String mimeType,
 	    IProgressMonitor progressMonitor) throws RequestException {
 	MultipartEntity multipartEntity = new MultipartEntityWithProgress(progressMonitor);
@@ -192,21 +232,19 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
+    /**
+     * Puts an entity.
+     * 
+     * @param url
+     * @param entity
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse put(String url, HttpEntity entity) throws RequestException {
 	HttpResponse response = null;
 	HttpPut put = null;
 	try {
-	    // sending a short put to trigger authentication and storing
-	    // httpcontext.
 	    put = new HttpPut(url);
-	    // HttpContext localContext = new BasicHttpContext();
-	    // HttpEntity smallEntity = new StringEntity("someBytes",
-	    // "application/xml", "UTF-8");
-	    // put.setEntity(smallEntity);
-	    // response = excute(put, localContext);
-	    // EntityUtils.consume(smallEntity);
-	    // consume(response);
-	    // put = new HttpPut(url);
 	    put.setEntity(entity);
 	    response = executeWithContext(put);
 	    EntityUtils.consume(entity);
@@ -214,11 +252,19 @@ public class MultiThreadedHttpClient {
 	    put.abort();
 	    throw new RequestException(e);
 	}
-	System.out.println("StatusCode received: [" + response.getStatusLine().getStatusCode() + "]");
 	expectStatusCode(response, 200);
 	return response;
     }
 
+    /**
+     * Posts a string with given mime type and default charset.
+     * 
+     * @param url
+     * @param string
+     * @param mimeType
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse post(String url, String string, String mimeType) throws RequestException {
 	try {
 	    return post(url, new StringEntity(string, mimeType, DEFAULT_CHARSET));
@@ -227,16 +273,43 @@ public class MultiThreadedHttpClient {
 	}
     }
 
+    /**
+     * Posts a file with mime type.
+     * 
+     * @param url
+     * @param file
+     * @param mimeType
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse post(String url, File file, String mimeType) throws RequestException {
 	return post(url, new FileEntity(file, mimeType));
     }
 
+    /**
+     * Posts a file with mime type and progress monitor.
+     * 
+     * @param url
+     * @param file
+     * @param mimeType
+     * @param progressMonitor
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse post(String url, File file, String mimeType, IProgressMonitor progressMonitor)
 	    throws RequestException {
 	HttpResponse response = post(url, new FileEntity(file, mimeType));
 	return response;
     }
 
+    /**
+     * Posts a entity.
+     * 
+     * @param url
+     * @param entity
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse post(String url, HttpEntity entity) throws RequestException {
 	HttpResponse response = null;
 	try {
@@ -251,6 +324,13 @@ public class MultiThreadedHttpClient {
 	return response;
     }
 
+    /**
+     * Deletes a resource.
+     * 
+     * @param url
+     * @return
+     * @throws RequestException
+     */
     public HttpResponse delete(String url) throws RequestException {
 	HttpResponse response = null;
 	try {
@@ -278,6 +358,14 @@ public class MultiThreadedHttpClient {
 	}
     }
 
+    /**
+     * If the responce has none of the given status codes a
+     * {@link RequestException} is thrown.
+     * 
+     * @param response
+     * @param expectedStatusCodes
+     * @throws RequestException
+     */
     private static void expectStatusCode(HttpResponse response, Integer... expectedStatusCodes) throws RequestException {
 	int actualStatusCode = response.getStatusLine().getStatusCode();
 	for (Integer expectedStatusCode : expectedStatusCodes) {
@@ -297,23 +385,32 @@ public class MultiThreadedHttpClient {
     }
 
     public void shutdown() {
-	idleConnectionMonitor.shutdown();
+	connectionCleaner.shutdown();
 	client.getConnectionManager().shutdown();
     }
 
+    /**
+     * All http methods are executed within the same context.
+     * 
+     * @param request
+     * @return
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     private HttpResponse executeWithContext(HttpUriRequest request) throws ClientProtocolException, IOException {
 	return client.execute(request, context);
     }
 
     /**
-     * Closes expired connections and releases idle connections.
+     * Background job which closes expired connections and releases idle
+     * connections.
      */
-    public static class IdleConnectionMonitor extends Thread {
+    public static class ConnectionCleaner extends Thread {
 
 	private final ClientConnectionManager cm;
 	private volatile boolean shutdown;
 
-	public IdleConnectionMonitor(ClientConnectionManager cm) {
+	public ConnectionCleaner(ClientConnectionManager cm) {
 	    super();
 	    this.cm = cm;
 	}
@@ -341,7 +438,19 @@ public class MultiThreadedHttpClient {
 		notifyAll();
 	    }
 	}
+    }
 
+    /**
+     * Starts the cleaner a background process.
+     * 
+     * @param cm
+     * @return
+     */
+    private ConnectionCleaner startConnectionCleaner(ThreadSafeClientConnManager cm) {
+	ConnectionCleaner connectionCleaner = new ConnectionCleaner(cm);
+	connectionCleaner.setDaemon(true);
+	connectionCleaner.start();
+	return connectionCleaner;
     }
 
 }

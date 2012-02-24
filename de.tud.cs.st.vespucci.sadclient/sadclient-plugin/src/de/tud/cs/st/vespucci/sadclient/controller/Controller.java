@@ -58,7 +58,7 @@ import de.tud.cs.st.vespucci.sadclient.model.http.RequestException;
 import de.tud.cs.st.vespucci.sadclient.view.IconAndMessageDialogs;
 
 /**
- * Gets called by the views and orchestrates {@link SADClient}.
+ * Gets called by the views and orchestrates the {@link SADClient}.
  * 
  * @author Mateusz Parzonka
  * 
@@ -68,7 +68,6 @@ public class Controller {
     final private static Controller instance = new Controller();
     final private SADClient sadClient;
     private ExecutorService pool;
-    private Future<SAD[]> sadCollectionFuture;
 
     private Controller() {
 	sadClient = new SADClient();
@@ -93,8 +92,19 @@ public class Controller {
 	sadClient.shutdown();
     }
 
+    /**
+     * Retrieves the collection of SADs.
+     * 
+     * @return
+     */
     public SAD[] getSADCollection() {
-	getSADCollectionFromServer();
+	// Executes a working thread getting the SADs from the server.
+	Future<SAD[]> sadCollectionFuture = pool.submit(new Callable<SAD[]>() {
+	    @Override
+	    public SAD[] call() throws Exception {
+		return sadClient.getSADCollection();
+	    }
+	});
 	try {
 	    return sadCollectionFuture.get();
 	} catch (Exception e) {
@@ -103,18 +113,11 @@ public class Controller {
     }
 
     /**
-     * Executes a working thread getting the SADs from the server.
+     * Deletes the SAD at the server.
+     * 
+     * @param sad
+     * @param viewer
      */
-    public void getSADCollectionFromServer() {
-	// TODO is it wise to cancel a running future before?
-	sadCollectionFuture = pool.submit(new Callable<SAD[]>() {
-	    @Override
-	    public SAD[] call() throws Exception {
-		return sadClient.getSADCollection();
-	    }
-	});
-    }
-
     public void deleteSAD(final SAD sad, final Viewer viewer) {
 	Job job = new Job("SAD deletion") {
 	    @Override
@@ -132,6 +135,12 @@ public class Controller {
 	job.schedule();
     }
 
+    /**
+     * Downloads the model to disk.
+     * 
+     * @param id
+     * @param downloadLocation
+     */
     public void downloadModel(final String id, final File downloadLocation) {
 	Job job = new Job("Model Download") {
 	    @Override
@@ -149,6 +158,12 @@ public class Controller {
 	job.schedule();
     }
 
+    /**
+     * Downloads the documentation to disk.
+     * 
+     * @param id
+     * @param downloadLocation
+     */
     public void downloadDocumentation(final String id, final File downloadLocation) {
 	Job job = new Job("Documentation Download") {
 	    @Override
@@ -166,6 +181,18 @@ public class Controller {
 	job.schedule();
     }
 
+    /**
+     * Stores or updates the given SAD and applies the changes passed in the
+     * additional fields.
+     * 
+     * @param descriptionChanged
+     * @param sad
+     * @param deleteModel
+     * @param modelFile
+     * @param deleteDoc
+     * @param docFile
+     * @param viewer
+     */
     public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
 	    final File modelFile, final boolean deleteDoc, final File docFile, final Viewer viewer) {
 
@@ -221,7 +248,9 @@ public class Controller {
     }
 
     /**
-     * Returns the total number of bytes to be transferred. Returns 0 when no work has to be done.
+     * Returns the total number of bytes to be transferred. Returns 0 when no
+     * work has to be done.
+     * 
      * @param descriptionChanged
      * @param sad
      * @param deleteModel

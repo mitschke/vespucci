@@ -158,7 +158,7 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
               logger.info("Created new SAD [%s]" format description)
             case Some(modified: Timestamp) if (modified.after(remoteModified)) =>
               val message = "Edit conflict. Someone has already stored a version of this SAD in the meantime. " +
-              		"Your changes are lost, sorry."
+              "Your changes are lost, sorry."
               logger.warn(message)
               throw new RequestException(response = new ErrorResponse(409, message)) // Conflict 
             case Some(modified: Timestamp) =>

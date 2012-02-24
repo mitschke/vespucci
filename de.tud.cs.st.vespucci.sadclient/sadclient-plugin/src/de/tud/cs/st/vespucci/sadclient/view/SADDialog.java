@@ -445,7 +445,7 @@ public class SADDialog extends Dialog {
 	    sad.setName(txtName.getText());
 	    sad.setType(txtType.getText());
 	    sad.setAbstrct(txtAbstract.getText());
-	    sad.setWip(false); // TODO
+	    sad.setWip(false); // TODO WIP to be used or not?
 	}
 	File modelFile = null;
 	if (radioModelUpload.getSelection())
