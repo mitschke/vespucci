@@ -59,6 +59,8 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTyp
  * Responsibility: create new package object called from context menu.
  * 
  * @author Tam-Minh Nguyen
+ * 
+ * TODO This should probably be deleted - by Ralf Mitschke
  */
 public class CreatePackageAction implements IObjectActionDelegate {
 

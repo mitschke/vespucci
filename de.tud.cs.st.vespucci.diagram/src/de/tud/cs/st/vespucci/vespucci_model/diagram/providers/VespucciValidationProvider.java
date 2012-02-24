@@ -215,7 +215,8 @@ public class VespucciValidationProvider {
 			de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
 					.getTarget();
 			String query = context.getQuery();
-
+			// replace any whitespace (including new line) by a single space
+			query = query.replaceAll("\\s+", " ");
 			// alle Klammern innerhalb Prolog-Strings rausfiltern (z.B. im Ensemblenamen)
 			query = filterPrologStringsRek(query);
 
@@ -255,23 +256,20 @@ public class VespucciValidationProvider {
 		}
 
 		/**
-		 * Filters everything between two 's within a string out.
+		 * Filters everything between two "'"s within a string out.
 		 * 
 		 * @generated NOT
 		 */
 		protected static String filterPrologStringsRek(String s) {
 			int beginIndex = s.indexOf('\'');
-			int endIndex = s.length() - 1;
-			if (beginIndex == -1) {
+			if (beginIndex == -1)
 				return s;
-			} else {
-				endIndex = s.replaceFirst("'", " ").indexOf('\'');
-				if (endIndex == -1) {
-					return s;
-				} else {
-					return s.substring(0, beginIndex) + filterPrologStringsRek(s.substring(endIndex, s.length()));
-				}
-			}
+			
+			int endIndex = s.indexOf('\'', beginIndex + 1);
+			if (endIndex == -1) 
+				return s;
+			String rest = s.substring(endIndex + 1);
+			return s.substring(0, beginIndex) + filterPrologStringsRek(rest);
 		}
 	}
 
