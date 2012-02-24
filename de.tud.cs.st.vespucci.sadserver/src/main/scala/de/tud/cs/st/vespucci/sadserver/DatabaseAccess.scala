@@ -22,6 +22,8 @@ import java.sql.ResultSet
 import org.dorest.server.log.Logger
 import java.sql.Timestamp
 import java.sql.Connection
+import org.dorest.server.RequestException
+import org.dorest.server.ErrorResponse
 
 object DatabaseAccess extends DatabaseAccess
 
@@ -155,9 +157,10 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
               execute("INSERT INTO sads VALUES('%s', ?, ?, ?, ?, ?, ?, ?, ?, ?)" format description.id)
               logger.info("Created new SAD [%s]" format description)
             case Some(modified: Timestamp) if (modified.after(remoteModified)) =>
-              val message = "Conflict. Stored version is from %s, but your version is from %s".format(modified.toString, remoteModified.toString())
+              val message = "Edit conflict. Someone has already stored a version of this SAD in the meantime. " +
+              		"Your changes are lost, sorry."
               logger.warn(message)
-              throw new RuntimeException(message) // TODO
+              throw new RequestException(response = new ErrorResponse(409, message)) // Conflict 
             case Some(modified: Timestamp) =>
               execute("UPDATE sads SET name = ?, type = ?, abstract = ?, modelName = ?, model = ?, documentationName = ?, documentation = ?, wip = ?, modified = ? WHERE id = '%s'" format description.id)
               logger.info("Updated SAD [%s]" format description)
