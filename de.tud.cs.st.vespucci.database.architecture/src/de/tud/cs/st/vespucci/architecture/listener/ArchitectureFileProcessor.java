@@ -98,6 +98,7 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 
 	public void setEnsembleRepository(IResource resource) {
 		doDatabaseAddition(resource, true);
+		doShadowFileAddition(resource);
 		ensembleRepository = resource.getFullPath().toString();
 	}
 
