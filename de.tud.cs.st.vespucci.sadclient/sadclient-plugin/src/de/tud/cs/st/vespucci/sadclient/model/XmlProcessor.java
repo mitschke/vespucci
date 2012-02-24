@@ -40,6 +40,7 @@ import static org.apache.commons.io.IOUtils.toInputStream;
 
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -130,7 +131,9 @@ public class XmlProcessor {
     }
 
     public SAD[] getSADCollection(InputStream inputStream) throws JAXBException {
-	return ((SADCollection) sadCollectionUnmarshaller.unmarshal(inputStream)).getSads().toArray(new SAD[0]);
+	List<SAD> listOfSADs = ((SADCollection) sadCollectionUnmarshaller.unmarshal(inputStream)).getSads();
+	// when the xml does not contain any SAD, the list is null
+	return listOfSADs == null ? new SAD[0] : listOfSADs.toArray(new SAD[0]);
     }
 
 }
