@@ -32,58 +32,54 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 package de.tud.cs.st.vespucci.marker;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
-import de.tud.cs.st.vespucci.interfaces.IViolationView;
-import de.tud.cs.st.vespucci.utilities.Util;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
+
+import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 
 /**
- * Receive IViolationViews and delegate them to ViolationManager and ViolationSummaryManger,
- * who mark and manage IViolations and IViolationSummary
+ * Explicit implementation of DataViewObserver for IViolationSummarys.
  * 
  * @author 
  */
-public class Marker implements IResultProcessor {
+public class ViolationSummaryManager extends DataViewObserver<IViolationSummary>{
 
-	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
+	private DescriptionFactory descriptionFactory;
+	private Map<IViolationSummary, IMarker> marks;
 
-	protected static void processException(Exception e){
-		final IStatus is = new Status(IStatus.ERROR, Marker.PLUGIN_ID, e.getMessage(), e);
-		StatusManager.getManager().handle(is, StatusManager.LOG);
+	public ViolationSummaryManager(){
+		descriptionFactory = new DescriptionFactory();
+		marks = new HashMap<IViolationSummary, IMarker>();
 	}
 
-	private ViolationManager violationManager;
-	private ViolationSummaryManager violationSummaryManager;
-
-	public Marker(){
-		violationManager = new ViolationManager();
-		violationSummaryManager = new ViolationSummaryManager();
+	private String createViolationSummaryDescription(IViolationSummary element) {
+		return descriptionFactory.getDescription(element);
 	}
 
 	@Override
-	public void processResult(Object result, IFile file) {
-		IViolationView violationView = Util.adapt(result, IViolationView.class);
-		IProject project = file.getProject();
-
-		if (violationView != null){
-			violationManager.add(violationView, project);
-			violationSummaryManager.add(violationView.getSummaryView(), project);
+	public void added(IViolationSummary element) {
+		if (!marks.containsKey(element)){
+			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromPortableString(element.getDiagramFile()));
+			IMarker marker = MarkingUtilities.markIFile(file, createViolationSummaryDescription(element), IMarker.PRIORITY_NORMAL);
+			if (marker != null){
+				marks.put(element, marker);
+			}
 		}
 	}
 
 	@Override
-	public boolean isInterested(Class<?> resultClass) {
-		return IViolationView.class.equals(resultClass);
-	}
-
-	@Override
-	public void cleanUp() {
-		//unused in this result processor
+	public void deleted(IViolationSummary element) {
+		if (marks.containsKey(element)){
+			IMarker marker = marks.get(element);
+			MarkingUtilities.deleteMarker(marker);
+			marks.remove(element);
+		}
 	}
 
 }
