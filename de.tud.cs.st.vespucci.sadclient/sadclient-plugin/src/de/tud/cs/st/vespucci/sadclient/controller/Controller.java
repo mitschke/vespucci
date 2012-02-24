@@ -55,6 +55,7 @@ import de.tud.cs.st.vespucci.sadclient.model.SAD;
 import de.tud.cs.st.vespucci.sadclient.model.SADClient;
 import de.tud.cs.st.vespucci.sadclient.model.Transaction;
 import de.tud.cs.st.vespucci.sadclient.model.http.RequestException;
+import de.tud.cs.st.vespucci.sadclient.preferences.PreferenceConstants;
 import de.tud.cs.st.vespucci.sadclient.view.IconAndMessageDialogs;
 
 /**
@@ -99,16 +100,19 @@ public class Controller {
      */
     public SAD[] getSADCollection() {
 	// Executes a working thread getting the SADs from the server.
-	Future<SAD[]> sadCollectionFuture = pool.submit(new Callable<SAD[]>() {
-	    @Override
-	    public SAD[] call() throws Exception {
-		return sadClient.getSADCollection();
-	    }
-	});
 	try {
+	    Future<SAD[]> sadCollectionFuture = pool.submit(new Callable<SAD[]>() {
+		@Override
+		public SAD[] call() throws Exception {
+		    return sadClient.getSADCollection();
+		}
+	    });
 	    return sadCollectionFuture.get();
 	} catch (Exception e) {
-	    throw new RuntimeException(e);
+	    IconAndMessageDialogs.showErrorDialog("Could not connect to server: "
+		    + Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SERVER),
+		    e.getMessage());
+	    return new SAD[0];
 	}
     }
 
