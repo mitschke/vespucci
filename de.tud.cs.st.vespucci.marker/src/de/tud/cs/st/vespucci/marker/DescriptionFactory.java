@@ -163,7 +163,7 @@ public class DescriptionFactory {
 			}
 		});
 
-		this.descMap.put("cast", new DescriptionGenerator() {
+		this.descMap.put("class_cast", new DescriptionGenerator() {
 
 			public String buildDescription(IViolation violation) {
 
