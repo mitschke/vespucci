@@ -32,58 +32,39 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 package de.tud.cs.st.vespucci.marker;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
-import de.tud.cs.st.vespucci.interfaces.IViolationView;
-import de.tud.cs.st.vespucci.utilities.Util;
+import java.util.Iterator;
+
+import org.eclipse.core.resources.IProject;
+
+import de.tud.cs.st.vespucci.interfaces.IDataView;
+import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
 
 /**
- * Receive IViolationViews and delegate them to ViolationManager and ViolationSummaryManger,
- * who mark and manage IViolations and IViolationSummary
+ * An abstract, generic implementation of IDataViewObserver
  * 
  * @author 
  */
-public class Marker implements IResultProcessor {
+public abstract class DataViewObserver<A> implements IDataViewObserver<A>{
 
-	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
-
-	protected static void processException(Exception e){
-		final IStatus is = new Status(IStatus.ERROR, Marker.PLUGIN_ID, e.getMessage(), e);
-		StatusManager.getManager().handle(is, StatusManager.LOG);
-	}
-
-	private ViolationManager violationManager;
-	private ViolationSummaryManager violationSummaryManager;
-
-	public Marker(){
-		violationManager = new ViolationManager();
-		violationSummaryManager = new ViolationSummaryManager();
-	}
-
-	@Override
-	public void processResult(Object result, IFile file) {
-		IViolationView violationView = Util.adapt(result, IViolationView.class);
-		IProject project = file.getProject();
-
-		if (violationView != null){
-			violationManager.add(violationView, project);
-			violationSummaryManager.add(violationView.getSummaryView(), project);
+	private IProject project;
+	
+	public void add(IDataView<A> dataView, IProject project) {
+		this.project = project;
+		dataView.register(this);
+		for (Iterator<A> dataViewIterator = dataView.iterator(); dataViewIterator.hasNext();) {
+			added(dataViewIterator.next());
 		}
 	}
 
 	@Override
-	public boolean isInterested(Class<?> resultClass) {
-		return IViolationView.class.equals(resultClass);
+	public void updated(A oldValue, A newValue) {
+		deleted(oldValue);
+		added(newValue);
 	}
-
-	@Override
-	public void cleanUp() {
-		//unused in this result processor
+	
+	public IProject getRelatedProject(){
+		return project;
 	}
 
 }
