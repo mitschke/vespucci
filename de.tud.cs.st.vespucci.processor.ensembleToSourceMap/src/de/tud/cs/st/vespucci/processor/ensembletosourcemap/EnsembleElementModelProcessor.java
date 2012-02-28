@@ -9,6 +9,7 @@ import sae.operators.Projection;
 import scala.Tuple2;
 import unisson.model.UnissonDatabase;
 import unisson.query.code_model.SourceElement;
+import de.tud.cs.st.scala.utilitites.ScalaFunction1Wrapper;
 import de.tud.cs.st.vespucci.database.architecture.provider.ArchitectureDatabaseProvider;
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;

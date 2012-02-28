@@ -7,7 +7,8 @@ Bundle-Activator: de.tud.cs.st.vespucci.processor.ensembletosourcemap.Activator
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.tud.cs.st.vespucci.database.architecture.provider,
+Import-Package: de.tud.cs.st.scala.utilitites,
+ de.tud.cs.st.vespucci.database.architecture.provider,
  de.tud.cs.st.vespucci.diagram.processing,
  de.tud.cs.st.vespucci.interfaces,
  de.tud.cs.st.vespucci.model,
