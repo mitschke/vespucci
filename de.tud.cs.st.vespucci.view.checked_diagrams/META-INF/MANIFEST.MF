@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Diagramsundercheck
-Bundle-SymbolicName: de.tud.cs.st.vespucci.view.currentdiagrams;singleton:=true
+Bundle-Name: CheckedDiagrams
+Bundle-SymbolicName: de.tud.cs.st.vespucci.view.checked_diagrams;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.tud.cs.st.vespucci.view.currentdiagrams.Activator
+Bundle-Activator: de.tud.cs.st.vespucci.view.checked_diagrams.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  de.tud.cs.st.vespucci.diagram,

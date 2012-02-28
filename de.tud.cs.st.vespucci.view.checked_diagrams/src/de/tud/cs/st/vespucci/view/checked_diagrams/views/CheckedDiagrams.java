@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.view.currentdiagrams.views;
+package de.tud.cs.st.vespucci.view.checked_diagrams.views;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,11 +30,11 @@ import org.eclipse.ui.part.ViewPart;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 
-public class CurrentDiagramsView extends ViewPart {
+public class CheckedDiagrams extends ViewPart {
 
 	public static final String ID = "de.tud.cs.st.vespucci.view.currentdiagrams.views.CurrentDiagramsView";
 
-	private static CurrentDiagramsView Table;
+	private static CheckedDiagrams Table;
 	
 	private ViewContentProvider contentProvider;
 	private LabelProvider labelProvider;
@@ -85,7 +85,7 @@ public class CurrentDiagramsView extends ViewPart {
 	/**
 	 * The constructor.
 	 */
-	public CurrentDiagramsView() {
+	public CheckedDiagrams() {
 		Table = this;
 	}
 
@@ -135,8 +135,8 @@ public class CurrentDiagramsView extends ViewPart {
 				}
 			}
 		};
-		disposeAction.setText("dispose");
-		disposeAction.setToolTipText("dispose");
+		disposeAction.setText("Remove");
+		disposeAction.setToolTipText("Remove the diagram from list of live checked diagrams");
 		disposeAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 				getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
 	}
