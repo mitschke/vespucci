@@ -13,4 +13,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.7.0",
  org.eclipse.emf.ecore;bundle-version="2.7.0",
  org.eclipse.emf.ecore.xmi;bundle-version="2.7.0",
  de.tud.cs.st.vespucci;bundle-version="1.5.2"
-Export-Package: de.tud.cs.st.vespucci.utilities
+Export-Package: de.tud.cs.st.scala.utilitites,
+ de.tud.cs.st.vespucci.utilities
+Import-Package: scala;version="2.9.0",
+ scala.runtime;version="2.9.0"

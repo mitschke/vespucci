@@ -41,9 +41,11 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterManager;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -168,7 +170,16 @@ public class Util {
 			for (IClasspathEntry classpathentry : javaProject
 					.getResolvedClasspath(false)) {
 				if (classpathentry.getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-					elements.add(classpathentry.getPath().toFile());
+					IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(classpathentry.getPath());
+					if(member != null)
+					{
+						// resource in workspace
+						elements.add(member.getLocation().toFile());
+					}
+					else{
+						// external resource
+						elements.add(classpathentry.getPath().toFile());
+					}
 				}
 			}
 		} catch (JavaModelException e) {
