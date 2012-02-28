@@ -1,5 +1,5 @@
 all
-call
+calls
 subtype
 create
 throws
