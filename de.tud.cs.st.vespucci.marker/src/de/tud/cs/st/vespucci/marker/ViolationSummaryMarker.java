@@ -17,38 +17,36 @@ import de.tud.cs.st.vespucci.interfaces.IDataView;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
 import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 
-public class ViolationSummaryMarker implements IDataViewObserver<IViolationSummary>{
+public class ViolationSummaryMarker implements
+		IDataViewObserver<IViolationSummary> {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
-	
+
 	private static HashMap<IViolationSummary, IMarker> markers = new HashMap<IViolationSummary, IMarker>();
 
-	private DescriptionFactory descFab;
-	
-	public ViolationSummaryMarker(IDataView<IViolationSummary> dataView){
-		if (dataView == null){
+	public ViolationSummaryMarker(IDataView<IViolationSummary> dataView) {
+		if (dataView == null) {
 			return;
 		}
-		
+
 		dataView.register(this);
-		this.descFab = new DescriptionFactory();
-		
-		for (Iterator<IViolationSummary> i = dataView.iterator(); i.hasNext();){
+
+		for (Iterator<IViolationSummary> i = dataView.iterator(); i.hasNext();) {
 			added(i.next());
 		}
-		
+
 	}
-	
+
 	private String createViolationSummaryDescription(IViolationSummary element) {
-		return descFab.getDescription(element);
+		return DescriptionFactory.getDescription(element);
 	}
-	
-	
+
 	@Override
 	public void added(IViolationSummary element) {
-		IMarker marker = addMarker(element, createViolationSummaryDescription(element));
-		if (marker != null){
-			if (!markers.containsKey(element)){
+		IMarker marker = addMarker(element,
+				createViolationSummaryDescription(element));
+		if (marker != null) {
+			if (!markers.containsKey(element)) {
 				markers.put(element, marker);
 			}
 		}
@@ -56,13 +54,14 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 
 	@Override
 	public void deleted(IViolationSummary element) {
-		
-		if (markers.containsKey(element)){
+
+		if (markers.containsKey(element)) {
 			try {
 				markers.get(element).delete();
 				markers.remove(element);
 			} catch (CoreException e) {
-				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID,
+						e.getMessage(), e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
 		}
@@ -73,30 +72,33 @@ public class ViolationSummaryMarker implements IDataViewObserver<IViolationSumma
 		deleted(oldValue);
 		added(newValue);
 	}
-	
-	protected static void deleteAllMarkers(){
+
+	protected static void deleteAllMarkers() {
 		for (Entry<IViolationSummary, IMarker> entry : markers.entrySet()) {
 			try {
 				entry.getValue().delete();
 			} catch (CoreException e) {
-				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+				final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID,
+						e.getMessage(), e);
 				StatusManager.getManager().handle(is, StatusManager.LOG);
 			}
 		}
 	}
-	
+
 	private IMarker addMarker(IViolationSummary element, String description) {
 		try {
 
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromPortableString(element.getDiagramFile()));
-			IMarker marker = file.createMarker("org.eclipse.core.resources.problemmarker");
+			IFile file = ResourcesPlugin.getWorkspace().getRoot()
+					.getFile(Path.fromPortableString(element.getDiagramFile()));
+			IMarker marker = file
+					.createMarker("org.eclipse.core.resources.problemmarker");
 			marker.setAttribute(IMarker.MESSAGE, description);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.PRIORITY_NORMAL);
 			marker.setAttribute(IMarker.TRANSIENT, true);
 			return marker;
-		}
-		catch (CoreException e) {
-			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+		} catch (CoreException e) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID,
+					e.getMessage(), e);
 			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
 		return null;

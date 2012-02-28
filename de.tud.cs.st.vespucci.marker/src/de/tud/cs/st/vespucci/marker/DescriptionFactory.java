@@ -4,45 +4,87 @@ import java.util.HashMap;
 
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
+import de.tud.cs.st.vespucci.model.IConstraint;
+import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.model.IExpected;
+import de.tud.cs.st.vespucci.model.IGlobalIncoming;
+import de.tud.cs.st.vespucci.model.IGlobalOutgoing;
+import de.tud.cs.st.vespucci.model.IInAndOut;
+import de.tud.cs.st.vespucci.model.IIncoming;
+import de.tud.cs.st.vespucci.model.INotAllowed;
+import de.tud.cs.st.vespucci.model.IOutgoing;
 
 public class DescriptionFactory {
-	
+
 	HashMap<String, DescriptionGenerator> descMap;
-	
-	public DescriptionFactory(){
-		
+
+	public DescriptionFactory() {
+
 		this.descMap = new HashMap<String, DescriptionGenerator>();
 		fillDescMapWithViolationKinds();
-		
+
 	}
-	
-	public String getDescription(IViolation violation){
-		
-		DescriptionGenerator descGen = this.descMap.get(violation.getViolatingKind());	
+
+	public String getDescription(IViolation violation) {
+
+		DescriptionGenerator descGen = this.descMap.get(violation
+				.getViolatingKind());
 		return descGen.buildDescription(violation);
-		
-		}
-	
-	public String getDescription(IViolationSummary violationSummmary){
+
+	}
+
+	public static String getDescription(IViolationSummary violationSummmary){
 		
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("There are ");
+		sb.append(getQualifiedName(violationSummmary.getSourceEnsemble()));
+		sb.append(" to ");
+		sb.append(getQualifiedName(violationSummmary.getTargetEnsemble()));
+		sb.append(" has ");
 		sb.append(violationSummmary.numberOfViolations());
-		sb.append("from Ensemble ");
-		sb.append(violationSummmary.getSourceEnsemble());
-		sb.append(" to Ensemble ");
-		sb.append(violationSummmary.getTargetEnsemble());
-		// Optional:
-		sb.append(" (Contraint Type: )");
+		sb.append(" violation(s)");
+		
+		// Constraint:
+		sb.append(" of ");
+		sb.append(getConstraintType(violationSummmary.getConstraint()));
+		sb.append("'");
 		sb.append(violationSummmary.getConstraint().getDependencyKind());
-		sb.append(")");
+		sb.append("'");
+		sb.append(" from "); 
+		sb.append(getQualifiedName(violationSummmary.getConstraint().getSource()));
+		sb.append(" to ");
+		sb.append(getQualifiedName(violationSummmary.getConstraint().getTarget()));
 		
 		return sb.toString();
 	}
-	
+
+	public static String getQualifiedName(IEnsemble ensemble) {
+		if (ensemble.getParent() == null)
+			return ensemble.getName();
+		return getQualifiedName(ensemble.getParent()) + "."
+				+ ensemble.getName();
+	}
+
+	public static String getConstraintType(IConstraint constraint) {
+		if (constraint instanceof IIncoming)
+			return "incoming";
+		if (constraint instanceof IOutgoing)
+			return "incoming";
+		if (constraint instanceof IInAndOut)
+			return "in/out";
+		if (constraint instanceof IGlobalIncoming)
+			return "global incoming";
+		if (constraint instanceof IGlobalOutgoing)
+			return "global outgoing";
+		if (constraint instanceof IExpected)
+			return "expected";
+		if (constraint instanceof INotAllowed)
+			return "not allowed";
+		return "unknown";
+	}
+
 	private void fillDescMapWithViolationKinds() {
-		
+
 		this.descMap.put("extends", new DescriptionGenerator() {
 
 			public String buildDescription(IViolation violation) {
@@ -75,7 +117,13 @@ public class DescriptionFactory {
 
 			public String buildDescription(IViolation violation) {
 
-				return violation.getViolatingKind();
+				StringBuffer sb = new StringBuffer();
+
+				sb.append(sourcePrefix(true, violation));
+				sb.append("calls a constructor on class: ");
+				sb.append(targetSuffix(violation));
+
+				return sb.toString();
 			}
 		});
 
@@ -101,6 +149,20 @@ public class DescriptionFactory {
 
 				sb.append(sourcePrefix(true, violation));
 				sb.append("calls a method on interface: ");
+				sb.append(targetSuffix(violation));
+
+				return sb.toString();
+			}
+		});
+		
+		this.descMap.put("invoke_static", new DescriptionGenerator() {
+
+			public String buildDescription(IViolation violation) {
+
+				StringBuffer sb = new StringBuffer();
+
+				sb.append(sourcePrefix(true, violation));
+				sb.append("calls a static method on : ");
 				sb.append(targetSuffix(violation));
 
 				return sb.toString();
@@ -200,6 +262,36 @@ public class DescriptionFactory {
 				sb.append("A field in ");
 				sb.append(sourcePrefix(false, violation));
 				sb.append("is declared as type: ");
+				sb.append(targetSuffix(violation));
+
+				return sb.toString();
+			}
+		});
+
+		this.descMap.put("throws", new DescriptionGenerator() {
+
+			public String buildDescription(IViolation violation) {
+
+				StringBuffer sb = new StringBuffer();
+
+				sb.append("A exception in ");
+				sb.append(sourcePrefix(false, violation));
+				sb.append("is thrown of type: ");
+				sb.append(targetSuffix(violation));
+
+				return sb.toString();
+			}
+		});
+
+		this.descMap.put("instanceof", new DescriptionGenerator() {
+
+			public String buildDescription(IViolation violation) {
+
+				StringBuffer sb = new StringBuffer();
+
+				sb.append("An instanceof check in ");
+				sb.append(sourcePrefix(false, violation));
+				sb.append("is performed on type: ");
 				sb.append(targetSuffix(violation));
 
 				return sb.toString();
