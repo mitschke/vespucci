@@ -48,13 +48,6 @@ public class Constraint implements IConstraint {
 
 	public Constraint(de.tud.cs.st.vespucci.vespucci_model.Connection connection) {
 		this.connection = connection;
-
-		source = connection.getSource();
-
-		target = connection.getSource();
-
-		kind = connection.getName();
-
 	}
 
 	@Override
@@ -72,6 +65,14 @@ public class Constraint implements IConstraint {
 		return ConversionUtils.createEnsemble(connection.getTarget());
 	}
 
+	private Shape getInternalSource() {
+		return connection.getSource();
+	}
+
+	private Shape getInternalTarget() {
+		return connection.getTarget();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -82,12 +83,6 @@ public class Constraint implements IConstraint {
 		return "Constraint(" + getSource().getName() + ", "
 				+ getTarget().getName() + ")";
 	}
-
-	Shape source;
-
-	Shape target;
-
-	String kind;
 
 	/*
 	 * (non-Javadoc)
@@ -104,13 +99,13 @@ public class Constraint implements IConstraint {
 
 			result = prime * result + ((kind == null) ? 0 : kind.hashCode());
 
-			Shape source = connection.getSource();
+			Shape source = getInternalSource();
 			if (source != null)
 				result = prime
 						* result
 						+ ((source.getName() == null) ? 0 : source.getName()
 								.hashCode());
-			Shape target = connection.getSource();
+			Shape target = getInternalSource();
 			if (target != null)
 				result = prime
 						* result
@@ -135,37 +130,40 @@ public class Constraint implements IConstraint {
 			return false;
 		Constraint other = (Constraint) obj;
 		if (connection == null) {
-			if (other.connection != null)
-				return false;
-		} else {
-			Shape source = connection.getSource();
-			Shape target = connection.getSource();
-			String kind = connection.getName();
-			if (kind == null) {
-				if (other.kind != null)
-					return false;
-			} else if (!kind.equals(other.kind))
-				return false;
-			if (source == null) {
-				if (other.source != null)
-					return false;
+			return other.connection == null;
+		}
 
-			} else {
-				String sourceName = source.getName() != null ? source.getName()
-						: "";
-				if (!sourceName.equals(other.source.getName()))
-					return false;
-			}
-			if (target == null) {
-				if (other.target != null)
-					return false;
-			} else {
-				String targetName = target.getName() != null ? target.getName()
-						: "";
+		// compare kinds
+		if (getDependencyKind() == null && other.getDependencyKind() != null)
+			return false;
+		if (getDependencyKind() != null
+				&& !getDependencyKind().equals(other.getDependencyKind()))
+			return false;
 
-				if (!targetName.equals(other.target.getName()))
-					return false;
-			}
+		// compare source names
+		if (getInternalSource() == null && other.getInternalSource() != null)
+			return false;
+		if (getInternalSource() != null) {
+			if (getInternalSource().getName() == null
+					&& other.getInternalSource().getName() != null)
+				return false;
+			if (getInternalSource().getName() != null
+					&& !getInternalSource().getName().equals(
+							other.getInternalSource().getName()))
+				return false;
+		}
+
+		// compare target names
+		if (getInternalTarget() == null && other.getInternalTarget() != null)
+			return false;
+		if (getInternalTarget() != null) {
+			if (getInternalTarget().getName() == null
+					&& other.getInternalTarget().getName() != null)
+				return false;
+			if (getInternalTarget().getName() != null
+					&& !getInternalTarget().getName().equals(
+							other.getInternalTarget().getName()))
+				return false;
 		}
 		return true;
 	}

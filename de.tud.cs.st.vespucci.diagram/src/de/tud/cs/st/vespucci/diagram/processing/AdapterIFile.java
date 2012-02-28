@@ -57,14 +57,11 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.model.output.spi.ArchitectureModel;
 import de.tud.cs.st.vespucci.diagram.model.output.spi.ConversionUtils;
-import de.tud.cs.st.vespucci.diagram.model.output.spi.EmptyEnsemble;
-import de.tud.cs.st.vespucci.diagram.model.output.spi.Ensemble;
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.utilities.Util;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Dummy;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
@@ -113,15 +110,12 @@ public class AdapterIFile implements IAdapterFactory {
 
 				}
 			}
-
-			Set<IConstraint> contraints = new HashSet<IConstraint>();
+			Set<IConstraint> constraints = new HashSet<IConstraint>();
 			for (IEnsemble ensemble : ensembles) {
-				for (IConstraint constraint : ensemble.getTargetConnections()) {
-
-					contraints.add(constraint);
-				}
+				Set<IConstraint> ensembleConstraints = getConstraints(ensemble);
+				constraints.addAll(ensembleConstraints);
 			}
-			return new ArchitectureModel(ensembles, contraints, diagramFile
+			return new ArchitectureModel(ensembles, constraints, diagramFile
 					.getFullPath().makeAbsolute().toPortableString());
 		}
 
@@ -148,7 +142,7 @@ public class AdapterIFile implements IAdapterFactory {
 					return (ShapesDiagram) eObject;
 				}
 			}
-			
+
 			throw new FileNotFoundException(
 					"ShapesDiagram could not be found in Document.");
 
@@ -171,12 +165,12 @@ public class AdapterIFile implements IAdapterFactory {
 	private static void createWarningForProxiesMarker(IFile file,
 			Connection element) {
 
-		if(!file.exists())
+		if (!file.exists())
 			return;
-		
-		if(ResourcesPlugin.getWorkspace().isTreeLocked())
+
+		if (ResourcesPlugin.getWorkspace().isTreeLocked())
 			return;
-		
+
 		String elementId = element.eResource().getURIFragment(element);
 
 		String location = EMFCoreUtil.getQualifiedName(element, true);
@@ -203,4 +197,21 @@ public class AdapterIFile implements IAdapterFactory {
 		return AdapterIFile.adapterList;
 	}
 
+	/**
+	 * Returns all constraints that start at this ensemble or any inner
+	 * ensembles
+	 * 
+	 * @param ensemble
+	 * @return
+	 */
+	private static Set<IConstraint> getConstraints(IEnsemble ensemble) {
+		Set<IConstraint> constraints = new HashSet<IConstraint>();
+		for (IConstraint constraint : ensemble.getTargetConnections()) {
+			constraints.add(constraint);
+		}
+		for (IEnsemble inner : ensemble.getInnerEnsembles()) {
+			constraints.addAll(getConstraints(inner));
+		}
+		return constraints;
+	}
 }
