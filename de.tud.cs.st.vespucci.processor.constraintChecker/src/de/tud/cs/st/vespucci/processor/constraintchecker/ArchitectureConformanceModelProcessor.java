@@ -21,23 +21,37 @@ public class ArchitectureConformanceModelProcessor implements IModelProcessor {
 		return IViolationView.class;
 	}
 
+	// @SuppressWarnings("deprecation")
 	public static IViolationView getViolationView(Object diagramModel) {
 
 		IFile diagramFile = Util.adapt(diagramModel, IFile.class);
-		
+
 		IProject project = diagramFile.getProject();
 
-		UnissonDatabase db = ArchitectureDatabaseProvider.getInstance().getArchitectureDatabase(project);
-		
-		SummaryView summaryView = new SummaryView(db.violation_summary());
-		
-		ViolationView violationView = new ViolationView(db.violations(), summaryView);
-		
+		UnissonDatabase db = ArchitectureDatabaseProvider.getInstance()
+				.getArchitectureDatabase(project);
+
+		// @SuppressWarnings("unchecked")
+		// QueryResult<Object> constraints =
+		// Conversions.lazyViewToResult(db.normalized_constraints());
+
+		SummaryView summaryView = new SummaryView(db.violation_summary(),
+				diagramFile);
+
+		ViolationView violationView = new ViolationView(db.violations(),
+				diagramFile, summaryView);
+
 		ArchitectureDatabaseProvider.getInstance().initializeDatabase(project);
-		
-		ArchitectureDatabaseProvider.getInstance().addModelFileToProject(diagramFile, project);
-		
+
+		ArchitectureDatabaseProvider.getInstance().addModelFileToProject(
+				diagramFile, project);
+
+		// List<Object> list = JavaConversions.asJavaList(constraints.asList());
+		// for (Object object : list) {
+		// System.out.println(object);
+		// }
+
 		return violationView;
 	}
-	
+
 }
