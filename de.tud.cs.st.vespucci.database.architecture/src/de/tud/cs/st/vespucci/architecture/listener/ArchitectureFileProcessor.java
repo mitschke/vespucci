@@ -184,10 +184,10 @@ public class ArchitectureFileProcessor implements IArchitectureObserver {
 		IArchitectureModel model = Util.adapt(resource,
 				IArchitectureModel.class);
 		if (asRepository) {
-			database.addGlobalModel(model);
+			database.removeGlobalModel(model);
 
 		} else {
-			database.addModel(model);
+			database.removeModel(model);
 		}
 
 	}

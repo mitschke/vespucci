@@ -24,10 +24,6 @@ public class ArchitectureDatabaseProvider {
 
 	private Map<IProject, ArchitectureFileProcessor> observers = new HashMap<IProject, ArchitectureFileProcessor>();
 
-	private StateLocationCopyService copyService = new StateLocationCopyService(
-			Activator.getDefault().getStateLocation(), ResourcesPlugin
-					.getWorkspace().getRoot());
-
 	public static ArchitectureDatabaseProvider getInstance() {
 		return Activator.getDefault().getDatabaseProvider();
 	}
@@ -107,7 +103,6 @@ public class ArchitectureDatabaseProvider {
 		if(!fileProcessor.isModel(modelFile))
 		{
 			fileProcessor.addConstraintModel(modelFile);
-			fileProcessor.architectureDiagramAdded(modelFile);
 		}
 		else
 		{
@@ -120,7 +115,6 @@ public class ArchitectureDatabaseProvider {
 			return;
 		
 		ArchitectureFileProcessor fileProcessor = observers.get(project);
-		fileProcessor.architectureDiagramRemoved(modelFile);
 		fileProcessor.deleteConstraintModel(modelFile);
 	}
 	
@@ -141,7 +135,6 @@ public class ArchitectureDatabaseProvider {
 		if(!fileProcessor.isGlobalModel(modelFile))
 		{
 			fileProcessor.setEnsembleRepository(modelFile);
-			fileProcessor.architectureDiagramAdded(modelFile);
 		}
 		else {
 			fileProcessor.architectureDiagramChanged(modelFile);
