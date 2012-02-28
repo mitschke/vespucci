@@ -1,7 +1,6 @@
-package de.tud.cs.st.vespucci.unmodeled_elements.view;
+package de.tud.cs.st.vespucci.view.unmodeled_elements;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewReference;

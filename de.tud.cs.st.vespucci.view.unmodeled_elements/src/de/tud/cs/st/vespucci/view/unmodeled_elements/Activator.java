@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.unmodeled_elements.view;
+package de.tud.cs.st.vespucci.view.unmodeled_elements;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

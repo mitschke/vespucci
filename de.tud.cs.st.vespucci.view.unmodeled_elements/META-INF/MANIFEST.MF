@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Umodeled Elements View
-Bundle-SymbolicName: de.tud.cs.st.vespucci.unmodeled_elements.view;singleton:=true
+Bundle-SymbolicName: de.tud.cs.st.vespucci.view.unmodeled_elements;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.tud.cs.st.vespucci.unmodeled_elements.view.Activator
+Bundle-Activator: de.tud.cs.st.vespucci.view.unmodeled_elements.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
