@@ -38,12 +38,14 @@ package de.tud.cs.st.vespucci.diagram.global_repository.view;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
  * 
  * @author Tanya Harizanova
+ * @author Christian Knapp
  * A dummy class for creating an Array with Ensembles
  */
  public final  class Init {
@@ -75,10 +77,49 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 		c.setDescription("description");
 		c.setQuery("empty");
 		
+		Ensemble e = new EnsembleImpl();
+		e.setName("e");
+		e.setDescription("description");
+		e.setQuery("empty");
+	
+		Ensemble f = new EnsembleImpl();
+		f.setName("f");
+		f.setDescription("description");
+		f.setQuery("empty");
+		
+		Ensemble inner2 = new EnsembleImpl();
+		inner2.setName("inner2");
+		inner2.setDescription("description");
+		inner2.setQuery("derived");
+	 
+		Ensemble outer2 = new EnsembleImpl();
+		outer2.setName("outer2");
+		outer2.setDescription("description");
+		outer2.setQuery("empty");
+		
+		Ensemble in2 = new EnsembleImpl();
+		in2.setName("in2");
+		in2.setDescription("description");
+		in2.setQuery("empty");
+	
+		Ensemble in3 = new EnsembleImpl();
+		in3.setName("in3");
+		in3.setDescription("description");
+		in3.setQuery("empty");
+		
+		Ensemble in4 = new EnsembleImpl();
+		in4.setName("in4");
+		in4.setDescription("description");
+		in4.setQuery("empty");
+		
 		inner.getShapes().add(c);
 		outer.getShapes().add(inner);
-		
-		
+		outer.getShapes().add(inner2);
+		inner2.getShapes().add(e);
+		inner2.getShapes().add(f);
+		outer2.getShapes().add(in2);
+		outer2.getShapes().add(in3);
+		outer2.getShapes().add(in4);
 		
 		Ensemble d = new EnsembleImpl();
 		d.setName("d");
@@ -90,6 +131,7 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 		resultList.add(b);
 		resultList.add(outer);
 		resultList.add(d);
+		resultList.add(outer2);
 		
 		return resultList;
 		

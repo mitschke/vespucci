@@ -60,7 +60,6 @@ public class GRContentProvider implements ITreeContentProvider {
 	}
 
 	/**
-	 * TODO
 	 * gets the children of an Ensemble an put it in the right place in the tree
 	 */
 	@Override
