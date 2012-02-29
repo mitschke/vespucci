@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="global_repository.presentation.Global_repositoryModelWizardID"
+            name="%_UI_Global_repositoryModelWizard_label"
+            class="global_repository.presentation.Global_repositoryModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/Global_repositoryModelFile.gif">
+         <description>%_UI_Global_repositoryModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="global_repository.presentation.Global_repositoryEditorID"
+            name="%_UI_Global_repositoryEditor_label"
+            icon="icons/full/obj16/Global_repositoryModelFile.gif"
+            extensions="global_repository"
+            class="global_repository.presentation.Global_repositoryEditor"
+            contributorClass="global_repository.presentation.Global_repositoryActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="vespucci_model.presentation.Vespucci_modelModelWizardID"
+            name="%_UI_Vespucci_modelModelWizard_label"
+            class="vespucci_model.presentation.Vespucci_modelModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/Vespucci_modelModelFile.gif">
+         <description>%_UI_Vespucci_modelModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="vespucci_model.presentation.Vespucci_modelEditorID"
+            name="%_UI_Vespucci_modelEditor_label"
+            icon="icons/full/obj16/Vespucci_modelModelFile.gif"
+            extensions="vespucci_model"
+            class="vespucci_model.presentation.Vespucci_modelEditor"
+            contributorClass="vespucci_model.presentation.Vespucci_modelActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

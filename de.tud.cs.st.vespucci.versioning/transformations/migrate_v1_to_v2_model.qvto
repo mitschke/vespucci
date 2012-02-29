@@ -55,45 +55,23 @@ main() {
 }
 
 mapping OldModel::ShapesDiagram::toNew() : NewModel::ShapesDiagram {
-
-	self.shapes->forEach(s){
-		s.allSubobjectsOfType(Expected).oclAsType(Expected)->forEach(c){
-			connections += c.map toExpected();
+	self->allSubobjectsOfKind(Shape)->forEach(s){
+		s.oclAsType(Shape).targetConnections->forEach(con){
+			switch{
+				case (con.oclIsTypeOf(Expected)) connections += con.oclAsType(Expected).map toExpected();
+				case (con.oclIsTypeOf(InAndOut)) connections += con.oclAsType(InAndOut).map toInAndOut();
+				case (con.oclIsTypeOf(Incoming)) connections += con.oclAsType(Incoming).map toIncoming();
+				case (con.oclIsTypeOf(NotAllowed)) connections += con.oclAsType(NotAllowed).map toNotAllowed();
+				case (con.oclIsTypeOf(Outgoing)) connections += con.oclAsType(Outgoing).map toOutgoing();
+				case (con.oclIsTypeOf(Violation)) connections += con.oclAsType(Violation).map toViolation();
+				case (con.oclIsTypeOf(GlobalIncoming)) connections += con.oclAsType(GlobalIncoming).map toGlobalIncoming();
+				case (con.oclIsTypeOf(GlobalOutgoing)) connections += con.oclAsType(GlobalOutgoing).map toGlobalOutgoing();
+			};
 		};
-		
-		s.allSubobjectsOfType(InAndOut).oclAsType(InAndOut)->forEach(c){
-			connections += c.map toInAndOut();
-		};
-		
-		s.allSubobjectsOfType(Incoming).oclAsType(Incoming)->forEach(c){
-			connections += c.map toIncoming();
-		};
-		
-		s.allSubobjectsOfType(NotAllowed).oclAsType(NotAllowed)->forEach(c){
-			connections += c.map toNotAllowed();
-		};
-		
-		s.allSubobjectsOfType(Outgoing).oclAsType(Outgoing)->forEach(c){
-			connections += c.map toOutgoing();
-		};
-		
-		s.allSubobjectsOfType(Violation).oclAsType(Violation)->forEach(c){
-			connections += c.map toViolation();
-		};
-		
-		s.allSubobjectsOfType(GlobalIncoming).oclAsType(GlobalIncoming)->forEach(c){
-			log("Current Connection: ", c);
-			connections += c.map toGlobalIncoming();
-		};
-		
-		s.allSubobjectsOfType(GlobalOutgoing).oclAsType(GlobalOutgoing)->forEach(c){
-			connections += c.map toGlobalOutgoing();
-		};
-		
-		shapes += self.shapes.map toEnsemble();
-		shapes += self.shapes.map toEmpty();
-			
-	};	
+	};
+	
+	shapes += self.shapes.map toEnsemble();
+	shapes += self.shapes.map toEmpty();
 
 	result.remember();
 }
