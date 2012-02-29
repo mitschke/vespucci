@@ -23,6 +23,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
@@ -57,6 +58,8 @@ IDataManagerObserver {
 
 	public static EnsembleElementsTableView Table;
 
+	private Composite parent;
+	
 	private TableViewer tableViewer;
 	private TableContentProvider contentProvider;
 	private DataManager<TableModel> dataManager;
@@ -75,27 +78,18 @@ IDataManagerObserver {
 	}
 
 	public void createPartControl(Composite parent) {
+		this.parent = parent;
 		composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		RowLayout layout1 = new RowLayout(SWT.HORIZONTAL);
+		layout1.spacing = 0;
+		layout1.marginLeft = 0;
+		layout1.marginRight = 0;
+		composite.setLayout(layout1);
 		GridData gd_composite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_composite.widthHint = 941;
 		gd_composite.heightHint = 26;
 		composite.setLayoutData(gd_composite);
 		
-		t_Ensemble = new Text(composite, SWT.BORDER);
-		t_Ensemble.setLayoutData(new RowData(166, SWT.DEFAULT));
-//		t_Ensemble.setLayoutData(new RowData(138, SWT.DEFAULT));
-
-		
-		t_Package = new Text(composite, SWT.BORDER);
-		t_Package.setLayoutData(new RowData(153, SWT.DEFAULT));
-		
-		t_Class = new Text(composite, SWT.BORDER);
-		t_Class.setLayoutData(new RowData(166, SWT.DEFAULT));
-		
-		t_Element = new Text(composite, SWT.BORDER);
-		t_Element.setLayoutData(new RowData(156, SWT.DEFAULT));
-
-
 
 		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION);
@@ -195,7 +189,21 @@ IDataManagerObserver {
 		viewerNameColumn.getColumn().setWidth(200);
 		addColumnListener(viewerNameColumn.getColumn(), 3);
 
+		TableColumn[] columns = tableViewer.getTable().getColumns();
 		
+		t_Ensemble = new Text(composite, SWT.BORDER);
+		t_Ensemble.setLayoutData(new RowData(88, SWT.DEFAULT));
+		t_Ensemble.setBounds(0, 0, columns[0].getWidth(), 50);
+		
+		t_Package = new Text(composite, SWT.BORDER);
+		t_Package.setBounds(columns[0].getWidth(), 0, columns[1].getWidth(), 50);
+		
+		t_Class = new Text(composite, SWT.BORDER);
+		t_Class.setBounds(columns[0].getWidth() + columns[1].getWidth(), 0, columns[2].getWidth(), 50);
+		
+		t_Element = new Text(composite, SWT.BORDER);
+		t_Element.setBounds(columns[0].getWidth() + columns[1].getWidth() + columns[2].getWidth(), 0, columns[3].getWidth(), 50);
+				
 		for (TableColumn column : tableViewer.getTable().getColumns()) {
 			column.addControlListener(new ControlListener() {
 				
@@ -229,12 +237,12 @@ IDataManagerObserver {
 	private void resizeTextFields(){
 		TableColumn[] columns = tableViewer.getTable().getColumns();
 		
+		t_Ensemble.setLayoutData(new RowData(columns[0].getWidth()-12, SWT.DEFAULT));
+		t_Package.setLayoutData(new RowData(columns[1].getWidth()-12, SWT.DEFAULT));
+		t_Class.setLayoutData(new RowData(columns[2].getWidth()-12, SWT.DEFAULT));
+		t_Element.setLayoutData(new RowData(columns[3].getWidth()-12, SWT.DEFAULT));
 		
-//		t_Ensemble.setBounds(0, 0, columns[0].getWidth(), 50);
-//		t_Package.setBounds(columns[0].getWidth(), 0, columns[1].getWidth(), 50);
-//		t_Class.setBounds(columns[1].getWidth(), 0, columns[2].getWidth(), 50);
-//		t_Element.setBounds(columns[2].getWidth(), 0, columns[3].getWidth(), 50);
-		
+		composite.layout();
 	}
 
 	private void addColumnListener(final TableColumn tableColumn,
