@@ -5,16 +5,16 @@
          point="org.eclipse.ui.views">
       <view
             category="de.tud.cs.st.vespucci.ensembleview.table"
-            class="de.tud.cs.st.vespucci.view.checked_diagrams.views.CheckedDiagrams"
+            class="de.tud.cs.st.vespucci.view.checked_diagrams.views.CheckedDiagramsTableView"
             icon="icons/Vespucci_modelDiagramFile.gif"
-            id="de.tud.cs.st.vespucci.view.currentdiagrams.views.CurrentDiagramsView"
+            id="de.tud.cs.st.vespucci.view.checked_diagrams"
             name="Live Checked Architecture">
       </view>
    </extension>
    <extension
          point="de.tud.cs.st.vespucci.diagram.resultProcessors">
       <resultProcessor
-            ResultProcessor="de.tud.cs.st.vespucci.view.checked_diagrams.ResultProcessor">
+            ResultProcessor="de.tud.cs.st.vespucci.view.checked_diagrams.CheckedDiagramsVisualizer">
       </resultProcessor>
    </extension>
 
