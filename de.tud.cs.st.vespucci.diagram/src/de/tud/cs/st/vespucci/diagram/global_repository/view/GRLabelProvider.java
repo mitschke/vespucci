@@ -35,7 +35,12 @@
 
 package de.tud.cs.st.vespucci.diagram.global_repository.view;
 
-import org.eclipse.jface.viewers.LabelProvider;
+
+
+
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.graphics.Image;
 
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
@@ -45,14 +50,15 @@ import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
  * @author Tabea Born, Christian Knapp
  * 
  */
-public class GRLabelProvider extends LabelProvider {
+public class GRLabelProvider extends StyledCellLabelProvider/*LabelProvider*/ {
 
 	Image img = new Image(null, getClass().getResourceAsStream("/icons/obj16/Ensemble.gif"));
+	
 
-	/**
+/*	/**
 	 * returns the name of the specific ensemble
 	 */
-	@Override
+/*	@Override
 	public String getText(Object ensemble) {
 		if (ensemble instanceof Ensemble) {
 			return ((Ensemble) ensemble).getName();
@@ -63,8 +69,30 @@ public class GRLabelProvider extends LabelProvider {
 	/**
 	 * the Image for the Ensembles in the list
 	 */
-	@Override
+/*	@Override
 	public Image getImage(Object element) {
 		return img;
+	}*/
+
+	
+	/**
+	 * updates the Ensemble List in View
+	 * Adds a counter for the direct children of one Ensemble
+	 */
+	@Override
+	public void update(ViewerCell cell) {
+		Object element = cell.getElement();
+		StyledString text = new StyledString();
+		
+		if(element instanceof Ensemble){
+			Ensemble ensemble = (Ensemble) element;
+			text.append(ensemble.getName());
+			cell.setImage(img);
+			text.append(" ( " +ensemble.getShapes().size() + " ) ", StyledString.COUNTER_STYLER);
+		} 
+		
+		cell.setText(text.toString());
+		cell.setStyleRanges(text.getStyleRanges());
+		super.update(cell);
 	}
 }
