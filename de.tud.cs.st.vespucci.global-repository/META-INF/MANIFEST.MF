@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Import-Package: de.tud.cs.st.vespucci.vespucci_model,
- de.tud.cs.st.vespucci.vespucci_model.impl
+ de.tud.cs.st.vespucci.vespucci_model.impl,
+ org.eclipse.core.resources
 Export-Package: de.tud.cs.st.vespucci.global_repository,
  de.tud.cs.st.vespucci.global_repository.util

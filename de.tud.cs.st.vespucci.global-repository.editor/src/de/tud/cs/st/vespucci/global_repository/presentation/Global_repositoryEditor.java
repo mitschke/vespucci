@@ -723,7 +723,7 @@ public class Global_repositoryEditor
 
 		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new Global_repositoryItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new Vespucci_modelItemProviderAdapterFactory()); //FIXME
+	//	adapterFactory.addAdapterFactory(new Vespucci_modelItemProviderAdapterFactory()); //FIXME
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are executed.

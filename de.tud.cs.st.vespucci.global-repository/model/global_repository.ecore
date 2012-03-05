@@ -5,6 +5,7 @@
     nsURI="http://global-repository" nsPrefix="vespucci">
   <eClassifiers xsi:type="ecore:EClass" name="GlobalRepository">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ensembles" ordered="false"
-        upperBound="-1" eType="ecore:EClass vespucci.ecore#//Ensemble" containment="true"/>
+        upperBound="-1" eType="ecore:EClass ../../de.tud.cs.st.vespucci/model/vespucci.ecore#//Ensemble"
+        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
