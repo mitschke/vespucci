@@ -40,7 +40,6 @@ import java.util.List;
 
 
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
-import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
 /**
  * 
@@ -52,65 +51,76 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 	
 	public static  List<Ensemble> getEnsembleList(){
 		
-		Ensemble a = new EnsembleImpl();
+		Ensemble a = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		a.setName("a");
 		a.setDescription("description");
 		a.setQuery("empty");
 		
-		Ensemble b = new EnsembleImpl();
+		Ensemble b = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		b.setName("b");
 		b.setDescription("description");
 		b.setQuery("empty");
 		
-		Ensemble outer = new EnsembleImpl();
+		Ensemble outer = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		outer.setName("outer");
 		outer.setDescription("description");
 		outer.setQuery("derived");
 		
-		Ensemble inner = new EnsembleImpl();
+		Ensemble inner = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		inner.setName("inner");
 		inner.setDescription("description");
 		inner.setQuery("derived");
 		
-		Ensemble c = new EnsembleImpl();
+		Ensemble c = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		c.setName("c");
 		c.setDescription("description");
 		c.setQuery("empty");
 		
-		Ensemble e = new EnsembleImpl();
+		Ensemble e = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		e.setName("e");
 		e.setDescription("description");
 		e.setQuery("empty");
 	
-		Ensemble f = new EnsembleImpl();
+		Ensemble f = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		f.setName("f");
 		f.setDescription("description");
 		f.setQuery("empty");
 		
-		Ensemble inner2 = new EnsembleImpl();
+		Ensemble inner2 = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		inner2.setName("inner2");
 		inner2.setDescription("description");
 		inner2.setQuery("derived");
 	 
-		Ensemble outer2 = new EnsembleImpl();
+		Ensemble outer2 = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		outer2.setName("outer2");
 		outer2.setDescription("description");
 		outer2.setQuery("empty");
 		
-		Ensemble in2 = new EnsembleImpl();
+		Ensemble in2 = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		in2.setName("in2");
 		in2.setDescription("description");
 		in2.setQuery("empty");
 	
-		Ensemble in3 = new EnsembleImpl();
+		Ensemble in3 = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		in3.setName("in3");
 		in3.setDescription("description");
 		in3.setQuery("empty");
 		
-		Ensemble in4 = new EnsembleImpl();
+		Ensemble in4 = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
 		in4.setName("in4");
 		in4.setDescription("description");
 		in4.setQuery("empty");
+		
+		Ensemble in5 = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
+		in5.setName("in5");
+		in5.setDescription("description");
+		in5.setQuery("empty");
+		
+		Ensemble d = de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE.createEnsemble();
+		d.setName("d");
+		d.setDescription("description");
+		d.setQuery("empty");
+		
 		
 		inner.getShapes().add(c);
 		outer.getShapes().add(inner);
@@ -120,11 +130,9 @@ import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 		outer2.getShapes().add(in2);
 		outer2.getShapes().add(in3);
 		outer2.getShapes().add(in4);
+		outer2.getShapes().add(in5);
 		
-		Ensemble d = new EnsembleImpl();
-		d.setName("d");
-		d.setDescription("description");
-		d.setQuery("empty");
+
 		
 		List<Ensemble> resultList = new ArrayList<Ensemble>();
 		resultList.add(a);

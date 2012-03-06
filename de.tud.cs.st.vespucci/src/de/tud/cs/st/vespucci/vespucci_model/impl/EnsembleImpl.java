@@ -77,9 +77,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
-	 */
-	//TODO:protected  
-	public EnsembleImpl() {
+	 */ 
+	protected EnsembleImpl() {
 		super();
 	}
 

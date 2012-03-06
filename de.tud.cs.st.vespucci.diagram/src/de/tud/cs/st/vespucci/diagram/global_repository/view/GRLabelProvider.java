@@ -37,10 +37,9 @@ package de.tud.cs.st.vespucci.diagram.global_repository.view;
 
 
 
-import org.eclipse.jface.viewers.LabelProvider;
+
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.graphics.Image;
 
@@ -51,30 +50,9 @@ import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
  * @author Tabea Born, Christian Knapp
  * 
  */
-public class GRLabelProvider extends StyledCellLabelProvider/*LabelProvider*/ {
+public class GRLabelProvider extends StyledCellLabelProvider{
 
 	Image img = new Image(null, getClass().getResourceAsStream("/icons/obj16/Ensemble.gif"));
-	Image emptyImage = new Image(null, getClass().getResourceAsStream("/icons/obj16/Empty.gif"));
-
-/*	/**
-	 * returns the name of the specific ensemble
-	 */
-/*	@Override
-	public String getText(Object ensemble) {
-		if (ensemble instanceof Ensemble) {
-			return ((Ensemble) ensemble).getName();
-		}
-		return null;
-	}
-
-	/**
-	 * the Image for the Ensembles in the list
-	 */
-/*	@Override
-	public Image getImage(Object element) {
-		return img;
-	}*/
-
 	
 	/**
 	 * updates the Ensemble List in View
