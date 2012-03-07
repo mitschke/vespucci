@@ -189,18 +189,11 @@ public class Controller {
      * Stores or updates the given SAD and applies the changes passed in the
      * additional fields.
      * 
-     * @param descriptionChanged
-     * @param sad
-     * @param deleteModel
-     * @param modelFile
-     * @param deleteDoc
-     * @param docFile
-     * @param viewer
+     * @param sadUpdate
      */
-    public void storeSAD(final boolean descriptionChanged, final SAD sad, final boolean deleteModel,
-	    final File modelFile, final boolean deleteDoc, final File docFile, final Viewer viewer) {
+    public void performUpdate(final SADUpdate sadUpdate) {
 
-	final int amount = getAmountOfWork(descriptionChanged, sad, deleteModel, modelFile, deleteDoc, docFile);
+	final int amount = getAmountOfWork(sadUpdate);
 	System.out.println("Amount of work: " + amount);
 	if (amount > 0) {
 	    Job job = new Job("SAD Update") {
@@ -208,27 +201,27 @@ public class Controller {
 		protected IStatus run(IProgressMonitor monitor) {
 		    String transactionId = null;
 		    try {
-			Transaction transaction = sadClient.startTransaction(sad.getId());
+			Transaction transaction = sadClient.startTransaction(sadUpdate.getSAD().getId());
 			transactionId = transaction.getTransactionId();
 			monitor.beginTask("Uploading changes...", amount);
 			try {
-			    if (descriptionChanged) {
+			    if (sadUpdate.isDescriptionChanged()) {
 				monitor.subTask("Updating description...");
-				sadClient.storeSAD(transactionId, sad);
+				sadClient.storeSAD(transactionId, sadUpdate.getSAD());
 			    }
-			    if (deleteModel) {
+			    if (sadUpdate.isDeleteModel()) {
 				monitor.subTask("Deleting model...");
 				sadClient.deleteModel(transactionId);
-			    } else if (modelFile != null) {
+			    } else if (sadUpdate.getModelFile() != null) {
 				monitor.subTask("Uploading model file...");
-				sadClient.putModel(transactionId, modelFile, monitor);
+				sadClient.putModel(transactionId, sadUpdate.getModelFile(), monitor);
 			    }
-			    if (deleteDoc) {
+			    if (sadUpdate.isDeleteDocumentation()) {
 				monitor.subTask("Deleting documentation...");
 				sadClient.deleteDocumentation(transactionId);
-			    } else if (docFile != null) {
+			    } else if (sadUpdate.getDocumentationFile() != null) {
 				monitor.subTask("Uploading documentation file...");
-				sadClient.putDocumentation(transactionId, docFile, monitor);
+				sadClient.putDocumentation(transactionId, sadUpdate.getDocumentationFile(), monitor);
 			    }
 			    monitor.subTask("Finishing update...");
 			    sadClient.commitTransaction(transactionId);
@@ -241,7 +234,7 @@ public class Controller {
 			IconAndMessageDialogs.showErrorDialog("Upload to SADServer failed.", e.getMessage());
 		    }
 
-		    refresh(viewer);
+		    refresh(sadUpdate.getViewer());
 
 		    return new Status(IStatus.OK, Activator.PLUGIN_ID, "OK");
 		}
@@ -255,24 +248,18 @@ public class Controller {
      * Returns the total number of bytes to be transferred. Returns 0 when no
      * work has to be done.
      * 
-     * @param descriptionChanged
-     * @param sad
-     * @param deleteModel
-     * @param modelFile
-     * @param deleteDoc
-     * @param docFile
-     * @return
+     * @param sadUpdate
+     * @return amount of work
      */
-    private static int getAmountOfWork(boolean descriptionChanged, SAD sad, boolean deleteModel, File modelFile,
-	    boolean deleteDoc, File docFile) {
+    private static int getAmountOfWork(SADUpdate sadUpdate) {
 	int amount = 0;
-	if (descriptionChanged) {
-	    amount += sad.getName().getBytes().length;
-	    amount += sad.getType().getBytes().length;
-	    amount += sad.getAbstrct().getBytes().length;
+	if (sadUpdate.isDescriptionChanged()) {
+	    amount += sadUpdate.getSAD().getName().getBytes().length;
+	    amount += sadUpdate.getSAD().getType().getBytes().length;
+	    amount += sadUpdate.getSAD().getAbstrct().getBytes().length;
 	}
-	amount += getAmountOfWork(deleteModel, modelFile);
-	amount += getAmountOfWork(deleteDoc, docFile);
+	amount += getAmountOfWork(sadUpdate.isDeleteModel(), sadUpdate.getModelFile());
+	amount += getAmountOfWork(sadUpdate.isDeleteDocumentation(), sadUpdate.getDocumentationFile());
 	return amount;
     }
 

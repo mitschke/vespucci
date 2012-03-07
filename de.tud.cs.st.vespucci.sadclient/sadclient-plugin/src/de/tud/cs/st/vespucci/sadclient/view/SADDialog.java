@@ -38,7 +38,6 @@ package de.tud.cs.st.vespucci.sadclient.view;
 
 import java.io.File;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.Viewer;
@@ -48,8 +47,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -65,6 +62,7 @@ import org.eclipse.swt.widgets.Text;
 
 import de.tud.cs.st.vespucci.sadclient.Activator;
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
+import de.tud.cs.st.vespucci.sadclient.controller.SADUpdate;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 import de.tud.cs.st.vespucci.sadclient.preferences.PreferenceConstants;
 
@@ -445,22 +443,28 @@ public class SADDialog extends Dialog {
 
     @Override
     protected void okPressed() {
+	SADUpdate su = new SADUpdate(parentViewer);
+	su.setDescriptionChanged(textChanged);
+	
 	if (textChanged) {
 	    sad.setName(txtName.getText());
 	    sad.setType(txtType.getText());
 	    sad.setAbstrct(txtAbstract.getText());
 	    sad.setWip(false); // TODO WIP to be used or not?
 	}
-	File modelFile = null;
+	su.setSAD(sad);
+	
 	if (radioModelUpload.getSelection())
-	    modelFile = new File(txtModelLocation.getText());
-	File documentationFile = null;
+	    su.setModelFile(new File(txtModelLocation.getText()));
 	if (radioDocumentationUpload.getSelection())
-	    documentationFile = new File(txtDocumentationLocation.getText());
+	    su.setDocumentation(new File(txtDocumentationLocation.getText()));
+	
+	su.setDeleteModel(radioModelDelete.getSelection());
+	su.setDeleteDocumentation(radioDocumentationDelete.getSelection());
 
-	controller.storeSAD(textChanged, sad, radioModelDelete.getSelection(), modelFile,
-		radioDocumentationDelete.getSelection(), documentationFile, parentViewer);
+	controller.performUpdate(su);
+	
 	super.okPressed();
     }
-
+    
 }
