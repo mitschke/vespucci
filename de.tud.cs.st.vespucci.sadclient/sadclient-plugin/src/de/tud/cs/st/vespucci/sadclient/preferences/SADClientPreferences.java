@@ -78,6 +78,8 @@ public class SADClientPreferences extends FieldEditorPreferencePage implements I
 	addField(new StringFieldEditor(PreferenceConstants.P_USERNAME, "U&sername:", getFieldEditorParent()));
 
 	addField(new StringFieldEditor(PreferenceConstants.P_PASSWORD, "P&assword:", getFieldEditorParent()));
+	
+	addField(new BooleanFieldEditor(PreferenceConstants.P_OPEN_ON_RADIOBUTTON, "Q&uick open upload dialog using radio button", getFieldEditorParent()));
 
     }
 

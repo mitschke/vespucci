@@ -49,5 +49,7 @@ public class PreferenceConstants {
 	public static final String P_PASSWORD = "PasswordPreference";
 
 	public static final String P_SERVER = "ServerPreference";
+
+	public static final String P_OPEN_ON_RADIOBUTTON = "OpenOnRadioButtonPreference";
 	
 }

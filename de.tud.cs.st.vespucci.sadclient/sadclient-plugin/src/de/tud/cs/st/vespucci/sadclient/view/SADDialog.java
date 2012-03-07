@@ -63,8 +63,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Text;
 
+import de.tud.cs.st.vespucci.sadclient.Activator;
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
+import de.tud.cs.st.vespucci.sadclient.preferences.PreferenceConstants;
 
 /**
  * Dialog for managing SADs.
@@ -367,7 +369,9 @@ public class SADDialog extends Dialog {
 		container.getDisplay().asyncExec(new Runnable() {
 		    @Override
 		    public void run() {
-			if (textForPath.getText().equals("")) {
+			if (textForPath.getText().equals("")
+				&& Activator.getDefault().getPreferenceStore()
+					.getBoolean(PreferenceConstants.P_OPEN_ON_RADIOBUTTON)) {
 			    File uploadLocation = openUploadDialog(fileType);
 			    if (uploadLocation != null)
 				textForPath.setText(uploadLocation.getAbsolutePath());

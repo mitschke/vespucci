@@ -52,6 +52,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	store.setDefault(PreferenceConstants.P_SERVER, "http://localhost:9000/vespucci"); // FIXME change in production code
 	store.setDefault(PreferenceConstants.P_USERNAME, "");
 	store.setDefault(PreferenceConstants.P_PASSWORD, "");
+	store.setDefault(PreferenceConstants.P_OPEN_ON_RADIOBUTTON, false);
     }
 
 }
