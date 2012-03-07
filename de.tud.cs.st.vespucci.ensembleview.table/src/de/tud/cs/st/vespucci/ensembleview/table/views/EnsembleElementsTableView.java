@@ -21,9 +21,6 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
@@ -47,6 +44,8 @@ import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.view.table.ColumnComparator;
+import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 public class EnsembleElementsTableView extends ViewPart implements
 IDataManagerObserver {
@@ -57,8 +56,6 @@ IDataManagerObserver {
 	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.ensembleview.table.views.EnsembleElementsVisualizer";
 
 	public static EnsembleElementsTableView Table;
-
-	private Composite parent;
 	
 	private TableViewer tableViewer;
 	private TableContentProvider contentProvider;
@@ -78,7 +75,6 @@ IDataManagerObserver {
 	}
 
 	public void createPartControl(Composite parent) {
-		this.parent = parent;
 		composite = new Composite(parent, SWT.NONE);
 		RowLayout layout1 = new RowLayout(SWT.HORIZONTAL);
 		layout1.spacing = 0;
@@ -166,29 +162,41 @@ IDataManagerObserver {
 			}
 		});
 
-		tableViewer.setComparator(new TableColumnComparator(1, 0));
-
 		TableViewerColumn viewerNameColumn = new TableViewerColumn(tableViewer,
 				SWT.NONE);
 		viewerNameColumn.getColumn().setText("Ensemble");
 		viewerNameColumn.getColumn().setWidth(176);
-		addColumnListener(viewerNameColumn.getColumn(), 0);
 
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Package");
 		viewerNameColumn.getColumn().setWidth(180);
-		addColumnListener(viewerNameColumn.getColumn(), 1);
 
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Class");
 		viewerNameColumn.getColumn().setWidth(188);
-		addColumnListener(viewerNameColumn.getColumn(), 2);
 
 		viewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		viewerNameColumn.getColumn().setText("Element");
 		viewerNameColumn.getColumn().setWidth(200);
-		addColumnListener(viewerNameColumn.getColumn(), 3);
-
+		
+		TableColumnSorterListener.addAllColumnListener(tableViewer, new ColumnComparator() {
+			
+			@Override
+			public int compare(Object e1, Object e2, int column) {
+				int tempOrder = 0;
+				if (column == 3){
+					IPair<IEnsemble, ICodeElement> element1 = DataManager.transfer(e1);	
+					IPair<IEnsemble, ICodeElement> element2 = DataManager.transfer(e2);
+					tempOrder =  TableLabelProvider.createElementTypQualifier(element1.getSecond()).compareTo(TableLabelProvider.createElementTypQualifier(element2.getSecond()));
+					if (tempOrder != 0){
+						return tempOrder;
+					}
+				}
+					TableLabelProvider tlp = new TableLabelProvider();
+					return tlp.getColumnText(e1, column).compareTo(tlp.getColumnText(e2, column));	
+			}
+		});
+		
 		TableColumn[] columns = tableViewer.getTable().getColumns();
 		
 		t_Ensemble = new Text(composite, SWT.BORDER);
@@ -243,44 +251,6 @@ IDataManagerObserver {
 		t_Element.setLayoutData(new RowData(columns[3].getWidth()-12, SWT.DEFAULT));
 		
 		composite.layout();
-	}
-
-	private void addColumnListener(final TableColumn tableColumn,
-			final int column) {
-		tableColumn.addSelectionListener(new SelectionListener() {
-
-			int sortDirection = SWT.NONE;
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if ((column == 0) && (sortDirection == SWT.NONE)) {
-					sortDirection = SWT.UP;
-				}
-
-				switch (sortDirection) {
-				case SWT.NONE:
-				case SWT.DOWN:
-					sortDirection = SWT.UP;
-					tableColumn.getParent().setSortColumn(tableColumn);
-					tableColumn.getParent().setSortDirection(SWT.UP);
-					tableViewer.setComparator(new TableColumnComparator(1,
-							column));
-					break;
-				case SWT.UP:
-					sortDirection = SWT.DOWN;
-					tableColumn.getParent().setSortColumn(tableColumn);
-					tableColumn.getParent().setSortDirection(SWT.DOWN);
-					tableViewer.setComparator(new TableColumnComparator(-1,
-							column));
-					break;
-				}
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});
 	}
 
 	/**
