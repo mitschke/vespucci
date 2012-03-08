@@ -402,10 +402,18 @@ public class CodeElementFinder {
 				temp.pushToWaitingArea(Util.getLastDollarSequence(sourceElement.getSimpleClassName()));	
 				startSearch(temp, project, processor);
 			}else{
-				processor.noMatchFound(sourceElement);			
+			//	processor.noMatchFound(sourceElement);
+				if (! (sourceElement instanceof IClassDeclaration)){
+					startSearch(new ClassDeclaration(sourceElement.getPackageIdentifier(), sourceElement.getSimpleClassName(), null), project, processor);
+				}else{
+					processor.noMatchFound(sourceElement);
+				}
 			}
+			
+
+			
+			
 		}
-		
 	}
 
 	private static void processBadSearchResult(IProject project, IComplexCodeElement temp, ICodeElementFoundProcessor processor) {
