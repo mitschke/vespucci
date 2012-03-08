@@ -457,7 +457,7 @@ public class SADDialog extends Dialog {
 	if (radioModelUpload.getSelection())
 	    su.setModelFile(new File(txtModelLocation.getText()));
 	if (radioDocumentationUpload.getSelection())
-	    su.setDocumentation(new File(txtDocumentationLocation.getText()));
+	    su.setDocumentationFile(new File(txtDocumentationLocation.getText()));
 	
 	su.setDeleteModel(radioModelDelete.getSelection());
 	su.setDeleteDocumentation(radioDocumentationDelete.getSelection());

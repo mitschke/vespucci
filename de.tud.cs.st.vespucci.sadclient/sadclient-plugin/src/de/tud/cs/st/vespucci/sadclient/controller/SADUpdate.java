@@ -109,7 +109,7 @@ public class SADUpdate {
 	return documentationFile;
     }
 
-    public void setDocumentation(File documentationFile) {
+    public void setDocumentationFile(File documentationFile) {
 	this.documentationFile = documentationFile;
     }
 

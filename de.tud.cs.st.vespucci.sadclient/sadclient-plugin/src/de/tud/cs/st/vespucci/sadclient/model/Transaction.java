@@ -105,5 +105,4 @@ public class Transaction {
 	return builder.toString();
     }
     
-    
 }

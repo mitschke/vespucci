@@ -36,6 +36,9 @@
  */
 package de.tud.cs.st.vespucci.sadclient.view;
 
+import java.io.File;
+
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -56,11 +59,20 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
@@ -69,6 +81,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
+import de.tud.cs.st.vespucci.sadclient.controller.SADUpdate;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
 /**
@@ -86,7 +99,9 @@ public class SADCollectionView extends ViewPart {
     private TableViewer viewer;
     private TableViewerComparator comparator;
     private SAD selectedSAD = null;
-    private boolean refreshFromCache; // true, when viewer#refresh does not expect the current state from the server
+    private boolean refreshFromCache; // true, when viewer#refresh does not
+				      // expect the current state from the
+				      // server
 
     // column numbers
     private final static int MODEL_COLUMN = 0;
@@ -236,6 +251,9 @@ public class SADCollectionView extends ViewPart {
 		}
 	    }
 	});
+	Transfer[] transferTypes = new Transfer[] { FileTransfer.getInstance() };
+	viewer.addDropSupport(DND.DROP_MOVE, transferTypes, new DropListener(viewer));
+	System.out.println("DropSupport");
     }
 
     /**
@@ -378,6 +396,119 @@ public class SADCollectionView extends ViewPart {
 
     public void setFocus() {
 	viewer.getControl().setFocus();
+    }
+
+    /**
+     * Allows drags from the project explorer to the table viewer.
+     */
+    private static class DropListener extends ViewerDropAdapter {
+
+	private enum DragType {
+	    INVALID, MODEL_FILE, DOCUMENT_FILE
+	}
+
+	private final Viewer viewer;
+
+	protected DropListener(Viewer viewer) {
+	    super(viewer);
+	    this.viewer = viewer;
+	}
+
+	@Override
+	public boolean performDrop(Object data) {
+	    
+	    System.out.println(((String[]) data)[0]);
+
+	    String[] drag = (String[]) data;
+	    DragType dragType = getDragType(drag);
+	    if (dragType == DragType.INVALID)
+		return false;
+
+	    SAD sad;
+	    if (getCurrentTarget() instanceof SAD) {
+		sad = (SAD) getCurrentTarget();
+	    } else {
+		sad = new SAD();
+	    }
+
+	    SADUpdate su = new SADUpdate(viewer);
+	    su.setSAD(sad);
+
+	    final String filePath = drag[0];
+	    final File file = new File(filePath);
+
+	    if (getCurrentLocation() == LOCATION_NONE && dragType == DragType.MODEL_FILE) {
+		sad = new SAD();
+		sad.setName(FilenameUtils.getName(filePath));
+		su.setModelFile(file);
+	    } else {
+		switch (dragType) {
+		case MODEL_FILE:
+		    su.setModelFile(file);
+		    break;
+		case DOCUMENT_FILE:
+		    su.setDocumentationFile(file);
+		    break;
+		}
+	    }
+	    Controller.getInstance().performUpdate(su);
+	    return true;
+	}
+
+	/*
+	 * We removed LOCATION_BEFORE and LOCATION_AFTER in this implementation
+	 * to improve the mouse handling (it got fiddly when trying to drop on
+	 * SADs when the mouse snapped AROUND SADs).
+	 */
+	@Override
+	protected int determineLocation(DropTargetEvent event) {
+	    if (!(event.item instanceof Item)) {
+		return LOCATION_NONE;
+	    }
+	    Item item = (Item) event.item;
+	    if (item != null) {
+		Rectangle bounds = getBounds(item);
+		if (bounds == null) {
+		    return LOCATION_NONE;
+		}
+	    }
+	    return LOCATION_ON;
+	}
+
+	@Override
+	public boolean validateDrop(Object target, int operation, TransferData transferType) {
+	    System.out.println("CurEv: " + getCurrentEvent());
+	    DragType dragType = getDragType(getData(getCurrentEvent()));
+	    System.out.println("DragType:" + dragType);
+	    switch (getCurrentLocation()) {
+	    case LOCATION_ON:
+		return true; // FIXME why is the data always null when 
+//		return dragType == DragType.MODEL_FILE || dragType == DragType.DOCUMENT_FILE;
+	    case LOCATION_NONE:
+		return true;
+	    default:
+		return false;
+	    }
+	}
+
+	private static DragType getDragType(String[] data) {
+	    if (data != null && data.length == 1) {
+		String fileName = data[0];
+		String extension = FilenameUtils.getExtension(fileName);
+		if (extension.equals("sad")) {
+		    return DragType.MODEL_FILE;
+		}
+		if (extension.equals("pdf")) {
+		    return DragType.DOCUMENT_FILE;
+		}
+	    }
+	    return DragType.INVALID;
+	}
+
+	private static String[] getData(DropTargetEvent event) {
+	    return (String[]) event.data;
+	}
+
     }
 
 }
