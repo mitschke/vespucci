@@ -53,6 +53,7 @@ public class SADUpdate {
 
     final Viewer viewer;
 
+    boolean newSAD;
     boolean descriptionChanged;
     SAD sad;
     boolean deleteModel;
@@ -116,5 +117,14 @@ public class SADUpdate {
     public Viewer getViewer() {
 	return viewer;
     }
+    
+    public boolean isNewSAD() {
+        return newSAD;
+    }
+
+    public void setNewSAD(boolean newSAD) {
+        this.newSAD = newSAD;
+    }
+
 
 }

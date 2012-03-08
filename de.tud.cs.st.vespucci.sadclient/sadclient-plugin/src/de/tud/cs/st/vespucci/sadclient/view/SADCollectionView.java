@@ -69,7 +69,6 @@ import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Item;
@@ -403,56 +402,70 @@ public class SADCollectionView extends ViewPart {
      */
     private static class DropListener extends ViewerDropAdapter {
 
-	private enum DragType {
-	    INVALID, MODEL_FILE, DOCUMENT_FILE
-	}
-
 	private final Viewer viewer;
 
 	protected DropListener(Viewer viewer) {
 	    super(viewer);
 	    this.viewer = viewer;
 	}
-
+	
 	@Override
 	public boolean performDrop(Object data) {
-	    
+
 	    System.out.println(((String[]) data)[0]);
 
 	    String[] drag = (String[]) data;
-	    DragType dragType = getDragType(drag);
-	    if (dragType == DragType.INVALID)
+	    File modelFile = getFileByExtension(drag, "sad");
+	    File documentationFile = getFileByExtension(drag, "pdf");
+
+	    if (!validateData(drag.length, modelFile, documentationFile))
 		return false;
 
-	    SAD sad;
-	    if (getCurrentTarget() instanceof SAD) {
-		sad = (SAD) getCurrentTarget();
-	    } else {
-		sad = new SAD();
+	    SADUpdate su = getSADUpdate();
+	    su.setModelFile(modelFile);
+	    su.setDocumentationFile(documentationFile);
+	    if (su.isNewSAD()) {
+		System.out.println("new sad");
+		String newName = modelFile != null ? getBasename(modelFile) : getBasename(documentationFile);
+		su.getSAD().setName(newName);
+		su.setDescriptionChanged(true);
 	    }
 
-	    SADUpdate su = new SADUpdate(viewer);
-	    su.setSAD(sad);
-
-	    final String filePath = drag[0];
-	    final File file = new File(filePath);
-
-	    if (getCurrentLocation() == LOCATION_NONE && dragType == DragType.MODEL_FILE) {
-		sad = new SAD();
-		sad.setName(FilenameUtils.getName(filePath));
-		su.setModelFile(file);
-	    } else {
-		switch (dragType) {
-		case MODEL_FILE:
-		    su.setModelFile(file);
-		    break;
-		case DOCUMENT_FILE:
-		    su.setDocumentationFile(file);
-		    break;
-		}
-	    }
 	    Controller.getInstance().performUpdate(su);
 	    return true;
+	}
+
+	private boolean validateData(int length, File modelFile, File documentationFile) {
+	    return ((length == 1 || length == 2) && 
+		    implies(length == 1, modelFile != null || documentationFile != null) &&
+		    implies(length == 2, modelFile != null && documentationFile != null));
+	}
+
+	private static boolean implies(boolean a, boolean b) {
+	    return (!a || b);
+	}
+
+	private static File getFileByExtension(String[] filePaths, String extension) {
+	    for (String filePath : filePaths) {
+		if (FilenameUtils.getExtension(filePath).equals(extension))
+		    return new File(filePath);
+	    }
+	    return null;
+	}
+
+	private static String getBasename(File file) {
+	    return FilenameUtils.getBaseName(file.getAbsolutePath());
+	}
+
+	private SADUpdate getSADUpdate() {
+	    SADUpdate sadUpdate = new SADUpdate(viewer);
+	    if (getCurrentTarget() instanceof SAD) {
+		sadUpdate.setSAD((SAD) getCurrentTarget());
+	    } else {
+		sadUpdate.setSAD(new SAD());
+		sadUpdate.setNewSAD(true);
+	    }
+	    return sadUpdate;
 	}
 
 	/*
@@ -477,36 +490,13 @@ public class SADCollectionView extends ViewPart {
 
 	@Override
 	public boolean validateDrop(Object target, int operation, TransferData transferType) {
-	    System.out.println("CurEv: " + getCurrentEvent());
-	    DragType dragType = getDragType(getData(getCurrentEvent()));
-	    System.out.println("DragType:" + dragType);
 	    switch (getCurrentLocation()) {
 	    case LOCATION_ON:
-		return true; // FIXME why is the data always null when 
-//		return dragType == DragType.MODEL_FILE || dragType == DragType.DOCUMENT_FILE;
 	    case LOCATION_NONE:
 		return true;
 	    default:
 		return false;
 	    }
-	}
-
-	private static DragType getDragType(String[] data) {
-	    if (data != null && data.length == 1) {
-		String fileName = data[0];
-		String extension = FilenameUtils.getExtension(fileName);
-		if (extension.equals("sad")) {
-		    return DragType.MODEL_FILE;
-		}
-		if (extension.equals("pdf")) {
-		    return DragType.DOCUMENT_FILE;
-		}
-	    }
-	    return DragType.INVALID;
-	}
-
-	private static String[] getData(DropTargetEvent event) {
-	    return (String[]) event.data;
 	}
 
     }
