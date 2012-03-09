@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensembleview.table.views;
+package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import de.tud.cs.st.vespucci.ensembleview.table.model.DataManager;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.view.ensemble_elements.model.DataManager;
 
 public class SearchFilter extends ViewerFilter {
 	

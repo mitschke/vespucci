@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensembleview.table.model;
+package de.tud.cs.st.vespucci.view.ensemble_elements.model;
 
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IPair;

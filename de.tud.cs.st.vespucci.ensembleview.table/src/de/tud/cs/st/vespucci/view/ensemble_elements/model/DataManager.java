@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensembleview.table.model;
+package de.tud.cs.st.vespucci.view.ensemble_elements.model;
 
 import java.util.HashSet;
 import java.util.Iterator;

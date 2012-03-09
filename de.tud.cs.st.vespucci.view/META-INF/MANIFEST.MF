@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: View
-Bundle-SymbolicName: de.tud.cs.st.vespucci.view
+Bundle-SymbolicName: de.tud.cs.st.vespucci.view;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.tud.cs.st.vespucci.view.Activator
 Require-Bundle: org.eclipse.ui,

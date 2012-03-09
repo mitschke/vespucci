@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensembleview.table.views;
+package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.events.ModifyEvent;

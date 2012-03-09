@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensembleview.table.views;
+package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
 import java.util.Arrays;
 
@@ -35,15 +35,15 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
-import de.tud.cs.st.vespucci.ensembleview.table.model.DataManager;
-import de.tud.cs.st.vespucci.ensembleview.table.model.IDataManagerObserver;
-import de.tud.cs.st.vespucci.ensembleview.table.model.TableModel;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.view.ensemble_elements.model.DataManager;
+import de.tud.cs.st.vespucci.view.ensemble_elements.model.IDataManagerObserver;
+import de.tud.cs.st.vespucci.view.ensemble_elements.model.TableModel;
 import de.tud.cs.st.vespucci.view.table.ColumnComparator;
 import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 

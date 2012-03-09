@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensembleview.table;
+package de.tud.cs.st.vespucci.view.ensemble_elements;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
@@ -8,15 +8,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
-import de.tud.cs.st.vespucci.ensembleview.table.model.DataManager;
-import de.tud.cs.st.vespucci.ensembleview.table.model.TableModel;
-import de.tud.cs.st.vespucci.ensembleview.table.views.EnsembleElementsTableView;
 import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
 import de.tud.cs.st.vespucci.utilities.Util;
+import de.tud.cs.st.vespucci.view.ensemble_elements.model.DataManager;
+import de.tud.cs.st.vespucci.view.ensemble_elements.model.TableModel;
+import de.tud.cs.st.vespucci.view.ensemble_elements.views.EnsembleElementsTableView;
 
 public class EnsembleElementsVisualizer implements IResultProcessor{
 
-	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.ensembleview.table";
+	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.view.ensemble_elements";
 	
 	@Override
 	public void processResult(Object result, IFile diagramFile) {

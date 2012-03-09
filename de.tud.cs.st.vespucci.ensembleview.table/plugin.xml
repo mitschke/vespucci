@@ -3,16 +3,12 @@
 <plugin>
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="de.tud.cs.st.vespucci.ensembleview.table"
-            name="Vespucci">
-      </category>
       <view
-            category="de.tud.cs.st.vespucci.ensembleview.table"
-            class="de.tud.cs.st.vespucci.ensembleview.table.views.EnsembleElementsTableView"
-            icon="icons/sample.gif"
-            id="de.tud.cs.st.vespucci.ensembleview.table"
-            name="Ensemble Elements Table">
+            category="de.tud.cs.st.vespucci.view"
+            class="de.tud.cs.st.vespucci.view.ensemble_elements.views.EnsembleElementsTableView"
+            icon="icons/Vespucci_modelDiagramFile.gif"
+            id="de.tud.cs.st.vespucci.view.ensemble_elements"
+            name="Ensemble Elements">
       </view>
    </extension>
    <extension
@@ -30,7 +26,7 @@
    <extension
          point="de.tud.cs.st.vespucci.diagram.resultProcessors">
       <resultProcessor
-            ResultProcessor="de.tud.cs.st.vespucci.ensembleview.table.EnsembleElementsVisualizer">
+            ResultProcessor="de.tud.cs.st.vespucci.view.ensemble_elements.EnsembleElementsVisualizer">
       </resultProcessor>
    </extension>
 

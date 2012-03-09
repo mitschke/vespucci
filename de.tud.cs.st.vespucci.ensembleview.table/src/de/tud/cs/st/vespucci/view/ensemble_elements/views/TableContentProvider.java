@@ -1,9 +1,9 @@
-package de.tud.cs.st.vespucci.ensembleview.table.views;
+package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.tud.cs.st.vespucci.ensembleview.table.model.TableModel;
+import de.tud.cs.st.vespucci.view.ensemble_elements.model.TableModel;
 
 class TableContentProvider implements IStructuredContentProvider {
 

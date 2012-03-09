@@ -1,76 +1,43 @@
-package de.tud.cs.st.vespucci.ensembleview.table.views;
+package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import de.tud.cs.st.vespucci.codeelementfinder.Util;
-import de.tud.cs.st.vespucci.ensembleview.table.Activator;
-import de.tud.cs.st.vespucci.ensembleview.table.model.DataManager;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.view.ImageManager;
+import de.tud.cs.st.vespucci.view.ensemble_elements.model.DataManager;
 
 class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 	public String getColumnText(Object obj, int index) {
 		return TableLabelProvider.createText(DataManager.transfer(obj), index);
 	}
 
-	private Image loadImage(String fileLocation) {
-		ImageDescriptor imageDescriptor = Activator.getImageDescriptor(fileLocation);
-		if (imageDescriptor != null){
-			return imageDescriptor.createImage();
-		}
-		return null;
-	}
-
-	private Image ensemble_icon_cache = null;
-	private Image class_icon_cache = null;
-	private Image method_icon_cache = null;
-	private Image field_icon_cache = null;
-	private Image package_icon_cache = null;
-	
 	public Image getColumnImage(Object obj, int index) {
 		IPair<IEnsemble, ICodeElement> pair = DataManager.transfer(obj);
 		if (pair != null){
 			switch (index) {
 			case 0:
-				if (ensemble_icon_cache == null){
-					ensemble_icon_cache = loadImage("icons/newpackfolder_wiz.gif");
-				}
-				return ensemble_icon_cache;
+				return ImageManager.getImage(ImageManager.ENSEMBLE);
 			case 1:
-				if (package_icon_cache == null){
-					package_icon_cache = loadImage("icons/package_obj.gif");
-				}
-				return package_icon_cache;
+				return ImageManager.getImage(ImageManager.ICON_PACKAGE);
 			case 2:
-				if (class_icon_cache == null){
-					class_icon_cache = loadImage("icons/class.gif");
-				}
-				return class_icon_cache;
+				return ImageManager.getImage(ImageManager.ICON_CLASS);
 			case 3:
 				if (pair.getSecond() instanceof IClassDeclaration){
-					if (class_icon_cache == null){
-						class_icon_cache = loadImage("icons/class.gif");
-					}
-					return class_icon_cache;
+					return ImageManager.getImage(ImageManager.ICON_CLASS);
 				}
 				if (pair.getSecond() instanceof IMethodDeclaration){
-					if (method_icon_cache == null){
-						method_icon_cache = loadImage("icons/method.gif");
-					}
-					return method_icon_cache;
+					return ImageManager.getImage(ImageManager.ICON_METHOD_UNCOLORED);
 				}
 				if (pair.getSecond() instanceof IFieldDeclaration){
-					if (field_icon_cache == null){
-						field_icon_cache = loadImage("icons/field.gif");
-					}
-					return field_icon_cache;
+					return ImageManager.getImage(ImageManager.ICON_FIELD_UNCOLORED);
 				}
 			default:
 			}

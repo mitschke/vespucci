@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            category="de.tud.cs.st.vespucci.ensembleview.table"
+            category="de.tud.cs.st.vespucci.view"
             class="de.tud.cs.st.vespucci.view.unmodeled_elements.UnmodeledElementsTableView"
             icon="icons/Vespucci_modelDiagramFile.gif"
             id="de.tud.cs.st.vespucci.unmodeled_elements.table"

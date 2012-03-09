@@ -1,4 +1,4 @@
-package de.tud.cs.st.vespucci.ensembleview.table;
+package de.tud.cs.st.vespucci.view.ensemble_elements;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
