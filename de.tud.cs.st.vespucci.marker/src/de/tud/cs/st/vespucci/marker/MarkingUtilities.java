@@ -67,6 +67,21 @@ public class MarkingUtilities {
 	}
 	
 	/**
+	 * Mark an line in a given IProject
+	 * 
+	 * @param project IProject where a line should be marked
+	 * @param message message shown in the ProblemsView
+	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
+	 * @return created Marker or null if the resource of given IMember is null
+	 */
+	protected static IMarker markIProject(IProject project, String message, int severity){
+		if (project != null){
+			return addMarker(project, message, 0, severity);
+		}
+		return null;
+	}
+	
+	/**
 	 * Mark a given IMember
 	 * 
 	 * @param member Member which should marked
@@ -88,6 +103,14 @@ public class MarkingUtilities {
 		return null;	
 	}
 	
+	/**
+	 * Mark a given IFile
+	 * 
+	 * @param file IFile which should marked
+	 * @param message message shown in the ProblemsView
+	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
+	 * @return created Marker or null if the resource of given IMember is null
+	 */
 	protected static IMarker markIFile(IFile file, String message, int severity){
 		return addMarker(file, message, 0, severity);
 	}
@@ -101,6 +124,29 @@ public class MarkingUtilities {
 		} catch (CoreException e) {
 			Marker.processException(e);
 		}
+	}
+
+	/**
+	 * Add a Marker (IMarker) to a given IProject
+	 * @param project IProject to create the marker on
+	 * @param message message shown in the ProblemsView
+	 * @param lineNumber line which should be marked
+	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
+	 * @return the created marker if it was possible to create one, otherwise null will be returned
+	 */
+	private static IMarker addMarker(IProject project, String message, int lineNumber, int severity) {
+		try {
+			IMarker marker = project.createMarker("org.eclipse.core.resources.problemmarker");
+			marker.setAttribute(IMarker.MESSAGE, message);
+			marker.setAttribute(IMarker.SEVERITY, severity);
+			marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
+			marker.setAttribute(IMarker.TRANSIENT, true);
+			return marker;
+		}
+		catch (CoreException e) {
+			Marker.processException(e);
+		}
+		return null;
 	}
 
 	/**
@@ -125,7 +171,7 @@ public class MarkingUtilities {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Add a Marker (IMarker) to a given IFile
 	 * @param file File to create the marker on
