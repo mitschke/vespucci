@@ -641,8 +641,12 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
 		// adds 2 TransferDropTargetListener to the diagram view. for handling DnD out of the Package Explorer
-		getDiagramGraphicalViewer().addDropTargetListener(new DropVespucciDiagramTargetListener(getDiagramGraphicalViewer()));
-		getDiagramGraphicalViewer().addDropTargetListener(new CreateEnsembleDropTargetListener(getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new DropVespucciDiagramTargetListener(
+						getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new CreateEnsembleDropTargetListener(
+						getDiagramGraphicalViewer()));
 	}
 
 	/**

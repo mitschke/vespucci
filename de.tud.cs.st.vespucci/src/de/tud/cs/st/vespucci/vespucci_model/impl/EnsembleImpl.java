@@ -141,8 +141,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:{
-				return getShapes();}
+			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
+				return getShapes();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
