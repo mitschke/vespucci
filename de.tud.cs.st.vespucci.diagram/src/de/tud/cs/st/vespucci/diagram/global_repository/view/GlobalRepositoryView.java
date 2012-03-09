@@ -37,8 +37,13 @@ package de.tud.cs.st.vespucci.diagram.global_repository.view;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
@@ -75,9 +80,25 @@ public class GlobalRepositoryView  extends ViewPart{
 		 //Provide the input to the ContentProvider
 		 viewer.setInput(new Init());
 		 
-         
-         }
+		 final Transfer[] transferTypes = new Transfer[]{LocalSelectionTransfer.getTransfer()};
+		 viewer.addDragSupport(DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE, transferTypes, new DragSourceListener(){
+			 public void dragStart(final DragSourceEvent event){
+				 LocalSelectionTransfer.getTransfer().setSelection(
+						 viewer.getSelection());
+						 }
 
+						 @Override
+						 public void dragSetData(final DragSourceEvent event) {
+
+						 }
+
+						 @Override
+						 public void dragFinished(DragSourceEvent event) {
+						 }
+         
+         });
+	}
+	
 	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
