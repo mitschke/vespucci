@@ -48,5 +48,12 @@
             class="de.tud.cs.st.vespucci.sadclient.preferences.PreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.ui.dropActions">
+      <action
+            class="de.tud.cs.st.vespucci.sadclient.view.ExplorerDropDelegate"
+            id="sadclient-plugin.sad.dnd">
+      </action>
+   </extension>
 
 </plugin>

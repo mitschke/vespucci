@@ -146,7 +146,7 @@ public class SADClient {
 
     // Model //
 
-    public byte[] getModel(String id, File downloadLocation, IProgressMonitor progressMonitor) throws RequestException {
+    public byte[] getModel(String id, IProgressMonitor progressMonitor) throws RequestException {
 	HttpResponse response = client.get(ModelUrl(id), XML, progressMonitor);
 	byte[] bytes;
 	try {
@@ -178,7 +178,7 @@ public class SADClient {
 
     // Documentation //
 
-    public byte[] getDocumentation(String id, File downloadLocation, IProgressMonitor progressMonitor)
+    public byte[] getDocumentation(String id, IProgressMonitor progressMonitor)
 	    throws RequestException {
 	HttpResponse response = client.get(DocumentationUrl(id), PDF, progressMonitor);
 	byte[] bytes;

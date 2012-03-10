@@ -139,17 +139,17 @@ public class SADDialog extends Dialog {
 		txtName.setText(sad.getName());
 		txtType.setText(sad.getType());
 		txtAbstract.setText(sad.getAbstrct());
-		SAD.Model model = sad.getModel();
+		SAD.Attachment attachment = sad.getModel();
 
-		if (model != null) {
-		    radioModelKeep.setText("Keep existing (Currently '" + model.getName() + "')");
+		if (attachment != null) {
+		    radioModelKeep.setText("Keep existing (Currently '" + attachment.getName() + "')");
 		    btnModelDownload.setEnabled(true);
 		} else {
 		    radioModelKeep.setText("Keep existing (Nothing uploaded)");
 		    btnModelDownload.setEnabled(false);
 		}
 
-		SAD.Documentation documentation = sad.getDocumentation();
+		SAD.Attachment documentation = sad.getDocumentation(); // FIXME
 		if (documentation != null) {
 		    radioDocumentationKeep.setText("Keep existing (Currently '" + documentation.getName() + "')");
 		    btnDocumentationDownload.setEnabled(true);

@@ -36,38 +36,59 @@
  */
 package de.tud.cs.st.vespucci.sadclient.view;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.dialogs.IconAndMessageDialog;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.statushandlers.StatusManager;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.util.List;
 
-import de.tud.cs.st.vespucci.sadclient.Activator;
+import org.eclipse.core.internal.resources.Folder;
+import org.eclipse.core.internal.resources.Project;
+import org.eclipse.core.internal.resources.Resource;
+import org.eclipse.ui.part.IDropActionDelegate;
+
+import de.tud.cs.st.vespucci.sadclient.controller.Controller;
+import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
 /**
- * Provides static utility methods for creating and displaying instances of
- * subclasses of {@link IconAndMessageDialog}.
+ * This delegate is {@link IDropActionDelegate} responsible for drops of
+ * (multiple) SADs into the package explorer.
  * 
  * @author Mateusz Parzonka
  * 
  */
-public class IconAndMessageDialogs {
-    
-    public static IStatus showErrorDialog(final String message, final String reason) {
-	final IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, reason);
-	PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-	    public void run() {
-		ErrorDialog errorDialog = new ErrorDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-			"Error", message, status, IStatus.ERROR);
-		errorDialog.open();
+@SuppressWarnings("restriction")
+public class PackageExplorerDropActionDelegate implements IDropActionDelegate {
+
+    @Override
+    public boolean run(Object source, Object target) {
+
+	if (target instanceof Project || target instanceof Folder) {
+	    Resource resource = (Resource) target;
+	    File file = resource.getLocation().toFile();
+
+	    if (source instanceof byte[]) {
+		try {
+		    Controller.getInstance().downloadBatch(toSADs((byte[]) source), file.getAbsolutePath(), true,
+			    resource);
+		    return true;
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    return false;
+		}
 	    }
-	});
-	return status;
+	}
+	return false;
     }
-    
-    public static void logError(final String message, final String reason) {
-	StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID, reason), StatusManager.SHOW);
+
+    @SuppressWarnings("unchecked")
+    private static List<SAD> toSADs(byte[] bytes) throws Exception {
+	ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+	ObjectInput in = new ObjectInputStream(bis);
+	Object o = in.readObject();
+	bis.close();
+	in.close();
+	return (List<SAD>) o;
     }
 
 }

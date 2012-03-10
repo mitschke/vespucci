@@ -38,14 +38,17 @@ package de.tud.cs.st.vespucci.sadclient.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.apache.commons.io.IOUtils;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.Viewer;
@@ -122,18 +125,56 @@ public class Controller {
      * @param sad
      * @param viewer
      */
-    public void deleteSAD(final SAD sad, final Viewer viewer) {
+    public void deleteSAD(final List<SAD> sads, final Viewer viewer) {
 	Job job = new Job("SAD deletion") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		try {
-		    sadClient.deleteSAD(sad.getId());
+		    for (SAD sad : sads) {
+			sadClient.deleteSAD(sad.getId());
+		    }
 		} catch (RequestException e) {
-		    IconAndMessageDialogs.showErrorDialog("SAD delete failed.", e.getMessage());
+		    IconAndMessageDialogs.showErrorDialog("SAD deletion failed.", e.getMessage());
 		}
 		refresh(viewer);
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "SAD deleted.");
 	    }
+	};
+	job.setUser(true);
+	job.schedule();
+    }
+
+    /**
+     * Downloads the model to disk.
+     * 
+     * @param id
+     * @param downloadLocation
+     */
+    public void downloadBatch(final List<SAD> sads, final String downloadPath, final boolean downloadDocumentation,
+	    final IResource resourceToRefresh) {
+	Job job = new Job("Model Download") {
+	    @Override
+	    protected IStatus run(IProgressMonitor monitor) {
+		try {
+		    for (SAD sad : sads) {
+			if (sad.getModel() != null) {
+			    IOUtils.write(sadClient.getModel(sad.getId(), monitor), new FileOutputStream(downloadPath
+				    + File.separator + sad.getModel().getName()));
+			}
+			if (downloadDocumentation && sad.getDocumentation() != null) {
+			    IOUtils.write(sadClient.getDocumentation(sad.getId(), monitor), new FileOutputStream(
+				    downloadPath + File.separator + sad.getDocumentation().getName()));
+			}
+		    }
+		    // since the files could get stored at some other place when
+		    // names collide, we refresh the whole project
+		    resourceToRefresh.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		} catch (Exception e) {
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Download failed: " + e.getMessage());
+		}
+		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Models and documentations downloaded.");
+	    }
+
 	};
 	job.setUser(true);
 	job.schedule();
@@ -150,8 +191,7 @@ public class Controller {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		try {
-		    IOUtils.write(sadClient.getModel(id, downloadLocation, monitor), new FileOutputStream(
-			    downloadLocation));
+		    IOUtils.write(sadClient.getModel(id, monitor), new FileOutputStream(downloadLocation));
 		} catch (Exception e) {
 		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
 		}
@@ -173,8 +213,7 @@ public class Controller {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		try {
-		    IOUtils.write(sadClient.getDocumentation(id, downloadLocation, monitor), new FileOutputStream(
-			    downloadLocation));
+		    IOUtils.write(sadClient.getDocumentation(id, monitor), new FileOutputStream(downloadLocation));
 		} catch (Exception e) {
 		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
 		}

@@ -36,7 +36,14 @@
  */
 package de.tud.cs.st.vespucci.sadclient.view;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jface.action.Action;
@@ -62,6 +69,8 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -77,6 +86,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.PluginTransfer;
+import org.eclipse.ui.part.PluginTransferData;
 import org.eclipse.ui.part.ViewPart;
 
 import de.tud.cs.st.vespucci.sadclient.controller.Controller;
@@ -97,7 +108,7 @@ public class SADCollectionView extends ViewPart {
 
     private TableViewer viewer;
     private TableViewerComparator comparator;
-    private SAD selectedSAD = null;
+    private final static List<SAD> selectedSAD = new ArrayList<SAD>();
     private boolean refreshFromCache; // true, when viewer#refresh does not
 				      // expect the current state from the
 				      // server
@@ -175,9 +186,10 @@ public class SADCollectionView extends ViewPart {
 	// delete
 	final Action actionDelete = new Action() {
 	    public void run() {
-		if (MessageDialog.openConfirm(viewer.getControl().getShell(), "Delete SAD",
-			"Do you really want to delete the selected SAD?"))
-		    Controller.getInstance().deleteSAD(selectedSAD, viewer);
+		if (!selectedSAD.isEmpty())
+		    if (MessageDialog.openConfirm(viewer.getControl().getShell(), "Delete SAD",
+			    String.format("Do you really want to delete the selected %d SAD(s)?", selectedSAD.size())))
+			Controller.getInstance().deleteSAD(selectedSAD, viewer);
 	    }
 	};
 	actionDelete.setText("Delete");
@@ -231,28 +243,36 @@ public class SADCollectionView extends ViewPart {
     private void addListeners() {
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    public void doubleClick(DoubleClickEvent event) {
-		if (selectedSAD != null) {
+		if (!selectedSAD.isEmpty()) {
 		    System.out.println("DB-Clicksource:" + event.getSource());
 		    System.out.println("DB-Clickviewer:" + event.getViewer());
-		    Dialog dialog = new SADDialog(viewer, selectedSAD);
+		    Dialog dialog = new SADDialog(viewer, selectedSAD.get(0));
 		    dialog.open();
 		}
 	    }
 	});
+
 	viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 	    public void selectionChanged(SelectionChangedEvent event) {
+		selectedSAD.clear();
 		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-		Object object = selection.getFirstElement();
-		if (object instanceof SAD) {
-		    selectedSAD = (SAD) object;
-		} else {
-		    System.err.println("SADTableViewer: Selection-type unknown!");
+		Iterator<?> iter = selection.iterator();
+		while (iter.hasNext()) {
+		    Object object = iter.next();
+		    if (object instanceof SAD) {
+			selectedSAD.add((SAD) object);
+		    } else {
+			System.err.println("SADTableViewer: Selection-type unknown!");
+		    }
 		}
+
 	    }
 	});
-	Transfer[] transferTypes = new Transfer[] { FileTransfer.getInstance() };
-	viewer.addDropSupport(DND.DROP_MOVE, transferTypes, new DropListener(viewer));
-	System.out.println("DropSupport");
+
+	viewer.addDropSupport(DND.DROP_MOVE, new Transfer[] { FileTransfer.getInstance() }, new DropListener(viewer));
+
+	viewer.addDragSupport(DND.DROP_MOVE, new Transfer[] { PluginTransfer.getInstance() }, new DragListener());
+
     }
 
     /**
@@ -408,7 +428,7 @@ public class SADCollectionView extends ViewPart {
 	    super(viewer);
 	    this.viewer = viewer;
 	}
-	
+
 	@Override
 	public boolean performDrop(Object data) {
 
@@ -436,9 +456,9 @@ public class SADCollectionView extends ViewPart {
 	}
 
 	private boolean validateData(int length, File modelFile, File documentationFile) {
-	    return ((length == 1 || length == 2) && 
-		    implies(length == 1, modelFile != null || documentationFile != null) &&
-		    implies(length == 2, modelFile != null && documentationFile != null));
+	    return ((length == 1 || length == 2)
+		    && implies(length == 1, modelFile != null || documentationFile != null) && implies(length == 2,
+			modelFile != null && documentationFile != null));
 	}
 
 	private static boolean implies(boolean a, boolean b) {
@@ -499,6 +519,48 @@ public class SADCollectionView extends ViewPart {
 	    }
 	}
 
+    }
+
+    private static class DragListener implements DragSourceListener {
+
+	public DragListener() {
+	    super();
+	}
+
+	@Override
+	public void dragFinished(DragSourceEvent event) {
+	    // nothing to do
+	}
+
+	@Override
+	public void dragSetData(DragSourceEvent event) {
+
+	    System.out.println("Drag set data" + event);
+
+	    PluginTransferData p;
+	    try {
+		System.out.println("Setting drag data to: " + selectedSAD);
+		p = new PluginTransferData("sadclient-plugin.sad.dnd", getBytes(selectedSAD));
+		event.data = p;
+	    } catch (IOException e) {
+		IconAndMessageDialogs.logError("Internal error with drag and drop.", e.getMessage());
+	    }
+	}
+
+	@Override
+	public void dragStart(DragSourceEvent event) {
+	    // nothing to do
+	}
+
+	private static byte[] getBytes(Object object) throws IOException {
+	    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	    ObjectOutput out = new ObjectOutputStream(bos);
+	    out.writeObject(object);
+	    byte[] result = bos.toByteArray();
+	    out.close();
+	    bos.close();
+	    return result;
+	}
     }
 
 }

@@ -36,6 +36,8 @@
  */
 package de.tud.cs.st.vespucci.sadclient.model;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,15 +49,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  */
 @XmlRootElement(name = "description")
-public class SAD {
+public class SAD implements Serializable {
 
+    private static final long serialVersionUID = 2018207527753011606L;
+    
     private String id;
     private String modified = "";
     private String name = "";
     private String type = "";
     private String abstrct = "";
-    private Model model;
-    private Documentation documentation;
+    private Attachment model;
+    private Attachment documentation;
     private boolean wip = false;
 
     @XmlAttribute
@@ -84,19 +88,19 @@ public class SAD {
 	this.name = name;
     }
 
-    public Model getModel() {
+    public Attachment getModel() {
 	return model;
     }
 
-    public void setModel(Model model) {
-	this.model = model;
+    public void setModel(Attachment attachment) {
+	this.model = attachment;
     }
 
-    public Documentation getDocumentation() {
+    public Attachment getDocumentation() {
 	return documentation;
     }
 
-    public void setDocumentation(Documentation documentation) {
+    public void setDocumentation(Attachment documentation) {
 	this.documentation = documentation;
     }
 
@@ -204,9 +208,11 @@ public class SAD {
 	return builder.toString();
     }
 
-    @XmlRootElement(name = "model")
-    public static class Model {
+    @XmlRootElement
+    public static class Attachment implements Serializable {
 
+	private static final long serialVersionUID = -1428369589776385348L;
+	
 	private int size;
 	private String name;
 	private String url;
@@ -240,7 +246,7 @@ public class SAD {
 	@Override
 	public String toString() {
 	    StringBuilder builder = new StringBuilder();
-	    builder.append("Model [size=");
+	    builder.append("Attachment [size=");
 	    builder.append(size);
 	    builder.append(", url=");
 	    builder.append(url);
@@ -265,7 +271,7 @@ public class SAD {
 		return false;
 	    if (getClass() != obj.getClass())
 		return false;
-	    Model other = (Model) obj;
+	    Attachment other = (Attachment) obj;
 	    if (size != other.size)
 		return false;
 	    if (url == null) {
@@ -274,80 +280,6 @@ public class SAD {
 	    } else if (!url.equals(other.url))
 		return false;
 	    return true;
-	}
-
-    }
-
-    @XmlRootElement(name = "documentation")
-    public static class Documentation {
-
-	private int size;
-	private String name;
-	private String url;
-
-	@XmlAttribute
-	public int getSize() {
-	    return size;
-	}
-
-	public void setSize(int size) {
-	    this.size = size;
-	}
-
-	@XmlAttribute
-	public String getName() {
-	    return name;
-	}
-
-	public void setName(String name) {
-	    this.name = name;
-	}
-
-	public String getUrl() {
-	    return url;
-	}
-
-	public void setUrl(String url) {
-	    this.url = url;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-	    if (this == obj)
-		return true;
-	    if (obj == null)
-		return false;
-	    if (getClass() != obj.getClass())
-		return false;
-	    Documentation other = (Documentation) obj;
-	    if (size != other.size)
-		return false;
-	    if (url == null) {
-		if (other.url != null)
-		    return false;
-	    } else if (!url.equals(other.url))
-		return false;
-	    return true;
-	}
-
-	@Override
-	public String toString() {
-	    StringBuilder builder = new StringBuilder();
-	    builder.append("Documentation [size=");
-	    builder.append(size);
-	    builder.append(", url=");
-	    builder.append(url);
-	    builder.append("]");
-	    return builder.toString();
-	}
-
-	@Override
-	public int hashCode() {
-	    final int prime = 31;
-	    int result = 1;
-	    result = prime * result + size;
-	    result = prime * result + ((url == null) ? 0 : url.hashCode());
-	    return result;
 	}
 
     }
