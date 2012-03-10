@@ -54,7 +54,7 @@ public class SAD implements Serializable {
     private static final long serialVersionUID = 2018207527753011606L;
     
     private String id;
-    private String modified = "";
+    private Long modified = null;
     private String name = "";
     private String type = "";
     private String abstrct = "";
@@ -63,11 +63,11 @@ public class SAD implements Serializable {
     private boolean wip = false;
 
     @XmlAttribute
-    public String getModified() {
+    public Long getModified() {
 	return modified;
     }
 
-    public void setModified(String modified) {
+    public void setModified(Long modified) {
 	this.modified = modified;
     }
 

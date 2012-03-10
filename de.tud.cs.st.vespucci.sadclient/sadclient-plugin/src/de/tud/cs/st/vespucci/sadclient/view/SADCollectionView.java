@@ -41,6 +41,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -118,7 +120,8 @@ public class SADCollectionView extends ViewPart {
     private final static int DOCUMENTATION_COLUMN = 1;
     private final static int NAME_COLUMN = 2;
     private final static int TYPE_COLUMN = 3;
-    private final static int ABSTRACT_COLUMN = 4;
+    private final static int MODIFIED_COLUMN = 4;
+    private final static int ABSTRACT_COLUMN = 5;
 
     @Override
     public void createPartControl(Composite parent) {
@@ -131,6 +134,7 @@ public class SADCollectionView extends ViewPart {
 	createTableViewerColumn(DOCUMENTATION_COLUMN, "Doc", 24, false);
 	createTableViewerColumn(NAME_COLUMN, "Name", 100, true);
 	createTableViewerColumn(TYPE_COLUMN, "Type", 100, true);
+	createTableViewerColumn(MODIFIED_COLUMN, "Modified", 100, true);
 	createTableViewerColumn(ABSTRACT_COLUMN, "Abstract", 300, true);
 
 	viewer.setContentProvider(new ViewContentProvider());
@@ -318,6 +322,8 @@ public class SADCollectionView extends ViewPart {
 		    return sad.getType();
 		case ABSTRACT_COLUMN:
 		    return sad.getAbstrct();
+		case MODIFIED_COLUMN:
+		    return new SimpleDateFormat("HH:mm:ss, dd.MM.yyyy").format(new Timestamp(sad.getModified()));
 		}
 	    }
 	    return "";
@@ -383,13 +389,18 @@ public class SADCollectionView extends ViewPart {
 		compare = compareNull(s1.getDocumentation(), s2.getDocumentation());
 		break;
 	    case NAME_COLUMN:
-		compare = s1.getName().compareToIgnoreCase(s2.getName());
+		compare = s1.getName().compareTo(s2.getName());
 		break;
 	    case TYPE_COLUMN:
-		compare = s1.getType().compareToIgnoreCase(s2.getType());
+		compare = s1.getType().compareTo(s2.getType());
 		break;
 	    case ABSTRACT_COLUMN:
-		compare = s1.getAbstrct().compareToIgnoreCase(s2.getAbstrct());
+		compare = s1.getAbstrct().compareTo(s2.getAbstrct());
+		break;
+	    case MODIFIED_COLUMN:
+		// long l1 = Long.parseLong(s1.getModified());
+		// long l2 = Long.parseLong(s2.getModified());
+		compare = s1.getModified().compareTo(s2.getModified());
 		break;
 	    default:
 		compare = 0;
