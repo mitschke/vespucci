@@ -80,6 +80,7 @@ import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Item;
@@ -490,7 +491,7 @@ public class SADCollectionView extends ViewPart {
 
 	private SADUpdate getSADUpdate() {
 	    SADUpdate sadUpdate = new SADUpdate(viewer);
-	    if (getCurrentTarget() instanceof SAD) {
+	    if (getCurrentTarget() instanceof SAD && getCurrentLocation() == LOCATION_ON) {
 		sadUpdate.setSAD((SAD) getCurrentTarget());
 	    } else {
 		sadUpdate.setSAD(new SAD());
@@ -500,9 +501,9 @@ public class SADCollectionView extends ViewPart {
 	}
 
 	/*
-	 * We removed LOCATION_BEFORE and LOCATION_AFTER in this implementation
-	 * to improve the mouse handling (it got fiddly when trying to drop on
-	 * SADs when the mouse snapped AROUND SADs).
+	 * We removed LOCATION_BEFORE in this implementation to improve the
+	 * mouse handling (it got fiddly when trying to drop on SADs when the
+	 * mouse snapped AROUND SADs).
 	 */
 	@Override
 	protected int determineLocation(DropTargetEvent event) {
@@ -510,12 +511,18 @@ public class SADCollectionView extends ViewPart {
 		return LOCATION_NONE;
 	    }
 	    Item item = (Item) event.item;
+	    Point coordinates = new Point(event.x, event.y);
+	    coordinates = viewer.getControl().toControl(coordinates);
 	    if (item != null) {
 		Rectangle bounds = getBounds(item);
 		if (bounds == null) {
 		    return LOCATION_NONE;
 		}
+		if ((bounds.y + bounds.height - coordinates.y) < 5) {
+		    return LOCATION_AFTER;
+		}
 	    }
+
 	    return LOCATION_ON;
 	}
 
@@ -524,6 +531,7 @@ public class SADCollectionView extends ViewPart {
 	    switch (getCurrentLocation()) {
 	    case LOCATION_ON:
 	    case LOCATION_NONE:
+	    case LOCATION_AFTER:
 		return true;
 	    default:
 		return false;
