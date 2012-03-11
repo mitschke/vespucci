@@ -69,7 +69,7 @@ public class ExplorerDropDelegate implements IDropActionDelegate {
 
 	    if (source instanceof byte[]) {
 		try {
-		    Controller.getInstance().downloadBatch(toSADs((byte[]) source), file.getAbsolutePath(), resource);
+		    Controller.getInstance().downloadModelsAndDocumentation(toSADs((byte[]) source), file.getAbsolutePath(), resource);
 		    return true;
 		} catch (Exception e) {
 		    e.printStackTrace();

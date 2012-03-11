@@ -39,6 +39,7 @@ package de.tud.cs.st.vespucci.sadclient.controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -63,6 +64,7 @@ import de.tud.cs.st.vespucci.sadclient.model.SADClient;
 import de.tud.cs.st.vespucci.sadclient.model.Transaction;
 import de.tud.cs.st.vespucci.sadclient.model.http.RequestException;
 import de.tud.cs.st.vespucci.sadclient.preferences.PreferenceConstants;
+import de.tud.cs.st.vespucci.sadclient.preferences.SADClientPreferences;
 import de.tud.cs.st.vespucci.sadclient.view.IconAndMessageDialogs;
 import de.tud.cs.st.vespucci.sadclient.view.OverwriteDialog;
 import de.tud.cs.st.vespucci.sadclient.view.OverwriteDialog.OverwriteSettings;
@@ -105,10 +107,12 @@ public class Controller {
     /**
      * Retrieves the collection of SADs.
      * 
-     * @return
+     * 
      */
     public SAD[] getSADCollection() {
-	// Executes a working thread getting the SADs from the server.
+	// Executes a working thread getting the SADs from the server. Implementing this
+	// functionality with Eclipse Job API was unsuccessful due to missing Future-semantics.
+	// job.join was not working as promised.
 	try {
 	    Future<SAD[]> sadCollectionFuture = pool.submit(new Callable<SAD[]>() {
 		@Override
@@ -132,7 +136,7 @@ public class Controller {
      * @param viewer
      */
     public void deleteSAD(final List<SAD> sads, final Viewer viewer) {
-	Job job = new Job("SAD deletion") {
+	Job job = new Job("Deleting SADs") {
 	    @Override
 	    protected IStatus run(IProgressMonitor monitor) {
 		try {
@@ -141,21 +145,31 @@ public class Controller {
 		    }
 		} catch (RequestException e) {
 		    refresh(viewer);
-		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "SAD deletion failed.", e);
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while deleting SADs.", e);
 		}
 		refresh(viewer);
-		return new Status(IStatus.OK, Activator.PLUGIN_ID, "SAD deleted.");
+		return new Status(IStatus.OK, Activator.PLUGIN_ID, "SADs deleted.");
 	    }
 	};
 	job.setUser(true);
 	job.schedule();
     }
 
-    public void downloadBatch(final List<SAD> sads, final String downloadPath, final IResource resourceToRefresh) {
+    /**
+     * Download all models in a list of SADs at the downloadPath, and documentation files too, if
+     * specified in the {@link SADClientPreferences} .
+     * 
+     * @param sads
+     * @param downloadPath
+     * @param resourceToRefresh
+     *            is refreshed after all files are downloaded into the given folder.
+     */
+    public void downloadModelsAndDocumentation(final List<SAD> sads, final String downloadPath,
+	    final IResource resourceToRefresh) {
 	final boolean downloadDocumentation = Activator.getDefault().getPreferenceStore()
 		.getBoolean(PreferenceConstants.P_DND_WITH_DOCUMENTATION);
-	String jobName = "Downloading Models";
-	jobName += downloadDocumentation ? " With Documentation" : "";
+	String jobName = "Downloading Model(s)";
+	jobName += downloadDocumentation ? " And Documentation" : "";
 	Job job = new Job(jobName) {
 	    @Override
 	    protected IStatus run(IProgressMonitor progressMonitor) {
@@ -171,28 +185,24 @@ public class Controller {
 		    monitor.beginTask(taskMessage, (modelCount + documentationCount) * 100);
 		    for (SAD sad : sads) {
 			if (sad.getModel() != null) {
-			    FileOutputStream fos = getFileOutput(sad.getModel().getName(), overwriteSettings);
-			    IOUtils.write(sadClient.getModel(sad.getId(), monitor.newChild(100)), fos);
-			    fos.flush();
-			    fos.close();
+			    byte[] bytes = sadClient.getModel(sad.getId(), monitor.newChild(100));
+			    writeBytes(bytes, sad.getModel().getName(), overwriteSettings);
 			}
 			if (downloadDocumentation && sad.getDocumentation() != null) {
-			    FileOutputStream fos = getFileOutput(sad.getDocumentation().getName(), overwriteSettings);
-			    IOUtils.write(sadClient.getDocumentation(sad.getId(), monitor.newChild(100)), fos);
-			    fos.flush();
-			    fos.close();
+			    byte[] bytes = sadClient.getDocumentation(sad.getId(), monitor.newChild(100));
+			    writeBytes(bytes, sad.getDocumentation().getName(), overwriteSettings);
 			}
 		    }
 		    resourceToRefresh.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (OperationCanceledException e) {
 		    return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "Download canceled.");
 		} catch (Exception e) {
-		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
-		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while downloading.", e);
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			    "Error while downloading model and documentation.", e);
 		} finally {
 		    monitor.done();
 		}
-		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Models and documentations downloaded.");
+		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Models and documentation downloaded.");
 	    }
 
 	    private int getModelCount(List<SAD> sads) {
@@ -211,12 +221,32 @@ public class Controller {
 		return count;
 	    }
 
+	    private void writeBytes(byte[] bytes, String name, OverwriteSettings overwriteSettings) throws IOException {
+		FileOutputStream fos = getFileOutput(name, overwriteSettings);
+		IOUtils.write(bytes, fos);
+		fos.flush();
+		fos.close();
+	    }
+
 	    private FileOutputStream getFileOutput(String name, OverwriteSettings overwriteSettings)
 		    throws FileNotFoundException {
 		return new FileOutputStream(getNextFile(new File(downloadPath + File.separator + name),
 			overwriteSettings));
 	    }
 
+	    /**
+	     * Returns a file which is either
+	     * <ul>
+	     * <li>the same as the given file, when <code>overwriteSettings.isOverwrite()</code> is
+	     * <code>false</code>
+	     * <li>a file which does not exist at the base path of the input file. The name is
+	     * suffixed by a digit starting from 1.
+	     * </ul>
+	     * 
+	     * @param file
+	     * @param overwriteSettings
+	     * @return a file which does not exist at the base path of the input file
+	     */
 	    private File getNextFile(File file, OverwriteSettings overwriteSettings) {
 		if (file.exists()) {
 		    if (!overwriteSettings.isApplyToAll()) {
@@ -241,7 +271,7 @@ public class Controller {
     }
 
     /**
-     * Downloads the model to disk.
+     * Downloads a single model to disk.
      * 
      * @param id
      * @param downloadLocation
@@ -258,8 +288,7 @@ public class Controller {
 		} catch (OperationCanceledException e) {
 		    return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "Download canceled.");
 		} catch (Exception e) {
-		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
-		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while downloading.", e);
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while downloading model.", e);
 		} finally {
 		    monitor.done();
 		}
@@ -271,7 +300,7 @@ public class Controller {
     }
 
     /**
-     * Downloads the documentation to disk.
+     * Downloads a single documentation to disk.
      * 
      * @param id
      * @param downloadLocation
@@ -288,8 +317,7 @@ public class Controller {
 		} catch (OperationCanceledException e) {
 		    return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "Download canceled.");
 		} catch (Exception e) {
-		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
-		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while downloading.", e);
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while downloading documentation.", e);
 		} finally {
 		    monitor.done();
 		}
@@ -301,8 +329,7 @@ public class Controller {
     }
 
     /**
-     * Stores or updates the given SAD and applies the changes passed in the
-     * additional fields.
+     * Stores or updates the given SAD and applies the changes passed in the additional fields.
      * 
      * @param sadUpdate
      */
@@ -360,8 +387,7 @@ public class Controller {
     }
 
     /**
-     * Returns the total number of bytes to be transferred. Returns 0 when no
-     * work has to be done.
+     * Returns the total number of bytes to be transferred. Returns 0 when no work has to be done.
      * 
      * @param sadUpdate
      * @return amount of work
