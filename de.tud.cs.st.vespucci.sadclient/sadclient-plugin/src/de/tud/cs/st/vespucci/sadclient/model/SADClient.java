@@ -36,11 +36,15 @@
  */
 package de.tud.cs.st.vespucci.sadclient.model;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
@@ -67,8 +71,6 @@ public class SADClient {
     private final static String PDF = "application/pdf";
 
     private final XmlProcessor xmlProcessor;
-
-    // public List<SADModel> getDescriptionCollection() {
 
     public SADClient() {
 	super();
@@ -146,21 +148,68 @@ public class SADClient {
 
     // Model //
 
-    public byte[] getModel(String id, IProgressMonitor progressMonitor) throws RequestException {
-	HttpResponse response = client.get(ModelUrl(id), XML, progressMonitor);
+    public byte[] getModel(String id, SubMonitor monitor) throws RequestException {
+	return getAttachment(id, "model", ModelUrl(id), XML, monitor);
+    }
+
+    private byte[] getAttachment(String id, String type, String url, String acceptedContentType, SubMonitor monitor)
+	    throws RequestException {
+	monitor.subTask(String.format("Downloading %s %s...", type, id));
+	HttpResponse response = client.get(url, acceptedContentType, monitor);
+	final int contentLength = safeLongToInt(response.getEntity().getContentLength());
 	byte[] bytes;
 	try {
-	    bytes = IOUtils.toByteArray(response.getEntity().getContent());
-	} catch (Exception e) {
-	    throw new RuntimeException(e);
+	    bytes = getBytesWithProgress(response.getEntity().getContent(), contentLength, monitor);
+	} catch (IOException e) {
+	    throw new RequestException(e);
 	} finally {
 	    client.consume(response);
 	}
 	return bytes;
     }
 
+    /**
+     * Transforms the input stream to a byte array while notifying the provided
+     * monitor. The workload is partitioned into 100 work units (think percent)
+     * which must be respected by clients which provide the monitor.
+     * 
+     * @param input
+     * @param inputLength
+     * @param monitor
+     * @return
+     * @throws IOException
+     */
+    public byte[] getBytesWithProgress(InputStream input, int inputLength, SubMonitor monitor) throws IOException {
+	final ByteArrayOutputStream output = new ByteArrayOutputStream();
+	final int bufferSize = 4096;
+	// when the inputLength is smaller than the buffer size we are finished
+	// immediately
+	final int workSize = inputLength < bufferSize ? bufferSize : inputLength / 100;
+	final byte[] buffer = new byte[bufferSize];
+	int currentWorkedBytes = 0;
+	int read = 0;
+	while (-1 != (read = input.read(buffer))) {
+	    output.write(buffer, 0, read);
+	    currentWorkedBytes += read;
+	    int worked = currentWorkedBytes / workSize;
+	    if (worked > 0) {
+		if (monitor.isCanceled())
+		    throw new OperationCanceledException();
+		monitor.worked(worked);
+		// FIXME SLOWDOWN remove in production code:
+		try {
+		    Thread.sleep(100);
+		} catch (InterruptedException e) {
+		    e.printStackTrace();
+		}
+		currentWorkedBytes -= worked * workSize;
+	    }
+	}
+	return output.toByteArray();
+    }
+
     public void putModel(String transactionId, File file, IProgressMonitor progressMonitor) throws RequestException {
-	consume(client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + MODEL, "model", file, XML,
+	consume(client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + MODEL, MODEL, file, XML,
 		progressMonitor));
     }
 
@@ -178,23 +227,13 @@ public class SADClient {
 
     // Documentation //
 
-    public byte[] getDocumentation(String id, IProgressMonitor progressMonitor)
-	    throws RequestException {
-	HttpResponse response = client.get(DocumentationUrl(id), PDF, progressMonitor);
-	byte[] bytes;
-	try {
-	    bytes = IOUtils.toByteArray(response.getEntity().getContent());
-	} catch (Exception e) {
-	    throw new RequestException(e);
-	} finally {
-	    client.consume(response);
-	}
-	return bytes;
+    public byte[] getDocumentation(String id, SubMonitor monitor) throws RequestException {
+	return getAttachment(id, DOCUMENTATION, DocumentationUrl(id), PDF, monitor);
     }
 
     public void putDocumentation(String transactionId, File file, IProgressMonitor progressMonitor)
 	    throws RequestException {
-	consume(client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + DOCUMENTATION, "documentation", file,
+	consume(client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + DOCUMENTATION, DOCUMENTATION, file,
 		PDF, progressMonitor));
     }
 
@@ -259,6 +298,13 @@ public class SADClient {
 
     private static String getPassword() {
 	return Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_PASSWORD);
+    }
+
+    private static int safeLongToInt(long l) {
+	if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+	    throw new IllegalArgumentException(l + " cannot be safely cast to int.");
+	}
+	return (int) l;
     }
 
     /**

@@ -49,7 +49,9 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -134,7 +136,8 @@ public class Controller {
 			sadClient.deleteSAD(sad.getId());
 		    }
 		} catch (RequestException e) {
-		    IconAndMessageDialogs.showErrorDialog("SAD deletion failed.", e.getMessage());
+		    refresh(viewer);
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "SAD deletion failed.", e);
 		}
 		refresh(viewer);
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "SAD deleted.");
@@ -144,37 +147,61 @@ public class Controller {
 	job.schedule();
     }
 
-    /**
-     * Downloads the model to disk.
-     * 
-     * @param id
-     * @param downloadLocation
-     */
     public void downloadBatch(final List<SAD> sads, final String downloadPath, final boolean downloadDocumentation,
 	    final IResource resourceToRefresh) {
-	Job job = new Job("Model Download") {
+	String jobName = "Downloading Models";
+	jobName += downloadDocumentation ? " With Documentation" : ""; 
+	Job job = new Job(jobName) {
 	    @Override
-	    protected IStatus run(IProgressMonitor monitor) {
+	    protected IStatus run(IProgressMonitor progressMonitor) {
+		SubMonitor monitor = SubMonitor.convert(progressMonitor);
 		try {
+
+		    final int modelCount = getModelCount(sads);
+		    final int documentationCount = downloadDocumentation ? getDocumentationCount(sads) : 0;
+		    final String taskMessage = "Downloading " + modelCount + " SAD model(s) and " + documentationCount
+			    + " documentation file(s)...";
+		    monitor.beginTask(taskMessage, (modelCount + documentationCount) * 100);
 		    for (SAD sad : sads) {
 			if (sad.getModel() != null) {
-			    IOUtils.write(sadClient.getModel(sad.getId(), monitor), new FileOutputStream(downloadPath
-				    + File.separator + sad.getModel().getName()));
+			    IOUtils.write(sadClient.getModel(sad.getId(), monitor.newChild(100)), new FileOutputStream(
+				    downloadPath + File.separator + sad.getModel().getName()));
 			}
 			if (downloadDocumentation && sad.getDocumentation() != null) {
-			    IOUtils.write(sadClient.getDocumentation(sad.getId(), monitor), new FileOutputStream(
-				    downloadPath + File.separator + sad.getDocumentation().getName()));
+			    IOUtils.write(sadClient.getDocumentation(sad.getId(), monitor.newChild(100)),
+				    new FileOutputStream(downloadPath + File.separator
+					    + sad.getDocumentation().getName()));
 			}
 		    }
 		    // since the files could get stored at some other place when
 		    // names collide, we refresh the whole project
 		    resourceToRefresh.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		} catch (OperationCanceledException e) {
+		    return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "Download canceled.");
 		} catch (Exception e) {
-		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Download failed: " + e.getMessage());
+		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while downloading.", e);
+		} finally {
+		    monitor.done();
 		}
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Models and documentations downloaded.");
 	    }
 
+	    private int getModelCount(List<SAD> sads) {
+		int count = 0;
+		for (SAD sad : sads)
+		    if (sad.getModel() != null)
+			count++;
+		return count;
+	    }
+
+	    private int getDocumentationCount(List<SAD> sads) {
+		int count = 0;
+		for (SAD sad : sads)
+		    if (sad.getDocumentation() != null)
+			count++;
+		return count;
+	    }
 	};
 	job.setUser(true);
 	job.schedule();
@@ -187,13 +214,21 @@ public class Controller {
      * @param downloadLocation
      */
     public void downloadModel(final String id, final File downloadLocation) {
-	Job job = new Job("Model Download") {
+	Job job = new Job("Downloading Model") {
 	    @Override
-	    protected IStatus run(IProgressMonitor monitor) {
+	    protected IStatus run(IProgressMonitor progressMonitor) {
+		SubMonitor monitor = SubMonitor.convert(progressMonitor);
+		monitor.beginTask("Downloading model " + id + "...", 100);
 		try {
-		    IOUtils.write(sadClient.getModel(id, monitor), new FileOutputStream(downloadLocation));
+		    byte[] bytes = sadClient.getModel(id, monitor);
+		    IOUtils.write(bytes, new FileOutputStream(downloadLocation));
+		} catch (OperationCanceledException e) {
+		    return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "Download canceled.");
 		} catch (Exception e) {
 		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while downloading.", e);
+		} finally {
+		    monitor.done();
 		}
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Model downloaded.");
 	    }
@@ -209,13 +244,21 @@ public class Controller {
      * @param downloadLocation
      */
     public void downloadDocumentation(final String id, final File downloadLocation) {
-	Job job = new Job("Documentation Download") {
+	Job job = new Job("Downloading Documentation") {
 	    @Override
-	    protected IStatus run(IProgressMonitor monitor) {
+	    protected IStatus run(IProgressMonitor progressMonitor) {
+		SubMonitor monitor = SubMonitor.convert(progressMonitor);
+		monitor.beginTask("Downloading documentation " + id + "...", 100);
 		try {
-		    IOUtils.write(sadClient.getDocumentation(id, monitor), new FileOutputStream(downloadLocation));
+		    byte[] bytes = sadClient.getModel(id, monitor);
+		    IOUtils.write(bytes, new FileOutputStream(downloadLocation));
+		} catch (OperationCanceledException e) {
+		    return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "Download canceled.");
 		} catch (Exception e) {
 		    IconAndMessageDialogs.showErrorDialog("Download failed.", e.getMessage());
+		    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while downloading.", e);
+		} finally {
+		    monitor.done();
 		}
 		return new Status(IStatus.OK, Activator.PLUGIN_ID, "Documentation downloaded.");
 	    }
@@ -235,7 +278,7 @@ public class Controller {
 	final int amount = getAmountOfWork(sadUpdate);
 	System.out.println("Amount of work: " + amount);
 	if (amount > 0) {
-	    Job job = new Job("SAD Update") {
+	    Job job = new Job("Updating SAD") {
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 		    String transactionId = null;
