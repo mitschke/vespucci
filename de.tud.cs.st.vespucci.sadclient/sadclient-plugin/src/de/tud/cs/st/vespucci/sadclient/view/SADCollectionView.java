@@ -242,15 +242,12 @@ public class SADCollectionView extends ViewPart {
     }
 
     /**
-     * Listen for selections in the table and for doubeclicks opening the
-     * {@link SADDialog}.
+     * Listen for selections in the table and for doubeclicks opening the {@link SADDialog}.
      */
     private void addListeners() {
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    public void doubleClick(DoubleClickEvent event) {
 		if (!selectedSAD.isEmpty()) {
-		    System.out.println("DB-Clicksource:" + event.getSource());
-		    System.out.println("DB-Clickviewer:" + event.getViewer());
 		    Dialog dialog = new SADDialog(viewer, selectedSAD.get(0));
 		    dialog.open();
 		}
@@ -267,7 +264,7 @@ public class SADCollectionView extends ViewPart {
 		    if (object instanceof SAD) {
 			selectedSAD.add((SAD) object);
 		    } else {
-			System.err.println("SADTableViewer: Selection-type unknown!");
+			IconAndMessageDialogs.logError("Unknown selection type.", "Type: " + object.getClass());
 		    }
 		}
 
@@ -307,8 +304,7 @@ public class SADCollectionView extends ViewPart {
     }
 
     /**
-     * Provides the labels for Model and Documentation, no labels for the other
-     * columns.
+     * Provides the labels for Model and Documentation, no labels for the other columns.
      */
     class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 
@@ -349,8 +345,7 @@ public class SADCollectionView extends ViewPart {
     }
 
     /**
-     * Sorts columns lexically. Model and documentation -columns are sorted
-     * not-null first.
+     * Sorts columns lexically. Model and documentation -columns are sorted not-null first.
      */
     public class TableViewerComparator extends ViewerComparator {
 	private int columnIndex;
@@ -442,8 +437,6 @@ public class SADCollectionView extends ViewPart {
 	@Override
 	public boolean performDrop(Object data) {
 
-	    System.out.println(((String[]) data)[0]);
-
 	    String[] drag = (String[]) data;
 	    File modelFile = getFileByExtension(drag, "sad");
 	    File documentationFile = getFileByExtension(drag, "pdf");
@@ -455,7 +448,6 @@ public class SADCollectionView extends ViewPart {
 	    su.setModelFile(modelFile);
 	    su.setDocumentationFile(documentationFile);
 	    if (su.isNewSAD()) {
-		System.out.println("new sad");
 		String newName = modelFile != null ? getBasename(modelFile) : getBasename(documentationFile);
 		su.getSAD().setName(newName);
 		su.setDescriptionChanged(true);
@@ -499,9 +491,8 @@ public class SADCollectionView extends ViewPart {
 	}
 
 	/*
-	 * We removed LOCATION_BEFORE in this implementation to improve the
-	 * mouse handling (it got fiddly when trying to drop on SADs when the
-	 * mouse snapped AROUND SADs).
+	 * We removed LOCATION_BEFORE in this implementation to improve the mouse handling (it got
+	 * fiddly when trying to drop on SADs when the mouse snapped AROUND SADs).
 	 */
 	@Override
 	protected int determineLocation(DropTargetEvent event) {
@@ -552,11 +543,8 @@ public class SADCollectionView extends ViewPart {
 	@Override
 	public void dragSetData(DragSourceEvent event) {
 
-	    System.out.println("Drag set data" + event);
-
 	    PluginTransferData p;
 	    try {
-		System.out.println("Setting drag data to: " + selectedSAD);
 		p = new PluginTransferData("sadclient-plugin.sad.dnd", getBytes(selectedSAD));
 		event.data = p;
 	    } catch (IOException e) {

@@ -168,46 +168,6 @@ public class SADClient {
 	return bytes;
     }
 
-    /**
-     * Transforms the input stream to a byte array while notifying the provided
-     * monitor. The workload is partitioned into 100 work units (think percent)
-     * which must be respected by clients which provide the monitor.
-     * 
-     * @param input
-     * @param inputLength
-     * @param monitor
-     * @return
-     * @throws IOException
-     */
-    public byte[] getBytesWithProgress(InputStream input, int inputLength, SubMonitor monitor) throws IOException {
-	final ByteArrayOutputStream output = new ByteArrayOutputStream();
-	final int bufferSize = 4096;
-	// when the inputLength is smaller than the buffer size we are finished
-	// immediately
-	final int workSize = inputLength < bufferSize ? bufferSize : inputLength / 100;
-	final byte[] buffer = new byte[bufferSize];
-	int currentWorkedBytes = 0;
-	int read = 0;
-	while (-1 != (read = input.read(buffer))) {
-	    output.write(buffer, 0, read);
-	    currentWorkedBytes += read;
-	    int worked = currentWorkedBytes / workSize;
-	    if (worked > 0) {
-		if (monitor.isCanceled())
-		    throw new OperationCanceledException();
-		monitor.worked(worked);
-		// FIXME SLOWDOWN remove in production code:
-		try {
-		    Thread.sleep(100);
-		} catch (InterruptedException e) {
-		    throw new RuntimeException(e);
-		}
-		currentWorkedBytes -= worked * workSize;
-	    }
-	}
-	return output.toByteArray();
-    }
-
     public void putModel(String transactionId, File file, IProgressMonitor progressMonitor) throws RequestException {
 	consume(client.putAsMultipart(SADTransactionUrl(transactionId) + "/" + MODEL, MODEL, file, XML,
 		progressMonitor));
@@ -268,6 +228,46 @@ public class SADClient {
     }
 
     // Helper //
+    
+    /**
+     * Transforms the input stream to a byte array while notifying the provided
+     * monitor. The workload is partitioned into 100 work units (think percent)
+     * which must be respected by clients which provide the monitor.
+     * 
+     * @param input
+     * @param inputLength
+     * @param monitor
+     * @return
+     * @throws IOException
+     */
+    public byte[] getBytesWithProgress(InputStream input, int inputLength, SubMonitor monitor) throws IOException {
+	final ByteArrayOutputStream output = new ByteArrayOutputStream();
+	final int bufferSize = 4096;
+	// when the inputLength is smaller than the buffer size we are finished
+	// immediately
+	final int workSize = inputLength < bufferSize ? bufferSize : inputLength / 100;
+	final byte[] buffer = new byte[bufferSize];
+	int currentWorkedBytes = 0;
+	int read = 0;
+	while (-1 != (read = input.read(buffer))) {
+	    output.write(buffer, 0, read);
+	    currentWorkedBytes += read;
+	    int worked = currentWorkedBytes / workSize;
+	    if (worked > 0) {
+		if (monitor.isCanceled())
+		    throw new OperationCanceledException();
+		monitor.worked(worked);
+		// FIXME SLOWDOWN remove in production code:
+		try {
+		    Thread.sleep(100);
+		} catch (InterruptedException e) {
+		    throw new RuntimeException(e);
+		}
+		currentWorkedBytes -= worked * workSize;
+	    }
+	}
+	return output.toByteArray();
+    }
 
     /**
      * Registers listeners for changes of credentials and server.
