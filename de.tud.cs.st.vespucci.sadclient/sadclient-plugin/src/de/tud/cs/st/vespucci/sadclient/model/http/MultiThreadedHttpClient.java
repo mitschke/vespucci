@@ -116,7 +116,7 @@ public class MultiThreadedHttpClient {
 	    final HttpGet get = new HttpGet(url);
 	    response = executeWithContext(get);
 	} catch (Exception e) {
-	    throw new HttpClientException(e);
+	    throw new RequestException(e);
 	}
 	expectStatusCode(response, 200);
 	return response;
@@ -137,7 +137,7 @@ public class MultiThreadedHttpClient {
 	    get.setHeader("accept", acceptedContentType);
 	    response = executeWithContext(get);
 	} catch (Exception e) {
-	    throw new HttpClientException(e);
+	    throw new RequestException(e);
 	}
 	expectStatusCode(response, 200);
 	return response;
