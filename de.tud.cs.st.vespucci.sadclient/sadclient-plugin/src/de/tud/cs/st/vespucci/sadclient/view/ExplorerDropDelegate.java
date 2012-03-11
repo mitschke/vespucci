@@ -51,8 +51,8 @@ import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
 /**
- * This {@link IDropActionDelegate} is responsible for drops of
- * (multiple) SADs into the package explorer.
+ * This {@link IDropActionDelegate} is responsible for drops of (multiple) SADs
+ * into the package explorer.
  * 
  * @author Mateusz Parzonka
  * 
@@ -69,8 +69,7 @@ public class ExplorerDropDelegate implements IDropActionDelegate {
 
 	    if (source instanceof byte[]) {
 		try {
-		    Controller.getInstance().downloadBatch(toSADs((byte[]) source), file.getAbsolutePath(), true,
-			    resource);
+		    Controller.getInstance().downloadBatch(toSADs((byte[]) source), file.getAbsolutePath(), resource);
 		    return true;
 		} catch (Exception e) {
 		    e.printStackTrace();

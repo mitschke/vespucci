@@ -37,7 +37,7 @@
 package de.tud.cs.st.vespucci.sadclient.preferences;
 
 /**
- * Constant definitions for plug-in preferences
+ * Constant definitions for plug-in preferences.
  * 
  * @author Mateusz Parzonka
  * 
@@ -51,5 +51,7 @@ public class PreferenceConstants {
 	public static final String P_SERVER = "ServerPreference";
 
 	public static final String P_OPEN_ON_RADIOBUTTON = "OpenOnRadioButtonPreference";
+	
+	public static final String P_DND_WITH_DOCUMENTATION = "DownloadDocumentationWithModelDuringDnD";
 	
 }

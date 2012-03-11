@@ -53,6 +53,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	store.setDefault(PreferenceConstants.P_USERNAME, "");
 	store.setDefault(PreferenceConstants.P_PASSWORD, "");
 	store.setDefault(PreferenceConstants.P_OPEN_ON_RADIOBUTTON, false);
+	store.setDefault(PreferenceConstants.P_DND_WITH_DOCUMENTATION, false);
     }
 
 }

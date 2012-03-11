@@ -147,10 +147,11 @@ public class Controller {
 	job.schedule();
     }
 
-    public void downloadBatch(final List<SAD> sads, final String downloadPath, final boolean downloadDocumentation,
-	    final IResource resourceToRefresh) {
+    public void downloadBatch(final List<SAD> sads, final String downloadPath, final IResource resourceToRefresh) {
+	final boolean downloadDocumentation = Activator.getDefault().getPreferenceStore()
+		.getBoolean(PreferenceConstants.P_DND_WITH_DOCUMENTATION);
 	String jobName = "Downloading Models";
-	jobName += downloadDocumentation ? " With Documentation" : ""; 
+	jobName += downloadDocumentation ? " With Documentation" : "";
 	Job job = new Job(jobName) {
 	    @Override
 	    protected IStatus run(IProgressMonitor progressMonitor) {
@@ -159,8 +160,9 @@ public class Controller {
 
 		    final int modelCount = getModelCount(sads);
 		    final int documentationCount = downloadDocumentation ? getDocumentationCount(sads) : 0;
-		    final String taskMessage = "Downloading " + modelCount + " SAD model(s) and " + documentationCount
-			    + " documentation file(s)...";
+		    String taskMessage = "Downloading " + modelCount + " SAD model(s)";
+		    taskMessage += downloadDocumentation ? " and " + documentationCount + " documentation file(s)..."
+			    :  "...";
 		    monitor.beginTask(taskMessage, (modelCount + documentationCount) * 100);
 		    for (SAD sad : sads) {
 			if (sad.getModel() != null) {
