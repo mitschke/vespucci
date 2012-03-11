@@ -247,8 +247,9 @@ public class SADDialog extends Dialog {
 	    @Override
 	    public void run() {
 		File downloadLocation = selectFileDialog("sad", sad.getModel().getName());
-		if (downloadLocation != null)
+		if (downloadLocation != null) {
 		    controller.downloadModel(sad.getId(), downloadLocation);
+		}
 	    }
 	});
 
@@ -382,21 +383,21 @@ public class SADDialog extends Dialog {
     }
 
     private Button createDownloadButton(Group parent, final Runnable runnable) {
-	Button btnModelDownload = new Button(parent, SWT.NONE);
-	btnModelDownload.setText("Download");
-	btnModelDownload.setToolTipText("Downloads the file to disk.");
-	FormData fd_btnModelDownload = new FormData();
-	fd_btnModelDownload.top = new FormAttachment(0, 6);
-	fd_btnModelDownload.left = new FormAttachment(RIGHT_TAB, BORDER_MARGIN);
-	fd_btnModelDownload.right = new FormAttachment(100, -BORDER_MARGIN);
-	btnModelDownload.setLayoutData(fd_btnModelDownload);
-	btnModelDownload.addMouseListener(new MouseAdapter() {
+	Button button = new Button(parent, SWT.NONE);
+	button.setText("Download");
+	button.setToolTipText("Downloads the file to disk.");
+	FormData formData = new FormData();
+	formData.top = new FormAttachment(0, 6);
+	formData.left = new FormAttachment(RIGHT_TAB, BORDER_MARGIN);
+	formData.right = new FormAttachment(100, -BORDER_MARGIN);
+	button.setLayoutData(formData);
+	button.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseUp(MouseEvent e) {
 		container.getDisplay().asyncExec(runnable);
 	    }
 	});
-	return btnModelDownload;
+	return button;
     }
 
     private Button createRadioKeep(Group parent) {

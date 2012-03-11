@@ -399,8 +399,6 @@ public class SADCollectionView extends ViewPart {
 		compare = s1.getAbstrct().compareTo(s2.getAbstrct());
 		break;
 	    case MODIFIED_COLUMN:
-		// long l1 = Long.parseLong(s1.getModified());
-		// long l2 = Long.parseLong(s2.getModified());
 		compare = s1.getModified().compareTo(s2.getModified());
 		break;
 	    default:
