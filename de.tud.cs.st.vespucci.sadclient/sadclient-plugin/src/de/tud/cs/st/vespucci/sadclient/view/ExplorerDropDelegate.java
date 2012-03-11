@@ -51,14 +51,14 @@ import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
 /**
- * This delegate is {@link IDropActionDelegate} responsible for drops of
+ * This {@link IDropActionDelegate} is responsible for drops of
  * (multiple) SADs into the package explorer.
  * 
  * @author Mateusz Parzonka
  * 
  */
 @SuppressWarnings("restriction")
-public class PackageExplorerDropActionDelegate implements IDropActionDelegate {
+public class ExplorerDropDelegate implements IDropActionDelegate {
 
     @Override
     public boolean run(Object source, Object target) {
