@@ -64,15 +64,11 @@ public class XmlProcessor {
     public XmlProcessor() {
 	JAXBContext context;
 	try {
-	    context = JAXBContext.newInstance(SAD.class);
+	    context = JAXBContext.newInstance(SAD.class, SADCollection.class, Transaction.class);
 	    sadMarshaller = context.createMarshaller();
 	    sadUnmarshaller = context.createUnmarshaller();
 	    sadMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-	    context = JAXBContext.newInstance(SADCollection.class);
 	    sadCollectionUnmarshaller = context.createUnmarshaller();
-
-	    context = JAXBContext.newInstance(Transaction.class);
 	    transactionMarshaller = context.createMarshaller();
 	    transactionUnmarshaller = context.createUnmarshaller();
 	    transactionMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
