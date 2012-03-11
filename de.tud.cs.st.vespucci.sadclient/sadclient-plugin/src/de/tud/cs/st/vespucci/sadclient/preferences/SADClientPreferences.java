@@ -36,9 +36,12 @@
  */
 package de.tud.cs.st.vespucci.sadclient.preferences;
 
-import org.eclipse.jface.preference.*;
-import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+
 import de.tud.cs.st.vespucci.sadclient.Activator;
 
 /**
@@ -76,11 +79,12 @@ public class SADClientPreferences extends FieldEditorPreferencePage implements I
 	addField(new StringFieldEditor(PreferenceConstants.P_SERVER, "S&erver:", getFieldEditorParent()));
 
 	addField(new StringFieldEditor(PreferenceConstants.P_USERNAME, "U&sername:", getFieldEditorParent()));
-
-	addField(new StringFieldEditor(PreferenceConstants.P_PASSWORD, "P&assword:", getFieldEditorParent()));
+	
+	addField(new PasswordFieldEditor(PreferenceConstants.P_PASSWORD, "P&assword:",
+		getFieldEditorParent()));
 
 	addField(new BooleanFieldEditor(PreferenceConstants.P_OPEN_ON_RADIOBUTTON,
-		"Q&uick open upload dialog using radio button", getFieldEditorParent()));
+		"R&adio button opens upload dialog", getFieldEditorParent()));
 
 	addField(new BooleanFieldEditor(PreferenceConstants.P_DND_WITH_DOCUMENTATION,
 		"D&rag and drop downloads model with documentation", getFieldEditorParent()));
