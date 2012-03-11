@@ -37,6 +37,7 @@
 package de.tud.cs.st.vespucci.sadclient.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -44,6 +45,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -62,6 +64,8 @@ import de.tud.cs.st.vespucci.sadclient.model.Transaction;
 import de.tud.cs.st.vespucci.sadclient.model.http.RequestException;
 import de.tud.cs.st.vespucci.sadclient.preferences.PreferenceConstants;
 import de.tud.cs.st.vespucci.sadclient.view.IconAndMessageDialogs;
+import de.tud.cs.st.vespucci.sadclient.view.OverwriteDialog;
+import de.tud.cs.st.vespucci.sadclient.view.OverwriteDialog.OverwriteSettings;
 
 /**
  * Gets called by the views and orchestrates the {@link SADClient}.
@@ -155,28 +159,30 @@ public class Controller {
 	Job job = new Job(jobName) {
 	    @Override
 	    protected IStatus run(IProgressMonitor progressMonitor) {
-		SubMonitor monitor = SubMonitor.convert(progressMonitor);
+		final SubMonitor monitor = SubMonitor.convert(progressMonitor);
+		OverwriteSettings overwriteSettings = new OverwriteSettings(false, false);
 		try {
 
 		    final int modelCount = getModelCount(sads);
 		    final int documentationCount = downloadDocumentation ? getDocumentationCount(sads) : 0;
 		    String taskMessage = "Downloading " + modelCount + " SAD model(s)";
 		    taskMessage += downloadDocumentation ? " and " + documentationCount + " documentation file(s)..."
-			    :  "...";
+			    : "...";
 		    monitor.beginTask(taskMessage, (modelCount + documentationCount) * 100);
 		    for (SAD sad : sads) {
 			if (sad.getModel() != null) {
-			    IOUtils.write(sadClient.getModel(sad.getId(), monitor.newChild(100)), new FileOutputStream(
-				    downloadPath + File.separator + sad.getModel().getName()));
+			    FileOutputStream fos = getFileOutput(sad.getModel().getName(), overwriteSettings);
+			    IOUtils.write(sadClient.getModel(sad.getId(), monitor.newChild(100)), fos);
+			    fos.flush();
+			    fos.close();
 			}
 			if (downloadDocumentation && sad.getDocumentation() != null) {
-			    IOUtils.write(sadClient.getDocumentation(sad.getId(), monitor.newChild(100)),
-				    new FileOutputStream(downloadPath + File.separator
-					    + sad.getDocumentation().getName()));
+			    FileOutputStream fos = getFileOutput(sad.getDocumentation().getName(), overwriteSettings);
+			    IOUtils.write(sadClient.getDocumentation(sad.getId(), monitor.newChild(100)), fos);
+			    fos.flush();
+			    fos.close();
 			}
 		    }
-		    // since the files could get stored at some other place when
-		    // names collide, we refresh the whole project
 		    resourceToRefresh.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (OperationCanceledException e) {
 		    return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "Download canceled.");
@@ -203,6 +209,31 @@ public class Controller {
 		    if (sad.getDocumentation() != null)
 			count++;
 		return count;
+	    }
+
+	    private FileOutputStream getFileOutput(String name, OverwriteSettings overwriteSettings)
+		    throws FileNotFoundException {
+		return new FileOutputStream(getNextFile(new File(downloadPath + File.separator + name),
+			overwriteSettings));
+	    }
+
+	    private File getNextFile(File file, OverwriteSettings overwriteSettings) {
+		if (file.exists()) {
+		    if (!overwriteSettings.isApplyToAll()) {
+			overwriteSettings = OverwriteDialog.askForSettings(overwriteSettings);
+		    }
+		    if (!overwriteSettings.isOverwrite()) {
+			String path = file.getAbsolutePath();
+			String prefix = FilenameUtils.removeExtension(path);
+			String suffix = FilenameUtils.getExtension(path);
+			int i = 1;
+			do {
+			    file = new File(String.format("%s %d.%s", prefix, i, suffix));
+			    i++;
+			} while (file.exists());
+		    }
+		}
+		return file;
 	    }
 	};
 	job.setUser(true);
