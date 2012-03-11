@@ -149,7 +149,7 @@ public class SADDialog extends Dialog {
 		    btnModelDownload.setEnabled(false);
 		}
 
-		SAD.Attachment documentation = sad.getDocumentation(); // FIXME
+		SAD.Attachment documentation = sad.getDocumentation();
 		if (documentation != null) {
 		    radioDocumentationKeep.setText("Keep existing (Currently '" + documentation.getName() + "')");
 		    btnDocumentationDownload.setEnabled(true);
@@ -408,7 +408,7 @@ public class SADDialog extends Dialog {
 	formData.left = new FormAttachment(0, BORDER_MARGIN);
 	radioButton.setLayoutData(formData);
 	radioButton
-		.setText("Keep existing (currently '                                                                             ')");
+		.setText("Keep existing (Nothing uploaded)");
 	return radioButton;
     }
 
