@@ -1,20 +1,28 @@
 # @author Mateusz Parzonka
 
-# We assume the root url is "http://localhost:9000/vespucci"
+# START
+
+java -jar sadserver.jar
+
+sadserver.properties is needed for startup.
+
 
 # USER MANAGEMENT
 
-# create a new user
+(Assuming the root url is "http://localhost:9000/vespucci")
+
+## create a new user
 curl --digest --user admin:password --request POST http://localhost:9000/vespucci/users -H "accept: application/xml" -H "Content-Type: application/xml" -d "<user><name>foo</name><password>bar</password></user>"
 
-# get a user
+## get a user
 curl --digest --user admin:password --request GET http://localhost:9000/vespucci/users -H "accept: application/xml"
 
-# delete a user
+## delete a user
 curl --digest --user admin:password --request DELETE http://localhost:9000/vespucci/users/8d69ad84-23ed-4429-bc40-9aedad2d747f -H "accept: application/xml"
+
 
 # SHUTDOWN
 
-# shutdown the server
+## shutdown the server
 curl --digest --user admin:password --request POST http://localhost:8999/vespucci/shutdown -H "accept: application/xml" -H "Content-Type: application/xml" -d "<shutdown/>"
 
