@@ -60,6 +60,10 @@ public class WriteFilesDialog extends MessageDialog {
     private final WriteFilesSettings writeFilesSettings;
     private Button btnCheckButton;
 
+    private final static int RENAME = 0;
+    private final static int STOP = 1;
+    private final static int OVERWRITE = 2;
+
     /**
      * Create the dialog.
      * 
@@ -98,24 +102,25 @@ public class WriteFilesDialog extends MessageDialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-	createButton(parent, 0, "Rename", false);
-	createButton(parent, IDialogConstants.CANCEL_ID, "Stop", false);
-	createButton(parent, 2, "Overwrite", true);
+	createButton(parent, RENAME, "Rename", false);
+	createButton(parent, STOP, "Stop", false);
+	createButton(parent, OVERWRITE, "Overwrite", true);
     }
 
     @Override
     protected void buttonPressed(int buttonId) {
 	int result = 0;
 	switch (buttonId) {
-	case IDialogConstants.CANCEL_ID:
-	    break;
-	case 0:
-	    writeFilesSettings.setOverwrite(true);
+	case RENAME:
+	    writeFilesSettings.setOverwrite(false);
 	    writeFilesSettings.setApplyToAll(btnCheckButton.getSelection());
 	    result = IDialogConstants.OK_ID;
 	    break;
-	case 2:
-	    writeFilesSettings.setOverwrite(false);
+	case STOP:
+	    result = IDialogConstants.CANCEL_ID;
+	    break;
+	case OVERWRITE:
+	    writeFilesSettings.setOverwrite(true);
 	    writeFilesSettings.setApplyToAll(btnCheckButton.getSelection());
 	    result = IDialogConstants.OK_ID;
 	    break;
