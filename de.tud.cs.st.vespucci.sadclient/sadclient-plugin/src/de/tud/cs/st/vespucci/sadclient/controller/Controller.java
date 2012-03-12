@@ -65,9 +65,9 @@ import de.tud.cs.st.vespucci.sadclient.model.Transaction;
 import de.tud.cs.st.vespucci.sadclient.model.http.RequestException;
 import de.tud.cs.st.vespucci.sadclient.preferences.PreferenceConstants;
 import de.tud.cs.st.vespucci.sadclient.preferences.SADClientPreferences;
+import de.tud.cs.st.vespucci.sadclient.view.WriteFilesDialog;
+import de.tud.cs.st.vespucci.sadclient.view.WriteFilesDialog.WriteFilesSettings;
 import de.tud.cs.st.vespucci.sadclient.view.IconAndMessageDialogs;
-import de.tud.cs.st.vespucci.sadclient.view.OverwriteDialog;
-import de.tud.cs.st.vespucci.sadclient.view.OverwriteDialog.OverwriteSettings;
 
 /**
  * Gets called by the views and orchestrates the {@link SADClient}.
@@ -174,7 +174,7 @@ public class Controller {
 	    @Override
 	    protected IStatus run(IProgressMonitor progressMonitor) {
 		final SubMonitor monitor = SubMonitor.convert(progressMonitor);
-		OverwriteSettings overwriteSettings = new OverwriteSettings();
+		WriteFilesSettings writeFilesSettings = new WriteFilesSettings();
 		try {
 
 		    final int modelCount = getModelCount(sads);
@@ -186,11 +186,11 @@ public class Controller {
 		    for (SAD sad : sads) {
 			if (sad.getModel() != null) {
 			    byte[] bytes = sadClient.getModel(sad.getId(), monitor.newChild(100));
-			    writeBytes(bytes, sad.getModel().getName(), overwriteSettings);
+			    writeBytes(bytes, sad.getModel().getName(), writeFilesSettings);
 			}
 			if (downloadDocumentation && sad.getDocumentation() != null) {
 			    byte[] bytes = sadClient.getDocumentation(sad.getId(), monitor.newChild(100));
-			    writeBytes(bytes, sad.getDocumentation().getName(), overwriteSettings);
+			    writeBytes(bytes, sad.getDocumentation().getName(), writeFilesSettings);
 			}
 		    }
 		    resourceToRefresh.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
@@ -221,39 +221,39 @@ public class Controller {
 		return count;
 	    }
 
-	    private void writeBytes(byte[] bytes, String name, OverwriteSettings overwriteSettings) throws IOException {
-		FileOutputStream fos = getFileOutput(name, overwriteSettings);
+	    private void writeBytes(byte[] bytes, String name, WriteFilesSettings writeFilesSettings)
+		    throws IOException {
+		FileOutputStream fos = getFileOutput(name, writeFilesSettings);
 		IOUtils.write(bytes, fos);
 		fos.flush();
 		fos.close();
 	    }
 
-	    private FileOutputStream getFileOutput(String name, OverwriteSettings overwriteSettings)
+	    private FileOutputStream getFileOutput(String name, WriteFilesSettings writeFilesSettings)
 		    throws FileNotFoundException {
 		return new FileOutputStream(getNextFile(new File(downloadPath + File.separator + name),
-			overwriteSettings));
+			writeFilesSettings));
 	    }
 
 	    /**
 	     * Returns a file which is either
 	     * <ul>
-	     * <li>the same as the given file, when <code>overwriteSettings.isOverwrite()</code> is
+	     * <li>the same as the given file, when <code>writeFilesSettings.isOverwrite()</code> is
 	     * <code>false</code>
 	     * <li>a file which does not exist at the base path of the input file. The name is
 	     * suffixed by a digit starting from 1.
 	     * </ul>
 	     * 
 	     * @param file
-	     * @param overwriteSettings
+	     * @param writeFilesSettings
 	     * @return a file which does not exist at the base path of the input file
 	     */
-	    private File getNextFile(File file, OverwriteSettings overwriteSettings) {
+	    private File getNextFile(File file, WriteFilesSettings writeFilesSettings) {
 		if (file.exists()) {
-		    if (!overwriteSettings.isApplyToAll()) {
-			overwriteSettings = OverwriteDialog.askForSettings(overwriteSettings, file.getName());
-			System.out.println(overwriteSettings);
+		    if (!writeFilesSettings.isApplyToAll()) {
+			WriteFilesDialog.askForSettings(writeFilesSettings, file.getName());
 		    }
-		    if (!overwriteSettings.isOverwrite()) {
+		    if (!writeFilesSettings.isOverwrite()) {
 			String path = file.getAbsolutePath();
 			String prefix = FilenameUtils.removeExtension(path);
 			String suffix = FilenameUtils.getExtension(path);
