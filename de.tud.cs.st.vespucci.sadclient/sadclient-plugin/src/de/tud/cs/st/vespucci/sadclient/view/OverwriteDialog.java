@@ -55,14 +55,16 @@ import org.eclipse.ui.PlatformUI;
 public class OverwriteDialog extends Dialog {
 
     Button btnCheckButton;
+    String fileName;
 
     /**
      * Create the dialog.
      * 
      * @param parentShell
      */
-    public OverwriteDialog(Shell parentShell) {
+    public OverwriteDialog(Shell parentShell, String fileName) {
 	super(parentShell);
+	this.fileName = fileName;
     }
 
     /**
@@ -70,6 +72,7 @@ public class OverwriteDialog extends Dialog {
      * 
      * @param parent
      */
+    @SuppressWarnings("unused")
     @Override
     protected Control createDialogArea(Composite parent) {
 	final Composite container = (Composite) super.createDialogArea(parent);
@@ -83,7 +86,7 @@ public class OverwriteDialog extends Dialog {
 
 	Label lblNewLabel = new Label(composite, SWT.NONE);
 	lblNewLabel.setBounds(10, 10, 396, 14);
-	lblNewLabel.setText("File with this name exists already!");
+	lblNewLabel.setText("File \"" + fileName + "\" exists already!");
 
 	Composite composite_1 = new Composite(container, SWT.NONE);
 	composite_1.setLayout(new GridLayout(4, true));
@@ -94,25 +97,23 @@ public class OverwriteDialog extends Dialog {
 
 	btnCheckButton = new Button(composite_1, SWT.CHECK);
 	GridData gd_btnCheckButton = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-	gd_btnCheckButton.widthHint = 89;
+	gd_btnCheckButton.widthHint = 104;
 	btnCheckButton.setLayoutData(gd_btnCheckButton);
 	btnCheckButton.setText("Apply to all");
 
-	Button btnStop = new Button(composite_1, SWT.CENTER);
-	btnStop.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-	btnStop.addMouseListener(new ButtonListener(container, -1));
-
-	Button btnRename = new Button(composite_1, SWT.NONE);
-	btnRename.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-	btnRename.setText("Rename");
-	btnRename.addMouseListener(new ButtonListener(container, 1));
-
-	Button btnOverwrite = new Button(composite_1, SWT.CENTER);
-	btnOverwrite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-	btnOverwrite.setText("Overwrite");
-	btnOverwrite.addMouseListener(new ButtonListener(container, 3));
-
+	Button btnRename = getButton(composite_1, "Rename", 1);
+	Button btnStop = getButton(composite_1, "Stop", -1);
+	Button btnOverwrite = getButton(composite_1, "Overwrite", 3);
+	
 	return container;
+    }
+
+    private Button getButton(Composite composite, String text, int returnCode) {
+	Button button = new Button(composite, SWT.CENTER);
+	button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+	button.setText(text);
+	button.addMouseListener(new ButtonListener(composite, returnCode));
+	return button;
     }
 
     @Override
@@ -137,7 +138,7 @@ public class OverwriteDialog extends Dialog {
 
 		@Override
 		public void run() {
-		    returnCode += btnCheckButton.getSelection() ? 0 : 1;
+		    returnCode += btnCheckButton.getSelection() ? 1 : 0;
 		    setReturnCode(returnCode);
 		    close();
 		}
@@ -151,16 +152,17 @@ public class OverwriteDialog extends Dialog {
      */
     @Override
     protected Point getInitialSize() {
-	return new Point(425, 150);
+	return new Point(430, 150);
     }
 
-    public static OverwriteSettings askForSettings(OverwriteSettings overwriteSettings) {
+    public static OverwriteSettings askForSettings(final OverwriteSettings overwriteSettings, final String fileName) {
 	final int[] result = new int[1];
 	PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 	    public void run() {
-		OverwriteDialog bar = new OverwriteDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell());
-		bar.setBlockOnOpen(true);
-		result[0] = bar.open();
+		OverwriteDialog dialog = new OverwriteDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+			fileName);
+		dialog.setBlockOnOpen(true);
+		result[0] = dialog.open();
 	    }
 	});
 	switch (result[0]) {
@@ -177,7 +179,7 @@ public class OverwriteDialog extends Dialog {
 	    overwriteSettings.setOverwrite(true);
 	    return overwriteSettings;
 	case 4:
-	    overwriteSettings.setApplyToAll(false);
+	    overwriteSettings.setApplyToAll(true);
 	    overwriteSettings.setOverwrite(true);
 	    return overwriteSettings;
 	default:
@@ -189,20 +191,18 @@ public class OverwriteDialog extends Dialog {
 
 	private boolean applyToAll;
 
-	private boolean option;
+	private boolean overwrite;
 
-	public OverwriteSettings(boolean applyToAll, boolean option) {
+	public OverwriteSettings() {
 	    super();
-	    this.applyToAll = applyToAll;
-	    this.option = option;
 	}
 
 	private void setOverwrite(boolean overwrite) {
-	    this.option = overwrite;
+	    this.overwrite = overwrite;
 	}
 
-	private void setApplyToAll(boolean overwrite) {
-	    this.applyToAll = overwrite;
+	private void setApplyToAll(boolean applyToAll) {
+	    this.applyToAll = applyToAll;
 	}
 
 	public boolean isApplyToAll() {
@@ -210,7 +210,18 @@ public class OverwriteDialog extends Dialog {
 	}
 
 	public boolean isOverwrite() {
-	    return option;
+	    return overwrite;
+	}
+	
+	@Override
+	public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("OverwriteSettings [applyToAll=");
+	    builder.append(applyToAll);
+	    builder.append(", overwrite=");
+	    builder.append(overwrite);
+	    builder.append("]");
+	    return builder.toString();
 	}
 
     }

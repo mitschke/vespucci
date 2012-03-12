@@ -174,7 +174,7 @@ public class Controller {
 	    @Override
 	    protected IStatus run(IProgressMonitor progressMonitor) {
 		final SubMonitor monitor = SubMonitor.convert(progressMonitor);
-		OverwriteSettings overwriteSettings = new OverwriteSettings(false, false);
+		OverwriteSettings overwriteSettings = new OverwriteSettings();
 		try {
 
 		    final int modelCount = getModelCount(sads);
@@ -250,7 +250,8 @@ public class Controller {
 	    private File getNextFile(File file, OverwriteSettings overwriteSettings) {
 		if (file.exists()) {
 		    if (!overwriteSettings.isApplyToAll()) {
-			overwriteSettings = OverwriteDialog.askForSettings(overwriteSettings);
+			overwriteSettings = OverwriteDialog.askForSettings(overwriteSettings, file.getName());
+			System.out.println(overwriteSettings);
 		    }
 		    if (!overwriteSettings.isOverwrite()) {
 			String path = file.getAbsolutePath();
@@ -336,7 +337,6 @@ public class Controller {
     public void performUpdate(final SADUpdate sadUpdate) {
 
 	final int amount = getAmountOfWork(sadUpdate);
-	System.out.println("Amount of work: " + amount);
 	if (amount > 0) {
 	    Job job = new Job("Updating SAD") {
 		@Override
