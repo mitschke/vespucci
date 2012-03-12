@@ -22,7 +22,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -47,6 +46,9 @@ import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataView;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
+import de.tud.cs.st.vespucci.view.table.ColumnComparator;
+import de.tud.cs.st.vespucci.view.table.DataViewContentProvider;
+import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 public class UnmodeledElementsTableView extends ViewPart implements
 		IProjectElementView<ICodeElement> {
@@ -96,9 +98,9 @@ public class UnmodeledElementsTableView extends ViewPart implements
 
 		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION);
-		tableViewer.setContentProvider(new CodeElementContentProvider());
+		tableViewer.setContentProvider(new DataViewContentProvider<ICodeElement>());
 		tableViewer.setLabelProvider(new CodeElementLabelProvider());
-		tableViewer.setSorter(new ViewerSorter());
+		//tableViewer.setSorter(new ViewerSorter());
 
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
@@ -160,22 +162,31 @@ public class UnmodeledElementsTableView extends ViewPart implements
 		packageColumn.setText("Package");
 		packageColumn.setWidth(100);
 		packageColumn.setMoveable(true);
-		addColumnSortListener(packageColumn);
+		//addColumnSortListener(packageColumn);
 
 		TableColumn classColumn = new TableColumn(tableViewer.getTable(),
 				SWT.NONE);
 		classColumn.setText("Class");
 		classColumn.setWidth(100);
 		classColumn.setMoveable(true);
-		addColumnSortListener(classColumn);
+		//addColumnSortListener(classColumn);
 
 		TableColumn elementColumn = new TableColumn(tableViewer.getTable(),
 				SWT.NONE);
 		elementColumn.setText("Element");
 		elementColumn.setWidth(200);
 		elementColumn.setMoveable(true);
-		addColumnSortListener(elementColumn);
+//		addColumnSortListener(elementColumn);
 
+		TableColumnSorterListener.addAllColumnListener(tableViewer, new ColumnComparator() {
+			
+			@Override
+			public int compare(Object e1, Object e2, int column) {
+				CodeElementLabelProvider tlp = new CodeElementLabelProvider();
+				return tlp.getColumnText(e1, column).compareToIgnoreCase(tlp.getColumnText(e2, column));
+			}
+		});
+		
 		IActionBars actionBars = getViewSite().getActionBars();
 		fillContextMenu(actionBars.getMenuManager());
 		fillToolBar(actionBars.getToolBarManager());

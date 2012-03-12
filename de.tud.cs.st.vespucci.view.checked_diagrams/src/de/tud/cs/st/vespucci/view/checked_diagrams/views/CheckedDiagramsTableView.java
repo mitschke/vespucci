@@ -29,7 +29,7 @@ import org.eclipse.ui.part.ViewPart;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.view.ImageManager;
-import de.tud.cs.st.vespucci.view.checked_diagrams.model.Pair;
+import de.tud.cs.st.vespucci.view.model.Pair;
 
 public class CheckedDiagramsTableView extends ViewPart {
 
@@ -87,8 +87,8 @@ public class CheckedDiagramsTableView extends ViewPart {
 				}
 			}
 		};
-		disposeAction.setText("dispose");
-		disposeAction.setToolTipText("dispose");
+		disposeAction.setText("remove diagram");
+		disposeAction.setToolTipText("removes all violation from this dagram an stop checking it");
 		disposeAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 				getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
 	}

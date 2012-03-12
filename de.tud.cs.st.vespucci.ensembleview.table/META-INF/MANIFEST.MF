@@ -16,5 +16,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.jdt.core,
  org.eclipse.jdt.ui
-Bundle-ClassPath: .,
- swing2swt.jar
+Bundle-ClassPath: .
