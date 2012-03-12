@@ -64,7 +64,14 @@ class TableColumnComparator extends ViewerSorter{
 		int column = getOriginialSortColumnIndex(tableViewer.getTable());
 		int sortDirection = getSortDirection(); 
 
-		return sortDirection * columnComparator.compare(e1, e2, column);
+		int tempOrder = 0;
+		for (int i = column; i < tableViewer.getTable().getColumnCount(); i++){
+			tempOrder = sortDirection * columnComparator.compare(e1, e2, i);
+			if (tempOrder != 0){
+				break;
+			}
+		}
+		return tempOrder;
 	}
 
 	private int getSortDirection() {

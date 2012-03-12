@@ -158,9 +158,9 @@ public class EnsembleElementsTableView extends ViewPart {
 			@Override
 			public int compare(Object e1, Object e2, int column) {
 				int tempOrder = 0;
-				if (column == 3){
+				if (column == COLOUMN_ELEMENT){
 					IPair<IEnsemble, ICodeElement> element1 = Pair.transfer(e1, IEnsemble.class, ICodeElement.class);	
-					IPair<IEnsemble, ICodeElement> element2 = Pair.transfer(e1, IEnsemble.class, ICodeElement.class);;
+					IPair<IEnsemble, ICodeElement> element2 = Pair.transfer(e2, IEnsemble.class, ICodeElement.class);;
 					tempOrder =  EnsembleElementsTableLabelProvider.createElementTypQualifier(element1.getSecond()).compareTo(EnsembleElementsTableLabelProvider.createElementTypQualifier(element2.getSecond()));
 					if (tempOrder != 0){
 						return tempOrder;

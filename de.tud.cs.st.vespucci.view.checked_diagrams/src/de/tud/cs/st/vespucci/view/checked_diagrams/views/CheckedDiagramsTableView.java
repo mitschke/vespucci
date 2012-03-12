@@ -30,6 +30,8 @@ import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.view.ImageManager;
 import de.tud.cs.st.vespucci.view.model.Pair;
+import de.tud.cs.st.vespucci.view.table.ColumnComparator;
+import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 public class CheckedDiagramsTableView extends ViewPart {
 
