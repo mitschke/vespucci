@@ -51,8 +51,8 @@ import de.tud.cs.st.vespucci.sadclient.controller.Controller;
 import de.tud.cs.st.vespucci.sadclient.model.SAD;
 
 /**
- * This {@link IDropActionDelegate} is responsible for drops of (multiple) SADs
- * into the package explorer.
+ * This {@link IDropActionDelegate} is responsible for drops of (multiple) SADs into the package
+ * explorer.
  * 
  * @author Mateusz Parzonka
  * 
@@ -69,14 +69,17 @@ public class ExplorerDropDelegate implements IDropActionDelegate {
 
 	    if (source instanceof byte[]) {
 		try {
-		    Controller.getInstance().downloadModelsAndDocumentation(toSADs((byte[]) source), file.getAbsolutePath(), resource);
+		    Controller.getInstance().downloadModelsAndDocumentation(toSADs((byte[]) source),
+			    file.getAbsolutePath(), resource);
 		    return true;
 		} catch (Exception e) {
-		    e.printStackTrace();
+		    IconAndMessageDialogs.logError("Error while dropping SADs in package explorer", e.getMessage());
 		    return false;
 		}
 	    }
 	}
+	IconAndMessageDialogs.logWarning("Invalid location for SAD drag and drop.",
+		"SADs can only be dropped in project folders and normal (non-source) folders.");
 	return false;
     }
 

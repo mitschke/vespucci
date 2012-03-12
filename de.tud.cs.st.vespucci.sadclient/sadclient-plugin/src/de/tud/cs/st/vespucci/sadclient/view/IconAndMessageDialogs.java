@@ -69,5 +69,9 @@ public class IconAndMessageDialogs {
     public static void logError(final String message, final String reason) {
 	StatusManager.getManager().handle(new Status(IStatus.ERROR, Activator.PLUGIN_ID, reason), StatusManager.SHOW);
     }
+    
+    public static void logWarning(final String message, final String reason) {
+   	StatusManager.getManager().handle(new Status(IStatus.WARNING, Activator.PLUGIN_ID, reason), StatusManager.LOG);
+       }
 
 }
