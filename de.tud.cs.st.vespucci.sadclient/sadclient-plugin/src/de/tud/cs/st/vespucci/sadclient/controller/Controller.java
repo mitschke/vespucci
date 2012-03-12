@@ -251,7 +251,9 @@ public class Controller {
 	    private File getNextFile(File file, WriteFilesSettings writeFilesSettings) {
 		if (file.exists()) {
 		    if (!writeFilesSettings.isApplyToAll()) {
-			WriteFilesDialog.askForSettings(writeFilesSettings, file.getName());
+			boolean dialogReturnOk = WriteFilesDialog.askForSettings(writeFilesSettings, file.getName());
+			if (!dialogReturnOk)
+			    throw new OperationCanceledException();
 		    }
 		    if (!writeFilesSettings.isOverwrite()) {
 			String path = file.getAbsolutePath();

@@ -136,7 +136,7 @@ public class WriteFilesDialog extends MessageDialog {
 	return new Point(450, 160);
     }
 
-    public static void askForSettings(final WriteFilesSettings writeFilesSettings, final String fileName) {
+    public static boolean askForSettings(final WriteFilesSettings writeFilesSettings, final String fileName) {
 	final int[] result = new int[1];
 	PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 	    public void run() {
@@ -146,6 +146,7 @@ public class WriteFilesDialog extends MessageDialog {
 		result[0] = dialog.open();
 	    }
 	});
+	return result[0] == IDialogConstants.OK_ID ? true : false; 
     }
 
     public static class WriteFilesSettings {
