@@ -234,7 +234,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	private ShapesDiagram getDiagramReferenceHelper() {
 		// temporary variables used to navigate to top node
 
-		EObject parent = this.eContainer.eContainer();
+		EObject parent = this.eContainer();
 
 		while (!(parent instanceof ShapesDiagram)) {
 			parent = parent.eContainer();
