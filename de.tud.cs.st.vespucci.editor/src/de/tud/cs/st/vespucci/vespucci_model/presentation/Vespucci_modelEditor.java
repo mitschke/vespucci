@@ -1023,7 +1023,7 @@ public class Vespucci_modelEditor
 	 * This is the method used by the framework to install your own controls.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public void createPages() {
@@ -1057,9 +1057,14 @@ public class Vespucci_modelEditor
 				selectionViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
 
 				selectionViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
-				selectionViewer.setInput(editingDomain.getResourceSet());
+				
+				ResourceSet resourceSet = editingDomain.getResourceSet();
+				Resource resource = (Resource)resourceSet.getResources().get(0);
+				
+				selectionViewer.setInput(resource);
+	
 				selectionViewer.setSelection(new StructuredSelection(editingDomain.getResourceSet().getResources().get(0)), true);
-				viewerPane.setTitle(editingDomain.getResourceSet());
+				viewerPane.setTitle(resource);
 
 				new AdapterFactoryTreeEditor(selectionViewer.getTree(), adapterFactory);
 

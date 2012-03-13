@@ -112,7 +112,6 @@ public class ShapesDiagramItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES);
-			childrenFeatures.add(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS);
 		}
 		return childrenFeatures;
 	}
@@ -164,8 +163,10 @@ public class ShapesDiagramItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ShapesDiagram.class)) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
 			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -192,46 +193,6 @@ public class ShapesDiagramItemProvider
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES,
 				 Vespucci_modelFactory.eINSTANCE.createEnsemble()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createNotAllowed()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createOutgoing()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createIncoming()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createInAndOut()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createExpected()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createGlobalOutgoing()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createGlobalIncoming()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createViolation()));
 	}
 
 	/**
