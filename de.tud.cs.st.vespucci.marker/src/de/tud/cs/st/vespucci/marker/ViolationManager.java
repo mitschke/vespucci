@@ -111,7 +111,13 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 	private String createSourceViolationDescription(IViolation element) {
 		return descriptionFactory.getDescription(element);
 	}
-
+	
+	/**
+	 * Implementation of ICodeElementFoundProcessor
+	 * for marking CodeElements of IViolations
+	 * 
+	 * @author 
+	 */
 	private class CodeElementMarker implements ICodeElementFoundProcessor{
 
 		private int type;

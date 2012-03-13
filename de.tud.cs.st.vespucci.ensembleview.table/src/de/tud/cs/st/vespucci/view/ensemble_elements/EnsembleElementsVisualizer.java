@@ -41,10 +41,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
-import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
+import de.tud.cs.st.vespucci.interfaces.IEnsembleElementView;
 import de.tud.cs.st.vespucci.utilities.Util;
 import de.tud.cs.st.vespucci.view.ensemble_elements.views.EnsembleElementsTableView;
 
+/**
+ * Receive IEnsembleElementsViews and delegate them to EnsembleElementsTableView for visualization
+ * 
+ * @author 
+ */
 public class EnsembleElementsVisualizer implements IResultProcessor{
 
 	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.view.ensemble_elements";
@@ -58,10 +63,9 @@ public class EnsembleElementsVisualizer implements IResultProcessor{
 
 	@Override
 	public void processResult(Object result, IFile diagramFile) {
-		IEnsembleElementList ensembleElementList = Util.adapt(result, IEnsembleElementList.class);
+		IEnsembleElementView ensembleElementList = Util.adapt(result, IEnsembleElementView.class);
 		if (ensembleElementList != null){	
 			openView();
-
 			view.setData(ensembleElementList, diagramFile.getProject());
 		}
 	}
@@ -76,7 +80,7 @@ public class EnsembleElementsVisualizer implements IResultProcessor{
 
 	@Override
 	public boolean isInterested(Class<?> resultClass) {
-		return IEnsembleElementList.class.equals(resultClass);
+		return IEnsembleElementView.class.equals(resultClass);
 	}
 
 	@Override

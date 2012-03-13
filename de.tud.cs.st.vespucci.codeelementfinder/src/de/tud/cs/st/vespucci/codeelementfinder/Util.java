@@ -1,3 +1,36 @@
+/*
+ *  License (BSD Style License):
+ *   Copyright (c) 2011
+ *   Software Technology Group
+ *   Department of Computer Science
+ *   Technische Universitiät Darmstadt
+ *   All rights reserved.
+ *
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions are met:
+ *
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   - Neither the name of the Software Technology Group Group or Technische
+ *     Universitiät Darmstadt nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
+ *     prior written permission.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *   POSSIBILITY OF SUCH DAMAGE.
+ */
 package de.tud.cs.st.vespucci.codeelementfinder;
 
 import java.util.HashMap;
@@ -21,6 +54,11 @@ import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 
+/**
+ * Provide functionalities that is need to find ICodeElemnets
+ * 
+ * @author 
+ */
 @SuppressWarnings("restriction")
 public class Util {
 
@@ -28,7 +66,12 @@ public class Util {
 
 	private static Map<String,String> primitiveTypeTable;
 
-
+	/**
+	 * Creates string pattern for an ICodeElement
+	 * 
+	 * @param sourceElement ICodeElement string pattern should be created for
+	 * @return StringPattern
+	 */
 	public static String createStringPattern(ICodeElement sourceElement) {
 		if (sourceElement instanceof IClassDeclaration){
 			IClassDeclaration classDeclaration = (IClassDeclaration) sourceElement;
@@ -52,6 +95,15 @@ public class Util {
 		return null;
 	}
 
+	/**
+	 * Creates the information what should be searched for out of an given
+	 * ICodeelement
+	 * 
+	 * @see org.eclipse.jdt.core.search.IJavaSearchConstants
+	 * 
+	 * @param sourceElement ICodeElement that is looked for
+	 * @return SearchFor constant
+	 */
 	public static int createSearchFor(ICodeElement sourceElement) {
 		if (sourceElement instanceof IClassDeclaration){
 			return IJavaSearchConstants.CLASS_AND_INTERFACE;
@@ -66,6 +118,12 @@ public class Util {
 		return 0;
 	}
 
+	/**
+	 * Creates stack with the prioritize search items for an ICodeElement
+	 * 
+	 * @param codeElement ICodeElement stack create for
+	 * @return Stack with the prioritize search items
+	 */
 	public static List<ICodeElement> createSearchTryStack(ICodeElement codeElement){
 		if (codeElement instanceof IClassDeclaration){
 			return createSearchTryStack((IClassDeclaration) codeElement);
@@ -81,7 +139,13 @@ public class Util {
 		return new LinkedList<ICodeElement>();
 	}
 
-
+	/**
+	 * Creates stack with the prioritize search items for an ICodeElement
+	 * containing all possible search items to find the contained class
+	 * 
+	 * @param codeElement ICodeElement stack create for
+	 * @return Stack with the prioritize search items
+	 */
 	private static List<ICodeElement> createSearchTryClassStack(ICodeElement codeElement) {
 		List<ICodeElement> result= new LinkedList<ICodeElement>();
 
@@ -101,7 +165,13 @@ public class Util {
 		return result;
 	}
 
-
+	/**
+	 * Creates stack with the prioritize search items for an IClassDeclaration
+	 * containing all possible search items to find the IClassDeclaration
+	 * 
+	 * @param codeElement ICodeElement stack create for
+	 * @return Stack with the prioritize search items
+	 */
 	public static List<ICodeElement> createSearchTryStack(IClassDeclaration codeElement){
 		List<ICodeElement> result= new LinkedList<ICodeElement>();
 
@@ -126,6 +196,13 @@ public class Util {
 		return result;
 	}
 
+	/**
+	 * Creates stack with the prioritize search items for an IMethodDeclaration
+	 * containing all possible search items to find the IMethodDeclaration
+	 * 
+	 * @param codeElement ICodeElement stack create for
+	 * @return Stack with the prioritize search items
+	 */
 	public static List<ICodeElement> createSearchTryStack(IMethodDeclaration codeElement){
 		List<ICodeElement> result= new LinkedList<ICodeElement>();
 
@@ -138,6 +215,13 @@ public class Util {
 		return result;
 	}
 
+	/**
+	 * Creates stack with the prioritize search items for an IFieldDeclaration
+	 * containing all possible search items to find the IFieldDeclaration
+	 * 
+	 * @param codeElement ICodeElement stack create for
+	 * @return Stack with the prioritize search items
+	 */
 	public static List<ICodeElement> createSearchTryStack(IFieldDeclaration codeElement){
 		List<ICodeElement> result= new LinkedList<ICodeElement>();
 
@@ -150,7 +234,12 @@ public class Util {
 		return result;
 	}
 
-
+	/**
+	 * Create array of possible ClassNames out of a given name of a class
+	 * 
+	 * @param className Class name possibilities should be created for
+	 * @return Array of all class names
+	 */
 	private static String[] createPossibleClassNames(String className) {
 		int numOf$ = count$(className);
 		if (numOf$ == 0){
@@ -179,10 +268,31 @@ public class Util {
 		return results;
 	}
 
-	private static int count$(String className) {
-		return className.replace("$", ":").split(":").length - 1;
+	/**
+	 * Count $ in a string
+	 * 
+	 * @param string String $ should be count in
+	 * @return Number of $ in the given string
+	 */
+	private static int count$(String string) {
+		return string.replace("$", ":").split(":").length - 1;
 	}
 
+	/**
+	 * Create a two dimensional array for all binary configurations
+	 * <br>
+	 * For example:<br>
+	 * <code>count = 2</code>
+	 * <br>
+	 * return:<br>
+	 * <code>1 1</code><br>
+	 * <code>1 0</code><br>
+	 * <code>0 1</code><br>
+	 * <code>0 0</code><br>
+	 * 
+	 * @param count Width of the array
+	 * @return Array with all possible configurations
+	 */
 	private static int[][] fillArrayBinary(int count){
 		int[][] array = new int[(int) Math.pow(2, count)][count];
 
@@ -195,7 +305,18 @@ public class Util {
 		return array;
 	}
 
-
+	/**
+	 * METHODE MUSS VERSCHOBEN WERDEN, HAT HIER NIX ZU SUCHEN.
+	 * WIRD AUS LABELPROVIDER VON VIEWS AUFGERUFEN	 * 
+	 * 
+	 * Returns the type qualifier modified out of a given type qualifier representation
+	 * <br>
+	 * For example:<br>
+	 * QString; --> Ljava/lang/String;
+	 * 
+	 * @param typQualifier Other representation of type qualifier
+	 * @return Modified type Qualifier
+	 */
 	public static String createSimpleTypeText(String typQualifier){
 		String label= "";
 
@@ -224,6 +345,16 @@ public class Util {
 		return label;
 	}
 
+	/**
+	 * Returns the type qualifier modified out of a given type qualifier representation and an IType element
+	 * <br>
+	 * For example:<br>
+	 * QString; --> Ljava/lang/String;
+	 * 
+	 * @param signatur Other representation of type qualifier
+	 * @param declaringType Type which declared the type
+	 * @return Type qualifier
+	 */
 	public static String createTypQualifier(String signatur, IType declaringType) {		
 
 		if (primitiveTypeTable == null){
@@ -250,7 +381,7 @@ public class Util {
 				innerTypQualifier = primitiveTypeTable.get(innerTypQualifier);
 			}			
 
-			// add the arraySymbols at the beginning and ';' at the end
+			// add the arraySymbols at the beginning
 			typeQualifier = arraySymbols + innerTypQualifier;
 
 		} catch (Exception e) {
@@ -292,6 +423,24 @@ public class Util {
 
 	public static String getLastDollarSequence(String simpleClassName) {
 		return simpleClassName.substring(simpleClassName.lastIndexOf("$") + 1);
+	}
+	
+	public static void printICodeElement(ICodeElement codeElement){
+		System.out.println("------------------"+codeElement.getClass()+"----------------------------");
+			System.out.println("PackageIdentifier: " + codeElement.getPackageIdentifier());
+			System.out.println("SimpleClassName: " + codeElement.getSimpleClassName());
+			if (codeElement instanceof IFieldDeclaration){
+				System.out.println("FieldName: " + ((IFieldDeclaration) codeElement).getFieldName());
+			}
+			if (codeElement instanceof IMethodDeclaration){
+				System.out.println("MethodeName: " + ((IMethodDeclaration) codeElement).getMethodName());
+				System.out.println("ReturnQualifier: " + ((IMethodDeclaration) codeElement).getReturnTypeQualifier());
+				System.out.println("ParameterQualifier:");
+				for (String string : ((IMethodDeclaration) codeElement).getParameterTypeQualifiers()) {
+					System.out.println("  - " + string);
+				}
+			}
+		System.out.println("----------------------------------------------");
 	}
 
 }

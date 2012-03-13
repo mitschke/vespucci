@@ -36,22 +36,71 @@ package de.tud.cs.st.vespucci.interfaces;
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
+/**
+ * Stands for an violation of the regulations make in the diagram file.
+ * Provide information about the violation.
+ * 
+ * @author 
+ */
 public interface IViolation {
 
+	/**
+	 * Returns the violating kind of the violation.
+	 * (also known as "Dependency Kind")
+	 * <br><br>
+	 * For example:<br>
+	 * <code>extends</code><br>
+	 * <code>implements</code><br>
+	 * <code>invoke_virtual</code><br>
+	 * <code>...</code><br>
+	 * 
+	 * @return The violating kind
+	 */
 	String getViolatingKind();
-	
+
+	/**
+	 * Returns the related diagram file as path + filename as string
+	 * 
+	 * @return Diagram file as string
+	 */
 	String getDiagramFile();
 
-	// Could be null
+	/**
+	 * Returns the source element of the violation
+	 * <br><br>
+	 * Could be null!
+	 * 
+	 * @return Source element
+	 */
 	ICodeElement getSourceElement();
 
-	// Could be null
+	/**
+	 * Returns the target element of the violation
+	 * <br><br>
+	 * Could be null!
+	 * 
+	 * @return Target element
+	 */
 	ICodeElement getTargetElement();
 
+	/**
+	 * Returns the source ensemble of the violation
+	 * 
+	 * @return Source ensemble
+	 */
 	IEnsemble getSourceEnsemble();
 
+	/**
+	 * Returns the target ensemble of the violation
+	 * 
+	 * @return Target ensemble
+	 */
 	IEnsemble getTargetEnsemble();
-
+	
+	/**
+	 * Returns the causality constraint of the violation
+	 * 
+	 * @return Constraint
+	 */
 	IConstraint getConstraint();
-
 }

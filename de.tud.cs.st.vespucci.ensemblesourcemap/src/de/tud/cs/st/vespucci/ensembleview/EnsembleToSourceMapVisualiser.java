@@ -8,7 +8,7 @@ import org.eclipse.ui.PlatformUI;
 import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
 import de.tud.cs.st.vespucci.ensembleview.model.TreeElement;
 import de.tud.cs.st.vespucci.ensembleview.views.EnsembleSourceMapView;
-import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
+import de.tud.cs.st.vespucci.interfaces.IEnsembleElementView;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.utilities.Util;
 
@@ -18,7 +18,7 @@ public class EnsembleToSourceMapVisualiser implements IResultProcessor {
 	
 	@Override
 	public void processResult(Object result, IFile file) {
-		IEnsembleElementList ensembleElementList = Util.adapt(result, IEnsembleElementList.class);
+		IEnsembleElementView ensembleElementList = Util.adapt(result, IEnsembleElementView.class);
 		if (ensembleElementList != null){
 			EnsembleSourceProject temp = new EnsembleSourceProject(ensembleElementList);
 		
@@ -44,7 +44,7 @@ public class EnsembleToSourceMapVisualiser implements IResultProcessor {
 
 	@Override
 	public boolean isInterested(Class<?> resultClass) {
-		return IEnsembleElementList.class.equals(resultClass);
+		return IEnsembleElementView.class.equals(resultClass);
 	}
 
 	@Override

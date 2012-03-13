@@ -48,16 +48,17 @@ import de.tud.cs.st.vespucci.view.ImageManager;
 import de.tud.cs.st.vespucci.view.model.Pair;
 
 /**
+ * TableLabelProvider for the EnsembleElements table
  * 
  * @author 
  */
 class EnsembleElementsTableLabelProvider extends LabelProvider implements ITableLabelProvider {
 	public String getColumnText(Object obj, int index) {
-		return createText(Pair.transfer(obj, IEnsemble.class, ICodeElement.class), index);
+		return createText(Pair.cast(obj, IEnsemble.class, ICodeElement.class), index);
 	}
 
 	public Image getColumnImage(Object obj, int index) {
-		IPair<IEnsemble, ICodeElement> pair = Pair.transfer(obj, IEnsemble.class, ICodeElement.class);
+		IPair<IEnsemble, ICodeElement> pair = Pair.cast(obj, IEnsemble.class, ICodeElement.class);
 		if (pair != null){
 			switch (index) {
 			case 0:
@@ -82,6 +83,12 @@ class EnsembleElementsTableLabelProvider extends LabelProvider implements ITable
 		return null;
 	}
 
+	/**
+	 * Create an ranking for ICodeElements to order them
+	 * 
+	 * @param element Element to rank
+	 * @return Ranking for the given Element
+	 */
 	public static Integer createElementTypQualifier(ICodeElement element){
 		if (element instanceof IClassDeclaration){
 			return 1;
@@ -95,34 +102,79 @@ class EnsembleElementsTableLabelProvider extends LabelProvider implements ITable
 		return 0;
 	}
 
-	public static String createText(IPair<IEnsemble, ICodeElement> value, int column){
-		if (value == null){
+	/**
+	 * Creates text which can be used in visualizations
+	 * 
+	 * @param element Element text created for
+	 * @param column Column text created for
+	 * @return Text created for the given element and column
+	 */
+	private static String createText(IPair<IEnsemble, ICodeElement> element, int column){
+		if (element == null){
 			return "";
 		}
 		switch (column){
-		case 0:
-			return createEnsembleText(value);
-		case 1:
-			return createPackageText(value);
-		case 2:
-			return createClassText(value);
-		case 3:
-			return createCodeElementText(value);
+		case EnsembleElementsTableView.COLOUMN_ENSEMBLE:
+			return createEnsembleText(element);
+		case EnsembleElementsTableView.COLOUMN_PACKAGE:
+			return createPackageText(element);
+		case EnsembleElementsTableView.COLOUMN_CLASS:
+			return createClassText(element);
+		case EnsembleElementsTableView.COLOUMN_ELEMENT:
+			return createCodeElementText(element);
 		default:
 			return "";
 		}
 	}
 
-	private static String createPackageText(IPair<IEnsemble, ICodeElement> value) {
-		return value.getSecond().getPackageIdentifier().replaceAll("/", ".");
+	/**
+	 * Creates text which can be used in visualizations
+	 * which contains information about the ensemble of the given element
+	 * 
+	 * @param element Element text created for
+	 * @return Text created for the given element
+	 */
+	private static String createEnsembleText(IPair<IEnsemble, ICodeElement> element) {
+		IEnsemble ensemble = element.getFirst();
+		String label =  ensemble.getName();
+		while (ensemble.getParent() != null){
+			ensemble = ensemble.getParent();
+			label = ensemble.getName() + "." + label;
+		}
+		return label;
 	}
 
-	private static String createClassText(IPair<IEnsemble, ICodeElement> value) {
-		return value.getSecond().getSimpleClassName();
+	/**
+	 * Creates text which can be used in visualizations
+	 * which contains information about the package of the given element
+	 * 
+	 * @param element Element text created for
+	 * @return Text created for the given element
+	 */
+	private static String createPackageText(IPair<IEnsemble, ICodeElement> element) {
+		return element.getSecond().getPackageIdentifier().replaceAll("/", ".");
 	}
 
-	public static String createCodeElementText(IPair<IEnsemble, ICodeElement> value) {
-		ICodeElement codeElement = value.getSecond();
+	/**
+	 * Creates text for an ICodeElement which can be used in visualizations
+	 * which contains information about the Class of the given element
+	 * 
+	 * @param element Element text created for
+	 * @return Text created for the given element
+	 */
+	private static String createClassText(IPair<IEnsemble, ICodeElement> element) {
+		return element.getSecond().getSimpleClassName();
+	}
+
+	/**
+	 * Creates text which can be used in visualizations
+	 * which contains information about the ICodeElement of the given element
+	 * 
+	 * @param element Element text created for
+	 * @return Text created for the given element
+	 */
+	private static String createCodeElementText(IPair<IEnsemble, ICodeElement> element) {
+		ICodeElement codeElement = element.getSecond();
 		if (codeElement instanceof IClassDeclaration){
 			return ((IClassDeclaration)codeElement).getSimpleClassName();
 		}
@@ -142,15 +194,5 @@ class EnsembleElementsTableLabelProvider extends LabelProvider implements ITable
 			return ((IFieldDeclaration)codeElement).getFieldName()+" : " + Util.createSimpleTypeText(((IFieldDeclaration)codeElement).getTypeQualifier());
 		}
 		return "";
-	}
-
-	private static String createEnsembleText(IPair<IEnsemble, ICodeElement> value) {
-		IEnsemble ensemble = value.getFirst();
-		String label =  ensemble.getName();
-		while (ensemble.getParent() != null){
-			ensemble = ensemble.getParent();
-			label = ensemble.getName() + "." + label;
-		}
-		return label;
 	}
 }

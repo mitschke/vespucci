@@ -33,9 +33,21 @@
  */
 package de.tud.cs.st.vespucci.interfaces;
 
+/**
+ * Representation of an class
+ * 
+ * @author 
+ */
 public interface IClassDeclaration extends ICodeElement{
 
-	// Ljava/lang/Object; FieldTypeQualifier
+	/**
+	 * Returns the type qualifier of the class
+	 * 
+	 * for example: <br>
+	 * 	<code>Ljava/lang/Object;</code><br>
+	 * 	<code>Ljava/lang/String;</code>
+	 *
+	 * @return TypeQualifier of the class
+	 */
 	String getTypeQualifier();
-	
 }

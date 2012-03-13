@@ -35,6 +35,11 @@ package de.tud.cs.st.vespucci.information.interfaces.spi;
 
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 
+/**
+ * Concrete implementation of IClassDeclaration
+ * 
+ * @author 
+ */
 public class ClassDeclaration extends CodeElement implements IClassDeclaration {
 
 	String typeQualifier;
@@ -48,5 +53,4 @@ public class ClassDeclaration extends CodeElement implements IClassDeclaration {
 	public String getTypeQualifier() {
 		return typeQualifier;
 	}
-
 }

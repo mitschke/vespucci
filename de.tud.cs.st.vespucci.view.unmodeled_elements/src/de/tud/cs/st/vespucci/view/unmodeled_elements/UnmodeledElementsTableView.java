@@ -178,7 +178,7 @@ public class UnmodeledElementsTableView extends ViewPart implements
 		elementColumn.setMoveable(true);
 //		addColumnSortListener(elementColumn);
 
-		TableColumnSorterListener.addAllColumnListener(tableViewer, new ColumnComparator() {
+		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new ColumnComparator() {
 			
 			@Override
 			public int compare(Object e1, Object e2, int column) {

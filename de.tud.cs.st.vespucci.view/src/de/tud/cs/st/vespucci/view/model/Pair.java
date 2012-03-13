@@ -61,7 +61,7 @@ public class Pair<A,B> implements IPair<A, B> {
 		return seconde;
 	}
 
-	public static <A,B> IPair<A, B> transfer(Object obj, Class<A> first, Class<B> secode){
+	public static <A,B> IPair<A, B> cast(Object obj, Class<A> first, Class<B> secode){
 		if (obj instanceof IPair){
 			IPair<?,?> temp = (IPair<?,?>) obj;
 			if (first.isInstance(temp.getFirst())){

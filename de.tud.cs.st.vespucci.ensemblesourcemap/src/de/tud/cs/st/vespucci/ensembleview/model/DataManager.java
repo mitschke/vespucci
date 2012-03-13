@@ -6,21 +6,20 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IMember;
 
 import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
-import de.tud.cs.st.vespucci.codeelementfinder.Debug;
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
-import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
+import de.tud.cs.st.vespucci.interfaces.IEnsembleElementView;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public class DataManager implements IDataViewObserver<IPair<IEnsemble, ICodeElement>> {
 
-	private IEnsembleElementList incommingData;
+	private IEnsembleElementView incommingData;
 	private IProject project;
 	
 	
-	public DataManager(IEnsembleElementList incommingData, IProject project){
+	public DataManager(IEnsembleElementView incommingData, IProject project){
 		this.project = project;
 		this.incommingData = incommingData;
 		this.incommingData.register(this);
@@ -28,7 +27,7 @@ public class DataManager implements IDataViewObserver<IPair<IEnsemble, ICodeElem
 	}
 
 
-	private void initialDataImport(IEnsembleElementList incommingData) {
+	private void initialDataImport(IEnsembleElementView incommingData) {
 		for (Iterator<IPair<IEnsemble, ICodeElement>> i = incommingData.iterator(); i.hasNext();){
 			added(i.next());
 		}
@@ -42,7 +41,6 @@ public class DataManager implements IDataViewObserver<IPair<IEnsemble, ICodeElem
 	@Override
 	public void added(IPair<IEnsemble, ICodeElement> element) {
 		// Serach for Element
-		Debug.printICodeElement(element.getSecond());
 		CodeElementFinder.startSearch(element.getSecond(), project, new CodeFinder(element));
 	}
 	

@@ -13,7 +13,7 @@ import de.tud.cs.st.scala.utilitites.ScalaFunction1Wrapper;
 import de.tud.cs.st.vespucci.database.architecture.provider.ArchitectureDatabaseProvider;
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
-import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
+import de.tud.cs.st.vespucci.interfaces.IEnsembleElementView;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.utilities.Util;
@@ -52,7 +52,7 @@ public class EnsembleElementModelProcessor implements IModelProcessor {
 	 */
 	@Override
 	public Class<?> resultClass() {
-		return IEnsembleElementList.class;
+		return IEnsembleElementView.class;
 	}
 
 	/**

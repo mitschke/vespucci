@@ -10,11 +10,11 @@ import sae.collections.QueryResult;
 import scala.collection.immutable.List;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
-import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
+import de.tud.cs.st.vespucci.interfaces.IEnsembleElementView;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
-public class EnsembleElementListView implements IEnsembleElementList,
+public class EnsembleElementListView implements IEnsembleElementView,
 		Observer<IPair<IEnsemble, ICodeElement>> {
 
 	private LazyView<IPair<IEnsemble, ICodeElement>> view;

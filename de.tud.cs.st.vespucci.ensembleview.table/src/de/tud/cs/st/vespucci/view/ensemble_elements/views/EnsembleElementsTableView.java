@@ -78,6 +78,8 @@ import de.tud.cs.st.vespucci.view.table.DataViewContentProvider;
 import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 /**
+ * View which visualize the information of an IEnsembleElementsView in a table
+ * with filter and sort functionalities
  * 
  * @author 
  */
@@ -85,10 +87,10 @@ public class EnsembleElementsTableView extends ViewPart {
 
 	private IProject project;
 
-	private static final int COLOUMN_ENSEMBLE = 0;
-	private static final int COLOUMN_PACKAGE = 1;
-	private static final int COLOUMN_CLASS = 2;
-	private static final int COLOUMN_ELEMENT = 3;
+	public static final int COLOUMN_ENSEMBLE = 0;
+	public static final int COLOUMN_PACKAGE = 1;
+	public static final int COLOUMN_CLASS = 2;
+	public static final int COLOUMN_ELEMENT = 3;
 
 	private TableViewer tableViewer;
 
@@ -153,14 +155,14 @@ public class EnsembleElementsTableView extends ViewPart {
 		tableColumn.getColumn().setText("Element");
 		tableColumn.getColumn().setWidth(200);
 
-		TableColumnSorterListener.addAllColumnListener(tableViewer, new ColumnComparator() {
+		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new ColumnComparator() {
 
 			@Override
 			public int compare(Object e1, Object e2, int column) {
 				int tempOrder = 0;
 				if (column == COLOUMN_ELEMENT){
-					IPair<IEnsemble, ICodeElement> element1 = Pair.transfer(e1, IEnsemble.class, ICodeElement.class);	
-					IPair<IEnsemble, ICodeElement> element2 = Pair.transfer(e2, IEnsemble.class, ICodeElement.class);;
+					IPair<IEnsemble, ICodeElement> element1 = Pair.cast(e1, IEnsemble.class, ICodeElement.class);	
+					IPair<IEnsemble, ICodeElement> element2 = Pair.cast(e2, IEnsemble.class, ICodeElement.class);;
 					tempOrder =  EnsembleElementsTableLabelProvider.createElementTypQualifier(element1.getSecond()).compareTo(EnsembleElementsTableLabelProvider.createElementTypQualifier(element2.getSecond()));
 					if (tempOrder != 0){
 						return tempOrder;
@@ -191,7 +193,7 @@ public class EnsembleElementsTableView extends ViewPart {
 				if (event.getSelection() instanceof StructuredSelection) {
 					StructuredSelection ts = (StructuredSelection) event.getSelection();
 
-					IPair<IEnsemble, ICodeElement> pair = Pair.transfer(ts.getFirstElement(), IEnsemble.class, ICodeElement.class); 
+					IPair<IEnsemble, ICodeElement> pair = Pair.cast(ts.getFirstElement(), IEnsemble.class, ICodeElement.class); 
 					if (pair != null) {
 						CodeElementFinder.startSearch(pair.getSecond(), project, new ICodeElementFoundProcessor() {
 

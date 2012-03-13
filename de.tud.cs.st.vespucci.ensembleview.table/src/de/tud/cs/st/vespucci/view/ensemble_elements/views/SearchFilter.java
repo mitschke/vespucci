@@ -45,6 +45,7 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.view.model.Pair;
 
 /**
+ * Filter used for search functionality.
  * 
  * @author 
  */
@@ -61,7 +62,7 @@ public class SearchFilter extends ViewerFilter {
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if (element != null){
-			return select(Pair.transfer(element, IEnsemble.class, ICodeElement.class), column, input);
+			return select(Pair.cast(element, IEnsemble.class, ICodeElement.class), column, input);
 		}
 		return false;
 	}
@@ -70,7 +71,8 @@ public class SearchFilter extends ViewerFilter {
 		if (element != null){
 			Pattern pat = Pattern.compile(".*" + input.replace("?", ".").replace("*", ".*"));
 			
-			String string = EnsembleElementsTableLabelProvider.createText(element, column);
+			EnsembleElementsTableLabelProvider ensembleElementsTableLableProvider = new EnsembleElementsTableLabelProvider();
+			String string = ensembleElementsTableLableProvider.getColumnText(element, column);
 			
 			Matcher matcher = pat.matcher(string);
 			return matcher.lookingAt();

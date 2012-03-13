@@ -48,7 +48,7 @@ import de.tud.cs.st.vespucci.view.checked_diagrams.views.CheckedDiagramsTableVie
 import de.tud.cs.st.vespucci.view.model.Pair;
 
 /**
- * 
+ * Receive IViolationViews and delegate them to CheckedDiagramsTable for visualization
  * 
  * @author 
  */
