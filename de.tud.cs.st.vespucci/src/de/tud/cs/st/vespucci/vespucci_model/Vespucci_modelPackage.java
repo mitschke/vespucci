@@ -183,22 +183,13 @@ public interface Vespucci_modelPackage extends EPackage {
 	int SHAPE__QUERY = 4;
 
 	/**
-	 * The feature id for the '<em><b>Diagram Reference</b></em>' container reference.
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPE__DIAGRAM_REFERENCE = 5;
-
-	/**
-	 * The feature id for the '<em><b>Ensemble Reference</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SHAPE__ENSEMBLE_REFERENCE = 6;
+	int SHAPE__KEY = 5;
 
 	/**
 	 * The number of structural features of the '<em>Shape</em>' class.
@@ -207,7 +198,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPE_FEATURE_COUNT = 7;
+	int SHAPE_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.EmptyImpl <em>Empty</em>}' class.
@@ -265,22 +256,13 @@ public interface Vespucci_modelPackage extends EPackage {
 	int EMPTY__QUERY = SHAPE__QUERY;
 
 	/**
-	 * The feature id for the '<em><b>Diagram Reference</b></em>' container reference.
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EMPTY__DIAGRAM_REFERENCE = SHAPE__DIAGRAM_REFERENCE;
-
-	/**
-	 * The feature id for the '<em><b>Ensemble Reference</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EMPTY__ENSEMBLE_REFERENCE = SHAPE__ENSEMBLE_REFERENCE;
+	int EMPTY__KEY = SHAPE__KEY;
 
 	/**
 	 * The number of structural features of the '<em>Empty</em>' class.
@@ -347,22 +329,13 @@ public interface Vespucci_modelPackage extends EPackage {
 	int ENSEMBLE__QUERY = SHAPE__QUERY;
 
 	/**
-	 * The feature id for the '<em><b>Diagram Reference</b></em>' container reference.
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ENSEMBLE__DIAGRAM_REFERENCE = SHAPE__DIAGRAM_REFERENCE;
-
-	/**
-	 * The feature id for the '<em><b>Ensemble Reference</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ENSEMBLE__ENSEMBLE_REFERENCE = SHAPE__ENSEMBLE_REFERENCE;
+	int ENSEMBLE__KEY = SHAPE__KEY;
 
 	/**
 	 * The feature id for the '<em><b>Shapes</b></em>' containment reference list.
@@ -447,13 +420,22 @@ public interface Vespucci_modelPackage extends EPackage {
 	int CONNECTION__ORIGINAL_TARGET = 5;
 
 	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONNECTION__KEY = 6;
+
+	/**
 	 * The number of structural features of the '<em>Connection</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONNECTION_FEATURE_COUNT = 6;
+	int CONNECTION_FEATURE_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.NotAllowedImpl <em>Not Allowed</em>}' class.
@@ -518,6 +500,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int NOT_ALLOWED__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT_ALLOWED__KEY = CONNECTION__KEY;
 
 	/**
 	 * The number of structural features of the '<em>Not Allowed</em>' class.
@@ -593,6 +584,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	int OUTGOING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
 
 	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int OUTGOING__KEY = CONNECTION__KEY;
+
+	/**
 	 * The number of structural features of the '<em>Outgoing</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -664,6 +664,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int INCOMING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INCOMING__KEY = CONNECTION__KEY;
 
 	/**
 	 * The number of structural features of the '<em>Incoming</em>' class.
@@ -739,6 +748,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	int IN_AND_OUT__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
 
 	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IN_AND_OUT__KEY = CONNECTION__KEY;
+
+	/**
 	 * The number of structural features of the '<em>In And Out</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -810,6 +828,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int EXPECTED__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPECTED__KEY = CONNECTION__KEY;
 
 	/**
 	 * The number of structural features of the '<em>Expected</em>' class.
@@ -886,6 +913,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	int GLOBAL_OUTGOING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
 
 	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_OUTGOING__KEY = CONNECTION__KEY;
+
+	/**
 	 * The number of structural features of the '<em>Global Outgoing</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -959,6 +995,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	int GLOBAL_INCOMING__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
 
 	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GLOBAL_INCOMING__KEY = CONNECTION__KEY;
+
+	/**
 	 * The number of structural features of the '<em>Global Incoming</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1030,6 +1075,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @ordered
 	 */
 	int VIOLATION__ORIGINAL_TARGET = CONNECTION__ORIGINAL_TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VIOLATION__KEY = CONNECTION__KEY;
 
 	/**
 	 * The number of structural features of the '<em>Violation</em>' class.
@@ -1138,26 +1192,15 @@ public interface Vespucci_modelPackage extends EPackage {
 	EAttribute getShape_Query();
 
 	/**
-	 * Returns the meta object for the container reference '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference <em>Diagram Reference</em>}'.
+	 * Returns the meta object for the attribute '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getKey <em>Key</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Diagram Reference</em>'.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference()
+	 * @return the meta object for the attribute '<em>Key</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getKey()
 	 * @see #getShape()
 	 * @generated
 	 */
-	EReference getShape_DiagramReference();
-
-	/**
-	 * Returns the meta object for the container reference '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getEnsembleReference <em>Ensemble Reference</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Ensemble Reference</em>'.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getEnsembleReference()
-	 * @see #getShape()
-	 * @generated
-	 */
-	EReference getShape_EnsembleReference();
+	EAttribute getShape_Key();
 
 	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Empty <em>Empty</em>}'.
@@ -1265,6 +1308,17 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getConnection_OriginalTarget();
+
+	/**
+	 * Returns the meta object for the attribute '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getKey <em>Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Key</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Connection#getKey()
+	 * @see #getConnection()
+	 * @generated
+	 */
+	EAttribute getConnection_Key();
 
 	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.NotAllowed <em>Not Allowed</em>}'.
@@ -1445,20 +1499,12 @@ public interface Vespucci_modelPackage extends EPackage {
 		EAttribute SHAPE__QUERY = eINSTANCE.getShape_Query();
 
 		/**
-		 * The meta object literal for the '<em><b>Diagram Reference</b></em>' container reference feature.
+		 * The meta object literal for the '<em><b>Key</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference SHAPE__DIAGRAM_REFERENCE = eINSTANCE.getShape_DiagramReference();
-
-		/**
-		 * The meta object literal for the '<em><b>Ensemble Reference</b></em>' container reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference SHAPE__ENSEMBLE_REFERENCE = eINSTANCE.getShape_EnsembleReference();
+		EAttribute SHAPE__KEY = eINSTANCE.getShape_Key();
 
 		/**
 		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.EmptyImpl <em>Empty</em>}' class.
@@ -1545,6 +1591,14 @@ public interface Vespucci_modelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CONNECTION__ORIGINAL_TARGET = eINSTANCE.getConnection_OriginalTarget();
+
+		/**
+		 * The meta object literal for the '<em><b>Key</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONNECTION__KEY = eINSTANCE.getConnection_Key();
 
 		/**
 		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.NotAllowedImpl <em>Not Allowed</em>}' class.

@@ -53,13 +53,11 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
-import de.tud.cs.st.vespucci.vespucci_model.util.Vespucci_modelValidator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
-import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -212,15 +210,6 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		// Initialize created meta-data
 		theVespucci_modelPackage.initializePackageContents();
 
-		// Register package validator
-		EValidator.Registry.INSTANCE.put
-			(theVespucci_modelPackage, 
-			 new EValidator.Descriptor() {
-				 public EValidator getEValidator() {
-					 return Vespucci_modelValidator.INSTANCE;
-				 }
-			 });
-
 		// Mark meta-data to indicate it can't be changed
 		theVespucci_modelPackage.freeze();
 
@@ -316,17 +305,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getShape_DiagramReference() {
-		return (EReference)shapeEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getShape_EnsembleReference() {
-		return (EReference)shapeEClass.getEStructuralFeatures().get(6);
+	public EAttribute getShape_Key() {
+		return (EAttribute)shapeEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -417,6 +397,15 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 */
 	public EReference getConnection_OriginalTarget() {
 		return (EReference)connectionEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConnection_Key() {
+		return (EAttribute)connectionEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -529,8 +518,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		createEAttribute(shapeEClass, SHAPE__NAME);
 		createEAttribute(shapeEClass, SHAPE__DESCRIPTION);
 		createEAttribute(shapeEClass, SHAPE__QUERY);
-		createEReference(shapeEClass, SHAPE__DIAGRAM_REFERENCE);
-		createEReference(shapeEClass, SHAPE__ENSEMBLE_REFERENCE);
+		createEAttribute(shapeEClass, SHAPE__KEY);
 
 		emptyEClass = createEClass(EMPTY);
 
@@ -544,6 +532,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		createEAttribute(connectionEClass, CONNECTION__TEMP);
 		createEReference(connectionEClass, CONNECTION__ORIGINAL_SOURCE);
 		createEReference(connectionEClass, CONNECTION__ORIGINAL_TARGET);
+		createEAttribute(connectionEClass, CONNECTION__KEY);
 
 		notAllowedEClass = createEClass(NOT_ALLOWED);
 
@@ -603,30 +592,36 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(shapesDiagramEClass, ShapesDiagram.class, "ShapesDiagram", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getShapesDiagram_Shapes(), this.getShape(), this.getShape_DiagramReference(), "shapes", null, 0, -1, ShapesDiagram.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getShapesDiagram_Shapes(), this.getShape(), null, "shapes", null, 0, -1, ShapesDiagram.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getShapesDiagram_Shapes().getEKeys().add(this.getShape_Key());
 		initEReference(getShapesDiagram_Connections(), this.getConnection(), null, "connections", null, 0, -1, ShapesDiagram.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getShapesDiagram_Connections().getEKeys().add(this.getConnection_Key());
 
-		initEClass(shapeEClass, Shape.class, "Shape", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(shapeEClass, Shape.class, "Shape", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getShape_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, Shape.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		getShape_SourceConnections().getEKeys().add(this.getConnection_Key());
 		initEReference(getShape_TargetConnections(), this.getConnection(), null, "targetConnections", null, 0, -1, Shape.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		getShape_TargetConnections().getEKeys().add(this.getConnection_Key());
 		initEAttribute(getShape_Name(), ecorePackage.getEString(), "name", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getShape_Description(), ecorePackage.getEString(), "description", "<description>", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getShape_Query(), ecorePackage.getEString(), "query", "empty", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getShape_DiagramReference(), this.getShapesDiagram(), this.getShapesDiagram_Shapes(), "diagramReference", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getShape_EnsembleReference(), this.getEnsemble(), this.getEnsemble_Shapes(), "ensembleReference", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getShape_Key(), ecorePackage.getEString(), "key", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(emptyEClass, Empty.class, "Empty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(ensembleEClass, Ensemble.class, "Ensemble", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEnsemble_Shapes(), this.getShape(), this.getShape_EnsembleReference(), "shapes", null, 0, -1, Ensemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEnsemble_Shapes(), this.getShape(), null, "shapes", null, 0, -1, Ensemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(connectionEClass, Connection.class, "Connection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(connectionEClass, Connection.class, "Connection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getConnection_Source(), this.getShape(), null, "source", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getConnection_Source().getEKeys().add(this.getShape_Key());
 		initEReference(getConnection_Target(), this.getShape(), null, "target", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getConnection_Target().getEKeys().add(this.getShape_Key());
 		initEAttribute(getConnection_Name(), ecorePackage.getEString(), "name", "all", 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConnection_Temp(), ecorePackage.getEBoolean(), "temp", "false", 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getConnection_OriginalSource(), this.getShape(), null, "originalSource", null, 0, -1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getConnection_OriginalTarget(), this.getShape(), null, "originalTarget", null, 0, -1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConnection_Key(), ecorePackage.getEString(), "key", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(notAllowedEClass, NotAllowed.class, "NotAllowed", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -650,8 +645,6 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		// Create annotations
 		// http://www.eclipse.org/emf/2002/Ecore
 		createEcoreAnnotations();
-		// http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot
-		createPivotAnnotations();
 	}
 
 	/**
@@ -669,30 +662,6 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 			 "invocationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
 			 "settingDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
 			 "validationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"
-		   });		
-		addAnnotation
-		  (shapeEClass, 
-		   source, 
-		   new String[] {
-			 "constraints", "notAllowedOnly testSourceConnections testTargetConnections"
-		   });	
-	}
-
-	/**
-	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot</b>.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void createPivotAnnotations() {
-		String source = "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot";				
-		addAnnotation
-		  (shapeEClass, 
-		   source, 
-		   new String[] {
-			 "notAllowedOnly", "self.targetConnections->forAll(x : Connection, y : Connection | (x <> y and x.source = y.source and x.target = y.target and x.oclIsTypeOf(NotAllowed)) implies y.oclIsTypeOf(NotAllowed))",
-			 "testSourceConnections", "self.sourceConnections->isEmpty()",
-			 "testTargetConnections", "self.targetConnections->isEmpty()"
 		   });
 	}
 

@@ -75,6 +75,16 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
+	public static String VespucciCreationWizard_DomainModelFilePageTitle;
+
+	/**
+	 * @generated
+	 */
+	public static String VespucciCreationWizard_DomainModelFilePageDescription;
+
+	/**
+	 * @generated
+	 */
 	public static String VespucciCreationWizardOpenEditorError;
 
 	/**

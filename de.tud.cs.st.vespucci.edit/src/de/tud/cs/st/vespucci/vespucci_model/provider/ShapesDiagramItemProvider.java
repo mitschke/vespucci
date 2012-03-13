@@ -186,22 +186,12 @@ public class ShapesDiagramItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES,
-				 Vespucci_modelFactory.eINSTANCE.createShape()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES,
 				 Vespucci_modelFactory.eINSTANCE.createEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES,
 				 Vespucci_modelFactory.eINSTANCE.createEnsemble()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createConnection()));
 
 		newChildDescriptors.add
 			(createChildParameter

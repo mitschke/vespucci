@@ -97,6 +97,7 @@ public class ConnectionItemProvider
 			addSourcePropertyDescriptor(object);
 			addTargetPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
+			addKeyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -168,6 +169,28 @@ public class ConnectionItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Key feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addKeyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Connection_key_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Connection_key_feature", "_UI_Connection_type"),
+				 Vespucci_modelPackage.Literals.CONNECTION__KEY,
+				 false,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns Connection.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -206,6 +229,7 @@ public class ConnectionItemProvider
 		switch (notification.getFeatureID(Connection.class)) {
 			case Vespucci_modelPackage.CONNECTION__NAME:
 			case Vespucci_modelPackage.CONNECTION__TEMP:
+			case Vespucci_modelPackage.CONNECTION__KEY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

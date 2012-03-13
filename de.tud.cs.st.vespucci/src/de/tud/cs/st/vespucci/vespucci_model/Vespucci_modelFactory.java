@@ -65,15 +65,6 @@ public interface Vespucci_modelFactory extends EFactory {
 	ShapesDiagram createShapesDiagram();
 
 	/**
-	 * Returns a new object of class '<em>Shape</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Shape</em>'.
-	 * @generated
-	 */
-	Shape createShape();
-
-	/**
 	 * Returns a new object of class '<em>Empty</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -90,15 +81,6 @@ public interface Vespucci_modelFactory extends EFactory {
 	 * @generated
 	 */
 	Ensemble createEnsemble();
-
-	/**
-	 * Returns a new object of class '<em>Connection</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Connection</em>'.
-	 * @generated
-	 */
-	Connection createConnection();
 
 	/**
 	 * Returns a new object of class '<em>Not Allowed</em>'.

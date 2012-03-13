@@ -33,8 +33,9 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -45,16 +46,21 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.ui.URIEditorInput;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.gmf.runtime.common.ui.services.marker.MarkerNavigationService;
@@ -63,6 +69,7 @@ import org.eclipse.gmf.runtime.diagram.ui.actions.ActionIds;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.TreeEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDocument;
@@ -74,10 +81,14 @@ import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorMatchingStrategy;
@@ -96,11 +107,8 @@ import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 
 import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
-import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
-import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
-import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
@@ -420,19 +428,19 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		final String filePath = getCurrentSelectedFilePath();
 		final String fileName = getCurrentSelectedFileName();
 
-		try {
-			pfc.createPrologFileFromDiagram(filePath, fileName);
-		} catch (final FileNotFoundException e) {
-			throw new VespucciIOException(String.format(
-					"File [%s%s] not found.", filePath, fileName), e);
-		} catch (final IOException e) {
-			throw new VespucciIOException(String.format(
-					"Failed to save Prolog file from [%s%s].", filePath,
-					fileName), e);
-		} catch (final Exception e) {
-			throw new VespucciIOException(String.format(
-					"File [%s%s] not found.", filePath, fileName), e);
-		}
+		//		try {
+		//			pfc.createPrologFileFromDiagram(filePath, fileName);
+		//		} catch (final FileNotFoundException e) {
+		//			throw new VespucciIOException(String.format(
+		//					"File [%s%s] not found.", filePath, fileName), e);
+		//		} catch (final IOException e) {
+		//			throw new VespucciIOException(String.format(
+		//					"Failed to save Prolog file from [%s%s].", filePath,
+		//					fileName), e);
+		//		} catch (final Exception e) {
+		//			throw new VespucciIOException(String.format(
+		//					"File [%s%s] not found.", filePath, fileName), e);
+		//		}
 
 		// refresh Package View
 		final IProject activeProject = getSelectedFile().getFile().getProject();
@@ -635,18 +643,87 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 * put a drop listener to the Vespucci diagram view
 	 * 
 	 * @author Malte Viering
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
-		// adds 2 TransferDropTargetListener to the diagram view. for handling DnD out of the Package Explorer
 		getDiagramGraphicalViewer().addDropTargetListener(
-				new DropVespucciDiagramTargetListener(
-						getDiagramGraphicalViewer()));
+				new DropTargetListener(getDiagramGraphicalViewer(),
+						LocalSelectionTransfer.getTransfer()) {
+
+					protected Object getJavaObject(TransferData data) {
+						return LocalSelectionTransfer.getTransfer()
+								.nativeToJava(data);
+					}
+
+				});
 		getDiagramGraphicalViewer().addDropTargetListener(
-				new CreateEnsembleDropTargetListener(
-						getDiagramGraphicalViewer()));
+				new DropTargetListener(getDiagramGraphicalViewer(),
+						LocalTransfer.getInstance()) {
+
+					protected Object getJavaObject(TransferData data) {
+						return LocalTransfer.getInstance().nativeToJava(data);
+					}
+
+				});
+	}
+
+	/**
+	 * @generated
+	 */
+	private abstract class DropTargetListener extends DiagramDropTargetListener {
+
+		/**
+		 * @generated
+		 */
+		public DropTargetListener(EditPartViewer viewer, Transfer xfer) {
+			super(viewer, xfer);
+		}
+
+		/**
+		 * @generated
+		 */
+		protected List getObjectsBeingDropped() {
+			TransferData data = getCurrentEvent().currentDataType;
+			HashSet<URI> uris = new HashSet<URI>();
+
+			Object transferedObject = getJavaObject(data);
+			if (transferedObject instanceof IStructuredSelection) {
+				IStructuredSelection selection = (IStructuredSelection) transferedObject;
+				for (Iterator<?> it = selection.iterator(); it.hasNext();) {
+					Object nextSelectedObject = it.next();
+					if (nextSelectedObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
+						View view = ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) nextSelectedObject)
+								.getView();
+						nextSelectedObject = view.getElement();
+					} else if (nextSelectedObject instanceof IAdaptable) {
+						IAdaptable adaptable = (IAdaptable) nextSelectedObject;
+						nextSelectedObject = adaptable
+								.getAdapter(EObject.class);
+					}
+
+					if (nextSelectedObject instanceof EObject) {
+						EObject modelElement = (EObject) nextSelectedObject;
+						uris.add(EcoreUtil.getURI(modelElement));
+					}
+				}
+			}
+
+			ArrayList<EObject> result = new ArrayList<EObject>(uris.size());
+			for (URI nextURI : uris) {
+				EObject modelObject = getEditingDomain().getResourceSet()
+						.getEObject(nextURI, true);
+				result.add(modelObject);
+			}
+			return result;
+		}
+
+		/**
+		 * @generated
+		 */
+		protected abstract Object getJavaObject(TransferData data);
+
 	}
 
 	/**

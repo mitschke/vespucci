@@ -1,7 +1,7 @@
-#Fri Apr 30 13:50:38 CEST 2010
 eclipse.preferences.version=1
 gmf_dashboard/domainGenerationModel=platform\:/resource/de.tud.cs.st.vespucci/model/vespucci.genmodel
 gmf_dashboard/domainModel=platform\:/resource/de.tud.cs.st.vespucci/model/vespucci.ecore
+gmf_dashboard/generationModel=platform\:/resource/de.tud.cs.st.vespucci/model/vespucci.gmfgen
 gmf_dashboard/graphicalDefinitionModel=platform\:/resource/de.tud.cs.st.vespucci/model/vespucci.gmfgraph
 gmf_dashboard/mappingModel=platform\:/resource/de.tud.cs.st.vespucci/model/vespucci.gmfmap
 gmf_dashboard/toolingDefinitionModel=platform\:/resource/de.tud.cs.st.vespucci/model/vespucci.gmftool

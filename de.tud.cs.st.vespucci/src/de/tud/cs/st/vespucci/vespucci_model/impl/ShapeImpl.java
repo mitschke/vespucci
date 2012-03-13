@@ -37,7 +37,6 @@
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
@@ -47,20 +46,15 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -74,14 +68,13 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getName <em>Name</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getQuery <em>Query</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getDiagramReference <em>Diagram Reference</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getEnsembleReference <em>Ensemble Reference</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getKey <em>Key</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ShapeImpl extends EObjectImpl implements Shape {
+public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -143,6 +136,26 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	protected String query = QUERY_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String KEY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getKey() <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected String key = KEY_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -174,6 +187,7 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 		return new EcoreEList.UnmodifiableEList<Connection>(this, 
 				Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS, connections.size(), connections.toArray());
 	}
+	
 	
 	
 	/**Filters the connections and shows the derived target list.
@@ -217,25 +231,17 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	 * @author Robert Cibulla
 	 * @return ShapesDiagram - reference to the ShapesDiagram
 	 */
-	private ShapesDiagram getDiagramReferenceHelper(){
-		//temporary variables used to navigate to top node
-		ShapesDiagram tempDiagramReference = this.getDiagramReference();
-		Ensemble tempEnsembleReference = this.getEnsembleReference();
-		//test whether the current Shape is directly persisted in the ShapesDiagram
-		if(tempDiagramReference == null){
-			//if not, navigate to the top level:
-			while(tempEnsembleReference != null){
-				if(tempEnsembleReference.getDiagramReference() == null)
-					tempEnsembleReference = tempEnsembleReference.getEnsembleReference();
-				else{
-					tempDiagramReference = tempEnsembleReference.getDiagramReference();
-					tempEnsembleReference = null;
-					}
-				}
+	private ShapesDiagram getDiagramReferenceHelper() {
+		// temporary variables used to navigate to top node
+
+		EObject parent = this.eContainer.eContainer();
+
+		while (!(parent instanceof ShapesDiagram)) {
+			parent = parent.eContainer();
 		}
-		return tempDiagramReference;
+		return (ShapesDiagram) parent;
 	}
-	
+
 	/**
 	 * Collects the connections and dissolves temporary connection references.
 	 * @generated NOT
@@ -328,106 +334,28 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc --> 
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
+	 * @generated NOT
+	 * @author Robert Cibulla
 	 */
-	public ShapesDiagram getDiagramReference() {
-		if (eContainerFeatureID() != Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE) return null;
-		return (ShapesDiagram)eContainer();
-	}
+	public String getKey() {
+		if (key == null)
+			this.key = EcoreUtil.generateUUID();
+		return key;
+	   }
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetDiagramReference(ShapesDiagram newDiagramReference, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newDiagramReference, Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE, msgs);
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setDiagramReference(ShapesDiagram newDiagramReference) {
-		if (newDiagramReference != eInternalContainer() || (eContainerFeatureID() != Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE && newDiagramReference != null)) {
-			if (EcoreUtil.isAncestor(this, newDiagramReference))
-				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-			NotificationChain msgs = null;
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			if (newDiagramReference != null)
-				msgs = ((InternalEObject)newDiagramReference).eInverseAdd(this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES, ShapesDiagram.class, msgs);
-			msgs = basicSetDiagramReference(newDiagramReference, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE, newDiagramReference, newDiagramReference));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Ensemble getEnsembleReference() {
-		if (eContainerFeatureID() != Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE) return null;
-		return (Ensemble)eContainer();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetDiagramReference((ShapesDiagram)otherEnd, msgs);
-			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return eBasicSetContainer(otherEnd, Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
-				return basicSetDiagramReference(null, msgs);
-			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
-				return eBasicSetContainer(null, Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-		switch (eContainerFeatureID()) {
-			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
-				return eInternalContainer().eInverseRemove(this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES, ShapesDiagram.class, msgs);
-			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
-				return eInternalContainer().eInverseRemove(this, Vespucci_modelPackage.ENSEMBLE__SHAPES, Ensemble.class, msgs);
-		}
-		return super.eBasicRemoveFromContainerFeature(msgs);
+	public void setKey(String newKey) {
+		String oldKey = key;
+		key = newKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.SHAPE__KEY, oldKey, key));
 	}
 
 	/**
@@ -448,10 +376,8 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 				return getDescription();
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				return getQuery();
-			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
-				return getDiagramReference();
-			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
-				return getEnsembleReference();
+			case Vespucci_modelPackage.SHAPE__KEY:
+				return getKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -482,8 +408,8 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				setQuery((String)newValue);
 				return;
-			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
-				setDiagramReference((ShapesDiagram)newValue);
+			case Vespucci_modelPackage.SHAPE__KEY:
+				setKey((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -512,8 +438,8 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				setQuery(QUERY_EDEFAULT);
 				return;
-			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
-				setDiagramReference((ShapesDiagram)null);
+			case Vespucci_modelPackage.SHAPE__KEY:
+				setKey(KEY_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -537,10 +463,8 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case Vespucci_modelPackage.SHAPE__QUERY:
 				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
-			case Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE:
-				return getDiagramReference() != null;
-			case Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE:
-				return getEnsembleReference() != null;
+			case Vespucci_modelPackage.SHAPE__KEY:
+				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -561,6 +485,8 @@ public class ShapeImpl extends EObjectImpl implements Shape {
 		result.append(description);
 		result.append(", query: ");
 		result.append(query);
+		result.append(", key: ");
+		result.append(key);
 		result.append(')');
 		return result.toString();
 	}

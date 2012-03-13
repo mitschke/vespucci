@@ -33,9 +33,8 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.navigator;
 
-import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -129,6 +128,9 @@ public class VespucciNavigatorLinkHelper implements ILinkHelper {
 			if (navigatorGroup.getParent() instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
 				navigatorView = ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) navigatorGroup
 						.getParent()).getView();
+			} else if (navigatorGroup.getParent() instanceof IAdaptable) {
+				navigatorView = (View) ((IAdaptable) navigatorGroup.getParent())
+						.getAdapter(View.class);
 			}
 		}
 		if (navigatorView == null) {

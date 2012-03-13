@@ -61,7 +61,6 @@ public interface ShapesDiagram extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Shapes</b></em>' containment reference list.
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
-	 * It is bidirectional and its opposite is '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference <em>Diagram Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Shapes</em>' containment reference list isn't clear,
@@ -70,8 +69,7 @@ public interface ShapesDiagram extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Shapes</em>' containment reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShapesDiagram_Shapes()
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getDiagramReference
-	 * @model opposite="diagramReference" containment="true"
+	 * @model containment="true" keys="key"
 	 * @generated
 	 */
 	EList<Shape> getShapes();
@@ -87,7 +85,7 @@ public interface ShapesDiagram extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Connections</em>' containment reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShapesDiagram_Connections()
-	 * @model containment="true"
+	 * @model containment="true" keys="key"
 	 * @generated
 	 */
 	EList<Connection> getConnections();

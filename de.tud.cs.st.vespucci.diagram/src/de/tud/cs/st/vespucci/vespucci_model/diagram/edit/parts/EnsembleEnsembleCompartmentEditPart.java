@@ -103,9 +103,6 @@ public class EnsembleEnsembleCompartmentEditPart extends
 				new CreationEditPolicy());
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
 				new DragDropEditPolicy());
-		installEditPolicy(
-				EditPolicyRoles.CANONICAL_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartmentCanonicalEditPolicy());
 	}
 
 	/**

@@ -184,40 +184,12 @@ public class EnsembleItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.ENSEMBLE__SHAPES,
-				 Vespucci_modelFactory.eINSTANCE.createShape()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.ENSEMBLE__SHAPES,
 				 Vespucci_modelFactory.eINSTANCE.createEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(Vespucci_modelPackage.Literals.ENSEMBLE__SHAPES,
 				 Vespucci_modelFactory.eINSTANCE.createEnsemble()));
-	}
-
-	/**
-	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-		Object childFeature = feature;
-		Object childObject = child;
-
-		boolean qualify =
-			childFeature == Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS ||
-			childFeature == Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS;
-
-		if (qualify) {
-			return getString
-				("_UI_CreateChild_text2",
-				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
-		}
-		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 }

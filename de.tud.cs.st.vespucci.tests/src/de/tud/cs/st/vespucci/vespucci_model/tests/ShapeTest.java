@@ -53,7 +53,7 @@ import junit.textui.TestRunner;
  * </p>
  * @generated
  */
-public class ShapeTest extends TestCase {
+public abstract class ShapeTest extends TestCase {
 
 	/**
 	 * The fixture for this Shape test case.
@@ -62,15 +62,6 @@ public class ShapeTest extends TestCase {
 	 * @generated
 	 */
 	protected Shape fixture = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(ShapeTest.class);
-	}
 
 	/**
 	 * Constructs a new Shape test case with the given name.
@@ -100,28 +91,6 @@ public class ShapeTest extends TestCase {
 	 */
 	protected Shape getFixture() {
 		return fixture;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		setFixture(Vespucci_modelFactory.eINSTANCE.createShape());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		setFixture(null);
 	}
 
 	/**

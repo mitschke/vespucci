@@ -265,10 +265,10 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider
 		final VespucciVersionTemplate fileVersion = versionChain
 				.getVersionOfFile(file);
 
-		if (!fileVersion.isNewestVersion()){
-				MessageDialog.openInformation(PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getShell(),
-						updateQuestionTitle, updateQuestionText);
+		if (!fileVersion.isNewestVersion()) {
+			MessageDialog.openInformation(PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getShell(),
+					updateQuestionTitle, updateQuestionText);
 			final UpdateSadFileHandler sadUpdater = new UpdateSadFileHandler();
 			sadUpdater.execute(file);
 		}
@@ -291,7 +291,7 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider
 			VespucciDocumentProvider
 					.checkConversionNeeded(((FileEditorInput) element)
 							.getFile());
-			
+
 			final Diagram diagram = DiagramIOUtil.load(domain, storage, true,
 					getProgressMonitor());
 			document.setContent(diagram);

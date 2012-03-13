@@ -129,29 +129,6 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.Shape} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ShapeItemProvider shapeItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createShapeAdapter() {
-		if (shapeItemProvider == null) {
-			shapeItemProvider = new ShapeItemProvider(this);
-		}
-
-		return shapeItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.Empty} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -195,29 +172,6 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 		}
 
 		return ensembleItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.Connection} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ConnectionItemProvider connectionItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Connection}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createConnectionAdapter() {
-		if (connectionItemProvider == null) {
-			connectionItemProvider = new ConnectionItemProvider(this);
-		}
-
-		return connectionItemProvider;
 	}
 
 	/**
@@ -504,10 +458,8 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 	 */
 	public void dispose() {
 		if (shapesDiagramItemProvider != null) shapesDiagramItemProvider.dispose();
-		if (shapeItemProvider != null) shapeItemProvider.dispose();
 		if (emptyItemProvider != null) emptyItemProvider.dispose();
 		if (ensembleItemProvider != null) ensembleItemProvider.dispose();
-		if (connectionItemProvider != null) connectionItemProvider.dispose();
 		if (notAllowedItemProvider != null) notAllowedItemProvider.dispose();
 		if (outgoingItemProvider != null) outgoingItemProvider.dispose();
 		if (incomingItemProvider != null) incomingItemProvider.dispose();

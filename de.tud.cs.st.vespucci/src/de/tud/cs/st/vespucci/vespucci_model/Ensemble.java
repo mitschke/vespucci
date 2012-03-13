@@ -58,7 +58,6 @@ public interface Ensemble extends Shape {
 	/**
 	 * Returns the value of the '<em><b>Shapes</b></em>' containment reference list.
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
-	 * It is bidirectional and its opposite is '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getEnsembleReference <em>Ensemble Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Shapes</em>' containment reference list isn't clear,
@@ -67,8 +66,7 @@ public interface Ensemble extends Shape {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Shapes</em>' containment reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getEnsemble_Shapes()
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getEnsembleReference
-	 * @model opposite="ensembleReference" containment="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<Shape> getShapes();

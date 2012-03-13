@@ -2,8 +2,7 @@
 <gmfgen:GenEditorGenerator xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:gmfgen="http://www.eclipse.org/gmf/2009/GenModel" sameFileForDiagramAndModel="true"
-    diagramFileExtension="sad"
+    xmlns:gmfgen="http://www.eclipse.org/gmf/2009/GenModel" diagramFileExtension="sad"
     domainFileExtension="sam"
     templateDirectory=""
     copyrightText=" License (BSD Style License):&#xD;&#xA;  Copyright (c) 2011&#xD;&#xA;  Software Engineering&#xD;&#xA;  Department of Computer Science&#xD;&#xA;  Technische Universität Darmstadt&#xD;&#xA;  All rights reserved.&#xD;&#xA;&#xD;&#xA;  Redistribution and use in source and binary forms, with or without&#xD;&#xA;  modification, are permitted provided that the following conditions are met:&#xD;&#xA;&#xD;&#xA;  - Redistributions of source code must retain the above copyright notice,&#xD;&#xA;    this list of conditions and the following disclaimer.&#xD;&#xA;  - Redistributions in binary form must reproduce the above copyright notice,&#xD;&#xA;    this list of conditions and the following disclaimer in the documentation&#xD;&#xA;    and/or other materials provided with the distribution.&#xD;&#xA;  - Neither the name of the Software Engineering Group or Technische &#xD;&#xA;    Universität Darmstadt nor the names of its contributors may be used to &#xD;&#xA;    endorse or promote products derived from this software without specific &#xD;&#xA;    prior written permission.&#xD;&#xA;&#xD;&#xA;  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;&#xD;&#xA;  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&#xD;&#xA;  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&#xD;&#xA;  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE&#xD;&#xA;  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR&#xD;&#xA;  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF&#xD;&#xA;  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS&#xD;&#xA;  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN&#xD;&#xA;  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&#xD;&#xA;  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&#xD;&#xA;  POSSIBILITY OF SUCH DAMAGE.">
@@ -145,7 +144,8 @@
       itemSemanticEditPolicyClassName="ShapesDiagramItemSemanticEditPolicy"
       canonicalEditPolicyClassName="ShapesDiagramCanonicalEditPolicy"
       iconProviderPriority="Low"
-      validationProviderPriority="Low">
+      validationProviderPriority="Low"
+      synchronized="false">
     <diagramRunTimeClass
         href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Diagram"/>
     <elementType
@@ -154,6 +154,8 @@
     <viewmap
         xsi:type="gmfgen:FigureViewmap"
         figureQualifiedClassName="org.eclipse.draw2d.FreeformLayer"/>
+    <containsShortcutsTo>sam</containsShortcutsTo>
+    <shortcutsProvidedFor>Vespucci</shortcutsProvidedFor>
     <domainDiagramElement
         href="vespucci.genmodel#//vespucci_model/ShapesDiagram"/>
     <childNodes

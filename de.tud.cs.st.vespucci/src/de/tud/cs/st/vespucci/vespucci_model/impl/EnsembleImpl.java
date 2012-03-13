@@ -42,6 +42,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -79,7 +80,7 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	 * @generated
 	 */
 	//TODO:protected  
-	public EnsembleImpl() {
+	protected EnsembleImpl() {
 		super();
 	}
 
@@ -100,24 +101,9 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	 */
 	public EList<Shape> getShapes() {
 		if (shapes == null) {
-			shapes = new EObjectContainmentWithInverseEList<Shape>(Shape.class, this, Vespucci_modelPackage.ENSEMBLE__SHAPES, Vespucci_modelPackage.SHAPE__ENSEMBLE_REFERENCE);
+			shapes = new EObjectContainmentEList<Shape>(Shape.class, this, Vespucci_modelPackage.ENSEMBLE__SHAPES);
 		}
 		return shapes;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getShapes()).basicAdd(otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -142,8 +128,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:{
-				return getShapes();}
+			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
+				return getShapes();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

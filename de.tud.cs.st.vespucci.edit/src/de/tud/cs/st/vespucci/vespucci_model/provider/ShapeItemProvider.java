@@ -97,11 +97,58 @@ public class ShapeItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addSourceConnectionsPropertyDescriptor(object);
+			addTargetConnectionsPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 			addDescriptionPropertyDescriptor(object);
 			addQueryPropertyDescriptor(object);
+			addKeyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Source Connections feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSourceConnectionsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Shape_sourceConnections_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_sourceConnections_feature", "_UI_Shape_type"),
+				 Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Target Connections feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTargetConnectionsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Shape_targetConnections_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_targetConnections_feature", "_UI_Shape_type"),
+				 Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
 	}
 
 	/**
@@ -171,34 +218,25 @@ public class ShapeItemProvider
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * This adds a property descriptor for the Key feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if (childrenFeatures == null) {
-			super.getChildrenFeatures(object);
-			childrenFeatures.add(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS);
-			childrenFeatures.add(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS);
-		}
-		return childrenFeatures;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
-		// adding (see {@link AddCommand}) it as a child.
-
-		return super.getChildFeature(object, child);
+	protected void addKeyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Shape_key_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_key_feature", "_UI_Shape_type"),
+				 Vespucci_modelPackage.Literals.SHAPE__KEY,
+				 false,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
@@ -241,11 +279,8 @@ public class ShapeItemProvider
 			case Vespucci_modelPackage.SHAPE__NAME:
 			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
 			case Vespucci_modelPackage.SHAPE__QUERY:
+			case Vespucci_modelPackage.SHAPE__KEY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case Vespucci_modelPackage.SHAPE__SOURCE_CONNECTIONS:
-			case Vespucci_modelPackage.SHAPE__TARGET_CONNECTIONS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -261,119 +296,6 @@ public class ShapeItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createConnection()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createNotAllowed()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createOutgoing()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createIncoming()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createInAndOut()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createExpected()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createGlobalOutgoing()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createGlobalIncoming()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createViolation()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createConnection()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createNotAllowed()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createOutgoing()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createIncoming()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createInAndOut()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createExpected()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createGlobalOutgoing()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createGlobalIncoming()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
-				 Vespucci_modelFactory.eINSTANCE.createViolation()));
-	}
-
-	/**
-	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-		Object childFeature = feature;
-		Object childObject = child;
-
-		boolean qualify =
-			childFeature == Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS ||
-			childFeature == Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS;
-
-		if (qualify) {
-			return getString
-				("_UI_CreateChild_text2",
-				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
-		}
-		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 	/**

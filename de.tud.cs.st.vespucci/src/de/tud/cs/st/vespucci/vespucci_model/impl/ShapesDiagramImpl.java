@@ -115,7 +115,7 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	 */
 	public EList<Shape> getShapes() {
 		if (shapes == null) {
-			shapes = new EObjectContainmentWithInverseEList<Shape>(Shape.class, this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES, Vespucci_modelPackage.SHAPE__DIAGRAM_REFERENCE);
+			shapes = new EObjectContainmentEList<Shape>(Shape.class, this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES);
 		}
 		return shapes;
 	}
@@ -130,21 +130,6 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 			connections = new EObjectContainmentEList<Connection>(Connection.class, this, Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS);
 		}
 		return connections;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getShapes()).basicAdd(otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**

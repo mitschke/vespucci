@@ -103,10 +103,8 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case Vespucci_modelPackage.SHAPES_DIAGRAM: return createShapesDiagram();
-			case Vespucci_modelPackage.SHAPE: return createShape();
 			case Vespucci_modelPackage.EMPTY: return createEmpty();
 			case Vespucci_modelPackage.ENSEMBLE: return createEnsemble();
-			case Vespucci_modelPackage.CONNECTION: return createConnection();
 			case Vespucci_modelPackage.NOT_ALLOWED: return createNotAllowed();
 			case Vespucci_modelPackage.OUTGOING: return createOutgoing();
 			case Vespucci_modelPackage.INCOMING: return createIncoming();
@@ -135,16 +133,6 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Shape createShape() {
-		ShapeImpl shape = new ShapeImpl();
-		return shape;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public Empty createEmpty() {
 		EmptyImpl empty = new EmptyImpl();
 		return empty;
@@ -158,16 +146,6 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 	public Ensemble createEnsemble() {
 		EnsembleImpl ensemble = new EnsembleImpl();
 		return ensemble;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Connection createConnection() {
-		ConnectionImpl connection = new ConnectionImpl();
-		return connection;
 	}
 
 	/**

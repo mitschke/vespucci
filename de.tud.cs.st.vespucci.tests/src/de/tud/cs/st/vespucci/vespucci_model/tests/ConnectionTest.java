@@ -46,7 +46,7 @@ import junit.textui.TestRunner;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ConnectionTest extends TestCase {
+public abstract class ConnectionTest extends TestCase {
 
 	/**
 	 * The fixture for this Connection test case.
@@ -55,15 +55,6 @@ public class ConnectionTest extends TestCase {
 	 * @generated
 	 */
 	protected Connection fixture = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(ConnectionTest.class);
-	}
 
 	/**
 	 * Constructs a new Connection test case with the given name.
@@ -93,28 +84,6 @@ public class ConnectionTest extends TestCase {
 	 */
 	protected Connection getFixture() {
 		return fixture;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		setFixture(Vespucci_modelFactory.eINSTANCE.createConnection());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		setFixture(null);
 	}
 
 } //ConnectionTest

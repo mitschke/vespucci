@@ -173,7 +173,8 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID,
 								de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT);
 				diagramResource.getContents().add(diagram);
-				diagramResource.getContents().add(diagram.getElement());
+				new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramContentInitializer()
+						.initDiagramContent(diagram);
 				return CommandResult.newOKCommandResult();
 			}
 		};

@@ -45,6 +45,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
@@ -60,12 +62,13 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#isTemp <em>Temp</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalSource <em>Original Source</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getOriginalTarget <em>Original Target</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ConnectionImpl#getKey <em>Key</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ConnectionImpl extends EObjectImpl implements Connection {
+public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 
 	/**
 	 * The cached value of the '{@link #getSource() <em>Source</em>}' reference.
@@ -146,6 +149,26 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 	protected EList<Shape> originalTarget;
 
 	/**
+	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String KEY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getKey() <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected String key = KEY_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -191,6 +214,8 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 				return getOriginalSource();
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
 				return getOriginalTarget();
+			case Vespucci_modelPackage.CONNECTION__KEY:
+				return getKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -214,6 +239,8 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 				return originalSource != null && !originalSource.isEmpty();
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
 				return originalTarget != null && !originalTarget.isEmpty();
+			case Vespucci_modelPackage.CONNECTION__KEY:
+				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -245,6 +272,9 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
 				getOriginalTarget().clear();
 				getOriginalTarget().addAll((Collection<? extends Shape>)newValue);
+				return;
+			case Vespucci_modelPackage.CONNECTION__KEY:
+				setKey((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -284,6 +314,9 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
 				getOriginalTarget().clear();
 				return;
+			case Vespucci_modelPackage.CONNECTION__KEY:
+				setKey(KEY_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -319,6 +352,31 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 			originalTarget = new EObjectResolvingEList<Shape>(Shape.class, this, Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET);
 		}
 		return originalTarget;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> 
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 * @author Robert Cibulla
+	 */
+	public String getKey() {
+		if (key == null)
+			this.key = EcoreUtil.generateUUID();
+		return key;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setKey(String newKey) {
+		String oldKey = key;
+		key = newKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__KEY, oldKey, key));
 	}
 
 	/**
@@ -426,6 +484,8 @@ public class ConnectionImpl extends EObjectImpl implements Connection {
 		result.append(name);
 		result.append(", temp: ");
 		result.append(temp);
+		result.append(", key: ");
+		result.append(key);
 		result.append(')');
 		return result.toString();
 	}

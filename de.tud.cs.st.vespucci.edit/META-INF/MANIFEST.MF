@@ -14,4 +14,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Import-Package: de.tud.cs.st.vespucci.vespucci_model,
+ de.tud.cs.st.vespucci.vespucci_model.provider,
  de.tud.cs.st.vespucci.vespucci_model.util

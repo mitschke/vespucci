@@ -53,11 +53,12 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#isTemp <em>Temp</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalSource <em>Original Source</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getOriginalTarget <em>Original Target</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getKey <em>Key</em>}</li>
  * </ul>
  * </p>
  *
  * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Connection extends EObject {
@@ -72,7 +73,7 @@ public interface Connection extends EObject {
 	 * @return the value of the '<em>Source</em>' reference.
 	 * @see #setSource(Shape)
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_Source()
-	 * @model
+	 * @model keys="key"
 	 * @generated
 	 */
 	Shape getSource();
@@ -98,7 +99,7 @@ public interface Connection extends EObject {
 	 * @return the value of the '<em>Target</em>' reference.
 	 * @see #setTarget(Shape)
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_Target()
-	 * @model
+	 * @model keys="key"
 	 * @generated
 	 */
 	Shape getTarget();
@@ -196,5 +197,31 @@ public interface Connection extends EObject {
 	 * @generated
 	 */
 	EList<Shape> getOriginalTarget();
+
+	/**
+	 * Returns the value of the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Key</em>' attribute.
+	 * @see #setKey(String)
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_Key()
+	 * @model id="true"
+	 * @generated
+	 */
+	String getKey();
+
+	/**
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getKey <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Key</em>' attribute.
+	 * @see #getKey()
+	 * @generated
+	 */
+	void setKey(String value);
 
 } // Connection
