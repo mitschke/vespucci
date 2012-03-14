@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Resources
 Bundle-SymbolicName: de.tud.cs.st.vespucci.diagram.resources
 Bundle-Version: 1.5.2
-Fragment-Host: de.tud.cs.st.vespucci.diagram;bundle-version="1.5.1"
+Fragment-Host: de.tud.cs.st.vespucci.diagram;bundle-version="1.5.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

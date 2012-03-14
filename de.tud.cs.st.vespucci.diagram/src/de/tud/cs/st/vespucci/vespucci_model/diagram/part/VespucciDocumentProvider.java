@@ -82,6 +82,7 @@ import org.eclipse.gmf.runtime.diagram.ui.resources.editor.internal.util.Diagram
 import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
 import org.eclipse.gmf.runtime.emf.core.resources.GMFResourceFactory;
 import org.eclipse.gmf.runtime.notation.Diagram;
+import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.osgi.util.NLS;
@@ -90,6 +91,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
+import de.tud.cs.st.vespucci.diagram.supports.VespucciDiagramElementCollector;
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.handler.UpdateSadFileHandler;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
@@ -294,6 +296,9 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider
 
 			final Diagram diagram = DiagramIOUtil.load(domain, storage, true,
 					getProgressMonitor());
+//		//FIXME: Test	
+//			VespucciDiagramElementCollector.collectElements((View) diagram);
+			
 			document.setContent(diagram);
 		} else if (element instanceof URIEditorInput) {
 			final URI uri = ((URIEditorInput) element).getURI();
@@ -329,6 +334,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider
 					for (final Object rootElement : resource.getContents()) {
 						if (rootElement instanceof Diagram) {
 							document.setContent(rootElement);
+							VespucciDiagramElementCollector.collectElements((View)rootElement);
+							System.out.println(rootElement);
 							return;
 						}
 					}
