@@ -15,4 +15,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.tud.cs.st.vespucci.database.architecture.provider
-Import-Package: unisson.model;version="0.4.0"
+Import-Package: unisson.model
