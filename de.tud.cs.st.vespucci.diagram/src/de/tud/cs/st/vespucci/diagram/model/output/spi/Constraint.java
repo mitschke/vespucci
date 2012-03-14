@@ -33,6 +33,8 @@
  */
 package de.tud.cs.st.vespucci.diagram.model.output.spi;
 
+import org.eclipse.emf.common.util.EList;
+
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
@@ -57,20 +59,37 @@ public class Constraint implements IConstraint {
 
 	@Override
 	public IEnsemble getSource() {
-		return ConversionUtils.createEnsemble(connection.getSource());
+		return ConversionUtils.createEnsemble(getInternalSource());
 	}
 
 	@Override
 	public IEnsemble getTarget() {
-		return ConversionUtils.createEnsemble(connection.getTarget());
+		return ConversionUtils.createEnsemble(getInternalTarget());
 	}
 
 	private Shape getInternalSource() {
-		return connection.getSource();
+		if (!connection.isTemp())
+			return connection.getSource();
+		
+		// a temp connection has a list of original sources; don't know why a
+		// list but it seems to work like a history
+		EList<Shape> originalSources = connection.getOriginalSource();
+		// we can be temp but use the concrete soure and only remember the original targets
+		if(originalSources.size() == 0)
+			return connection.getSource();
+		return originalSources.get(originalSources.size() - 1);
 	}
 
 	private Shape getInternalTarget() {
-		return connection.getTarget();
+		if (!connection.isTemp())
+			return connection.getTarget();
+		// a temp connection has a list of original targets; don't know why a
+		// list but it seems to work like a history
+		EList<Shape> originalTargets = connection.getOriginalTarget();
+		// we can be temp but use the concrete target and only remember the original sources
+		if(originalTargets.size() == 0)
+			return connection.getTarget();
+		return originalTargets.get(originalTargets.size() - 1);
 	}
 
 	/*
