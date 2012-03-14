@@ -4,11 +4,11 @@ import java.util.Iterator;
 
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
-import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
+import de.tud.cs.st.vespucci.interfaces.IEnsembleElementView;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
-public class EmptyEnsembleElementList implements IEnsembleElementList {
+public class EmptyEnsembleElementList implements IEnsembleElementView {
 
 	@Override
 	public Iterator<IPair<IEnsemble, ICodeElement>> iterator() {

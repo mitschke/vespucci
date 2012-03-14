@@ -38,18 +38,33 @@ package de.tud.cs.st.vespucci.interfaces;
  * Always identified by a PackageIdentifier, a SimpleClassName and a LineNumber
  * We don't distinguish here between classes, methods or just simple fields
  * 
+ * @author
  */
 public interface ICodeElement {
-	
+
 	/**
-	 *  examples for the return: "model", "tud.cs.st.vespucci.test.test"
-	 *  what about default package?
+	 * Returns the package identifier of the codeElement
+	 * 
+	 * for example:<br>
+	 * <code>model</code><br>
+	 * <code>tud.cs.st.vespucci.test</code>
+	 * <br><br>
+	 * 
+	 * For default package an empty String will be return
+	 * 
+	 * @return The identifier of the package
 	 */
 	public String getPackageIdentifier();
-			
+
 	/**
-	 *  examples  for the return: "DataModel", "MainController" 
+	 * Returns the SimpleClassName of the codeElement
+	 * 
+	 * for example:<br>
+	 * <code>DataModel</code><br>
+	 * <code>DataModel$SubModel</code> (inner classes/nested classes)<br>
+	 * <code>DataModel$0</code> (anonymous inner classes)
+	 * 
+	 * @return The name of the class
 	 */
 	public String getSimpleClassName();
-
 }

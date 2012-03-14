@@ -35,6 +35,11 @@ package de.tud.cs.st.vespucci.information.interfaces.spi;
 
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 
+/**
+ * Concrete implementation of IMethodDelcaration
+ * 
+ * @author 
+ */
 public class MethodDeclaration extends CodeElement implements IMethodDeclaration  {
 	
 	private String methodName;

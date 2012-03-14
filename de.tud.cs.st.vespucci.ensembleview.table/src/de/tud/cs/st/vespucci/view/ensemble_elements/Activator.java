@@ -31,76 +31,58 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.interfaces;
+package de.tud.cs.st.vespucci.view.ensemble_elements;
 
-import de.tud.cs.st.vespucci.model.IConstraint;
-import de.tud.cs.st.vespucci.model.IEnsemble;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.BundleContext;
 
 /**
- * Stands for an violation of the regulations make in the diagram file.
- * Provide information about the violation.
- * 
- * @author 
+ * The activator class controls the plug-in life cycle
  */
-public interface IViolation {
+public class Activator extends AbstractUIPlugin {
 
-	/**
-	 * Returns the violating kind of the violation.
-	 * (also known as "Dependency Kind")
-	 * <br><br>
-	 * For example:<br>
-	 * <code>extends</code><br>
-	 * <code>implements</code><br>
-	 * <code>invoke_virtual</code><br>
-	 * <code>...</code><br>
-	 * 
-	 * @return The violating kind
-	 */
-	String getViolatingKind();
+	// The plug-in ID
+	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.ensembleview.table"; //$NON-NLS-1$
 
-	/**
-	 * Returns the related diagram file as path + filename as string
-	 * 
-	 * @return Diagram file as string
-	 */
-	String getDiagramFile();
-
-	/**
-	 * Returns the source element of the violation
-	 * <br><br>
-	 * Could be null!
-	 * 
-	 * @return Source element
-	 */
-	ICodeElement getSourceElement();
-
-	/**
-	 * Returns the target element of the violation
-	 * <br><br>
-	 * Could be null!
-	 * 
-	 * @return Target element
-	 */
-	ICodeElement getTargetElement();
-
-	/**
-	 * Returns the source ensemble of the violation
-	 * 
-	 * @return Source ensemble
-	 */
-	IEnsemble getSourceEnsemble();
-
-	/**
-	 * Returns the target ensemble of the violation
-	 * 
-	 * @return Target ensemble
-	 */
-	IEnsemble getTargetEnsemble();
+	// The shared instance
+	private static Activator plugin;
 	
 	/**
-	 * Returns the causality constraint of the violation
-	 * 
-	 * @return Constraint
+	 * The constructor
 	 */
-	IConstraint getConstraint();
+	public Activator() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 */
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		plugin = this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 */
+	public void stop(BundleContext context) throws Exception {
+		plugin = null;
+		super.stop(context);
+	}
+
+	/**
+	 * Returns the shared instance
+	 *
+	 * @return the shared instance
+	 */
+	public static Activator getDefault() {
+		return plugin;
+	}
+
+	public static ImageDescriptor getImageDescriptor(String path) {
+		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
 }

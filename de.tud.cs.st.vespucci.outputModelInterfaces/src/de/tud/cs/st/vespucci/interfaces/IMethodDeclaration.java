@@ -33,21 +33,43 @@
  */
 package de.tud.cs.st.vespucci.interfaces;
 
+/**
+ * Representation of a method
+ * 
+ * @author 
+ */
 public interface IMethodDeclaration extends ICodeElement{
 
 	/**
-	 * examples for the return: "createView"
+	 * Returns the name of the method
+	 * 
+	 * for example: <br>
+	 * 	<code>doSome</code> for <code>void doSome(){..}</code><br>
+	 * 	<code>calcFaculty</code> for <code>int calcFaculty(int n){...}</code>
+	 * 
+	 * @return The name of the method
 	 */
 	String getMethodName();
-	
+
 	/**
-	 * examples for the return: "V" (void), "I" (int)
+	 * Returns the return value type qualifier of method
+	 * 
+	 * for example: <br>
+	 * 	<code>V;</code> for <code>void doSome(int a, String[] b){..}</code><br>
+	 * 	<code>I;</code> for <code>int calcFaculty(int n){...}</code>
+	 *
+	 * @return The return value type qualifier of the class
 	 */
 	String getReturnTypeQualifier();
-	
+
 	/**
-	 * examples for the return: {"Ljava/lang/String;"}
+	 * Returns the type qualifier of the parameter
+	 * 
+	 * for example: <br>
+	 * 	<code>{V;, [Ljava/lang/String;}</code> for <code>void doSome(int a, String[] b){..}</code><br>
+	 * 	<code>{I;}</code> for <code>int calcFaculty(int n){...}</code>
+	 *
+	 * @return The type qualifier of the paramter
 	 */
 	String[] getParameterTypeQualifiers();
-	
 }

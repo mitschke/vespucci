@@ -1,20 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Table
-Bundle-SymbolicName: de.tud.cs.st.vespucci.ensembleview.table;singleton:=true
+Bundle-SymbolicName: de.tud.cs.st.vespucci.view.ensemble_elements;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.tud.cs.st.vespucci.ensembleview.table.Activator
+Bundle-Activator: de.tud.cs.st.vespucci.view.ensemble_elements.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  de.tud.cs.st.vespucci.diagram,
  de.tud.cs.st.vespucci.utilities;bundle-version="1.0.0",
  de.tud.cs.st.vespucci.codeelementfinder;bundle-version="1.0.0",
  de.tud.cs.st.vespucci.interfaces;bundle-version="1.0.0",
- de.tud.cs.st.vespucci.model;bundle-version="1.0.0"
+ de.tud.cs.st.vespucci.model;bundle-version="1.0.0",
+ de.tud.cs.st.vespucci.view;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.jdt.core,
- org.eclipse.jdt.ui,
- org.eclipse.ui.ide
-Bundle-ClassPath: .,
- swing2swt.jar
+ org.eclipse.jdt.ui
+Bundle-ClassPath: .

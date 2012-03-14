@@ -5,7 +5,8 @@ Bundle-SymbolicName: de.tud.cs.st.vespucci.view.unmodeled_elements;singleton:=tr
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.tud.cs.st.vespucci.view.unmodeled_elements.Activator
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ de.tud.cs.st.vespucci.view;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.tud.cs.st.vespucci.codeelementfinder,

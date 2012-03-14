@@ -31,40 +31,40 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.view.table;
+package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
-import java.util.Iterator;
-
-import de.tud.cs.st.vespucci.interfaces.IDataView;
-import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
-
-import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Text;
 
 /**
- * An abstract, generic implementation of IDataViewObserver
+ * Listener which add and remove an SearchFilter to an tableView
+ * when the modifyText event is notified
  * 
  * @author 
  */
-public abstract class DataViewObserver<A> implements IDataViewObserver<A>{
+public class SearchFieldModifyListener implements ModifyListener {
 
-	private IProject project;
+	private TableViewer tableViewer;
+	private SearchFilter filter = null;
+	private String text = null;
+	private int column;
 	
-	public void add(IDataView<A> dataView, IProject project) {
-		this.project = project;
-		dataView.register(this);
-		for (Iterator<A> dataViewIterator = dataView.iterator(); dataViewIterator.hasNext();) {
-			added(dataViewIterator.next());
-		}
+	public SearchFieldModifyListener(TableViewer tableView, int column){
+		this.tableViewer = tableView;
+		this.column = column;
 	}
-
+	
 	@Override
-	public void updated(A oldValue, A newValue) {
-		deleted(oldValue);
-		added(newValue);
-	}
-	
-	public IProject getRelatedProject(){
-		return project;
+	public void modifyText(ModifyEvent e) {
+		if (filter != null) {
+			tableViewer.removeFilter(filter);
+		}
+
+		text = ((Text) e.getSource()).getText();
+		filter = new SearchFilter(column, text);
+		tableViewer.addFilter(filter);
 	}
 
 }

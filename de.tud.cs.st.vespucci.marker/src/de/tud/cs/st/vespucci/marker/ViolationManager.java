@@ -56,12 +56,12 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 	public static final int TARGET = 0;
 	public static final int SOURCE = 1;
 
-	private DescriptionFactory descriptionFactory;
 	private Map<IViolation, Set<IMarker>> marks;
+	private DescriptionFactory descriptionFactory;
 
 	public ViolationManager(){
-		descriptionFactory = new DescriptionFactory();
 		marks = new HashMap<IViolation, Set<IMarker>>();
+		descriptionFactory = new DescriptionFactory();
 	}
 
 	@Override
@@ -111,7 +111,13 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 	private String createSourceViolationDescription(IViolation element) {
 		return descriptionFactory.getDescription(element);
 	}
-
+	
+	/**
+	 * Implementation of ICodeElementFoundProcessor
+	 * for marking CodeElements of IViolations
+	 * 
+	 * @author 
+	 */
 	private class CodeElementMarker implements ICodeElementFoundProcessor{
 
 		private int type;
@@ -126,34 +132,34 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 
 		@Override
 		public void processFoundCodeElement(IMember member) {
-			int priority = getPriority();
+			int priority = getSeverity();
 			IMarker marker = MarkingUtilities.markIMember(member, description, priority);
 			saveMarker(violation, marker);
 		}
 
 		@Override
 		public void processFoundCodeElement(IMember member, int lineNr) {
-			int priority = getPriority();
-			IMarker marker = MarkingUtilities.markIStatement(member, description, lineNr, priority);
+			IMarker marker = MarkingUtilities.markIStatement(member, description, lineNr, getSeverity());
 			saveMarker(violation, marker);
 		}
 
 		@Override
 		public void noMatchFound(ICodeElement codeElement) {
-			// not used here
+			IMarker marker = MarkingUtilities.markIProject(getRelatedProject(), description, getSeverity());
+			saveMarker(violation, marker);
 		}
 
-		private int getPriority() {
-			int priority = IMarker.PRIORITY_LOW;
+		private int getSeverity() {
+			int severity = IMarker.PRIORITY_LOW;
 			switch (type){
 			case ViolationManager.SOURCE:
-				priority = IMarker.PRIORITY_HIGH;
+				severity = IMarker.PRIORITY_HIGH;
 				break;
 			case ViolationManager.TARGET:
-				priority = IMarker.PRIORITY_LOW;
+				severity = IMarker.PRIORITY_LOW;
 				break;
 			}
-			return priority;
+			return severity;
 		}
 	}
 

@@ -31,7 +31,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.view.checked_diagrams.model;
+package de.tud.cs.st.vespucci.view.model;
 
 
 import de.tud.cs.st.vespucci.interfaces.IPair;
@@ -61,7 +61,7 @@ public class Pair<A,B> implements IPair<A, B> {
 		return seconde;
 	}
 
-	public static <A,B> IPair<A, B> transfer(Object obj, Class<A> first, Class<B> secode){
+	public static <A,B> IPair<A, B> cast(Object obj, Class<A> first, Class<B> secode){
 		if (obj instanceof IPair){
 			IPair<?,?> temp = (IPair<?,?>) obj;
 			if (first.isInstance(temp.getFirst())){

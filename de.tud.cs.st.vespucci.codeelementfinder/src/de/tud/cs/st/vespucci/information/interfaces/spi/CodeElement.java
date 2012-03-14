@@ -35,6 +35,11 @@ package de.tud.cs.st.vespucci.information.interfaces.spi;
 
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
+/**
+ * Concrete implementation of ICodeElement
+ * 
+ * @author 
+ */
 public abstract class CodeElement implements ICodeElement {
 	
 	private String packageIdentifier;
@@ -54,5 +59,4 @@ public abstract class CodeElement implements ICodeElement {
 	public String getSimpleClassName() {
 		return simpleClassName;
 	}
-
 }

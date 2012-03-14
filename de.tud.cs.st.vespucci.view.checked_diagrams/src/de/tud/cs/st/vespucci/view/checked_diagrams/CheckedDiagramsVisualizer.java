@@ -44,11 +44,11 @@ import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.utilities.Util;
-import de.tud.cs.st.vespucci.view.checked_diagrams.model.Pair;
 import de.tud.cs.st.vespucci.view.checked_diagrams.views.CheckedDiagramsTableView;
+import de.tud.cs.st.vespucci.view.model.Pair;
 
 /**
- * 
+ * Receive IViolationViews and delegate them to CheckedDiagramsTable for visualization
  * 
  * @author 
  */
@@ -79,6 +79,17 @@ public class CheckedDiagramsVisualizer implements IResultProcessor {
 
 	private void openView() {
 		try {
+//			IViewReference viewReference = PlatformUI.getWorkbench()
+//					.getActiveWorkbenchWindow().getActivePage()
+//					.findViewReference(PLUGIN_ID);
+//			CheckedDiagramsTableView view = viewReference != null ? (CheckedDiagramsTableView) viewReference
+//					.getPart(true) : null;
+//			if (view == null) {
+//				view = (CheckedDiagramsTableView) PlatformUI
+//						.getWorkbench().getActiveWorkbenchWindow()
+//						.getActivePage().showView(PLUGIN_ID);
+//			}
+			
 			view = (CheckedDiagramsTableView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PLUGIN_ID);		
 		} catch (PartInitException e) {
 			processException(e);

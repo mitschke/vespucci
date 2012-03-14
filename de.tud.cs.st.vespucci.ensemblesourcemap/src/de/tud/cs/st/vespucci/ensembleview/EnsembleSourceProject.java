@@ -9,16 +9,16 @@ import java.util.Map;
 import de.tud.cs.st.vespucci.ensembleview.model.TreeElement;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
-import de.tud.cs.st.vespucci.interfaces.IEnsembleElementList;
+import de.tud.cs.st.vespucci.interfaces.IEnsembleElementView;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
 public class EnsembleSourceProject implements IDataViewObserver<IPair<IEnsemble, ICodeElement>> {
 
-	private IEnsembleElementList ensembleElementList;
+	private IEnsembleElementView ensembleElementList;
 	private List<IPair<IEnsemble, ICodeElement>> pairs;
 	
-	public EnsembleSourceProject(IEnsembleElementList ensembleElementList){
+	public EnsembleSourceProject(IEnsembleElementView ensembleElementList){
 		pairs = new LinkedList<IPair<IEnsemble,ICodeElement>>();
 		this.ensembleElementList = ensembleElementList;
 		this.ensembleElementList.register(this);

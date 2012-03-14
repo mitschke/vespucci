@@ -31,76 +31,61 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.interfaces;
+package de.tud.cs.st.vespucci.view.ensemble_elements;
 
-import de.tud.cs.st.vespucci.model.IConstraint;
-import de.tud.cs.st.vespucci.model.IEnsemble;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.statushandlers.StatusManager;
+
+import de.tud.cs.st.vespucci.diagram.processing.IResultProcessor;
+import de.tud.cs.st.vespucci.interfaces.IEnsembleElementView;
+import de.tud.cs.st.vespucci.utilities.Util;
+import de.tud.cs.st.vespucci.view.ensemble_elements.views.EnsembleElementsTableView;
 
 /**
- * Stands for an violation of the regulations make in the diagram file.
- * Provide information about the violation.
+ * Receive IEnsembleElementsViews and delegate them to EnsembleElementsTableView for visualization
  * 
  * @author 
  */
-public interface IViolation {
+public class EnsembleElementsVisualizer implements IResultProcessor{
 
-	/**
-	 * Returns the violating kind of the violation.
-	 * (also known as "Dependency Kind")
-	 * <br><br>
-	 * For example:<br>
-	 * <code>extends</code><br>
-	 * <code>implements</code><br>
-	 * <code>invoke_virtual</code><br>
-	 * <code>...</code><br>
-	 * 
-	 * @return The violating kind
-	 */
-	String getViolatingKind();
+	public static final String PLUGIN_ID = "de.tud.cs.st.vespucci.view.ensemble_elements";
 
-	/**
-	 * Returns the related diagram file as path + filename as string
-	 * 
-	 * @return Diagram file as string
-	 */
-	String getDiagramFile();
+	public static void processException(Exception e){
+		final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+		StatusManager.getManager().handle(is, StatusManager.LOG);
+	}
 
-	/**
-	 * Returns the source element of the violation
-	 * <br><br>
-	 * Could be null!
-	 * 
-	 * @return Source element
-	 */
-	ICodeElement getSourceElement();
+	private EnsembleElementsTableView view;
 
-	/**
-	 * Returns the target element of the violation
-	 * <br><br>
-	 * Could be null!
-	 * 
-	 * @return Target element
-	 */
-	ICodeElement getTargetElement();
+	@Override
+	public void processResult(Object result, IFile diagramFile) {
+		IEnsembleElementView ensembleElementList = Util.adapt(result, IEnsembleElementView.class);
+		if (ensembleElementList != null){	
+			openView();
+			view.setData(ensembleElementList, diagramFile.getProject());
+		}
+	}
 
-	/**
-	 * Returns the source ensemble of the violation
-	 * 
-	 * @return Source ensemble
-	 */
-	IEnsemble getSourceEnsemble();
+	private void openView() {
+		try {
+			view = (EnsembleElementsTableView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PLUGIN_ID);		
+		} catch (PartInitException e) {
+			processException(e);
+		}
+	}
 
-	/**
-	 * Returns the target ensemble of the violation
-	 * 
-	 * @return Target ensemble
-	 */
-	IEnsemble getTargetEnsemble();
-	
-	/**
-	 * Returns the causality constraint of the violation
-	 * 
-	 * @return Constraint
-	 */
-	IConstraint getConstraint();
+	@Override
+	public boolean isInterested(Class<?> resultClass) {
+		return IEnsembleElementView.class.equals(resultClass);
+	}
+
+	@Override
+	public void cleanUp() {
+		//unused in this ResultProcessor
+	}
+
 }

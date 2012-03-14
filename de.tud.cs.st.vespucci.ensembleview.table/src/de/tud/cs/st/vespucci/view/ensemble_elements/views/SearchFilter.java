@@ -31,76 +31,53 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.interfaces;
+package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
-import de.tud.cs.st.vespucci.model.IConstraint;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
+
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
+import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.view.model.Pair;
 
 /**
- * Stands for an violation of the regulations make in the diagram file.
- * Provide information about the violation.
+ * Filter used for search functionality.
  * 
  * @author 
  */
-public interface IViolation {
-
-	/**
-	 * Returns the violating kind of the violation.
-	 * (also known as "Dependency Kind")
-	 * <br><br>
-	 * For example:<br>
-	 * <code>extends</code><br>
-	 * <code>implements</code><br>
-	 * <code>invoke_virtual</code><br>
-	 * <code>...</code><br>
-	 * 
-	 * @return The violating kind
-	 */
-	String getViolatingKind();
-
-	/**
-	 * Returns the related diagram file as path + filename as string
-	 * 
-	 * @return Diagram file as string
-	 */
-	String getDiagramFile();
-
-	/**
-	 * Returns the source element of the violation
-	 * <br><br>
-	 * Could be null!
-	 * 
-	 * @return Source element
-	 */
-	ICodeElement getSourceElement();
-
-	/**
-	 * Returns the target element of the violation
-	 * <br><br>
-	 * Could be null!
-	 * 
-	 * @return Target element
-	 */
-	ICodeElement getTargetElement();
-
-	/**
-	 * Returns the source ensemble of the violation
-	 * 
-	 * @return Source ensemble
-	 */
-	IEnsemble getSourceEnsemble();
-
-	/**
-	 * Returns the target ensemble of the violation
-	 * 
-	 * @return Target ensemble
-	 */
-	IEnsemble getTargetEnsemble();
+public class SearchFilter extends ViewerFilter {
 	
-	/**
-	 * Returns the causality constraint of the violation
-	 * 
-	 * @return Constraint
-	 */
-	IConstraint getConstraint();
+	private int column;
+	private String input;
+	
+	public SearchFilter(int column, String input){
+		this.column = column;
+		this.input = input;
+	}
+	
+	@Override
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
+		if (element != null){
+			return select(Pair.cast(element, IEnsemble.class, ICodeElement.class), column, input);
+		}
+		return false;
+	}
+	
+	public static boolean select(IPair<IEnsemble, ICodeElement> element, int column, String input){
+		if (element != null){
+			Pattern pat = Pattern.compile(".*" + input.replace("?", ".").replace("*", ".*"));
+			
+			EnsembleElementsTableLabelProvider ensembleElementsTableLableProvider = new EnsembleElementsTableLabelProvider();
+			String string = ensembleElementsTableLableProvider.getColumnText(element, column);
+			
+			Matcher matcher = pat.matcher(string);
+			return matcher.lookingAt();
+		}
+		return false;
+	}
+
 }

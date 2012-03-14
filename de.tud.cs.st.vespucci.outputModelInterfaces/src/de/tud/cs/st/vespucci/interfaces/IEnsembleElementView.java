@@ -33,9 +33,13 @@
  */
 package de.tud.cs.st.vespucci.interfaces;
 
-public interface IPair<U,V> {
+import de.tud.cs.st.vespucci.model.IEnsemble;
 
-	U getFirst();
-	
-	V getSecond();
+/**
+ * Interface extends <code>IDataView&lt;T&gt;</code> use <code>IPair&lt;IEnsemble, ICodeElement&gt;</code> as T
+ * 
+ * @author 
+ */
+public interface IEnsembleElementView extends IDataView<IPair<IEnsemble, ICodeElement>>{
+
 }
