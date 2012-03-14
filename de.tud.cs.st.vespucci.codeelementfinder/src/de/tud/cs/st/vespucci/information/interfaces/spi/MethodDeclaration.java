@@ -47,9 +47,7 @@ public class MethodDeclaration extends CodeElement implements IMethodDeclaration
 	private String[] paramTypes;
 
 	public MethodDeclaration(String packageIdentifier, String simpleClassName, String methodName, String returnType, String[] paramTypes){
-		
 		super(packageIdentifier, simpleClassName);
-		
 		this.methodName = methodName;
 		this.returnType = returnType;
 		this.paramTypes = paramTypes;
@@ -69,5 +67,4 @@ public class MethodDeclaration extends CodeElement implements IMethodDeclaration
 	public String[] getParameterTypeQualifiers() {
 		return this.paramTypes;
 	}
-
 }

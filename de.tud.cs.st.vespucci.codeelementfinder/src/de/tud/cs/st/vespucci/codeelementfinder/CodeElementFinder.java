@@ -33,8 +33,8 @@
  */
 package de.tud.cs.st.vespucci.codeelementfinder;
 
-import java.util.List;
 import java.util.Stack;
+import java.util.WeakHashMap;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -58,9 +58,10 @@ import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IStatement;
 
 /**
- * Class that is able to finde ICodeElements in workspace
+ * Class that is able to find ICodeElements in workspace
  * 
  * @author 
  */
@@ -68,24 +69,23 @@ public class CodeElementFinder {
 
 	private static String PLUGIN_ID = "de.tud.cs.st.vespucci.codeelementfinder";
 
-	//private static WeakHashMap<ICodeElement, IMember> cache = new WeakHashMap<ICodeElement, IMember>();
+	protected static void processException(Exception e){
+		final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
+		StatusManager.getManager().handle(is, StatusManager.LOG);
+	}
+
+	private static WeakHashMap<ICodeElement, IMember> cache = new WeakHashMap<ICodeElement, IMember>();
 
 	private ICodeElement codeElement;
 	private ICodeElementFoundProcessor codeElementFoundProcessor;
 	private Stack<ICodeElement> stack = new Stack<ICodeElement>();
 	
-	private boolean found = false;
+	private ICodeElement actualSearchItem;
+	private Boolean found = false;
 	private IMember foundMatch = null;
 
-	public CodeElementFinder(ICodeElement codeElement, IProject project, ICodeElementFoundProcessor codeElementFoundProcessor){
-		this.codeElement = codeElement;
-		this.codeElementFoundProcessor = codeElementFoundProcessor;
-
-		initSearchTries();
-	}
-
 	/**
-	 * Searched an ICodeElement
+	 * Search an ICodeElement
 	 * 
 	 * @param sourceElement ICodeElement looking for
 	 * @param project IProject that looking in
@@ -93,169 +93,199 @@ public class CodeElementFinder {
 	 */
 	public static void startSearch(ICodeElement sourceElement, IProject project, ICodeElementFoundProcessor processor){	
 		CodeElementFinder cef = new CodeElementFinder(sourceElement, project, processor);
-		cef.startSearch();
+		cef.nextSearchStep();
 	}
 
-	/**
-	 * Initialize the search
-	 */
-	private void initSearchTries() {
-		stack.clear();
-		List<ICodeElement> searchTries = Util.createSearchTryStack(codeElement);
-		for (int i = searchTries.size()-1; i >= 0; i--){
-			stack.push(searchTries.get(i));
+	private CodeElementFinder(ICodeElement codeElement, IProject project, ICodeElementFoundProcessor codeElementFoundProcessor){
+		this.codeElement = codeElement;
+		this.codeElementFoundProcessor = codeElementFoundProcessor;
+
+		stack = Util.createSearchTryStack(codeElement);
+		
+		// checks if CodeElement was already found before
+		if (cache.containsKey(codeElement)){
+			IMember match = cache.get(codeElement);
+			if (match.exists()){
+				found = true;
+				foundMatch = match;
+			}
 		}
 	}
 
 	/**
-	 * Starts the search process
+	 * Process the next step in the search process
 	 */
-	public void startSearch(){
-		next();
-	}
-
-	/**
-	 * Starts the next step in the search process
-	 */
-	private void next(){
+	private void nextSearchStep(){
 		if (found){
-			//put foundMatch in WeakHashMap
-			codeElementFoundProcessor.processFoundCodeElement(foundMatch);
+			cache.put(codeElement, foundMatch);
+			if (actualSearchItem instanceof IStatement){
+				IStatement statement = (IStatement) codeElement;
+				codeElementFoundProcessor.processFoundCodeElement(foundMatch, statement.getLineNumber());
+			}else{
+				codeElementFoundProcessor.processFoundCodeElement(foundMatch);
+			}
 		}else{
 			if (stack.isEmpty()){
 				codeElementFoundProcessor.noMatchFound(codeElement);
 			}else{
-				ICodeElement nextTry = stack.pop();
-				SearchPattern searchPattern = SearchPattern.createPattern(Util.createStringPattern(nextTry), Util.createSearchFor(nextTry), IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
-				search(searchPattern, SearchEngine.createWorkspaceScope(), nextTry);
+				actualSearchItem = stack.pop();
+				searchItem();
 			}
 		}
 	}
 
 	/**
 	 * Start searching
-	 * @param searchPattern Pattern searched for
-	 * @param javaSearchScope Scope searched in
-	 * @param sourceElement ICodeElement searched for
+	 * 
+	 * @param codeElement ICodeElement searched for
 	 */
-	private void search(SearchPattern searchPattern, final IJavaSearchScope javaSearchScope, final ICodeElement sourceElement) {
+	private void searchItem() {
 
-		SearchRequestor requestor = new SearchRequestor() {
-			@Override
-			public void acceptSearchMatch(SearchMatch match) throws CoreException {
-				if (!found){
-					foundMatch(match, sourceElement);
-				}
-			}
+		SearchRequestor requestor = new CodeElementSearchRequestor(actualSearchItem);
 
-			@Override
-			public void endReporting(){
-				next();
-			}
-		};
-
-		// Search
 		SearchEngine searchEngine = new SearchEngine();
 		try {
-
+			SearchPattern searchPattern = SearchPattern.createPattern(Util.createStringPattern(actualSearchItem), Util.createSearchFor(actualSearchItem), IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
+			IJavaSearchScope javaSearchScope = SearchEngine.createWorkspaceScope();
 			searchEngine.search(searchPattern, new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()}, javaSearchScope, requestor, null);
-
-
 		} catch (CoreException e) {
-			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
+			processException(e);
 		}
 	}
 
 	/**
-	 * Checks if an found match is that what were looking for
+	 * SearchRequestor for searching ICodeElements
 	 * 
-	 * @param match Found match
-	 * @param sourceElement ICodeElement looking for
+	 * If an ICodeElement was found the SearchRequester set<br>
+	 * <code>found = true</code> and <code>foundMatch = </code> Match which was found 
+	 * 
+	 * 
+	 * @author 
 	 */
-	private void foundMatch(SearchMatch match, ICodeElement sourceElement) {
-		if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){	
-			foundMatch((IType) match.getElement(), (IClassDeclaration) sourceElement);
-		}	
-		if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
-			foundMatch((IMethod) match.getElement(), (IMethodDeclaration) sourceElement);
-		}
-		if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
-			foundMatch((IField) match.getElement(), (IFieldDeclaration) sourceElement);
-		}
-	}
+	class CodeElementSearchRequestor extends SearchRequestor {
 
-	/**
-	 * Checks if an found match is the IClassDeclaration we were looking for
-	 * 
-	 * @param match Found match
-	 * @param classDeclaration IClassDeclaration looking for
-	 */
-	private void foundMatch(IType type, IClassDeclaration classDeclaration) {
-		if (classDeclaration.getTypeQualifier() != null){
-			if (type.getKey().equals(classDeclaration.getTypeQualifier())){
+		private ICodeElement codeElement;
+
+		public CodeElementSearchRequestor(ICodeElement codeElement) {
+			this.codeElement = codeElement;
+		}
+
+		@Override
+		public void acceptSearchMatch(SearchMatch match) throws CoreException {
+			if (!found){
+				foundMatch(match, codeElement);
+			}
+		}
+
+		@Override
+		public void endReporting(){
+			nextSearchStep();
+		}
+		
+		/**
+		 * Checks if an found match is that what were looking for
+		 * 
+		 * @param match Found match
+		 * @param sourceElement ICodeElement looking for
+		 */
+		private void foundMatch(SearchMatch match, ICodeElement sourceElement) {
+			if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){	
+				foundMatch((IType) match.getElement(), (IClassDeclaration) sourceElement);
+			}
+			if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){	
+				foundMatch((IType) match.getElement(), (IStatement) sourceElement);
+			}	
+			if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
+				foundMatch((IMethod) match.getElement(), (IMethodDeclaration) sourceElement);
+			}
+			if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
+				foundMatch((IField) match.getElement(), (IFieldDeclaration) sourceElement);
+			}
+		}
+
+		/**
+		 * Checks if an found match is the IClassDeclaration we were looking for
+		 * 
+		 * @param match Found match
+		 * @param classDeclaration IClassDeclaration looking for
+		 */
+		private void foundMatch(IType type, IClassDeclaration classDeclaration) {
+			if (classDeclaration.getTypeQualifier() != null){
+				if (type.getKey().equals(classDeclaration.getTypeQualifier())){
+					foundMatch = type;
+					found = true;
+				}
+			}else{
 				foundMatch = type;
 				found = true;
 			}
-		}else{
+		}
+
+		/**
+		 * Checks if an found match is the IStatement we were looking for
+		 * 
+		 * @param match Found match
+		 * @param classDeclaration IClassDeclaration looking for
+		 */
+		private void foundMatch(IType type, IStatement sourceElement) {
+			// In case of searching for an IStatement there is no possibility to checker
+			// if the found match is the correct. A found match is always process as a correct match
 			foundMatch = type;
 			found = true;
 		}
-	}
-
-	/**
-	 * Checks if an found match is the IFieldDeclaration we were looking for
-	 * 
-	 * @param match Found match
-	 * @param classDeclaration IFieldDeclaration looking for
-	 */
-	private void foundMatch(IField field, IFieldDeclaration fieldDeclaration) {
-		try {
-			if (fieldDeclaration.getTypeQualifier().equals(Util.createTypQualifier(field.getTypeSignature(), field.getDeclaringType()))){
-				foundMatch = field;
-				found = true;
-			}
-		} catch (JavaModelException e) {
-			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		}
-	}
-
-	/**
-	 * Checks if an found match is the IMethodDeclaration we were looking for
-	 * 
-	 * @param match Found match
-	 * @param classDeclaration IMethodDeclaration looking for
-	 */
-	private void foundMatch(IMethod method, IMethodDeclaration methodDeclaration) {
-		try {
-			IType declaringType = method.getDeclaringType();
-			
-			// check if the returnType is the expected
-			if (methodDeclaration.getReturnTypeQualifier().equals(Util.createTypQualifier(method.getReturnType(), declaringType))){
-				boolean equal = true;
-
-				// check if all parameterTypes are equal the expected
-				String[] parameterTypes = method.getParameterTypes();
-				String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
-
-				if(expectedParameterTypes.length != parameterTypes.length)
-					return;
-				for (int i = 0; i < parameterTypes.length; i++){
-					if (!expectedParameterTypes[i].equals(Util.createTypQualifier(parameterTypes[i], declaringType))){
-						equal = false;
-						break;
-					}
-				}
-
-				if (equal){
-					foundMatch = method;
+		
+		/**
+		 * Checks if an found match is the IFieldDeclaration we were looking for
+		 * 
+		 * @param match Found match
+		 * @param classDeclaration IFieldDeclaration looking for
+		 */
+		private void foundMatch(IField field, IFieldDeclaration fieldDeclaration) {
+			try {
+				if (fieldDeclaration.getTypeQualifier().equals(Util.createTypQualifier(field.getTypeSignature(), field.getDeclaringType()))){
+					foundMatch = field;
 					found = true;
 				}
+			} catch (JavaModelException e) {
+				processException(e);
 			}
-		} catch (JavaModelException e) {
-			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
 		}
-	}
+
+		/**
+		 * Checks if an found match is the IMethodDeclaration we were looking for
+		 * 
+		 * @param match Found match
+		 * @param classDeclaration IMethodDeclaration looking for
+		 */
+		private void foundMatch(IMethod method, IMethodDeclaration methodDeclaration) {
+			try {
+				IType declaringType = method.getDeclaringType();
+				
+				// check if the returnType is the expected
+				if (methodDeclaration.getReturnTypeQualifier().equals(Util.createTypQualifier(method.getReturnType(), declaringType))){
+					boolean equal = true;
+
+					// check if all parameterTypes are equal the expected
+					String[] parameterTypes = method.getParameterTypes();
+					String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
+
+					if(expectedParameterTypes.length != parameterTypes.length)
+						return;
+					for (int i = 0; i < parameterTypes.length; i++){
+						if (!expectedParameterTypes[i].equals(Util.createTypQualifier(parameterTypes[i], declaringType))){
+							equal = false;
+							break;
+						}
+					}
+
+					if (equal){
+						foundMatch = method;
+						found = true;
+					}
+				}
+			} catch (JavaModelException e) {
+				processException(e);
+			}
+		}
+	};
 }

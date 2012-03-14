@@ -46,7 +46,6 @@ public class Statement extends CodeElement implements IStatement {
 	
 	public Statement(String packageIdentifier, String simpleClassName, int lineNumber){
 		super(packageIdentifier, simpleClassName);
-		
 		this.lineNumber = lineNumber;
 	}
 

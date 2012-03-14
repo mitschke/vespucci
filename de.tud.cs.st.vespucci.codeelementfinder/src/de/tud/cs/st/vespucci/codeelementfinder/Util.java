@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Stack;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -49,10 +50,12 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.FieldDeclaration;
 import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
+import de.tud.cs.st.vespucci.information.interfaces.spi.Statement;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IStatement;
 
 /**
  * Provide functionalities that is need to find ICodeElemnets
@@ -69,30 +72,42 @@ public class Util {
 	/**
 	 * Creates string pattern for an ICodeElement
 	 * 
-	 * @param sourceElement ICodeElement string pattern should be created for
-	 * @return StringPattern
+	 * @see org.eclipse.jdt.core.search.SearchPattern.createPattern(String, int, int, int)
+	 * 
+	 * @param codeElement ICodeElement string pattern should be created for
+	 * @return StringPattern, if it is not possible to create a string pattern an empty string is returned
 	 */
-	public static String createStringPattern(ICodeElement sourceElement) {
-		if (sourceElement instanceof IClassDeclaration){
-			IClassDeclaration classDeclaration = (IClassDeclaration) sourceElement;
-			return classDeclaration.getPackageIdentifier().replace("/", ".") + "." + classDeclaration.getSimpleClassName();
-		}else if (sourceElement instanceof IMethodDeclaration){
-			IMethodDeclaration methodDeclaration = (IMethodDeclaration) sourceElement;
+	public static String createStringPattern(ICodeElement codeElement) {
+		String packagePrefix = codeElement.getPackageIdentifier();
+		packagePrefix = packagePrefix.replace("/", ".");
+		if (!packagePrefix.equals("")){
+			packagePrefix += ".";
+		}
+		
+		if (codeElement instanceof IClassDeclaration){
+			IClassDeclaration classDeclaration = (IClassDeclaration) codeElement;
+			return packagePrefix + classDeclaration.getSimpleClassName();
+		}else if (codeElement instanceof IStatement){
+			// string pattern for IStatement is the same than for the corresponding IClassDeclaration
+			IStatement statement = (IStatement) codeElement;
+			IClassDeclaration classDeclaration = new ClassDeclaration(statement.getPackageIdentifier(), statement.getSimpleClassName(), null);
+
+			return createStringPattern(classDeclaration);
+		}else if (codeElement instanceof IMethodDeclaration){
+			IMethodDeclaration methodDeclaration = (IMethodDeclaration) codeElement;
 			if (methodDeclaration.getMethodName().contains("<")){
-				if (methodDeclaration.getMethodName().contains("<init>")){
-					return methodDeclaration.getPackageIdentifier().replace("/", ".") + "." + methodDeclaration.getSimpleClassName();
+				if (methodDeclaration.getMethodName().contains("<init")){
+					return packagePrefix + methodDeclaration.getSimpleClassName();
 				}else{
-					// <clinit> case must to be fixed in an other way
-					return methodDeclaration.getPackageIdentifier().replace("/", ".") + "." + methodDeclaration.getSimpleClassName();
+					return packagePrefix + methodDeclaration.getSimpleClassName();
 				}
 			}
-			
-			return methodDeclaration.getPackageIdentifier().replace("/", ".") + "." + methodDeclaration.getSimpleClassName() + "." + methodDeclaration.getMethodName();
-		}else if (sourceElement instanceof IFieldDeclaration){
-			IFieldDeclaration fieldDeclaration = (IFieldDeclaration) sourceElement;
-			return fieldDeclaration.getPackageIdentifier().replace("/", ".") + "." + fieldDeclaration.getSimpleClassName() + "."+ fieldDeclaration.getFieldName();
+			return packagePrefix + methodDeclaration.getSimpleClassName() + "." + methodDeclaration.getMethodName();
+		}else if (codeElement instanceof IFieldDeclaration){
+			IFieldDeclaration fieldDeclaration = (IFieldDeclaration) codeElement;
+			return packagePrefix + fieldDeclaration.getSimpleClassName() + "."+ fieldDeclaration.getFieldName();
 		}
-		return null;
+		return "";
 	}
 
 	/**
@@ -101,18 +116,18 @@ public class Util {
 	 * 
 	 * @see org.eclipse.jdt.core.search.IJavaSearchConstants
 	 * 
-	 * @param sourceElement ICodeElement that is looked for
+	 * @param codeElement ICodeElement that is looked for
 	 * @return SearchFor constant
 	 */
-	public static int createSearchFor(ICodeElement sourceElement) {
-		if (sourceElement instanceof IClassDeclaration){
+	public static int createSearchFor(ICodeElement codeElement) {
+		if ((codeElement instanceof IClassDeclaration)||(codeElement instanceof IStatement)){
 			return IJavaSearchConstants.CLASS_AND_INTERFACE;
-		}else if (sourceElement instanceof IMethodDeclaration){
-			if (((IMethodDeclaration) sourceElement).getMethodName().contains("<init")){
+		}else if (codeElement instanceof IMethodDeclaration){
+			if (((IMethodDeclaration) codeElement).getMethodName().contains("<init>")){
 				return IJavaSearchConstants.CONSTRUCTOR;
 			}
 			return IJavaSearchConstants.METHOD;
-		}else if (sourceElement instanceof IFieldDeclaration){
+		}else if (codeElement instanceof IFieldDeclaration){
 			return IJavaSearchConstants.FIELD;
 		}
 		return 0;
@@ -124,35 +139,47 @@ public class Util {
 	 * @param codeElement ICodeElement stack create for
 	 * @return Stack with the prioritize search items
 	 */
-	public static List<ICodeElement> createSearchTryStack(ICodeElement codeElement){
+	public static Stack<ICodeElement> createSearchTryStack(ICodeElement codeElement){
+		List<ICodeElement> tempSearchItems = new LinkedList<ICodeElement>();;
 		if (codeElement instanceof IClassDeclaration){
-			return createSearchTryStack((IClassDeclaration) codeElement);
+			tempSearchItems = createSearchItems((IClassDeclaration) codeElement);
+		}else if (codeElement instanceof IStatement){
+			tempSearchItems = createSearchItems((IStatement) codeElement);
+			tempSearchItems.addAll(createMinimumSearchItems(codeElement));
 		}else if (codeElement instanceof IMethodDeclaration){
-			List<ICodeElement> temp = createSearchTryStack((IMethodDeclaration) codeElement);
-			temp.addAll(createSearchTryClassStack(codeElement));
-			return temp;
+			tempSearchItems = createSearchItems((IMethodDeclaration) codeElement);
+			tempSearchItems.addAll(createMinimumSearchItems(codeElement));
 		}else if (codeElement instanceof IFieldDeclaration){
-			List<ICodeElement> temp = createSearchTryStack((IFieldDeclaration) codeElement);
-			temp.addAll(createSearchTryClassStack(codeElement));
-			return temp;
+			tempSearchItems = createSearchItems((IFieldDeclaration) codeElement);
+			tempSearchItems.addAll(createMinimumSearchItems(codeElement));
 		}
-		return new LinkedList<ICodeElement>();
+		
+		// List --> Stack
+		
+		Stack<ICodeElement> searchItems = new Stack<ICodeElement>();
+		for (int i = tempSearchItems.size()-1; i >= 0; i--){
+			searchItems.push(tempSearchItems.get(i));
+		}
+		
+		return searchItems;
 	}
 
 	/**
-	 * Creates stack with the prioritize search items for an ICodeElement
+	 * Creates list with the prioritize search items for an ICodeElement
 	 * containing all possible search items to find the contained class
 	 * 
+	 * The created search items are the worst for each ICodeElement.
+	 *
 	 * @param codeElement ICodeElement stack create for
-	 * @return Stack with the prioritize search items
+	 * @return List with the prioritize search items
 	 */
-	private static List<ICodeElement> createSearchTryClassStack(ICodeElement codeElement) {
+	private static List<ICodeElement> createMinimumSearchItems(ICodeElement codeElement) {
 		List<ICodeElement> result= new LinkedList<ICodeElement>();
 
 		String className = codeElement.getSimpleClassName();
 		String[] results = null;
 		String[] t = className.replace("$", ":").split(":");		
-		for (int i = count$(className); i >= 0; i--){
+		for (int i = countDollars(className); i >= 0; i--){
 			String res = t[0];
 			for (int j = 1; j <= i; j++){
 				res += "$" + t[j];
@@ -166,19 +193,20 @@ public class Util {
 	}
 
 	/**
-	 * Creates stack with the prioritize search items for an IClassDeclaration
+	 * Creates list with the prioritize search items for an IClassDeclaration
 	 * containing all possible search items to find the IClassDeclaration
 	 * 
 	 * @param codeElement ICodeElement stack create for
-	 * @return Stack with the prioritize search items
+	 * @return List with the prioritize search items
 	 */
-	public static List<ICodeElement> createSearchTryStack(IClassDeclaration codeElement){
+	public static List<ICodeElement> createSearchItems(IClassDeclaration codeElement){
 		List<ICodeElement> result= new LinkedList<ICodeElement>();
 
+		// Create an IClassDeclaration for each possible class name (variable length)
 		String className = codeElement.getSimpleClassName();
 		String[] results = null;
 		String[] t = className.replace("$", ":").split(":");		
-		for (int i = count$(className); i >= 0; i--){
+		for (int i = countDollars(className); i >= 0; i--){
 			String res = t[0];
 			for (int j = 1; j <= i; j++){
 				res += "$" + t[j];
@@ -187,7 +215,7 @@ public class Util {
 			for (String string : results) {
 				IClassDeclaration c = (IClassDeclaration) codeElement;
 				String typeQualifier = c.getTypeQualifier();
-				if (i != count$(className)){
+				if (i != countDollars(className)){
 					typeQualifier = null;
 				}
 				result.add(new ClassDeclaration(codeElement.getPackageIdentifier(), string, typeQualifier));
@@ -197,15 +225,36 @@ public class Util {
 	}
 
 	/**
-	 * Creates stack with the prioritize search items for an IMethodDeclaration
+	 * Creates list with the prioritize search items for an IStatement
+	 * containing all possible search items to find the IStatement
+	 * 
+	 * @param codeElement ICodeElement stack create for
+	 * @return List with the prioritize search items
+	 */
+	public static List<ICodeElement> createSearchItems(IStatement codeElement){
+		List<ICodeElement> result= new LinkedList<ICodeElement>();
+
+		// Create an IMethodDeclaration for each possible class name
+		String className = codeElement.getSimpleClassName();
+		String[] results = createPossibleClassNames(className);	
+		for (String string : results) {
+			result.add(new Statement(codeElement.getPackageIdentifier(), string, codeElement.getLineNumber()));
+		}
+
+		return result;
+	}
+
+	/**
+	 * Creates list with the prioritize search items for an IMethodDeclaration
 	 * containing all possible search items to find the IMethodDeclaration
 	 * 
 	 * @param codeElement ICodeElement stack create for
-	 * @return Stack with the prioritize search items
+	 * @return List with the prioritize search items
 	 */
-	public static List<ICodeElement> createSearchTryStack(IMethodDeclaration codeElement){
+	public static List<ICodeElement> createSearchItems(IMethodDeclaration codeElement){
 		List<ICodeElement> result= new LinkedList<ICodeElement>();
 
+		// Create an IMethodDeclaration for each possible class name
 		String className = codeElement.getSimpleClassName();
 		String[] results = createPossibleClassNames(className);	
 		for (String string : results) {
@@ -216,15 +265,16 @@ public class Util {
 	}
 
 	/**
-	 * Creates stack with the prioritize search items for an IFieldDeclaration
+	 * Creates list with the prioritize search items for an IFieldDeclaration
 	 * containing all possible search items to find the IFieldDeclaration
 	 * 
 	 * @param codeElement ICodeElement stack create for
-	 * @return Stack with the prioritize search items
+	 * @return List with the prioritize search items
 	 */
-	public static List<ICodeElement> createSearchTryStack(IFieldDeclaration codeElement){
+	public static List<ICodeElement> createSearchItems(IFieldDeclaration codeElement){
 		List<ICodeElement> result= new LinkedList<ICodeElement>();
 
+		// Create an IFieldDeclaration for each possible class name
 		String className = codeElement.getSimpleClassName();
 		String[] results = createPossibleClassNames(className);	
 		for (String string : results) {
@@ -237,17 +287,28 @@ public class Util {
 	/**
 	 * Create array of possible ClassNames out of a given name of a class
 	 * 
+	 * For example:<br>
+	 * <code>className: A$B$C</code>
+	 * <br>
+	 * result:<br>
+	 * <code>[A$B$C, <br> A$B.C,<br> A.B$C, <br>A.B.C]</code>
+	 * <br><br>
+	 * <code>className: A</code>
+	 * <br>
+	 * result:<br>
+	 * <code>[A]</code>
+	 * 
 	 * @param className Class name possibilities should be created for
 	 * @return Array of all class names
 	 */
 	private static String[] createPossibleClassNames(String className) {
-		int numOf$ = count$(className);
-		if (numOf$ == 0){
+		int numOfDollars = countDollars(className);
+		if (numOfDollars == 0){
 			String[] results = new String[1];
 			results[0] = className;
 			return results; 
 		}
-		int[][] temp = fillArrayBinary(numOf$);
+		int[][] temp = fillArrayBinary(numOfDollars);
 		String[] results = new String[temp.length];
 
 		for (int i = 0; i < results.length; i++){
@@ -269,50 +330,51 @@ public class Util {
 	}
 
 	/**
-	 * Count $ in a string
+	 * Count the occurrence of '$' in a string
 	 * 
-	 * @param string String $ should be count in
-	 * @return Number of $ in the given string
+	 * @param string
+	 * @return Number of '$'
 	 */
-	private static int count$(String string) {
-		return string.replace("$", ":").split(":").length - 1;
+	private static int countDollars(String string) {
+		int count = 0;
+		for (int i = 0; i < string.length(); i++){
+			if (string.charAt(i) == '$'){
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/**
-	 * Create a two dimensional array for all binary configurations
+	 * Create a two dimensional array with all possible binary configurations
 	 * <br>
 	 * For example:<br>
 	 * <code>count = 2</code>
 	 * <br>
-	 * return:<br>
-	 * <code>1 1</code><br>
-	 * <code>1 0</code><br>
-	 * <code>0 1</code><br>
-	 * <code>0 0</code><br>
+	 * result:<br>
+	 * <code>[[1, 1], <br> [1, 0],<br> [0, 1], <br>[0, 0]]</code>
 	 * 
-	 * @param count Width of the array
+	 * @param size Size of the array
 	 * @return Array with all possible configurations
 	 */
-	private static int[][] fillArrayBinary(int count){
-		int[][] array = new int[(int) Math.pow(2, count)][count];
+	private static int[][] fillArrayBinary(int size){
+		int[][] array = new int[(int) Math.pow(2, size)][size];
 
-		for (int i = 0; i < Math.pow(2, count); i++){
+		for (int i = 0; i < Math.pow(2, size); i++){
 			char[] t = Integer.toBinaryString(i).toCharArray();
 			for (int j = t.length-1; j >= 0; j--){
-				array[array.length -1 -i][count-1-j] = Integer.parseInt(String.valueOf(t[t.length -1 - j]));
+				array[array.length -1 -i][size-1-j] = Integer.parseInt(String.valueOf(t[t.length -1 - j]));
 			}
 		}
 		return array;
 	}
 
 	/**
-	 * METHODE MUSS VERSCHOBEN WERDEN, HAT HIER NIX ZU SUCHEN.
-	 * WIRD AUS LABELPROVIDER VON VIEWS AUFGERUFEN	 * 
-	 * 
-	 * Returns the type qualifier modified out of a given type qualifier representation
+	 * Returns the type qualifier modified to an version used for visualizations
 	 * <br>
 	 * For example:<br>
-	 * QString; --> Ljava/lang/String;
+	 * Ljava/lang/String; --> String
+	 * [[I; --> int[][]
 	 * 
 	 * @param typQualifier Other representation of type qualifier
 	 * @return Modified type Qualifier
@@ -320,7 +382,7 @@ public class Util {
 	public static String createSimpleTypeText(String typQualifier){
 		String label= "";
 
-		int dimensionOfArray = numberOfArraySymbol(typQualifier);
+		int dimensionOfArray = numberOfArraySymbols(typQualifier);
 
 		String innerTypQualifier = typQualifier.substring(dimensionOfArray);
 		if (innerTypQualifier.contains("/")){
@@ -330,7 +392,6 @@ public class Util {
 			if (primitiveTypeTable == null){
 				fillPrimitiveTypeTable();
 			}
-
 			for (Entry<String, String> entry : primitiveTypeTable.entrySet()) {
 				if (entry.getValue().equals(innerTypQualifier)){
 					label = entry.getKey();
@@ -363,7 +424,7 @@ public class Util {
 
 		String typeQualifier = "";
 
-		int dimensionOfArray = numberOfArraySymbol(signatur);
+		int dimensionOfArray = numberOfArraySymbols(signatur);
 
 		String arraySymbols = signatur.substring(0, dimensionOfArray);
 		String innerTypQualifier = signatur.substring(dimensionOfArray);
@@ -391,11 +452,17 @@ public class Util {
 		return typeQualifier;
 	}
 
-	private static int numberOfArraySymbol(String signatur) {
+	/**
+	 * Count the occurrence of '[' at the beginning of a given typeQualifier
+	 * 
+	 * @param typeQualifier
+	 * @return Number of '[' at the beginning
+	 */
+	private static int numberOfArraySymbols(String typeQualifier) {
 		// filter '[' we need them later
 		int dimensionOfArray = 0;
-		for (int i = 0; i < signatur.length(); i++){
-			if (signatur.charAt(i) == '[' ){
+		for (int i = 0; i < typeQualifier.length(); i++){
+			if (typeQualifier.charAt(i) == '[' ){
 				dimensionOfArray++;
 			}else{
 				break;
@@ -417,14 +484,6 @@ public class Util {
 		primitiveTypeTable.put("void", "V");
 	}
 
-	public static String removeLastDollarSequence(String simpleClassName) {
-		return simpleClassName.substring(0, simpleClassName.lastIndexOf("$"));
-	}
-
-	public static String getLastDollarSequence(String simpleClassName) {
-		return simpleClassName.substring(simpleClassName.lastIndexOf("$") + 1);
-	}
-	
 	public static void printICodeElement(ICodeElement codeElement){
 		System.out.println("------------------"+codeElement.getClass()+"----------------------------");
 			System.out.println("PackageIdentifier: " + codeElement.getPackageIdentifier());
@@ -442,5 +501,4 @@ public class Util {
 			}
 		System.out.println("----------------------------------------------");
 	}
-
 }
