@@ -110,7 +110,7 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 	@Override
 	public void added(IViolation arg0) {
 
-		// System.out.println("  added: " + arg0);
+		System.out.println("  added: " + arg0);
 
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.added(arg0);
@@ -120,7 +120,7 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 	@Override
 	public void removed(IViolation arg0) {
 
-		// System.out.println("removed: " + arg0);
+		System.out.println("removed: " + arg0);
 
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.deleted(arg0);
@@ -130,7 +130,7 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 	@Override
 	public void updated(IViolation arg0, IViolation arg1) {
 
-		// System.out.println("updated: " + arg0 + " => " + arg1);
+		System.out.println("updated: " + arg0 + " => " + arg1);
 
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.updated(arg0, arg1);
