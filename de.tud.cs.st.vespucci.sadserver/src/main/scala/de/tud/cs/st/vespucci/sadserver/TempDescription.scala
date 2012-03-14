@@ -50,12 +50,11 @@ object TempDescription {
   def clean(): Unit = {
     var i = 0
     for (
-      (id, (time, description)) <- map if (currentTime - time) > lifetime
-    ) {
+      (id, (time, description)) <- map if (currentTime - time) > lifetime) {
       map.-=(id)
       i = i + 1
     }
-    logger.debug("Collected and cleared %d forgotten descriptions." format i)
+    logger.debug("Cleared %d expired transactions (%d open transactions)." format (i, map.size))
   }
 
   def currentTime = System.currentTimeMillis
