@@ -31,26 +31,32 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.information.interfaces.spi;
+package de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi;
 
-import de.tud.cs.st.vespucci.interfaces.IStatement;
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
 /**
- * Concrete implementation of IStatement
+ * Concrete implementation of ICodeElement
  * 
  * @author 
  */
-public class Statement extends CodeElement implements IStatement {
-
-	int lineNumber;
+public abstract class CodeElement implements ICodeElement {
 	
-	public Statement(String packageIdentifier, String simpleClassName, int lineNumber){
-		super(packageIdentifier, simpleClassName);
-		this.lineNumber = lineNumber;
+	private String packageIdentifier;
+	private String simpleClassName;
+	
+	public CodeElement(String packageName, String simpleClassName) {
+		this.packageIdentifier = packageName;
+		this.simpleClassName = simpleClassName;
 	}
 
 	@Override
-	public int getLineNumber() {
-		return lineNumber;
+	public String getPackageIdentifier() {
+		return packageIdentifier;
+	}
+
+	@Override
+	public String getSimpleClassName() {
+		return simpleClassName;
 	}
 }

@@ -40,24 +40,15 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
-import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
-import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
-import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IStatement;
 
 /**
@@ -76,10 +67,11 @@ public class CodeElementFinder {
 
 	private static WeakHashMap<ICodeElement, IMember> cache = new WeakHashMap<ICodeElement, IMember>();
 
-	private ICodeElement codeElement;
 	private ICodeElementFoundProcessor codeElementFoundProcessor;
-	private Stack<ICodeElement> stack = new Stack<ICodeElement>();
-	
+	private CodeElementSearchRequestor codeElementSearchRequestor;
+
+	private Stack<ICodeElement> searchItems = new Stack<ICodeElement>();
+
 	private ICodeElement actualSearchItem;
 	private Boolean found = false;
 	private IMember foundMatch = null;
@@ -93,44 +85,72 @@ public class CodeElementFinder {
 	 */
 	public static void startSearch(ICodeElement sourceElement, IProject project, ICodeElementFoundProcessor processor){	
 		CodeElementFinder cef = new CodeElementFinder(sourceElement, project, processor);
-		cef.nextSearchStep();
+		cef.nextStep();
 	}
 
 	private CodeElementFinder(ICodeElement codeElement, IProject project, ICodeElementFoundProcessor codeElementFoundProcessor){
-		this.codeElement = codeElement;
 		this.codeElementFoundProcessor = codeElementFoundProcessor;
-
-		stack = Util.createSearchTryStack(codeElement);
-		
-		// checks if CodeElement was already found before
-		if (cache.containsKey(codeElement)){
-			IMember match = cache.get(codeElement);
-			if (match.exists()){
-				found = true;
-				foundMatch = match;
-			}
-		}
+		searchItems = Util.createSearchTryStack(codeElement);
 	}
 
 	/**
 	 * Process the next step in the search process
 	 */
-	private void nextSearchStep(){
+	private void nextStep(){
+		getSearchStatus();
 		if (found){
-			cache.put(codeElement, foundMatch);
-			if (actualSearchItem instanceof IStatement){
-				IStatement statement = (IStatement) codeElement;
-				codeElementFoundProcessor.processFoundCodeElement(foundMatch, statement.getLineNumber());
-			}else{
-				codeElementFoundProcessor.processFoundCodeElement(foundMatch);
-			}
+			foundCodeElement();
 		}else{
-			if (stack.isEmpty()){
-				codeElementFoundProcessor.noMatchFound(codeElement);
-			}else{
-				actualSearchItem = stack.pop();
-				searchItem();
+			nothingFoundYet();
+		}
+	}
+
+	/**
+	 * Is called when actualSearchItem was not found.
+	 * Starts an new search with the next best search item
+	 */
+	private void nothingFoundYet() {
+		if (searchItems.isEmpty()){
+			codeElementFoundProcessor.noMatchFound(actualSearchItem);
+		}else{
+			actualSearchItem = searchItems.pop();
+			
+			// checks if CodeElement was already found before
+			if (cache.containsKey(actualSearchItem)){
+				IMember match = cache.get(actualSearchItem);
+				if (match.exists()){
+					found = true;
+					foundMatch = match;
+					nextStep();
+				}
 			}
+			searchItem();
+		}
+	}
+
+	/**
+	 * Is called when a ICodeElement was found and delegate the found match
+	 * to the correct CodeElementFoundProcessor method
+	 */
+	private void foundCodeElement() {
+		if (!cache.containsKey(actualSearchItem)){
+			cache.put(actualSearchItem, foundMatch);
+		}
+		if (actualSearchItem instanceof IStatement){
+			IStatement statement = (IStatement) actualSearchItem;
+			codeElementFoundProcessor.processFoundCodeElement(foundMatch, statement.getLineNumber());
+		}else{
+			codeElementFoundProcessor.processFoundCodeElement(foundMatch);
+		}
+	}
+
+	/**
+	 * Catch information about the last search step from the SearchRequestor
+	 */
+	private void getSearchStatus() {
+		if (codeElementSearchRequestor != null){
+			found = codeElementSearchRequestor.getSearchResult();
+			foundMatch = codeElementSearchRequestor.getSearchMatch();
 		}
 	}
 
@@ -141,151 +161,22 @@ public class CodeElementFinder {
 	 */
 	private void searchItem() {
 
-		SearchRequestor requestor = new CodeElementSearchRequestor(actualSearchItem);
+		codeElementSearchRequestor = new CodeElementSearchRequestor(actualSearchItem, new IAction() {
+
+			@Override
+			public void run() {
+				// When the search process is finished nextSearchStep(); is called
+				nextStep();
+			}
+		});
 
 		SearchEngine searchEngine = new SearchEngine();
 		try {
 			SearchPattern searchPattern = SearchPattern.createPattern(Util.createStringPattern(actualSearchItem), Util.createSearchFor(actualSearchItem), IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH);
 			IJavaSearchScope javaSearchScope = SearchEngine.createWorkspaceScope();
-			searchEngine.search(searchPattern, new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()}, javaSearchScope, requestor, null);
+			searchEngine.search(searchPattern, new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()}, javaSearchScope, codeElementSearchRequestor, null);
 		} catch (CoreException e) {
 			processException(e);
 		}
 	}
-
-	/**
-	 * SearchRequestor for searching ICodeElements
-	 * 
-	 * If an ICodeElement was found the SearchRequester set<br>
-	 * <code>found = true</code> and <code>foundMatch = </code> Match which was found 
-	 * 
-	 * 
-	 * @author 
-	 */
-	class CodeElementSearchRequestor extends SearchRequestor {
-
-		private ICodeElement codeElement;
-
-		public CodeElementSearchRequestor(ICodeElement codeElement) {
-			this.codeElement = codeElement;
-		}
-
-		@Override
-		public void acceptSearchMatch(SearchMatch match) throws CoreException {
-			if (!found){
-				foundMatch(match, codeElement);
-			}
-		}
-
-		@Override
-		public void endReporting(){
-			nextSearchStep();
-		}
-		
-		/**
-		 * Checks if an found match is that what were looking for
-		 * 
-		 * @param match Found match
-		 * @param sourceElement ICodeElement looking for
-		 */
-		private void foundMatch(SearchMatch match, ICodeElement sourceElement) {
-			if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){	
-				foundMatch((IType) match.getElement(), (IClassDeclaration) sourceElement);
-			}
-			if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){	
-				foundMatch((IType) match.getElement(), (IStatement) sourceElement);
-			}	
-			if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
-				foundMatch((IMethod) match.getElement(), (IMethodDeclaration) sourceElement);
-			}
-			if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
-				foundMatch((IField) match.getElement(), (IFieldDeclaration) sourceElement);
-			}
-		}
-
-		/**
-		 * Checks if an found match is the IClassDeclaration we were looking for
-		 * 
-		 * @param match Found match
-		 * @param classDeclaration IClassDeclaration looking for
-		 */
-		private void foundMatch(IType type, IClassDeclaration classDeclaration) {
-			if (classDeclaration.getTypeQualifier() != null){
-				if (type.getKey().equals(classDeclaration.getTypeQualifier())){
-					foundMatch = type;
-					found = true;
-				}
-			}else{
-				foundMatch = type;
-				found = true;
-			}
-		}
-
-		/**
-		 * Checks if an found match is the IStatement we were looking for
-		 * 
-		 * @param match Found match
-		 * @param classDeclaration IClassDeclaration looking for
-		 */
-		private void foundMatch(IType type, IStatement sourceElement) {
-			// In case of searching for an IStatement there is no possibility to checker
-			// if the found match is the correct. A found match is always process as a correct match
-			foundMatch = type;
-			found = true;
-		}
-		
-		/**
-		 * Checks if an found match is the IFieldDeclaration we were looking for
-		 * 
-		 * @param match Found match
-		 * @param classDeclaration IFieldDeclaration looking for
-		 */
-		private void foundMatch(IField field, IFieldDeclaration fieldDeclaration) {
-			try {
-				if (fieldDeclaration.getTypeQualifier().equals(Util.createTypQualifier(field.getTypeSignature(), field.getDeclaringType()))){
-					foundMatch = field;
-					found = true;
-				}
-			} catch (JavaModelException e) {
-				processException(e);
-			}
-		}
-
-		/**
-		 * Checks if an found match is the IMethodDeclaration we were looking for
-		 * 
-		 * @param match Found match
-		 * @param classDeclaration IMethodDeclaration looking for
-		 */
-		private void foundMatch(IMethod method, IMethodDeclaration methodDeclaration) {
-			try {
-				IType declaringType = method.getDeclaringType();
-				
-				// check if the returnType is the expected
-				if (methodDeclaration.getReturnTypeQualifier().equals(Util.createTypQualifier(method.getReturnType(), declaringType))){
-					boolean equal = true;
-
-					// check if all parameterTypes are equal the expected
-					String[] parameterTypes = method.getParameterTypes();
-					String[] expectedParameterTypes = methodDeclaration.getParameterTypeQualifiers();
-
-					if(expectedParameterTypes.length != parameterTypes.length)
-						return;
-					for (int i = 0; i < parameterTypes.length; i++){
-						if (!expectedParameterTypes[i].equals(Util.createTypQualifier(parameterTypes[i], declaringType))){
-							equal = false;
-							break;
-						}
-					}
-
-					if (equal){
-						foundMatch = method;
-						found = true;
-					}
-				}
-			} catch (JavaModelException e) {
-				processException(e);
-			}
-		}
-	};
 }

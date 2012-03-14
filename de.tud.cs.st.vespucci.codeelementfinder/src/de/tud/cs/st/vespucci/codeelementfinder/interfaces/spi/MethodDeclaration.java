@@ -31,33 +31,40 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.information.interfaces.spi;
+package de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi;
 
-import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 
 /**
- * Concrete implementation of IFieldDeclaration
+ * Concrete implementation of IMethodDelcaration
  * 
  * @author 
  */
-public class FieldDeclaration extends CodeElement implements IFieldDeclaration {
-
-	private String fieldName;
-	private String typeQualifier;
+public class MethodDeclaration extends CodeElement implements IMethodDeclaration  {
 	
-	public FieldDeclaration(String packageName, String simpleClassName, String fieldName, String typeQualifier) {
-		super(packageName, simpleClassName);
-		this.fieldName = fieldName;
-		this.typeQualifier = typeQualifier;
+	private String methodName;
+	private String returnType;
+	private String[] paramTypes;
+
+	public MethodDeclaration(String packageIdentifier, String simpleClassName, String methodName, String returnType, String[] paramTypes){
+		super(packageIdentifier, simpleClassName);
+		this.methodName = methodName;
+		this.returnType = returnType;
+		this.paramTypes = paramTypes;
 	}
 
 	@Override
-	public String getFieldName() {
-		return fieldName;
+	public String getMethodName() {
+		return this.methodName;
+	}
+
+	@Override
+	public String getReturnTypeQualifier() {
+		return this.returnType;
 	}
 	
 	@Override
-	public String getTypeQualifier(){
-		return typeQualifier;
+	public String[] getParameterTypeQualifiers() {
+		return this.paramTypes;
 	}
 }

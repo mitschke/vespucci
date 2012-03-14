@@ -31,26 +31,26 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.information.interfaces.spi;
+package de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi;
 
-import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IStatement;
 
 /**
- * Concrete implementation of IClassDeclaration
+ * Concrete implementation of IStatement
  * 
  * @author 
  */
-public class ClassDeclaration extends CodeElement implements IClassDeclaration {
+public class Statement extends CodeElement implements IStatement {
 
-	String typeQualifier;
+	int lineNumber;
 	
-	public ClassDeclaration(String packageName, String className, String typeQualifier) {
-		super(packageName, className);
-		this.typeQualifier = typeQualifier;
+	public Statement(String packageIdentifier, String simpleClassName, int lineNumber){
+		super(packageIdentifier, simpleClassName);
+		this.lineNumber = lineNumber;
 	}
 
 	@Override
-	public String getTypeQualifier() {
-		return typeQualifier;
+	public int getLineNumber() {
+		return lineNumber;
 	}
 }

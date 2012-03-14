@@ -47,10 +47,10 @@ import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.tud.cs.st.vespucci.information.interfaces.spi.ClassDeclaration;
-import de.tud.cs.st.vespucci.information.interfaces.spi.FieldDeclaration;
-import de.tud.cs.st.vespucci.information.interfaces.spi.MethodDeclaration;
-import de.tud.cs.st.vespucci.information.interfaces.spi.Statement;
+import de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi.ClassDeclaration;
+import de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi.FieldDeclaration;
+import de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi.MethodDeclaration;
+import de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi.Statement;
 import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;

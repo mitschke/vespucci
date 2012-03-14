@@ -33,42 +33,12 @@
  */
 package de.tud.cs.st.vespucci.codeelementfinder;
 
-import org.eclipse.jdt.core.IMember;
-
-import de.tud.cs.st.vespucci.interfaces.ICodeElement;
-
 /**
- * Processor which provide methods that declares what should be done
- * when an ICodeElement is found
+ * Action that is processed when called
  * 
  * @author 
- *
  */
-public interface ICodeElementFoundProcessor {
+public interface IAction {
 
-	/**
-	 * Is called when the CodeElement was found and the wanted element was <br>
-	 * an IClassDeclaration<br>
-	 * an IFieldDeclaration<br>
-	 * an IMethodDeclaration<br>
-	 * 
-	 * @param member Match that was found
-	 */
-	public void processFoundCodeElement(IMember member);
-
-	/**
-	 * Is called when the CodeElement was found and the wanted element was <br>
-	 * an IStatement<br>
-	 * 
-	 * @param member Match that was found
-	 * @param lineNr Line number of the IStatement
-	 */
-	public void processFoundCodeElement(IMember member, int lineNr);
-
-	/**
-	 * Is called when the CodeElement was not found
-	 * 
-	 * @param codeElement Element which was not found
-	 */
-	public void noMatchFound(ICodeElement codeElement);
+	void run();
 }

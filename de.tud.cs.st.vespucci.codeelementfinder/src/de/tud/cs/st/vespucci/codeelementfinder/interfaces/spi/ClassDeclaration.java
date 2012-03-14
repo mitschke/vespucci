@@ -31,32 +31,26 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.information.interfaces.spi;
+package de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi;
 
-import de.tud.cs.st.vespucci.interfaces.ICodeElement;
+import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 
 /**
- * Concrete implementation of ICodeElement
+ * Concrete implementation of IClassDeclaration
  * 
  * @author 
  */
-public abstract class CodeElement implements ICodeElement {
+public class ClassDeclaration extends CodeElement implements IClassDeclaration {
+
+	String typeQualifier;
 	
-	private String packageIdentifier;
-	private String simpleClassName;
-	
-	public CodeElement(String packageName, String simpleClassName) {
-		this.packageIdentifier = packageName;
-		this.simpleClassName = simpleClassName;
+	public ClassDeclaration(String packageName, String className, String typeQualifier) {
+		super(packageName, className);
+		this.typeQualifier = typeQualifier;
 	}
 
 	@Override
-	public String getPackageIdentifier() {
-		return packageIdentifier;
-	}
-
-	@Override
-	public String getSimpleClassName() {
-		return simpleClassName;
+	public String getTypeQualifier() {
+		return typeQualifier;
 	}
 }
