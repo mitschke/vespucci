@@ -105,7 +105,7 @@ public class AdapterIFile implements IAdapterFactory {
 
 				for (Connection connection : shape.getTargetConnections()) {
 
-					if (connection.getTarget().eIsProxy())
+					if (connection.getTarget() ==  null ||connection.getTarget().eIsProxy())
 						createWarningForProxiesMarker(diagramFile, connection);
 
 				}
