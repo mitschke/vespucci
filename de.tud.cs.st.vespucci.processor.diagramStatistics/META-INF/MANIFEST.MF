@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DiagramStatistics
+Bundle-SymbolicName: de.tud.cs.st.vespucci.processor.diagramStatistics;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.tud.cs.st.vespucci.processor.diagramStatistics.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: de.tud.cs.st.vespucci.diagram.processing,
+ de.tud.cs.st.vespucci.interfaces,
+ de.tud.cs.st.vespucci.model,
+ de.tud.cs.st.vespucci.utilities,
+ org.eclipse.core.resources

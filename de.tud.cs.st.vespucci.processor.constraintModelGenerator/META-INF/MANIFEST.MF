@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Constraint Model Generator
+Bundle-SymbolicName: de.tud.cs.st.vespucci.processor.constraintModelGenerator;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.tud.cs.st.vespucci.processor.constraintModelGenerator.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: de.tud.cs.st.vespucci.database.architecture.provider,
+ de.tud.cs.st.vespucci.diagram.processing,
+ de.tud.cs.st.vespucci.interfaces,
+ de.tud.cs.st.vespucci.model,
+ de.tud.cs.st.vespucci.utilities,
+ de.tud.cs.st.vespucci.vespucci_model,
+ org.eclipse.core.resources,
+ org.eclipse.emf.common.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.resource,
+ org.eclipse.gmf.runtime.notation,
+ sae,
+ scala,
+ scala.collection,
+ unisson.model

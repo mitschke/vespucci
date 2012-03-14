@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="de.tud.cs.st.vespucci.processor.diagramStatistics.modelProcessors"
+         name="Vespucci Diagram Statistics"
+         point="de.tud.cs.st.vespucci.diagram.modelProcessors">
+      <modelProcessor
+            Label="Print Diagram Statistics"
+            ModelProcessor="de.tud.cs.st.vespucci.processor.diagramStatistics.ArchitectureDiagramStatisticsProcessor">
+      </modelProcessor>
+   </extension>
+
+</plugin>

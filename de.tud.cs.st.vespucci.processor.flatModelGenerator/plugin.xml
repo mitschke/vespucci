@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="de.tud.cs.st.vespucci.processor.diagramStatistics.modelProcessors"
+         name="Generate Flat Model"
+         point="de.tud.cs.st.vespucci.diagram.modelProcessors">
+      <modelProcessor
+            Label="Convert To Flat Dependency Model"
+            ModelProcessor="de.tud.cs.st.vespucci.processor.flatModelGenerator.FlatModelGeneratorProcessor">
+      </modelProcessor>
+   </extension>
+
+</plugin>
