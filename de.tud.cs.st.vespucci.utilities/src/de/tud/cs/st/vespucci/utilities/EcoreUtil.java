@@ -50,4 +50,5 @@ public class EcoreUtil {
 		throw new IllegalStateException(fileName + " did not contain a vespuci model [ShapesDiagram.class].");
 	}
 
+	
 }

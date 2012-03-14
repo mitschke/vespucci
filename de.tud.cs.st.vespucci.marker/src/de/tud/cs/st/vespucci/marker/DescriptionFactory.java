@@ -4,15 +4,8 @@ import java.util.HashMap;
 
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
-import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
-import de.tud.cs.st.vespucci.model.IExpected;
-import de.tud.cs.st.vespucci.model.IGlobalIncoming;
-import de.tud.cs.st.vespucci.model.IGlobalOutgoing;
-import de.tud.cs.st.vespucci.model.IInAndOut;
-import de.tud.cs.st.vespucci.model.IIncoming;
-import de.tud.cs.st.vespucci.model.INotAllowed;
-import de.tud.cs.st.vespucci.model.IOutgoing;
+import de.tud.cs.st.vespucci.utilities.ModelUtils;
 
 public class DescriptionFactory {
 
@@ -46,7 +39,7 @@ public class DescriptionFactory {
 		
 		// Constraint:
 		sb.append(" of ");
-		sb.append(getConstraintType(violationSummmary.getConstraint()));
+		sb.append(ModelUtils.getConstraintType(violationSummmary.getConstraint()));
 		sb.append("'");
 		sb.append(violationSummmary.getConstraint().getDependencyKind());
 		sb.append("'");
@@ -65,23 +58,7 @@ public class DescriptionFactory {
 				+ ensemble.getName();
 	}
 
-	public static String getConstraintType(IConstraint constraint) {
-		if (constraint instanceof IIncoming)
-			return "incoming";
-		if (constraint instanceof IOutgoing)
-			return "incoming";
-		if (constraint instanceof IInAndOut)
-			return "in/out";
-		if (constraint instanceof IGlobalIncoming)
-			return "global incoming";
-		if (constraint instanceof IGlobalOutgoing)
-			return "global outgoing";
-		if (constraint instanceof IExpected)
-			return "expected";
-		if (constraint instanceof INotAllowed)
-			return "not allowed";
-		return "unknown";
-	}
+
 
 	private void fillDescMapWithViolationKinds() {
 
