@@ -37,8 +37,8 @@
 package de.tud.cs.st.vespucci.sadclient.model.http;
 
 /**
- * When the server sends an error message or something goes wrong in the client
- * during the request, this exception is used.
+ * When the server sends an error message or something goes wrong in the client during the request,
+ * this exception is used.
  * 
  * @author Mateusz Parzonka
  * 
@@ -46,17 +46,28 @@ package de.tud.cs.st.vespucci.sadclient.model.http;
 public class RequestException extends Exception {
 
     private static final long serialVersionUID = 2415823236817036258L;
+    private final Integer statusCode;
 
     public RequestException(int statusCode) {
 	super("Server responded with status code " + statusCode + ".");
+	this.statusCode = statusCode;
     }
 
     public RequestException(int statusCode, String body) {
-	super("Server responded with status code " + statusCode + ".\n" + body);
+	super("Server responded with status code " + statusCode + ". \n" + body);
+	this.statusCode = statusCode;
     }
 
     public RequestException(Throwable e) {
 	super(e);
+	this.statusCode = null;
+    }
+
+    /**
+     * @return server status code if set, else null.
+     */
+    public Integer getStatusCode() {
+	return statusCode;
     }
 
 }
