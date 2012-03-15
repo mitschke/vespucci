@@ -370,16 +370,19 @@ public class Controller {
 			    monitor.subTask("Finishing update...");
 			    sadClient.commitTransaction(transactionId);
 			    monitor.done();
-			} catch (RequestException e) {
+			} catch (Exception e) {
 			    sadClient.rollbackTransaction(transactionId);
 			    throw e;
 			}
+		    } catch (OperationCanceledException e) {
+			return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "SAD update canceled.");
+		    } catch (RequestException e) {
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while updating SAD: "
+				+ e.getMessage(), e);
 		    } catch (Exception e) {
-			IconAndMessageDialogs.showErrorDialog("Upload to SADServer failed.", e.getMessage());
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unexpected error while updating SAD.", e);
 		    }
-
 		    refresh(sadUpdate.getViewer());
-
 		    return new Status(IStatus.OK, Activator.PLUGIN_ID, "OK");
 		}
 	    };

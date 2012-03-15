@@ -41,6 +41,7 @@ import java.io.OutputStream;
 
 import org.apache.http.entity.mime.MultipartEntity;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 
 /**
  * A {@link MultipartEntity} which updates a given {@link IProgressMonitor}.
@@ -55,6 +56,8 @@ public class MultipartEntityWithProgress extends MultipartEntity {
     public MultipartEntityWithProgress(IProgressMonitor progressMonitor) {
 	super();
 	this.progressMonitor = progressMonitor;
+	System.out.println("MultipartWithProgress");
+
     }
 
     @Override
@@ -66,6 +69,7 @@ public class MultipartEntityWithProgress extends MultipartEntity {
 
 	private final OutputStream outstream;
 	private int bytesWritten = 0;
+	private final static int workloadSize = 1 << 16;
 
 	public OutputStreamProgress(OutputStream outstream) {
 	    this.outstream = outstream;
@@ -74,23 +78,22 @@ public class MultipartEntityWithProgress extends MultipartEntity {
 	@Override
 	public void write(int b) throws IOException {
 	    outstream.write(b);
-	    bytesWritten++;
+	    bytesWritten ++;
+	    updateProgress();
 	}
 
 	@Override
 	public void write(byte[] b) throws IOException {
 	    outstream.write(b);
 	    bytesWritten += b.length;
-	    if (bytesWritten > 4096) {
-		progressMonitor.worked(bytesWritten);
-		bytesWritten = 0;
-	    }
+	    updateProgress();
 	}
 
 	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
 	    outstream.write(b, off, len);
 	    bytesWritten += len;
+	    updateProgress();
 	}
 
 	@Override
@@ -103,8 +106,15 @@ public class MultipartEntityWithProgress extends MultipartEntity {
 	    outstream.close();
 	}
 
-	public long getWrittenLength() {
-	    return bytesWritten;
+	private void updateProgress() {
+	    if (progressMonitor.isCanceled()) {
+		throw new OperationCanceledException();
+	    }
+	    final int currentWorkload = bytesWritten / workloadSize;
+	    if (currentWorkload > 0) {
+		progressMonitor.worked(currentWorkload * workloadSize);
+		bytesWritten -= currentWorkload * workloadSize;
+	    }
 	}
 
     }
