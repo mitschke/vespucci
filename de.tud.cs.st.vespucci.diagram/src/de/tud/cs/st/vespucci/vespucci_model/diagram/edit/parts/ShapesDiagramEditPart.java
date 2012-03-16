@@ -56,6 +56,7 @@ import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.diagram.dnd.CreationNewEnsembleEditPolicy;
 import de.tud.cs.st.vespucci.diagram.dnd.VespucciDragDropEditPolicy;
 
 /**
@@ -90,44 +91,8 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 		installEditPolicy(
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramItemSemanticEditPolicy());
-		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
-				new DiagramDragDropEditPolicy() {
-					public Command getDropObjectsCommand(
-							DropObjectsRequest dropRequest) {
-						ArrayList<CreateViewRequest.ViewDescriptor> viewDescriptors = new ArrayList<CreateViewRequest.ViewDescriptor>();
-						for (Iterator<?> it = dropRequest.getObjects()
-								.iterator(); it.hasNext();) {
-							Object nextObject = it.next();
-							if (false == nextObject instanceof EObject) {
-								continue;
-							}
-							viewDescriptors
-									.add(new CreateViewRequest.ViewDescriptor(
-											new EObjectAdapter(
-													(EObject) nextObject),
-											Node.class, null,
-											getDiagramPreferencesHint()));
-						}
-						return createShortcutsCommand(dropRequest,
-								viewDescriptors);
-					}
-
-					private Command createShortcutsCommand(
-							DropObjectsRequest dropRequest,
-							List<CreateViewRequest.ViewDescriptor> viewDescriptors) {
-						Command command = createViewsAndArrangeCommand(
-								dropRequest, viewDescriptors);
-						if (command != null) {
-							return command
-									.chain(new ICommandProxy(
-											new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.VespucciCreateShortcutDecorationsCommand(
-													getEditingDomain(),
-													(View) getModel(),
-													viewDescriptors)));
-						}
-						return null;
-					}
-				});
+		installEditPolicy(EditPolicyRoles.CREATION_ROLE, new CreationNewEnsembleEditPolicy());
+		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new VespucciDragDropEditPolicy(this));
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 

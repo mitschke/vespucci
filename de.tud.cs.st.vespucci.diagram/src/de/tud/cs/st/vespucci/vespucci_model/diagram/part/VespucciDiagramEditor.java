@@ -107,6 +107,8 @@ import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 
 import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
+import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
@@ -643,28 +645,30 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	 * put a drop listener to the Vespucci diagram view
 	 * 
 	 * @author Malte Viering
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
+		getDiagramGraphicalViewer().addDropTargetListener(new DropVespucciDiagramTargetListener(getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(new CreateEnsembleDropTargetListener(getDiagramGraphicalViewer()));
 		getDiagramGraphicalViewer().addDropTargetListener(
 				new DropTargetListener(getDiagramGraphicalViewer(),
-						LocalSelectionTransfer.getTransfer()) {
+				LocalSelectionTransfer.getTransfer()) {
 
-					protected Object getJavaObject(TransferData data) {
-						return LocalSelectionTransfer.getTransfer()
-								.nativeToJava(data);
-					}
+				protected Object getJavaObject(TransferData data) {
+				return LocalSelectionTransfer.getTransfer()
+				.nativeToJava(data);
+				}
 
 				});
-		getDiagramGraphicalViewer().addDropTargetListener(
+				getDiagramGraphicalViewer().addDropTargetListener(
 				new DropTargetListener(getDiagramGraphicalViewer(),
-						LocalTransfer.getInstance()) {
+				LocalTransfer.getInstance()) {
 
-					protected Object getJavaObject(TransferData data) {
-						return LocalTransfer.getInstance().nativeToJava(data);
-					}
+				protected Object getJavaObject(TransferData data) {
+				return LocalTransfer.getInstance().nativeToJava(data);
+				}
 
 				});
 	}

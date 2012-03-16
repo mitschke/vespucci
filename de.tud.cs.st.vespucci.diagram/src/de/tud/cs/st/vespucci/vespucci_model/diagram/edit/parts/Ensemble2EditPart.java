@@ -38,10 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.BorderLayout;
-import org.eclipse.draw2d.FlowLayout;
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
@@ -65,9 +62,10 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
+
+import de.tud.cs.st.vespucci.diagram.dnd.EditDropPolicy;
 
 /**
  * @generated
@@ -105,7 +103,7 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.Ensemble2ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
-		//		installEditPolicy(REQ_DIRECT_EDIT, new EditDropPolicy());
+		installEditPolicy(REQ_DIRECT_EDIT, new EditDropPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
 	}
