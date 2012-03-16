@@ -58,12 +58,6 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
             modified TIMESTAMP)
             """)
 
-        // TODO creating a temporary user, remove this in production code!
-        val result: ResultSet = conn.executeQuery("SELECT * FROM users WHERE name = 'somebody'")
-        if (result.isEmpty())
-          conn.executeUpdate("INSERT INTO users VALUES('someid', 'somebody', 'password')")
-        result.close()
-
     }
   }
 
