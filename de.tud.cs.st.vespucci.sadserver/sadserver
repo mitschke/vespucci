@@ -2,14 +2,15 @@
 
 ### BEGIN INIT INFO
 # Provides:          Vespucci SADServer
-# Required-Start
-# Required-Stop:
+# Required-Start: $remote_fs $syslog
+# Required-Stop: $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start and graceful stop of the Vespucci SADServer
-# Description:       To be placed in /etc/init.d then initialize there with "sudo update-rc.d -f sadserver defaults"
+# Short-Description:  Starts the Vespucci SADServer, does not stop it gracefully, but the database has its own hook.
+# Description: To be placed in /etc/init.d then registered there with "sudo update-rc.d sadserver defaults 99"
 ### END INIT INFO
 # Author: Mateusz Parzonka <parzonka@gmail.com>
+
 
 # Handle manual control parameters like start, stop, status, restart, etc.
 
@@ -21,8 +22,6 @@ case "$1" in
         ;;
     stop)
         echo "Stopping SADServer"
-        cd /opt/sadserver
-        sh shutdown.sh
         ;;
     restart)
         echo "Starting SADServer"
