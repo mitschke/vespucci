@@ -1,0 +1,34 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          Vespucci SADServer
+# Required-Start
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start and graceful stop of the Vespucci SADServer
+# Description:       To be placed in /etc/init.d then initialize there with "sudo update-rc.d -f sadserver defaults"
+### END INIT INFO
+# Author: Mateusz Parzonka <parzonka@gmail.com>
+
+# Handle manual control parameters like start, stop, status, restart, etc.
+
+case "$1" in
+    start)
+        echo "Starting SADServer"
+        cd /opt/sadserver
+        java -jar sadserver.jar
+        ;;
+    stop)
+        echo "Stopping SADServer"
+        cd /opt/sadserver
+        sh shutdown.sh
+        ;;
+    restart)
+        echo "Starting SADServer"
+        cd /opt/sadserver
+        java -jar sadserver.jar
+        ;;
+esac
+
+exit 0
