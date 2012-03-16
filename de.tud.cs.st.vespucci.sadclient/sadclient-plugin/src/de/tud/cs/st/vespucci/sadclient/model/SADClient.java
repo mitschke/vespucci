@@ -257,12 +257,6 @@ public class SADClient {
 		if (monitor.isCanceled())
 		    throw new OperationCanceledException();
 		monitor.worked(worked);
-		// TODO deactivated SLOWDOWN remove in production code:
-//		try {
-//		    Thread.sleep(100);
-//		} catch (InterruptedException e) {
-//		    throw new RuntimeException(e);
-//		}
 		currentWorkedBytes -= worked * workSize;
 	    }
 	}
