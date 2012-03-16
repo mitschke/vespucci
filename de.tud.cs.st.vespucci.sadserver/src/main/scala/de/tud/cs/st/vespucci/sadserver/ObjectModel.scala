@@ -68,6 +68,10 @@ case class Description(
       { if (model.isDefined) model.get.toXml }
       { if (documentation.isDefined) documentation.get.toXml }
     </description>
+      
+  def renewId() {
+    id = randomUUID.toString
+  }
 
 }
 

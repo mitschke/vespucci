@@ -1,5 +1,5 @@
 /*
-   Copyright 2011 Michael Eichberg et al
+¡   Copyright 2011 Michael Eichberg et al
  
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -171,7 +171,6 @@ class TempDescriptionResource extends RESTInterface with TempDescription with Da
 
   /** stores the SAD to the database */
   post of XML returns XML {
-    println("Committing...")
     deleteTemp(id).map(storeSAD(_).toXML)
   }
 

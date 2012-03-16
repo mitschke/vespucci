@@ -377,9 +377,16 @@ public class Controller {
 		    } catch (OperationCanceledException e) {
 			return new Status(IStatus.CANCEL, Activator.PLUGIN_ID, "SAD update canceled.");
 		    } catch (RequestException e) {
+			// check for edit conflict code => edit race
+			if (e.getStatusCode() == 409) {
+			    refresh(sadUpdate.getViewer());
+			    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage());
+			}
+			// when server responds with an error (forbidden, etc.)
 			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while updating SAD: "
 				+ e.getMessage(), e);
 		    } catch (Exception e) {
+			// when something is really wrong
 			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unexpected error while updating SAD.", e);
 		    }
 		    refresh(sadUpdate.getViewer());

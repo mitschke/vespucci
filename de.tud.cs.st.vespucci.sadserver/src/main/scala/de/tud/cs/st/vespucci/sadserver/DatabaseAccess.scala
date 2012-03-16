@@ -157,10 +157,14 @@ trait DatabaseAccess extends JdbcSupport with H2DatabaseConnection {
               execute("INSERT INTO sads VALUES('%s', ?, ?, ?, ?, ?, ?, ?, ?, ?)" format description.id)
               logger.info("Created new SAD [%s]" format description)
             case Some(modified: Timestamp) if (modified.after(remoteModified)) =>
-              val message = "Edit conflict. Someone has already stored a version of this SAD in the meantime. " +
-              "Your changes are lost, sorry."
-              logger.warn(message)
-              throw new RequestException(response = new ErrorResponse(409, message)) // Conflict 
+              description.renewId()
+              description.name = description.name + " [EDIT RACE VERSION]"
+              val message = "Edit race. Someone has already stored a version of this SAD in the meantime. " +
+              " Your update was stored as a duplicate, please review both changes."
+              execute("INSERT INTO sads VALUES('%s', ?, ?, ?, ?, ?, ?, ?, ?, ?)" format description.id)
+              conn.commit() // because we need to throw an exception
+              logger.warn("Edit race, stored duplicate [%s]" format description)
+              throw new RequestException(response = new ErrorResponse(409, message)) 
             case Some(modified: Timestamp) =>
               execute("UPDATE sads SET name = ?, type = ?, abstract = ?, modelName = ?, model = ?, documentationName = ?, documentation = ?, wip = ?, modified = ? WHERE id = '%s'" format description.id)
               logger.info("Updated SAD [%s]" format description)
