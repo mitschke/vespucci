@@ -105,9 +105,7 @@ public class Controller {
     }
 
     /**
-     * Retrieves the collection of SADs.
-     * 
-     * 
+     * @return all SADs on server
      */
     public SAD[] getSADCollection() {
 	// Executes a working thread getting the SADs from the server. Implementing this
@@ -126,6 +124,28 @@ public class Controller {
 		    + Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SERVER),
 		    e.getMessage());
 	    return new SAD[0];
+	}
+    }
+
+    /**
+     * @param id
+     *            of SAD
+     * @return a single SAD
+     */
+    public SAD getSAD(final String id) {
+	try {
+	    Future<SAD> sadCollectionFuture = pool.submit(new Callable<SAD>() {
+		@Override
+		public SAD call() throws Exception {
+		    return sadClient.getSAD(id);
+		}
+	    });
+	    return sadCollectionFuture.get();
+	} catch (Exception e) {
+	    IconAndMessageDialogs.showErrorDialog("Could not connect to server: "
+		    + Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SERVER),
+		    e.getMessage());
+	    return new SAD();
 	}
     }
 

@@ -242,16 +242,28 @@ public class SADCollectionView extends ViewPart {
     }
 
     /**
-     * Listen for selections in the table and for doubeclicks opening the {@link SADDialog}.
+     * Listen for selections in the table and for double-clicks opening the {@link SADDialog}.
      */
     private void addListeners() {
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    public void doubleClick(DoubleClickEvent event) {
 		if (!selectedSAD.isEmpty()) {
-		    Dialog dialog = new SADDialog(viewer, selectedSAD.get(0));
+		    final String id = selectedSAD.get(0).getId();
+		    Dialog dialog = new SADDialog(viewer, Controller.getInstance().getSAD(id));
+		    asyncViewerRefresh();
 		    dialog.open();
 		}
 	    }
+
+	    private void asyncViewerRefresh() {
+		viewer.getControl().getDisplay().asyncExec(new Runnable() {
+		    @Override
+		    public void run() {
+			viewer.refresh();
+		    }
+		});
+	    }
+	    
 	});
 
 	viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -460,7 +472,7 @@ public class SADCollectionView extends ViewPart {
 	private boolean validateData(int length, File modelFile, File documentationFile) {
 	    return ((length == 1 || length == 2)
 		    && implies(length == 1, modelFile != null || documentationFile != null) && implies(length == 2,
-			modelFile != null && documentationFile != null));
+		    modelFile != null && documentationFile != null));
 	}
 
 	private static boolean implies(boolean a, boolean b) {
