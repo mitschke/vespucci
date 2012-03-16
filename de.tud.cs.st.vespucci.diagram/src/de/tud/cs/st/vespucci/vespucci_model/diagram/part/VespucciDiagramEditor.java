@@ -123,6 +123,7 @@ import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEmptyEditPart;
@@ -650,43 +651,51 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
-		getDiagramGraphicalViewer().addDropTargetListener(new DropVespucciDiagramTargetListener(getDiagramGraphicalViewer()));
-		getDiagramGraphicalViewer().addDropTargetListener(new CreateEnsembleDropTargetListener(getDiagramGraphicalViewer()));
 		getDiagramGraphicalViewer().addDropTargetListener(
-				new DropTargetListener(getDiagramGraphicalViewer(),
-				LocalSelectionTransfer.getTransfer()) {
+				new DropVespucciDiagramTargetListener(
+						getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new CreateEnsembleDropTargetListener(
+						getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new GlobalRepositoryDropTargetListener(
+						getDiagramGraphicalViewer(), LocalSelectionTransfer
+								.getTransfer()) {
 
-				protected Object getJavaObject(TransferData data) {
-				return LocalSelectionTransfer.getTransfer()
-				.nativeToJava(data);
-				}
+					protected Object getJavaObject(TransferData data) {
+						return LocalSelectionTransfer.getTransfer()
+								.nativeToJava(data);
+					}
 
 				});
-				getDiagramGraphicalViewer().addDropTargetListener(
-				new DropTargetListener(getDiagramGraphicalViewer(),
-				LocalTransfer.getInstance()) {
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new GlobalRepositoryDropTargetListener(
+						getDiagramGraphicalViewer(), LocalTransfer
+								.getInstance()) {
 
-				protected Object getJavaObject(TransferData data) {
-				return LocalTransfer.getInstance().nativeToJava(data);
-				}
+					protected Object getJavaObject(TransferData data) {
+						return LocalTransfer.getInstance().nativeToJava(data);
+					}
 
 				});
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
-	private abstract class DropTargetListener extends DiagramDropTargetListener {
+	private abstract class GlobalRepositoryDropTargetListener extends
+			DiagramDropTargetListener {
 
 		/**
-		 * @generated
+		 * @generated NOT
 		 */
-		public DropTargetListener(EditPartViewer viewer, Transfer xfer) {
+		public GlobalRepositoryDropTargetListener(EditPartViewer viewer,
+				Transfer xfer) {
 			super(viewer, xfer);
 		}
 
 		/**
-		 * @generated
+		 * @generated NOT
 		 */
 		protected List getObjectsBeingDropped() {
 			TransferData data = getCurrentEvent().currentDataType;
@@ -707,7 +716,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 								.getAdapter(EObject.class);
 					}
 
-					if (nextSelectedObject instanceof EObject) {
+					if (nextSelectedObject instanceof Shape) {
 						EObject modelElement = (EObject) nextSelectedObject;
 						uris.add(EcoreUtil.getURI(modelElement));
 					}
@@ -724,7 +733,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		}
 
 		/**
-		 * @generated
+		 * @generated NOT
 		 */
 		protected abstract Object getJavaObject(TransferData data);
 

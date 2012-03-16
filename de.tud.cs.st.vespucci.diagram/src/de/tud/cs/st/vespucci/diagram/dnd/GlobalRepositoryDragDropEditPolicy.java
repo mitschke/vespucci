@@ -6,23 +6,20 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gmf.runtime.diagram.ui.commands.ICommandProxy;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DiagramDragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.DropObjectsRequest;
 import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
 import org.eclipse.gmf.runtime.notation.Node;
-import org.eclipse.gmf.runtime.notation.View;
-
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DiagramDragDropEditPolicy;
 
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
 
-public class VespucciDragDropEditPolicy extends
+public class GlobalRepositoryDragDropEditPolicy extends
 		DiagramDragDropEditPolicy {
 	
 	private ShapesDiagramEditPart sep = null;
 	
-	public VespucciDragDropEditPolicy(ShapesDiagramEditPart sep){
+	public GlobalRepositoryDragDropEditPolicy(ShapesDiagramEditPart sep){
 		super();
 		this.sep = sep;
 	}
@@ -47,13 +44,6 @@ public class VespucciDragDropEditPolicy extends
 			List<CreateViewRequest.ViewDescriptor> viewDescriptors) {
 		Command command = createViewsAndArrangeCommand(dropRequest,
 				viewDescriptors);
-		if (command != null) {
-			return command
-					.chain(new ICommandProxy(
-							new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.VespucciCreateShortcutDecorationsCommand(
-									sep.getEditingDomain(), (View) sep.getModel(),
-									viewDescriptors)));
-		}
-		return null;
+		return command;
 	}
 }

@@ -296,9 +296,9 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider
 
 			final Diagram diagram = DiagramIOUtil.load(domain, storage, true,
 					getProgressMonitor());
-//		//FIXME: Test	
-//			VespucciDiagramElementCollector.collectElements((View) diagram);
-			
+			//		//FIXME: Test	
+			//			VespucciDiagramElementCollector.collectElements((View) diagram);
+
 			document.setContent(diagram);
 		} else if (element instanceof URIEditorInput) {
 			final URI uri = ((URIEditorInput) element).getURI();
@@ -334,7 +334,8 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider
 					for (final Object rootElement : resource.getContents()) {
 						if (rootElement instanceof Diagram) {
 							document.setContent(rootElement);
-							VespucciDiagramElementCollector.collectElements((View)rootElement);
+							VespucciDiagramElementCollector
+									.collectElements((View) rootElement);
 							System.out.println(rootElement);
 							return;
 						}

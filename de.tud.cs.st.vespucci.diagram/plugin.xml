@@ -1044,7 +1044,7 @@
                 type="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
           </propertyTester>
        </extension>
-<extension point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders" id="decorator-provider">
+<extension point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders" id="decorator-provider">
       <?gmfgen generated="true"?>
       <decoratorProvider class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciShortcutsDecoratorProvider">
          <Priority name="Lowest"/>
@@ -1065,6 +1065,12 @@
            class="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciShortcutPropertyTester">
        </propertyTester>
    </extension>
+
+
+
+
+
+
 
 
 
