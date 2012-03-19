@@ -33,6 +33,7 @@
  */
 package de.tud.cs.st.vespucci.interfaces;
 
+
 /**
  * A source code element is either a whole class, a method or a field
  * Always identified by a PackageIdentifier, a SimpleClassName and a LineNumber
@@ -67,4 +68,6 @@ public interface ICodeElement {
 	 * @return The name of the class
 	 */
 	public String getSimpleClassName();
+	
+	
 }
