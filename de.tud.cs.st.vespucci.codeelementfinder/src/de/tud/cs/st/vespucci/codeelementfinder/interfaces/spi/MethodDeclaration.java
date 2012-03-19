@@ -33,20 +33,24 @@
  */
 package de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi;
 
+import java.util.Arrays;
+
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 
 /**
  * Concrete implementation of IMethodDelcaration
  * 
- * @author 
+ * @author
  */
-public class MethodDeclaration extends CodeElement implements IMethodDeclaration  {
-	
+public class MethodDeclaration extends CodeElement implements
+		IMethodDeclaration {
+
 	private String methodName;
 	private String returnType;
 	private String[] paramTypes;
 
-	public MethodDeclaration(String packageIdentifier, String simpleClassName, String methodName, String returnType, String[] paramTypes){
+	public MethodDeclaration(String packageIdentifier, String simpleClassName,
+			String methodName, String returnType, String[] paramTypes) {
 		super(packageIdentifier, simpleClassName);
 		this.methodName = methodName;
 		this.returnType = returnType;
@@ -62,9 +66,55 @@ public class MethodDeclaration extends CodeElement implements IMethodDeclaration
 	public String getReturnTypeQualifier() {
 		return this.returnType;
 	}
-	
+
 	@Override
 	public String[] getParameterTypeQualifiers() {
 		return this.paramTypes;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((methodName == null) ? 0 : methodName.hashCode());
+		result = prime * result + Arrays.hashCode(paramTypes);
+		result = prime * result
+				+ ((returnType == null) ? 0 : returnType.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof IMethodDeclaration))
+			return false;
+		IMethodDeclaration other = (IMethodDeclaration) obj;
+		if (methodName == null) {
+			if (other.getMethodName() != null)
+				return false;
+		} else if (!methodName.equals(other.getMethodName()))
+			return false;
+		if (!Arrays.equals(paramTypes, other.getParameterTypeQualifiers()))
+			return false;
+		if (returnType == null) {
+			if (other.getReturnTypeQualifier() != null)
+				return false;
+		} else if (!returnType.equals(other.getReturnTypeQualifier()))
+			return false;
+		return true;
 	}
 }

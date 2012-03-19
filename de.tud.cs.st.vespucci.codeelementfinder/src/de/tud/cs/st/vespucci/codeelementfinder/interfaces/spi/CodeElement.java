@@ -38,13 +38,13 @@ import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 /**
  * Concrete implementation of ICodeElement
  * 
- * @author 
+ * @author
  */
 public abstract class CodeElement implements ICodeElement {
-	
+
 	private String packageIdentifier;
 	private String simpleClassName;
-	
+
 	public CodeElement(String packageName, String simpleClassName) {
 		this.packageIdentifier = packageName;
 		this.simpleClassName = simpleClassName;
@@ -58,5 +58,50 @@ public abstract class CodeElement implements ICodeElement {
 	@Override
 	public String getSimpleClassName() {
 		return simpleClassName;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((packageIdentifier == null) ? 0 : packageIdentifier
+						.hashCode());
+		result = prime * result
+				+ ((simpleClassName == null) ? 0 : simpleClassName.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof ICodeElement))
+			return false;
+		ICodeElement other = (ICodeElement) obj;
+		if (packageIdentifier == null) {
+			if (other.getPackageIdentifier() != null)
+				return false;
+		} else if (!packageIdentifier.equals(other.getPackageIdentifier()))
+			return false;
+		if (simpleClassName == null) {
+			if (other.getSimpleClassName() != null)
+				return false;
+		} else if (!simpleClassName.equals(other.getSimpleClassName()))
+			return false;
+		return true;
 	}
 }

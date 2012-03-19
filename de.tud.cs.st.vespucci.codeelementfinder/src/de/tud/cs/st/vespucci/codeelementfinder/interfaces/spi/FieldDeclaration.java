@@ -38,14 +38,15 @@ import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 /**
  * Concrete implementation of IFieldDeclaration
  * 
- * @author 
+ * @author
  */
 public class FieldDeclaration extends CodeElement implements IFieldDeclaration {
 
 	private String fieldName;
 	private String typeQualifier;
-	
-	public FieldDeclaration(String packageName, String simpleClassName, String fieldName, String typeQualifier) {
+
+	public FieldDeclaration(String packageName, String simpleClassName,
+			String fieldName, String typeQualifier) {
 		super(packageName, simpleClassName);
 		this.fieldName = fieldName;
 		this.typeQualifier = typeQualifier;
@@ -55,9 +56,52 @@ public class FieldDeclaration extends CodeElement implements IFieldDeclaration {
 	public String getFieldName() {
 		return fieldName;
 	}
-	
+
 	@Override
-	public String getTypeQualifier(){
+	public String getTypeQualifier() {
 		return typeQualifier;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((fieldName == null) ? 0 : fieldName.hashCode());
+		result = prime * result
+				+ ((typeQualifier == null) ? 0 : typeQualifier.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof IFieldDeclaration))
+			return false;
+		IFieldDeclaration other = (IFieldDeclaration) obj;
+		if (fieldName == null) {
+			if (other.getFieldName() != null)
+				return false;
+		} else if (!fieldName.equals(other.getFieldName()))
+			return false;
+		if (typeQualifier == null) {
+			if (other.getTypeQualifier() != null)
+				return false;
+		} else if (!typeQualifier.equals(other.getTypeQualifier()))
+			return false;
+		return true;
 	}
 }

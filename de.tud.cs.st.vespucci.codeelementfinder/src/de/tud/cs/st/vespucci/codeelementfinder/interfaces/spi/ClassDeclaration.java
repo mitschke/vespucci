@@ -38,13 +38,14 @@ import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 /**
  * Concrete implementation of IClassDeclaration
  * 
- * @author 
+ * @author
  */
 public class ClassDeclaration extends CodeElement implements IClassDeclaration {
 
 	String typeQualifier;
-	
-	public ClassDeclaration(String packageName, String className, String typeQualifier) {
+
+	public ClassDeclaration(String packageName, String className,
+			String typeQualifier) {
 		super(packageName, className);
 		this.typeQualifier = typeQualifier;
 	}
@@ -53,4 +54,19 @@ public class ClassDeclaration extends CodeElement implements IClassDeclaration {
 	public String getTypeQualifier() {
 		return typeQualifier;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi.CodeElement#equals
+	 * (java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof IClassDeclaration))
+			return false;
+		return super.equals(obj);
+	}
+
 }
