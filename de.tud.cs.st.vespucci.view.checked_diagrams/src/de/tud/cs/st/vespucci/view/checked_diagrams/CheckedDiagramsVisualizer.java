@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.view.checked_diagrams;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -79,18 +80,16 @@ public class CheckedDiagramsVisualizer implements IResultProcessor {
 
 	private void openView() {
 		try {
-//			IViewReference viewReference = PlatformUI.getWorkbench()
-//					.getActiveWorkbenchWindow().getActivePage()
-//					.findViewReference(PLUGIN_ID);
-//			CheckedDiagramsTableView view = viewReference != null ? (CheckedDiagramsTableView) viewReference
-//					.getPart(true) : null;
-//			if (view == null) {
-//				view = (CheckedDiagramsTableView) PlatformUI
-//						.getWorkbench().getActiveWorkbenchWindow()
-//						.getActivePage().showView(PLUGIN_ID);
-//			}
-			
-			view = (CheckedDiagramsTableView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PLUGIN_ID);		
+			IViewReference viewReference = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage()
+					.findViewReference(PLUGIN_ID);
+			view = viewReference != null ? (CheckedDiagramsTableView) viewReference
+					.getPart(true) : null;
+			if (view == null) {
+				view = (CheckedDiagramsTableView) PlatformUI
+						.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage().showView(PLUGIN_ID);
+			}
 		} catch (PartInitException e) {
 			processException(e);
 		}
