@@ -9,6 +9,12 @@
     <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="ShapesDiagram">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="uniqueEnsembleName"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="uniqueEnsemblename" value="self->allSubobjectsOfKind(Shape)->uniqueName(name)"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="shapes" upperBound="-1"
         eType="#//Shape" containment="true" eKeys="#//Shape/key"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="connections" upperBound="-1"

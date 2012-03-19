@@ -53,11 +53,13 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
+import de.tud.cs.st.vespucci.vespucci_model.util.Vespucci_modelValidator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -209,6 +211,15 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 
 		// Initialize created meta-data
 		theVespucci_modelPackage.initializePackageContents();
+
+		// Register package validator
+		EValidator.Registry.INSTANCE.put
+			(theVespucci_modelPackage, 
+			 new EValidator.Descriptor() {
+				 public EValidator getEValidator() {
+					 return Vespucci_modelValidator.INSTANCE;
+				 }
+			 });
 
 		// Mark meta-data to indicate it can't be changed
 		theVespucci_modelPackage.freeze();
@@ -645,6 +656,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		// Create annotations
 		// http://www.eclipse.org/emf/2002/Ecore
 		createEcoreAnnotations();
+		// http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot
+		createPivotAnnotations();
 	}
 
 	/**
@@ -662,6 +675,28 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 			 "invocationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
 			 "settingDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
 			 "validationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"
+		   });		
+		addAnnotation
+		  (shapesDiagramEClass, 
+		   source, 
+		   new String[] {
+			 "constraints", "uniqueEnsembleName"
+		   });	
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createPivotAnnotations() {
+		String source = "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot";				
+		addAnnotation
+		  (shapesDiagramEClass, 
+		   source, 
+		   new String[] {
+			 "uniqueEnsemblename", "self->allSubobjectsOfKind(Shape)->uniqueName(name)"
 		   });
 	}
 

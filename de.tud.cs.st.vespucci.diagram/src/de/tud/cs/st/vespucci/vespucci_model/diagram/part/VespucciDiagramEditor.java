@@ -87,6 +87,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.widgets.Shell;
@@ -109,6 +110,8 @@ import org.eclipse.ui.part.ShowInContext;
 import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
 import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDropTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
@@ -124,7 +127,11 @@ import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineConnectionEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEmptyEditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.outline.OutlineEnsembleEditPart;
@@ -658,7 +665,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 				new CreateEnsembleDropTargetListener(
 						getDiagramGraphicalViewer()));
 		getDiagramGraphicalViewer().addDropTargetListener(
-				new GlobalRepositoryDropTargetListener(
+				new GlobalRepositoryDropTargetListener(getEditingDomain(),
 						getDiagramGraphicalViewer(), LocalSelectionTransfer
 								.getTransfer()) {
 
@@ -669,7 +676,7 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 
 				});
 		getDiagramGraphicalViewer().addDropTargetListener(
-				new GlobalRepositoryDropTargetListener(
+				new GlobalRepositoryDropTargetListener(getEditingDomain(),
 						getDiagramGraphicalViewer(), LocalTransfer
 								.getInstance()) {
 
@@ -678,65 +685,6 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 					}
 
 				});
-	}
-
-	/**
-	 * @generated NOT
-	 */
-	private abstract class GlobalRepositoryDropTargetListener extends
-			DiagramDropTargetListener {
-
-		/**
-		 * @generated NOT
-		 */
-		public GlobalRepositoryDropTargetListener(EditPartViewer viewer,
-				Transfer xfer) {
-			super(viewer, xfer);
-		}
-
-		/**
-		 * @generated NOT
-		 */
-		protected List getObjectsBeingDropped() {
-			TransferData data = getCurrentEvent().currentDataType;
-			HashSet<URI> uris = new HashSet<URI>();
-
-			Object transferedObject = getJavaObject(data);
-			if (transferedObject instanceof IStructuredSelection) {
-				IStructuredSelection selection = (IStructuredSelection) transferedObject;
-				for (Iterator<?> it = selection.iterator(); it.hasNext();) {
-					Object nextSelectedObject = it.next();
-					if (nextSelectedObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
-						View view = ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) nextSelectedObject)
-								.getView();
-						nextSelectedObject = view.getElement();
-					} else if (nextSelectedObject instanceof IAdaptable) {
-						IAdaptable adaptable = (IAdaptable) nextSelectedObject;
-						nextSelectedObject = adaptable
-								.getAdapter(EObject.class);
-					}
-
-					if (nextSelectedObject instanceof Shape) {
-						EObject modelElement = (EObject) nextSelectedObject;
-						uris.add(EcoreUtil.getURI(modelElement));
-					}
-				}
-			}
-
-			ArrayList<EObject> result = new ArrayList<EObject>(uris.size());
-			for (URI nextURI : uris) {
-				EObject modelObject = getEditingDomain().getResourceSet()
-						.getEObject(nextURI, true);
-				result.add(modelObject);
-			}
-			return result;
-		}
-
-		/**
-		 * @generated NOT
-		 */
-		protected abstract Object getJavaObject(TransferData data);
-
 	}
 
 	/**

@@ -54,7 +54,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShapesDiagram()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueEnsembleName'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueEnsemblename='self->allSubobjectsOfKind(Shape)->uniqueName(name)'"
  * @generated
  */
 public interface ShapesDiagram extends EObject {
