@@ -34,8 +34,9 @@
 package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -44,27 +45,36 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author 
  */
-public class SearchFieldModifyListener implements ModifyListener {
+public class SearchFieldKeyListener implements KeyListener {
 
 	private TableViewer tableViewer;
 	private SearchFilter filter = null;
 	private String text = null;
 	private int column;
-	
-	public SearchFieldModifyListener(TableViewer tableView, int column){
+
+	public SearchFieldKeyListener(TableViewer tableView, int column){
 		this.tableViewer = tableView;
 		this.column = column;
 	}
-	
-	@Override
-	public void modifyText(ModifyEvent e) {
-		if (filter != null) {
-			tableViewer.removeFilter(filter);
-		}
 
-		text = ((Text) e.getSource()).getText();
-		filter = new SearchFilter(column, text);
-		tableViewer.addFilter(filter);
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// unused in this case
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.character == SWT.CR){
+			if (filter != null) {
+				tableViewer.removeFilter(filter);
+			}
+
+			text = ((Text) e.getSource()).getText();
+			if (!text.equals("")){
+				filter = new SearchFilter(column, text);
+				tableViewer.addFilter(filter);
+			}
+		}
 	}
 
 }

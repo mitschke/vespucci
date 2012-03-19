@@ -36,11 +36,11 @@ package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
-import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.view.model.Pair;
 
@@ -52,32 +52,28 @@ import de.tud.cs.st.vespucci.view.model.Pair;
 public class SearchFilter extends ViewerFilter {
 	
 	private int column;
-	private String input;
-	
+	private Pattern pattern;
+	private static ITableLabelProvider tableLabelProvider = new EnsembleElementsTableLabelProvider();
+
 	public SearchFilter(int column, String input){
 		this.column = column;
-		this.input = input;
+		pattern = Pattern.compile(".*" + input.replace("?", ".").replace("*", ".*"));
 	}
-	
+
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if (element != null){
-			return select(Pair.cast(element, IEnsemble.class, ICodeElement.class), column, input);
-		}
-		return false;
-	}
-	
-	public static boolean select(IPair<IEnsemble, ICodeElement> element, int column, String input){
-		if (element != null){
-			Pattern pat = Pattern.compile(".*" + input.replace("?", ".").replace("*", ".*"));
-			
-			EnsembleElementsTableLabelProvider ensembleElementsTableLableProvider = new EnsembleElementsTableLabelProvider();
-			String string = ensembleElementsTableLableProvider.getColumnText(element, column);
-			
-			Matcher matcher = pat.matcher(string);
-			return matcher.lookingAt();
+			String entry = tableLabelProvider.getColumnText(Pair.cast(element, IEnsemble.class, ICodeElement.class), column);
+			return select(entry);
 		}
 		return false;
 	}
 
+	public boolean select(String element){
+		if (element != null){
+			Matcher matcher = pattern.matcher(element);
+			return matcher.lookingAt();
+		}
+		return false;
+	}
 }
