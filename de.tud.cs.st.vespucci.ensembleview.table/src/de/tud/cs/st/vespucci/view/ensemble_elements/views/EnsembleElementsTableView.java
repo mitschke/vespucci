@@ -240,11 +240,10 @@ public class EnsembleElementsTableView extends ViewPart {
 	}
 
 	private void addSearchFieldListener() {
+		searchFieldEnsemble.addKeyListener(new SearchFieldKeyListener(tableViewer, COLOUMN_ENSEMBLE));
+		searchFieldPackage.addKeyListener(new SearchFieldKeyListener(tableViewer, COLOUMN_PACKAGE));
 		searchFieldClass.addKeyListener(new SearchFieldKeyListener(tableViewer, COLOUMN_CLASS));
-		//searchFieldEnsemble.addModifyListener(new SearchFieldModifyListener(tableViewer, COLOUMN_ENSEMBLE));
-		//searchFieldPackage.addModifyListener(new SearchFieldModifyListener(tableViewer, COLOUMN_PACKAGE));
-		//searchFieldClass.addModifyListener(new SearchFieldModifyListener(tableViewer, COLOUMN_CLASS));
-		//searchFieldElement.addModifyListener(new SearchFieldModifyListener(tableViewer, COLOUMN_ELEMENT));
+		searchFieldElement.addKeyListener(new SearchFieldKeyListener(tableViewer, COLOUMN_ELEMENT));
 	}
 
 	private void resizeSearchFields(Composite parent){
