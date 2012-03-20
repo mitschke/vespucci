@@ -91,7 +91,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
-import de.tud.cs.st.vespucci.diagram.supports.VespucciDiagramElementCollector;
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.handler.UpdateSadFileHandler;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
@@ -334,9 +333,6 @@ public class VespucciDocumentProvider extends AbstractDocumentProvider
 					for (final Object rootElement : resource.getContents()) {
 						if (rootElement instanceof Diagram) {
 							document.setContent(rootElement);
-							VespucciDiagramElementCollector
-									.collectElements((View) rootElement);
-							System.out.println(rootElement);
 							return;
 						}
 					}

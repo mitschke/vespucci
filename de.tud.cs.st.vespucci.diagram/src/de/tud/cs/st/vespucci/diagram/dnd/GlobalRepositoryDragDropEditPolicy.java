@@ -48,7 +48,9 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
 
@@ -89,8 +91,8 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	 * @return
 	 */
 	private boolean canBeDropped(Object nextObject){
-		return (nextObject instanceof Ensemble && 
-				(((Ensemble) nextObject).eContainer() instanceof ShapesDiagram) &&
+		return (nextObject instanceof Shape && 
+				(((Shape) nextObject).eContainer() instanceof ShapesDiagram) &&
 				!isDuplicate(nextObject));
 	}
 	
