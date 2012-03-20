@@ -105,7 +105,7 @@ public class MockProcessor implements IModelProcessor {
 		IMethodDeclaration dataModel_createView = new MethodDeclaration("model", "DataModel", "createInnerView", "[Ljava/lang/String;", paramTypes1);
 		
 		IMethodDeclaration SubView_show = new MethodDeclaration("view", "MainView$SubView", "show", "V;", new String[0]);
-		IClassDeclaration mainView = new ClassDeclaration("view", "MainView$SubView", "Lview/MainView$SubView;");
+		IClassDeclaration mainView = new ClassDeclaration("cirrus.hibernate.type", "AbstractType", null);
 
 		IFieldDeclaration field_dec = new FieldDeclaration("controller", "MainController$InnerController$InnerInnerConroller", "someString", "Ljava/lang/String;");
 		IMethodDeclaration innerInnerController_doSomething = new MethodDeclaration("controller", "MainController$InnerController$InnerInnerConroller$InnerInnerController", "doSomething", "V;", new String[0]);
@@ -123,8 +123,8 @@ public class MockProcessor implements IModelProcessor {
 		
 		IViolation secondViolation = new Violation(
 				"Some Violation 2",
-				SubView_show, 
 				mainView,
+				null,//SubView_show, 
 				model, 
 				view, 
 				modelToView);
@@ -145,7 +145,7 @@ public class MockProcessor implements IModelProcessor {
 		violations.add(thirdViolation);
 				
 		Set<IViolationSummary> set = new HashSet<IViolationSummary>();
-		set.add(new ViolationSummary("/CaseStudy/src/caseStudy.sad"));
+		//set.add(new ViolationSummary("/CaseStudy/src/caseStudy.sad"));
 		IDataView<IViolationSummary> temp = new ViolationSummaryView(set);
 	
 		return new ViolationView(violations, temp);

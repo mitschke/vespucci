@@ -57,7 +57,7 @@ public class MarkingUtilities {
 	 * @return created Marker or null if the resource of given IMember is null
 	 */
 	protected static IMarker markIStatement(IMember member, String message, int lineNumber, int severity){
-		if (member.getResource() != null){
+		if ((member.getResource() != null)&&(!member.isBinary())){
 			IProject project = member.getJavaProject().getProject();
 			IFile file = project.getFile(member.getResource().getProjectRelativePath());
 			
@@ -87,10 +87,10 @@ public class MarkingUtilities {
 	 * @param member Member which should marked
 	 * @param message message shown in the ProblemsView
 	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
-	 * @return created Marker or null if the resource of given IMember is null
+	 * @return created Marker or null if the resource of given IMember is null or resource is a binary
 	 */
 	protected static IMarker markIMember(IMember member, String message, int severity) {
-		if (member.getResource() != null){
+		if ((member.getResource() != null)&&(!member.isBinary())){			
 			try {
 				IProject project = member.getJavaProject().getProject();
 				IFile file = project.getFile(member.getResource().getProjectRelativePath());
@@ -109,7 +109,7 @@ public class MarkingUtilities {
 	 * @param file IFile which should marked
 	 * @param message message shown in the ProblemsView
 	 * @param severity Severity of the new Marker (@see IMarker) example: IMarker.IMarker.PRIORITY_HIGH
-	 * @return created Marker or null if the resource of given IMember is null
+	 * @return created Marker or null if the resource of given IMember is null or resource is a binary
 	 */
 	protected static IMarker markIFile(IFile file, String message, int severity){
 		return addMarker(file, message, 0, severity);
@@ -196,5 +196,4 @@ public class MarkingUtilities {
 		}
 		return null;
 	}
-
 }
