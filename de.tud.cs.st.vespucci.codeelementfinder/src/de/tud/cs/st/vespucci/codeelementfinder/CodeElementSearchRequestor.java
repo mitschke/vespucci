@@ -43,7 +43,7 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	@Override
 	public void acceptSearchMatch(SearchMatch match) throws CoreException {
 		if (!found){
-			foundMatch(match, codeElement);
+			checkReturnedMatch(match, codeElement);
 		}
 	}
 
@@ -80,18 +80,18 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	 * @param match Found match
 	 * @param sourceElement ICodeElement looking for
 	 */
-	private void foundMatch(SearchMatch match, ICodeElement sourceElement) {
+	private void checkReturnedMatch(SearchMatch match, ICodeElement sourceElement) {
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IClassDeclaration)){	
-			foundMatch((IType) match.getElement(), (IClassDeclaration) sourceElement);
+			checkReturnedMatch((IType) match.getElement(), (IClassDeclaration) sourceElement);
 		}
 		if ((match.getElement() instanceof IType) && (sourceElement instanceof IStatement)){	
-			foundMatch((IType) match.getElement(), (IStatement) sourceElement);
+			checkReturnedMatch((IType) match.getElement(), (IStatement) sourceElement);
 		}	
 		if ((match.getElement() instanceof IMethod) && (sourceElement instanceof IMethodDeclaration)){
-			foundMatch((IMethod) match.getElement(), (IMethodDeclaration) sourceElement);
+			checkReturnedMatch((IMethod) match.getElement(), (IMethodDeclaration) sourceElement);
 		}
 		if ((match.getElement() instanceof IField) && (sourceElement instanceof IFieldDeclaration)){
-			foundMatch((IField) match.getElement(), (IFieldDeclaration) sourceElement);
+			checkReturnedMatch((IField) match.getElement(), (IFieldDeclaration) sourceElement);
 		}
 	}
 
@@ -101,7 +101,7 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	 * @param match Found match
 	 * @param classDeclaration IClassDeclaration looking for
 	 */
-	private void foundMatch(IType type, IClassDeclaration classDeclaration) {
+	private void checkReturnedMatch(IType type, IClassDeclaration classDeclaration) {
 		if (classDeclaration.getTypeQualifier() != null){
 			if (type.getKey().equals(classDeclaration.getTypeQualifier())){
 				foundMatch = type;
@@ -119,7 +119,7 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	 * @param match Found match
 	 * @param classDeclaration IClassDeclaration looking for
 	 */
-	private void foundMatch(IType type, IStatement sourceElement) {
+	private void checkReturnedMatch(IType type, IStatement sourceElement) {
 		// In case of searching for an IStatement there is no possibility to checker
 		// if the found match is the correct. A found match is always process as a correct match
 		foundMatch = type;
@@ -132,7 +132,7 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	 * @param match Found match
 	 * @param classDeclaration IFieldDeclaration looking for
 	 */
-	private void foundMatch(IField field, IFieldDeclaration fieldDeclaration) {
+	private void checkReturnedMatch(IField field, IFieldDeclaration fieldDeclaration) {
 		try {
 			if (fieldDeclaration.getTypeQualifier().equals(Util.createTypQualifier(field.getTypeSignature(), field.getDeclaringType()))){
 				foundMatch = field;
@@ -149,7 +149,7 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	 * @param match Found match
 	 * @param classDeclaration IMethodDeclaration looking for
 	 */
-	private void foundMatch(IMethod method, IMethodDeclaration methodDeclaration) {
+	private void checkReturnedMatch(IMethod method, IMethodDeclaration methodDeclaration) {
 		try {
 			IType declaringType = method.getDeclaringType();
 			

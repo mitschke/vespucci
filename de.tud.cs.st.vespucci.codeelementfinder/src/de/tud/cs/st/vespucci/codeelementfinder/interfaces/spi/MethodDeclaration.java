@@ -79,14 +79,15 @@ public class MethodDeclaration extends CodeElement implements
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((methodName == null) ? 0 : methodName.hashCode());
-		result = prime * result + Arrays.hashCode(paramTypes);
-		result = prime * result
-				+ ((returnType == null) ? 0 : returnType.hashCode());
-		return result;
+		int code = "MethodIdentifier".hashCode();
+		ClassDeclaration declaration = new ClassDeclaration(
+				getPackageIdentifier(), getSimpleClassName());
+		code = code * 41 + declaration.hashCode();
+		code = code * 41 + ((methodName == null) ? 0 : methodName.hashCode());
+		code = code * 41
+				+ ((paramTypes == null) ? 0 : TypeUtil.hashCode(paramTypes));
+		code = code * 41 + TypeUtil.hashCode(returnType);
+		return code;
 	}
 
 	/*

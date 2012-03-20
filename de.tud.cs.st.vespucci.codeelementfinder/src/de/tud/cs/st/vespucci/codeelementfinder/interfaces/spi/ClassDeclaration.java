@@ -42,17 +42,17 @@ import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
  */
 public class ClassDeclaration extends CodeElement implements IClassDeclaration {
 
-	String typeQualifier;
+	private String internalizedName;
 
-	public ClassDeclaration(String packageName, String className,
-			String typeQualifier) {
+	public ClassDeclaration(String packageName, String className) {
 		super(packageName, className);
-		this.typeQualifier = typeQualifier;
+		internalizedName = getPackageIdentifier().replaceAll("\\.", "/") + "/"
+				+ getSimpleClassName();
 	}
 
 	@Override
 	public String getTypeQualifier() {
-		return typeQualifier;
+		return "L" + internalizedName + ";";
 	}
 
 	/*
@@ -67,6 +67,18 @@ public class ClassDeclaration extends CodeElement implements IClassDeclaration {
 		if (!(obj instanceof IClassDeclaration))
 			return false;
 		return super.equals(obj);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.tud.cs.st.vespucci.codeelementfinder.interfaces.spi.CodeElement#hashCode
+	 * ()
+	 */
+	@Override
+	public int hashCode() {
+		return internalizedName.hashCode() * 43;
 	}
 
 }

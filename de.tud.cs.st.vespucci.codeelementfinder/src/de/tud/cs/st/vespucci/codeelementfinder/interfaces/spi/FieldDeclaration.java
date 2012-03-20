@@ -69,13 +69,18 @@ public class FieldDeclaration extends CodeElement implements IFieldDeclaration {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((fieldName == null) ? 0 : fieldName.hashCode());
-		result = prime * result
-				+ ((typeQualifier == null) ? 0 : typeQualifier.hashCode());
-		return result;
+		int code = "FieldIdentifier".hashCode();
+		ClassDeclaration declaration = new ClassDeclaration(
+				getPackageIdentifier(), getSimpleClassName());
+
+		code = code * 41 + declaration.hashCode();
+		code = code * 41 + ((fieldName == null) ? 0 : fieldName.hashCode());
+		code = code
+				* 41
+				+ ((typeQualifier == null) ? 0 : TypeUtil
+						.hashCode(typeQualifier));
+		return code;
+
 	}
 
 	/*

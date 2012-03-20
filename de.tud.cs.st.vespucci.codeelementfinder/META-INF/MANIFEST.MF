@@ -4,9 +4,17 @@ Bundle-Name: Codeelementfinder
 Bundle-SymbolicName: de.tud.cs.st.vespucci.codeelementfinder
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.core.resources,
+Import-Package: de.tud.cs.st.bat;resolution:=optional,
+ org.eclipse.core.resources,
  org.eclipse.jdt.internal.corext.util,
- org.eclipse.ui.statushandlers
+ org.eclipse.ui.statushandlers,
+ sae.bytecode.model;resolution:=optional,
+ scala;resolution:=optional,
+ scala.collection;resolution:=optional,
+ scala.collection.immutable;resolution:=optional,
+ scala.collection.mutable;resolution:=optional,
+ scala.util;resolution:=optional,
+ unisson.query.code_model;resolution:=optional
 Require-Bundle: de.tud.cs.st.vespucci.interfaces;bundle-version="1.0.0",
  org.eclipse.core.runtime;bundle-version="3.7.0",
  org.eclipse.jdt.core;bundle-version="3.7.1"

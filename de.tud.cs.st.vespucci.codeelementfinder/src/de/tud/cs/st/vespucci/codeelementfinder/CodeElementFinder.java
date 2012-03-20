@@ -74,26 +74,11 @@ public class CodeElementFinder {
 
 	private Stack<ICodeElement> searchItems = new Stack<ICodeElement>();
 
+	private ICodeElement currentSearchItem;
 	private ICodeElement actualSearchItem;
+	
 	private Boolean found = false;
 	private IMember foundMatch = null;
-
-	private static long timespent = 0;
-
-	/**
-	 * @return the timespent
-	 */
-	public static long getTimespent() {
-		return timespent;
-	}
-
-	/**
-	 * @param timespent
-	 *            the timespent to set
-	 */
-	public static void setTimespent(long timespent) {
-		CodeElementFinder.timespent = timespent;
-	}
 
 	/**
 	 * Search an ICodeElement
@@ -108,29 +93,24 @@ public class CodeElementFinder {
 	 */
 	public static void startSearch(ICodeElement sourceElement,
 			IProject project, ICodeElementFoundProcessor processor) {
-		
-		
-		long start = System.nanoTime();
-		
-		if(cache.containsKey(sourceElement))
-		{
-			System.out.println("hit");
+
+		if (cache.containsKey(sourceElement)) {
+			IMember member = cache.get(sourceElement);
+			if(!member.exists())
 			processor.processFoundCodeElement(cache.get(sourceElement));
-		}
-		else
-		{
-			System.out.println("miss");
-			CodeElementFinder cef = new CodeElementFinder(sourceElement, project,
-					processor);
+		} else {
+			System.out.println("miss: " + sourceElement.toString());
+			CodeElementFinder cef = new CodeElementFinder(sourceElement,
+					project, processor);
 
 			cef.nextStep();
 		}
-		timespent += (System.nanoTime() - start);
 	}
 
 	private CodeElementFinder(ICodeElement codeElement, IProject project,
 			ICodeElementFoundProcessor codeElementFoundProcessor) {
 		this.codeElementFoundProcessor = codeElementFoundProcessor;
+		actualSearchItem = codeElement;
 		searchItems = Util.createSearchTryStack(codeElement);
 	}
 
@@ -147,18 +127,18 @@ public class CodeElementFinder {
 	}
 
 	/**
-	 * Is called when actualSearchItem was not found. Starts an new search with
+	 * Is called when currentSearchItem was not found. Starts an new search with
 	 * the next best search item
 	 */
 	private void nothingFoundYet() {
 		if (searchItems.isEmpty()) {
-			codeElementFoundProcessor.noMatchFound(actualSearchItem);
+			codeElementFoundProcessor.noMatchFound(currentSearchItem);
 		} else {
-			actualSearchItem = searchItems.pop();
+			currentSearchItem = searchItems.pop();
 
 			// checks if CodeElement was already found before
-			if (cache.containsKey(actualSearchItem.toString())) {
-				IMember match = cache.get(actualSearchItem.toString());
+			if (cache.containsKey(currentSearchItem)) {
+				IMember match = cache.get(currentSearchItem);
 				if (match.exists()) {
 					found = true;
 					foundMatch = match;
@@ -177,8 +157,8 @@ public class CodeElementFinder {
 		if (!cache.containsKey(actualSearchItem)) {
 			cache.put(actualSearchItem, foundMatch);
 		}
-		if (actualSearchItem instanceof IStatement) {
-			IStatement statement = (IStatement) actualSearchItem;
+		if (currentSearchItem instanceof IStatement) {
+			IStatement statement = (IStatement) currentSearchItem;
 			codeElementFoundProcessor.processFoundCodeElement(foundMatch,
 					statement.getLineNumber());
 		} else {
@@ -205,7 +185,7 @@ public class CodeElementFinder {
 	private void searchItem() {
 
 		codeElementSearchRequestor = new CodeElementSearchRequestor(
-				actualSearchItem, new IAction() {
+				currentSearchItem, new IAction() {
 
 					@Override
 					public void run() {
@@ -218,8 +198,8 @@ public class CodeElementFinder {
 		SearchEngine searchEngine = new SearchEngine();
 		try {
 			SearchPattern searchPattern = SearchPattern.createPattern(
-					Util.createStringPattern(actualSearchItem),
-					Util.createSearchFor(actualSearchItem),
+					Util.createStringPattern(currentSearchItem),
+					Util.createSearchFor(currentSearchItem),
 					IJavaSearchConstants.DECLARATIONS,
 					SearchPattern.R_EXACT_MATCH);
 			IJavaSearchScope javaSearchScope = SearchEngine
