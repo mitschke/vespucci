@@ -35,6 +35,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -46,6 +47,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
+
+import de.tud.cs.st.vespucci.diagram.supports.VespucciCreationSAMHelper;
 
 /**
  * @generated
@@ -131,7 +134,7 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 	}
 
 	/**
-	 * @generated
+	 * @generated not
 	 */
 	public void addPages() {
 		diagramModelFilePage = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardPage(
@@ -142,39 +145,20 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 				.setDescription(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizard_DiagramModelFilePageDescription);
 		addPage(diagramModelFilePage);
 
-		domainModelFilePage = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardPage(
-				"DomainModelFile", getSelection(), "sam") { //$NON-NLS-1$ //$NON-NLS-2$
 
-			public void setVisible(boolean visible) {
-				if (visible) {
-					String fileName = diagramModelFilePage.getFileName();
-					fileName = fileName.substring(0,
-							fileName.length() - ".sad".length()); //$NON-NLS-1$
-					setFileName(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
-							.getUniqueFileName(getContainerFullPath(),
-									fileName, "sam")); //$NON-NLS-1$
-				}
-				super.setVisible(visible);
-			}
-		};
-		domainModelFilePage
-				.setTitle(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizard_DomainModelFilePageTitle);
-		domainModelFilePage
-				.setDescription(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizard_DomainModelFilePageDescription);
-		addPage(domainModelFilePage);
 	}
 
 	/**
-	 * @generated
+	 * @generated not
 	 */
 	public boolean performFinish() {
 		IRunnableWithProgress op = new WorkspaceModifyOperation(null) {
-
+		
 			protected void execute(IProgressMonitor monitor)
-					throws CoreException, InterruptedException {
-				diagram = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
+	 				throws CoreException, InterruptedException {
+	 			diagram = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
 						.createDiagram(diagramModelFilePage.getURI(),
-								domainModelFilePage.getURI(), monitor);
+								VespucciCreationSAMHelper.createmodelURI(diagramModelFilePage.getURI()), monitor);
 				if (isOpenNewlyCreatedDiagramEditor() && diagram != null) {
 					try {
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
@@ -209,6 +193,8 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 			}
 			return false;
 		}
+	
+		
 		return diagram != null;
 	}
 }

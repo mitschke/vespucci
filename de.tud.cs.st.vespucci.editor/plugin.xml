@@ -3,8 +3,7 @@
 
 <!--
   License (BSD Style License):
-   Copyright (c) 2010
-   Author Tam-Minh Nguyen
+   Copyright (c) 2011
    Software Engineering
    Department of Computer Science
    Technische Universität Darmstadt
@@ -34,20 +33,31 @@
    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
    POSSIBILITY OF SUCH DAMAGE.
- 
-
- $Id$
 -->
 
 <plugin>
 
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.tud.cs.st.vespucci.vespucci_model.presentation.Vespucci_modelModelWizardID"
+            name="%_UI_Vespucci_modelModelWizard_label"
+            class="de.tud.cs.st.vespucci.vespucci_model.presentation.Vespucci_modelModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/Vespucci_modelModelFile.gif">
+         <description>%_UI_Vespucci_modelModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
 
    <extension point="org.eclipse.ui.editors">
       <editor
             id="de.tud.cs.st.vespucci.vespucci_model.presentation.Vespucci_modelEditorID"
             name="%_UI_Vespucci_modelEditor_label"
             icon="icons/full/obj16/Vespucci_modelModelFile.gif"
-            extensions="vespucci_model"
+            extensions="sam"
             class="de.tud.cs.st.vespucci.vespucci_model.presentation.Vespucci_modelEditor"
             contributorClass="de.tud.cs.st.vespucci.vespucci_model.presentation.Vespucci_modelActionBarContributor">
       </editor>
