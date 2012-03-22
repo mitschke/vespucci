@@ -44,7 +44,10 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.gmf.runtime.notation.Diagram;
+import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
@@ -116,14 +119,20 @@ public class PrologFileCreator {
 
 		diagramResource.load(diagramStream, new HashMap<Object, Object>());
 
+		if(diagramResource.getContents().get(0) instanceof Diagram){
+			
+		}
+			
+		
 		// Find the ShapesDiagram-EObject
 		for (int i = 0; i < diagramResource.getContents().size(); i++) {
-			if (diagramResource.getContents().get(i) instanceof ShapesDiagram) {
+			if (diagramResource.getContents().get(i) instanceof Diagram) {
 				final EObject eObject = diagramResource.getContents().get(i);
-				return (ShapesDiagram) eObject;
+				VespucciTraversalUtil.init((View)eObject);
+				if(((Diagram)eObject).getElement() instanceof ShapesDiagram)
+						return (ShapesDiagram)((Diagram)eObject).getElement();
 			}
 		}
-
 		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
 	}
 
@@ -145,7 +154,7 @@ public class PrologFileCreator {
 		// insert ensemble Header
 		strBuilder.append(InvariantPrologFacts.createEnsembleHeader());
 
-		final StringBuilder ensembleFacts = EnsemblePrologFacts.getFacts(diagram.getShapes(), diagramFileName);
+		final StringBuilder ensembleFacts = EnsemblePrologFacts.getFacts(VespucciTraversalUtil.getEnsemblesFromDiagram(diagram.getShapes()), diagramFileName);
 
 		if (hasEmpty(diagram.getShapes())) {
 			ensembleFacts.append("ensemble('" + diagramFileName + "',(empty),empty,[]).\n");
@@ -158,7 +167,7 @@ public class PrologFileCreator {
 		strBuilder.append(InvariantPrologFacts.createDependencyHeader());
 
 		// insert dependencies
-		strBuilder.append(DependencyPrologFacts.getFacts(diagram.getShapes(), diagramFileName));
+		strBuilder.append(DependencyPrologFacts.getFacts(VespucciTraversalUtil.getEnsemblesFromDiagram(diagram.getShapes()), diagramFileName));
 
 		return strBuilder.toString().getBytes();
 	}

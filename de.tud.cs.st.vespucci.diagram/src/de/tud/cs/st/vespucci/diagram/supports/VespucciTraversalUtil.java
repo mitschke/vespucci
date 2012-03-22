@@ -34,10 +34,10 @@
 package de.tud.cs.st.vespucci.diagram.supports;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.Edge;
 import org.eclipse.gmf.runtime.notation.View;
@@ -47,74 +47,128 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * Util class to provide traversal filters for Connections and Ensembles.
+ * 
  * @author Robert Cibulla
- *
+ * 
  */
 public class VespucciTraversalUtil {
-	
-	
-	
+
+	static HashMap<Shape, View> ensembleRegistry = new HashMap<Shape, View>();
+	static HashMap<Connection, View> connectionRegistry = new HashMap<Connection, View>();
+//	static List<Shape> baseShapes = new ArrayList<Shape>();
+
 	/**
-	 * Filters given List of Connections and returns only those existing in the Diagram.
-	 * example usage: VespucciTraversalUtil.getConnectionsFromDiagram(ensembleXXX.getSourceConnections, diagram)
+	 * Initialize both connection- and ensembleRegisty
+	 * 
+	 * @param diagram
+	 */
+	public static void init(View diagram) {
+		initConnectionRegistry(diagram);
+		initEnsembleRegistry(diagram);
+//		initBaseShapes(diagram);
+	}
+
+//	/**
+//	 * 
+//	 * @param diagram
+//	 */
+//	private static void initBaseShapes(View diagram) {
+//		if (diagram instanceof Diagram) {
+//			for (Object ensemble : ((Diagram) diagram).getChildren()) {
+//				if (ensemble instanceof View
+//						&& ((View) ensemble).getElement() instanceof Shape) {
+//					baseShapes.add((Shape) ((View) ensemble).getElement());
+//				}
+//			}
+//		}
+//	}
+
+	/**
+	 * Initializes the connection registry
+	 * 
+	 * @param diagram
+	 */
+	private static void initConnectionRegistry(View diagram) {
+		if (diagram instanceof Diagram) {
+			for (Object edge : ((Diagram) diagram).getEdges()) {
+				if (edge instanceof Edge
+						&& ((Edge) edge).getElement() instanceof Connection) {
+					connectionRegistry.put(
+							(Connection) ((Edge) edge).getElement(),
+							(View) edge);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Recursively initializes the ensemble registry
+	 * 
+	 * @param diagram
+	 */
+	private static void initEnsembleRegistry(View diagram) {
+		if (diagram instanceof Diagram) {
+			for (Object ensemble : ((Diagram) diagram).getChildren()) {
+				if (ensemble instanceof View
+						&& ((View) ensemble).getElement() instanceof Shape) {
+					ensembleRegistry.put(
+							(Shape) ((View) ensemble).getElement(),
+							(View) ensemble);
+				}
+				if (((View) ensemble).getChildren() != null
+						&& ((View) ensemble).getChildren().size() != 0) {
+					for (Object rek : ((View) ensemble).getChildren()) {
+						if (rek instanceof View
+								&& ((View) rek).getElement() instanceof Shape)
+							initEnsembleRegistry((View) rek);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Filters given List of Connections and returns only those existing in the
+	 * Diagram. example usage:
+	 * VespucciTraversalUtil.getConnectionsFromDiagram(ensembleXXX
+	 * .getSourceConnections, diagram)
+	 * 
 	 * @param conns
 	 * @param diagram
 	 * @return
 	 */
-	public static List getConnectionsFromDiagram(EList<Connection> conns, Diagram diagram){
+	public static List<Connection> getConnectionsFromDiagram(
+			EList<Connection> conns) {
 		List<Connection> result = new ArrayList<Connection>();
-		for(Connection con : conns){
-			if(isConnectionInDiagram(con, diagram))
+		for (Connection con : conns) {
+			if (connectionRegistry.get(con) != null)
 				result.add(con);
 		}
 		return result;
 	}
-	
+
 	/**
-	 * TODO: make recursive!
+	 * Filters given List of Ensembles and returns only those existing in the
+	 * Diagram.
+	 * 
 	 * @param shapes
 	 * @param diagram
 	 * @return
 	 */
-	public static List getEnsemblesFromDiagram(EList<Shape> shapes, Diagram diagram){
+	public static List<Shape> getEnsemblesFromDiagram(EList<Shape> shapes) {
 		List<Shape> result = new ArrayList<Shape>();
-		for(Shape shp : shapes){
-			if(!isEnsembleInDiagram(shp, diagram))
+		for (Shape shp : shapes) {
+			if (ensembleRegistry.get(shp) != null)
 				result.add(shp);
 		}
 		return result;
 	}
-	
-	/**
-	 * 
-	 * @param o
-	 * @param diagram
-	 * @return
-	 */
-	public static boolean isEnsembleInDiagram(EObject o, Diagram diagram){
-		for(Object e : diagram.getChildren()){
-			if(e instanceof View){
-				if(((View) e).getElement().equals(o))
-					return true;
-			}
-		}
-		return false;
-	}
-	
-	
-	/**
-	 * Checks if given Connection is in the current diagram.
-	 * @param o
-	 * @param diagram
-	 * @return
-	 */
-	public static boolean isConnectionInDiagram(EObject o, Diagram diagram){
-		for(Object e : diagram.getEdges()){
-			if(e instanceof Edge)
-				if(((Edge) e).getElement().equals(o))
-					return true;
-		}
-		return false;
-	}
 
+//	/**
+//	 * 
+//	 * @return
+//	 */
+//	public static List<Shape> getBaseShapes() {
+//		return baseShapes;
+//	}
 }

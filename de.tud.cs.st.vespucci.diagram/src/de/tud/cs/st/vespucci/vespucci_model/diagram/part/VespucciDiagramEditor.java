@@ -33,6 +33,8 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -114,6 +116,7 @@ import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
+import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
@@ -438,19 +441,19 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		final String filePath = getCurrentSelectedFilePath();
 		final String fileName = getCurrentSelectedFileName();
 
-		//		try {
-		//			pfc.createPrologFileFromDiagram(filePath, fileName);
-		//		} catch (final FileNotFoundException e) {
-		//			throw new VespucciIOException(String.format(
-		//					"File [%s%s] not found.", filePath, fileName), e);
-		//		} catch (final IOException e) {
-		//			throw new VespucciIOException(String.format(
-		//					"Failed to save Prolog file from [%s%s].", filePath,
-		//					fileName), e);
-		//		} catch (final Exception e) {
-		//			throw new VespucciIOException(String.format(
-		//					"File [%s%s] not found.", filePath, fileName), e);
-		//		}
+				try {
+					pfc.createPrologFileFromDiagram(filePath, fileName);
+				} catch (final FileNotFoundException e) {
+					throw new VespucciIOException(String.format(
+							"File [%s%s] not found.", filePath, fileName), e);
+				} catch (final IOException e) {
+					throw new VespucciIOException(String.format(
+							"Failed to save Prolog file from [%s%s].", filePath,
+							fileName), e);
+				} catch (final Exception e) {
+					throw new VespucciIOException(String.format(
+							"File [%s%s] not found.", filePath, fileName), e);
+				}
 
 		// refresh Package View
 		final IProject activeProject = getSelectedFile().getFile().getProject();

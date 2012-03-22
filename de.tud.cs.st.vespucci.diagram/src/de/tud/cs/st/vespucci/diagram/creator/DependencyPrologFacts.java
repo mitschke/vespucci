@@ -35,6 +35,7 @@ package de.tud.cs.st.vespucci.diagram.creator;
 
 import java.util.List;
 
+import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 
@@ -102,7 +103,7 @@ public class DependencyPrologFacts {
 			if (shape instanceof Ensemble) {
 				final Ensemble ensemble = (Ensemble) shape;
 				if (shape != null) {
-					for (final Connection connection : ensemble.getTargetConnections()) {
+					for (final Connection connection : VespucciTraversalUtil.getConnectionsFromDiagram(ensemble.getTargetConnections())) {
 						dependencyFacts.append(createSingleDependencyFact(connection));
 					}
 				}
@@ -134,9 +135,9 @@ public class DependencyPrologFacts {
 		// This reference has no influence to working process but it is a problem
 		// for prolog fact conversion.
 		
-		if (connection.getSource().eIsProxy() || connection.getTarget().eIsProxy()) {
-			return "";
-		}
+//		if (connection.getSource().eIsProxy() || connection.getTarget().eIsProxy()) {
+//			return "";
+//		}
 
 		final String dependencySuffix = String.format("('%s', %s, %s, [], %s, [], [%s]).\n", diagramFileName, dependencyCounter,
 				getEnsembleName(source), getEnsembleName(target), connection.getName());

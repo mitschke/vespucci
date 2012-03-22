@@ -134,7 +134,7 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 	}
 
 	/**
-	 * @generated not
+	 * @generated NOT
 	 */
 	public void addPages() {
 		diagramModelFilePage = new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciCreationWizardPage(
@@ -149,7 +149,7 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 	}
 
 	/**
-	 * @generated not
+	 * @generated NOT
 	 */
 	public boolean performFinish() {
 		IRunnableWithProgress op = new WorkspaceModifyOperation(null) {

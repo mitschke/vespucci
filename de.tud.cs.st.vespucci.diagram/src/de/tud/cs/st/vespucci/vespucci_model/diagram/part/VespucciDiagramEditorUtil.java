@@ -83,6 +83,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
+import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
+
 /**
  * @generated
  */
@@ -187,7 +189,7 @@ public class VespucciDiagramEditorUtil {
 
 	/**
 	 * This method should be called within a workspace modify operation since it creates resources.
-	 * @generated
+	 * @generated NOT
 	 */
 	public static Resource createDiagram(URI diagramURI, URI modelURI,
 			IProgressMonitor progressMonitor) {
@@ -200,7 +202,7 @@ public class VespucciDiagramEditorUtil {
 		final Resource diagramResource = editingDomain.getResourceSet()
 				.createResource(diagramURI);
 		final Resource modelResource = editingDomain.getResourceSet()
-				.createResource(modelURI);
+				.getResource(modelURI, true);
 		final String diagramName = diagramURI.lastSegment();
 		AbstractTransactionalCommand command = new AbstractTransactionalCommand(
 				editingDomain,
@@ -209,8 +211,14 @@ public class VespucciDiagramEditorUtil {
 			protected CommandResult doExecuteWithResult(
 					IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model = createInitialModel();
-				attachModelToResource(model, modelResource);
+				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model;
+				if(!modelResource.isLoaded()){
+						model = createInitialModel();
+						attachModelToResource(model, modelResource);
+					}
+				else{
+					model = (ShapesDiagram) modelResource.getContents().get(0);
+				}
 
 				Diagram diagram = ViewService
 						.createDiagram(
