@@ -145,7 +145,6 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 				.setDescription(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciCreationWizard_DiagramModelFilePageDescription);
 		addPage(diagramModelFilePage);
 
-
 	}
 
 	/**
@@ -153,12 +152,14 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 	 */
 	public boolean performFinish() {
 		IRunnableWithProgress op = new WorkspaceModifyOperation(null) {
-		
+
 			protected void execute(IProgressMonitor monitor)
-	 				throws CoreException, InterruptedException {
-	 			diagram = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
+					throws CoreException, InterruptedException {
+				diagram = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
 						.createDiagram(diagramModelFilePage.getURI(),
-								VespucciCreationSAMHelper.createmodelURI(diagramModelFilePage.getURI()), monitor);
+								VespucciCreationSAMHelper
+										.createmodelURI(diagramModelFilePage
+												.getURI()), monitor);
 				if (isOpenNewlyCreatedDiagramEditor() && diagram != null) {
 					try {
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorUtil
@@ -193,8 +194,7 @@ public class VespucciCreationWizard extends Wizard implements INewWizard {
 			}
 			return false;
 		}
-	
-		
+
 		return diagram != null;
 	}
 }

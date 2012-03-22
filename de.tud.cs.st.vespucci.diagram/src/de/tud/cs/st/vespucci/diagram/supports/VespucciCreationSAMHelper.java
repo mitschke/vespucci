@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -14,6 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gmf.runtime.emf.core.GMFEditingDomainFactory;
@@ -33,6 +35,10 @@ public class VespucciCreationSAMHelper {
 
 		return uri;
 
+	}
+	
+	public static boolean checkExisting(URI modelURI, URIConverter uriconv){
+		return uriconv.exists(modelURI, null);
 	}
 
 }

@@ -441,19 +441,19 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		final String filePath = getCurrentSelectedFilePath();
 		final String fileName = getCurrentSelectedFileName();
 
-				try {
-					pfc.createPrologFileFromDiagram(filePath, fileName);
-				} catch (final FileNotFoundException e) {
-					throw new VespucciIOException(String.format(
-							"File [%s%s] not found.", filePath, fileName), e);
-				} catch (final IOException e) {
-					throw new VespucciIOException(String.format(
-							"Failed to save Prolog file from [%s%s].", filePath,
-							fileName), e);
-				} catch (final Exception e) {
-					throw new VespucciIOException(String.format(
-							"File [%s%s] not found.", filePath, fileName), e);
-				}
+		try {
+			pfc.createPrologFileFromDiagram(filePath, fileName);
+		} catch (final FileNotFoundException e) {
+			throw new VespucciIOException(String.format(
+					"File [%s/%s] not found.", filePath, fileName), e);
+		} catch (final IOException e) {
+			throw new VespucciIOException(String.format(
+					"Failed to save Prolog file from [%s/%s].", filePath,
+					fileName), e);
+		} catch (final Exception e) {
+			throw new VespucciIOException(String.format(
+					"File [%s/%s] not found.", filePath, fileName), e);
+		}
 
 		// refresh Package View
 		final IProject activeProject = getSelectedFile().getFile().getProject();
@@ -688,6 +688,63 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 					}
 
 				});
+	}
+
+	/**
+	 * @generated
+	 */
+	private abstract class DropTargetListener extends DiagramDropTargetListener {
+
+		/**
+		 * @generated
+		 */
+		public DropTargetListener(EditPartViewer viewer, Transfer xfer) {
+			super(viewer, xfer);
+		}
+
+		/**
+		 * @generated
+		 */
+		protected List getObjectsBeingDropped() {
+			TransferData data = getCurrentEvent().currentDataType;
+			HashSet<URI> uris = new HashSet<URI>();
+
+			Object transferedObject = getJavaObject(data);
+			if (transferedObject instanceof IStructuredSelection) {
+				IStructuredSelection selection = (IStructuredSelection) transferedObject;
+				for (Iterator<?> it = selection.iterator(); it.hasNext();) {
+					Object nextSelectedObject = it.next();
+					if (nextSelectedObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
+						View view = ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) nextSelectedObject)
+								.getView();
+						nextSelectedObject = view.getElement();
+					} else if (nextSelectedObject instanceof IAdaptable) {
+						IAdaptable adaptable = (IAdaptable) nextSelectedObject;
+						nextSelectedObject = adaptable
+								.getAdapter(EObject.class);
+					}
+
+					if (nextSelectedObject instanceof EObject) {
+						EObject modelElement = (EObject) nextSelectedObject;
+						uris.add(EcoreUtil.getURI(modelElement));
+					}
+				}
+			}
+
+			ArrayList<EObject> result = new ArrayList<EObject>(uris.size());
+			for (URI nextURI : uris) {
+				EObject modelObject = getEditingDomain().getResourceSet()
+						.getEObject(nextURI, true);
+				result.add(modelObject);
+			}
+			return result;
+		}
+
+		/**
+		 * @generated
+		 */
+		protected abstract Object getJavaObject(TransferData data);
+
 	}
 
 	/**

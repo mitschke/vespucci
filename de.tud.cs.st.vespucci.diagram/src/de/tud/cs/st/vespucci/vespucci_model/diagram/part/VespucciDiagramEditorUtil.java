@@ -84,6 +84,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
+import de.tud.cs.st.vespucci.diagram.supports.VespucciCreationSAMHelper;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
 /**
@@ -200,12 +201,20 @@ public class VespucciDiagramEditorUtil {
 				.beginTask(
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditorUtil_CreateDiagramProgressTask,
 						3);
+		
 		final Resource diagramResource = editingDomain.getResourceSet()
 				.createResource(diagramURI);
-		//FIXME: something seems to go wrong here!
-		final Resource modelResource = editingDomain.getResourceSet()
+		
+		//needs to make sure that the model is already existing
+		boolean checkExisting = VespucciCreationSAMHelper.checkExisting(modelURI, editingDomain.getResourceSet().getURIConverter());
+		final Resource modelResource;
+		if(checkExisting){
+			modelResource = editingDomain.getResourceSet()
 				.getResource(modelURI, true);
-
+		}else {
+			modelResource = editingDomain.getResourceSet().createResource(modelURI);
+		}
+		
 		final String diagramName = diagramURI.lastSegment();
 		AbstractTransactionalCommand command = new AbstractTransactionalCommand(
 				editingDomain,
@@ -215,11 +224,10 @@ public class VespucciDiagramEditorUtil {
 					IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
 				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model;
-				if(!modelResource.isLoaded()){
-						model = createInitialModel();
-						attachModelToResource(model, modelResource);
-					}
-				else{
+				if (!modelResource.isLoaded()) {
+					model = createInitialModel();
+					attachModelToResource(model, modelResource);
+				} else {
 					model = (ShapesDiagram) modelResource.getContents().get(0);
 				}
 

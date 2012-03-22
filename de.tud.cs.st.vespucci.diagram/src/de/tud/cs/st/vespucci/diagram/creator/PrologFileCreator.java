@@ -113,7 +113,7 @@ public class PrologFileCreator {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @author Dominic Scheurer
-	 * @author Robert Cibulla - fixed prolog generation for non-synchronized 
+	 * @author Robert Cibulla - fixed prolog generation for non-synchronized diagrams
 	 */
 	private static ShapesDiagram loadDiagramFile(final String fullPath) throws FileNotFoundException, IOException {
 
