@@ -33,10 +33,13 @@
  */
 package de.tud.cs.st.vespucci.view.ensemble_elements.views;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -45,36 +48,50 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author 
  */
-public class SearchFieldKeyListener implements KeyListener {
+public class SearchFieldListener implements ModifyListener {
 
 	private TableViewer tableViewer;
+	private Display display;
 	private SearchFilter filter = null;
 	private String text = null;
 	private int column;
 
-	public SearchFieldKeyListener(TableViewer tableView, int column){
+	public SearchFieldListener(TableViewer tableView, int column, Display display){
 		this.tableViewer = tableView;
 		this.column = column;
+		this.display = display;
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// unused in this case
-	}
+	private Timer timer;
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		if (e.character == SWT.CR){
-			if (filter != null) {
-				tableViewer.removeFilter(filter);
-			}
-
-			text = ((Text) e.getSource()).getText();
-			if (!text.equals("")){
-				filter = new SearchFilter(column, text);
-				tableViewer.addFilter(filter);
-			}
+	public void modifyText(final ModifyEvent e) {
+		if (timer != null){
+			timer.cancel();
 		}
-	}
 
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				display.syncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						if (filter != null) {
+							tableViewer.removeFilter(filter);
+						}
+
+						text = ((Text) e.getSource()).getText();
+						if (!text.equals("")){
+							filter = new SearchFilter(column, text);
+							tableViewer.addFilter(filter);
+						}
+					}
+				});
+			}
+		}, 250);
+
+	}
 }
