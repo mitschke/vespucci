@@ -35,15 +35,17 @@ package de.tud.cs.st.vespucci.diagram.creator;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 
@@ -51,7 +53,6 @@ import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
-
 /**
  * PrologFileCreator creates a *.pl file from a *.sad file .
  * 
@@ -112,27 +113,37 @@ public class PrologFileCreator {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @author Dominic Scheurer
+	 * @author Robert Cibulla - fixed prolog generation for non-synchronized 
 	 */
 	private static ShapesDiagram loadDiagramFile(final String fullPath) throws FileNotFoundException, IOException {
-		final XMIResourceImpl diagramResource = new XMIResourceImpl();
-		final FileInputStream diagramStream = new FileInputStream(new File(fullPath));
 
-		diagramResource.load(diagramStream, new HashMap<Object, Object>());
+		//load resources from filesystem:
+		URI diagramURI = URI.createFileURI(fullPath);
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource diagramResource = resourceSet.getResource(diagramURI, true);
+		URI modelURI = EcoreUtil.getURI(((View)diagramResource.getContents().get(0)).getElement());
+		Resource modelResource = resourceSet.getResource(modelURI, true);
 
-		if(diagramResource.getContents().get(0) instanceof Diagram){
-			
-		}
-			
-		
-		// Find the ShapesDiagram-EObject
-		for (int i = 0; i < diagramResource.getContents().size(); i++) {
-			if (diagramResource.getContents().get(i) instanceof Diagram) {
-				final EObject eObject = diagramResource.getContents().get(i);
-				VespucciTraversalUtil.init((View)eObject);
-				if(((Diagram)eObject).getElement() instanceof ShapesDiagram)
-						return (ShapesDiagram)((Diagram)eObject).getElement();
+		//Initialize VespucciTraversalUtil
+		if(diagramResource.getContents() != null && diagramResource.getContents().size() > 0){
+			for(int i = 0; i < diagramResource.getContents().size(); i++){
+				if(diagramResource.getContents().get(i) instanceof Diagram){
+					VespucciTraversalUtil.init((View) diagramResource.getContents().get(i));
+					break;
+				}
 			}
 		}
+		
+		//find ShapesDiagram
+		if(modelResource.getContents() != null && modelResource.getContents().size() > 0){
+			for(int i = 0; i < modelResource.getContents().size(); i++){
+				if(modelResource.getContents().get(i) instanceof ShapesDiagram){
+					final EObject eObject = modelResource.getContents().get(i);
+					return (ShapesDiagram) eObject;
+				}
+			}
+		}
+			
 		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
 	}
 

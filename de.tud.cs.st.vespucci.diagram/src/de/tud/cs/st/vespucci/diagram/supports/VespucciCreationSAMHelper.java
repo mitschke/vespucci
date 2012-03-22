@@ -29,7 +29,7 @@ public class VespucciCreationSAMHelper {
 
 	public static URI createmodelURI(URI diagramURI) {
 		
-		URI uri = URI.createURI(ResourcesPlugin.getWorkspace().getRoot().getProject(diagramURI.segment(1)).getFullPath()+"/GlobalRepository.sam");
+		URI uri = URI.createPlatformResourceURI(ResourcesPlugin.getWorkspace().getRoot().getProject(diagramURI.segment(1)).getFullPath()+"/GlobalRepository.sam", true);
 
 		return uri;
 

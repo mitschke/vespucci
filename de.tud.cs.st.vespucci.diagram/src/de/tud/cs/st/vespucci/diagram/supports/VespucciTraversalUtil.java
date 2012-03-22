@@ -53,9 +53,8 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
  */
 public class VespucciTraversalUtil {
 
-	static HashMap<Shape, View> ensembleRegistry = new HashMap<Shape, View>();
-	static HashMap<Connection, View> connectionRegistry = new HashMap<Connection, View>();
-//	static List<Shape> baseShapes = new ArrayList<Shape>();
+	static HashMap<String, Shape> ensembleRegistry = new HashMap<String, Shape>();
+	static HashMap<String, Connection> connectionRegistry = new HashMap<String, Connection>();
 
 	/**
 	 * Initialize both connection- and ensembleRegisty
@@ -65,23 +64,7 @@ public class VespucciTraversalUtil {
 	public static void init(View diagram) {
 		initConnectionRegistry(diagram);
 		initEnsembleRegistry(diagram);
-//		initBaseShapes(diagram);
 	}
-
-//	/**
-//	 * 
-//	 * @param diagram
-//	 */
-//	private static void initBaseShapes(View diagram) {
-//		if (diagram instanceof Diagram) {
-//			for (Object ensemble : ((Diagram) diagram).getChildren()) {
-//				if (ensemble instanceof View
-//						&& ((View) ensemble).getElement() instanceof Shape) {
-//					baseShapes.add((Shape) ((View) ensemble).getElement());
-//				}
-//			}
-//		}
-//	}
 
 	/**
 	 * Initializes the connection registry
@@ -89,39 +72,33 @@ public class VespucciTraversalUtil {
 	 * @param diagram
 	 */
 	private static void initConnectionRegistry(View diagram) {
+		connectionRegistry.clear();
 		if (diagram instanceof Diagram) {
 			for (Object edge : ((Diagram) diagram).getEdges()) {
 				if (edge instanceof Edge
 						&& ((Edge) edge).getElement() instanceof Connection) {
 					connectionRegistry.put(
-							(Connection) ((Edge) edge).getElement(),
-							(View) edge);
+							((Connection) ((Edge) edge).getElement()).getKey(),
+							(Connection) ((Edge) edge).getElement());
 				}
 			}
 		}
 	}
 
 	/**
-	 * Recursively initializes the ensemble registry
+	 * Initializes the ensemble registry
 	 * 
 	 * @param diagram
 	 */
 	private static void initEnsembleRegistry(View diagram) {
+		ensembleRegistry.clear();
 		if (diagram instanceof Diagram) {
 			for (Object ensemble : ((Diagram) diagram).getChildren()) {
 				if (ensemble instanceof View
 						&& ((View) ensemble).getElement() instanceof Shape) {
 					ensembleRegistry.put(
-							(Shape) ((View) ensemble).getElement(),
-							(View) ensemble);
-				}
-				if (((View) ensemble).getChildren() != null
-						&& ((View) ensemble).getChildren().size() != 0) {
-					for (Object rek : ((View) ensemble).getChildren()) {
-						if (rek instanceof View
-								&& ((View) rek).getElement() instanceof Shape)
-							initEnsembleRegistry((View) rek);
-					}
+							((Shape) ((View) ensemble).getElement()).getKey(),
+							(Shape) ((View) ensemble).getElement());
 				}
 			}
 		}
@@ -141,7 +118,7 @@ public class VespucciTraversalUtil {
 			EList<Connection> conns) {
 		List<Connection> result = new ArrayList<Connection>();
 		for (Connection con : conns) {
-			if (connectionRegistry.get(con) != null)
+			if (connectionRegistry.get(con.getKey()) != null)
 				result.add(con);
 		}
 		return result;
@@ -158,17 +135,10 @@ public class VespucciTraversalUtil {
 	public static List<Shape> getEnsemblesFromDiagram(EList<Shape> shapes) {
 		List<Shape> result = new ArrayList<Shape>();
 		for (Shape shp : shapes) {
-			if (ensembleRegistry.get(shp) != null)
+			if (ensembleRegistry.get(shp.getKey()) != null)
 				result.add(shp);
 		}
 		return result;
 	}
 
-//	/**
-//	 * 
-//	 * @return
-//	 */
-//	public static List<Shape> getBaseShapes() {
-//		return baseShapes;
-//	}
 }

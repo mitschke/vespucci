@@ -33,6 +33,7 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -201,8 +202,10 @@ public class VespucciDiagramEditorUtil {
 						3);
 		final Resource diagramResource = editingDomain.getResourceSet()
 				.createResource(diagramURI);
+		//FIXME: something seems to go wrong here!
 		final Resource modelResource = editingDomain.getResourceSet()
 				.getResource(modelURI, true);
+
 		final String diagramName = diagramURI.lastSegment();
 		AbstractTransactionalCommand command = new AbstractTransactionalCommand(
 				editingDomain,
