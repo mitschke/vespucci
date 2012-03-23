@@ -151,7 +151,7 @@ public class VespucciEditPartProvider extends AbstractEditPartProvider {
 	public synchronized boolean provides(IOperation operation) {
 		if (operation instanceof CreateGraphicEditPartOperation) {
 			View view = ((IEditPartOperation) operation).getView();
-			if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+			if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 					.equals(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 							.getModelID(view))) {
 				return false;

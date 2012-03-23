@@ -134,7 +134,7 @@ public class VespucciValidationDecoratorProvider extends AbstractProvider
 				.getDecoratorTarget();
 		View view = (View) decoratorTarget.getAdapter(View.class);
 		return view != null
-				&& de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+				&& de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 						.equals(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 								.getModelID(view));
 	}

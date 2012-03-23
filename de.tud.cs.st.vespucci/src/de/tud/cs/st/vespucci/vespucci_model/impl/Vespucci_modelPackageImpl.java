@@ -36,9 +36,16 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EValidator;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
-
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
 import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
@@ -48,19 +55,10 @@ import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
 import de.tud.cs.st.vespucci.vespucci_model.util.Vespucci_modelValidator;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.EValidator;
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -74,7 +72,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass shapesDiagramEClass = null;
+	private EClass architectureModelEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -235,8 +233,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getShapesDiagram() {
-		return shapesDiagramEClass;
+	public EClass getArchitectureModel() {
+		return architectureModelEClass;
 	}
 
 	/**
@@ -244,8 +242,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getShapesDiagram_Shapes() {
-		return (EReference)shapesDiagramEClass.getEStructuralFeatures().get(0);
+	public EReference getArchitectureModel_Shapes() {
+		return (EReference)architectureModelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -253,8 +251,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getShapesDiagram_Connections() {
-		return (EReference)shapesDiagramEClass.getEStructuralFeatures().get(1);
+	public EReference getArchitectureModel_Connections() {
+		return (EReference)architectureModelEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -519,9 +517,9 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		isCreated = true;
 
 		// Create classes and their features
-		shapesDiagramEClass = createEClass(SHAPES_DIAGRAM);
-		createEReference(shapesDiagramEClass, SHAPES_DIAGRAM__SHAPES);
-		createEReference(shapesDiagramEClass, SHAPES_DIAGRAM__CONNECTIONS);
+		architectureModelEClass = createEClass(ARCHITECTURE_MODEL);
+		createEReference(architectureModelEClass, ARCHITECTURE_MODEL__SHAPES);
+		createEReference(architectureModelEClass, ARCHITECTURE_MODEL__CONNECTIONS);
 
 		shapeEClass = createEClass(SHAPE);
 		createEReference(shapeEClass, SHAPE__SOURCE_CONNECTIONS);
@@ -602,11 +600,11 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		violationEClass.getESuperTypes().add(this.getConnection());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(shapesDiagramEClass, ShapesDiagram.class, "ShapesDiagram", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getShapesDiagram_Shapes(), this.getShape(), null, "shapes", null, 0, -1, ShapesDiagram.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		getShapesDiagram_Shapes().getEKeys().add(this.getShape_Key());
-		initEReference(getShapesDiagram_Connections(), this.getConnection(), null, "connections", null, 0, -1, ShapesDiagram.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		getShapesDiagram_Connections().getEKeys().add(this.getConnection_Key());
+		initEClass(architectureModelEClass, ArchitectureModel.class, "ArchitectureModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getArchitectureModel_Shapes(), this.getShape(), null, "shapes", null, 0, -1, ArchitectureModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getArchitectureModel_Shapes().getEKeys().add(this.getShape_Key());
+		initEReference(getArchitectureModel_Connections(), this.getConnection(), null, "connections", null, 0, -1, ArchitectureModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getArchitectureModel_Connections().getEKeys().add(this.getConnection_Key());
 
 		initEClass(shapeEClass, Shape.class, "Shape", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getShape_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, Shape.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -677,7 +675,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 			 "validationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"
 		   });		
 		addAnnotation
-		  (shapesDiagramEClass, 
+		  (architectureModelEClass, 
 		   source, 
 		   new String[] {
 			 "constraints", "uniqueEnsembleName"
@@ -693,7 +691,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	protected void createPivotAnnotations() {
 		String source = "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot";				
 		addAnnotation
-		  (shapesDiagramEClass, 
+		  (architectureModelEClass, 
 		   source, 
 		   new String[] {
 			 "uniqueEnsemblename", "self->allSubobjectsOfKind(Shape)->uniqueName(name)"

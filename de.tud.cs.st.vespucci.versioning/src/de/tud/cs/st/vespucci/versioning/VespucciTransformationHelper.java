@@ -67,10 +67,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
-import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.exceptions.VespucciTransformationFailedException;
+import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
-import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
 
 /**
  * Template class which supplies various methods for Vespucci file transformations.

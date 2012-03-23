@@ -63,7 +63,7 @@ public class GlobalIncomingCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	private final de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container;
+	private final de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container;
 
 	/**
 	 * @generated
@@ -173,7 +173,7 @@ public class GlobalIncomingCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	public de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram getContainer() {
+	public de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel getContainer() {
 		return container;
 	}
 
@@ -182,15 +182,15 @@ public class GlobalIncomingCreateCommand extends EditElementCommand {
 	 * Modify with appropriate logic.
 	 * @generated
 	 */
-	private static de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram deduceContainer(
+	private static de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel deduceContainer(
 			EObject source, EObject target) {
 		// Find container element for the new link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				return (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				return (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		return null;

@@ -36,7 +36,7 @@ package de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers;
 /**
  * @generated
  */
-public class ShapesDiagramEditHelper
+public class ArchitectureDiagramEditHelper
 		extends
 		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.VespucciBaseEditHelper {
 }

@@ -37,24 +37,25 @@
 package de.tud.cs.st.vespucci.vespucci_model.util;
 
 import de.tud.cs.st.vespucci.vespucci_model.*;
-import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
+import org.eclipse.emf.ecore.EObject;
 
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notifier;
-
-import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
-import org.eclipse.emf.ecore.EObject;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
 /**
  * <!-- begin-user-doc -->
@@ -113,8 +114,8 @@ public class Vespucci_modelAdapterFactory extends AdapterFactoryImpl {
 	protected Vespucci_modelSwitch<Adapter> modelSwitch =
 		new Vespucci_modelSwitch<Adapter>() {
 			@Override
-			public Adapter caseShapesDiagram(ShapesDiagram object) {
-				return createShapesDiagramAdapter();
+			public Adapter caseArchitectureModel(ArchitectureModel object) {
+				return createArchitectureModelAdapter();
 			}
 			@Override
 			public Adapter caseShape(Shape object) {
@@ -185,16 +186,16 @@ public class Vespucci_modelAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram <em>Shapes Diagram</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel <em>Architecture Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram
+	 * @see de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel
 	 * @generated
 	 */
-	public Adapter createShapesDiagramAdapter() {
+	public Adapter createArchitectureModelAdapter() {
 		return null;
 	}
 

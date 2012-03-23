@@ -48,7 +48,7 @@ public class EnsembleEnsembleCompartmentItemSemanticEditPolicy
 	 */
 	public EnsembleEnsembleCompartmentItemSemanticEditPolicy() {
 		super(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001);
+				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003);
 	}
 
 	/**

@@ -103,7 +103,7 @@ public class VespucciValidationProvider {
 		}
 		if (object instanceof View) {
 			return constraintsActive
-					&& de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+					&& de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 							.equals(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 									.getModelID((View) object));
 		}

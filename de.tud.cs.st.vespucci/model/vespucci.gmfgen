@@ -140,9 +140,9 @@
   </audits>
   <diagram
       visualID="1000"
-      editPartClassName="ShapesDiagramEditPart"
-      itemSemanticEditPolicyClassName="ShapesDiagramItemSemanticEditPolicy"
-      canonicalEditPolicyClassName="ShapesDiagramCanonicalEditPolicy"
+      editPartClassName="ArchitectureModelEditPart"
+      itemSemanticEditPolicyClassName="ArchitectureModelItemSemanticEditPolicy"
+      canonicalEditPolicyClassName="ArchitectureModelCanonicalEditPolicy"
       iconProviderPriority="Low"
       validationProviderPriority="Low"
       synchronized="false">
@@ -150,14 +150,14 @@
         href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Diagram"/>
     <elementType
         xsi:type="gmfgen:MetamodelType"
-        editHelperClassName="ShapesDiagramEditHelper"/>
+        editHelperClassName="ArchitectureDiagramEditHelper"/>
     <viewmap
         xsi:type="gmfgen:FigureViewmap"
         figureQualifiedClassName="org.eclipse.draw2d.FreeformLayer"/>
     <containsShortcutsTo>sam</containsShortcutsTo>
     <shortcutsProvidedFor>Vespucci</shortcutsProvidedFor>
     <domainDiagramElement
-        href="vespucci.genmodel#//vespucci_model/ShapesDiagram"/>
+        href="vespucci.genmodel#//vespucci_model/ArchitectureModel"/>
     <childNodes
         visualID="3001"
         editPartClassName="Ensemble2EditPart"
@@ -280,10 +280,9 @@
       </labels>
     </childNodes>
     <topLevelNodes
-        visualID="2001"
+        visualID="2003"
         editPartClassName="EnsembleEditPart"
         itemSemanticEditPolicyClassName="EnsembleItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleViewFactory"
         canonicalEditPolicyClassName="EnsembleCanonicalEditPolicy"
         compartments="//@diagram/@compartments.0 //@diagram/@compartments.1"
         graphicalNodeEditPolicyClassName="EnsembleGraphicalNodeEditPolicy"
@@ -301,15 +300,14 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Ensemble"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/shapes"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/shapes"/>
       </modelFacet>
       <labels
-          visualID="5001"
+          visualID="5009"
           editPartClassName="EnsembleNameEditPart"
           itemSemanticEditPolicyClassName="EnsembleNameItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleNameViewFactory"
           elementIcon="true">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
@@ -325,10 +323,9 @@
         </modelFacet>
       </labels>
       <labels
-          visualID="5008"
+          visualID="5010"
           editPartClassName="EnsembleDescriptionEditPart"
-          itemSemanticEditPolicyClassName="EnsembleDescriptionItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleDescriptionViewFactory">
+          itemSemanticEditPolicyClassName="EnsembleDescriptionItemSemanticEditPolicy">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -347,10 +344,9 @@
       </labels>
     </topLevelNodes>
     <topLevelNodes
-        visualID="2002"
+        visualID="2004"
         editPartClassName="EmptyEditPart"
         itemSemanticEditPolicyClassName="EmptyItemSemanticEditPolicy"
-        notationViewFactoryClassName="EmptyViewFactory"
         canonicalEditPolicyClassName="EmptyCanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="EmptyGraphicalNodeEditPolicy"
         createCommandClassName="EmptyCreateCommand">
@@ -375,15 +371,14 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Empty"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/shapes"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/shapes"/>
       </modelFacet>
       <labels
-          visualID="5002"
+          visualID="5011"
           editPartClassName="EmptyNameEditPart"
-          itemSemanticEditPolicyClassName="EmptyNameItemSemanticEditPolicy"
-          notationViewFactoryClassName="EmptyNameViewFactory">
+          itemSemanticEditPolicyClassName="EmptyNameItemSemanticEditPolicy">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -423,9 +418,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Incoming"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -485,9 +480,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Outgoing"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -548,9 +543,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/InAndOut"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -610,9 +605,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/NotAllowed"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -672,9 +667,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Expected"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -734,9 +729,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/GlobalIncoming"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -796,9 +791,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/GlobalOutgoing"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -857,9 +852,9 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Violation"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ShapesDiagram/connections"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/connections"/>
         <sourceMetaFeature
             href="vespucci.genmodel#//vespucci_model/Connection/source"/>
         <targetMetaFeature
@@ -895,10 +890,9 @@
           targetEnd="//@expressionProviders/@providers.0/@expressions.13"/>
     </links>
     <compartments
-        visualID="7001"
+        visualID="7005"
         editPartClassName="EnsembleEnsembleCompartmentEditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleCompartmentItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleEnsembleCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleCompartmentCanonicalEditPolicy"
         childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.1"
         title="EnsembleCompartment"
@@ -917,10 +911,9 @@
       </viewmap>
     </compartments>
     <compartments
-        visualID="7003"
+        visualID="7006"
         editPartClassName="EnsembleEnsembleDescriptionCompartmentEditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleDescriptionCompartmentItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleEnsembleDescriptionCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleDescriptionCompartmentCanonicalEditPolicy"
         title="EnsembleDescriptionCompartment"
         needsTitle="false"

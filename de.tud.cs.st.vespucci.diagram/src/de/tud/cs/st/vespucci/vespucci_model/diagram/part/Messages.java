@@ -420,16 +420,6 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Ensemble_2001_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Ensemble_2001_outgoinglinks;
-
-	/**
-	 * @generated
-	 */
 	public static String NavigatorGroupName_Ensemble_3001_incominglinks;
 
 	/**
@@ -470,27 +460,22 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Empty_2002_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Empty_2002_outgoinglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_ShapesDiagram_1000_links;
-
-	/**
-	 * @generated
-	 */
 	public static String NavigatorGroupName_GlobalOutgoing_4007_target;
 
 	/**
 	 * @generated
 	 */
 	public static String NavigatorGroupName_GlobalOutgoing_4007_source;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Empty_2004_incominglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Empty_2004_outgoinglinks;
 
 	/**
 	 * @generated
@@ -511,6 +496,21 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String NavigatorGroupName_InAndOut_4001_source;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_ArchitectureModel_1000_links;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Ensemble_2003_incominglinks;
+
+	/**
+	 * @generated
+	 */
+	public static String NavigatorGroupName_Ensemble_2003_outgoinglinks;
 
 	/**
 	 * @generated

@@ -87,10 +87,10 @@ public class TransformationHelperLibrary {
 	
 
 	/**___________________________________________________________________
-	 * Stores the ShapesDiagram model element for usage as reference in
+	 * Stores the ArchitectureModel (former ShapesDiagram) model element for usage as reference in
 	 * the diagram part.
 	 */
-	private static de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram shapesDiagram;
+	private static de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel architectureModel;
 	
 	
 	
@@ -144,8 +144,8 @@ public class TransformationHelperLibrary {
 	 * @param self The shapesDiagram to remember.
 	 */
 	@Operation(contextual=true)
-	public static void remember(de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram self) {
-		shapesDiagram = self;
+	public static void remember(de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel self) {
+		architectureModel = self;
 	}
 	
 	/**
@@ -193,8 +193,8 @@ public class TransformationHelperLibrary {
 	 * @return Remembered ShapesDiagram
 	 */
 	@Operation(contextual=true)
-	public static de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram getRememberedShapesDiagram(Object self) {
-		return shapesDiagram;
+	public static de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel getRememberedArchictectureModel(Object self) {
+		return architectureModel;
 	}
 	
 	

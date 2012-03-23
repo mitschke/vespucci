@@ -56,13 +56,13 @@ public interface Vespucci_modelFactory extends EFactory {
 	Vespucci_modelFactory eINSTANCE = de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Shapes Diagram</em>'.
+	 * Returns a new object of class '<em>Architecture Model</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Shapes Diagram</em>'.
+	 * @return a new object of class '<em>Architecture Model</em>'.
 	 * @generated
 	 */
-	ShapesDiagram createShapesDiagram();
+	ArchitectureModel createArchitectureModel();
 
 	/**
 	 * Returns a new object of class '<em>Empty</em>'.

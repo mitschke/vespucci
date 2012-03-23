@@ -61,8 +61,8 @@ public class VespucciEditPartFactory implements EditPartFactory {
 			switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 					.getVisualID(view)) {
 
-			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart(
+			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID:
+				return new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart(
 						view);
 
 			case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:

@@ -123,7 +123,7 @@ public class EnsembleDescription2EditPart extends CompartmentEditPart implements
 				new LabelDirectEditPolicy());
 		installEditPolicy(
 				EditPolicy.PRIMARY_DRAG_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.NodeLabelDragPolicy());
+				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.NodeLabelDragPolicy());
 	}
 
 	/**

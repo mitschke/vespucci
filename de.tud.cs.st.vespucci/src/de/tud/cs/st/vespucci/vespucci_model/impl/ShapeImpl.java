@@ -36,25 +36,23 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
-import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -214,12 +212,12 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	 */
 	private List<Connection> getConnectionsHelper(boolean source){
 		//get DiagramReference:
-		ShapesDiagram tempDiagramReference = getDiagramReferenceHelper();
+		ArchitectureModel tempRootReference = getRootReferenceHelper();
 		//temporary Arraylist to collect valid Connections
 		List<Connection> connections = new ArrayList<Connection>();
 		//collect all Connections where the current shape is the Target:
-		if (tempDiagramReference != null) {
-			for (Connection conn : tempDiagramReference.getConnections()) {
+		if (tempRootReference != null) {
+			for (Connection conn : tempRootReference.getConnections()) {
 				resolveTemporaryConnections(source, conn, connections);
 			}
 		}
@@ -227,21 +225,21 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	}
 	
 	/**
-	 *Private method to get the ShapesDiagram reference.
+	 *Private method to get the ArchitectureModel.
 	 * 
 	 * @generated NOT
 	 * @author Robert Cibulla
-	 * @return ShapesDiagram - reference to the ShapesDiagram
+	 * @return ArchitectureModel - reference to the ArchitectureModel
 	 */
-	private ShapesDiagram getDiagramReferenceHelper() {
+	private ArchitectureModel getRootReferenceHelper() {
 		// temporary variables used to navigate to top node
 
 		EObject parent = this.eContainer();
 
-		while (!(parent instanceof ShapesDiagram) && parent != null) {
+		while (!(parent instanceof ArchitectureModel) && parent != null) {
 			parent = parent.eContainer();
 		}
-		return (ShapesDiagram) parent;
+		return (ArchitectureModel) parent;
 	}
 
 	/**

@@ -43,28 +43,28 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.DuplicateElementsRequest;
 /**
  * @generated
  */
-public class ShapesDiagramItemSemanticEditPolicy
+public class ArchitectureModelItemSemanticEditPolicy
 		extends
 		de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
 	 */
-	public ShapesDiagramItemSemanticEditPolicy() {
+	public ArchitectureModelItemSemanticEditPolicy() {
 		super(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.ShapesDiagram_1000);
+				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.ArchitectureModel_1000);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001 == req
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003 == req
 				.getElementType()) {
 			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.EnsembleCreateCommand(
 					req));
 		}
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2002 == req
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2004 == req
 				.getElementType()) {
 			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.EmptyCreateCommand(
 					req));

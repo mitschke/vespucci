@@ -7,7 +7,7 @@
     xmlns:gmftool="http://www.eclipse.org/gmf/2005/ToolDefinition">
   <nodes>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/shapes"/>
+        href="vespucci.ecore#//ArchitectureModel/shapes"/>
     <ownedChild>
       <domainMetaElement
           href="vespucci.ecore#//Ensemble"/>
@@ -58,7 +58,7 @@
   </nodes>
   <nodes>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/shapes"/>
+        href="vespucci.ecore#//ArchitectureModel/shapes"/>
     <ownedChild>
       <domainMetaElement
           href="vespucci.ecore#//Empty"/>
@@ -89,7 +89,7 @@
           href="vespucci.ecore#//Connection/name"/>
     </labelMappings>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/connections"/>
+        href="vespucci.ecore#//ArchitectureModel/connections"/>
     <tool
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.0"/>
@@ -123,7 +123,7 @@
           href="vespucci.ecore#//Connection/name"/>
     </labelMappings>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/connections"/>
+        href="vespucci.ecore#//ArchitectureModel/connections"/>
     <tool
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.1"/>
@@ -153,7 +153,7 @@
           href="vespucci.ecore#//Connection/name"/>
     </labelMappings>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/connections"/>
+        href="vespucci.ecore#//ArchitectureModel/connections"/>
     <tool
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.2"/>
@@ -185,7 +185,7 @@
           href="vespucci.ecore#//Connection/name"/>
     </labelMappings>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/connections"/>
+        href="vespucci.ecore#//ArchitectureModel/connections"/>
     <tool
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.4"/>
@@ -217,7 +217,7 @@
           href="vespucci.ecore#//Connection/name"/>
     </labelMappings>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/connections"/>
+        href="vespucci.ecore#//ArchitectureModel/connections"/>
     <tool
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.3"/>
@@ -249,7 +249,7 @@
           href="vespucci.ecore#//Connection/name"/>
     </labelMappings>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/connections"/>
+        href="vespucci.ecore#//ArchitectureModel/connections"/>
     <tool
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.5"/>
@@ -281,7 +281,7 @@
           href="vespucci.ecore#//Connection/name"/>
     </labelMappings>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/connections"/>
+        href="vespucci.ecore#//ArchitectureModel/connections"/>
     <tool
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.6"/>
@@ -311,7 +311,7 @@
           href="vespucci.ecore#//Connection/name"/>
     </labelMappings>
     <containmentFeature
-        href="vespucci.ecore#//ShapesDiagram/connections"/>
+        href="vespucci.ecore#//ArchitectureModel/connections"/>
     <tool
         xsi:type="gmftool:CreationTool"
         href="vespucci.gmftool#//@palette/@tools.1/@tools.7"/>
@@ -336,7 +336,7 @@
     <domainModel
         href="vespucci.ecore#/"/>
     <domainMetaElement
-        href="vespucci.ecore#//ShapesDiagram"/>
+        href="vespucci.ecore#//ArchitectureModel"/>
     <palette
         href="vespucci.gmftool#//@palette"/>
   </diagram>

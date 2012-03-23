@@ -119,45 +119,45 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements
 	public Image getImage(View view) {
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getVisualID(view)) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?TopLevelNode?http://vespucci.editor/2011-11-29?Ensemble", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001); //$NON-NLS-1$
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?Link?http://vespucci.editor/2011-11-29?Incoming", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Incoming_4005); //$NON-NLS-1$
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Link?http://vespucci.editor/2011-11-29?Outgoing", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003); //$NON-NLS-1$
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Link?http://vespucci.editor/2011-11-29?NotAllowed", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004); //$NON-NLS-1$
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?Link?http://vespucci.editor/2011-11-29?Expected", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Expected_4002); //$NON-NLS-1$
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
 			return getImage(
-					"Navigator?Node?http://vespucci.editor/2011-11-29?Ensemble", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001); //$NON-NLS-1$
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Link?http://vespucci.editor/2011-11-29?GlobalIncoming", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalIncoming_4006); //$NON-NLS-1$
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Link?http://vespucci.editor/2011-11-29?Violation", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009); //$NON-NLS-1$
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Diagram?http://vespucci.editor/2011-11-29?ShapesDiagram", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.ShapesDiagram_1000); //$NON-NLS-1$
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Link?http://vespucci.editor/2011-11-29?GlobalOutgoing", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalOutgoing_4007); //$NON-NLS-1$
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
-			return getImage(
-					"Navigator?Node?http://vespucci.editor/2011-11-29?Empty", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003); //$NON-NLS-1$
+					"Navigator?Link?http://vespucci.editor/2011-11-29?NotAllowed", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.NotAllowed_4004); //$NON-NLS-1$
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?Link?http://vespucci.editor/2011-11-29?InAndOut", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.InAndOut_4001); //$NON-NLS-1$
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart.VISUAL_ID:
 			return getImage(
-					"Navigator?TopLevelNode?http://vespucci.editor/2011-11-29?Empty", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2002); //$NON-NLS-1$
+					"Navigator?TopLevelNode?http://vespucci.editor/2011-11-29?Empty", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2004); //$NON-NLS-1$
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Link?http://vespucci.editor/2011-11-29?Violation", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Violation_4009); //$NON-NLS-1$
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Node?http://vespucci.editor/2011-11-29?Empty", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003); //$NON-NLS-1$
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Node?http://vespucci.editor/2011-11-29?Ensemble", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001); //$NON-NLS-1$
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Diagram?http://vespucci.editor/2011-11-29?ArchitectureModel", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.ArchitectureModel_1000); //$NON-NLS-1$
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Link?http://vespucci.editor/2011-11-29?GlobalIncoming", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalIncoming_4006); //$NON-NLS-1$
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Link?http://vespucci.editor/2011-11-29?Outgoing", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Outgoing_4003); //$NON-NLS-1$
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?TopLevelNode?http://vespucci.editor/2011-11-29?Ensemble", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003); //$NON-NLS-1$
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Link?http://vespucci.editor/2011-11-29?GlobalOutgoing", de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.GlobalOutgoing_4007); //$NON-NLS-1$
 		}
 		return getImage("Navigator?UnknownElement", null); //$NON-NLS-1$
 	}
@@ -222,32 +222,32 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements
 		}
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getVisualID(view)) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			return getEnsemble_2001Text(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
 			return getIncoming_4005Text(view);
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
-			return getOutgoing_4003Text(view);
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
-			return getNotAllowed_4004Text(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ExpectedEditPart.VISUAL_ID:
 			return getExpected_4002Text(view);
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
-			return getEnsemble_3001Text(view);
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
-			return getGlobalIncoming_4006Text(view);
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
-			return getViolation_4009Text(view);
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-			return getShapesDiagram_1000Text(view);
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
-			return getGlobalOutgoing_4007Text(view);
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
-			return getEmpty_3003Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.NotAllowedEditPart.VISUAL_ID:
+			return getNotAllowed_4004Text(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.InAndOutEditPart.VISUAL_ID:
 			return getInAndOut_4001Text(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart.VISUAL_ID:
-			return getEmpty_2002Text(view);
+			return getEmpty_2004Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ViolationEditPart.VISUAL_ID:
+			return getViolation_4009Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
+			return getEmpty_3003Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
+			return getEnsemble_3001Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID:
+			return getArchitectureModel_1000Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalIncomingEditPart.VISUAL_ID:
+			return getGlobalIncoming_4006Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:
+			return getOutgoing_4003Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
+			return getEnsemble_2003Text(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.GlobalOutgoingEditPart.VISUAL_ID:
+			return getGlobalOutgoing_4007Text(view);
 		}
 		return getUnknownElementText(view);
 	}
@@ -299,35 +299,6 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements
 	/**
 	 * @generated
 	 */
-	private String getEmpty_2002Text(View view) {
-		IParser parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
-				.getParser(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2002,
-						view.getElement() != null ? view.getElement() : view,
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyNameEditPart.VISUAL_ID));
-		if (parser != null) {
-			return parser.getPrintString(new EObjectAdapter(
-					view.getElement() != null ? view.getElement() : view),
-					ParserOptions.NONE.intValue());
-		} else {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-					.getInstance().logError(
-							"Parser was not found for label " + 5002); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	 * @generated
-	 */
-	private String getShapesDiagram_1000Text(View view) {
-		return ""; //$NON-NLS-1$
-	}
-
-	/**
-	 * @generated
-	 */
 	private String getGlobalOutgoing_4007Text(View view) {
 		IParser parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
 				.getParser(
@@ -343,6 +314,28 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements
 			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 					.getInstance().logError(
 							"Parser was not found for label " + 6007); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * @generated
+	 */
+	private String getEmpty_2004Text(View view) {
+		IParser parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
+				.getParser(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2004,
+						view.getElement() != null ? view.getElement() : view,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(
+					view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+					.getInstance().logError(
+							"Parser was not found for label " + 5011); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}
@@ -460,6 +453,35 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements
 	/**
 	 * @generated
 	 */
+	private String getArchitectureModel_1000Text(View view) {
+		return ""; //$NON-NLS-1$
+	}
+
+	/**
+	 * @generated
+	 */
+	private String getEnsemble_2003Text(View view) {
+		IParser parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
+				.getParser(
+						de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003,
+						view.getElement() != null ? view.getElement() : view,
+						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
+								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(
+					view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
+					.getInstance().logError(
+							"Parser was not found for label " + 5009); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * @generated
+	 */
 	private String getNotAllowed_4004Text(View view) {
 		IParser parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
 				.getParser(
@@ -475,28 +497,6 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements
 			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 					.getInstance().logError(
 							"Parser was not found for label " + 6004); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	 * @generated
-	 */
-	private String getEnsemble_2001Text(View view) {
-		IParser parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
-				.getParser(
-						de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001,
-						view.getElement() != null ? view.getElement() : view,
-						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
-								.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID));
-		if (parser != null) {
-			return parser.getPrintString(new EObjectAdapter(
-					view.getElement() != null ? view.getElement() : view),
-					ParserOptions.NONE.intValue());
-		} else {
-			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
-					.getInstance().logError(
-							"Parser was not found for label " + 5001); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}
@@ -566,7 +566,7 @@ public class VespucciNavigatorLabelProvider extends LabelProvider implements
 	 * @generated
 	 */
 	private boolean isOwnView(View view) {
-		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+		return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 				.equals(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getModelID(view));
 	}

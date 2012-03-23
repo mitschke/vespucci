@@ -50,7 +50,7 @@ import org.eclipse.swt.dnd.DND;
 import de.tud.cs.st.vespucci.diagram.dnd.JavaType.Resolver;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
 
 /**
  * A TransferDropTargetListener for handling the drop of ISelections on the VespucciDiagram view. The drop is enabled if
@@ -95,7 +95,7 @@ public class DropVespucciDiagramTargetListener extends AbstractTransferDropTarge
 
 			// all EditPart for which DnD should work
 		} else if (getTargetEditPart() instanceof EnsembleEditPart || getTargetEditPart() instanceof Ensemble2EditPart
-				|| getTargetEditPart() instanceof ShapesDiagramEditPart) {
+				|| getTargetEditPart() instanceof ArchitectureModelEditPart) {
 			return Resolver.isResolvable(getTargetRequest().getExtendedData().values());
 		}
 		return false;

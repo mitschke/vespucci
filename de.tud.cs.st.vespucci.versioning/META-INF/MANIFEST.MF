@@ -20,6 +20,7 @@ Import-Package: de.tud.cs.st.vespucci.exceptions,
  org.eclipse.core.expressions,
  org.eclipse.core.filesystem,
  org.eclipse.core.resources,
+ org.eclipse.gmf.runtime.notation,
  org.eclipse.gmf.runtime.notation.impl,
  org.eclipse.m2m.qvt.oml.util
 Export-Package: de.tud.cs.st.vespucci.versioning,

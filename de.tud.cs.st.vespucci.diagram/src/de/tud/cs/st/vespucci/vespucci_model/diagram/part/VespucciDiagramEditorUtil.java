@@ -33,9 +33,7 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.diagram.part;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -85,7 +83,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
 import de.tud.cs.st.vespucci.diagram.supports.VespucciCreationSAMHelper;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 
 /**
  * @generated
@@ -201,20 +199,22 @@ public class VespucciDiagramEditorUtil {
 				.beginTask(
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciDiagramEditorUtil_CreateDiagramProgressTask,
 						3);
-		
+
 		final Resource diagramResource = editingDomain.getResourceSet()
 				.createResource(diagramURI);
-		
+
 		//needs to make sure that the model is already existing
-		boolean checkExisting = VespucciCreationSAMHelper.checkExisting(modelURI, editingDomain.getResourceSet().getURIConverter());
+		boolean checkExisting = VespucciCreationSAMHelper.checkExisting(
+				modelURI, editingDomain.getResourceSet().getURIConverter());
 		final Resource modelResource;
-		if(checkExisting){
-			modelResource = editingDomain.getResourceSet()
-				.getResource(modelURI, true);
-		}else {
-			modelResource = editingDomain.getResourceSet().createResource(modelURI);
+		if (checkExisting) {
+			modelResource = editingDomain.getResourceSet().getResource(
+					modelURI, true);
+		} else {
+			modelResource = editingDomain.getResourceSet().createResource(
+					modelURI);
 		}
-		
+
 		final String diagramName = diagramURI.lastSegment();
 		AbstractTransactionalCommand command = new AbstractTransactionalCommand(
 				editingDomain,
@@ -223,18 +223,19 @@ public class VespucciDiagramEditorUtil {
 			protected CommandResult doExecuteWithResult(
 					IProgressMonitor monitor, IAdaptable info)
 					throws ExecutionException {
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model;
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel model;
 				if (!modelResource.isLoaded()) {
 					model = createInitialModel();
 					attachModelToResource(model, modelResource);
 				} else {
-					model = (ShapesDiagram) modelResource.getContents().get(0);
+					model = (ArchitectureModel) modelResource.getContents()
+							.get(0);
 				}
 
 				Diagram diagram = ViewService
 						.createDiagram(
 								model,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID,
+								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID,
 								de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT);
 				if (diagram != null) {
 					diagramResource.getContents().add(diagram);
@@ -278,9 +279,9 @@ public class VespucciDiagramEditorUtil {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram createInitialModel() {
+	private static de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel createInitialModel() {
 		return de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory.eINSTANCE
-				.createShapesDiagram();
+				.createArchitectureModel();
 	}
 
 	/**
@@ -290,7 +291,7 @@ public class VespucciDiagramEditorUtil {
 	 * @generated
 	 */
 	private static void attachModelToResource(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram model,
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel model,
 			Resource resource) {
 		resource.getContents().add(model);
 	}

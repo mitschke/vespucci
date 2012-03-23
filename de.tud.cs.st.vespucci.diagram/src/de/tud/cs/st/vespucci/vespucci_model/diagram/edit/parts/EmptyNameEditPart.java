@@ -81,7 +81,7 @@ public class EmptyNameEditPart extends CompartmentEditPart implements
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5002;
+	public static final int VISUAL_ID = 5011;
 
 	/**
 	 * @generated
@@ -122,7 +122,7 @@ public class EmptyNameEditPart extends CompartmentEditPart implements
 				new LabelDirectEditPolicy());
 		installEditPolicy(
 				EditPolicy.PRIMARY_DRAG_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.NodeLabelDragPolicy());
+				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.NodeLabelDragPolicy());
 	}
 
 	/**
@@ -323,7 +323,7 @@ public class EmptyNameEditPart extends CompartmentEditPart implements
 		if (parser == null) {
 			parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
 					.getParser(
-							de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2002,
+							de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2004,
 							getParserElement(),
 							de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 									.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyNameEditPart.VISUAL_ID));

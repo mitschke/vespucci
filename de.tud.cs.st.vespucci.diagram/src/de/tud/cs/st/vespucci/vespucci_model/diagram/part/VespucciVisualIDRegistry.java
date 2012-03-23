@@ -58,9 +58,9 @@ public class VespucciVisualIDRegistry {
 	 */
 	public static int getVisualID(View view) {
 		if (view instanceof Diagram) {
-			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 					.equals(view.getType())) {
-				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID;
+				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID;
 			} else {
 				return -1;
 			}
@@ -117,9 +117,9 @@ public class VespucciVisualIDRegistry {
 			return -1;
 		}
 		if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-				.getShapesDiagram().isSuperTypeOf(domainElement.eClass())
-				&& isDiagram((de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) domainElement)) {
-			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID;
+				.getArchitectureModel().isSuperTypeOf(domainElement.eClass())
+				&& isDiagram((de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) domainElement)) {
+			return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID;
 		}
 		return -1;
 	}
@@ -133,25 +133,25 @@ public class VespucciVisualIDRegistry {
 		}
 		String containerModelID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getModelID(containerView);
-		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 				.equals(containerModelID)
 				&& !"Vespucci".equals(containerModelID)) { //$NON-NLS-1$
 			return -1;
 		}
 		int containerVisualID;
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 				.equals(containerModelID)) {
 			containerVisualID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 					.getVisualID(containerView);
 		} else {
 			if (containerView instanceof Diagram) {
-				containerVisualID = de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID;
+				containerVisualID = de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID;
 			} else {
 				return -1;
 			}
 		}
 		switch (containerVisualID) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID:
 			if (de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 					.getEnsemble().isSuperTypeOf(domainElement.eClass())) {
 				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID;
@@ -191,25 +191,25 @@ public class VespucciVisualIDRegistry {
 	public static boolean canCreateNode(View containerView, int nodeVisualID) {
 		String containerModelID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getModelID(containerView);
-		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 				.equals(containerModelID)
 				&& !"Vespucci".equals(containerModelID)) { //$NON-NLS-1$
 			return false;
 		}
 		int containerVisualID;
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 				.equals(containerModelID)) {
 			containerVisualID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 					.getVisualID(containerView);
 		} else {
 			if (containerView instanceof Diagram) {
-				containerVisualID = de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID;
+				containerVisualID = de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID;
 			} else {
 				return false;
 			}
 		}
 		switch (containerVisualID) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID:
 			if (de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -364,7 +364,7 @@ public class VespucciVisualIDRegistry {
 	 * @generated
 	 */
 	private static boolean isDiagram(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram element) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel element) {
 		return true;
 	}
 

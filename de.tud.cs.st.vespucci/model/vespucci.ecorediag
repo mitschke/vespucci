@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_3DyqgSonEeGgmaRrfkOdtw" type="EcoreTools" measurementUnit="Pixel">
-  <children xmi:type="notation:Node" xmi:id="_3GO6gConEeGgmaRrfkOdtw" type="1001">
-    <children xmi:type="notation:Node" xmi:id="_3GuCsConEeGgmaRrfkOdtw" type="4001"/>
-    <children xmi:type="notation:Node" xmi:id="_3GyUIConEeGgmaRrfkOdtw" type="5001">
-      <styles xmi:type="notation:DrawerStyle" xmi:id="_3GyUISonEeGgmaRrfkOdtw"/>
-      <styles xmi:type="notation:SortingStyle" xmi:id="_3GyUIionEeGgmaRrfkOdtw"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_3GyUIyonEeGgmaRrfkOdtw"/>
-    </children>
-    <children xmi:type="notation:Node" xmi:id="_3GziQConEeGgmaRrfkOdtw" type="5002">
-      <styles xmi:type="notation:DrawerStyle" xmi:id="_3GziQSonEeGgmaRrfkOdtw"/>
-      <styles xmi:type="notation:SortingStyle" xmi:id="_3GziQionEeGgmaRrfkOdtw"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_3GziQyonEeGgmaRrfkOdtw"/>
-    </children>
-    <styles xmi:type="notation:ShapeStyle" xmi:id="_3GO6gSonEeGgmaRrfkOdtw" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
-    <element xmi:type="ecore:EClass" href="vespucci.ecore#//ShapesDiagram"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3GO6gionEeGgmaRrfkOdtw" x="62" y="145"/>
-  </children>
   <children xmi:type="notation:Node" xmi:id="_3H6VgConEeGgmaRrfkOdtw" type="1001">
     <children xmi:type="notation:Node" xmi:id="_3H7joConEeGgmaRrfkOdtw" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="_3H7joSonEeGgmaRrfkOdtw" type="5001">
@@ -230,20 +214,6 @@
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_3DyqgionEeGgmaRrfkOdtw"/>
   <element xmi:type="ecore:EPackage" href="vespucci.ecore#/"/>
-  <edges xmi:type="notation:Edge" xmi:id="_3KvAAConEeGgmaRrfkOdtw" type="3002" source="_3GO6gConEeGgmaRrfkOdtw" target="_3H6VgConEeGgmaRrfkOdtw">
-    <children xmi:type="notation:Node" xmi:id="_3Kw1MConEeGgmaRrfkOdtw" type="4011">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_3Kw1MSonEeGgmaRrfkOdtw" x="-10" y="-10"/>
-    </children>
-    <children xmi:type="notation:Node" xmi:id="_3KzRcConEeGgmaRrfkOdtw" type="4012">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_3KzRcSonEeGgmaRrfkOdtw" x="10" y="10"/>
-    </children>
-    <styles xmi:type="notation:ConnectorStyle" xmi:id="_3KvAASonEeGgmaRrfkOdtw" lineColor="4210752"/>
-    <styles xmi:type="notation:FontStyle" xmi:id="_3KvAAionEeGgmaRrfkOdtw" fontColor="4210752" fontName="Segoe UI" fontHeight="10"/>
-    <element xmi:type="ecore:EReference" href="vespucci.ecore#//ShapesDiagram/shapes"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_3KvAAyonEeGgmaRrfkOdtw" points="[0, 0, -444, 60]$[444, -60, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3YJw8ConEeGgmaRrfkOdtw" id="(0.5,0.0)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3YJw8SonEeGgmaRrfkOdtw" id="(0.0945945945945946,1.0)"/>
-  </edges>
   <edges xmi:type="notation:Edge" xmi:id="_3Kz4gConEeGgmaRrfkOdtw" type="3002" source="_3H6VgConEeGgmaRrfkOdtw" target="_3JoMxConEeGgmaRrfkOdtw">
     <children xmi:type="notation:Node" xmi:id="_3K0fkConEeGgmaRrfkOdtw" type="4011">
       <layoutConstraint xmi:type="notation:Location" xmi:id="_3K0fkSonEeGgmaRrfkOdtw" x="-10" y="-10"/>

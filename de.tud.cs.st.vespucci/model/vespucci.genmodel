@@ -8,9 +8,9 @@
   <foreignModel>vespucci.ecore</foreignModel>
   <genPackages prefix="Vespucci_model" basePackage="de.tud.cs.st.vespucci" disposableProviderFactory="true"
       contentTypeIdentifier="" fileExtensions="sam" ecorePackage="vespucci.ecore#/">
-    <genClasses ecoreClass="vespucci.ecore#//ShapesDiagram">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//ShapesDiagram/shapes"/>
-      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//ShapesDiagram/connections"/>
+    <genClasses ecoreClass="vespucci.ecore#//ArchitectureModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//ArchitectureModel/shapes"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//ArchitectureModel/connections"/>
     </genClasses>
     <genClasses ecoreClass="vespucci.ecore#//Shape">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/sourceConnections"/>

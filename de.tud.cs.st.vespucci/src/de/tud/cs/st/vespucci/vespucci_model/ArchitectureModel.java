@@ -30,9 +30,6 @@
  *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
- * 
- *
- * $Id$
  */
 package de.tud.cs.st.vespucci.vespucci_model;
 
@@ -42,23 +39,23 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Shapes Diagram</b></em>'.
+ * A representation of the model object '<em><b>Architecture Model</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getShapes <em>Shapes</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getConnections <em>Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getShapes <em>Shapes</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getConnections <em>Connections</em>}</li>
  * </ul>
  * </p>
  *
- * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShapesDiagram()
+ * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getArchitectureModel()
  * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueEnsembleName'"
  *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueEnsemblename='self->allSubobjectsOfKind(Shape)->uniqueName(name)'"
  * @generated
  */
-public interface ShapesDiagram extends EObject {
+public interface ArchitectureModel extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Shapes</b></em>' containment reference list.
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
@@ -69,7 +66,7 @@ public interface ShapesDiagram extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Shapes</em>' containment reference list.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShapesDiagram_Shapes()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getArchitectureModel_Shapes()
 	 * @model containment="true" keys="key"
 	 * @generated
 	 */
@@ -85,10 +82,10 @@ public interface ShapesDiagram extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Connections</em>' containment reference list.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShapesDiagram_Connections()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getArchitectureModel_Connections()
 	 * @model containment="true" keys="key"
 	 * @generated
 	 */
 	EList<Connection> getConnections();
 
-} // ShapesDiagram
+} // ArchitectureModel

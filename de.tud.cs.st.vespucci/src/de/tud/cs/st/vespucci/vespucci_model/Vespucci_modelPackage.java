@@ -91,14 +91,14 @@ public interface Vespucci_modelPackage extends EPackage {
 	Vespucci_modelPackage eINSTANCE = de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl <em>Shapes Diagram</em>}' class.
+	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl <em>Architecture Model</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl
-	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getShapesDiagram()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl
+	 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getArchitectureModel()
 	 * @generated
 	 */
-	int SHAPES_DIAGRAM = 0;
+	int ARCHITECTURE_MODEL = 0;
 
 	/**
 	 * The feature id for the '<em><b>Shapes</b></em>' containment reference list.
@@ -107,7 +107,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPES_DIAGRAM__SHAPES = 0;
+	int ARCHITECTURE_MODEL__SHAPES = 0;
 
 	/**
 	 * The feature id for the '<em><b>Connections</b></em>' containment reference list.
@@ -116,16 +116,16 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPES_DIAGRAM__CONNECTIONS = 1;
+	int ARCHITECTURE_MODEL__CONNECTIONS = 1;
 
 	/**
-	 * The number of structural features of the '<em>Shapes Diagram</em>' class.
+	 * The number of structural features of the '<em>Architecture Model</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SHAPES_DIAGRAM_FEATURE_COUNT = 2;
+	int ARCHITECTURE_MODEL_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl <em>Shape</em>}' class.
@@ -1095,36 +1095,36 @@ public interface Vespucci_modelPackage extends EPackage {
 	int VIOLATION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 0;
 
 	/**
-	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram <em>Shapes Diagram</em>}'.
+	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel <em>Architecture Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Shapes Diagram</em>'.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram
+	 * @return the meta object for class '<em>Architecture Model</em>'.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel
 	 * @generated
 	 */
-	EClass getShapesDiagram();
+	EClass getArchitectureModel();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getShapes <em>Shapes</em>}'.
+	 * Returns the meta object for the containment reference list '{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getShapes <em>Shapes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Shapes</em>'.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getShapes()
-	 * @see #getShapesDiagram()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getShapes()
+	 * @see #getArchitectureModel()
 	 * @generated
 	 */
-	EReference getShapesDiagram_Shapes();
+	EReference getArchitectureModel_Shapes();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getConnections <em>Connections</em>}'.
+	 * Returns the meta object for the containment reference list '{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getConnections <em>Connections</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Connections</em>'.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram#getConnections()
-	 * @see #getShapesDiagram()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getConnections()
+	 * @see #getArchitectureModel()
 	 * @generated
 	 */
-	EReference getShapesDiagram_Connections();
+	EReference getArchitectureModel_Connections();
 
 	/**
 	 * Returns the meta object for class '{@link de.tud.cs.st.vespucci.vespucci_model.Shape <em>Shape</em>}'.
@@ -1423,14 +1423,14 @@ public interface Vespucci_modelPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl <em>Shapes Diagram</em>}' class.
+		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl <em>Architecture Model</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl
-		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getShapesDiagram()
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl
+		 * @see de.tud.cs.st.vespucci.vespucci_model.impl.Vespucci_modelPackageImpl#getArchitectureModel()
 		 * @generated
 		 */
-		EClass SHAPES_DIAGRAM = eINSTANCE.getShapesDiagram();
+		EClass ARCHITECTURE_MODEL = eINSTANCE.getArchitectureModel();
 
 		/**
 		 * The meta object literal for the '<em><b>Shapes</b></em>' containment reference list feature.
@@ -1438,7 +1438,7 @@ public interface Vespucci_modelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference SHAPES_DIAGRAM__SHAPES = eINSTANCE.getShapesDiagram_Shapes();
+		EReference ARCHITECTURE_MODEL__SHAPES = eINSTANCE.getArchitectureModel_Shapes();
 
 		/**
 		 * The meta object literal for the '<em><b>Connections</b></em>' containment reference list feature.
@@ -1446,7 +1446,7 @@ public interface Vespucci_modelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference SHAPES_DIAGRAM__CONNECTIONS = eINSTANCE.getShapesDiagram_Connections();
+		EReference ARCHITECTURE_MODEL__CONNECTIONS = eINSTANCE.getArchitectureModel_Connections();
 
 		/**
 		 * The meta object literal for the '{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl <em>Shape</em>}' class.

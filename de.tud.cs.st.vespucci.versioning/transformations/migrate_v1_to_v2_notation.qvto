@@ -72,7 +72,7 @@ mapping notation::Diagram::toDiagram() : notation::Diagram {
 	type := self.type;
 	name := self.name;
 	measurementUnit := self.measurementUnit;
-	element := self.getRememberedShapesDiagram().oclAsType(EObject);
+	element := self.getRememberedArchitectureModel().oclAsType(EObject);
 		
 	// CHILDREN
 	children += self.children->map toEnsemble();

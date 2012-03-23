@@ -66,10 +66,10 @@ public class VespucciModelingAssistantProvider extends
 	public List getTypesForPopupBar(IAdaptable host) {
 		IGraphicalEditPart editPart = (IGraphicalEditPart) host
 				.getAdapter(IGraphicalEditPart.class);
-		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart) {
+		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart) {
 			ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001);
-			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2002);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003);
+			types.add(de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2004);
 			return types;
 		}
 		if (editPart instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart) {

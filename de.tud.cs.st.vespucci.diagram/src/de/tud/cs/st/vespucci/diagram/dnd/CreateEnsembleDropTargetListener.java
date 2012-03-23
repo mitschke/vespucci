@@ -86,7 +86,7 @@ public class CreateEnsembleDropTargetListener extends DropVespucciDiagramTargetL
 		final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 		IElementType elementType = ElementTypeRegistry.getInstance().getElementType(vesPackage.getEnsemble());
 
-		elementType = VespucciElementTypes.Ensemble_2001;
+		elementType = VespucciElementTypes.Ensemble_2003;
 		// Get the selected editpart
 		final EditPart epart = getTargetEditPart();
 		if (epart == null) {

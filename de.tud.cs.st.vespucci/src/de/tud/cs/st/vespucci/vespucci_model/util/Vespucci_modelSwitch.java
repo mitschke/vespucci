@@ -37,24 +37,24 @@
 package de.tud.cs.st.vespucci.vespucci_model.util;
 
 import de.tud.cs.st.vespucci.vespucci_model.*;
-import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.util.Switch;
 
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
-import java.util.List;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.util.Switch;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
 /**
  * <!-- begin-user-doc -->
@@ -113,9 +113,9 @@ public class Vespucci_modelSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM: {
-				ShapesDiagram shapesDiagram = (ShapesDiagram)theEObject;
-				T result = caseShapesDiagram(shapesDiagram);
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL: {
+				ArchitectureModel architectureModel = (ArchitectureModel)theEObject;
+				T result = caseArchitectureModel(architectureModel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -206,17 +206,17 @@ public class Vespucci_modelSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Shapes Diagram</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Architecture Model</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Shapes Diagram</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Architecture Model</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseShapesDiagram(ShapesDiagram object) {
+	public T caseArchitectureModel(ArchitectureModel object) {
 		return null;
 	}
 

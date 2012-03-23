@@ -362,7 +362,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canCreateIncoming_4005(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			return canExistIncoming_4005(container, null, source, target);
@@ -372,7 +372,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canCreateOutgoing_4003(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			return canExistOutgoing_4003(container, null, source, target);
@@ -382,7 +382,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canCreateInAndOut_4001(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			return canExistInAndOut_4001(container, null, source, target);
@@ -392,7 +392,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canCreateNotAllowed_4004(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			return canExistNotAllowed_4004(container, null, source, target);
@@ -402,7 +402,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canCreateExpected_4002(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			return canExistExpected_4002(container, null, source, target);
@@ -412,7 +412,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canCreateGlobalIncoming_4006(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			return canExistGlobalIncoming_4006(container, null, source, target);
@@ -422,7 +422,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canCreateGlobalOutgoing_4007(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			return canExistGlobalOutgoing_4007(container, null, source, target);
@@ -432,7 +432,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canCreateViolation_4009(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
 			return canExistViolation_4009(container, null, source, target);
@@ -442,7 +442,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canExistIncoming_4005(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Incoming linkInstance,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
@@ -498,7 +498,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canExistOutgoing_4003(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Outgoing linkInstance,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
@@ -535,7 +535,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canExistInAndOut_4001(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.InAndOut linkInstance,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
@@ -591,7 +591,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canExistNotAllowed_4004(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.NotAllowed linkInstance,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
@@ -647,7 +647,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canExistExpected_4002(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Expected linkInstance,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
@@ -703,7 +703,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canExistGlobalIncoming_4006(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming linkInstance,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
@@ -759,7 +759,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canExistGlobalOutgoing_4007(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing linkInstance,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
@@ -796,7 +796,7 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 * @generated
 		 */
 		public boolean canExistViolation_4009(
-				de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container,
+				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Violation linkInstance,
 				de.tud.cs.st.vespucci.vespucci_model.Shape source,
 				de.tud.cs.st.vespucci.vespucci_model.Shape target) {

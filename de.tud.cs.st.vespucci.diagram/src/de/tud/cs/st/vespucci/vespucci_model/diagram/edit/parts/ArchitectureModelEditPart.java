@@ -61,7 +61,7 @@ import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDragDropEditPolicy;
 /**
  * @generated
  */
-public class ShapesDiagramEditPart extends DiagramEditPart {
+public class ArchitectureModelEditPart extends DiagramEditPart {
 
 	/**
 	 * @generated
@@ -76,7 +76,7 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 	/**
 	 * @generated
 	 */
-	public ShapesDiagramEditPart(View view) {
+	public ArchitectureModelEditPart(View view) {
 		super(view);
 	}
 
@@ -89,7 +89,7 @@ public class ShapesDiagramEditPart extends DiagramEditPart {
 		super.createDefaultEditPolicies();
 		installEditPolicy(
 				EditPolicyRoles.SEMANTIC_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ShapesDiagramItemSemanticEditPolicy());
+				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ArchitectureModelItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationNewEnsembleEditPolicy());
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,

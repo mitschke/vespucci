@@ -9,7 +9,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
@@ -19,10 +18,10 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
 
 	/**
 	 * @generated NOT
@@ -54,7 +53,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEdit
 		 * @generated NOT
 		 */
 		private boolean canBeDropped() {
-			return (getTargetEditPart() instanceof ShapesDiagramEditPart) && !containsChild();
+			return (getTargetEditPart() instanceof ArchitectureModelEditPart) && !containsChild();
 		}
 		
 		
@@ -67,7 +66,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEdit
 		private boolean containsChild(){
 			List l = getObjectsBeingDropped();
 			for(Object o : l){
-				if((o instanceof Ensemble) && !(((Ensemble)o).eContainer() instanceof ShapesDiagram))
+				if((o instanceof Ensemble) && !(((Ensemble)o).eContainer() instanceof ArchitectureModel))
 						return true;
 			}
 			return false;

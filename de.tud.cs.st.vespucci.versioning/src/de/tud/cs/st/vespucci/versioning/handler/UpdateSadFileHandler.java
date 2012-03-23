@@ -50,15 +50,20 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.gmf.runtime.notation.impl.DiagramImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.gmf.runtime.notation.Diagram;
+import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tud.cs.st.vespucci.versioning.VespucciVersionChain;
 import de.tud.cs.st.vespucci.versioning.versions.VespucciVersionTemplate;
-import de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl;
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model_2011_06_01.ShapesDiagram;;
 
 /**
  * Handler for sad file Upgrade action.
@@ -111,16 +116,53 @@ public class UpdateSadFileHandler extends AbstractHandler {
 
 	private static boolean isSadFile(final IFile file) {
 		final URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
-		final List<EObject> fileModelContents =
-			new ResourceSetImpl().getResource(fileURI, true).getContents();
+		final ResourceSet rss= new ResourceSetImpl();
+		final Resource rs = rss.getResource(fileURI, true);
+		final List<EObject> diagramFileContents = rs.getContents();
+		
+		final boolean isOldSad = isOldSad(diagramFileContents);
+		
+		final boolean isNewSad;
+		if(!isOldSad){
+			isNewSad = isNewSad(diagramFileContents, rs, rss);
+		} else{
+			isNewSad = false;
+		}
 		
 		return file.getFullPath().getFileExtension().equalsIgnoreCase("sad") &&
-			fileModelContents != null &&
-			fileModelContents.size() == 2 &&
-			((fileModelContents.get(0) instanceof ShapesDiagramImpl &&
-			  fileModelContents.get(1) instanceof DiagramImpl) ||
-			 (fileModelContents.get(0) instanceof DiagramImpl &&
-			  fileModelContents.get(1) instanceof ShapesDiagramImpl));
+			isOldSad || isNewSad;
+	}
+	
+	private static boolean isNewSad(List<EObject> diagramFileContents,
+			Resource rs, ResourceSet rss) {
+		boolean result = (diagramFileContents.size() == 1 && diagramFileContents
+				.get(0) instanceof Diagram);
+		URI modelURI = EcoreUtil.getURI(((View) rs.getContents().get(0))
+				.getElement());
+		Resource modelResource = rss.getResource(modelURI, true);
+		if (result) {
+			if (modelResource.getContents() != null
+					&& modelResource.getContents().size() > 0) {
+				for (int i = 0; i < modelResource.getContents().size(); i++) {
+					if (modelResource.getContents().get(i) instanceof ArchitectureModel) {
+						result = true;
+						break;
+					} else {
+						result = false;
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	private static boolean isOldSad(List<EObject> diagramFileContents){
+		return diagramFileContents != null
+				&& diagramFileContents.size() == 2
+				&& ((diagramFileContents.get(0) instanceof ShapesDiagram && diagramFileContents
+						.get(1) instanceof Diagram) || (diagramFileContents
+						.get(0) instanceof Diagram && diagramFileContents
+						.get(1) instanceof ShapesDiagram));
 	}
 
 	/**

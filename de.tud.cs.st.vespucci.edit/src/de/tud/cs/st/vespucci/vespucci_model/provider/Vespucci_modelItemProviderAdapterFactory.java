@@ -106,26 +106,26 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram} instances.
+	 * This keeps track of the one adapter used for all {@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ShapesDiagramItemProvider shapesDiagramItemProvider;
+	protected ArchitectureModelItemProvider architectureModelItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram}.
+	 * This creates an adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createShapesDiagramAdapter() {
-		if (shapesDiagramItemProvider == null) {
-			shapesDiagramItemProvider = new ShapesDiagramItemProvider(this);
+	public Adapter createArchitectureModelAdapter() {
+		if (architectureModelItemProvider == null) {
+			architectureModelItemProvider = new ArchitectureModelItemProvider(this);
 		}
 
-		return shapesDiagramItemProvider;
+		return architectureModelItemProvider;
 	}
 
 	/**
@@ -457,7 +457,7 @@ public class Vespucci_modelItemProviderAdapterFactory extends Vespucci_modelAdap
 	 * @generated
 	 */
 	public void dispose() {
-		if (shapesDiagramItemProvider != null) shapesDiagramItemProvider.dispose();
+		if (architectureModelItemProvider != null) architectureModelItemProvider.dispose();
 		if (emptyItemProvider != null) emptyItemProvider.dispose();
 		if (ensembleItemProvider != null) ensembleItemProvider.dispose();
 		if (notAllowedItemProvider != null) notAllowedItemProvider.dispose();

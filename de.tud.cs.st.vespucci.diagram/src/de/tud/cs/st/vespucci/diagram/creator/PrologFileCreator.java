@@ -50,9 +50,9 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 /**
  * PrologFileCreator creates a *.pl file from a *.sad file .
  * 
@@ -90,7 +90,7 @@ public class PrologFileCreator {
 	public void createPrologFileFromDiagram(final String location, final String fileName) throws Exception {
 		diagramFileName = fileName;
 		final String fullFileName = location + "/" + fileName;
-		final ShapesDiagram diagram = loadDiagramFile(fullFileName);
+		final ArchitectureModel diagram = loadDiagramFile(fullFileName);
 
 		// create a new Prolog File
 		final File prologFile = new File(fullFileName + ".pl");
@@ -115,7 +115,7 @@ public class PrologFileCreator {
 	 * @author Dominic Scheurer
 	 * @author Robert Cibulla - fixed prolog generation for non-synchronized diagrams
 	 */
-	private static ShapesDiagram loadDiagramFile(final String fullPath) throws FileNotFoundException, IOException {
+	private static ArchitectureModel loadDiagramFile(final String fullPath) throws FileNotFoundException, IOException {
 
 		//load resources from filesystem:
 		URI diagramURI = URI.createFileURI(fullPath);
@@ -134,17 +134,17 @@ public class PrologFileCreator {
 			}
 		}
 		
-		//find ShapesDiagram
+		//find ArchitectureModel
 		if(modelResource.getContents() != null && modelResource.getContents().size() > 0){
 			for(int i = 0; i < modelResource.getContents().size(); i++){
-				if(modelResource.getContents().get(i) instanceof ShapesDiagram){
+				if(modelResource.getContents().get(i) instanceof ArchitectureModel){
 					final EObject eObject = modelResource.getContents().get(i);
-					return (ShapesDiagram) eObject;
+					return (ArchitectureModel) eObject;
 				}
 			}
 		}
 			
-		throw new FileNotFoundException("ShapesDiagram could not be found in Document.");
+		throw new FileNotFoundException("ArchitectureModel could not be found in Document.");
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class PrologFileCreator {
 	 * @return Returns a string with the prolog facts.
 	 * @throws Exception
 	 */
-	private byte[] createPrologFacts(final ShapesDiagram diagram, final String fullFileName) throws Exception {
+	private byte[] createPrologFacts(final ArchitectureModel diagram, final String fullFileName) throws Exception {
 		final StringBuilder strBuilder = new StringBuilder();
 
 		strBuilder.append(InvariantPrologFacts.createFileHeader(fullFileName));

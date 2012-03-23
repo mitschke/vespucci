@@ -3,7 +3,7 @@
  *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universität Darmstadt
+ *   Technische Universitï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -15,7 +15,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -59,7 +59,7 @@ public class VespucciShortcutPropertyTester extends PropertyTester {
 		if (SHORTCUT_PROPERTY.equals(method)) {
 			EAnnotation annotation = view.getEAnnotation("Shortcut"); //$NON-NLS-1$
 			if (annotation != null) {
-				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+				return de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 						.equals(annotation.getDetails().get("modelID")); //$NON-NLS-1$
 			}
 		}

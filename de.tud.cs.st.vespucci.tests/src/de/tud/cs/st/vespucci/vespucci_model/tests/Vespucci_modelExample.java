@@ -33,26 +33,21 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.tests;
 
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
-
 import org.eclipse.emf.ecore.EObject;
-
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
 import org.eclipse.emf.ecore.util.Diagnostician;
-
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -91,7 +86,7 @@ public class Vespucci_modelExample {
 			System.out.println("Enter a list of file paths or URIs that have content like this:");
 			try {
 				Resource resource = resourceSet.createResource(URI.createURI("http:///My.sam"));
-				ShapesDiagram root = Vespucci_modelFactory.eINSTANCE.createShapesDiagram();
+				ArchitectureModel root = Vespucci_modelFactory.eINSTANCE.createArchitectureModel();
 				resource.getContents().add(root);
 				resource.save(System.out, null);
 			}

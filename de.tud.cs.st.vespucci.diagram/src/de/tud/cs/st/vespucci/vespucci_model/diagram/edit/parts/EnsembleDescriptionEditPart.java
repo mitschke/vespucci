@@ -82,7 +82,7 @@ public class EnsembleDescriptionEditPart extends CompartmentEditPart implements
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5008;
+	public static final int VISUAL_ID = 5010;
 
 	/**
 	 * @generated
@@ -123,7 +123,7 @@ public class EnsembleDescriptionEditPart extends CompartmentEditPart implements
 				new LabelDirectEditPolicy());
 		installEditPolicy(
 				EditPolicy.PRIMARY_DRAG_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.NodeLabelDragPolicy());
+				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.NodeLabelDragPolicy());
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class EnsembleDescriptionEditPart extends CompartmentEditPart implements
 		if (parser == null) {
 			parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
 					.getParser(
-							de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2001,
+							de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003,
 							getParserElement(),
 							de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 									.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID));

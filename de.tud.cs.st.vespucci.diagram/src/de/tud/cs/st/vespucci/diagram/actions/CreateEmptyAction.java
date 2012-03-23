@@ -66,7 +66,7 @@ public class CreateEmptyAction implements IObjectActionDelegate {
 
 	@Override
 	public void run(final IAction action) {
-		final CreateViewRequest emptyRequest = CreateViewRequestFactory.getCreateShapeRequest(VespucciElementTypes.Empty_2002,
+		final CreateViewRequest emptyRequest = CreateViewRequestFactory.getCreateShapeRequest(VespucciElementTypes.Empty_2004,
 				selectedElement.getDiagramPreferencesHint());
 		emptyRequest.setLocation(EditPartService.getRecentRightClickPos());
 

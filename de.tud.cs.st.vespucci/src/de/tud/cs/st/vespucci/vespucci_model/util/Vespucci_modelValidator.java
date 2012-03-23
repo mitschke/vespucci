@@ -34,16 +34,28 @@
 package de.tud.cs.st.vespucci.vespucci_model.util;
 
 import de.tud.cs.st.vespucci.vespucci_model.*;
-
 import java.util.Map;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.EObjectValidator;
+
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing;
+import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
+import de.tud.cs.st.vespucci.vespucci_model.Incoming;
+import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
+import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
+import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
 /**
  * <!-- begin-user-doc -->
@@ -117,8 +129,8 @@ public class Vespucci_modelValidator extends EObjectValidator {
 	@Override
 	protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		switch (classifierID) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM:
-				return validateShapesDiagram((ShapesDiagram)value, diagnostics, context);
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL:
+				return validateArchitectureModel((ArchitectureModel)value, diagnostics, context);
 			case Vespucci_modelPackage.SHAPE:
 				return validateShape((Shape)value, diagnostics, context);
 			case Vespucci_modelPackage.EMPTY:
@@ -153,27 +165,27 @@ public class Vespucci_modelValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateShapesDiagram(ShapesDiagram shapesDiagram, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		if (!validate_NoCircularContainment(shapesDiagram, diagnostics, context)) return false;
-		boolean result = validate_EveryMultiplicityConforms(shapesDiagram, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(shapesDiagram, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(shapesDiagram, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(shapesDiagram, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(shapesDiagram, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(shapesDiagram, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(shapesDiagram, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(shapesDiagram, diagnostics, context);
-		if (result || diagnostics != null) result &= validateShapesDiagram_uniqueEnsembleName(shapesDiagram, diagnostics, context);
+	public boolean validateArchitectureModel(ArchitectureModel architectureModel, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		if (!validate_NoCircularContainment(architectureModel, diagnostics, context)) return false;
+		boolean result = validate_EveryMultiplicityConforms(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validateArchitectureModel_uniqueEnsembleName(architectureModel, diagnostics, context);
 		return result;
 	}
 
 	/**
-	 * Validates the uniqueEnsembleName constraint of '<em>Shapes Diagram</em>'.
+	 * Validates the uniqueEnsembleName constraint of '<em>Architecture Model</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateShapesDiagram_uniqueEnsembleName(ShapesDiagram shapesDiagram, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateArchitectureModel_uniqueEnsembleName(ArchitectureModel architectureModel, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO implement the constraint
 		// -> specify the condition that violates the constraint
 		// -> verify the diagnostic details, including severity, code, and message
@@ -186,8 +198,8 @@ public class Vespucci_modelValidator extends EObjectValidator {
 						 DIAGNOSTIC_SOURCE,
 						 0,
 						 "_UI_GenericConstraint_diagnostic",
-						 new Object[] { "uniqueEnsembleName", getObjectLabel(shapesDiagram, context) },
-						 new Object[] { shapesDiagram },
+						 new Object[] { "uniqueEnsembleName", getObjectLabel(architectureModel, context) },
+						 new Object[] { architectureModel },
 						 context));
 			}
 			return false;

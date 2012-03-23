@@ -54,7 +54,7 @@ main() {
 	oldModel.rootObjects()[ShapesDiagram]->map toNew();
 }
 
-mapping OldModel::ShapesDiagram::toNew() : NewModel::ShapesDiagram {
+mapping OldModel::ShapesDiagram::toNew() : NewModel::ArchitectureModel {
 	self->allSubobjectsOfKind(Shape)->forEach(s){
 		s.oclAsType(Shape).targetConnections->forEach(con){
 			switch{
@@ -93,11 +93,10 @@ when {self.metaClassName() = 'Dummy'} {
 
 
 
-mapping OldModel::Shape::toShape() : NewModel::Shape {	
+abstract mapping OldModel::Shape::toShape() : NewModel::Shape {	
 	name := self.name;
 	_query := self._query;
 	description := self.description;
-	//TODO Set diagramReference and ensembleReference
 	result.remember(self);
 	
 }
@@ -143,7 +142,7 @@ inherits OldModel::Connection::toConnection
 when {self.metaClassName() = 'GlobalOutgoing'} {
 }
 
-mapping OldModel::Connection::toConnection() : NewModel::Connection {
+abstract mapping OldModel::Connection::toConnection() : NewModel::Connection {
 	name := self.name;
 	
 	self.originalSource->forEach(os) {

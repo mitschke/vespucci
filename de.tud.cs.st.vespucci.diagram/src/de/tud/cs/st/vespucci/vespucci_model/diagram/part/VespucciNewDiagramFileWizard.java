@@ -99,7 +99,7 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 		myFileCreationPage
 				.setDescription(NLS
 						.bind(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciNewDiagramFileWizard_CreationPageDescription,
-								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID));
+								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID));
 		IPath filePath;
 		String fileName = URI.decode(domainModelURI.trimFileExtension()
 				.lastSegment());
@@ -162,7 +162,7 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 				int diagramVID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getDiagramVisualID(diagramRootElementSelectionPage
 								.getModelElement());
-				if (diagramVID != de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID) {
+				if (diagramVID != de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID) {
 					return CommandResult
 							.newErrorCommandResult(de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciNewDiagramFileWizard_IncorrectRootError);
 				}
@@ -170,7 +170,7 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 						.createDiagram(
 								diagramRootElementSelectionPage
 										.getModelElement(),
-								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID,
+								de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID,
 								de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT);
 				diagramResource.getContents().add(diagram);
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramContentInitializer()
@@ -236,7 +236,7 @@ public class VespucciNewDiagramFileWizard extends Wizard {
 					.provides(
 							new CreateDiagramViewOperation(
 									new EObjectAdapter(selectedModelElement),
-									de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID,
+									de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID,
 									de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT));
 			setErrorMessage(result ? null
 					: de.tud.cs.st.vespucci.vespucci_model.diagram.part.Messages.VespucciNewDiagramFileWizard_RootSelectionPageInvalidSelectionMessage);

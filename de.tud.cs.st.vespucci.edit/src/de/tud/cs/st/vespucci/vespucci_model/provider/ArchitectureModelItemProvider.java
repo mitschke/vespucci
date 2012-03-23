@@ -30,14 +30,11 @@
  *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
- * 
- *
- * $Id$
  */
 package de.tud.cs.st.vespucci.vespucci_model.provider;
 
 
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
@@ -61,12 +58,12 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram} object.
+ * This is the item provider adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ShapesDiagramItemProvider
+public class ArchitectureModelItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -80,7 +77,7 @@ public class ShapesDiagramItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ShapesDiagramItemProvider(AdapterFactory adapterFactory) {
+	public ArchitectureModelItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -111,7 +108,8 @@ public class ShapesDiagramItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES);
+			childrenFeatures.add(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__SHAPES);
+			childrenFeatures.add(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__CONNECTIONS);
 		}
 		return childrenFeatures;
 	}
@@ -130,14 +128,14 @@ public class ShapesDiagramItemProvider
 	}
 
 	/**
-	 * This returns ShapesDiagram.gif.
+	 * This returns ArchitectureModel.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ShapesDiagram"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ArchitectureModel"));
 	}
 
 	/**
@@ -148,7 +146,7 @@ public class ShapesDiagramItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_ShapesDiagram_type");
+		return getString("_UI_ArchitectureModel_type");
 	}
 
 	/**
@@ -162,11 +160,9 @@ public class ShapesDiagramItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(ShapesDiagram.class)) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
+		switch (notification.getFeatureID(ArchitectureModel.class)) {
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -186,12 +182,12 @@ public class ShapesDiagramItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES,
+				(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__SHAPES,
 				 Vespucci_modelFactory.eINSTANCE.createEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(Vespucci_modelPackage.Literals.SHAPES_DIAGRAM__SHAPES,
+				(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__SHAPES,
 				 Vespucci_modelFactory.eINSTANCE.createEnsemble()));
 	}
 

@@ -37,26 +37,25 @@
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
 import de.tud.cs.st.vespucci.vespucci_model.*;
-import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.impl.EFactoryImpl;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming;
+import de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing;
 import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-
-import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
-import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
 /**
  * <!-- begin-user-doc -->
@@ -102,7 +101,7 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM: return createShapesDiagram();
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL: return createArchitectureModel();
 			case Vespucci_modelPackage.EMPTY: return createEmpty();
 			case Vespucci_modelPackage.ENSEMBLE: return createEnsemble();
 			case Vespucci_modelPackage.NOT_ALLOWED: return createNotAllowed();
@@ -123,9 +122,9 @@ public class Vespucci_modelFactoryImpl extends EFactoryImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ShapesDiagram createShapesDiagram() {
-		ShapesDiagramImpl shapesDiagram = new ShapesDiagramImpl();
-		return shapesDiagram;
+	public ArchitectureModel createArchitectureModel() {
+		ArchitectureModelImpl architectureModel = new ArchitectureModelImpl();
+		return architectureModel;
 	}
 
 	/**

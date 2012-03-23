@@ -30,15 +30,12 @@
  *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
- * 
- *
- * $Id$
  */
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 import java.util.Collection;
@@ -53,24 +50,23 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Shapes Diagram</b></em>'.
+ * An implementation of the model object '<em><b>Architecture Model</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl#getShapes <em>Shapes</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapesDiagramImpl#getConnections <em>Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl#getShapes <em>Shapes</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl#getConnections <em>Connections</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
+public class ArchitectureModelImpl extends EObjectImpl implements ArchitectureModel {
 	/**
 	 * The cached value of the '{@link #getShapes() <em>Shapes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -80,6 +76,7 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	 * @ordered
 	 */
 	protected EList<Shape> shapes;
+
 	/**
 	 * The cached value of the '{@link #getConnections() <em>Connections</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -89,12 +86,13 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	 * @ordered
 	 */
 	protected EList<Connection> connections;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ShapesDiagramImpl() {
+	protected ArchitectureModelImpl() {
 		super();
 	}
 
@@ -105,7 +103,7 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return Vespucci_modelPackage.Literals.SHAPES_DIAGRAM;
+		return Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL;
 	}
 
 	/**
@@ -115,7 +113,7 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	 */
 	public EList<Shape> getShapes() {
 		if (shapes == null) {
-			shapes = new EObjectContainmentEList<Shape>(Shape.class, this, Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES);
+			shapes = new EObjectContainmentEList<Shape>(Shape.class, this, Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES);
 		}
 		return shapes;
 	}
@@ -127,7 +125,7 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	 */
 	public EList<Connection> getConnections() {
 		if (connections == null) {
-			connections = new EObjectContainmentEList<Connection>(Connection.class, this, Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS);
+			connections = new EObjectContainmentEList<Connection>(Connection.class, this, Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS);
 		}
 		return connections;
 	}
@@ -140,9 +138,9 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
 				return ((InternalEList<?>)getShapes()).basicRemove(otherEnd, msgs);
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				return ((InternalEList<?>)getConnections()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -156,9 +154,9 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
 				return getShapes();
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				return getConnections();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -173,11 +171,11 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
 				getShapes().clear();
 				getShapes().addAll((Collection<? extends Shape>)newValue);
 				return;
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				getConnections().clear();
 				getConnections().addAll((Collection<? extends Connection>)newValue);
 				return;
@@ -193,10 +191,10 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
 				getShapes().clear();
 				return;
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				getConnections().clear();
 				return;
 		}
@@ -211,12 +209,12 @@ public class ShapesDiagramImpl extends EObjectImpl implements ShapesDiagram {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__SHAPES:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
 				return shapes != null && !shapes.isEmpty();
-			case Vespucci_modelPackage.SHAPES_DIAGRAM__CONNECTIONS:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				return connections != null && !connections.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //ShapesDiagramImpl
+} //ArchitectureModelImpl

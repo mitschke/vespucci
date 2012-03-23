@@ -133,7 +133,7 @@ public class ViolationNameEditPart extends LabelEditPart implements
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciTextSelectionEditPolicy());
 		installEditPolicy(
 				EditPolicy.PRIMARY_DRAG_ROLE,
-				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.LinkLabelDragPolicy());
+				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.LinkLabelDragPolicy());
 	}
 
 	/**

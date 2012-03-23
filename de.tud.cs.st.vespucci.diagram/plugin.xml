@@ -310,7 +310,7 @@
          </object>
          <context viewClass="org.eclipse.gmf.runtime.notation.Node" containerViews="referencing-diagrams"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Vespucci"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,3001,3003"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2003,2004,3001,3003"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4005,4003,4001,4004,4002,4006,4007,4009"/>
       </viewProvider>
    </extension>
@@ -323,16 +323,16 @@
             <method name="getType()" value="Vespucci"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2002,3001,3003"/>
+            <method name="getType()" value="2003,2004,3001,3003"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4005,4003,4001,4004,4002,4006,4007,4009"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
-            <method name="getType()" value="5001,5008,5002,5006,5007,5005"/>
+            <method name="getType()" value="5009,5010,5011,5006,5007,5005"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
-            <method name="getType()" value="7001,7003,7002,7004"/>
+            <method name="getType()" value="7005,7006,7002,7004"/>
          </object>
          <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
       </editpartProvider>
@@ -343,12 +343,12 @@
       <modelingAssistantProvider class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciModelingAssistantProvider">
       <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
-         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart" id="ShapesDiagram_1000"/>
-         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart" id="Ensemble_2001"/>
+         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart" id="ArchitectureModel_1000"/>
+         <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart" id="Ensemble_2004"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart" id="Ensemble_3001"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart" id="Empty_2002"/>
          <object class="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart" id="Empty_3003"/>
-         <context elements="ShapesDiagram_1000,Ensemble_2001,Ensemble_3001,Empty_2002,Empty_3003"/>
+         <context elements="ArchitectureModel_1000,Ensemble_2004,Ensemble_3001,Empty_2002,Empty_3003"/>
       </modelingAssistantProvider>
    </extension>
 
@@ -370,31 +370,31 @@
       <?gmfgen generated="true"?>
       <metamodel nsURI="http://vespucci.editor/2011-11-29">
          <metamodelType
-               id="de.tud.cs.st.vespucci.diagram.ShapesDiagram_1000"
-               name="%metatype.name.ShapesDiagram_1000"
+               id="de.tud.cs.st.vespucci.diagram.ArchitectureModel_1000"
+               name="%metatype.name.ArchitectureModel_1000"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="ShapesDiagram"
-               edithelper="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.ShapesDiagramEditHelper">
+               eclass="ArchitectureModel"
+               edithelper="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.ArchitectureDiagramEditHelper">
             <param name="semanticHint" value="1000"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="http://vespucci.editor/2011-11-29">
          <metamodelType
-               id="de.tud.cs.st.vespucci.diagram.Ensemble_2001"
-               name="%metatype.name.Ensemble_2001"
+               id="de.tud.cs.st.vespucci.diagram.Ensemble_2003"
+               name="%metatype.name.Ensemble_2003"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
                eclass="Ensemble"
                edithelper="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.helpers.EnsembleEditHelper">
-            <param name="semanticHint" value="2001"/>
+            <param name="semanticHint" value="2003"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="http://vespucci.editor/2011-11-29">
          <specializationType
-               id="de.tud.cs.st.vespucci.diagram.Empty_2002"
-               name="%metatype.name.Empty_2002"
+               id="de.tud.cs.st.vespucci.diagram.Empty_2004"
+               name="%metatype.name.Empty_2004"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="de.tud.cs.st.vespucci.diagram.Empty_3003"/>
-            <param name="semanticHint" value="2002"/>
+            <param name="semanticHint" value="2004"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://vespucci.editor/2011-11-29">
@@ -402,7 +402,7 @@
                id="de.tud.cs.st.vespucci.diagram.Ensemble_3001"
                name="%metatype.name.Ensemble_3001"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="de.tud.cs.st.vespucci.diagram.Ensemble_2001"/>
+            <specializes id="de.tud.cs.st.vespucci.diagram.Ensemble_2003"/>
             <param name="semanticHint" value="3001"/>
          </specializationType>
       </metamodel>
@@ -508,9 +508,9 @@
          </enablement>
       </clientContext> 
       <binding context="de.tud.cs.st.vespucci.diagram.TypeContext">
-         <elementType ref="de.tud.cs.st.vespucci.diagram.ShapesDiagram_1000"/>
-         <elementType ref="de.tud.cs.st.vespucci.diagram.Ensemble_2001"/>
-         <elementType ref="de.tud.cs.st.vespucci.diagram.Empty_2002"/>
+         <elementType ref="de.tud.cs.st.vespucci.diagram.ArchitectureModel_1000"/>
+         <elementType ref="de.tud.cs.st.vespucci.diagram.Ensemble_2003"/>
+         <elementType ref="de.tud.cs.st.vespucci.diagram.Empty_2004"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.Ensemble_3001"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.Empty_3003"/>
          <elementType ref="de.tud.cs.st.vespucci.diagram.Incoming_4005"/>
@@ -798,7 +798,7 @@
                <and>
                   <with variable="activePartId"><equals value="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID"/></with>
                   <with variable="selection"><iterate ifEmpty="false"> 
-                     <instanceof value="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart"/>
+                     <instanceof value="de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart"/>
                   </iterate></with>
                </and>
             </visibleWhen>
@@ -1049,7 +1049,7 @@
       <decoratorProvider class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciShortcutsDecoratorProvider">
          <Priority name="Lowest"/>
          <object class="org.eclipse.gmf.runtime.notation.Node(org.eclipse.gmf.runtime.notation)" id="generated-top-nodes">
-            <method name="getType()" value="2001,2002"/>
+            <method name="getType()" value="2003,2004"/>
          </object>
          <context decoratorTargets="generated-top-nodes"/>
       </decoratorProvider>

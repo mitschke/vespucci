@@ -1,22 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_T_HFEKlAEd-Mlt9QeSKOYw" type="Ecore" measurementUnit="Pixel">
-  <children xmi:type="notation:Shape" xmi:id="_UukzIKlAEd-Mlt9QeSKOYw" type="2001" fontName="DejaVu Sans Mono">
-    <children xmi:type="notation:DecorationNode" xmi:id="_Uu8mkKlAEd-Mlt9QeSKOYw" type="5001"/>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_Uvk4sKlAEd-Mlt9QeSKOYw" type="7001">
-      <styles xmi:type="notation:SortingStyle" xmi:id="_Uvk4salAEd-Mlt9QeSKOYw"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_Uvk4sqlAEd-Mlt9QeSKOYw"/>
-    </children>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_Uvk4s6lAEd-Mlt9QeSKOYw" type="7002">
-      <styles xmi:type="notation:SortingStyle" xmi:id="_Uvk4tKlAEd-Mlt9QeSKOYw"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_Uvk4talAEd-Mlt9QeSKOYw"/>
-    </children>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_UvlfwKlAEd-Mlt9QeSKOYw" type="7003">
-      <styles xmi:type="notation:SortingStyle" xmi:id="_UvlfwalAEd-Mlt9QeSKOYw"/>
-      <styles xmi:type="notation:FilteringStyle" xmi:id="_UvlfwqlAEd-Mlt9QeSKOYw"/>
-    </children>
-    <element xmi:type="ecore:EClass" href="vespucci.ecore#//ShapesDiagram"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UulaMKlAEd-Mlt9QeSKOYw" x="92" y="270"/>
-  </children>
   <children xmi:type="notation:Shape" xmi:id="_UvmG0KlAEd-Mlt9QeSKOYw" type="2001" fontName="DejaVu Sans Mono">
     <children xmi:type="notation:DecorationNode" xmi:id="_UvmG0qlAEd-Mlt9QeSKOYw" type="5001"/>
     <children xmi:type="notation:BasicCompartment" xmi:id="_Uvmt4KlAEd-Mlt9QeSKOYw" type="7001">
@@ -32,7 +15,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_UvnU86lAEd-Mlt9QeSKOYw"/>
     </children>
     <element xmi:type="ecore:EClass" href="vespucci.ecore#//Shape"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UvmG0alAEd-Mlt9QeSKOYw" x="284" y="135" width="101" height="94"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UvmG0alAEd-Mlt9QeSKOYw" x="245" y="175" width="101" height="94"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_UvpKIKlAEd-Mlt9QeSKOYw" type="2001" fontName="DejaVu Sans Mono">
     <children xmi:type="notation:DecorationNode" xmi:id="_UvpKIqlAEd-Mlt9QeSKOYw" type="5001"/>
@@ -152,6 +135,100 @@
     </children>
     <element xmi:type="ecore:EClass" href="vespucci.ecore#//Expected"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UvziMalAEd-Mlt9QeSKOYw" x="678" y="135"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_3cJkAXTBEeG_ncKBS7FmLw" type="2001" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3cJkA3TBEeG_ncKBS7FmLw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkBHTBEeG_ncKBS7FmLw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkBXTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkBnTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkB3TBEeG_ncKBS7FmLw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkCHTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkCXTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkCnTBEeG_ncKBS7FmLw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkC3TBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkDHTBEeG_ncKBS7FmLw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vespucci.ecore#//ArchitectureModel"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3cJkAnTBEeG_ncKBS7FmLw" x="10" y="5"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_3cJkDXTBEeG_ncKBS7FmLw" type="2001" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3cJkD3TBEeG_ncKBS7FmLw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkEHTBEeG_ncKBS7FmLw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkEXTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkEnTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkE3TBEeG_ncKBS7FmLw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkFHTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkFXTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkFnTBEeG_ncKBS7FmLw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkF3TBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkGHTBEeG_ncKBS7FmLw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vespucci.ecore#//Empty"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3cJkDnTBEeG_ncKBS7FmLw" x="178"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_3cJkGXTBEeG_ncKBS7FmLw" type="2001" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3cJkG3TBEeG_ncKBS7FmLw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkHHTBEeG_ncKBS7FmLw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkHXTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkHnTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkH3TBEeG_ncKBS7FmLw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkIHTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkIXTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkInTBEeG_ncKBS7FmLw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkI3TBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkJHTBEeG_ncKBS7FmLw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vespucci.ecore#//GlobalOutgoing"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3cJkGnTBEeG_ncKBS7FmLw" x="324" y="-6"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_3cJkJXTBEeG_ncKBS7FmLw" type="2001" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3cJkJ3TBEeG_ncKBS7FmLw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkKHTBEeG_ncKBS7FmLw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkKXTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkKnTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkK3TBEeG_ncKBS7FmLw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkLHTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkLXTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkLnTBEeG_ncKBS7FmLw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkL3TBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkMHTBEeG_ncKBS7FmLw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vespucci.ecore#//GlobalIncoming"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3cJkJnTBEeG_ncKBS7FmLw" x="456"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_3cJkMXTBEeG_ncKBS7FmLw" type="2001" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3cJkM3TBEeG_ncKBS7FmLw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkNHTBEeG_ncKBS7FmLw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkNXTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkNnTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkN3TBEeG_ncKBS7FmLw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkOHTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkOXTBEeG_ncKBS7FmLw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkOnTBEeG_ncKBS7FmLw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkO3TBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkPHTBEeG_ncKBS7FmLw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vespucci.ecore#//Violation"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3cJkMnTBEeG_ncKBS7FmLw" x="621"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_3cJkPXTBEeG_ncKBS7FmLw" type="2003" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_3cJkP3TBEeG_ncKBS7FmLw" type="5003"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_3cJkQHTBEeG_ncKBS7FmLw" type="7009">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_3cJkQXTBEeG_ncKBS7FmLw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_3cJkQnTBEeG_ncKBS7FmLw"/>
+    </children>
+    <element xmi:type="ecore:EAnnotation" href="vespucci.ecore#//%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FEcore%"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3cJkPnTBEeG_ncKBS7FmLw" x="747"/>
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_T_HFEalAEd-Mlt9QeSKOYw"/>
   <element xmi:type="ecore:EPackage" href="vespucci.ecore#/"/>

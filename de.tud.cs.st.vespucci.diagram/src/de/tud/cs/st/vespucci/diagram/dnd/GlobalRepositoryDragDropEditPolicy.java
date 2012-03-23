@@ -39,7 +39,6 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.requests.DropRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DiagramDragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.DropObjectsRequest;
@@ -48,11 +47,9 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
 
 /**
  * 
@@ -62,9 +59,9 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEdit
 public class GlobalRepositoryDragDropEditPolicy extends
 		DiagramDragDropEditPolicy {
 	
-	private ShapesDiagramEditPart sep = null;
+	private ArchitectureModelEditPart sep = null;
 	
-	public GlobalRepositoryDragDropEditPolicy(ShapesDiagramEditPart sep){
+	public GlobalRepositoryDragDropEditPolicy(ArchitectureModelEditPart sep){
 		super();
 		this.sep = sep;
 	}
@@ -92,7 +89,7 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	 */
 	private boolean canBeDropped(Object nextObject){
 		return (nextObject instanceof Shape && 
-				(((Shape) nextObject).eContainer() instanceof ShapesDiagram) &&
+				(((Shape) nextObject).eContainer() instanceof ArchitectureModel) &&
 				!isDuplicate(nextObject));
 	}
 	

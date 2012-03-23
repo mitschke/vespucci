@@ -65,10 +65,10 @@ public class VespucciDiagramUpdater {
 			View view) {
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getVisualID(view)) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-			return getShapesDiagram_1000SemanticChildren(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID:
+			return getArchitectureModel_1000SemanticChildren(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID:
-			return getEnsembleEnsembleCompartment_7001SemanticChildren(view);
+			return getEnsembleEnsembleCompartment_7005SemanticChildren(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartment2EditPart.VISUAL_ID:
 			return getEnsembleEnsembleCompartment_7002SemanticChildren(view);
 		}
@@ -78,12 +78,12 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> getShapesDiagram_1000SemanticChildren(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> getArchitectureModel_1000SemanticChildren(
 			View view) {
 		if (!view.isSetElement()) {
 			return Collections.emptyList();
 		}
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram modelElement = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) view
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel modelElement = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) view
 				.getElement();
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getShapes().iterator(); it.hasNext();) {
@@ -108,7 +108,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> getEnsembleEnsembleCompartment_7001SemanticChildren(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> getEnsembleEnsembleCompartment_7005SemanticChildren(
 			View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
@@ -180,12 +180,12 @@ public class VespucciDiagramUpdater {
 			View view) {
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getVisualID(view)) {
-		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.VISUAL_ID:
-			return getShapesDiagram_1000ContainedLinks(view);
+		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID:
+			return getArchitectureModel_1000ContainedLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			return getEnsemble_2001ContainedLinks(view);
+			return getEnsemble_2003ContainedLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart.VISUAL_ID:
-			return getEmpty_2002ContainedLinks(view);
+			return getEmpty_2004ContainedLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
 			return getEnsemble_3001ContainedLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
@@ -218,9 +218,9 @@ public class VespucciDiagramUpdater {
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getVisualID(view)) {
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			return getEnsemble_2001IncomingLinks(view);
+			return getEnsemble_2003IncomingLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart.VISUAL_ID:
-			return getEmpty_2002IncomingLinks(view);
+			return getEmpty_2004IncomingLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
 			return getEnsemble_3001IncomingLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
@@ -253,9 +253,9 @@ public class VespucciDiagramUpdater {
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getVisualID(view)) {
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			return getEnsemble_2001OutgoingLinks(view);
+			return getEnsemble_2003OutgoingLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart.VISUAL_ID:
-			return getEmpty_2002OutgoingLinks(view);
+			return getEmpty_2004OutgoingLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
 			return getEnsemble_3001OutgoingLinks(view);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
@@ -283,9 +283,9 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getShapesDiagram_1000ContainedLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getArchitectureModel_1000ContainedLinks(
 			View view) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram modelElement = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) view
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel modelElement = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) view
 				.getElement();
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		result.addAll(getContainedTypeModelFacetLinks_Incoming_4005(modelElement));
@@ -302,7 +302,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEnsemble_2001ContainedLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEnsemble_2003ContainedLinks(
 			View view) {
 		return Collections.emptyList();
 	}
@@ -310,7 +310,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEmpty_2002ContainedLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEmpty_2004ContainedLinks(
 			View view) {
 		return Collections.emptyList();
 	}
@@ -398,7 +398,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEnsemble_2001IncomingLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEnsemble_2003IncomingLinks(
 			View view) {
 		de.tud.cs.st.vespucci.vespucci_model.Ensemble modelElement = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) view
 				.getElement();
@@ -427,7 +427,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEmpty_2002IncomingLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEmpty_2004IncomingLinks(
 			View view) {
 		de.tud.cs.st.vespucci.vespucci_model.Empty modelElement = (de.tud.cs.st.vespucci.vespucci_model.Empty) view
 				.getElement();
@@ -578,7 +578,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEnsemble_2001OutgoingLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEnsemble_2003OutgoingLinks(
 			View view) {
 		de.tud.cs.st.vespucci.vespucci_model.Ensemble modelElement = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) view
 				.getElement();
@@ -597,7 +597,7 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEmpty_2002OutgoingLinks(
+	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getEmpty_2004OutgoingLinks(
 			View view) {
 		de.tud.cs.st.vespucci.vespucci_model.Empty modelElement = (de.tud.cs.st.vespucci.vespucci_model.Empty) view
 				.getElement();
@@ -719,7 +719,7 @@ public class VespucciDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_Incoming_4005(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getConnections().iterator(); links
 				.hasNext();) {
@@ -748,7 +748,7 @@ public class VespucciDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_Outgoing_4003(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getConnections().iterator(); links
 				.hasNext();) {
@@ -777,7 +777,7 @@ public class VespucciDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_InAndOut_4001(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getConnections().iterator(); links
 				.hasNext();) {
@@ -806,7 +806,7 @@ public class VespucciDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_NotAllowed_4004(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getConnections().iterator(); links
 				.hasNext();) {
@@ -835,7 +835,7 @@ public class VespucciDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_Expected_4002(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getConnections().iterator(); links
 				.hasNext();) {
@@ -864,7 +864,7 @@ public class VespucciDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_GlobalIncoming_4006(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getConnections().iterator(); links
 				.hasNext();) {
@@ -893,7 +893,7 @@ public class VespucciDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_GlobalOutgoing_4007(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getConnections().iterator(); links
 				.hasNext();) {
@@ -922,7 +922,7 @@ public class VespucciDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getContainedTypeModelFacetLinks_Violation_4009(
-			de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container) {
+			de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container) {
 		LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> result = new LinkedList<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor>();
 		for (Iterator<?> links = container.getConnections().iterator(); links
 				.hasNext();) {
@@ -1208,14 +1208,14 @@ public class VespucciDiagramUpdater {
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_Incoming_4005(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = null;
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container = null;
 		// Find container element for the link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null && container == null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				container = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		if (container == null) {
@@ -1253,14 +1253,14 @@ public class VespucciDiagramUpdater {
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_Outgoing_4003(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = null;
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container = null;
 		// Find container element for the link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null && container == null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				container = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		if (container == null) {
@@ -1298,14 +1298,14 @@ public class VespucciDiagramUpdater {
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_InAndOut_4001(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = null;
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container = null;
 		// Find container element for the link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null && container == null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				container = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		if (container == null) {
@@ -1343,14 +1343,14 @@ public class VespucciDiagramUpdater {
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_NotAllowed_4004(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = null;
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container = null;
 		// Find container element for the link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null && container == null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				container = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		if (container == null) {
@@ -1388,14 +1388,14 @@ public class VespucciDiagramUpdater {
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_Expected_4002(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = null;
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container = null;
 		// Find container element for the link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null && container == null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				container = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		if (container == null) {
@@ -1433,14 +1433,14 @@ public class VespucciDiagramUpdater {
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_GlobalIncoming_4006(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = null;
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container = null;
 		// Find container element for the link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null && container == null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				container = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		if (container == null) {
@@ -1478,14 +1478,14 @@ public class VespucciDiagramUpdater {
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_GlobalOutgoing_4007(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = null;
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container = null;
 		// Find container element for the link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null && container == null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				container = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		if (container == null) {
@@ -1523,14 +1523,14 @@ public class VespucciDiagramUpdater {
 	 */
 	private static Collection<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciLinkDescriptor> getOutgoingTypeModelFacetLinks_Violation_4009(
 			de.tud.cs.st.vespucci.vespucci_model.Shape source) {
-		de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram container = null;
+		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container = null;
 		// Find container element for the link.
 		// Climb up by containment hierarchy starting from the source
 		// and return the first element that is instance of the container class.
 		for (EObject element = source; element != null && container == null; element = element
 				.eContainer()) {
-			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
-				container = (de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) element;
+			if (element instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
+				container = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) element;
 			}
 		}
 		if (container == null) {

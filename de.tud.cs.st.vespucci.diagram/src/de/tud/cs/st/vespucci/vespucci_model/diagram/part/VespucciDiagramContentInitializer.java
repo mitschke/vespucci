@@ -3,7 +3,7 @@
  *   Copyright (c) 2011
  *   Software Engineering
  *   Department of Computer Science
- *   Technische Universität Darmstadt
+ *   Technische Universitï¿½t Darmstadt
  *   All rights reserved.
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -15,7 +15,7 @@
  *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
  *   - Neither the name of the Software Engineering Group or Technische 
- *     Universität Darmstadt nor the names of its contributors may be used to 
+ *     Universitï¿½t Darmstadt nor the names of its contributors may be used to 
  *     endorse or promote products derived from this software without specific 
  *     prior written permission.
  * 
@@ -65,7 +65,7 @@ public class VespucciDiagramContentInitializer {
 	 * @generated
 	 */
 	public void initDiagramContent(Diagram diagram) {
-		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ShapesDiagramEditPart.MODEL_ID
+		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
 				.equals(diagram.getType())) {
 			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 					.getInstance().logError(
@@ -73,24 +73,24 @@ public class VespucciDiagramContentInitializer {
 									+ diagram.getType());
 			return;
 		}
-		if (false == diagram.getElement() instanceof de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram) {
+		if (false == diagram.getElement() instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) {
 			de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin
 					.getInstance().logError(
 							"Incorrect diagram element specified: "
 									+ diagram.getElement()
-									+ " instead of ShapesDiagram");
+									+ " instead of ArchitectureModel");
 			return;
 		}
-		createShapesDiagram_1000Children(diagram);
+		createArchitectureModel_1000Children(diagram);
 		createLinks(diagram);
 	}
 
 	/**
 	 * @generated
 	 */
-	private void createShapesDiagram_1000Children(View view) {
+	private void createArchitectureModel_1000Children(View view) {
 		Collection childNodeDescriptors = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-				.getShapesDiagram_1000SemanticChildren(view);
+				.getArchitectureModel_1000SemanticChildren(view);
 		for (Iterator it = childNodeDescriptors.iterator(); it.hasNext();) {
 			createNode(
 					view,
@@ -102,15 +102,15 @@ public class VespucciDiagramContentInitializer {
 	/**
 	 * @generated
 	 */
-	private void createEnsemble_2001Children(View view) {
+	private void createEnsemble_2003Children(View view) {
 		myDomain2NotationMap.put(view.getElement(), view);
 		myLinkDescriptors
 				.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-						.getEnsemble_2001OutgoingLinks(view));
-		createEnsembleEnsembleCompartment_7001Children(getCompartment(
+						.getEnsemble_2003OutgoingLinks(view));
+		createEnsembleEnsembleCompartment_7005Children(getCompartment(
 				view,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart.VISUAL_ID));
-		createEnsembleEnsembleDescriptionCompartment_7003Children(getCompartment(
+		createEnsembleEnsembleDescriptionCompartment_7006Children(getCompartment(
 				view,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleDescriptionCompartmentEditPart.VISUAL_ID));
 
@@ -119,11 +119,11 @@ public class VespucciDiagramContentInitializer {
 	/**
 	 * @generated
 	 */
-	private void createEmpty_2002Children(View view) {
+	private void createEmpty_2004Children(View view) {
 		myDomain2NotationMap.put(view.getElement(), view);
 		myLinkDescriptors
 				.addAll(de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-						.getEmpty_2002OutgoingLinks(view));
+						.getEmpty_2004OutgoingLinks(view));
 
 	}
 
@@ -158,9 +158,9 @@ public class VespucciDiagramContentInitializer {
 	/**
 	 * @generated
 	 */
-	private void createEnsembleEnsembleCompartment_7001Children(View view) {
+	private void createEnsembleEnsembleCompartment_7005Children(View view) {
 		Collection childNodeDescriptors = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-				.getEnsembleEnsembleCompartment_7001SemanticChildren(view);
+				.getEnsembleEnsembleCompartment_7005SemanticChildren(view);
 		for (Iterator it = childNodeDescriptors.iterator(); it.hasNext();) {
 			createNode(
 					view,
@@ -172,7 +172,7 @@ public class VespucciDiagramContentInitializer {
 	/**
 	 * @generated
 	 */
-	private void createEnsembleEnsembleDescriptionCompartment_7003Children(
+	private void createEnsembleEnsembleDescriptionCompartment_7006Children(
 			View view) {
 	}
 
@@ -213,10 +213,10 @@ public class VespucciDiagramContentInitializer {
 						de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT);
 		switch (nodeDescriptor.getVisualID()) {
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			createEnsemble_2001Children(node);
+			createEnsemble_2003Children(node);
 			return;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart.VISUAL_ID:
-			createEmpty_2002Children(node);
+			createEmpty_2004Children(node);
 			return;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
 			createEnsemble_3001Children(node);
