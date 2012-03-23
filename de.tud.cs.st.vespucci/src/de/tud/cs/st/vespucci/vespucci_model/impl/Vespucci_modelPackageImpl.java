@@ -675,7 +675,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 			 "validationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"
 		   });		
 		addAnnotation
-		  (architectureModelEClass, 
+		  (ensembleEClass, 
 		   source, 
 		   new String[] {
 			 "constraints", "uniqueName"
@@ -691,10 +691,10 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	protected void createPivotAnnotations() {
 		String source = "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot";				
 		addAnnotation
-		  (architectureModelEClass, 
+		  (ensembleEClass, 
 		   source, 
 		   new String[] {
-			 "uniqueName", "self->allSubobjectsOfKind(Ensemble)->uniqueName(name)"
+			 "uniqueName", "Ensemble.allInstances()->forAll(e | e <> self implies e.name <> self.name)"
 		   });
 	}
 

@@ -51,8 +51,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getArchitectureModel()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueName'"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueName='self->allSubobjectsOfKind(Ensemble)->uniqueName(name)'"
+ * @model
  * @generated
  */
 public interface ArchitectureModel extends EObject {

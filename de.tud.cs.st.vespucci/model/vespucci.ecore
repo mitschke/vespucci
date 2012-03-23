@@ -9,12 +9,6 @@
     <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="ArchitectureModel">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="uniqueName"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="uniqueName" value="self->allSubobjectsOfKind(Ensemble)->uniqueName(name)"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="shapes" upperBound="-1"
         eType="#//Shape" containment="true" eKeys="#//Shape/key"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="connections" upperBound="-1"
@@ -36,6 +30,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Empty" eSuperTypes="#//Shape"/>
   <eClassifiers xsi:type="ecore:EClass" name="Ensemble" eSuperTypes="#//Shape">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="uniqueName"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="uniqueName" value="Ensemble.allInstances()->forAll(e | e &lt;> self implies e.name &lt;> self.name)"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="shapes" upperBound="-1"
         eType="#//Shape" containment="true"/>
   </eClassifiers>

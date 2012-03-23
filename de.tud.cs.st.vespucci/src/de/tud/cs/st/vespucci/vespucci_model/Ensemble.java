@@ -51,7 +51,8 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  *
  * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getEnsemble()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='uniqueName'"
+ *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueName='Ensemble.allInstances()->forAll(e | e <> self implies e.name <> self.name)'"
  * @generated
  */
 public interface Ensemble extends Shape {

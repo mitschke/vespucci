@@ -360,18 +360,6 @@
         </target>
       </audits>
       <audits
-          name="ERROR if Ensemble name UNIQUE"
-          id="EnsembleNameUniqueID"
-          message="Ensemble must have unique name!">
-        <rule
-            body="Ensemble.allInstances()->forAll(e| e &lt;> self implies e.name &lt;> self.name)"/>
-        <target
-            xsi:type="gmfmap:DomainElementTarget">
-          <element
-              href="vespucci.ecore#//Ensemble"/>
-        </target>
-      </audits>
-      <audits
           name="WARNING if Ensemble query not NULL"
           id="EnsembleQueryNotNullID"
           severity="WARNING"

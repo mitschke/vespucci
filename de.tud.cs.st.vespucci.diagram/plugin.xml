@@ -672,16 +672,6 @@
             <message><![CDATA[Ensemble name must be set!]]></message>
             <target class="vespucci_model.Ensemble"/>
          </constraint>
-                  <constraint id="EnsembleNameUniqueID"
-            lang="OCL"
-            name="ERROR if Ensemble name UNIQUE"
-            mode="Batch"
-            severity="ERROR" statusCode="200">
-            <![CDATA[Ensemble.allInstances()->forAll(e| e <> self implies e.name <> self.name)]]>
-            <description><![CDATA[]]></description>
-            <message><![CDATA[Ensemble must have unique name!]]></message>
-            <target class="vespucci_model.Ensemble"/>
-         </constraint>
                   <constraint id="EnsembleQueryNotNullID"
             lang="OCL"
             name="WARNING if Ensemble query not NULL"
@@ -693,7 +683,7 @@
             <target class="vespucci_model.Ensemble"/>
          </constraint>
                   <constraint id="NonLeafEnsembleMustBeDerivedID"
-            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter4"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter3"
             name="ERROR if non leaf Ensemble is not derived"
             mode="Batch"
             severity="ERROR" statusCode="200">
@@ -703,7 +693,7 @@
             <target class="vespucci_model.Ensemble"/>
          </constraint>
                   <constraint id="EnsembleQueryValidParenthesisID"
-            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter5"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter4"
             name="WARNING if Ensemble query has invalid parenthesis count"
             mode="Batch"
             severity="WARNING" statusCode="200">
@@ -713,7 +703,7 @@
             <target class="vespucci_model.Ensemble"/>
          </constraint>
                   <constraint id="EnsembleQueryCompletePrologStringsID"
-            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter6"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter5"
             name="WARNING if Ensemble query contains incomplete Prolog string"
             mode="Batch"
             severity="WARNING" statusCode="200">
@@ -723,7 +713,7 @@
             <target class="vespucci_model.Ensemble"/>
          </constraint>
                   <constraint id="EnsembleQueryValidBracketID"
-            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter7"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter6"
             name="WARNING if Ensemble query has invalid bracket count"
             mode="Batch"
             severity="WARNING" statusCode="200">
@@ -735,7 +725,7 @@
                   </constraints>
          <constraints categories="VespucciDiagramConstraintsID/ConnectionsConstraintsID">
                   <constraint id="DependencyInvalidID"
-            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter8"
+            lang="Java" class="de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciValidationProvider$Adapter7"
             name="invalid constraint-dependency"
             mode="Batch"
             severity="ERROR" statusCode="200">
@@ -755,7 +745,6 @@
       </clientContext>
       <binding context="de.tud.cs.st.vespucci.diagramDefaultCtx">
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleNameNotNullID"/>
-                  <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleNameUniqueID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryNotNullID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.NonLeafEnsembleMustBeDerivedID"/>
                   <constraint ref="de.tud.cs.st.vespucci.diagram.EnsembleQueryValidParenthesisID"/>

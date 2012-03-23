@@ -166,46 +166,7 @@ public class Vespucci_modelValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateArchitectureModel(ArchitectureModel architectureModel, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		if (!validate_NoCircularContainment(architectureModel, diagnostics, context)) return false;
-		boolean result = validate_EveryMultiplicityConforms(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validateArchitectureModel_uniqueName(architectureModel, diagnostics, context);
-		return result;
-	}
-
-	/**
-	 * The cached validation expression for the uniqueName constraint of '<em>Architecture Model</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected static final String ARCHITECTURE_MODEL__UNIQUE_NAME__EEXPRESSION = "self->allSubobjectsOfKind(Ensemble)->uniqueName(name)";
-
-	/**
-	 * Validates the uniqueName constraint of '<em>Architecture Model</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateArchitectureModel_uniqueName(ArchitectureModel architectureModel, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		return
-			validate
-				(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL,
-				 architectureModel,
-				 diagnostics,
-				 context,
-				 "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
-				 "uniqueName",
-				 ARCHITECTURE_MODEL__UNIQUE_NAME__EEXPRESSION,
-				 Diagnostic.ERROR,
-				 DIAGNOSTIC_SOURCE,
-				 0);
+		return validate_EveryDefaultConstraint(architectureModel, diagnostics, context);
 	}
 
 	/**
@@ -232,7 +193,46 @@ public class Vespucci_modelValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateEnsemble(Ensemble ensemble, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		return validate_EveryDefaultConstraint(ensemble, diagnostics, context);
+		if (!validate_NoCircularContainment(ensemble, diagnostics, context)) return false;
+		boolean result = validate_EveryMultiplicityConforms(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(ensemble, diagnostics, context);
+		if (result || diagnostics != null) result &= validateEnsemble_uniqueName(ensemble, diagnostics, context);
+		return result;
+	}
+
+	/**
+	 * The cached validation expression for the uniqueName constraint of '<em>Ensemble</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected static final String ENSEMBLE__UNIQUE_NAME__EEXPRESSION = "Ensemble.allInstances()->forAll(e | e <> self implies e.name <> self.name)";
+
+	/**
+	 * Validates the uniqueName constraint of '<em>Ensemble</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateEnsemble_uniqueName(Ensemble ensemble, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return
+			validate
+				(Vespucci_modelPackage.Literals.ENSEMBLE,
+				 ensemble,
+				 diagnostics,
+				 context,
+				 "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
+				 "uniqueName",
+				 ENSEMBLE__UNIQUE_NAME__EEXPRESSION,
+				 Diagnostic.ERROR,
+				 DIAGNOSTIC_SOURCE,
+				 0);
 	}
 
 	/**

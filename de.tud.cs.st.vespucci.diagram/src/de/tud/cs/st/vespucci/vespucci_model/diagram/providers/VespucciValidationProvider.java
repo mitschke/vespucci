@@ -127,8 +127,8 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static class Adapter4 extends AbstractModelConstraint {
-		// TODO change the name Adapter4 to a more expressive name (CAUTION: Refactoring may affect code generator!)
+	public static class Adapter3 extends AbstractModelConstraint {
+		// TODO change the name Adapter3 to a more expressive name (CAUTION: Refactoring may affect code generator!)
 		/**
 		 * Java implementation for the constraint NonLeafEnsembleMustBeDerived in All constraints
 		 * about Ensemble
@@ -155,7 +155,7 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static class Adapter5 extends AbstractModelConstraint {
+	public static class Adapter4 extends AbstractModelConstraint {
 
 		/**
 		 * Checks if the brackets in an Ensemble Query are complete.
@@ -235,7 +235,7 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static class Adapter6 extends AbstractModelConstraint {
+	public static class Adapter5 extends AbstractModelConstraint {
 
 		/**
 		 * Checks if Ensemble query prolog strings are complete.
@@ -268,7 +268,7 @@ public class VespucciValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static class Adapter7 extends AbstractModelConstraint {
+	public static class Adapter6 extends AbstractModelConstraint {
 
 		/**
 		 * @author Theo Kischka
@@ -282,9 +282,9 @@ public class VespucciValidationProvider {
 			String query = context.getQuery();
 
 			// alle Klammern innerhalb Prolog-Strings rausfiltern (z.B. im Ensemblenamen)
-			query = Adapter5.filterPrologStringsRek(query);
+			query = Adapter4.filterPrologStringsRek(query);
 
-			if (!Adapter5.checkBrackets(query, '[', ']')) {
+			if (!Adapter4.checkBrackets(query, '[', ']')) {
 				return ctx
 						.createFailureStatus("Invalid brackets count in Ensemble query.");
 			}
@@ -292,11 +292,8 @@ public class VespucciValidationProvider {
 		}
 	}
 
-	/**
-	 * @generated
-	 */
-	public static class Adapter8 extends AbstractModelConstraint {
-		// TODO change the name Adapter8 to a more expressive name (CAUTION: Refactoring may affect code generator!)
+	public static class Adapter7 extends AbstractModelConstraint {
+		// TODO change the name Adapter7 to a more expressive name (CAUTION: Refactoring may affect code generator!)
 		private static ResourceBundle pluginProperties = ResourceBundle
 				.getBundle("plugin");
 
@@ -322,7 +319,7 @@ public class VespucciValidationProvider {
 			 */
 			final String[] validDependencies = KeywordReader
 					.readAndParseResourceFile(
-							FrameworkUtil.getBundle(Adapter8.class)
+							FrameworkUtil.getBundle(Adapter7.class)
 									.getSymbolicName(), pluginProperties
 									.getString("validDependenciesFile"));
 
@@ -347,7 +344,6 @@ public class VespucciValidationProvider {
 			return ctx.createSuccessStatus();
 		}
 	}
-
 	/**
 	 * @generated
 	 */
