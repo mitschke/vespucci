@@ -175,36 +175,37 @@ public class Vespucci_modelValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_UniqueID(architectureModel, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(architectureModel, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(architectureModel, diagnostics, context);
-		if (result || diagnostics != null) result &= validateArchitectureModel_uniqueEnsembleName(architectureModel, diagnostics, context);
+		if (result || diagnostics != null) result &= validateArchitectureModel_uniqueName(architectureModel, diagnostics, context);
 		return result;
 	}
 
 	/**
-	 * Validates the uniqueEnsembleName constraint of '<em>Architecture Model</em>'.
+	 * The cached validation expression for the uniqueName constraint of '<em>Architecture Model</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateArchitectureModel_uniqueEnsembleName(ArchitectureModel architectureModel, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		// TODO implement the constraint
-		// -> specify the condition that violates the constraint
-		// -> verify the diagnostic details, including severity, code, and message
-		// Ensure that you remove @generated or mark it @generated NOT
-		if (false) {
-			if (diagnostics != null) {
-				diagnostics.add
-					(createDiagnostic
-						(Diagnostic.ERROR,
-						 DIAGNOSTIC_SOURCE,
-						 0,
-						 "_UI_GenericConstraint_diagnostic",
-						 new Object[] { "uniqueEnsembleName", getObjectLabel(architectureModel, context) },
-						 new Object[] { architectureModel },
-						 context));
-			}
-			return false;
-		}
-		return true;
+	protected static final String ARCHITECTURE_MODEL__UNIQUE_NAME__EEXPRESSION = "self->allSubobjectsOfKind(Ensemble)->uniqueName(name)";
+
+	/**
+	 * Validates the uniqueName constraint of '<em>Architecture Model</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateArchitectureModel_uniqueName(ArchitectureModel architectureModel, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return
+			validate
+				(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL,
+				 architectureModel,
+				 diagnostics,
+				 context,
+				 "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
+				 "uniqueName",
+				 ARCHITECTURE_MODEL__UNIQUE_NAME__EEXPRESSION,
+				 Diagnostic.ERROR,
+				 DIAGNOSTIC_SOURCE,
+				 0);
 	}
 
 	/**

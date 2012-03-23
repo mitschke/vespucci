@@ -80,7 +80,7 @@ public interface Vespucci_modelPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_PREFIX = "";
+	String eNS_PREFIX = "vespucci";
 
 	/**
 	 * The singleton instance of the package.

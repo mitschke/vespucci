@@ -678,7 +678,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		  (architectureModelEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "uniqueEnsembleName"
+			 "constraints", "uniqueName"
 		   });	
 	}
 
@@ -694,7 +694,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		  (architectureModelEClass, 
 		   source, 
 		   new String[] {
-			 "uniqueEnsemblename", "self->allSubobjectsOfKind(Shape)->uniqueName(name)"
+			 "uniqueName", "self->allSubobjectsOfKind(Ensemble)->uniqueName(name)"
 		   });
 	}
 

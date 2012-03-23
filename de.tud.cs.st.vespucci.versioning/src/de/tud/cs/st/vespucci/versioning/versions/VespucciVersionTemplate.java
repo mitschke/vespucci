@@ -226,33 +226,41 @@ implements Comparable<VespucciVersionTemplate> {
 	}
 
 	/**
-	 * @param file The file which namespace to check.
-	 * @return True if the file has the namespace of this Vespucci version, else false.
+	 * @param file
+	 *            The file which namespace to check.
+	 * @return True if the file has the namespace of this Vespucci version, else
+	 *         false.
 	 */
 	public boolean fileIsOfThisVersion(IFile file) {
 		InputStream fileInputStream = null;
-		
+
 		try {
 			fileInputStream = file.getContents();
 		} catch (CoreException coreException) {
-			throw new VespucciIOException(String.format("Error occured while reading file contents of %s.", file), coreException);
+			throw new VespucciIOException(String.format(
+					"Error occured while reading file contents of %s.", file),
+					coreException);
 		}
-		
+
 		final Scanner scanner = new Scanner(fileInputStream);
 		Pattern xmlnsPattern = Pattern.compile("^.*xmlns=\"(.*?)\".*$");
+		Pattern xmlnsPattern2 = Pattern
+				.compile("^.*xmlns:vespucci=\"(.*?)\".*$");
 
 		while (scanner.hasNextLine()) {
-			Matcher m = xmlnsPattern.matcher(scanner.nextLine());
-			if (m.find() &&
-				m.group(1).equalsIgnoreCase(getNamespace())) {	
-				
-				scanner.close();				
+			String nextLine = scanner.nextLine();
+			Matcher m = xmlnsPattern.matcher(nextLine);
+			Matcher m2 = xmlnsPattern2.matcher(nextLine);
+			if (m.find() && m.group(1).equalsIgnoreCase(getNamespace())
+					|| (m2.find() && m2.group(1).equalsIgnoreCase(getNamespace()))) {
+
+				scanner.close();
 				return true;
-				
+
 			}
 		}
-		
-		scanner.close();		
+
+		scanner.close();
 		return false;
 	}
 }
