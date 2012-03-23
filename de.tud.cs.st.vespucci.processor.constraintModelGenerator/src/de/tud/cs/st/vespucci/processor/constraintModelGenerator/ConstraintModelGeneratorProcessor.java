@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -42,7 +43,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 
-	private Map<IPair<IEnsemble, IEnsemble>, Integer> parentRelations = new HashMap<IPair<IEnsemble, IEnsemble>, Integer>();
+	private static final String GLOBAL_VIEWS_TEMP = "global-views-temp";
 
 	@Override
 	public Object processModel(Object diagramModel) {
@@ -66,46 +67,16 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 		Vespucci_modelFactory modelFactory = Vespucci_modelPackage.eINSTANCE
 				.getVespucci_modelFactory();
 
-		for (Tuple3<IEnsemble, IEnsemble, Object> tuple3 : dependencies) {
-			System.out.println(tuple3);
-			IEnsemble source = tuple3._1();
-			IEnsemble target = tuple3._2();
-			if (source.equals(target))
-				continue;
+		Set<IPair<IEnsemble, IEnsemble>> dependencyMapping = createRelationMapping(dependencies);
 
-			IPair<IEnsemble, IEnsemble> pair = null;
-			if (!haveCommonAncestors(source, target)) {
-				pair = new EnsemblePair(
-						ModelUtils.getOuterMostEnclosingEnsemble(source),
-						ModelUtils.getOuterMostEnclosingEnsemble(target));
-			} else {
-				pair = new EnsemblePair(source, target);
-			}
-
-			if (!parentRelations.containsKey(pair))
-				parentRelations.put(pair, Integer.valueOf(1));
-			else
-				parentRelations.put(pair, Integer.valueOf(parentRelations.get(
-						pair).intValue() + 1));
-
-		}
-
-		Set<Entry<IPair<IEnsemble,IEnsemble>,Integer>> set = parentRelations.entrySet();
-		for (Entry<IPair<IEnsemble, IEnsemble>, Integer> entry : set) {
-			System.out.println(entry.getKey() + " -> " + entry.getValue());
-		}
-		
-		
 		List<Shape> ensembles = new ArrayList<Shape>(globalModel.getShapes());
 		for (Shape ensemble : ensembles) {
 			ShapesDiagram model = Util.adapt(diagramModel, ShapesDiagram.class);
-			Map<IPair<IEnsemble, IEnsemble>, Integer> relations = new HashMap<IPair<IEnsemble,IEnsemble>, Integer>(parentRelations);
-			for (Tuple3<IEnsemble, IEnsemble, Object> tuple3 : dependencies) {
 
-				IEnsemble source = tuple3._1();
-				IEnsemble target = tuple3._2();
-				if (source.equals(target))
-					continue;
+			for (IPair<IEnsemble, IEnsemble> dependency : dependencyMapping) {
+				IEnsemble source = dependency.getFirst();
+				IEnsemble target = dependency.getSecond();
+
 				IEnsemble outerMostEnclosingSource = ModelUtils
 						.getOuterMostEnclosingEnsemble(source);
 				IEnsemble outerMostEnclosingTarget = ModelUtils
@@ -114,40 +85,11 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 						ensemble.getName()) || outerMostEnclosingTarget
 						.getName().equals(ensemble.getName())))
 					continue;
-				IPair<IEnsemble, IEnsemble> pair = null;
-				if (!haveCommonAncestors(source, target)) {
-					pair = new EnsemblePair(
-							ModelUtils.getOuterMostEnclosingEnsemble(source),
-							ModelUtils.getOuterMostEnclosingEnsemble(target));
-				} else {
-					pair = new EnsemblePair(source, target);
-				}
 
-				if (!relations.containsKey(pair))
-					continue; // we have already processed this as a single
-								// relation
-				System.out.println(pair);
-				int numParentRelations = relations.get(pair);
-				relations.remove(pair);
-				
-				Shape sourceEnsemble = null;
-				Shape targetEnsemble = null;
+				System.out.println(dependency);
 
-				if (numParentRelations == 0) {
-					throw new IllegalStateException(
-							"Parents should have at least one dependency");
-				}
-				if (numParentRelations == 1) {
-					sourceEnsemble = getModelEnsemble(source, model);
-					targetEnsemble = getModelEnsemble(target, model);
-				} else {
-					sourceEnsemble = getModelEnsemble(
-							ModelUtils.getOuterMostEnclosingEnsemble(source),
-							model);
-					targetEnsemble = getModelEnsemble(
-							ModelUtils.getOuterMostEnclosingEnsemble(target),
-							model);
-				}
+				Shape sourceEnsemble = getModelEnsemble(source, model);
+				Shape targetEnsemble = getModelEnsemble(target, model);
 
 				if (haveCommonAncestors(source, target)) {
 					InAndOut inAndOut = modelFactory.createInAndOut();
@@ -156,7 +98,8 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 					inAndOut.setTarget(targetEnsemble);
 					sourceEnsemble.getTargetConnections().add(inAndOut);
 				} else {
-					if (ModelUtils.getOuterMostEnclosingEnsemble(target).getName().equals(ensemble.getName())) {
+					if (ModelUtils.getOuterMostEnclosingEnsemble(target)
+							.getName().equals(ensemble.getName())) {
 						GlobalIncoming incoming = modelFactory
 								.createGlobalIncoming();
 						incoming.setName("all");
@@ -164,7 +107,8 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 						incoming.setTarget(targetEnsemble);
 						sourceEnsemble.getTargetConnections().add(incoming);
 					}
-					if (ModelUtils.getOuterMostEnclosingEnsemble(source).getName().equals(ensemble.getName())) {
+					if (ModelUtils.getOuterMostEnclosingEnsemble(source)
+							.getName().equals(ensemble.getName())) {
 						GlobalOutgoing outgoing = modelFactory
 								.createGlobalOutgoing();
 						outgoing.setName("all");
@@ -177,14 +121,14 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 			}
 
 			IPath outpath = diagramFile.getLocation().removeLastSegments(1)
-					.append("global-views").append(ensemble.getName())
+					.append(GLOBAL_VIEWS_TEMP).append(ensemble.getName())
 					.addFileExtension("sad");
 
 			try {
 				File file = outpath.toFile();
 				if (!file.exists()) {
 					IPath viewPath = diagramFile.getLocation()
-							.removeLastSegments(1).append("global-views");
+							.removeLastSegments(1).append(GLOBAL_VIEWS_TEMP);
 					viewPath.toFile().mkdirs();
 					file.createNewFile();
 				}
@@ -200,71 +144,118 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 			}
 
 		}
-
-		// try {
-		//
-		// List<Shape> ensembles = new
-		// ArrayList<Shape>(globalModel.getShapes());
-		//
-		//
-		// for (Shape ensemble : ensembles) {
-		// EList<Connection> targetConnections =
-		// ensemble.getTargetConnections();
-		// List<Shape> targets = new LinkedList<Shape>();
-		// for (Connection connection : targetConnections) {
-		// targets.add(connection.getTarget());
-		// }
-		// List<Shape> removals = new ArrayList<Shape>(globalModel.getShapes());
-		// removals.remove(ensemble);
-		// for (Shape retained : targets) {
-		// removals.remove(retained);
-		// }
-		// globalModel.getShapes().removeAll(removals);
-		//
-		// Diagram diagram = getDiagram(globalModel);
-		//
-		// List<Node> diagramRemovals = new LinkedList<Node>();
-		// List persistedChildren = new
-		// ArrayList<Object>(diagram.getPersistedChildren());
-		// for (Object child : persistedChildren) {
-		// Node node = (Node) child;
-		// if(removals.contains(node.getElement())){
-		// diagram.removeChild(node);
-		// diagramRemovals.add(node);
-		// }
-		// }
-		//
-		// IPath outpath =
-		// diagramFile.getLocation().removeLastSegments(1).append("global-views")
-		// .append(ensemble.getName()).addFileExtension("sad");
-		//
-		// File file = outpath.toFile();
-		// if (!file.exists()){
-		// IPath viewPath =
-		// diagramFile.getLocation().removeLastSegments(1).append("global-views");
-		// viewPath.toFile().mkdirs();
-		// file.createNewFile();
-		// }
-		//
-		// FileOutputStream outputStream = new FileOutputStream(file);
-		// Resource resource = globalModel.eResource();
-		// resource.save(outputStream, null);
-		// outputStream.close();
-		// System.out.println("wrote " + file.getName());
-		// globalModel.getShapes().addAll(removals);
-		//
-		// for (Node node : diagramRemovals) {
-		// diagram.insertChild(node);
-		// }
-		// }
-		//
-		//
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
 		return null;
+	}
+
+	private Set<IPair<IEnsemble, IEnsemble>> createRelationMapping(
+			Collection<Tuple3<IEnsemble, IEnsemble, Object>> dependencies) {
+
+		Set<IPair<IEnsemble, IEnsemble>> result = new HashSet<IPair<IEnsemble, IEnsemble>>();
+		Map<IEnsemble, List<IEnsemble>> sourceToTarget = new HashMap<IEnsemble, List<IEnsemble>>();
+		Map<IEnsemble, List<IEnsemble>> targetToSource = new HashMap<IEnsemble, List<IEnsemble>>();
+
+		for (Tuple3<IEnsemble, IEnsemble, Object> tuple3 : dependencies) {
+			IEnsemble source = tuple3._1();
+			IEnsemble target = tuple3._2();
+			if (source.equals(target))
+				continue;
+
+			if (!sourceToTarget.containsKey(source))
+				sourceToTarget.put(source, new LinkedList<IEnsemble>());
+			sourceToTarget.get(source).add(target);
+
+			if (!targetToSource.containsKey(target))
+				targetToSource.put(target, new LinkedList<IEnsemble>());
+			targetToSource.get(target).add(source);
+
+			result.add(new EnsemblePair(source, target));
+		}
+
+		// subsume the targets
+		for (IEnsemble source : sourceToTarget.keySet()) {
+			List<IEnsemble> targets = sourceToTarget.get(source);
+			Map<IEnsemble, Set<IEnsemble>> parentBuckets = new HashMap<IEnsemble, Set<IEnsemble>>();
+			// group the targets by their parents
+			for (IEnsemble target : targets) {
+				if (target.getParent() != null
+						&& !target.getParent().equals(source.getParent()))
+					addTransitiveParents(parentBuckets, target);
+			}
+			// remove all targets that are subsumed under one parent
+			Set<IEnsemble> parents = parentBuckets.keySet();
+			for (IEnsemble parent : parents) {
+				Set<IEnsemble> targetsWithSameParent = parentBuckets
+						.get(parent);
+				if (targetsWithSameParent.size() > 1) {
+					for (IEnsemble target : targetsWithSameParent) {
+						result.remove(new EnsemblePair(source, target));
+					}
+					result.add(new EnsemblePair(source, parent));
+				}
+			}
+		}
+		removeParentChildDuplicates(result);
+
+		// subsume the sources by parents
+		Map<IEnsemble, Set<IEnsemble>> parentBuckets = new HashMap<IEnsemble, Set<IEnsemble>>();
+		for (IEnsemble target : targetToSource.keySet()) {
+			List<IEnsemble> sources = targetToSource.get(target);
+			// group the targets by their parents
+			for (IEnsemble source : sources) {
+				if (source.getParent() != null
+						&& !source.getParent().equals(target.getParent()))
+					addTransitiveParents(parentBuckets, source);
+			}
+			// remove all sources that are subsumed under one parent
+			Set<IEnsemble> parents = parentBuckets.keySet();
+			for (IEnsemble parent : parents) {
+				Set<IEnsemble> sourcesWithSameParent = parentBuckets
+						.get(parent);
+				if (sourcesWithSameParent.size() > 1) {
+					for (IEnsemble source : sourcesWithSameParent) {
+						result.remove(new EnsemblePair(source, target));
+					}
+					result.add(new EnsemblePair(parent, target));
+				}
+			}
+		}
+
+		removeParentChildDuplicates(result);
+
+		return result;
+	}
+
+	private static void removeParentChildDuplicates(
+			Set<IPair<IEnsemble, IEnsemble>> dependencies) {
+		Set<IPair<IEnsemble, IEnsemble>> removals = new HashSet<IPair<IEnsemble, IEnsemble>>();
+		for (IPair<IEnsemble, IEnsemble> dependency : dependencies) {
+			if (dependency.getFirst().getParent() != null)
+				if (dependencies.contains(new EnsemblePair(dependency
+						.getFirst().getParent(), dependency.getSecond())))
+					removals.add(new EnsemblePair(dependency.getFirst()
+							.getParent(), dependency.getSecond()));
+			if (dependency.getSecond().getParent() != null)
+				if (dependencies.contains(new EnsemblePair(dependency
+						.getFirst(), dependency.getSecond().getParent())))
+					removals.add(new EnsemblePair(dependency.getFirst(),
+							dependency.getSecond().getParent()));
+		}
+		dependencies.removeAll(removals);
+	}
+
+	// adds an ensemble to the mapping of parents to ensembles
+	// if the parent has more parents than the parent is added transitively to
+	// the list of it's parents
+	private static void addTransitiveParents(
+			Map<IEnsemble, Set<IEnsemble>> parentChildRelation,
+			IEnsemble ensemble) {
+		IEnsemble parent = ensemble.getParent();
+		if (parent == null)
+			return;
+		if (!parentChildRelation.containsKey(parent))
+			parentChildRelation.put(parent, new HashSet<IEnsemble>());
+		parentChildRelation.get(parent).add(ensemble);
+		addTransitiveParents(parentChildRelation, parent);
 	}
 
 	@Override
@@ -422,7 +413,9 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 			return true;
 		}
 
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.lang.Object#toString()
 		 */
 		@Override
