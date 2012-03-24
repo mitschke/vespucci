@@ -38,16 +38,22 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.CompartmentEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DiagramDragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.DropObjectsRequest;
 import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
+import org.eclipse.gmf.runtime.notation.BasicCompartment;
+import org.eclipse.gmf.runtime.notation.Compartment;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
 
@@ -59,24 +65,19 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 public class GlobalRepositoryDragDropEditPolicy extends
 		DiagramDragDropEditPolicy {
 	
-	private ArchitectureModelEditPart sep = null;
 	
-	public GlobalRepositoryDragDropEditPolicy(ArchitectureModelEditPart sep){
-		super();
-		this.sep = sep;
-	}
 	
 	@Override
 	public Command getDropObjectsCommand(DropObjectsRequest dropRequest) {
 		ArrayList<CreateViewRequest.ViewDescriptor> viewDescriptors = new ArrayList<CreateViewRequest.ViewDescriptor>();
 		for (Iterator<?> it = dropRequest.getObjects().iterator(); it.hasNext();) {
 			Object nextObject = it.next();
-			if (!canBeDropped(nextObject)) {
+			if (!canBeDropped(nextObject, dropRequest)) {
 				continue;
 			}
 			viewDescriptors.add( new CreateViewRequest.ViewDescriptor(
 					new EObjectAdapter((EObject) nextObject), Node.class, null,
-					sep.getDiagramPreferencesHint()));
+					((GraphicalEditPart) getHost()).getDiagramPreferencesHint()));
 		}
 		return createEnsembleCommand(dropRequest, viewDescriptors);
 	}
@@ -87,10 +88,25 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	 * @param nextObject
 	 * @return
 	 */
-	private boolean canBeDropped(Object nextObject){
+	private boolean canBeDropped(Object nextObject, DropObjectsRequest dropRequest){
 		return (nextObject instanceof Shape && 
-				(((Shape) nextObject).eContainer() instanceof ArchitectureModel) &&
-				!isDuplicate(nextObject));
+			isCorrectParent(nextObject, dropRequest) &&
+				!isDuplicate(nextObject, dropRequest));
+	}
+	
+	private boolean isCorrectParent(Object nextObject, DropObjectsRequest dropRequest){
+		EditPart epart = getTargetEditPart(dropRequest);
+		boolean result = true;
+		if(isChild(nextObject)){
+			if(!((View)epart.getModel()).getElement().equals(((EObject)nextObject).eContainer()))
+				result &= false;
+		}
+		return result;
+		
+	}
+	
+	private boolean isChild(Object nextObject){
+		return (nextObject instanceof Shape) && !(((Shape)nextObject).eContainer() instanceof ArchitectureModel);
 	}
 	
 	
@@ -99,13 +115,16 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	 * @param nextObject
 	 * @return
 	 */
-	private boolean isDuplicate(Object nextObject){
+	private boolean isDuplicate(Object nextObject, DropObjectsRequest dropRequest){
 		List l = null;
-		Object eo = getHost().getModel();
-		if(eo instanceof Diagram)
-			l = ((Diagram)eo).getChildren();
+		EditPart ep = getTargetEditPart(dropRequest);
+		if(ep instanceof ArchitectureModelEditPart)
+			l = ((View)((ArchitectureModelEditPart)ep).getModel()).getChildren();
+		else if(ep instanceof CompartmentEditPart)
+			l = ((View)((CompartmentEditPart)ep).getModel()).getChildren();
+		else return true;
 		for(Object o : l){
-			if(o instanceof View && ((View)o).getElement().equals(nextObject)){
+			if(o instanceof View && ((Shape)((View)o).getElement()).equals(nextObject)){
 				return true;
 			}
 		}
@@ -124,4 +143,5 @@ public class GlobalRepositoryDragDropEditPolicy extends
 				viewDescriptors);
 		return command;
 	}
+	
 }

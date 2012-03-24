@@ -33,7 +33,6 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.util;
 
-import de.tud.cs.st.vespucci.vespucci_model.*;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.Diagnostic;

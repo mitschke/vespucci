@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.CompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
 import org.eclipse.gmf.runtime.notation.View;
@@ -22,6 +23,8 @@ import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart;
 
 	/**
 	 * @generated NOT
@@ -53,7 +56,8 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 		 * @generated NOT
 		 */
 		private boolean canBeDropped() {
-			return (getTargetEditPart() instanceof ArchitectureModelEditPart) && !containsChild();
+			return (getTargetEditPart() instanceof ArchitectureModelEditPart) && !containsChild() ||
+					(getTargetEditPart() instanceof CompartmentEditPart && areCorrectChildren());
 		}
 		
 		
@@ -70,6 +74,16 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 						return true;
 			}
 			return false;
+		}
+		
+		private boolean areCorrectChildren(){
+			List l = getObjectsBeingDropped();
+			boolean result = false;
+			for(Object o : l){
+				if((o instanceof Ensemble) && ((View)(getTargetEditPart().getModel())).getElement().equals(((Ensemble)o).eContainer()))
+					result |= true;
+			}
+			return result;
 		}
 	
 
