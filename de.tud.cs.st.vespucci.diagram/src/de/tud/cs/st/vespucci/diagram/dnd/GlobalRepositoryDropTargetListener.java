@@ -23,8 +23,6 @@ import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEnsembleCompartmentEditPart;
 
 	/**
 	 * @generated NOT

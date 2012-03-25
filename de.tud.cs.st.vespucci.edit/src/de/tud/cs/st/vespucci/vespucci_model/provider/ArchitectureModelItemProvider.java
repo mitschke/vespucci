@@ -109,7 +109,6 @@ public class ArchitectureModelItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__SHAPES);
-			childrenFeatures.add(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__CONNECTIONS);
 		}
 		return childrenFeatures;
 	}
@@ -161,8 +160,10 @@ public class ArchitectureModelItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ArchitectureModel.class)) {
-			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
 			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}

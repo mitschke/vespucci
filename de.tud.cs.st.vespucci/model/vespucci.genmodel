@@ -10,7 +10,7 @@
       contentTypeIdentifier="" fileExtensions="sam" ecorePackage="vespucci.ecore#/">
     <genClasses ecoreClass="vespucci.ecore#//ArchitectureModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//ArchitectureModel/shapes"/>
-      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//ArchitectureModel/connections"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//ArchitectureModel/connections"/>
     </genClasses>
     <genClasses ecoreClass="vespucci.ecore#//Shape">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/sourceConnections"/>
