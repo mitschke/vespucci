@@ -147,81 +147,121 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 		return null;
 	}
 
+	private static IPair<IEnsemble, IEnsemble> Pair(IEnsemble source,
+			IEnsemble target) {
+		return new EnsemblePair(source, target);
+	}
+
+	private static void checkAndInitCounter(
+			Map<IPair<IEnsemble, IEnsemble>, Integer> ensembleDependencies,
+			IPair<IEnsemble, IEnsemble> element) {
+		if (!ensembleDependencies.containsKey(element))
+			ensembleDependencies.put(element, 0);
+	}
+
+	private static void incCounter(
+			Map<IPair<IEnsemble, IEnsemble>, Integer> ensembleDependencies,
+			IPair<IEnsemble, IEnsemble> element) {
+		checkAndInitCounter(ensembleDependencies, element);
+		ensembleDependencies
+				.put(element, ensembleDependencies.get(element) + 1);
+	}
+
 	private Set<IPair<IEnsemble, IEnsemble>> createRelationMapping(
 			Collection<Tuple3<IEnsemble, IEnsemble, Object>> dependencies) {
 
 		Set<IPair<IEnsemble, IEnsemble>> result = new HashSet<IPair<IEnsemble, IEnsemble>>();
-		Map<IEnsemble, List<IEnsemble>> sourceToTarget = new HashMap<IEnsemble, List<IEnsemble>>();
-		Map<IEnsemble, List<IEnsemble>> targetToSource = new HashMap<IEnsemble, List<IEnsemble>>();
+
+		Map<IPair<IEnsemble, IEnsemble>, Integer> ensembleDependencies = new HashMap<IPair<IEnsemble, IEnsemble>, Integer>();
+
+		Map<IPair<IEnsemble, IEnsemble>, Set<IPair<IEnsemble, IEnsemble>>> subsumedBy = new HashMap<IPair<IEnsemble,IEnsemble>, Set<IPair<IEnsemble,IEnsemble>>>();
 
 		for (Tuple3<IEnsemble, IEnsemble, Object> tuple3 : dependencies) {
-			IEnsemble source = tuple3._1();
-			IEnsemble target = tuple3._2();
-			if (source.equals(target))
+			IEnsemble sourceEnsemble = tuple3._1();
+			IEnsemble targetEnsemble = tuple3._2();
+			if (sourceEnsemble.equals(targetEnsemble))
 				continue;
+			List<IEnsemble> sources = ModelUtils.getParentList(sourceEnsemble);
+			sources.add(0, sourceEnsemble);
+			List<IEnsemble> targets = ModelUtils.getParentList(targetEnsemble);
+			targets.add(0, targetEnsemble);
 
-			if (!sourceToTarget.containsKey(source))
-				sourceToTarget.put(source, new LinkedList<IEnsemble>());
-			sourceToTarget.get(source).add(target);
-
-			if (!targetToSource.containsKey(target))
-				targetToSource.put(target, new LinkedList<IEnsemble>());
-			targetToSource.get(target).add(source);
-
-			result.add(new EnsemblePair(source, target));
-		}
-
-		// subsume the targets
-		for (IEnsemble source : sourceToTarget.keySet()) {
-			List<IEnsemble> targets = sourceToTarget.get(source);
-			Map<IEnsemble, Set<IEnsemble>> parentBuckets = new HashMap<IEnsemble, Set<IEnsemble>>();
-			// group the targets by their parents
-			for (IEnsemble target : targets) {
-				if (target.getParent() != null
-						&& !target.getParent().equals(source.getParent()))
-					addTransitiveParents(parentBuckets, target);
-			}
-			// remove all targets that are subsumed under one parent
-			Set<IEnsemble> parents = parentBuckets.keySet();
-			for (IEnsemble parent : parents) {
-				Set<IEnsemble> targetsWithSameParent = parentBuckets
-						.get(parent);
-				if (targetsWithSameParent.size() > 1) {
-					for (IEnsemble target : targetsWithSameParent) {
-						result.remove(new EnsemblePair(source, target));
-					}
-					result.add(new EnsemblePair(source, parent));
-				}
-			}
-		}
-		removeParentChildDuplicates(result);
-
-		// subsume the sources by parents
-		Map<IEnsemble, Set<IEnsemble>> parentBuckets = new HashMap<IEnsemble, Set<IEnsemble>>();
-		for (IEnsemble target : targetToSource.keySet()) {
-			List<IEnsemble> sources = targetToSource.get(target);
-			// group the targets by their parents
+			List<IPair<IEnsemble, IEnsemble>> combinations = new LinkedList<IPair<IEnsemble, IEnsemble>>();
+			// add all combinations including parents parent combinations.
 			for (IEnsemble source : sources) {
-				if (source.getParent() != null
-						&& !source.getParent().equals(target.getParent()))
-					addTransitiveParents(parentBuckets, source);
-			}
-			// remove all sources that are subsumed under one parent
-			Set<IEnsemble> parents = parentBuckets.keySet();
-			for (IEnsemble parent : parents) {
-				Set<IEnsemble> sourcesWithSameParent = parentBuckets
-						.get(parent);
-				if (sourcesWithSameParent.size() > 1) {
-					for (IEnsemble source : sourcesWithSameParent) {
-						result.remove(new EnsemblePair(source, target));
-					}
-					result.add(new EnsemblePair(parent, target));
+				for (IEnsemble target : targets) {
+					if(sources.contains(target) || targets.contains(source))
+						continue;
+					combinations.add(Pair(source, target));
+					result.add(Pair(source, target));
+					incCounter(ensembleDependencies, Pair(source, target));
 				}
 			}
+
+			for (IPair<IEnsemble, IEnsemble> combination : combinations) {
+				Set<IPair<IEnsemble,IEnsemble>> directSubsumingEdges = getDirectSubsumingEdges(combination, combinations);
+				if(!subsumedBy.containsKey(combination))
+					subsumedBy.put(combination, new HashSet<IPair<IEnsemble,IEnsemble>>());
+				subsumedBy.get(combination).addAll(directSubsumingEdges);
+			}
+			
 		}
 
-		removeParentChildDuplicates(result);
+		Set<IPair<IEnsemble, IEnsemble>> allDependencies = ensembleDependencies
+				.keySet();
 
+		for (IPair<IEnsemble, IEnsemble> dependency : allDependencies) {
+			Set<IPair<IEnsemble, IEnsemble>> superEdges = getAllSubsumingEdges(
+					dependency, subsumedBy);
+			if (superEdges.size() == 0)
+				continue;
+			boolean hasSubsumingEdge = false;
+			for (IPair<IEnsemble, IEnsemble> superEdge : superEdges) {
+				if (ensembleDependencies.get(superEdge) == 1)
+					result.remove(superEdge);
+				else
+					hasSubsumingEdge = true;
+			}
+			if (hasSubsumingEdge)
+				result.remove(dependency);
+		}
+
+		return result;
+	}
+
+	private static Set<IPair<IEnsemble, IEnsemble>> getDirectSubsumingEdges(
+			IPair<IEnsemble, IEnsemble> in,
+			List<IPair<IEnsemble, IEnsemble>> edges) {
+
+		Set<IPair<IEnsemble, IEnsemble>> result = new HashSet<IPair<IEnsemble,IEnsemble>>();
+
+		for (IPair<IEnsemble, IEnsemble> edge : edges) {
+			if ( 
+					(
+							edge.getFirst().equals(in.getFirst().getParent()) && 
+							edge.getSecond().equals(in.getSecond())
+					) || 
+					(
+							edge.getFirst().equals(in.getFirst()) &&
+							edge.getSecond().equals(in.getSecond().getParent())
+					)
+				)
+				result.add(edge);
+		}
+
+		return result;
+	}
+
+	private static Set<IPair<IEnsemble, IEnsemble>> getAllSubsumingEdges(
+			IPair<IEnsemble, IEnsemble> edge,
+			Map<IPair<IEnsemble, IEnsemble>, Set<IPair<IEnsemble, IEnsemble>>> edgeMapping) {
+		Set<IPair<IEnsemble, IEnsemble>> result = new HashSet<IPair<IEnsemble,IEnsemble>>();
+
+		Set<IPair<IEnsemble, IEnsemble>> superEdges = edgeMapping.get(edge);
+		result.addAll(superEdges);
+		for (IPair<IEnsemble, IEnsemble> superEdge : superEdges) {
+			result.addAll(getAllSubsumingEdges(superEdge, edgeMapping));
+		}
 		return result;
 	}
 
@@ -420,7 +460,7 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 		 */
 		@Override
 		public String toString() {
-			return "EnsemblePair [first=" + first + ", second=" + second + "]";
+			return "(" + first + "," + second + ")";
 		}
 	}
 }
