@@ -34,6 +34,8 @@
 package de.tud.cs.st.vespucci.view.checked_diagrams.views;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
@@ -41,13 +43,13 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -63,6 +65,8 @@ import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.view.ImageManager;
 import de.tud.cs.st.vespucci.view.model.Pair;
+import de.tud.cs.st.vespucci.view.table.ColumnComparator;
+import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 /**
  * View which visualize the information of IViolationViews in a table.
@@ -79,6 +83,13 @@ public class CheckedDiagramsTableView extends ViewPart {
 
 	private TableViewer tableViewer;
 	private Action disposeAction;
+	private ContentProvider contentProvider;
+
+	public void addEntry(IPair<IViolationView, IFile> element) {
+		contentProvider.addData(element);
+		tableViewer.setLabelProvider(new ViewLabelProvider());
+		tableViewer.refresh();
+	}
 
 	public void createPartControl(Composite parent) {
 		createTable(parent);
@@ -90,6 +101,13 @@ public class CheckedDiagramsTableView extends ViewPart {
 	private void createTable(Composite parent) {
 		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION);
+		tableViewer.setLabelProvider(new ViewLabelProvider());
+		contentProvider = new ContentProvider();
+		tableViewer.setContentProvider(contentProvider);
+		tableViewer.setInput(getViewSite());
+
+		tableViewer.getTable().setHeaderVisible(true);
+		tableViewer.getTable().setLinesVisible(true);
 
 		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn tableColumn = tableViewerColumn.getColumn();
@@ -106,12 +124,15 @@ public class CheckedDiagramsTableView extends ViewPart {
 		tableColumn.setText("Path");
 		tableColumn.setWidth(200);
 
-		tableViewer.setLabelProvider(new ViewLabelProvider());
-		tableViewer.setSorter(new ViewerSorter());
-		tableViewer.setContentProvider(new ArrayContentProvider());
-
-		tableViewer.getTable().setHeaderVisible(true);
-		tableViewer.getTable().setLinesVisible(true);
+		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new ColumnComparator() {
+			
+			@Override
+			public int compare(Object e1, Object e2, int column) {
+				ViewLabelProvider vlp = new ViewLabelProvider();
+				
+				return vlp.getColumnText(e1, column).compareToIgnoreCase(vlp.getColumnText(e2, column));
+			}
+		});
 	}
 
 	private void createActions(){
@@ -152,10 +173,6 @@ public class CheckedDiagramsTableView extends ViewPart {
 		actionBars.getToolBarManager().add(disposeAction);
 	}
 
-	public void addEntry(IPair<IViolationView, IFile> element) {
-		tableViewer.add(element);
-	}
-
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
@@ -194,5 +211,35 @@ public class CheckedDiagramsTableView extends ViewPart {
 			}
 			return null;
 		}
+	}
+
+	/**
+	 * ContentProvider for checked_diagram table
+	 * 
+	 * @author 
+	 */
+	class ContentProvider implements IStructuredContentProvider{
+
+		private List<IPair<IViolationView, IFile>> data = new LinkedList<IPair<IViolationView, IFile>>();
+
+		public void addData(IPair<IViolationView, IFile> element){
+			data.add(element);
+		}
+		
+		@Override
+		public void dispose() {
+			// unused in this case
+		}
+
+		@Override
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			// unused in this case
+		}
+
+		@Override
+		public Object[] getElements(Object inputElement) {
+			return data.toArray();
+		}
+		
 	}
 }

@@ -9,8 +9,6 @@ Require-Bundle: org.eclipse.ui,
  de.tud.cs.st.vespucci.diagram,
  de.tud.cs.st.vespucci.interfaces;bundle-version="1.0.0",
  de.tud.cs.st.vespucci.utilities;bundle-version="1.0.0",
- de.tud.cs.st.vespucci.marker;bundle-version="1.0.0",
  de.tud.cs.st.vespucci.view;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.tud.cs.st.vespucci.diagram.processing

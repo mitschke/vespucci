@@ -55,6 +55,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -93,8 +94,6 @@ public class EnsembleElementsTableView extends ViewPart {
 	public static final int COLOUMN_ELEMENT = 3;
 
 	private TableViewer tableViewer;
-
-	private Composite composite;
 
 	private Text searchFieldEnsemble;
 	private Text searchFieldPackage;
@@ -230,7 +229,7 @@ public class EnsembleElementsTableView extends ViewPart {
 		layout.marginLeft = 0;
 		layout.marginRight = 0;
 
-		composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(layout);
 
 		searchFieldEnsemble = new Text(composite, SWT.BORDER);
@@ -240,10 +239,11 @@ public class EnsembleElementsTableView extends ViewPart {
 	}
 
 	private void addSearchFieldListener() {
-		searchFieldEnsemble.addModifyListener(new SearchFieldModifyListener(tableViewer, COLOUMN_ENSEMBLE));
-		searchFieldPackage.addModifyListener(new SearchFieldModifyListener(tableViewer, COLOUMN_PACKAGE));
-		searchFieldClass.addModifyListener(new SearchFieldModifyListener(tableViewer, COLOUMN_CLASS));
-		searchFieldElement.addModifyListener(new SearchFieldModifyListener(tableViewer, COLOUMN_ELEMENT));
+		Display display = tableViewer.getTable().getParent().getDisplay();
+		searchFieldEnsemble.addModifyListener(new SearchFieldListener(tableViewer, COLOUMN_ENSEMBLE, display));
+		searchFieldPackage.addModifyListener(new SearchFieldListener(tableViewer, COLOUMN_PACKAGE, display));
+		searchFieldClass.addModifyListener(new SearchFieldListener(tableViewer, COLOUMN_CLASS, display));
+		searchFieldElement.addModifyListener(new SearchFieldListener(tableViewer, COLOUMN_ELEMENT, display));
 	}
 
 	private void resizeSearchFields(Composite parent){

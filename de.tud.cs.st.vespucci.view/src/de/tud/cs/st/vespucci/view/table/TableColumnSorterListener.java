@@ -33,6 +33,7 @@
  */
 package de.tud.cs.st.vespucci.view.table;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -60,6 +61,7 @@ public final class TableColumnSorterListener implements SelectionListener {
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {
+		ISelection selection = tableViewer.getSelection();	
 		switch (tableViewer.getTable().getSortDirection()) {
 		case SWT.NONE:
 		case SWT.DOWN:
@@ -73,6 +75,8 @@ public final class TableColumnSorterListener implements SelectionListener {
 			tableViewer.refresh();
 			break;
 		}
+		tableViewer.setSelection(selection, true);
+		tableViewer.getTable().showSelection();
 	}
 
 	@Override
