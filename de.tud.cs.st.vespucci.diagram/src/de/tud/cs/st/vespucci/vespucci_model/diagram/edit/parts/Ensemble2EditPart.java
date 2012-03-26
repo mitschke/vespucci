@@ -65,7 +65,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
-import de.tud.cs.st.vespucci.diagram.dnd.EditDropPolicy;
+import de.tud.cs.st.vespucci.diagram.dnd.IJavaElementDropConstants;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaElementEnsembleDropPolicy;
 
 /**
  * @generated
@@ -103,7 +104,7 @@ public class Ensemble2EditPart extends ShapeNodeEditPart {
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.Ensemble2ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
-		installEditPolicy(REQ_DIRECT_EDIT, new EditDropPolicy());
+		installEditPolicy(IJavaElementDropConstants.REQ_DROP_EXTEND_ENSEMBLE, new JavaElementEnsembleDropPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
 	}

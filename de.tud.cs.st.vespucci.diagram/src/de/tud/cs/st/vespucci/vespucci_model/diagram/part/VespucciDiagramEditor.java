@@ -109,9 +109,9 @@ import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 
 import de.tud.cs.st.vespucci.diagram.creator.PrologFileCreator;
-import de.tud.cs.st.vespucci.diagram.dnd.CreateEnsembleDropTargetListener;
-import de.tud.cs.st.vespucci.diagram.dnd.DropVespucciDiagramTargetListener;
 import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDropTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaElementDiagramDropTargetListener;
+import de.tud.cs.st.vespucci.diagram.dnd.JavaElementEnsembleDropTargetListener;
 import de.tud.cs.st.vespucci.diagram.supports.EditPartService;
 import de.tud.cs.st.vespucci.diagram.supports.VespucciMouseListener;
 import de.tud.cs.st.vespucci.exceptions.VespucciIOException;
@@ -654,12 +654,8 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
-		getDiagramGraphicalViewer().addDropTargetListener(
-				new DropVespucciDiagramTargetListener(
-						getDiagramGraphicalViewer()));
-		getDiagramGraphicalViewer().addDropTargetListener(
-				new CreateEnsembleDropTargetListener(
-						getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(new JavaElementEnsembleDropTargetListener(getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(new JavaElementDiagramDropTargetListener(getDiagramGraphicalViewer()));
 		getDiagramGraphicalViewer().addDropTargetListener(
 				new GlobalRepositoryDropTargetListener(getEditingDomain(),
 						getDiagramGraphicalViewer(), LocalSelectionTransfer

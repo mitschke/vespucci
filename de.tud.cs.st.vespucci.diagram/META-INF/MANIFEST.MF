@@ -53,6 +53,7 @@ Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.tud.cs.st.vespucci.exceptions,
+ de.tud.cs.st.vespucci.interfaces,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.jdt.internal.corext.util,

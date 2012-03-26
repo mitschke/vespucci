@@ -30,13 +30,20 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 	public abstract class GlobalRepositoryDropTargetListener extends
 			DiagramDropTargetListener {
 		
-		EditingDomain editingDomain;
+		private EditingDomain editingDomain;
 		
+		/**
+		 * @param editingDomain	the current EditingDomain
+		 * @param idgv
+		 * @param lt
+		 * @generated NOT
+		 */
 		public GlobalRepositoryDropTargetListener(EditingDomain editingDomain, IDiagramGraphicalViewer idgv , Transfer lt){
 			super(idgv, lt);
 			this.editingDomain = editingDomain;
 		}
-		
+
+
 		@Override
 		protected void handleDragOver() {
 			super.handleDragOver();
@@ -74,6 +81,10 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 			return false;
 		}
 		
+		/**
+		 * hopefully not needed anymore
+		 * @return
+		 */
 		private boolean areCorrectChildren(){
 			List l = getObjectsBeingDropped();
 			boolean result = false;
@@ -86,42 +97,28 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 	
 
 		/**
-		 * @generated NOT
-		 */
-		public GlobalRepositoryDropTargetListener(EditPartViewer viewer,
-				Transfer xfer) {
-			super(viewer, xfer);
-		}
-
-		/**
+		 * gets objects to be dropped
 		 * @generated NOT
 		 */
 		@SuppressWarnings("rawtypes")
 		protected List getObjectsBeingDropped() {
 			TransferData data = getCurrentEvent().currentDataType;
+			
+			//added via URIs to prevent object ID's from chaning
 			HashSet<URI> uris = new HashSet<URI>();
 
+			//gets Java Objects from transferred data (LocalSelectionTransfer or LocalTransfer)
 			Object transferedObject = getJavaObject(data);
 			if (transferedObject instanceof IStructuredSelection) {
 				IStructuredSelection selection = (IStructuredSelection) transferedObject;
 				for (Iterator<?> it = selection.iterator(); it.hasNext();) {
 					Object nextSelectedObject = it.next();
-					if (nextSelectedObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
-						View view = ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) nextSelectedObject)
-								.getView();
-						nextSelectedObject = view.getElement();
-					} else if (nextSelectedObject instanceof IAdaptable) {
-						IAdaptable adaptable = (IAdaptable) nextSelectedObject;
-						nextSelectedObject = adaptable
-								.getAdapter(EObject.class);
-					}
 					if (nextSelectedObject instanceof Shape) {
 						Shape modelElement = (Shape) nextSelectedObject;
 						uris.add(EcoreUtil.getURI(modelElement));
 					}
 				}
 			}
-
 			ArrayList<EObject> result = new ArrayList<EObject>(uris.size());
 			for (URI nextURI : uris) {
 				EObject modelObject = editingDomain.getResourceSet()
@@ -130,6 +127,8 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 			}
 			return result;
 		}
+		
+		
 
 		/**
 		 * @generated NOT

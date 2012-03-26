@@ -66,7 +66,9 @@ public class GlobalRepositoryDragDropEditPolicy extends
 		DiagramDragDropEditPolicy {
 	
 	
-	
+	/**
+	 * 
+	 */
 	@Override
 	public Command getDropObjectsCommand(DropObjectsRequest dropRequest) {
 		ArrayList<CreateViewRequest.ViewDescriptor> viewDescriptors = new ArrayList<CreateViewRequest.ViewDescriptor>();
@@ -84,7 +86,7 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	
 	
 	/**
-	 * prevent childnodes and duplicates from being dropped
+	 * prevent child nodes and duplicates from being dropped
 	 * @param nextObject
 	 * @return
 	 */
@@ -94,6 +96,12 @@ public class GlobalRepositoryDragDropEditPolicy extends
 				!isDuplicate(nextObject, dropRequest));
 	}
 	
+	/**
+	 *TODO: may want to create children automatically and just prevent children from being dropped
+	 * @param nextObject
+	 * @param dropRequest
+	 * @return
+	 */
 	private boolean isCorrectParent(Object nextObject, DropObjectsRequest dropRequest){
 		EditPart epart = getTargetEditPart(dropRequest);
 		boolean result = true;
@@ -105,6 +113,11 @@ public class GlobalRepositoryDragDropEditPolicy extends
 		
 	}
 	
+	/**
+	 * 
+	 * @param nextObject
+	 * @return
+	 */
 	private boolean isChild(Object nextObject){
 		return (nextObject instanceof Shape) && !(((Shape)nextObject).eContainer() instanceof ArchitectureModel);
 	}
@@ -124,7 +137,7 @@ public class GlobalRepositoryDragDropEditPolicy extends
 			l = ((View)((CompartmentEditPart)ep).getModel()).getChildren();
 		else return true;
 		for(Object o : l){
-			if(o instanceof View && ((Shape)((View)o).getElement()).equals(nextObject)){
+			if(o instanceof View && ((Shape)((View)o).getElement()).equals(((Shape)nextObject))){
 				return true;
 			}
 		}
