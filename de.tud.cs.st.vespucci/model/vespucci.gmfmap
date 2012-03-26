@@ -7,7 +7,7 @@
     xmlns:gmftool="http://www.eclipse.org/gmf/2005/ToolDefinition">
   <nodes>
     <containmentFeature
-        href="vespucci.ecore#//ArchitectureModel/shapes"/>
+        href="vespucci.ecore#//ArchitectureModel/ensembles"/>
     <ownedChild>
       <domainMetaElement
           href="vespucci.ecore#//Ensemble"/>
@@ -16,7 +16,7 @@
         <diagramLabel
             href="vespucci.gmfgraph#EnsembleName"/>
         <features
-            href="vespucci.ecore#//Shape/name"/>
+            href="vespucci.ecore#//AbstractEnsemble/name"/>
       </labelMappings>
       <labelMappings
           xsi:type="gmfmap:FeatureLabelMapping"
@@ -26,7 +26,7 @@
         <diagramLabel
             href="vespucci.gmfgraph#EnsembleDescription"/>
         <features
-            href="vespucci.ecore#//Shape/description"/>
+            href="vespucci.ecore#//AbstractEnsemble/description"/>
       </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"
@@ -37,13 +37,13 @@
           compartment="//@nodes.0/@ownedChild/@compartments.0"
           referencedChild="//@nodes.0/@ownedChild">
         <containmentFeature
-            href="vespucci.ecore#//Ensemble/shapes"/>
+            href="vespucci.ecore#//Ensemble/ensembles"/>
       </children>
       <children
           compartment="//@nodes.0/@ownedChild/@compartments.0"
           referencedChild="//@nodes.1/@ownedChild">
         <containmentFeature
-            href="vespucci.ecore#//Ensemble/shapes"/>
+            href="vespucci.ecore#//Ensemble/ensembles"/>
       </children>
       <compartments
           children="//@nodes.0/@ownedChild/@children.0 //@nodes.0/@ownedChild/@children.1">
@@ -58,7 +58,7 @@
   </nodes>
   <nodes>
     <containmentFeature
-        href="vespucci.ecore#//ArchitectureModel/shapes"/>
+        href="vespucci.ecore#//ArchitectureModel/ensembles"/>
     <ownedChild>
       <domainMetaElement
           href="vespucci.ecore#//Empty"/>
@@ -67,7 +67,7 @@
         <diagramLabel
             href="vespucci.gmfgraph#EmptyName"/>
         <features
-            href="vespucci.ecore#//Shape/name"/>
+            href="vespucci.ecore#//AbstractEnsemble/name"/>
       </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"

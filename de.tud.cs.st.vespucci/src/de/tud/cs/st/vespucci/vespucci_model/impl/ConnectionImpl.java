@@ -47,8 +47,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
@@ -77,7 +77,7 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 * @ordered
 	 */
-	protected Shape source;
+	protected AbstractEnsemble source;
 
 	/**
 	 * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
@@ -86,7 +86,7 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 * @ordered
 	 */
-	protected Shape target;
+	protected AbstractEnsemble target;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -136,7 +136,7 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Shape> originalSource;
+	protected EList<AbstractEnsemble> originalSource;
 
 	/**
 	 * The cached value of the '{@link #getOriginalTarget() <em>Original Target</em>}' reference list. <!--
@@ -146,7 +146,7 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Shape> originalTarget;
+	protected EList<AbstractEnsemble> originalTarget;
 
 	/**
 	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
@@ -181,16 +181,40 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Shape basicGetSource() {
+	public AbstractEnsemble basicGetSource() {
 		return source;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSource(AbstractEnsemble newSource) {
+		AbstractEnsemble oldSource = source;
+		source = newSource;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__SOURCE, oldSource, source));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Shape basicGetTarget() {
+	public AbstractEnsemble basicGetTarget() {
 		return target;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setTarget(AbstractEnsemble newTarget) {
+		AbstractEnsemble oldTarget = target;
+		target = newTarget;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__TARGET, oldTarget, target));
 	}
 
 	/**
@@ -254,10 +278,10 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Vespucci_modelPackage.CONNECTION__SOURCE:
-				setSource((Shape)newValue);
+				setSource((AbstractEnsemble)newValue);
 				return;
 			case Vespucci_modelPackage.CONNECTION__TARGET:
-				setTarget((Shape)newValue);
+				setTarget((AbstractEnsemble)newValue);
 				return;
 			case Vespucci_modelPackage.CONNECTION__NAME:
 				setName((String)newValue);
@@ -267,11 +291,11 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 				return;
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE:
 				getOriginalSource().clear();
-				getOriginalSource().addAll((Collection<? extends Shape>)newValue);
+				getOriginalSource().addAll((Collection<? extends AbstractEnsemble>)newValue);
 				return;
 			case Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET:
 				getOriginalTarget().clear();
-				getOriginalTarget().addAll((Collection<? extends Shape>)newValue);
+				getOriginalTarget().addAll((Collection<? extends AbstractEnsemble>)newValue);
 				return;
 			case Vespucci_modelPackage.CONNECTION__KEY:
 				setKey((String)newValue);
@@ -297,10 +321,10 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Vespucci_modelPackage.CONNECTION__SOURCE:
-				setSource((Shape)null);
+				setSource((AbstractEnsemble)null);
 				return;
 			case Vespucci_modelPackage.CONNECTION__TARGET:
-				setTarget((Shape)null);
+				setTarget((AbstractEnsemble)null);
 				return;
 			case Vespucci_modelPackage.CONNECTION__NAME:
 				setName(NAME_EDEFAULT);
@@ -335,9 +359,9 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 */
 	@Override
-	public EList<Shape> getOriginalSource() {
+	public EList<AbstractEnsemble> getOriginalSource() {
 		if (originalSource == null) {
-			originalSource = new EObjectResolvingEList<Shape>(Shape.class, this, Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE);
+			originalSource = new EObjectResolvingEList<AbstractEnsemble>(AbstractEnsemble.class, this, Vespucci_modelPackage.CONNECTION__ORIGINAL_SOURCE);
 		}
 		return originalSource;
 	}
@@ -347,9 +371,9 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 */
 	@Override
-	public EList<Shape> getOriginalTarget() {
+	public EList<AbstractEnsemble> getOriginalTarget() {
 		if (originalTarget == null) {
-			originalTarget = new EObjectResolvingEList<Shape>(Shape.class, this, Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET);
+			originalTarget = new EObjectResolvingEList<AbstractEnsemble>(AbstractEnsemble.class, this, Vespucci_modelPackage.CONNECTION__ORIGINAL_TARGET);
 		}
 		return originalTarget;
 	}
@@ -384,10 +408,10 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 */
 	@Override
-	public Shape getSource() {
+	public AbstractEnsemble getSource() {
 		if (source != null && source.eIsProxy()) {
 			InternalEObject oldSource = (InternalEObject)source;
-			source = (Shape)eResolveProxy(oldSource);
+			source = (AbstractEnsemble)eResolveProxy(oldSource);
 			if (source != oldSource) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Vespucci_modelPackage.CONNECTION__SOURCE, oldSource, source));
@@ -401,10 +425,10 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 	 * @generated
 	 */
 	@Override
-	public Shape getTarget() {
+	public AbstractEnsemble getTarget() {
 		if (target != null && target.eIsProxy()) {
 			InternalEObject oldTarget = (InternalEObject)target;
-			target = (Shape)eResolveProxy(oldTarget);
+			target = (AbstractEnsemble)eResolveProxy(oldTarget);
 			if (target != oldTarget) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Vespucci_modelPackage.CONNECTION__TARGET, oldTarget, target));
@@ -433,30 +457,6 @@ public abstract class ConnectionImpl extends EObjectImpl implements Connection {
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__NAME, oldName, name));
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setSource(Shape newSource) {
-		Shape oldSource = source;
-		source = newSource;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__SOURCE, oldSource, source));
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setTarget(Shape newTarget) {
-		Shape oldTarget = target;
-		target = newTarget;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.CONNECTION__TARGET, oldTarget, target));
 	}
 
 	/**

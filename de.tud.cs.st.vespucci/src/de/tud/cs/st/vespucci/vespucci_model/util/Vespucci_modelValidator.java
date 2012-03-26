@@ -42,6 +42,7 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EObjectValidator;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
@@ -53,7 +54,6 @@ import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
@@ -131,8 +131,8 @@ public class Vespucci_modelValidator extends EObjectValidator {
 		switch (classifierID) {
 			case Vespucci_modelPackage.ARCHITECTURE_MODEL:
 				return validateArchitectureModel((ArchitectureModel)value, diagnostics, context);
-			case Vespucci_modelPackage.SHAPE:
-				return validateShape((Shape)value, diagnostics, context);
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE:
+				return validateAbstractEnsemble((AbstractEnsemble)value, diagnostics, context);
 			case Vespucci_modelPackage.EMPTY:
 				return validateEmpty((Empty)value, diagnostics, context);
 			case Vespucci_modelPackage.ENSEMBLE:
@@ -174,8 +174,8 @@ public class Vespucci_modelValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateShape(Shape shape, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		return validate_EveryDefaultConstraint(shape, diagnostics, context);
+	public boolean validateAbstractEnsemble(AbstractEnsemble abstractEnsemble, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(abstractEnsemble, diagnostics, context);
 	}
 
 	/**

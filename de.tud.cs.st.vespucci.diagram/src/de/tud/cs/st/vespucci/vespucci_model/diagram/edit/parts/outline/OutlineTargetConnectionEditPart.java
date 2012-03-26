@@ -42,7 +42,7 @@ import org.eclipse.gmf.runtime.diagram.core.util.ViewUtil;
 import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 
 /**
  * OutlineEditPart for TargetConnections(incoming connections)
@@ -93,7 +93,7 @@ public abstract class OutlineTargetConnectionEditPart extends
 				.getSource();
 		String name = "";
 		if (sourceNode != null){
-			name = ((Shape) sourceNode.getElement()).getName();
+			name = ((AbstractEnsemble) sourceNode.getElement()).getName();
 			if(name == null)
 				name = "";
 		}

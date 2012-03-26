@@ -50,8 +50,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.IPropertySource;
+
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
@@ -166,12 +167,12 @@ public class EnsembleDescriptionPropertySection extends
 	 */
 	@Override
 	protected void setPropertyValue(final EObject object, final Object value) {
-		if (object instanceof Shape) {
+		if (object instanceof AbstractEnsemble) {
 			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
 					.getEPackage(VESPUCCI_NAMESPACE_URL);
 			final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
-			object.eSet(vesPackage.getShape_Description(), value);
+			object.eSet(vesPackage.getAbstractEnsemble_Description(), value);
 		}
 	}
 
@@ -187,7 +188,7 @@ public class EnsembleDescriptionPropertySection extends
 
 		if (eObject instanceof EnsembleImpl) {
 			getSectionComposite().setVisible(true);
-			return (String) eObject.eGet(vesPackage.getShape_Description());
+			return (String) eObject.eGet(vesPackage.getAbstractEnsemble_Description());
 		} else {
 			getSectionComposite().setVisible(false);
 			throw new VespucciUnexpectedException(String.format(

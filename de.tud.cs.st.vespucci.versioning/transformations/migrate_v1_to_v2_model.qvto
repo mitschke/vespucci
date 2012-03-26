@@ -70,8 +70,8 @@ mapping OldModel::ShapesDiagram::toNew() : NewModel::ArchitectureModel {
 		};
 	};
 	
-	shapes += self.shapes.map toEnsemble();
-	shapes += self.shapes.map toEmpty();
+	ensembles += self.shapes.map toEnsemble();
+	ensembles += self.shapes.map toEmpty();
 
 	result.remember();
 }
@@ -80,8 +80,8 @@ mapping OldModel::ShapesDiagram::toNew() : NewModel::ArchitectureModel {
 mapping OldModel::Shape::toEnsemble() : NewModel::Ensemble
 inherits OldModel::Shape::toShape
 when {self.metaClassName() = 'Ensemble'} {
-	shapes += self->oclAsType(OldModel::Ensemble).shapes.map toEnsemble();
-	shapes += self->oclAsType(OldModel::Ensemble).shapes.map toEmpty();
+	ensembles += self->oclAsType(OldModel::Ensemble).shapes.map toEnsemble();
+	ensembles += self->oclAsType(OldModel::Ensemble).shapes.map toEmpty();
 }
 
 mapping OldModel::Shape::toEmpty() : NewModel::Empty
@@ -93,7 +93,7 @@ when {self.metaClassName() = 'Dummy'} {
 
 
 
-abstract mapping OldModel::Shape::toShape() : NewModel::Shape {	
+abstract mapping OldModel::Shape::toShape() : NewModel::AbstractEnsemble {	
 	name := self.name;
 	_query := self._query;
 	description := self.description;
@@ -146,15 +146,15 @@ abstract mapping OldModel::Connection::toConnection() : NewModel::Connection {
 	name := self.name;
 	
 	self.originalSource->forEach(os) {
-		originalSource += os.late resolveone(NewModel::Shape);
+		originalSource += os.late resolveone(NewModel::AbstractEnsemble);
 	};
 	
 	self.originalTarget->forEach(ot) {
-		originalTarget += ot.late resolveone(NewModel::Shape);
+		originalTarget += ot.late resolveone(NewModel::AbstractEnsemble);
 	};
 	
-	source := self.source.late resolveone(NewModel::Shape);
-	target := self.target.late resolveone(NewModel::Shape);
+	source := self.source.late resolveone(NewModel::AbstractEnsemble);
+	target := self.target.late resolveone(NewModel::AbstractEnsemble);
 	
 	temp := self.temp;
 	

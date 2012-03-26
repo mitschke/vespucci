@@ -42,19 +42,19 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.Edge;
 import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
- * Util class to provide traversal filters for Connections and Ensembles.
+ * Utility class to provide traversal filters for Connections and Ensembles.
  * 
  * @author Robert Cibulla
  * 
  */
 public class VespucciTraversalUtil {
 
-	static HashMap<String, Shape> ensembleRegistry = new HashMap<String, Shape>();
-	static HashMap<String, Connection> connectionRegistry = new HashMap<String, Connection>();
+	static HashMap<String, String> ensembleRegistry = new HashMap<String, String>();
+	static HashMap<String, String> connectionRegistry = new HashMap<String, String>();
 
 	/**
 	 * Initialize both connection- and ensembleRegisty
@@ -79,7 +79,7 @@ public class VespucciTraversalUtil {
 						&& ((Edge) edge).getElement() instanceof Connection) {
 					connectionRegistry.put(
 							((Connection) ((Edge) edge).getElement()).getKey(),
-							(Connection) ((Edge) edge).getElement());
+							"ok");
 				}
 			}
 		}
@@ -95,10 +95,10 @@ public class VespucciTraversalUtil {
 		if (diagram instanceof Diagram) {
 			for (Object ensemble : ((Diagram) diagram).getChildren()) {
 				if (ensemble instanceof View
-						&& ((View) ensemble).getElement() instanceof Shape) {
+						&& ((View) ensemble).getElement() instanceof AbstractEnsemble) {
 					ensembleRegistry.put(
-							((Shape) ((View) ensemble).getElement()).getKey(),
-							(Shape) ((View) ensemble).getElement());
+							((AbstractEnsemble) ((View) ensemble).getElement()).getKey(),
+							"ok");
 				}
 			}
 		}
@@ -128,15 +128,15 @@ public class VespucciTraversalUtil {
 	 * Filters given List of Ensembles and returns only those existing in the
 	 * Diagram.
 	 * 
-	 * @param shapes
+	 * @param ensembles
 	 * @param diagram
 	 * @return
 	 */
-	public static List<Shape> getEnsemblesFromDiagram(EList<Shape> shapes) {
-		List<Shape> result = new ArrayList<Shape>();
-		for (Shape shp : shapes) {
-			if (ensembleRegistry.get(shp.getKey()) != null)
-				result.add(shp);
+	public static List<AbstractEnsemble> getEnsemblesFromDiagram(EList<AbstractEnsemble> ensembles) {
+		List<AbstractEnsemble> result = new ArrayList<AbstractEnsemble>();
+		for (AbstractEnsemble ens : ensembles) {
+			if (ensembleRegistry.get(ens.getKey()) != null)
+				result.add(ens);
 		}
 		return result;
 	}

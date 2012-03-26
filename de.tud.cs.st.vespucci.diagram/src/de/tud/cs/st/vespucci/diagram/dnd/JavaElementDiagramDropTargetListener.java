@@ -47,13 +47,13 @@ public class JavaElementDiagramDropTargetListener extends
 
 		ViewAndElementDescriptor viewAndElementDescriptor = new CreateViewAndElementRequest.ViewAndElementDescriptor(
 				new CreateElementRequestAdapter(new CreateElementRequest(
-						VespucciElementTypes.Ensemble_2003)), Node.class,
-				"2003", hint);
+						VespucciElementTypes.Ensemble_2005)), Node.class,
+				"2005", hint);
 		/*
 		 * Important Note! The viewAndElementDescriptor is required during the
 		 * creation and not correctly filled if other constructors of
 		 * CreateViewAndElementRequest are used. Especially the semanticHint =
-		 * "2003" must be set for the diagram element factory to know that it is
+		 * "2005" must be set for the diagram element factory to know that it is
 		 * responsible for providing elements of the chosen type.
 		 */
 		CreateViewAndElementRequest request = new CreateViewAndElementRequest(

@@ -250,16 +250,16 @@ public class VespucciViewProvider extends AbstractProvider implements
 		}
 		switch (visualID) {
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			return createEnsemble_2003(domainElement, containerView, index,
+			return createEnsemble_2005(domainElement, containerView, index,
 					persisted, preferencesHint);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart.VISUAL_ID:
-			return createEmpty_2004(domainElement, containerView, index,
+			return createEmpty_2006(domainElement, containerView, index,
 					persisted, preferencesHint);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
-			return createEnsemble_3001(domainElement, containerView, index,
+			return createEnsemble_3004(domainElement, containerView, index,
 					persisted, preferencesHint);
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
-			return createEmpty_3003(domainElement, containerView, index,
+			return createEmpty_3005(domainElement, containerView, index,
 					persisted, preferencesHint);
 		}
 		// can't happen, provided #provides(CreateNodeViewOperation) is correct
@@ -310,7 +310,7 @@ public class VespucciViewProvider extends AbstractProvider implements
 	/**
 	 * @generated
 	 */
-	public Node createEnsemble_2003(EObject domainElement, View containerView,
+	public Node createEnsemble_2005(EObject domainElement, View containerView,
 			int index, boolean persisted, PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -347,11 +347,11 @@ public class VespucciViewProvider extends AbstractProvider implements
 		ViewUtil.setStructuralFeatureValue(node,
 				NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5009 = createLabel(
+		Node label5015 = createLabel(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID));
-		Node label5010 = createLabel(
+		Node label5016 = createLabel(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescriptionEditPart.VISUAL_ID));
@@ -371,7 +371,7 @@ public class VespucciViewProvider extends AbstractProvider implements
 	/**
 	 * @generated
 	 */
-	public Node createEmpty_2004(EObject domainElement, View containerView,
+	public Node createEmpty_2006(EObject domainElement, View containerView,
 			int index, boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles()
@@ -407,7 +407,7 @@ public class VespucciViewProvider extends AbstractProvider implements
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB)
 					.intValue());
 		}
-		Node label5011 = createLabel(
+		Node label5017 = createLabel(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyNameEditPart.VISUAL_ID));
@@ -417,7 +417,7 @@ public class VespucciViewProvider extends AbstractProvider implements
 	/**
 	 * @generated
 	 */
-	public Node createEnsemble_3001(EObject domainElement, View containerView,
+	public Node createEnsemble_3004(EObject domainElement, View containerView,
 			int index, boolean persisted, PreferencesHint preferencesHint) {
 		Shape node = NotationFactory.eINSTANCE.createShape();
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
@@ -453,11 +453,11 @@ public class VespucciViewProvider extends AbstractProvider implements
 		ViewUtil.setStructuralFeatureValue(node,
 				NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5006 = createLabel(
+		Node label5013 = createLabel(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleName2EditPart.VISUAL_ID));
-		Node label5007 = createLabel(
+		Node label5014 = createLabel(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleDescription2EditPart.VISUAL_ID));
@@ -477,7 +477,7 @@ public class VespucciViewProvider extends AbstractProvider implements
 	/**
 	 * @generated
 	 */
-	public Node createEmpty_3003(EObject domainElement, View containerView,
+	public Node createEmpty_3005(EObject domainElement, View containerView,
 			int index, boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles()
@@ -512,7 +512,7 @@ public class VespucciViewProvider extends AbstractProvider implements
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB)
 					.intValue());
 		}
-		Node label5005 = createLabel(
+		Node label5012 = createLabel(
 				node,
 				de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 						.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyName2EditPart.VISUAL_ID));

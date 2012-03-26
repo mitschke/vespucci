@@ -654,8 +654,12 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
-		getDiagramGraphicalViewer().addDropTargetListener(new JavaElementEnsembleDropTargetListener(getDiagramGraphicalViewer()));
-		getDiagramGraphicalViewer().addDropTargetListener(new JavaElementDiagramDropTargetListener(getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new JavaElementEnsembleDropTargetListener(
+						getDiagramGraphicalViewer()));
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new JavaElementDiagramDropTargetListener(
+						getDiagramGraphicalViewer()));
 		getDiagramGraphicalViewer().addDropTargetListener(
 				new GlobalRepositoryDropTargetListener(getEditingDomain(),
 						getDiagramGraphicalViewer(), LocalSelectionTransfer

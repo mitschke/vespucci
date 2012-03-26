@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
@@ -54,7 +55,6 @@ import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
@@ -79,7 +79,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass shapeEClass = null;
+	private EClass abstractEnsembleEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -242,7 +242,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getArchitectureModel_Shapes() {
+	public EReference getArchitectureModel_Ensembles() {
 		return (EReference)architectureModelEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -260,8 +260,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getShape() {
-		return shapeEClass;
+	public EClass getAbstractEnsemble() {
+		return abstractEnsembleEClass;
 	}
 
 	/**
@@ -269,8 +269,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getShape_SourceConnections() {
-		return (EReference)shapeEClass.getEStructuralFeatures().get(0);
+	public EReference getAbstractEnsemble_SourceConnections() {
+		return (EReference)abstractEnsembleEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -278,8 +278,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getShape_TargetConnections() {
-		return (EReference)shapeEClass.getEStructuralFeatures().get(1);
+	public EReference getAbstractEnsemble_TargetConnections() {
+		return (EReference)abstractEnsembleEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -287,8 +287,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getShape_Name() {
-		return (EAttribute)shapeEClass.getEStructuralFeatures().get(2);
+	public EAttribute getAbstractEnsemble_Name() {
+		return (EAttribute)abstractEnsembleEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -296,8 +296,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getShape_Description() {
-		return (EAttribute)shapeEClass.getEStructuralFeatures().get(3);
+	public EAttribute getAbstractEnsemble_Description() {
+		return (EAttribute)abstractEnsembleEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -305,8 +305,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getShape_Query() {
-		return (EAttribute)shapeEClass.getEStructuralFeatures().get(4);
+	public EAttribute getAbstractEnsemble_Query() {
+		return (EAttribute)abstractEnsembleEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -314,8 +314,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getShape_Key() {
-		return (EAttribute)shapeEClass.getEStructuralFeatures().get(5);
+	public EAttribute getAbstractEnsemble_Key() {
+		return (EAttribute)abstractEnsembleEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEnsemble_Shapes() {
+	public EReference getEnsemble_Ensembles() {
 		return (EReference)ensembleEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -518,21 +518,21 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 
 		// Create classes and their features
 		architectureModelEClass = createEClass(ARCHITECTURE_MODEL);
-		createEReference(architectureModelEClass, ARCHITECTURE_MODEL__SHAPES);
+		createEReference(architectureModelEClass, ARCHITECTURE_MODEL__ENSEMBLES);
 		createEReference(architectureModelEClass, ARCHITECTURE_MODEL__CONNECTIONS);
 
-		shapeEClass = createEClass(SHAPE);
-		createEReference(shapeEClass, SHAPE__SOURCE_CONNECTIONS);
-		createEReference(shapeEClass, SHAPE__TARGET_CONNECTIONS);
-		createEAttribute(shapeEClass, SHAPE__NAME);
-		createEAttribute(shapeEClass, SHAPE__DESCRIPTION);
-		createEAttribute(shapeEClass, SHAPE__QUERY);
-		createEAttribute(shapeEClass, SHAPE__KEY);
+		abstractEnsembleEClass = createEClass(ABSTRACT_ENSEMBLE);
+		createEReference(abstractEnsembleEClass, ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS);
+		createEReference(abstractEnsembleEClass, ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS);
+		createEAttribute(abstractEnsembleEClass, ABSTRACT_ENSEMBLE__NAME);
+		createEAttribute(abstractEnsembleEClass, ABSTRACT_ENSEMBLE__DESCRIPTION);
+		createEAttribute(abstractEnsembleEClass, ABSTRACT_ENSEMBLE__QUERY);
+		createEAttribute(abstractEnsembleEClass, ABSTRACT_ENSEMBLE__KEY);
 
 		emptyEClass = createEClass(EMPTY);
 
 		ensembleEClass = createEClass(ENSEMBLE);
-		createEReference(ensembleEClass, ENSEMBLE__SHAPES);
+		createEReference(ensembleEClass, ENSEMBLE__ENSEMBLES);
 
 		connectionEClass = createEClass(CONNECTION);
 		createEReference(connectionEClass, CONNECTION__SOURCE);
@@ -588,8 +588,8 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		emptyEClass.getESuperTypes().add(this.getShape());
-		ensembleEClass.getESuperTypes().add(this.getShape());
+		emptyEClass.getESuperTypes().add(this.getAbstractEnsemble());
+		ensembleEClass.getESuperTypes().add(this.getAbstractEnsemble());
 		notAllowedEClass.getESuperTypes().add(this.getConnection());
 		outgoingEClass.getESuperTypes().add(this.getConnection());
 		incomingEClass.getESuperTypes().add(this.getConnection());
@@ -601,35 +601,35 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(architectureModelEClass, ArchitectureModel.class, "ArchitectureModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getArchitectureModel_Shapes(), this.getShape(), null, "shapes", null, 0, -1, ArchitectureModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		getArchitectureModel_Shapes().getEKeys().add(this.getShape_Key());
+		initEReference(getArchitectureModel_Ensembles(), this.getAbstractEnsemble(), null, "ensembles", null, 0, -1, ArchitectureModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getArchitectureModel_Ensembles().getEKeys().add(this.getAbstractEnsemble_Key());
 		initEReference(getArchitectureModel_Connections(), this.getConnection(), null, "connections", null, 0, -1, ArchitectureModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		getArchitectureModel_Connections().getEKeys().add(this.getConnection_Key());
 
-		initEClass(shapeEClass, Shape.class, "Shape", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getShape_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, Shape.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		getShape_SourceConnections().getEKeys().add(this.getConnection_Key());
-		initEReference(getShape_TargetConnections(), this.getConnection(), null, "targetConnections", null, 0, -1, Shape.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		getShape_TargetConnections().getEKeys().add(this.getConnection_Key());
-		initEAttribute(getShape_Name(), ecorePackage.getEString(), "name", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getShape_Description(), ecorePackage.getEString(), "description", "<description>", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getShape_Query(), ecorePackage.getEString(), "query", "empty", 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getShape_Key(), ecorePackage.getEString(), "key", null, 0, 1, Shape.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(abstractEnsembleEClass, AbstractEnsemble.class, "AbstractEnsemble", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getAbstractEnsemble_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, AbstractEnsemble.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		getAbstractEnsemble_SourceConnections().getEKeys().add(this.getConnection_Key());
+		initEReference(getAbstractEnsemble_TargetConnections(), this.getConnection(), null, "targetConnections", null, 0, -1, AbstractEnsemble.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		getAbstractEnsemble_TargetConnections().getEKeys().add(this.getConnection_Key());
+		initEAttribute(getAbstractEnsemble_Name(), ecorePackage.getEString(), "name", null, 0, 1, AbstractEnsemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAbstractEnsemble_Description(), ecorePackage.getEString(), "description", "<description>", 0, 1, AbstractEnsemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAbstractEnsemble_Query(), ecorePackage.getEString(), "query", "empty", 0, 1, AbstractEnsemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAbstractEnsemble_Key(), ecorePackage.getEString(), "key", null, 0, 1, AbstractEnsemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(emptyEClass, Empty.class, "Empty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(ensembleEClass, Ensemble.class, "Ensemble", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEnsemble_Shapes(), this.getShape(), null, "shapes", null, 0, -1, Ensemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEnsemble_Ensembles(), this.getAbstractEnsemble(), null, "ensembles", null, 0, -1, Ensemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(connectionEClass, Connection.class, "Connection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getConnection_Source(), this.getShape(), null, "source", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		getConnection_Source().getEKeys().add(this.getShape_Key());
-		initEReference(getConnection_Target(), this.getShape(), null, "target", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		getConnection_Target().getEKeys().add(this.getShape_Key());
+		initEReference(getConnection_Source(), this.getAbstractEnsemble(), null, "source", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getConnection_Source().getEKeys().add(this.getAbstractEnsemble_Key());
+		initEReference(getConnection_Target(), this.getAbstractEnsemble(), null, "target", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getConnection_Target().getEKeys().add(this.getAbstractEnsemble_Key());
 		initEAttribute(getConnection_Name(), ecorePackage.getEString(), "name", "all", 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConnection_Temp(), ecorePackage.getEBoolean(), "temp", "false", 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConnection_OriginalSource(), this.getShape(), null, "originalSource", null, 0, -1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getConnection_OriginalTarget(), this.getShape(), null, "originalTarget", null, 0, -1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConnection_OriginalSource(), this.getAbstractEnsemble(), null, "originalSource", null, 0, -1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConnection_OriginalTarget(), this.getAbstractEnsemble(), null, "originalTarget", null, 0, -1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConnection_Key(), ecorePackage.getEString(), "key", null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(notAllowedEClass, NotAllowed.class, "NotAllowed", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

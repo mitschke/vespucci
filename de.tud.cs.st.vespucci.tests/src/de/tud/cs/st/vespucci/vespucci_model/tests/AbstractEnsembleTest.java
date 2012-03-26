@@ -33,71 +33,68 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.tests;
 
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 
 import junit.framework.TestCase;
 
-import junit.textui.TestRunner;
-
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Shape</b></em>'.
+ * A test case for the model object '<em><b>Abstract Ensemble</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections() <em>Source Connections</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections() <em>Target Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getSourceConnections() <em>Source Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getTargetConnections() <em>Target Connections</em>}</li>
  * </ul>
  * </p>
  * @generated
  */
-public abstract class ShapeTest extends TestCase {
+public abstract class AbstractEnsembleTest extends TestCase {
 
 	/**
-	 * The fixture for this Shape test case.
+	 * The fixture for this Abstract Ensemble test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Shape fixture = null;
+	protected AbstractEnsemble fixture = null;
 
 	/**
-	 * Constructs a new Shape test case with the given name.
+	 * Constructs a new Abstract Ensemble test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ShapeTest(String name) {
+	public AbstractEnsembleTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Sets the fixture for this Shape test case.
+	 * Sets the fixture for this Abstract Ensemble test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void setFixture(Shape fixture) {
+	protected void setFixture(AbstractEnsemble fixture) {
 		this.fixture = fixture;
 	}
 
 	/**
-	 * Returns the fixture for this Shape test case.
+	 * Returns the fixture for this Abstract Ensemble test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Shape getFixture() {
+	protected AbstractEnsemble getFixture() {
 		return fixture;
 	}
 
 	/**
-	 * Tests the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections() <em>Source Connections</em>}' feature getter.
+	 * Tests the '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getSourceConnections() <em>Source Connections</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getSourceConnections()
 	 * @generated
 	 */
 	public void testGetSourceConnections() {
@@ -107,10 +104,10 @@ public abstract class ShapeTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections() <em>Target Connections</em>}' feature getter.
+	 * Tests the '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getTargetConnections() <em>Target Connections</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getTargetConnections()
 	 * @generated
 	 */
 	public void testGetTargetConnections() {
@@ -119,4 +116,4 @@ public abstract class ShapeTest extends TestCase {
 		fail();
 	}
 
-} //ShapeTest
+} //AbstractEnsembleTest

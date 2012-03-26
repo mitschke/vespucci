@@ -81,7 +81,7 @@ public class EmptyName2EditPart extends CompartmentEditPart implements
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5005;
+	public static final int VISUAL_ID = 5012;
 
 	/**
 	 * @generated
@@ -323,7 +323,7 @@ public class EmptyName2EditPart extends CompartmentEditPart implements
 		if (parser == null) {
 			parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
 					.getParser(
-							de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003,
+							de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3005,
 							getParserElement(),
 							de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 									.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyName2EditPart.VISUAL_ID));

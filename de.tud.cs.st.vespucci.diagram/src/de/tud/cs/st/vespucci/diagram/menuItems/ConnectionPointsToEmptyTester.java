@@ -36,9 +36,9 @@ package de.tud.cs.st.vespucci.diagram.menuItems;
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * PropertyTester to check whether a connection starts or ends at an Empty Ensemble.
@@ -56,7 +56,7 @@ public class ConnectionPointsToEmptyTester extends PropertyTester {
 	}
 
 	// XXX: This method should be part of the Connection interface.
-	private static Shape getOriginalSource(final Connection conn) {
+	private static AbstractEnsemble getOriginalSource(final Connection conn) {
 		if (conn.getOriginalSource().isEmpty()) {
 			return conn.getSource();
 		} else {
@@ -65,7 +65,7 @@ public class ConnectionPointsToEmptyTester extends PropertyTester {
 	}
 
 	// XXX: This method should be part of the Connection interface
-	private static Shape getOriginalTarget(final Connection conn) {
+	private static AbstractEnsemble getOriginalTarget(final Connection conn) {
 		if (conn.getOriginalTarget().isEmpty()) {
 			return conn.getTarget();
 		} else {

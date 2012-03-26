@@ -45,8 +45,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
@@ -56,23 +56,22 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl#getShapes <em>Shapes</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl#getEnsembles <em>Ensembles</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class EnsembleImpl extends ShapeImpl implements Ensemble {
+public class EnsembleImpl extends AbstractEnsembleImpl implements Ensemble {
 	/**
-	 * The cached value of the '{@link #getShapes() <em>Shapes</em>}' containment reference list.
+	 * The cached value of the '{@link #getEnsembles() <em>Ensembles</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getShapes()
+	 * @see #getEnsembles()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Shape> shapes;
-
+	protected EList<AbstractEnsemble> ensembles;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -98,11 +97,11 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Shape> getShapes() {
-		if (shapes == null) {
-			shapes = new EObjectContainmentEList<Shape>(Shape.class, this, Vespucci_modelPackage.ENSEMBLE__SHAPES);
+	public EList<AbstractEnsemble> getEnsembles() {
+		if (ensembles == null) {
+			ensembles = new EObjectContainmentEList<AbstractEnsemble>(AbstractEnsemble.class, this, Vespucci_modelPackage.ENSEMBLE__ENSEMBLES);
 		}
-		return shapes;
+		return ensembles;
 	}
 
 	/**
@@ -113,8 +112,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
-				return ((InternalEList<?>)getShapes()).basicRemove(otherEnd, msgs);
+			case Vespucci_modelPackage.ENSEMBLE__ENSEMBLES:
+				return ((InternalEList<?>)getEnsembles()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -127,8 +126,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
-				return getShapes();
+			case Vespucci_modelPackage.ENSEMBLE__ENSEMBLES:
+				return getEnsembles();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -142,9 +141,9 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
-				getShapes().clear();
-				getShapes().addAll((Collection<? extends Shape>)newValue);
+			case Vespucci_modelPackage.ENSEMBLE__ENSEMBLES:
+				getEnsembles().clear();
+				getEnsembles().addAll((Collection<? extends AbstractEnsemble>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -158,8 +157,8 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
-				getShapes().clear();
+			case Vespucci_modelPackage.ENSEMBLE__ENSEMBLES:
+				getEnsembles().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -173,21 +172,10 @@ public class EnsembleImpl extends ShapeImpl implements Ensemble {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
-				return shapes != null && !shapes.isEmpty();
+			case Vespucci_modelPackage.ENSEMBLE__ENSEMBLES:
+				return ensembles != null && !ensembles.isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-	
-	/**
-	 * Autoadjusts nonleaf-query to derived if empty
-	 * @generated NOT
-	 * @author Robert Cibulla
-	 */
-	public void adjustQueryIfNonLeaf(){
-		if(getQuery().compareTo("empty") == 0 && !getShapes().isEmpty()){
-			setQuery("derived");
-		}
 	}
 
 } //EnsembleImpl

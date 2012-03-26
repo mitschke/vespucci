@@ -3,49 +3,49 @@
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:trace="http://www.eclipse.org/gmf/2006/Trace">
   <nodeTraces
-      visualID="2003"
-      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Ensemble') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'ArchitectureModel') and _containmentMF_.name = 'shapes')">
+      visualID="2005"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Ensemble') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'ArchitectureModel') and _containmentMF_.name = 'ensembles')">
     <nodeLabelTraces
-        visualID="5009"
+        visualID="5015"
         queryText="true"/>
     <nodeLabelTraces
-        visualID="5010"
+        visualID="5016"
         queryText="true"/>
     <compartmentTraces
-        visualID="7005"
+        visualID="7007"
         queryText="true"/>
     <compartmentTraces
-        visualID="7006"
+        visualID="7008"
         queryText="true"/>
   </nodeTraces>
   <nodeTraces
-      visualID="2004"
-      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Empty') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'ArchitectureModel') and _containmentMF_.name = 'shapes')">
+      visualID="2006"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Empty') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'ArchitectureModel') and _containmentMF_.name = 'ensembles')">
     <nodeLabelTraces
-        visualID="5011"
+        visualID="5017"
         queryText="true"/>
   </nodeTraces>
   <childNodeTraces
-      visualID="3001"
-      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Ensemble') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Ensemble') and _containmentMF_.name = 'shapes')">
+      visualID="3004"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Ensemble') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Ensemble') and _containmentMF_.name = 'ensembles')">
     <nodeLabelTraces
-        visualID="5006"
+        visualID="5013"
         queryText="true"/>
     <nodeLabelTraces
-        visualID="5007"
+        visualID="5014"
         queryText="true"/>
     <compartmentTraces
-        visualID="7002"
+        visualID="7009"
         queryText="true"/>
     <compartmentTraces
-        visualID="7004"
+        visualID="7010"
         queryText="true"/>
   </childNodeTraces>
   <childNodeTraces
-      visualID="3003"
-      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Empty') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Ensemble') and _containmentMF_.name = 'shapes')">
+      visualID="3005"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Empty') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://vespucci.editor/2011-11-29' and _eClass_.name = 'Ensemble') and _containmentMF_.name = 'ensembles')">
     <nodeLabelTraces
-        visualID="5005"
+        visualID="5012"
         queryText="true"/>
   </childNodeTraces>
   <linkTraces

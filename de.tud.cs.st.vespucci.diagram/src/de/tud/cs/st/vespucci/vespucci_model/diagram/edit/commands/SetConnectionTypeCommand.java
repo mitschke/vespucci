@@ -64,8 +64,8 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.impl.EdgeImpl;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * This command changes the class of the connection, e.g. from Incoming to Outgoing. Thus the class
@@ -311,14 +311,14 @@ public class SetConnectionTypeCommand implements Command {
 
 			// Check for source/target-history; those must be copied or the history will be lost
 			// after execution of the delete command
-			if (value instanceof EList && ((EList) value).size() != 0 && ((EList) value).get(0) instanceof Shape) {
+			if (value instanceof EList && ((EList) value).size() != 0 && ((EList) value).get(0) instanceof AbstractEnsemble) {
 				// copy source/target-history
-				final EList<Shape> shapeList = new BasicEList<Shape>();
-				for (final Shape shape : (EList<Shape>) value) {
-					shapeList.add(shape);
+				final EList<AbstractEnsemble> ensembleList = new BasicEList<AbstractEnsemble>();
+				for (final AbstractEnsemble ens : (EList<AbstractEnsemble>) value) {
+					ensembleList.add(ens);
 				}
 				
-				featureMap.put(feature, shapeList);
+				featureMap.put(feature, ensembleList);
 			} else {
 				featureMap.put(feature, value);
 			}

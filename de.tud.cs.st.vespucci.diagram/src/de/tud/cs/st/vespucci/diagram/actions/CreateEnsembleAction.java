@@ -67,7 +67,7 @@ public class CreateEnsembleAction implements IObjectActionDelegate {
 	@Override
 	public void run(final IAction action) {
 		final CreateViewRequest ensembleRequest = CreateViewRequestFactory.getCreateShapeRequest(
-				VespucciElementTypes.Ensemble_2003, selectedElement.getDiagramPreferencesHint());
+				VespucciElementTypes.Ensemble_2005, selectedElement.getDiagramPreferencesHint());
 		ensembleRequest.setLocation(EditPartService.getRecentRightClickPos());
 
 		final Command createCommand = selectedElement.getCommand(ensembleRequest);

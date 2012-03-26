@@ -108,7 +108,7 @@ public class ArchitectureModelItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__SHAPES);
+			childrenFeatures.add(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__ENSEMBLES);
 		}
 		return childrenFeatures;
 	}
@@ -163,7 +163,7 @@ public class ArchitectureModelItemProvider
 			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__ENSEMBLES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -183,12 +183,12 @@ public class ArchitectureModelItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__SHAPES,
+				(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__ENSEMBLES,
 				 Vespucci_modelFactory.eINSTANCE.createEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__SHAPES,
+				(Vespucci_modelPackage.Literals.ARCHITECTURE_MODEL__ENSEMBLES,
 				 Vespucci_modelFactory.eINSTANCE.createEnsemble()));
 	}
 

@@ -84,11 +84,11 @@ public class ViolationCreateCommand extends EditElementCommand {
 			return false;
 		}
 		if (source != null
-				&& false == source instanceof de.tud.cs.st.vespucci.vespucci_model.Shape) {
+				&& false == source instanceof de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) {
 			return false;
 		}
 		if (target != null
-				&& false == target instanceof de.tud.cs.st.vespucci.vespucci_model.Shape) {
+				&& false == target instanceof de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) {
 			return false;
 		}
 		if (getSource() == null) {
@@ -159,15 +159,15 @@ public class ViolationCreateCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	protected de.tud.cs.st.vespucci.vespucci_model.Shape getSource() {
-		return (de.tud.cs.st.vespucci.vespucci_model.Shape) source;
+	protected de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getSource() {
+		return (de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) source;
 	}
 
 	/**
 	 * @generated
 	 */
-	protected de.tud.cs.st.vespucci.vespucci_model.Shape getTarget() {
-		return (de.tud.cs.st.vespucci.vespucci_model.Shape) target;
+	protected de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getTarget() {
+		return (de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) target;
 	}
 
 	/**

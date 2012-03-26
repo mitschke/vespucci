@@ -71,12 +71,12 @@ public interface Connection extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Source</em>' reference.
-	 * @see #setSource(Shape)
+	 * @see #setSource(AbstractEnsemble)
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_Source()
 	 * @model keys="key"
 	 * @generated
 	 */
-	Shape getSource();
+	AbstractEnsemble getSource();
 
 	/**
 	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getSource <em>Source</em>}' reference.
@@ -86,7 +86,7 @@ public interface Connection extends EObject {
 	 * @see #getSource()
 	 * @generated
 	 */
-	void setSource(Shape value);
+	void setSource(AbstractEnsemble value);
 
 	/**
 	 * Returns the value of the '<em><b>Target</b></em>' reference.
@@ -97,12 +97,12 @@ public interface Connection extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target</em>' reference.
-	 * @see #setTarget(Shape)
+	 * @see #setTarget(AbstractEnsemble)
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getConnection_Target()
 	 * @model keys="key"
 	 * @generated
 	 */
-	Shape getTarget();
+	AbstractEnsemble getTarget();
 
 	/**
 	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Connection#getTarget <em>Target</em>}' reference.
@@ -112,7 +112,7 @@ public interface Connection extends EObject {
 	 * @see #getTarget()
 	 * @generated
 	 */
-	void setTarget(Shape value);
+	void setTarget(AbstractEnsemble value);
 
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -170,7 +170,7 @@ public interface Connection extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Original Source</b></em>' reference list.
-	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
+	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * Seems to be more of an history of previous targets. Used for collapse.
@@ -181,11 +181,11 @@ public interface Connection extends EObject {
 	 * @model
 	 * @generated
 	 */
-	EList<Shape> getOriginalSource();
+	EList<AbstractEnsemble> getOriginalSource();
 
 	/**
 	 * Returns the value of the '<em><b>Original Target</b></em>' reference list.
-	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
+	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * Seems to be more of an history of previous targets. Used for collapse.
@@ -196,7 +196,7 @@ public interface Connection extends EObject {
 	 * @model
 	 * @generated
 	 */
-	EList<Shape> getOriginalTarget();
+	EList<AbstractEnsemble> getOriginalTarget();
 
 	/**
 	 * Returns the value of the '<em><b>Key</b></em>' attribute.

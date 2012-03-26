@@ -53,7 +53,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 
 import de.tud.cs.st.vespucci.exceptions.VespucciUnexpectedException;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.impl.EnsembleImpl;
 
@@ -169,12 +169,12 @@ public class EnsembleQueryPropertySection extends
 	 */
 	@Override
 	protected void setPropertyValue(final EObject object, final Object value) {
-		if (object instanceof Shape) {
+		if (object instanceof AbstractEnsemble) {
 			final EPackage epackage = org.eclipse.emf.ecore.EPackage.Registry.INSTANCE
 					.getEPackage(VESPUCCI_NAMESPACE_URL);
 			final Vespucci_modelPackage vesPackage = (Vespucci_modelPackage) epackage;
 
-			object.eSet(vesPackage.getShape_Query(), value);
+			object.eSet(vesPackage.getAbstractEnsemble_Query(), value);
 		}
 	}
 
@@ -191,7 +191,7 @@ public class EnsembleQueryPropertySection extends
 		if (eObject instanceof EnsembleImpl) {
 			getSectionComposite().setVisible(true);
 			String trimmedQuery = ((String) eObject.eGet(vesPackage
-					.getShape_Query()));
+					.getAbstractEnsemble_Query()));
 			return trimmedQuery;
 		} else {
 			getSectionComposite().setVisible(false);

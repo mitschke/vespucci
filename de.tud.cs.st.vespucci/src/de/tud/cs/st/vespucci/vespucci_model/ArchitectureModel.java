@@ -45,7 +45,7 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getShapes <em>Shapes</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getEnsembles <em>Ensembles</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel#getConnections <em>Connections</em>}</li>
  * </ul>
  * </p>
@@ -56,20 +56,20 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface ArchitectureModel extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Shapes</b></em>' containment reference list.
-	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
+	 * Returns the value of the '<em><b>Ensembles</b></em>' containment reference list.
+	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Shapes</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Ensembles</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Shapes</em>' containment reference list.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getArchitectureModel_Shapes()
+	 * @return the value of the '<em>Ensembles</em>' containment reference list.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getArchitectureModel_Ensembles()
 	 * @model containment="true" keys="key"
 	 * @generated
 	 */
-	EList<Shape> getShapes();
+	EList<AbstractEnsemble> getEnsembles();
 
 	/**
 	 * Returns the value of the '<em><b>Connections</b></em>' containment reference list.

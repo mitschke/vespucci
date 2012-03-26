@@ -67,7 +67,7 @@ public class CreatePackageAction implements IObjectActionDelegate {
 	@Override
 	public void run(final IAction action) {
 		final CreateViewRequest packageRequest = CreateViewRequestFactory.getCreateShapeRequest(
-				VespucciElementTypes.Ensemble_2003, selectedElement.getDiagramPreferencesHint());
+				VespucciElementTypes.Ensemble_2005, selectedElement.getDiagramPreferencesHint());
 		packageRequest.setLocation(EditPartService.getRecentRightClickPos());
 
 		final Command createCommand = selectedElement.getCommand(packageRequest);

@@ -60,7 +60,7 @@ public class Ensemble2ItemSemanticEditPolicy
 	 */
 	public Ensemble2ItemSemanticEditPolicy() {
 		super(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001);
+				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3004);
 	}
 
 	/**

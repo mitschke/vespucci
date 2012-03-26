@@ -93,10 +93,10 @@ public class OutgoingReorientCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected boolean canReorientSource() {
-		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
+		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape target = getLink()
+		de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target = getLink()
 				.getTarget();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel)) {
 			return false;
@@ -112,10 +112,10 @@ public class OutgoingReorientCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected boolean canReorientTarget() {
-		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.Shape)) {
+		if (!(oldEnd instanceof de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble && newEnd instanceof de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble)) {
 			return false;
 		}
-		de.tud.cs.st.vespucci.vespucci_model.Shape source = getLink()
+		de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source = getLink()
 				.getSource();
 		if (!(getLink().eContainer() instanceof de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel)) {
 			return false;
@@ -210,28 +210,28 @@ public class OutgoingReorientCommand extends EditElementCommand {
 	/**
 	 * @generated
 	 */
-	protected de.tud.cs.st.vespucci.vespucci_model.Shape getOldSource() {
-		return (de.tud.cs.st.vespucci.vespucci_model.Shape) oldEnd;
+	protected de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getOldSource() {
+		return (de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) oldEnd;
 	}
 
 	/**
 	 * @generated
 	 */
-	protected de.tud.cs.st.vespucci.vespucci_model.Shape getNewSource() {
-		return (de.tud.cs.st.vespucci.vespucci_model.Shape) newEnd;
+	protected de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getNewSource() {
+		return (de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) newEnd;
 	}
 
 	/**
 	 * @generated
 	 */
-	protected de.tud.cs.st.vespucci.vespucci_model.Shape getOldTarget() {
-		return (de.tud.cs.st.vespucci.vespucci_model.Shape) oldEnd;
+	protected de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getOldTarget() {
+		return (de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) oldEnd;
 	}
 
 	/**
 	 * @generated
 	 */
-	protected de.tud.cs.st.vespucci.vespucci_model.Shape getNewTarget() {
-		return (de.tud.cs.st.vespucci.vespucci_model.Shape) newEnd;
+	protected de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getNewTarget() {
+		return (de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) newEnd;
 	}
 }

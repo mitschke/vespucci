@@ -58,7 +58,7 @@ public class Empty2ItemSemanticEditPolicy
 	 */
 	public Empty2ItemSemanticEditPolicy() {
 		super(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003);
+				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3005);
 	}
 
 	/**

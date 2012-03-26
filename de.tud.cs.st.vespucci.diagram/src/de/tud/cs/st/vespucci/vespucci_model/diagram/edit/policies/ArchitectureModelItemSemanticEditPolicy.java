@@ -59,12 +59,12 @@ public class ArchitectureModelItemSemanticEditPolicy
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003 == req
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2005 == req
 				.getElementType()) {
 			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.EnsembleCreateCommand(
 					req));
 		}
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2004 == req
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_2006 == req
 				.getElementType()) {
 			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.EmptyCreateCommand(
 					req));

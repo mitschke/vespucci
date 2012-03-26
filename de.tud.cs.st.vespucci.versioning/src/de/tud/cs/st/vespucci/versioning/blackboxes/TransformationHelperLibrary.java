@@ -63,7 +63,7 @@ public class TransformationHelperLibrary {
 	 * Maps the original model shapes to the resulting ones after the
 	 * transformation.
 	 */
-	private static HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.Shape> modelShapes = new HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.Shape>();
+	private static HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble> modelShapes = new HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble>();
 	
 	/**
 	 * Maps the original model connections to the resulting ones after the
@@ -165,11 +165,11 @@ public class TransformationHelperLibrary {
 	 * Remembers that <code>result</code> is the transformation result
 	 * of <code>self</code>.
 	 * 
-	 * @param result The resulting Shape (after transformation)
+	 * @param result The resulting AbstractEnsemble (after transformation)
 	 * @param self The original Shape
 	 */
 	@Operation(contextual=true)
-	public static void remember(de.tud.cs.st.vespucci.vespucci_model.Shape result, Shape self) {
+	public static void remember(de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble result, Shape self) {
 		modelShapes.put(self, result);
 	}	
 	
@@ -218,7 +218,7 @@ public class TransformationHelperLibrary {
 	 * @return The remembered transformation result
 	 */
 	@Operation(contextual=true)
-	public static de.tud.cs.st.vespucci.vespucci_model.Shape getRememberedShape(Object self) {
+	public static de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getRememberedShape(Object self) {
 		return modelShapes.get(self);
 	}
 	

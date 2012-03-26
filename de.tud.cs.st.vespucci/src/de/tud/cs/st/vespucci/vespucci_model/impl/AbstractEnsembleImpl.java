@@ -49,9 +49,9 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
@@ -61,18 +61,18 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getSourceConnections <em>Source Connections</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getTargetConnections <em>Target Connections</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getName <em>Name</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getDescription <em>Description</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getQuery <em>Query</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ShapeImpl#getKey <em>Key</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.AbstractEnsembleImpl#getSourceConnections <em>Source Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.AbstractEnsembleImpl#getTargetConnections <em>Target Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.AbstractEnsembleImpl#getName <em>Name</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.AbstractEnsembleImpl#getDescription <em>Description</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.AbstractEnsembleImpl#getQuery <em>Query</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.AbstractEnsembleImpl#getKey <em>Key</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public abstract class ShapeImpl extends EObjectImpl implements Shape {
+public abstract class AbstractEnsembleImpl extends EObjectImpl implements AbstractEnsemble {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -158,7 +158,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ShapeImpl() {
+	protected AbstractEnsembleImpl() {
 		super();
 	}
 
@@ -169,7 +169,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return Vespucci_modelPackage.Literals.SHAPE;
+		return Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE;
 	}
 
 	/**Filters the connections and shows the derived source list.
@@ -183,7 +183,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	public EList<Connection> getSourceConnections() {
 		List<Connection> connections = getConnectionsHelper(true);
 		return new EcoreEList.UnmodifiableEList<Connection>(this, 
-				Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS, connections.size(), connections.toArray());
+				Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS, connections.size(), connections.toArray());
 	}
 	
 	
@@ -199,7 +199,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	public EList<Connection> getTargetConnections() {
 		List<Connection> connections = getConnectionsHelper(false);
 		return new EcoreEList.UnmodifiableEList<Connection>(this, 
-				Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS, connections.size(), connections.toArray());
+				Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS, connections.size(), connections.toArray());
 	}
 	
 	
@@ -288,7 +288,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.SHAPE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.ABSTRACT_ENSEMBLE__NAME, oldName, name));
 	}
 
 	/**
@@ -309,7 +309,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 		String oldDescription = description;
 		description = newDescription;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.SHAPE__DESCRIPTION, oldDescription, description));
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.ABSTRACT_ENSEMBLE__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -330,7 +330,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 		String oldQuery = query;
 		query = newQuery;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.SHAPE__QUERY, oldQuery, query));
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.ABSTRACT_ENSEMBLE__QUERY, oldQuery, query));
 	}
 
 	/**
@@ -355,7 +355,7 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 		String oldKey = key;
 		key = newKey;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.SHAPE__KEY, oldKey, key));
+			eNotify(new ENotificationImpl(this, Notification.SET, Vespucci_modelPackage.ABSTRACT_ENSEMBLE__KEY, oldKey, key));
 	}
 
 	/**
@@ -366,17 +366,17 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPE__SOURCE_CONNECTIONS:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS:
 				return getSourceConnections();
-			case Vespucci_modelPackage.SHAPE__TARGET_CONNECTIONS:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS:
 				return getTargetConnections();
-			case Vespucci_modelPackage.SHAPE__NAME:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__NAME:
 				return getName();
-			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__DESCRIPTION:
 				return getDescription();
-			case Vespucci_modelPackage.SHAPE__QUERY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__QUERY:
 				return getQuery();
-			case Vespucci_modelPackage.SHAPE__KEY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__KEY:
 				return getKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -391,24 +391,24 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPE__SOURCE_CONNECTIONS:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS:
 				getSourceConnections().clear();
 				getSourceConnections().addAll((Collection<? extends Connection>)newValue);
 				return;
-			case Vespucci_modelPackage.SHAPE__TARGET_CONNECTIONS:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS:
 				getTargetConnections().clear();
 				getTargetConnections().addAll((Collection<? extends Connection>)newValue);
 				return;
-			case Vespucci_modelPackage.SHAPE__NAME:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__NAME:
 				setName((String)newValue);
 				return;
-			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
-			case Vespucci_modelPackage.SHAPE__QUERY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__QUERY:
 				setQuery((String)newValue);
 				return;
-			case Vespucci_modelPackage.SHAPE__KEY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__KEY:
 				setKey((String)newValue);
 				return;
 		}
@@ -423,22 +423,22 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPE__SOURCE_CONNECTIONS:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS:
 				getSourceConnections().clear();
 				return;
-			case Vespucci_modelPackage.SHAPE__TARGET_CONNECTIONS:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS:
 				getTargetConnections().clear();
 				return;
-			case Vespucci_modelPackage.SHAPE__NAME:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
-			case Vespucci_modelPackage.SHAPE__QUERY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__QUERY:
 				setQuery(QUERY_EDEFAULT);
 				return;
-			case Vespucci_modelPackage.SHAPE__KEY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__KEY:
 				setKey(KEY_EDEFAULT);
 				return;
 		}
@@ -453,17 +453,17 @@ public abstract class ShapeImpl extends EObjectImpl implements Shape {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Vespucci_modelPackage.SHAPE__SOURCE_CONNECTIONS:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS:
 				return !getSourceConnections().isEmpty();
-			case Vespucci_modelPackage.SHAPE__TARGET_CONNECTIONS:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS:
 				return !getTargetConnections().isEmpty();
-			case Vespucci_modelPackage.SHAPE__NAME:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
-			case Vespucci_modelPackage.SHAPE__QUERY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__QUERY:
 				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
-			case Vespucci_modelPackage.SHAPE__KEY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__KEY:
 				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
 		}
 		return super.eIsSet(featureID);

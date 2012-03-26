@@ -87,7 +87,7 @@ public class EnsembleCreateCommand extends EditElementCommand {
 				.createEnsemble();
 
 		de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel owner = (de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel) getElementToEdit();
-		owner.getShapes().add(newElement);
+		owner.getEnsembles().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

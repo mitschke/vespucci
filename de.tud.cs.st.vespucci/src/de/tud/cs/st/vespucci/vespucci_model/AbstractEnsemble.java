@@ -30,9 +30,6 @@
  *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
- * 
- *
- * $Id$
  */
 package de.tud.cs.st.vespucci.vespucci_model;
 
@@ -42,26 +39,26 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Shape</b></em>'.
+ * A representation of the model object '<em><b>Abstract Ensemble</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getSourceConnections <em>Source Connections</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getTargetConnections <em>Target Connections</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getName <em>Name</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDescription <em>Description</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getQuery <em>Query</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getKey <em>Key</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getSourceConnections <em>Source Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getTargetConnections <em>Target Connections</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getName <em>Name</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getDescription <em>Description</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getQuery <em>Query</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getKey <em>Key</em>}</li>
  * </ul>
  * </p>
  *
- * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape()
+ * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble()
  * @model abstract="true"
  * @generated
  */
-public interface Shape extends EObject {
+public interface AbstractEnsemble extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Source Connections</b></em>' reference list.
 	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Connection}.
@@ -72,7 +69,7 @@ public interface Shape extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Source Connections</em>' reference list.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_SourceConnections()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble_SourceConnections()
 	 * @model resolveProxies="false" keys="key" transient="true" volatile="true" derived="true"
 	 * @generated
 	 */
@@ -88,7 +85,7 @@ public interface Shape extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Connections</em>' reference list.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_TargetConnections()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble_TargetConnections()
 	 * @model resolveProxies="false" keys="key" transient="true" volatile="true" derived="true"
 	 * @generated
 	 */
@@ -104,14 +101,14 @@ public interface Shape extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_Name()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble_Name()
 	 * @model
 	 * @generated
 	 */
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -131,14 +128,14 @@ public interface Shape extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Description</em>' attribute.
 	 * @see #setDescription(String)
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_Description()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble_Description()
 	 * @model default="<description>"
 	 * @generated
 	 */
 	String getDescription();
 
 	/**
-	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getDescription <em>Description</em>}' attribute.
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getDescription <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Description</em>' attribute.
@@ -158,14 +155,14 @@ public interface Shape extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query</em>' attribute.
 	 * @see #setQuery(String)
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_Query()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble_Query()
 	 * @model default="empty"
 	 * @generated
 	 */
 	String getQuery();
 
 	/**
-	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getQuery <em>Query</em>}' attribute.
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getQuery <em>Query</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Query</em>' attribute.
@@ -184,14 +181,14 @@ public interface Shape extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Key</em>' attribute.
 	 * @see #setKey(String)
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getShape_Key()
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble_Key()
 	 * @model
 	 * @generated
 	 */
 	String getKey();
 
 	/**
-	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.Shape#getKey <em>Key</em>}' attribute.
+	 * Sets the value of the '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getKey <em>Key</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Key</em>' attribute.
@@ -200,4 +197,4 @@ public interface Shape extends EObject {
 	 */
 	void setKey(String value);
 
-} // Shape
+} // AbstractEnsemble

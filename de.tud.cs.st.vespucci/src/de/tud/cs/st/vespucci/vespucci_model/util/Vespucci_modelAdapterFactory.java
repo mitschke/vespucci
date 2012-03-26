@@ -42,6 +42,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
@@ -53,7 +54,6 @@ import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
@@ -118,8 +118,8 @@ public class Vespucci_modelAdapterFactory extends AdapterFactoryImpl {
 				return createArchitectureModelAdapter();
 			}
 			@Override
-			public Adapter caseShape(Shape object) {
-				return createShapeAdapter();
+			public Adapter caseAbstractEnsemble(AbstractEnsemble object) {
+				return createAbstractEnsembleAdapter();
 			}
 			@Override
 			public Adapter caseEmpty(Empty object) {
@@ -200,16 +200,16 @@ public class Vespucci_modelAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.Shape <em>Shape</em>}'.
+	 * Creates a new adapter for an object of class '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble <em>Abstract Ensemble</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Shape
+	 * @see de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble
 	 * @generated
 	 */
-	public Adapter createShapeAdapter() {
+	public Adapter createAbstractEnsembleAdapter() {
 		return null;
 	}
 

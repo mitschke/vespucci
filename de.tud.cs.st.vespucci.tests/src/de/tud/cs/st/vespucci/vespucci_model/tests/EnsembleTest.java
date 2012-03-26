@@ -44,7 +44,7 @@ import junit.textui.TestRunner;
  * <!-- end-user-doc -->
  * @generated
  */
-public class EnsembleTest extends ShapeTest {
+public class EnsembleTest extends AbstractEnsembleTest {
 
 	/**
 	 * <!-- begin-user-doc -->

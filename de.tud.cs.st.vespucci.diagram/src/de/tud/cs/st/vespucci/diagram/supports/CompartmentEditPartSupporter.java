@@ -49,8 +49,8 @@ import org.eclipse.gmf.runtime.notation.impl.NodeImpl;
 import org.eclipse.gmf.runtime.notation.impl.ShapeImpl;
 import org.eclipse.swt.graphics.Color;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * Collapsement supporter for EnsembleEditPart.
@@ -127,17 +127,17 @@ public class CompartmentEditPartSupporter {
 				edge.setSource((ShapeImpl) editPartOfCompartment.getModel());
 				final Connection con = (Connection) edge.getElement();
 				con.setTemp(true);
-				final EList<Shape> oSources = con.getOriginalSource();
+				final EList<AbstractEnsemble> oSources = con.getOriginalSource();
 				oSources.add(con.getSource());
-				con.setSource((Shape) ((ShapeImpl) editPartOfCompartment.getModel()).getElement());
+				con.setSource((AbstractEnsemble) ((ShapeImpl) editPartOfCompartment.getModel()).getElement());
 			} else {
 				// readjust at target
 				edge.setTarget((ShapeImpl) editPartOfCompartment.getModel());
 				final Connection con = (Connection) edge.getElement();
 				con.setTemp(true);
-				final EList<Shape> oTargets = con.getOriginalTarget();
+				final EList<AbstractEnsemble> oTargets = con.getOriginalTarget();
 				oTargets.add(con.getTarget());
-				con.setTarget((Shape) ((ShapeImpl) editPartOfCompartment.getModel()).getElement());
+				con.setTarget((AbstractEnsemble) ((ShapeImpl) editPartOfCompartment.getModel()).getElement());
 			}
 		}
 	}
@@ -150,12 +150,12 @@ public class CompartmentEditPartSupporter {
 	 * @param shapeOfNode
 	 *            Model shape of the view to be searched and returned.
 	 */
-	private static NodeImpl getViewFromModel(final EditPart containerEditPart, final Shape shapeOfNode) {
+	private static NodeImpl getViewFromModel(final EditPart containerEditPart, final AbstractEnsemble shapeOfNode) {
 		final List<EditPart> editParts = EditPartService.getAllShapesInSideCompartment(containerEditPart);
 		for (final EditPart i : editParts) {
 			if (i.getModel() instanceof NodeImpl) {
 				final NodeImpl shapeImpl = (NodeImpl) i.getModel();
-				final Shape element = (Shape) shapeImpl.getElement();
+				final AbstractEnsemble element = (AbstractEnsemble) shapeImpl.getElement();
 				if (element.equals(shapeOfNode)) {
 					return shapeImpl;
 				}
@@ -178,8 +178,8 @@ public class CompartmentEditPartSupporter {
 			if (con.isTemp()) {
 				if (edgeToRestore.getSource() == editPartOfCompartment.getModel() && (!con.getOriginalSource().isEmpty())) {
 					// readjust source
-					final EList<Shape> oSources = con.getOriginalSource();
-					final Shape source = oSources.remove(oSources.size() - 1);
+					final EList<AbstractEnsemble> oSources = con.getOriginalSource();
+					final AbstractEnsemble source = oSources.remove(oSources.size() - 1);
 
 					final NodeImpl shapeImpl = getViewFromModel(compartmentToSupport, source);
 
@@ -188,8 +188,8 @@ public class CompartmentEditPartSupporter {
 					con.setSource(source);
 				} else if (edgeToRestore.getTarget() == editPartOfCompartment.getModel() && (!con.getOriginalTarget().isEmpty())) {
 					// readjust target
-					final EList<Shape> oTargets = con.getOriginalTarget();
-					final Shape target = oTargets.remove(oTargets.size() - 1);
+					final EList<AbstractEnsemble> oTargets = con.getOriginalTarget();
+					final AbstractEnsemble target = oTargets.remove(oTargets.size() - 1);
 
 					final NodeImpl shapeImpl = getViewFromModel(compartmentToSupport, target);
 					edgeToRestore.setTarget(shapeImpl);

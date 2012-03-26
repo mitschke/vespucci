@@ -146,10 +146,9 @@
     <domainDiagramElement
         href="vespucci.genmodel#//vespucci_model/ArchitectureModel"/>
     <childNodes
-        visualID="3001"
+        visualID="3004"
         editPartClassName="Ensemble2EditPart"
         itemSemanticEditPolicyClassName="Ensemble2ItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleViewFactory"
         canonicalEditPolicyClassName="Ensemble2CanonicalEditPolicy"
         compartments="//@diagram/@compartments.2 //@diagram/@compartments.3"
         graphicalNodeEditPolicyClassName="Ensemble2GraphicalNodeEditPolicy"
@@ -168,15 +167,14 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Ensemble"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Ensemble/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/Ensemble/ensembles"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Ensemble/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/Ensemble/ensembles"/>
       </modelFacet>
       <labels
-          visualID="5006"
+          visualID="5013"
           editPartClassName="EnsembleName2EditPart"
           itemSemanticEditPolicyClassName="EnsembleName2ItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleNameViewFactory"
           elementIcon="true">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
@@ -188,14 +186,13 @@
             xsi:type="gmfgen:FeatureLabelModelFacet"
             parser="//@labelParsers/@implementations.0">
           <metaFeatures
-              href="vespucci.genmodel#//vespucci_model/Shape/name"/>
+              href="vespucci.genmodel#//vespucci_model/AbstractEnsemble/name"/>
         </modelFacet>
       </labels>
       <labels
-          visualID="5007"
+          visualID="5014"
           editPartClassName="EnsembleDescription2EditPart"
-          itemSemanticEditPolicyClassName="EnsembleDescription2ItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleDescriptionViewFactory">
+          itemSemanticEditPolicyClassName="EnsembleDescription2ItemSemanticEditPolicy">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -209,15 +206,14 @@
             editorPattern=""
             editPattern="">
           <metaFeatures
-              href="vespucci.genmodel#//vespucci_model/Shape/description"/>
+              href="vespucci.genmodel#//vespucci_model/AbstractEnsemble/description"/>
         </modelFacet>
       </labels>
     </childNodes>
     <childNodes
-        visualID="3003"
+        visualID="3005"
         editPartClassName="Empty2EditPart"
         itemSemanticEditPolicyClassName="Empty2ItemSemanticEditPolicy"
-        notationViewFactoryClassName="EmptyViewFactory"
         canonicalEditPolicyClassName="Empty2CanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="Empty2GraphicalNodeEditPolicy"
         createCommandClassName="Empty2CreateCommand"
@@ -243,15 +239,14 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Empty"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Ensemble/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/Ensemble/ensembles"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/Ensemble/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/Ensemble/ensembles"/>
       </modelFacet>
       <labels
-          visualID="5005"
+          visualID="5012"
           editPartClassName="EmptyName2EditPart"
-          itemSemanticEditPolicyClassName="EmptyName2ItemSemanticEditPolicy"
-          notationViewFactoryClassName="EmptyNameViewFactory">
+          itemSemanticEditPolicyClassName="EmptyName2ItemSemanticEditPolicy">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -262,15 +257,14 @@
             xsi:type="gmfgen:FeatureLabelModelFacet"
             parser="//@labelParsers/@implementations.0">
           <metaFeatures
-              href="vespucci.genmodel#//vespucci_model/Shape/name"/>
+              href="vespucci.genmodel#//vespucci_model/AbstractEnsemble/name"/>
         </modelFacet>
       </labels>
     </childNodes>
     <topLevelNodes
-        visualID="2003"
+        visualID="2005"
         editPartClassName="EnsembleEditPart"
         itemSemanticEditPolicyClassName="EnsembleItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleViewFactory"
         canonicalEditPolicyClassName="EnsembleCanonicalEditPolicy"
         compartments="//@diagram/@compartments.0 //@diagram/@compartments.1"
         graphicalNodeEditPolicyClassName="EnsembleGraphicalNodeEditPolicy"
@@ -288,15 +282,14 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Ensemble"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/ensembles"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/ensembles"/>
       </modelFacet>
       <labels
-          visualID="5009"
+          visualID="5015"
           editPartClassName="EnsembleNameEditPart"
           itemSemanticEditPolicyClassName="EnsembleNameItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleNameViewFactory"
           elementIcon="true">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
@@ -308,14 +301,13 @@
             xsi:type="gmfgen:FeatureLabelModelFacet"
             parser="//@labelParsers/@implementations.0">
           <metaFeatures
-              href="vespucci.genmodel#//vespucci_model/Shape/name"/>
+              href="vespucci.genmodel#//vespucci_model/AbstractEnsemble/name"/>
         </modelFacet>
       </labels>
       <labels
-          visualID="5010"
+          visualID="5016"
           editPartClassName="EnsembleDescriptionEditPart"
-          itemSemanticEditPolicyClassName="EnsembleDescriptionItemSemanticEditPolicy"
-          notationViewFactoryClassName="EnsembleDescriptionViewFactory">
+          itemSemanticEditPolicyClassName="EnsembleDescriptionItemSemanticEditPolicy">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -329,15 +321,14 @@
             editorPattern=""
             editPattern="">
           <metaFeatures
-              href="vespucci.genmodel#//vespucci_model/Shape/description"/>
+              href="vespucci.genmodel#//vespucci_model/AbstractEnsemble/description"/>
         </modelFacet>
       </labels>
     </topLevelNodes>
     <topLevelNodes
-        visualID="2004"
+        visualID="2006"
         editPartClassName="EmptyEditPart"
         itemSemanticEditPolicyClassName="EmptyItemSemanticEditPolicy"
-        notationViewFactoryClassName="EmptyViewFactory"
         canonicalEditPolicyClassName="EmptyCanonicalEditPolicy"
         graphicalNodeEditPolicyClassName="EmptyGraphicalNodeEditPolicy"
         createCommandClassName="EmptyCreateCommand">
@@ -362,15 +353,14 @@
         <metaClass
             href="vespucci.genmodel#//vespucci_model/Empty"/>
         <containmentMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/ensembles"/>
         <childMetaFeature
-            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/shapes"/>
+            href="vespucci.genmodel#//vespucci_model/ArchitectureModel/ensembles"/>
       </modelFacet>
       <labels
-          visualID="5011"
+          visualID="5017"
           editPartClassName="EmptyNameEditPart"
-          itemSemanticEditPolicyClassName="EmptyNameItemSemanticEditPolicy"
-          notationViewFactoryClassName="EmptyNameViewFactory">
+          itemSemanticEditPolicyClassName="EmptyNameItemSemanticEditPolicy">
         <diagramRunTimeClass
             href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap
@@ -381,7 +371,7 @@
             xsi:type="gmfgen:FeatureLabelModelFacet"
             parser="//@labelParsers/@implementations.0">
           <metaFeatures
-              href="vespucci.genmodel#//vespucci_model/Shape/name"/>
+              href="vespucci.genmodel#//vespucci_model/AbstractEnsemble/name"/>
         </modelFacet>
       </labels>
     </topLevelNodes>
@@ -882,10 +872,9 @@
           targetEnd="//@expressionProviders/@providers.0/@expressions.13"/>
     </links>
     <compartments
-        visualID="7005"
+        visualID="7007"
         editPartClassName="EnsembleEnsembleCompartmentEditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleCompartmentItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleEnsembleCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleCompartmentCanonicalEditPolicy"
         childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.1"
         title="EnsembleCompartment"
@@ -904,10 +893,9 @@
       </viewmap>
     </compartments>
     <compartments
-        visualID="7006"
+        visualID="7008"
         editPartClassName="EnsembleEnsembleDescriptionCompartmentEditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleDescriptionCompartmentItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleEnsembleDescriptionCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleDescriptionCompartmentCanonicalEditPolicy"
         title="EnsembleDescriptionCompartment"
         needsTitle="false"
@@ -920,10 +908,9 @@
           figureQualifiedClassName="org.eclipse.draw2d.RectangleFigure"/>
     </compartments>
     <compartments
-        visualID="7002"
+        visualID="7009"
         editPartClassName="EnsembleEnsembleCompartment2EditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleCompartment2ItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleEnsembleCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleCompartment2CanonicalEditPolicy"
         childNodes="//@diagram/@childNodes.0 //@diagram/@childNodes.1"
         title="EnsembleCompartment"
@@ -942,10 +929,9 @@
       </viewmap>
     </compartments>
     <compartments
-        visualID="7004"
+        visualID="7010"
         editPartClassName="EnsembleEnsembleDescriptionCompartment2EditPart"
         itemSemanticEditPolicyClassName="EnsembleEnsembleDescriptionCompartment2ItemSemanticEditPolicy"
-        notationViewFactoryClassName="EnsembleEnsembleDescriptionCompartmentViewFactory"
         canonicalEditPolicyClassName="EnsembleEnsembleDescriptionCompartment2CanonicalEditPolicy"
         title="EnsembleDescriptionCompartment"
         needsTitle="false"

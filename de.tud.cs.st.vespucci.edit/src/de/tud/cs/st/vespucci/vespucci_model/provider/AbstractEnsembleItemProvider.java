@@ -30,15 +30,11 @@
  *   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
- * 
- *
- * $Id$
  */
 package de.tud.cs.st.vespucci.vespucci_model.provider;
 
 
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelFactory;
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 import java.util.Collection;
@@ -48,8 +44,6 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
@@ -63,12 +57,12 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.Shape} object.
+ * This is the item provider adapter for a {@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ShapeItemProvider
+public class AbstractEnsembleItemProvider
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -82,7 +76,7 @@ public class ShapeItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ShapeItemProvider(AdapterFactory adapterFactory) {
+	public AbstractEnsembleItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -118,9 +112,9 @@ public class ShapeItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Shape_sourceConnections_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_sourceConnections_feature", "_UI_Shape_type"),
-				 Vespucci_modelPackage.Literals.SHAPE__SOURCE_CONNECTIONS,
+				 getString("_UI_AbstractEnsemble_sourceConnections_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_AbstractEnsemble_sourceConnections_feature", "_UI_AbstractEnsemble_type"),
+				 Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS,
 				 true,
 				 false,
 				 true,
@@ -140,9 +134,9 @@ public class ShapeItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Shape_targetConnections_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_targetConnections_feature", "_UI_Shape_type"),
-				 Vespucci_modelPackage.Literals.SHAPE__TARGET_CONNECTIONS,
+				 getString("_UI_AbstractEnsemble_targetConnections_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_AbstractEnsemble_targetConnections_feature", "_UI_AbstractEnsemble_type"),
+				 Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS,
 				 true,
 				 false,
 				 true,
@@ -162,9 +156,9 @@ public class ShapeItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Shape_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_name_feature", "_UI_Shape_type"),
-				 Vespucci_modelPackage.Literals.SHAPE__NAME,
+				 getString("_UI_AbstractEnsemble_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_AbstractEnsemble_name_feature", "_UI_AbstractEnsemble_type"),
+				 Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__NAME,
 				 true,
 				 false,
 				 false,
@@ -184,11 +178,11 @@ public class ShapeItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Shape_description_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_description_feature", "_UI_Shape_type"),
-				 Vespucci_modelPackage.Literals.SHAPE__DESCRIPTION,
+				 getString("_UI_AbstractEnsemble_description_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_AbstractEnsemble_description_feature", "_UI_AbstractEnsemble_type"),
+				 Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__DESCRIPTION,
 				 true,
-				 true,
+				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
@@ -206,9 +200,9 @@ public class ShapeItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Shape_query_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_query_feature", "_UI_Shape_type"),
-				 Vespucci_modelPackage.Literals.SHAPE__QUERY,
+				 getString("_UI_AbstractEnsemble_query_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_AbstractEnsemble_query_feature", "_UI_AbstractEnsemble_type"),
+				 Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__QUERY,
 				 true,
 				 false,
 				 false,
@@ -228,26 +222,15 @@ public class ShapeItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Shape_key_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Shape_key_feature", "_UI_Shape_type"),
-				 Vespucci_modelPackage.Literals.SHAPE__KEY,
-				 false,
+				 getString("_UI_AbstractEnsemble_key_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_AbstractEnsemble_key_feature", "_UI_AbstractEnsemble_type"),
+				 Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__KEY,
+				 true,
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
-	}
-
-	/**
-	 * This returns Shape.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Shape"));
 	}
 
 	/**
@@ -258,10 +241,10 @@ public class ShapeItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Shape)object).getName();
+		String label = ((AbstractEnsemble)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Shape_type") :
-			getString("_UI_Shape_type") + " " + label;
+			getString("_UI_AbstractEnsemble_type") :
+			getString("_UI_AbstractEnsemble_type") + " " + label;
 	}
 
 	/**
@@ -275,11 +258,11 @@ public class ShapeItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Shape.class)) {
-			case Vespucci_modelPackage.SHAPE__NAME:
-			case Vespucci_modelPackage.SHAPE__DESCRIPTION:
-			case Vespucci_modelPackage.SHAPE__QUERY:
-			case Vespucci_modelPackage.SHAPE__KEY:
+		switch (notification.getFeatureID(AbstractEnsemble.class)) {
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__NAME:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__DESCRIPTION:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__QUERY:
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__KEY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

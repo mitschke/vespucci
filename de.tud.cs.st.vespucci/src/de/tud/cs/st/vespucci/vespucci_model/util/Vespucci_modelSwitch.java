@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
@@ -52,7 +53,6 @@ import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
@@ -119,23 +119,23 @@ public class Vespucci_modelSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Vespucci_modelPackage.SHAPE: {
-				Shape shape = (Shape)theEObject;
-				T result = caseShape(shape);
+			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE: {
+				AbstractEnsemble abstractEnsemble = (AbstractEnsemble)theEObject;
+				T result = caseAbstractEnsemble(abstractEnsemble);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case Vespucci_modelPackage.EMPTY: {
 				Empty empty = (Empty)theEObject;
 				T result = caseEmpty(empty);
-				if (result == null) result = caseShape(empty);
+				if (result == null) result = caseAbstractEnsemble(empty);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case Vespucci_modelPackage.ENSEMBLE: {
 				Ensemble ensemble = (Ensemble)theEObject;
 				T result = caseEnsemble(ensemble);
-				if (result == null) result = caseShape(ensemble);
+				if (result == null) result = caseAbstractEnsemble(ensemble);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -221,17 +221,17 @@ public class Vespucci_modelSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Shape</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Abstract Ensemble</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Shape</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Abstract Ensemble</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseShape(Shape object) {
+	public T caseAbstractEnsemble(AbstractEnsemble object) {
 		return null;
 	}
 

@@ -40,10 +40,9 @@ import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.EList;
 
-
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * This class encapsulates the ensemble prolog facts.
@@ -86,7 +85,7 @@ public class EnsemblePrologFacts {
 	 * @param diagramFileName
 	 * @return Returns the formatted ensemble facts.
 	 */
-	static StringBuilder getFacts(final List<Shape> shapeList, final String diagramFileName) throws Exception {
+	static StringBuilder getFacts(final List<AbstractEnsemble> shapeList, final String diagramFileName) throws Exception {
 		EnsemblePrologFacts.diagramFileName = diagramFileName;
 		return createEnsembleFacts(shapeList);
 	}
@@ -94,17 +93,17 @@ public class EnsemblePrologFacts {
 	/**
 	 * Search the diagram recursively and create all ensemble facts, except Empty.
 	 * 
-	 * @param shapeList
+	 * @param ensembleList
 	 *            The list of shapes in the diagram.
 	 * @throws Exception
 	 * @return Returns the formatted ensemble facts.
 	 */
-	static StringBuilder createEnsembleFacts(final List<Shape> shapeList) throws Exception {
+	static StringBuilder createEnsembleFacts(final List<AbstractEnsemble> ensembleList) throws Exception {
 		final StringBuilder ensembleFacts = new StringBuilder();
-		for (final Shape shape : shapeList) {
+		for (final AbstractEnsemble abs_ens : ensembleList) {
 			// create Ensemble facts:
-			if (shape instanceof Ensemble && shape != null) {
-				final Ensemble ensemble = (Ensemble) shape;
+			if (abs_ens instanceof Ensemble && abs_ens != null) {
+				final Ensemble ensemble = (Ensemble) abs_ens;
 				if (isAbstractEnsemble(ensemble)) {
 					ensembleFacts.append("abstract_ensemble");
 				} else {
@@ -116,11 +115,11 @@ public class EnsemblePrologFacts {
 
 				ensembleFacts.append(String.format("('%s', %s, %s, (%s), [%s]).\n", diagramFileName,
 						createEnsembleDescriptor(ensemble), createEnsembleParameters(ensemble), query,
-						listSubEnsembles(ensemble.getShapes())));
+						listSubEnsembles(ensemble.getEnsembles())));
 
 				// do children exist
-				if ((ensemble.getShapes() != null) && (ensemble.getShapes().size() > 0)) {
-					ensembleFacts.append(createEnsembleFacts(ensemble.getShapes()));
+				if ((ensemble.getEnsembles() != null) && (ensemble.getEnsembles().size() > 0)) {
+					ensembleFacts.append(createEnsembleFacts(ensemble.getEnsembles()));
 				}
 
 			}
@@ -146,13 +145,13 @@ public class EnsemblePrologFacts {
 
 	/**
 	 * 
-	 * @param shape
+	 * @param abs_ens
 	 * @return The name of the ensemble in apostrophes. (Without parameters)
 	 */
-	static String createEnsembleDescriptor(final Shape shape) {
+	static String createEnsembleDescriptor(final AbstractEnsemble abs_ens) {
 		String name = "";
-		if (shape.getName() != null) {
-			name = shape.getName().length() == 0 ? "non-editpart" : shape.getName();
+		if (abs_ens.getName() != null) {
+			name = abs_ens.getName().length() == 0 ? "non-editpart" : abs_ens.getName();
 		}
 		final StringBuilder s = new StringBuilder("'");
 		if (name.indexOf('(') > 0) {
@@ -190,18 +189,18 @@ public class EnsemblePrologFacts {
 	 * @param ensembles
 	 * @return Return formatted string listing the given ensembles.
 	 */
-	private static String listSubEnsembles(final EList<Shape> ensembles) {
+	private static String listSubEnsembles(final EList<AbstractEnsemble> ensembles) {
 		final StringBuilder strBuilder = new StringBuilder();
 		if (ensembles == null) {
 			return strBuilder.toString();
 		}
 
 		String komma = "";
-		for (final Shape shape : ensembles) {
-			if (shape instanceof Empty) {
+		for (final AbstractEnsemble abs_ens : ensembles) {
+			if (abs_ens instanceof Empty) {
 				strBuilder.append(komma + "'empty'");
-			} else if (shape instanceof Ensemble) {
-				strBuilder.append(komma + "'" + shape.getName() + "'");
+			} else if (abs_ens instanceof Ensemble) {
+				strBuilder.append(komma + "'" + abs_ens.getName() + "'");
 			}
 			komma = ", ";
 		}

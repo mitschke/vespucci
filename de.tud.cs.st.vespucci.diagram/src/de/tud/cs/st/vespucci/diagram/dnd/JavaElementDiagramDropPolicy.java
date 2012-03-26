@@ -133,7 +133,7 @@ public final class JavaElementDiagramDropPolicy extends CreationEditPolicy {
 			public EObject getValue() {
 				return findReturnElement(previousCommand);
 			}
-		}, Vespucci_modelPackage.eINSTANCE.getShape_Name(),
+		}, Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble_Name(),
 				createNameforNewEnsemble(request.getExtendedData()));
 	}
 
@@ -150,7 +150,7 @@ public final class JavaElementDiagramDropPolicy extends CreationEditPolicy {
 			public EObject getValue() {
 				return findReturnElement(previousCommand);
 			}
-		}, Vespucci_modelPackage.eINSTANCE.getShape_Query(),
+		}, Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble_Query(),
 				QueryBuilder.createQueryFromRequestData(request
 						.getExtendedData()));
 	}

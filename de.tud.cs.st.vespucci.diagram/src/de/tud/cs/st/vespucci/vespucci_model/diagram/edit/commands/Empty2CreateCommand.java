@@ -87,7 +87,7 @@ public class Empty2CreateCommand extends EditElementCommand {
 				.createEmpty();
 
 		de.tud.cs.st.vespucci.vespucci_model.Ensemble owner = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) getElementToEdit();
-		owner.getShapes().add(newElement);
+		owner.getEnsembles().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

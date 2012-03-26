@@ -47,7 +47,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class EmptyImpl extends ShapeImpl implements Empty {
+public class EmptyImpl extends AbstractEnsembleImpl implements Empty {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

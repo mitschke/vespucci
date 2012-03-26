@@ -64,7 +64,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * @generated
  */
 public class EnsembleItemProvider
-	extends ShapeItemProvider
+	extends AbstractEnsembleItemProvider
 	implements
 		IEditingDomainItemProvider,
 		IStructuredItemContentProvider,
@@ -108,7 +108,7 @@ public class EnsembleItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(Vespucci_modelPackage.Literals.ENSEMBLE__SHAPES);
+			childrenFeatures.add(Vespucci_modelPackage.Literals.ENSEMBLE__ENSEMBLES);
 		}
 		return childrenFeatures;
 	}
@@ -163,7 +163,7 @@ public class EnsembleItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Ensemble.class)) {
-			case Vespucci_modelPackage.ENSEMBLE__SHAPES:
+			case Vespucci_modelPackage.ENSEMBLE__ENSEMBLES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -183,12 +183,12 @@ public class EnsembleItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(Vespucci_modelPackage.Literals.ENSEMBLE__SHAPES,
+				(Vespucci_modelPackage.Literals.ENSEMBLE__ENSEMBLES,
 				 Vespucci_modelFactory.eINSTANCE.createEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(Vespucci_modelPackage.Literals.ENSEMBLE__SHAPES,
+				(Vespucci_modelPackage.Literals.ENSEMBLE__ENSEMBLES,
 				 Vespucci_modelFactory.eINSTANCE.createEnsemble()));
 	}
 

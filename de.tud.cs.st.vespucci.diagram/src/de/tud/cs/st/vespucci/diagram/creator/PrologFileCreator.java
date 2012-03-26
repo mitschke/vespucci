@@ -50,9 +50,9 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 /**
  * PrologFileCreator creates a *.pl file from a *.sad file .
  * 
@@ -165,9 +165,9 @@ public class PrologFileCreator {
 		// insert ensemble Header
 		strBuilder.append(InvariantPrologFacts.createEnsembleHeader());
 
-		final StringBuilder ensembleFacts = EnsemblePrologFacts.getFacts(VespucciTraversalUtil.getEnsemblesFromDiagram(diagram.getShapes()), diagramFileName);
+		final StringBuilder ensembleFacts = EnsemblePrologFacts.getFacts(VespucciTraversalUtil.getEnsemblesFromDiagram(diagram.getEnsembles()), diagramFileName);
 
-		if (hasEmpty(diagram.getShapes())) {
+		if (hasEmpty(diagram.getEnsembles())) {
 			ensembleFacts.append("ensemble('" + diagramFileName + "',(empty),empty,[]).\n");
 		}
 
@@ -178,7 +178,7 @@ public class PrologFileCreator {
 		strBuilder.append(InvariantPrologFacts.createDependencyHeader());
 
 		// insert dependencies
-		strBuilder.append(DependencyPrologFacts.getFacts(VespucciTraversalUtil.getEnsemblesFromDiagram(diagram.getShapes()), diagramFileName));
+		strBuilder.append(DependencyPrologFacts.getFacts(VespucciTraversalUtil.getEnsemblesFromDiagram(diagram.getEnsembles()), diagramFileName));
 
 		return strBuilder.toString().getBytes();
 	}
@@ -188,9 +188,9 @@ public class PrologFileCreator {
 	 * @param shapeList
 	 * @return Return true only if given shape list contains a empty.
 	 */
-	private static boolean hasEmpty(final List<Shape> shapeList) {
-		for (final Shape shape : shapeList) {
-			if (shape instanceof Empty) {
+	private static boolean hasEmpty(final List<AbstractEnsemble> shapeList) {
+		for (final AbstractEnsemble abs_ens : shapeList) {
+			if (abs_ens instanceof Empty) {
 				return true;
 			}
 		}

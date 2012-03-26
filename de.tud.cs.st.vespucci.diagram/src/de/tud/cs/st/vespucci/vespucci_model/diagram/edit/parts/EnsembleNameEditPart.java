@@ -81,7 +81,7 @@ public class EnsembleNameEditPart extends CompartmentEditPart implements
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5009;
+	public static final int VISUAL_ID = 5015;
 
 	/**
 	 * @generated
@@ -328,7 +328,7 @@ public class EnsembleNameEditPart extends CompartmentEditPart implements
 		if (parser == null) {
 			parser = de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciParserProvider
 					.getParser(
-							de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003,
+							de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2005,
 							getParserElement(),
 							de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 									.getType(de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleNameEditPart.VISUAL_ID));

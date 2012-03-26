@@ -47,7 +47,7 @@ import org.eclipse.gmf.runtime.emf.type.core.commands.SetValueCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
@@ -81,10 +81,10 @@ public class JavaElementEnsembleDropPolicy extends DirectEditPolicy {
 			return null;
 		View view = (View) targetEditPart.getModel();
 		EObject element = view.getElement();
-		if (!(element instanceof Shape))
+		if (!(element instanceof AbstractEnsemble))
 			return null;
 
-		Shape ensemble = (Shape) element;
+		AbstractEnsemble ensemble = (AbstractEnsemble) element;
 		// get info about the EMF meta model so we can refer to the
 		// singleton that saves Vespucci_modelPackage
 		final String modelNamespace = ResourceBundle.getBundle("plugin")
@@ -98,7 +98,7 @@ public class JavaElementEnsembleDropPolicy extends DirectEditPolicy {
 		final String oldQuery = ensemble.getQuery();
 
 		final SetRequest sr = new SetRequest(ensemble,
-				vespucciMetamodel.getShape_Query(),
+				vespucciMetamodel.getAbstractEnsemble_Query(),
 				QueryBuilder.createQueryFromRequestData(
 						request.getExtendedData(), oldQuery));
 

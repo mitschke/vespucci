@@ -48,19 +48,19 @@ public class EnsembleEnsembleCompartmentItemSemanticEditPolicy
 	 */
 	public EnsembleEnsembleCompartmentItemSemanticEditPolicy() {
 		super(
-				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2003);
+				de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_2005);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3001 == req
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Ensemble_3004 == req
 				.getElementType()) {
 			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.Ensemble2CreateCommand(
 					req));
 		}
-		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3003 == req
+		if (de.tud.cs.st.vespucci.vespucci_model.diagram.providers.VespucciElementTypes.Empty_3005 == req
 				.getElementType()) {
 			return getGEFWrapper(new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.commands.Empty2CreateCommand(
 					req));

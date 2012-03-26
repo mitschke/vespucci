@@ -53,7 +53,7 @@ public class EnsembleEnsembleDescriptionCompartmentEditPart extends
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7006;
+	public static final int VISUAL_ID = 7008;
 
 	/**
 	 * @generated

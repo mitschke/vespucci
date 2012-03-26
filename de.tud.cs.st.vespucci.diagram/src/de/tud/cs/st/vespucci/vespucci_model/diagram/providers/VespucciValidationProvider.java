@@ -141,7 +141,7 @@ public class VespucciValidationProvider {
 		public IStatus validate(final IValidationContext ctx) {
 			final de.tud.cs.st.vespucci.vespucci_model.Ensemble context = (de.tud.cs.st.vespucci.vespucci_model.Ensemble) ctx
 					.getTarget();
-			if (context.getShapes().size() == 0) {
+			if (context.getEnsembles().size() == 0) {
 				return ctx.createSuccessStatus();
 			}
 			if (context.getQuery().equals("derived")) {
@@ -344,6 +344,7 @@ public class VespucciValidationProvider {
 			return ctx.createSuccessStatus();
 		}
 	}
+
 	/**
 	 * @generated
 	 */

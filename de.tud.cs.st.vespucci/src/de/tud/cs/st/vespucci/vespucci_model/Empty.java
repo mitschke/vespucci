@@ -44,5 +44,5 @@ package de.tud.cs.st.vespucci.vespucci_model;
  * @model
  * @generated
  */
-public interface Empty extends Shape {
+public interface Empty extends AbstractEnsemble {
 } // Empty

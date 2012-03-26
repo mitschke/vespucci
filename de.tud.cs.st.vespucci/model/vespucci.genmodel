@@ -9,22 +9,20 @@
   <genPackages prefix="Vespucci_model" basePackage="de.tud.cs.st.vespucci" disposableProviderFactory="true"
       contentTypeIdentifier="" fileExtensions="sam" ecorePackage="vespucci.ecore#/">
     <genClasses ecoreClass="vespucci.ecore#//ArchitectureModel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//ArchitectureModel/shapes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//ArchitectureModel/ensembles"/>
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EReference vespucci.ecore#//ArchitectureModel/connections"/>
     </genClasses>
-    <genClasses ecoreClass="vespucci.ecore#//Shape">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/sourceConnections"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vespucci.ecore#//Shape/targetConnections"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/name"/>
-      <genFeatures createChild="false" propertyCategory="" propertyDescription=""
-          propertyMultiLine="true" ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/description"/>
-      <genFeatures createChild="false" propertyCategory="" propertyDescription=""
-          ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/query"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//Shape/key"/>
+    <genClasses image="false" ecoreClass="vespucci.ecore#//AbstractEnsemble">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vespucci.ecore#//AbstractEnsemble/sourceConnections"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference vespucci.ecore#//AbstractEnsemble/targetConnections"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//AbstractEnsemble/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//AbstractEnsemble/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//AbstractEnsemble/query"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute vespucci.ecore#//AbstractEnsemble/key"/>
     </genClasses>
     <genClasses ecoreClass="vespucci.ecore#//Empty"/>
     <genClasses ecoreClass="vespucci.ecore#//Ensemble">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//Ensemble/shapes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference vespucci.ecore#//Ensemble/ensembles"/>
     </genClasses>
     <genClasses ecoreClass="vespucci.ecore#//Connection">
       <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"

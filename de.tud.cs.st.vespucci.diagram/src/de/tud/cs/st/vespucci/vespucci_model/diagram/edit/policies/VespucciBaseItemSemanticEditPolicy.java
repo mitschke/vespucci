@@ -363,8 +363,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateIncoming_4005(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			return canExistIncoming_4005(container, null, source, target);
 		}
 
@@ -373,8 +373,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateOutgoing_4003(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			return canExistOutgoing_4003(container, null, source, target);
 		}
 
@@ -383,8 +383,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateInAndOut_4001(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			return canExistInAndOut_4001(container, null, source, target);
 		}
 
@@ -393,8 +393,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateNotAllowed_4004(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			return canExistNotAllowed_4004(container, null, source, target);
 		}
 
@@ -403,8 +403,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateExpected_4002(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			return canExistExpected_4002(container, null, source, target);
 		}
 
@@ -413,8 +413,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateGlobalIncoming_4006(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			return canExistGlobalIncoming_4006(container, null, source, target);
 		}
 
@@ -423,8 +423,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateGlobalOutgoing_4007(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			return canExistGlobalOutgoing_4007(container, null, source, target);
 		}
 
@@ -433,8 +433,8 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateViolation_4009(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			return canExistViolation_4009(container, null, source, target);
 		}
 
@@ -444,20 +444,21 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		public boolean canExistIncoming_4005(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Incoming linkInstance,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			try {
 				if (source == null) {
 					return true;
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									0,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									source,
 									Collections.singletonMap(
 											"oppositeEnd", target)); //$NON-NLS-1$
@@ -471,12 +472,13 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									1,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									target,
 									Collections.singletonMap(
 											"oppositeEnd", source)); //$NON-NLS-1$
@@ -500,20 +502,21 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		public boolean canExistOutgoing_4003(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Outgoing linkInstance,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			try {
 				if (source == null) {
 					return true;
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									2,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									source,
 									Collections.singletonMap(
 											"oppositeEnd", target)); //$NON-NLS-1$
@@ -537,20 +540,21 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		public boolean canExistInAndOut_4001(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.InAndOut linkInstance,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			try {
 				if (source == null) {
 					return true;
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									3,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									source,
 									Collections.singletonMap(
 											"oppositeEnd", target)); //$NON-NLS-1$
@@ -564,12 +568,13 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									4,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									target,
 									Collections.singletonMap(
 											"oppositeEnd", source)); //$NON-NLS-1$
@@ -593,20 +598,21 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		public boolean canExistNotAllowed_4004(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.NotAllowed linkInstance,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			try {
 				if (source == null) {
 					return true;
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									5,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									source,
 									Collections.singletonMap(
 											"oppositeEnd", target)); //$NON-NLS-1$
@@ -620,12 +626,13 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									6,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									target,
 									Collections.singletonMap(
 											"oppositeEnd", source)); //$NON-NLS-1$
@@ -649,20 +656,21 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		public boolean canExistExpected_4002(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Expected linkInstance,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			try {
 				if (source == null) {
 					return true;
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									7,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									source,
 									Collections.singletonMap(
 											"oppositeEnd", target)); //$NON-NLS-1$
@@ -676,12 +684,13 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									8,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									target,
 									Collections.singletonMap(
 											"oppositeEnd", source)); //$NON-NLS-1$
@@ -705,20 +714,21 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		public boolean canExistGlobalIncoming_4006(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.GlobalIncoming linkInstance,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			try {
 				if (source == null) {
 					return true;
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									9,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									source,
 									Collections.singletonMap(
 											"oppositeEnd", target)); //$NON-NLS-1$
@@ -732,12 +742,13 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									10,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									target,
 									Collections.singletonMap(
 											"oppositeEnd", source)); //$NON-NLS-1$
@@ -761,20 +772,21 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		public boolean canExistGlobalOutgoing_4007(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.GlobalOutgoing linkInstance,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			try {
 				if (source == null) {
 					return true;
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									11,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									source,
 									Collections.singletonMap(
 											"oppositeEnd", target)); //$NON-NLS-1$
@@ -798,20 +810,21 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		public boolean canExistViolation_4009(
 				de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel container,
 				de.tud.cs.st.vespucci.vespucci_model.Violation linkInstance,
-				de.tud.cs.st.vespucci.vespucci_model.Shape source,
-				de.tud.cs.st.vespucci.vespucci_model.Shape target) {
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble source,
+				de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble target) {
 			try {
 				if (source == null) {
 					return true;
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object sourceVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									12,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									source,
 									Collections.singletonMap(
 											"oppositeEnd", target)); //$NON-NLS-1$
@@ -825,12 +838,13 @@ public class VespucciBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 				} else {
 					Map<String, EClassifier> env = Collections
 							.<String, EClassifier> singletonMap(
-									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getShape()); //$NON-NLS-1$
+									"oppositeEnd", de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getAbstractEnsemble()); //$NON-NLS-1$
 					Object targetVal = de.tud.cs.st.vespucci.vespucci_model.diagram.expressions.VespucciOCLFactory
 							.getExpression(
 									13,
 									de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
-											.getShape(), env).evaluate(
+											.getAbstractEnsemble(), env)
+							.evaluate(
 									target,
 									Collections.singletonMap(
 											"oppositeEnd", source)); //$NON-NLS-1$

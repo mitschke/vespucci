@@ -83,22 +83,22 @@ public class VespucciElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType Ensemble_2003 = getElementType("de.tud.cs.st.vespucci.diagram.Ensemble_2003"); //$NON-NLS-1$
+	public static final IElementType Ensemble_2005 = getElementType("de.tud.cs.st.vespucci.diagram.Ensemble_2005"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType Empty_2004 = getElementType("de.tud.cs.st.vespucci.diagram.Empty_2004"); //$NON-NLS-1$
+	public static final IElementType Empty_2006 = getElementType("de.tud.cs.st.vespucci.diagram.Empty_2006"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType Ensemble_3001 = getElementType("de.tud.cs.st.vespucci.diagram.Ensemble_3001"); //$NON-NLS-1$
+	public static final IElementType Ensemble_3004 = getElementType("de.tud.cs.st.vespucci.diagram.Ensemble_3004"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType Empty_3003 = getElementType("de.tud.cs.st.vespucci.diagram.Empty_3003"); //$NON-NLS-1$
+	public static final IElementType Empty_3005 = getElementType("de.tud.cs.st.vespucci.diagram.Empty_3005"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -257,22 +257,22 @@ public class VespucciElementTypes {
 							.getArchitectureModel());
 
 			elements.put(
-					Ensemble_2003,
+					Ensemble_2005,
 					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 							.getEnsemble());
 
 			elements.put(
-					Empty_2004,
+					Empty_2006,
 					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 							.getEmpty());
 
 			elements.put(
-					Ensemble_3001,
+					Ensemble_3004,
 					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 							.getEnsemble());
 
 			elements.put(
-					Empty_3003,
+					Empty_3005,
 					de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE
 							.getEmpty());
 
@@ -333,10 +333,10 @@ public class VespucciElementTypes {
 		if (KNOWN_ELEMENT_TYPES == null) {
 			KNOWN_ELEMENT_TYPES = new HashSet<IElementType>();
 			KNOWN_ELEMENT_TYPES.add(ArchitectureModel_1000);
-			KNOWN_ELEMENT_TYPES.add(Ensemble_2003);
-			KNOWN_ELEMENT_TYPES.add(Empty_2004);
-			KNOWN_ELEMENT_TYPES.add(Ensemble_3001);
-			KNOWN_ELEMENT_TYPES.add(Empty_3003);
+			KNOWN_ELEMENT_TYPES.add(Ensemble_2005);
+			KNOWN_ELEMENT_TYPES.add(Empty_2006);
+			KNOWN_ELEMENT_TYPES.add(Ensemble_3004);
+			KNOWN_ELEMENT_TYPES.add(Empty_3005);
 			KNOWN_ELEMENT_TYPES.add(Incoming_4005);
 			KNOWN_ELEMENT_TYPES.add(Outgoing_4003);
 			KNOWN_ELEMENT_TYPES.add(InAndOut_4001);
@@ -357,13 +357,13 @@ public class VespucciElementTypes {
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.VISUAL_ID:
 			return ArchitectureModel_1000;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart.VISUAL_ID:
-			return Ensemble_2003;
+			return Ensemble_2005;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EmptyEditPart.VISUAL_ID:
-			return Empty_2004;
+			return Empty_2006;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Ensemble2EditPart.VISUAL_ID:
-			return Ensemble_3001;
+			return Ensemble_3004;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.Empty2EditPart.VISUAL_ID:
-			return Empty_3003;
+			return Empty_3005;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.IncomingEditPart.VISUAL_ID:
 			return Incoming_4005;
 		case de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.OutgoingEditPart.VISUAL_ID:

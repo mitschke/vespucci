@@ -58,7 +58,7 @@ public class EnsembleEnsembleCompartment2EditPart extends
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7002;
+	public static final int VISUAL_ID = 7009;
 
 	private CompartmentEditPartSupporter abm;
 

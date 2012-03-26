@@ -46,7 +46,7 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Ensemble#getShapes <em>Shapes</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.Ensemble#getEnsembles <em>Ensembles</em>}</li>
  * </ul>
  * </p>
  *
@@ -55,23 +55,21 @@ import org.eclipse.emf.common.util.EList;
  *        annotation="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot uniqueName='Ensemble.allInstances()->forAll(e | e <> self implies e.name <> self.name)'"
  * @generated
  */
-public interface Ensemble extends Shape {
+public interface Ensemble extends AbstractEnsemble {
 	/**
-	 * Returns the value of the '<em><b>Shapes</b></em>' containment reference list.
-	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.Shape}.
+	 * Returns the value of the '<em><b>Ensembles</b></em>' containment reference list.
+	 * The list contents are of type {@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Shapes</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Ensembles</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Shapes</em>' containment reference list.
-	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getEnsemble_Shapes()
+	 * @return the value of the '<em>Ensembles</em>' containment reference list.
+	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getEnsemble_Ensembles()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Shape> getShapes();
-
-	void adjustQueryIfNonLeaf();
+	EList<AbstractEnsemble> getEnsembles();
 
 } // Ensemble

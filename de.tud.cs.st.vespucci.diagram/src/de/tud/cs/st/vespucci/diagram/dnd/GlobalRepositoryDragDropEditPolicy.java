@@ -46,15 +46,11 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DiagramDragDropEditPolicy
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.DropObjectsRequest;
 import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
-import org.eclipse.gmf.runtime.notation.BasicCompartment;
-import org.eclipse.gmf.runtime.notation.Compartment;
-import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
 
 /**
@@ -91,7 +87,7 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	 * @return
 	 */
 	private boolean canBeDropped(Object nextObject, DropObjectsRequest dropRequest){
-		return (nextObject instanceof Shape && 
+		return (nextObject instanceof AbstractEnsemble && 
 			isCorrectParent(nextObject, dropRequest) &&
 				!isDuplicate(nextObject, dropRequest));
 	}
@@ -119,7 +115,7 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	 * @return
 	 */
 	private boolean isChild(Object nextObject){
-		return (nextObject instanceof Shape) && !(((Shape)nextObject).eContainer() instanceof ArchitectureModel);
+		return (nextObject instanceof AbstractEnsemble) && !(((AbstractEnsemble)nextObject).eContainer() instanceof ArchitectureModel);
 	}
 	
 	
@@ -137,7 +133,7 @@ public class GlobalRepositoryDragDropEditPolicy extends
 			l = ((View)((CompartmentEditPart)ep).getModel()).getChildren();
 		else return true;
 		for(Object o : l){
-			if(o instanceof View && ((Shape)((View)o).getElement()).equals(((Shape)nextObject))){
+			if(o instanceof View && ((AbstractEnsemble)((View)o).getElement()).equals(((AbstractEnsemble)nextObject))){
 				return true;
 			}
 		}

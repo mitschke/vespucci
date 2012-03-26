@@ -4,12 +4,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.CompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
@@ -19,9 +17,9 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
 
 	/**
@@ -113,8 +111,8 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 				IStructuredSelection selection = (IStructuredSelection) transferedObject;
 				for (Iterator<?> it = selection.iterator(); it.hasNext();) {
 					Object nextSelectedObject = it.next();
-					if (nextSelectedObject instanceof Shape) {
-						Shape modelElement = (Shape) nextSelectedObject;
+					if (nextSelectedObject instanceof AbstractEnsemble) {
+						AbstractEnsemble modelElement = (AbstractEnsemble) nextSelectedObject;
 						uris.add(EcoreUtil.getURI(modelElement));
 					}
 				}

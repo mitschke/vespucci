@@ -33,24 +33,20 @@
  */
 package de.tud.cs.st.vespucci.vespucci_model.impl;
 
-import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
-import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
+import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -59,7 +55,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl#getShapes <em>Shapes</em>}</li>
+ *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl#getEnsembles <em>Ensembles</em>}</li>
  *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.impl.ArchitectureModelImpl#getConnections <em>Connections</em>}</li>
  * </ul>
  * </p>
@@ -68,14 +64,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class ArchitectureModelImpl extends EObjectImpl implements ArchitectureModel {
 	/**
-	 * The cached value of the '{@link #getShapes() <em>Shapes</em>}' containment reference list.
+	 * The cached value of the '{@link #getEnsembles() <em>Ensembles</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getShapes()
+	 * @see #getEnsembles()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Shape> shapes;
+	protected EList<AbstractEnsemble> ensembles;
 
 	/**
 	 * The cached value of the '{@link #getConnections() <em>Connections</em>}' containment reference list.
@@ -111,11 +107,11 @@ public class ArchitectureModelImpl extends EObjectImpl implements ArchitectureMo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Shape> getShapes() {
-		if (shapes == null) {
-			shapes = new EObjectContainmentEList<Shape>(Shape.class, this, Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES);
+	public EList<AbstractEnsemble> getEnsembles() {
+		if (ensembles == null) {
+			ensembles = new EObjectContainmentEList<AbstractEnsemble>(AbstractEnsemble.class, this, Vespucci_modelPackage.ARCHITECTURE_MODEL__ENSEMBLES);
 		}
-		return shapes;
+		return ensembles;
 	}
 
 	/**
@@ -138,8 +134,8 @@ public class ArchitectureModelImpl extends EObjectImpl implements ArchitectureMo
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
-				return ((InternalEList<?>)getShapes()).basicRemove(otherEnd, msgs);
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__ENSEMBLES:
+				return ((InternalEList<?>)getEnsembles()).basicRemove(otherEnd, msgs);
 			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				return ((InternalEList<?>)getConnections()).basicRemove(otherEnd, msgs);
 		}
@@ -154,8 +150,8 @@ public class ArchitectureModelImpl extends EObjectImpl implements ArchitectureMo
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
-				return getShapes();
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__ENSEMBLES:
+				return getEnsembles();
 			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				return getConnections();
 		}
@@ -171,9 +167,9 @@ public class ArchitectureModelImpl extends EObjectImpl implements ArchitectureMo
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
-				getShapes().clear();
-				getShapes().addAll((Collection<? extends Shape>)newValue);
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__ENSEMBLES:
+				getEnsembles().clear();
+				getEnsembles().addAll((Collection<? extends AbstractEnsemble>)newValue);
 				return;
 			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				getConnections().clear();
@@ -191,8 +187,8 @@ public class ArchitectureModelImpl extends EObjectImpl implements ArchitectureMo
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
-				getShapes().clear();
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__ENSEMBLES:
+				getEnsembles().clear();
 				return;
 			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				getConnections().clear();
@@ -209,8 +205,8 @@ public class ArchitectureModelImpl extends EObjectImpl implements ArchitectureMo
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Vespucci_modelPackage.ARCHITECTURE_MODEL__SHAPES:
-				return shapes != null && !shapes.isEmpty();
+			case Vespucci_modelPackage.ARCHITECTURE_MODEL__ENSEMBLES:
+				return ensembles != null && !ensembles.isEmpty();
 			case Vespucci_modelPackage.ARCHITECTURE_MODEL__CONNECTIONS:
 				return connections != null && !connections.isEmpty();
 		}

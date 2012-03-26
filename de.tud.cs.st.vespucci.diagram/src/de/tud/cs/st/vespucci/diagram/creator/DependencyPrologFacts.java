@@ -39,6 +39,7 @@ import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 
+import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
@@ -48,7 +49,6 @@ import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
-import de.tud.cs.st.vespucci.vespucci_model.Shape;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
 /**
@@ -80,7 +80,7 @@ public class DependencyPrologFacts {
 	 * @param diagramFileName
 	 * @return Returns the formatted dependency facts.
 	 */
-	static StringBuilder getFacts(final List<Shape> shapeList, final String diagramFileName) {
+	static StringBuilder getFacts(final List<AbstractEnsemble> shapeList, final String diagramFileName) {
 		DependencyPrologFacts.diagramFileName = diagramFileName;
 		
 		// reset transaction counter
@@ -92,23 +92,23 @@ public class DependencyPrologFacts {
 	/**
 	 * Search the diagram recursively and create all facts.
 	 * 
-	 * @param shapeList
+	 * @param ensembleList
 	 * @return Returns the formatted dependency facts.
 	 * @author Patrick Jahnke
 	 */
-	static StringBuilder createDependencyFacts(final List<Shape> shapeList) {
+	static StringBuilder createDependencyFacts(final List<AbstractEnsemble> ensembleList) {
 
 		final StringBuilder dependencyFacts = new StringBuilder();
-		for (final Shape shape : shapeList) {
-			if (shape instanceof Ensemble) {
-				final Ensemble ensemble = (Ensemble) shape;
-				if (shape != null) {
+		for (final AbstractEnsemble abst_ens : ensembleList) {
+			if (abst_ens instanceof Ensemble) {
+				final Ensemble ensemble = (Ensemble) abst_ens;
+				if (abst_ens != null) {
 					for (final Connection connection : VespucciTraversalUtil.getConnectionsFromDiagram(ensemble.getTargetConnections())) {
 						dependencyFacts.append(createSingleDependencyFact(connection));
 					}
 				}
-				if (ensemble.getShapes() != null) {
-					dependencyFacts.append(createDependencyFacts(ensemble.getShapes()));
+				if (ensemble.getEnsembles() != null) {
+					dependencyFacts.append(createDependencyFacts(ensemble.getEnsembles()));
 				}
 
 			}
@@ -122,8 +122,8 @@ public class DependencyPrologFacts {
 	 * @return Return a fact for a single dependency.
 	 */
 	private static String createSingleDependencyFact(final Connection connection) {
-		final Shape source = getSource(connection);
-		final Shape target = getTarget(connection);
+		final AbstractEnsemble source = getSource(connection);
+		final AbstractEnsemble target = getTarget(connection);
 
 		final StringBuilder transactionSB = new StringBuilder();
 		
@@ -194,7 +194,7 @@ public class DependencyPrologFacts {
 	 * @param connection
 	 * @return Returns the source of given connection.
 	 */
-	private static Shape getSource(final Connection connection) {
+	private static AbstractEnsemble getSource(final Connection connection) {
 		if ((connection.getOriginalSource() == null) || (connection.getOriginalSource().size() == 0)) {
 			return connection.getSource();
 		} else {
@@ -210,7 +210,7 @@ public class DependencyPrologFacts {
 	 * @param connection
 	 * @return Returns the source of given connection.
 	 */
-	private static Shape getTarget(final Connection connection) {
+	private static AbstractEnsemble getTarget(final Connection connection) {
 		// Get the original target (and not the red line target)
 		if ((connection.getOriginalTarget() == null) || (connection.getOriginalTarget().size() == 0)) {
 			return connection.getTarget();
@@ -220,13 +220,13 @@ public class DependencyPrologFacts {
 	}
 
 	/**
-	 * @param shape
+	 * @param ensemble
 	 * @return Returns the name of an ensemble (without the parameter).
 	 */
-	private static String getEnsembleName(final Shape shape) {
-		if (shape instanceof Ensemble) {
-			return EnsemblePrologFacts.createEnsembleDescriptor(shape);
-		} else if (shape instanceof Empty) {
+	private static String getEnsembleName(final AbstractEnsemble ensemble) {
+		if (ensemble instanceof Ensemble) {
+			return EnsemblePrologFacts.createEnsembleDescriptor(ensemble);
+		} else if (ensemble instanceof Empty) {
 			return "empty";
 		}
 		return "not_defined";
