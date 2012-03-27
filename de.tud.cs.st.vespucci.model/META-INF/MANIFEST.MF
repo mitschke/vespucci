@@ -5,3 +5,5 @@ Bundle-SymbolicName: de.tud.cs.st.vespucci.model
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.tud.cs.st.vespucci.model
+Import-Package: org.eclipse.gmf.runtime.notation
+Require-Bundle: de.tud.cs.st.vespucci;bundle-version="1.5.2"
