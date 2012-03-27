@@ -50,6 +50,8 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
+import de.tud.cs.st.vespucci.model.adapters.AdapterRegistry;
+import de.tud.cs.st.vespucci.model.adapters.ArchitectureModelAdapter;
 import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
@@ -91,7 +93,7 @@ public class PrologFileCreator {
 		diagramFileName = fileName;
 		final String fullFileName = location + "/" + fileName;
 		final ArchitectureModel diagram = loadDiagramFile(fullFileName);
-
+		
 		// create a new Prolog File
 		final File prologFile = new File(fullFileName + ".pl");
 

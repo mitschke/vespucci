@@ -54,6 +54,8 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.tud.cs.st.vespucci.exceptions,
  de.tud.cs.st.vespucci.interfaces,
+ de.tud.cs.st.vespucci.model,
+ de.tud.cs.st.vespucci.model.adapters,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.jdt.internal.corext.util,

@@ -97,7 +97,6 @@ public class ConnectionItemProvider
 			addSourcePropertyDescriptor(object);
 			addTargetPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addKeyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -161,28 +160,6 @@ public class ConnectionItemProvider
 				 getString("_UI_PropertyDescriptor_description", "_UI_Connection_name_feature", "_UI_Connection_type"),
 				 Vespucci_modelPackage.Literals.CONNECTION__NAME,
 				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Key feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addKeyPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Connection_key_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Connection_key_feature", "_UI_Connection_type"),
-				 Vespucci_modelPackage.Literals.CONNECTION__KEY,
-				 false,
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,

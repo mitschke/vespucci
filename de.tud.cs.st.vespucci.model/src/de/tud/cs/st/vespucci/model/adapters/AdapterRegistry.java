@@ -87,7 +87,7 @@ public class AdapterRegistry {
 			initEnsembles(rootModel);
 			initConstraints(rootModel);
 		} else {
-
+			//TODO: implement filters
 		}
 	}
 
@@ -128,29 +128,26 @@ public class AdapterRegistry {
 	 */
 	private static void initConstraints(ArchitectureModel architectureModel) {
 		for (Connection con : architectureModel.getConnections()) {
-			switch (con.eClass().getClassifierID()) {
-			case Vespucci_modelPackage.VIOLATION:
+			if(con instanceof Violation){
 				constraintMap.put(con, new DocumentedViolationAdapter(
 						(Violation) con));
-			case Vespucci_modelPackage.EXPECTED:
+			} else if(con instanceof Expected){
 				constraintMap.put(con, new ExpectedAdapter((Expected) con));
-			case Vespucci_modelPackage.GLOBAL_INCOMING:
+			} else if(con instanceof GlobalIncoming){
 				constraintMap.put(con, new GlobalIncomingAdapter(
 						(GlobalIncoming) con));
-			case Vespucci_modelPackage.GLOBAL_OUTGOING:
+			} else if (con instanceof GlobalOutgoing){
 				constraintMap.put(con, new GlobalOutgoingAdapter(
 						(GlobalOutgoing) con));
-			case Vespucci_modelPackage.IN_AND_OUT:
+			} else if(con instanceof InAndOut){
 				constraintMap.put(con, new InAndOutAdapter((InAndOut) con));
-			case Vespucci_modelPackage.INCOMING:
+			} else if(con instanceof Incoming){
 				constraintMap.put(con, new IncomingAdapter((Incoming) con));
-			case Vespucci_modelPackage.NOT_ALLOWED:
+			} else if(con instanceof NotAllowed){
 				constraintMap.put(con, new NotAllowedAdapter((NotAllowed) con));
-			case Vespucci_modelPackage.OUTGOING:
+			} else if(con instanceof Outgoing){
 				constraintMap.put(con, new OutgoingAdapter((Outgoing) con));
-			default:
-				continue;
-			}
+			} else continue;
 		}
 	}
 

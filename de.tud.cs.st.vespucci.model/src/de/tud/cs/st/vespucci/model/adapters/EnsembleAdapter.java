@@ -129,8 +129,10 @@ public class EnsembleAdapter implements IEnsemble {
 		initTargetConnections();
 		
 		//Initialize all inner ensembles:
-		for(IEnsemble inner_ens : innerEnsembles){
-			((EnsembleAdapter)inner_ens).init();
+		if(innerEnsembles != null){
+			for(IEnsemble inner_ens : innerEnsembles){
+				((EnsembleAdapter)inner_ens).init();
+			}
 		}
 	}
 	

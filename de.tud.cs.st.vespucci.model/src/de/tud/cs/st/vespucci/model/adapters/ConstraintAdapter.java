@@ -81,13 +81,11 @@ public class ConstraintAdapter implements IConstraint {
 	}
 
 	public IEnsemble getSource() {
-		// TODO Auto-generated method stub
-		return null;
+		return source;
 	}
 
 	public IEnsemble getTarget() {
-		// TODO Auto-generated method stub
-		return null;
+		return target;
 	}
 
 	/**

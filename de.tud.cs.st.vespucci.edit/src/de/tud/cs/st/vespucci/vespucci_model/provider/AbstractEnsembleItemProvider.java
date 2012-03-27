@@ -96,7 +96,6 @@ public class AbstractEnsembleItemProvider
 			addNamePropertyDescriptor(object);
 			addDescriptionPropertyDescriptor(object);
 			addQueryPropertyDescriptor(object);
-			addKeyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -203,28 +202,6 @@ public class AbstractEnsembleItemProvider
 				 getString("_UI_AbstractEnsemble_query_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_AbstractEnsemble_query_feature", "_UI_AbstractEnsemble_type"),
 				 Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__QUERY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Key feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addKeyPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_AbstractEnsemble_key_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_AbstractEnsemble_key_feature", "_UI_AbstractEnsemble_type"),
-				 Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__KEY,
 				 true,
 				 false,
 				 false,

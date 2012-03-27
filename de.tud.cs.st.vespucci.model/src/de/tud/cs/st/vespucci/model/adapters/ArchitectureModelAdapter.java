@@ -101,6 +101,12 @@ public class ArchitectureModelAdapter implements IArchitectureModel {
 	public void init(){
 		initIEnsembles();
 		initIConstraints();
+		for(IEnsemble ens : iEnsembles){
+			((EnsembleAdapter)ens).init();
+		}
+		for(IConstraint cons : iConstraints){
+			((ConstraintAdapter)cons).init();
+		}
 	}
 	
 
@@ -109,14 +115,13 @@ public class ArchitectureModelAdapter implements IArchitectureModel {
 	 */
 	private void initIEnsembles() {
 		Set<IEnsemble> iEnsembles = new HashSet<IEnsemble>();
-		for (AbstractEnsemble ens : ((Ensemble) adaptee).getEnsembles()) {
+		for (AbstractEnsemble ens : ((ArchitectureModel) adaptee).getEnsembles()) {
 			IEnsemble i_ens;
 			if ((i_ens = AdapterRegistry.getEnsembleAdapter(ens)) != null) {
 				iEnsembles.add(i_ens);
 			}
-			this.iEnsembles = iEnsembles;
 		}
-		this.iEnsembles = null;
+		this.iEnsembles = iEnsembles;
 	}
 	
 	/**
@@ -129,8 +134,8 @@ public class ArchitectureModelAdapter implements IArchitectureModel {
 			if((i_cons = AdapterRegistry.getConstraintAdapter(con)) != null){
 				iConstraints.add(i_cons);
 			}
-			this.iConstraints = iConstraints;
 		}
+		this.iConstraints = iConstraints;
 	}
 }
 
