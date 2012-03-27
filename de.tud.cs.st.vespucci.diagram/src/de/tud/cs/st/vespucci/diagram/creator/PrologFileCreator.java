@@ -49,8 +49,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 
-import de.tud.cs.st.vespucci.model.adapters.AdapterRegistry;
-import de.tud.cs.st.vespucci.model.adapters.ArchitectureModelAdapter;
 import de.tud.cs.st.vespucci.model.util.AdapterDiagramFilter;
 import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;

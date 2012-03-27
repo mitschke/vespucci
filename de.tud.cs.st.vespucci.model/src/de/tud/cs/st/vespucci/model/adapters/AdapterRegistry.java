@@ -36,9 +36,7 @@ package de.tud.cs.st.vespucci.model.adapters;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.notation.View;
 
@@ -57,11 +55,20 @@ import de.tud.cs.st.vespucci.vespucci_model.InAndOut;
 import de.tud.cs.st.vespucci.vespucci_model.Incoming;
 import de.tud.cs.st.vespucci.vespucci_model.NotAllowed;
 import de.tud.cs.st.vespucci.vespucci_model.Outgoing;
-import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 import de.tud.cs.st.vespucci.vespucci_model.Violation;
 
 /**
  * The AdapterRegistry
+ * 
+ * example usage (not filtered): 
+ * 		AdapterRegistry.initRegistry(exampleArchitectureModel, null);
+ * 		((ArchitectureModelAdapter)AdapterRegistry.getArchitectureModelAdapter()).init();
+ * 
+ * for non-synchronized diagrams it might be needed to filter the model for ensembles/constraints only existing in the diagram:
+ * 		AdapterRegistry.initRegistry(exampleArchitectureModel, diagram);
+ * 		((ArchitectureModelAdapter)AdapterRegistry.getArchitectureModelAdapter()).init();
+ * 
+ * diagram has to be of type {@link View} and has to be the root of the diagram
  * 
  * @author Robert Cibulla
  * 
@@ -70,28 +77,25 @@ public class AdapterRegistry {
 	private static IArchitectureModel architectureModelAdapter;
 	private static Map<AbstractEnsemble, IEnsemble> ensembleMap = new HashMap<AbstractEnsemble, IEnsemble>();
 	private static Map<Connection, IConstraint> constraintMap = new HashMap<Connection, IConstraint>();
-	private static boolean isFiltered = false;
-	private static View sDiagram;
+	
 	/**
 	 * initialize registry
 	 * 
-	 * @param rootModel
+	 * @param rootModel the ArchitectureModel
 	 * @param diagram
-	 *            set if you want to filter the model for a specific diagram,
-	 *            else null.
+	 *            set to root of the GMFDiagram if you want to filter the model for a specific diagram - 
+	 *            else set to <code>null</code>.
 	 */
 	public static void initRegistry(ArchitectureModel rootModel, View diagram) {
 		architectureModelAdapter = null;
 		ensembleMap.clear();
 		constraintMap.clear();
 		initModel(rootModel);
-		sDiagram = diagram;
-		if (sDiagram == null) {
+		if (diagram == null) {
 			initEnsembles(rootModel, false);
 			initConstraints(rootModel, false);
 		} else {
-			isFiltered = true;
-			AdapterDiagramFilter.init(sDiagram);
+			AdapterDiagramFilter.init(diagram);
 			initEnsembles(rootModel, true);
 			initConstraints(rootModel, true);
 		}

@@ -44,7 +44,6 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
-import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 
 /**
  * Implementation of an IArchitectureModelAdapter

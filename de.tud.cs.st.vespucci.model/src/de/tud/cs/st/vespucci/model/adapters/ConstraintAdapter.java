@@ -36,6 +36,7 @@ package de.tud.cs.st.vespucci.model.adapters;
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
+import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 
 /**
  * Implementation of an IConstraintAdapter
@@ -69,21 +70,30 @@ public class ConstraintAdapter implements IConstraint {
 	}
 	
 	/**
-	 * Initialize this IConstraint
+	 * Initialize this {@link ConstraintAdapter} by setting the source an the target
 	 */
 	protected void init(){
 		initSource();
 		initTarget();
 	}
 
+	/**
+	 * getter for the DependencyKind of this {@link ConstraintAdapter}
+	 */
 	public String getDependencyKind() {
 		return adaptee.getName();
 	}
 
+	/**
+	 * getter for the source of this {@link ConstraintAdapter}
+	 */
 	public IEnsemble getSource() {
 		return source;
 	}
-
+	
+	/**
+	 * getter for the target of this {@link ConstraintAdapter}
+	 */
 	public IEnsemble getTarget() {
 		return target;
 	}
@@ -95,10 +105,16 @@ public class ConstraintAdapter implements IConstraint {
 		return adaptee;
 	}
 	
+	/**
+	 * get the adapter of the source {@link Ensemble}
+	 */
 	private void initSource() {
 		this.source = AdapterRegistry.getEnsembleAdapter(adaptee.getSource());		
 	}
 
+	/**
+	 * get the adapter of the target {@link Ensemble}
+	 */
 	private void initTarget() {
 		this.target = AdapterRegistry.getEnsembleAdapter(adaptee.getTarget());
 	}

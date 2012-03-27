@@ -104,7 +104,7 @@ public class AdapterDiagramFilter {
 	/**
 	 * Filters given List of Connections and returns only those existing in the
 	 * Diagram. example usage:
-	 * VespucciTraversalUtil.getConnectionsFromDiagram(ensembleXXX
+	 * AdapterDiagramFilter.getConnectionsFromDiagram(ensembleXXX
 	 * .getSourceConnections, diagram)
 	 * 
 	 * @param conns
