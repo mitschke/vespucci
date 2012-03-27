@@ -35,11 +35,10 @@ package de.tud.cs.st.vespucci.diagram.creator;
 
 import java.util.List;
 
-import de.tud.cs.st.vespucci.diagram.supports.VespucciTraversalUtil;
 import de.tud.cs.st.vespucci.exceptions.VespucciIllegalArgumentException;
-import de.tud.cs.st.vespucci.vespucci_model.Connection;
-
+import de.tud.cs.st.vespucci.model.util.AdapterDiagramFilter;
 import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
+import de.tud.cs.st.vespucci.vespucci_model.Connection;
 import de.tud.cs.st.vespucci.vespucci_model.Empty;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
 import de.tud.cs.st.vespucci.vespucci_model.Expected;
@@ -103,7 +102,7 @@ public class DependencyPrologFacts {
 			if (abst_ens instanceof Ensemble) {
 				final Ensemble ensemble = (Ensemble) abst_ens;
 				if (abst_ens != null) {
-					for (final Connection connection : VespucciTraversalUtil.getConnectionsFromDiagram(ensemble.getTargetConnections())) {
+					for (final Connection connection : AdapterDiagramFilter.getConnectionsFromDiagram(ensemble.getTargetConnections())) {
 						dependencyFacts.append(createSingleDependencyFact(connection));
 					}
 				}

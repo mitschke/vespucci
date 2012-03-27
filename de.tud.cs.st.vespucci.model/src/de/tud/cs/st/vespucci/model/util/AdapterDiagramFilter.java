@@ -31,7 +31,7 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.diagram.supports;
+package de.tud.cs.st.vespucci.model.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,13 +46,10 @@ import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
 
 /**
- * Utility class to provide traversal filters for Connections and Ensembles.
- * 
  * @author Robert Cibulla
- * 
+ *
  */
-public class VespucciTraversalUtil {
-
+public class AdapterDiagramFilter {
 	static HashMap<String, String> ensembleRegistry = new HashMap<String, String>();
 	static HashMap<String, String> connectionRegistry = new HashMap<String, String>();
 
@@ -62,6 +59,8 @@ public class VespucciTraversalUtil {
 	 * @param diagram
 	 */
 	public static void init(View diagram) {
+		connectionRegistry.clear();
+		ensembleRegistry.clear();
 		initConnectionRegistry(diagram);
 		initEnsembleRegistry(diagram);
 	}
@@ -72,7 +71,6 @@ public class VespucciTraversalUtil {
 	 * @param diagram
 	 */
 	private static void initConnectionRegistry(View diagram) {
-		connectionRegistry.clear();
 		if (diagram instanceof Diagram) {
 			for (Object edge : ((Diagram) diagram).getEdges()) {
 				if (edge instanceof Edge
@@ -91,7 +89,6 @@ public class VespucciTraversalUtil {
 	 * @param diagram
 	 */
 	private static void initEnsembleRegistry(View diagram) {
-		ensembleRegistry.clear();
 		if (diagram instanceof Diagram) {
 			for (Object ensemble : ((Diagram) diagram).getChildren()) {
 				if (ensemble instanceof View

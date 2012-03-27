@@ -148,9 +148,8 @@ public class EnsembleAdapter implements IEnsemble {
 					innerEnsembles.add(i_ens);
 				}
 			}
-			this.innerEnsembles = innerEnsembles;
 		}
-		this.innerEnsembles = null;
+		this.innerEnsembles = innerEnsembles;
 	}
 	
 	/**

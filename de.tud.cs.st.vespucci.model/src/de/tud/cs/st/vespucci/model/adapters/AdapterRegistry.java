@@ -34,15 +34,18 @@
 package de.tud.cs.st.vespucci.model.adapters;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.model.IArchitectureModel;
 import de.tud.cs.st.vespucci.model.IConstraint;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.model.util.AdapterDiagramFilter;
 import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.Connection;
@@ -68,7 +71,7 @@ public class AdapterRegistry {
 	private static Map<AbstractEnsemble, IEnsemble> ensembleMap = new HashMap<AbstractEnsemble, IEnsemble>();
 	private static Map<Connection, IConstraint> constraintMap = new HashMap<Connection, IConstraint>();
 	private static boolean isFiltered = false;
-
+	private static View sDiagram;
 	/**
 	 * initialize registry
 	 * 
@@ -81,13 +84,16 @@ public class AdapterRegistry {
 		architectureModelAdapter = null;
 		ensembleMap.clear();
 		constraintMap.clear();
-		isFiltered = false;
-		if (diagram == null) {
-			initModel(rootModel);
-			initEnsembles(rootModel);
-			initConstraints(rootModel);
+		initModel(rootModel);
+		sDiagram = diagram;
+		if (sDiagram == null) {
+			initEnsembles(rootModel, false);
+			initConstraints(rootModel, false);
 		} else {
-			//TODO: implement filters
+			isFiltered = true;
+			AdapterDiagramFilter.init(sDiagram);
+			initEnsembles(rootModel, true);
+			initConstraints(rootModel, true);
 		}
 	}
 
@@ -105,29 +111,43 @@ public class AdapterRegistry {
 	 * 
 	 * @param rek
 	 */
-	private static void initEnsembles(EObject rek) {
+	private static void initEnsembles(EObject rek, boolean isFiltered) {
 		if (rek instanceof ArchitectureModel) {
-			for (AbstractEnsemble ens : ((ArchitectureModel) rek)
-					.getEnsembles()) {
+			List<AbstractEnsemble> ensembles;
+			//determine filtered or unfiltered ensembles
+			if(!isFiltered){
+				ensembles = ((ArchitectureModel) rek)
+						.getEnsembles();
+			} else {
+				ensembles = AdapterDiagramFilter.getEnsemblesFromDiagram(((ArchitectureModel) rek)
+						.getEnsembles());
+			}
+			for (AbstractEnsemble ens : ensembles) {
 				ensembleMap.put(ens, new EnsembleAdapter(ens));
-				initEnsembles(ens);
+				initEnsembles(ens, isFiltered);
 			}
 		} else if (rek instanceof Ensemble) {
 			for (AbstractEnsemble ens : ((Ensemble) rek).getEnsembles()) {
 				ensembleMap.put(ens, new EnsembleAdapter(ens));
-				initEnsembles(ens);
+				initEnsembles(ens, isFiltered);
 			}
 		} else
 			return;
 	}
-
+	
 	/**
 	 * initialize constraintMap without filter
 	 * 
 	 * @param architectureModel
 	 */
-	private static void initConstraints(ArchitectureModel architectureModel) {
-		for (Connection con : architectureModel.getConnections()) {
+	private static void initConstraints(ArchitectureModel architectureModel, boolean isFiltered) {
+		List<Connection> connections;
+		if(!isFiltered){
+			connections = architectureModel.getConnections();
+		} else {
+			connections = AdapterDiagramFilter.getConnectionsFromDiagram(architectureModel.getConnections());
+		}
+		for (Connection con : connections) {
 			if(con instanceof Violation){
 				constraintMap.put(con, new DocumentedViolationAdapter(
 						(Violation) con));
@@ -178,12 +198,5 @@ public class AdapterRegistry {
 	 */
 	public static IArchitectureModel getArchitectureModelAdapter() {
 		return architectureModelAdapter;
-	}
-
-	/**
-	 * @return the isFiltered
-	 */
-	public static boolean isFiltered() {
-		return isFiltered;
 	}
 }

@@ -41,11 +41,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
-import org.eclipse.gmf.runtime.notation.View;
-
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.EnsembleEditPart;
 
 /**
  * Provide common services, methods extracting information from edit part.
@@ -70,7 +65,6 @@ public class EditPartService {
 				shapes.addAll(getAllShapesInSideCompartment((EditPart) i));
 			}
 		}
-
 		return shapes;
 	}
 
