@@ -122,6 +122,10 @@ public class NotAllowedCreateCommand extends EditElementCommand {
 
 		newElement.setSource(getSource());
 		newElement.setTarget(getTarget());
+		
+		getSource().getTargetConnections().add(newElement);
+		getTarget().getSourceConnections().add(newElement);
+		
 		doConfigure(newElement, monitor, info);
 		((CreateElementRequest) getRequest()).setNewElement(newElement);
 		return CommandResult.newOKCommandResult(newElement);

@@ -46,6 +46,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -56,7 +57,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Shape</b></em>'.
+ * An implementation of the model object '<em><b>AbstractEnsemble</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -73,6 +74,26 @@ import de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage;
  * @generated
  */
 public abstract class AbstractEnsembleImpl extends EObjectImpl implements AbstractEnsemble {
+	/**
+	 * The cached value of the '{@link #getSourceConnections() <em>Source Connections</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSourceConnections()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Connection> sourceConnections;
+
+	/**
+	 * The cached value of the '{@link #getTargetConnections() <em>Target Connections</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTargetConnections()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Connection> targetConnections;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -172,103 +193,32 @@ public abstract class AbstractEnsembleImpl extends EObjectImpl implements Abstra
 		return Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE;
 	}
 
-	/**Filters the connections and shows the derived source list.
-	 * Returns all <code>Connections</code> which point from another <code>Shape</code> to this one.
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 * @author Robert Cibulla
-	 * @return EList<Connection>
+	 * @generated
 	 */
 	public EList<Connection> getSourceConnections() {
-		List<Connection> connections = getConnectionsHelper(true);
-		return new EcoreEList.UnmodifiableEList<Connection>(this, 
-				Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS, connections.size(), connections.toArray());
+		if (sourceConnections == null) {
+			sourceConnections = new EObjectEList<Connection>(Connection.class, this, Vespucci_modelPackage.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS);
+		}
+		return sourceConnections;
 	}
 	
 	
 	
-	/**Filters the connections and shows the derived target list.
-	 * Returns all <code>Connections</code> which point from this <code>Shape</code> to another.
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 * @author Robert Cibulla
-	 * @return EList<Connection> 
+	 * @generated
 	 */
 	public EList<Connection> getTargetConnections() {
-		List<Connection> connections = getConnectionsHelper(false);
-		return new EcoreEList.UnmodifiableEList<Connection>(this, 
-				Vespucci_modelPackage.Literals.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS, connections.size(), connections.toArray());
+		if (targetConnections == null) {
+			targetConnections = new EObjectEList<Connection>(Connection.class, this, Vespucci_modelPackage.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS);
+		}
+		return targetConnections;
 	}
 	
-	
-	/**
-	 * Helper method to collect connections.
-	 * @author Robert Cibulla
-	 * @generated NOT
-	 * @param boolean source - determines whether source or target connections are collected.
-	 * return List<Connection>;
-	 */
-	private List<Connection> getConnectionsHelper(boolean source){
-		//get DiagramReference:
-		ArchitectureModel tempRootReference = getRootReferenceHelper();
-		//temporary Arraylist to collect valid Connections
-		List<Connection> connections = new ArrayList<Connection>();
-		//collect all Connections where the current shape is the Target:
-		if (tempRootReference != null) {
-			for (Connection conn : tempRootReference.getConnections()) {
-				resolveTemporaryConnections(source, conn, connections);
-			}
-		}
-		return connections;
-	}
-	
-	/**
-	 *Private method to get the ArchitectureModel.
-	 * 
-	 * @generated NOT
-	 * @author Robert Cibulla
-	 * @return ArchitectureModel - reference to the ArchitectureModel
-	 */
-	private ArchitectureModel getRootReferenceHelper() {
-		// temporary variables used to navigate to top node
-
-		EObject parent = this.eContainer();
-
-		while (!(parent instanceof ArchitectureModel) && parent != null) {
-			parent = parent.eContainer();
-		}
-		return (ArchitectureModel) parent;
-	}
-
-	/**
-	 * Collects the connections and resolves temporary connection references.
-	 * @generated NOT
-	 * @author Robert Cibulla
-	 */
-	private void resolveTemporaryConnections(boolean source, Connection con, List<Connection> connections){
-		//decide whether method is used in for getSourceConnections or getTargetConnections
-		if(source){
-			//check if connection is either temporary or temporary on the wrong end (empty OriginalSource/-Target)
-			if(!con.isTemp() || (con.getOriginalTarget() != null && con.getOriginalTarget().isEmpty())){
-				if(con.getTarget().equals(this))
-					connections.add(con);
-			} else {
-				if(con.getOriginalTarget().get(0).equals(this))
-					connections.add(con);
-			}
-		} else {
-			//check if connection is either temporary or temporary on the wrong end (empty OriginalSource/-Target)
-			if(!con.isTemp() || (con.getOriginalSource() != null && con.getOriginalSource().isEmpty())){
-				if(con.getSource().equals(this))
-					connections.add(con);
-			} else {
-				if(con.getOriginalSource().get(0).equals(this))
-					connections.add(con);
-			}
-		}
-	}
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -454,9 +404,9 @@ public abstract class AbstractEnsembleImpl extends EObjectImpl implements Abstra
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__SOURCE_CONNECTIONS:
-				return !getSourceConnections().isEmpty();
+				return sourceConnections != null && !sourceConnections.isEmpty();
 			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__TARGET_CONNECTIONS:
-				return !getTargetConnections().isEmpty();
+				return targetConnections != null && !targetConnections.isEmpty();
 			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case Vespucci_modelPackage.ABSTRACT_ENSEMBLE__DESCRIPTION:

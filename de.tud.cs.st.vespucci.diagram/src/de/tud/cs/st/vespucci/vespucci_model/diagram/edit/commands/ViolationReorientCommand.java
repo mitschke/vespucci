@@ -144,17 +144,21 @@ public class ViolationReorientCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
+		getOldSource().getTargetConnections().remove(getLink());
+		getNewSource().getTargetConnections().add(getLink());
 		getLink().setSource(getNewSource());
 		return CommandResult.newOKCommandResult(getLink());
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {
+		getOldTarget().getSourceConnections().remove(getLink());
+		getNewTarget().getSourceConnections().add(getLink());
 		getLink().setTarget(getNewTarget());
 		return CommandResult.newOKCommandResult(getLink());
 	}

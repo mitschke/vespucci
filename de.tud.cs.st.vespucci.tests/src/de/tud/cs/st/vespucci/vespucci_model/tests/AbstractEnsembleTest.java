@@ -41,13 +41,6 @@ import junit.framework.TestCase;
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Abstract Ensemble</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * The following features are tested:
- * <ul>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getSourceConnections() <em>Source Connections</em>}</li>
- *   <li>{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getTargetConnections() <em>Target Connections</em>}</li>
- * </ul>
- * </p>
  * @generated
  */
 public abstract class AbstractEnsembleTest extends TestCase {
@@ -88,32 +81,6 @@ public abstract class AbstractEnsembleTest extends TestCase {
 	 */
 	protected AbstractEnsemble getFixture() {
 		return fixture;
-	}
-
-	/**
-	 * Tests the '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getSourceConnections() <em>Source Connections</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getSourceConnections()
-	 * @generated
-	 */
-	public void testGetSourceConnections() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '{@link de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getTargetConnections() <em>Target Connections</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble#getTargetConnections()
-	 * @generated
-	 */
-	public void testGetTargetConnections() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
 	}
 
 } //AbstractEnsembleTest

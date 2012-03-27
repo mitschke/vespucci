@@ -48,6 +48,8 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDragDropEditPolicy;
 import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartment2CanonicalEditPolicy;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartmentCanonicalEditPolicy;
 
 /**
  * @generated
@@ -97,6 +99,7 @@ public class EnsembleEnsembleCompartmentEditPart extends
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
 				new ResizableCompartmentEditPolicy());
+		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new EnsembleEnsembleCompartmentCanonicalEditPolicy());
 		installEditPolicy(
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartmentItemSemanticEditPolicy());

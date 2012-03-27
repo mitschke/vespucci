@@ -607,9 +607,9 @@ public class Vespucci_modelPackageImpl extends EPackageImpl implements Vespucci_
 		getArchitectureModel_Connections().getEKeys().add(this.getConnection_Key());
 
 		initEClass(abstractEnsembleEClass, AbstractEnsemble.class, "AbstractEnsemble", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAbstractEnsemble_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, AbstractEnsemble.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getAbstractEnsemble_SourceConnections(), this.getConnection(), null, "sourceConnections", null, 0, -1, AbstractEnsemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		getAbstractEnsemble_SourceConnections().getEKeys().add(this.getConnection_Key());
-		initEReference(getAbstractEnsemble_TargetConnections(), this.getConnection(), null, "targetConnections", null, 0, -1, AbstractEnsemble.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getAbstractEnsemble_TargetConnections(), this.getConnection(), null, "targetConnections", null, 0, -1, AbstractEnsemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		getAbstractEnsemble_TargetConnections().getEKeys().add(this.getConnection_Key());
 		initEAttribute(getAbstractEnsemble_Name(), ecorePackage.getEString(), "name", null, 0, 1, AbstractEnsemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAbstractEnsemble_Description(), ecorePackage.getEString(), "description", "<description>", 0, 1, AbstractEnsemble.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

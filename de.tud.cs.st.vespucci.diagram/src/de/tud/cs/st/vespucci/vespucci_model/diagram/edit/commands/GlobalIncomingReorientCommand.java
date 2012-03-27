@@ -144,18 +144,22 @@ public class GlobalIncomingReorientCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
 		getLink().setSource(getNewSource());
+		getOldSource().getTargetConnections().remove(getLink());
+		getNewSource().getTargetConnections().add(getLink());
 		return CommandResult.newOKCommandResult(getLink());
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {
 		getLink().setTarget(getNewTarget());
+		getOldTarget().getSourceConnections().remove(getLink());
+		getNewTarget().getSourceConnections().add(getLink());
 		return CommandResult.newOKCommandResult(getLink());
 	}
 

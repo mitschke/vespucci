@@ -158,6 +158,8 @@ public class IncomingReorientCommand extends EditElementCommand {
 				getLink().setTemp(false);
 			}
 		}
+		getOldSource().getTargetConnections().remove(getLink());
+		getNewSource().getTargetConnections().add(getLink());
 		getLink().setSource(getNewSource());
 		return CommandResult.newOKCommandResult(getLink());
 	}

@@ -158,6 +158,8 @@ public class OutgoingReorientCommand extends EditElementCommand {
 				getLink().setTemp(false);
 			}
 		}
+		getOldSource().getTargetConnections().remove(getLink());
+		getNewSource().getTargetConnections().add(getLink());
 		getLink().setSource(getNewSource());
 		return CommandResult.newOKCommandResult(getLink());
 	}
@@ -185,6 +187,8 @@ public class OutgoingReorientCommand extends EditElementCommand {
 				getLink().setTemp(false);
 			}
 		}
+		getOldTarget().getSourceConnections().remove(getLink());
+		getNewTarget().getSourceConnections().add(getLink());
 		getLink().setTarget(getNewTarget());
 		return CommandResult.newOKCommandResult(getLink());
 	}

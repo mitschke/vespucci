@@ -70,7 +70,7 @@ public interface AbstractEnsemble extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Source Connections</em>' reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble_SourceConnections()
-	 * @model resolveProxies="false" keys="key" transient="true" volatile="true" derived="true"
+	 * @model resolveProxies="false" keys="key"
 	 * @generated
 	 */
 	EList<Connection> getSourceConnections();
@@ -86,7 +86,7 @@ public interface AbstractEnsemble extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Connections</em>' reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getAbstractEnsemble_TargetConnections()
-	 * @model resolveProxies="false" keys="key" transient="true" volatile="true" derived="true"
+	 * @model resolveProxies="false" keys="key"
 	 * @generated
 	 */
 	EList<Connection> getTargetConnections();
