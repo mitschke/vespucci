@@ -48,9 +48,4 @@ public class UnmodeledElementsVisualizer implements IResultProcessor {
 		return IUnmodeledElementView.class.equals(resultClass);
 	}
 
-	@Override
-	public void cleanUp() {
-		// unused in this ResultProcessor
-	}
-
 }
