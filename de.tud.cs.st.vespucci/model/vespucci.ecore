@@ -35,7 +35,7 @@
       <details key="uniqueName" value="Ensemble.allInstances()->forAll(e | e &lt;> self implies e.name &lt;> self.name)"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ensembles" upperBound="-1"
-        eType="#//AbstractEnsemble" containment="true"/>
+        eType="#//AbstractEnsemble" containment="true" eKeys="#//AbstractEnsemble/key"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Connection" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//AbstractEnsemble"

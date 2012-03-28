@@ -149,13 +149,13 @@
              <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
           <?gmfgen generated="false"?>
-        <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
+ <!--       <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
             <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
                <GlobalActionId actionId="cut"/>
                <GlobalActionId actionId="copy"/>
                <GlobalActionId actionId="paste"/>
             </ElementType>
-         </ViewId>
+         </ViewId>		-->
       </GlobalActionHandlerProvider>
    </extension>
 
@@ -953,13 +953,14 @@
                commandId="de.tud.cs.st.vespucci.diagram.SetDependencyConstraint">
          </handler>
       </extension>
-       <extension
+ <!--      <extension
             point="org.eclipse.gmf.runtime.emf.clipboard.core.clipboardSupport">
          <factory
                class="de.tud.cs.st.vespucci.diagram.supports.VespucciClipboardSupportFactory"
                priority="medium">
          </factory>
-      </extension>
+      </extension> 
+-->
        
        <?gmfgen generated="false"?>
        <extension

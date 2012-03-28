@@ -67,7 +67,7 @@ public interface Ensemble extends AbstractEnsemble {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Ensembles</em>' containment reference list.
 	 * @see de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage#getEnsemble_Ensembles()
-	 * @model containment="true"
+	 * @model containment="true" keys="key"
 	 * @generated
 	 */
 	EList<AbstractEnsemble> getEnsembles();
