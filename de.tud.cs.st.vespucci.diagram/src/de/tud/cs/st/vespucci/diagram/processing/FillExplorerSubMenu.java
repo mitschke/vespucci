@@ -125,6 +125,11 @@ public class FillExplorerSubMenu extends ContributionItem {
 
 	}
 
+	/**
+	 * Returns a list of IFiles which ends with *.sad and are currently selected
+	 * 
+	 * @return List of selected diagram files as IFiles
+	 */
 	private LinkedList<IFile> getSelectedDiagramIFiles() {
 
 		LinkedList<IFile> diagramIFiles = new LinkedList<IFile>();
@@ -151,6 +156,11 @@ public class FillExplorerSubMenu extends ContributionItem {
 				new NullProgressMonitor());
 	}
 
+	/**
+	 * Return all available IModelProcessor
+	 * 
+	 * @return List of ProcessorItems containing IModelProcessor and corresponding label
+	 */
 	private LinkedList<ProcessorItem<IModelProcessor>> getProcessorItems() {
 		
 		LinkedList<ProcessorItem<IModelProcessor>> converterItems = new LinkedList<ProcessorItem<IModelProcessor>>();
@@ -179,6 +189,11 @@ public class FillExplorerSubMenu extends ContributionItem {
 	}
 	
 
+	/**
+	 * Returns a list of all registered resultProcessors
+	 * See ExtensionPoint de.tud.cs.st.vespucci.diagram.resultProcessors
+	 * @return List of all available IResultProcessors 
+	 */
 	private LinkedList<IResultProcessor> getResultProcessors() {
 		
 		LinkedList<IResultProcessor> returnProcessors = new LinkedList<IResultProcessor>();
