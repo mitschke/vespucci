@@ -38,7 +38,7 @@ import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataView;
-import de.tud.cs.st.vespucci.view.table.ColumnComparator;
+import de.tud.cs.st.vespucci.view.table.IColumnComparator;
 import de.tud.cs.st.vespucci.view.table.DataViewContentProvider;
 import de.tud.cs.st.vespucci.view.table.Filter;
 import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
@@ -171,7 +171,7 @@ public class UnmodeledElementsTableView extends ViewPart implements
 		elementColumn.setMoveable(true);
 //		addColumnSortListener(elementColumn);
 
-		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new ColumnComparator() {
+		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new IColumnComparator() {
 			
 			@Override
 			public int compare(Object e1, Object e2, int column) {

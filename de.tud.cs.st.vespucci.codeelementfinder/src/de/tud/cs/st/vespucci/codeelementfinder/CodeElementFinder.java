@@ -55,7 +55,7 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 /**
  * Class that is able to find ICodeElements in workspace
  * 
- * @author
+ * @author Olav Lenz
  */
 public class CodeElementFinder {
 
@@ -146,6 +146,7 @@ public class CodeElementFinder {
 					found = true;
 					foundMatch = match;
 					nextStep();
+					return;
 				}
 			}
 			searchForNextItem();

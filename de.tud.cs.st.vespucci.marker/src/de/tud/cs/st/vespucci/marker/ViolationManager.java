@@ -49,7 +49,7 @@ import de.tud.cs.st.vespucci.interfaces.IViolation;
 /**
  * Explicit implementation of DataViewObserver for IViolations.
  * 
- * @author 
+ * @author Olav Lenz
  */
 public class ViolationManager extends DataViewObserver<IViolation> {
 
@@ -88,7 +88,7 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 		}
 		if (element.getTargetElement() != null){
 			CodeElementFinder.startSearch(element.getTargetElement(), getRelatedProject(), new CodeElementMarker(ViolationManager.TARGET, createTargetViolationDescription(element), element));
-		}	
+		}
 	}
 
 	public void saveMarker(IViolation violation, IMarker mark) {
@@ -116,14 +116,13 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 	 * Implementation of ICodeElementFoundProcessor
 	 * for marking CodeElements of IViolations
 	 * 
-	 * @author 
+	 * @author Olav Lenz
 	 */
 	private class CodeElementMarker implements ICodeElementFoundProcessor{
 
 		private int type;
 		private String description;
 		private IViolation violation;
-
 		public CodeElementMarker(int type, String description, IViolation violation){
 			this.type = type;
 			this.description = description;
@@ -132,14 +131,19 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 
 		@Override
 		public void processFoundCodeElement(IMember member) {
-			int priority = getSeverity();
-			IMarker marker = MarkingUtilities.markIMember(member, description, priority);
+			IMarker marker = MarkingUtilities.markIMember(member, description, getSeverity());
+			if (marker == null){
+				marker = MarkingUtilities.markIProject(getRelatedProject(), description, getSeverity());
+			}
 			saveMarker(violation, marker);
 		}
 
 		@Override
 		public void processFoundCodeElement(IMember member, int lineNr) {
 			IMarker marker = MarkingUtilities.markIStatement(member, description, lineNr, getSeverity());
+			if (marker == null){
+				marker = MarkingUtilities.markIProject(getRelatedProject(), description, getSeverity());
+			}
 			saveMarker(violation, marker);
 		}
 

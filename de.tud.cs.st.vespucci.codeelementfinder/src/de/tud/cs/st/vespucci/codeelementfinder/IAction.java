@@ -36,7 +36,7 @@ package de.tud.cs.st.vespucci.codeelementfinder;
 /**
  * Action that is processed when called
  * 
- * @author 
+ * @author Olav Lenz
  */
 public interface IAction {
 

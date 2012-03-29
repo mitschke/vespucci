@@ -49,7 +49,7 @@ import de.tud.cs.st.vespucci.utilities.Util;
  * Receive IViolationViews and delegate them to ViolationManager and
  * ViolationSummaryManger, who mark and manage IViolations and IViolationSummary
  * 
- * @author
+ * @author Olav Lenz
  */
 public class Marker implements IResultProcessor {
 

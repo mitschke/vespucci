@@ -43,7 +43,7 @@ import org.eclipse.jdt.core.JavaModelException;
 /**
  * Provide facilities to mark elements
  * 
- * @author 
+ * @author Olav Lenz
  */
 public class MarkingUtilities {
 

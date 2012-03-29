@@ -41,7 +41,7 @@ import de.tud.cs.st.vespucci.interfaces.ICodeElement;
  * Processor which provide methods that declares what should be done
  * when an ICodeElement is found
  * 
- * @author 
+ * @author Olav Lenz
  *
  */
 public interface ICodeElementFoundProcessor {

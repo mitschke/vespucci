@@ -18,7 +18,7 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 /**
  * SearchRequestor for searching ICodeElements
  * 
- * @author 
+ * @author Olav Lenz
  */
 public class CodeElementSearchRequestor extends SearchRequestor {
 

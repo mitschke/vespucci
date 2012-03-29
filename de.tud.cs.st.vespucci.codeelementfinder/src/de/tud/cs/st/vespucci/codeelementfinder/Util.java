@@ -60,7 +60,7 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 /**
  * Provide functionalities that is need to find ICodeElemnets
  * 
- * @author
+ * @author Olav Lenz
  */
 @SuppressWarnings("restriction")
 public class Util {

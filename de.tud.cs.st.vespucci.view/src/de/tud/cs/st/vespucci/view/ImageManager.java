@@ -42,7 +42,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Class which provides icons and images (cached) for other Plug-in projects
  * 
- * @author 
+ * @author
  */
 public class ImageManager {
 

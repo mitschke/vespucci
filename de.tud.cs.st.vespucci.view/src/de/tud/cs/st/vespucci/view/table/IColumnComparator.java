@@ -39,7 +39,7 @@ package de.tud.cs.st.vespucci.view.table;
  * 
  * @author 
  */
-public interface ColumnComparator {
+public interface IColumnComparator {
 
 	/**
 	 * Compare two elements depending of given column number

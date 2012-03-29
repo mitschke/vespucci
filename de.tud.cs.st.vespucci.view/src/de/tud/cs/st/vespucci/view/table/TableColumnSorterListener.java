@@ -84,7 +84,7 @@ public final class TableColumnSorterListener implements SelectionListener {
 		widgetSelected(e);
 	}
 
-	public static void addColumnSortFunctionality(TableViewer tableViewer, ColumnComparator columnComparator){
+	public static void addColumnSortFunctionality(TableViewer tableViewer, IColumnComparator columnComparator){
 		Table table = tableViewer.getTable();
 		for (int i = 0; i < table.getColumnCount(); i++){
 			table.getColumn(i).addSelectionListener(new TableColumnSorterListener(tableViewer, i));
@@ -101,10 +101,10 @@ public final class TableColumnSorterListener implements SelectionListener {
  */
 class TableColumnSorter extends ViewerSorter{
 	
-	private ColumnComparator columnComparator;
+	private IColumnComparator columnComparator;
 	private TableViewer tableViewer;
 
-	public TableColumnSorter(TableViewer tableViewer, ColumnComparator columnComparator){
+	public TableColumnSorter(TableViewer tableViewer, IColumnComparator columnComparator){
 		this.columnComparator = columnComparator;
 		this.tableViewer = tableViewer;
 	}

@@ -46,7 +46,7 @@ import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 /**
  * Explicit implementation of DataViewObserver for IViolationSummarys.
  * 
- * @author 
+ * @author Olav Lenz
  */
 public class ViolationSummaryManager extends DataViewObserver<IViolationSummary>{
 

@@ -65,7 +65,7 @@ import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.view.ImageManager;
 import de.tud.cs.st.vespucci.view.model.Pair;
-import de.tud.cs.st.vespucci.view.table.ColumnComparator;
+import de.tud.cs.st.vespucci.view.table.IColumnComparator;
 import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 /**
@@ -124,7 +124,7 @@ public class CheckedDiagramsTableView extends ViewPart {
 		tableColumn.setText("Path");
 		tableColumn.setWidth(200);
 
-		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new ColumnComparator() {
+		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new IColumnComparator() {
 			
 			@Override
 			public int compare(Object e1, Object e2, int column) {
