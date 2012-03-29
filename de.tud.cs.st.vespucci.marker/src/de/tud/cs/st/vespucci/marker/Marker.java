@@ -32,6 +32,9 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 package de.tud.cs.st.vespucci.marker;
+
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
@@ -43,24 +46,25 @@ import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.utilities.Util;
 
 /**
- * Receive IViolationViews and delegate them to ViolationManager and ViolationSummaryManger,
- * who mark and manage IViolations and IViolationSummary
+ * Receive IViolationViews and delegate them to ViolationManager and
+ * ViolationSummaryManger, who mark and manage IViolations and IViolationSummary
  * 
- * @author 
+ * @author
  */
 public class Marker implements IResultProcessor {
 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
 
-	protected static void processException(Exception e){
-		final IStatus is = new Status(IStatus.ERROR, Marker.PLUGIN_ID, e.getMessage(), e);
+	protected static void processException(Exception e) {
+		final IStatus is = new Status(IStatus.ERROR, Marker.PLUGIN_ID,
+				e.getMessage(), e);
 		StatusManager.getManager().handle(is, StatusManager.LOG);
 	}
 
 	private ViolationManager violationManager;
 	private ViolationSummaryManager violationSummaryManager;
 
-	public Marker(){
+	public Marker() {
 		violationManager = new ViolationManager();
 		violationSummaryManager = new ViolationSummaryManager();
 	}
@@ -70,10 +74,18 @@ public class Marker implements IResultProcessor {
 		IViolationView violationView = Util.adapt(result, IViolationView.class);
 		IProject project = file.getProject();
 
-		if (violationView != null){
+		long start = System.nanoTime();
+		if (violationView != null) {
 			violationManager.add(violationView, project);
-			violationSummaryManager.add(violationView.getSummaryView(), project);
+			violationSummaryManager
+					.add(violationView.getSummaryView(), project);
 		}
+		long taken = System.nanoTime() - start;
+		System.out
+				.println("time to create markers       : "
+						+ TimeUnit.SECONDS.convert(taken, TimeUnit.NANOSECONDS)
+						+ " ms");
+
 	}
 
 	@Override
@@ -83,7 +95,7 @@ public class Marker implements IResultProcessor {
 
 	@Override
 	public void cleanUp() {
-		//unused in this result processor
+		// unused in this result processor
 	}
 
 }
