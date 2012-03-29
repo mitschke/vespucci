@@ -71,7 +71,9 @@ public class EnsembleEnsembleCompartment2CanonicalEditPolicy extends CanonicalEd
 	}
 
 	/**
+	 * Return empty List to turn off synchronization
 	 * @generated NOT
+	 * @author Robert Cibulla
 	 */
 	@Override
 	@SuppressWarnings("rawtypes")

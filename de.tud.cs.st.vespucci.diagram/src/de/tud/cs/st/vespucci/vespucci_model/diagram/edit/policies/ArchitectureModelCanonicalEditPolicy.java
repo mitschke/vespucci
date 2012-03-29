@@ -69,7 +69,9 @@ public class ArchitectureModelCanonicalEditPolicy extends CanonicalConnectionEdi
 	Set myFeaturesToSynchronize;
 
 	/**
+	 * Return empty List to turn off synchronization
 	 * @generated NOT
+	 * @author Robert Cibulla
 	 */
 	@SuppressWarnings("rawtypes")
 	protected List getSemanticChildrenList() {
@@ -83,7 +85,7 @@ public class ArchitectureModelCanonicalEditPolicy extends CanonicalConnectionEdi
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	protected boolean shouldDeleteView(View view) {
 		return super.shouldDeleteView(view);
