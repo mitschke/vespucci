@@ -96,15 +96,15 @@ public class CodeElementFinder {
 
 		if (cache.containsKey(sourceElement)) {
 			IMember member = cache.get(sourceElement);
-			if(!member.exists())
-			processor.processFoundCodeElement(cache.get(sourceElement));
-		} else {
-			System.out.println("miss: " + sourceElement.toString());
-			CodeElementFinder cef = new CodeElementFinder(sourceElement,
-					project, processor);
-
-			cef.nextStep();
+			if(member.exists()){
+				processor.processFoundCodeElement(member);
+				return;
+			}
 		}
+
+		CodeElementFinder cef = new CodeElementFinder(sourceElement, project, processor);
+
+		cef.nextStep();
 	}
 
 	private CodeElementFinder(ICodeElement codeElement, IProject project,
