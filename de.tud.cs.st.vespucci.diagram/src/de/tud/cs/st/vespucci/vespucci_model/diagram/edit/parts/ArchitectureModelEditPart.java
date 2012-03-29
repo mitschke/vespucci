@@ -97,8 +97,9 @@ public class ArchitectureModelEditPart extends DiagramEditPart {
 				new JavaElementDiagramDropPolicy());
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
 				new GlobalRepositoryDragDropEditPolicy());
-		installEditPolicy(VespucciCanonicalEditPolicy.SEMI_CANONICAL_ROLE,
-				new VespucciCanonicalEditPolicy());
+//TODO: implement EditPolicy to remove deleted elements
+//		installEditPolicy(VespucciCanonicalEditPolicy.SEMI_CANONICAL_ROLE,
+//				new VespucciCanonicalEditPolicy());
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 

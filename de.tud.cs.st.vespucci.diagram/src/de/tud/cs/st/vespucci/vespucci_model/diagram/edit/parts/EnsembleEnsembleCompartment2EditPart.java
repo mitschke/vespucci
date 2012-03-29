@@ -38,7 +38,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CreationEditPolicy;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.ResizableCompartmentEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.figures.ResizableCompartmentFigure;
@@ -48,8 +47,6 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDragDropEditPolicy;
 import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartment2CanonicalEditPolicy;
-import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciCanonicalEditPolicy;
 
 /**
  * @generated
@@ -95,9 +92,10 @@ public class EnsembleEnsembleCompartment2EditPart extends
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
+//TODO: install an EditPolicy to clean the diagram
+//		installEditPolicy(VespucciCanonicalEditPolicy.SEMI_CANONICAL_ROLE, new VespucciCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
 				new ResizableCompartmentEditPolicy());
-		installEditPolicy(VespucciCanonicalEditPolicy.SEMI_CANONICAL_ROLE, new VespucciCanonicalEditPolicy());
 		installEditPolicy(
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartment2ItemSemanticEditPolicy());
