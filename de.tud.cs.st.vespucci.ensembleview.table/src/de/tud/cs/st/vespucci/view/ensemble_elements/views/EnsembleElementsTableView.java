@@ -45,8 +45,6 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -65,24 +63,23 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
-import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataView;
-import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
-import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.view.ensemble_elements.EnsembleElementsVisualizer;
 import de.tud.cs.st.vespucci.view.model.Pair;
 import de.tud.cs.st.vespucci.view.table.ColumnComparator;
 import de.tud.cs.st.vespucci.view.table.DataViewContentProvider;
+import de.tud.cs.st.vespucci.view.table.Filter;
 import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 /**
  * View which visualize the information of an IEnsembleElementsView in a table
  * with filter and sort functionalities
  * 
- * @author 
+ * @author Olav Lenz
+ * 
  */
 public class EnsembleElementsTableView extends ViewPart {
 
@@ -264,42 +261,6 @@ public class EnsembleElementsTableView extends ViewPart {
 		tableViewer.getControl().setFocus();
 	}
 
-	private final ViewerFilter classDeclarationFilter = new ViewerFilter() {
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IClassDeclaration);
-		}
-	};
-
-	private final ViewerFilter methodDeclarationFilter = new ViewerFilter() {
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IMethodDeclaration);
-		}
-	};
-
-	private final ViewerFilter fieldDeclarationFilter = new ViewerFilter() {
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IFieldDeclaration);
-		}
-	};
-
 	private void addActions() {
 		IActionBars actionBars = getViewSite().getActionBars();
 		IMenuManager viewMenu = actionBars.getMenuManager();
@@ -314,9 +275,9 @@ public class EnsembleElementsTableView extends ViewPart {
 			@Override
 			public void run() {
 				if (!isChecked()){
-					tableViewer.addFilter(classDeclarationFilter);
+					tableViewer.addFilter(Filter.classDeclarationFilter);
 				}else{
-					tableViewer.removeFilter(classDeclarationFilter);
+					tableViewer.removeFilter(Filter.classDeclarationFilter);
 				}
 			}
 
@@ -334,9 +295,9 @@ public class EnsembleElementsTableView extends ViewPart {
 			@Override
 			public void run() {
 				if (!isChecked()){
-					tableViewer.addFilter(methodDeclarationFilter);
+					tableViewer.addFilter(Filter.methodDeclarationFilter);
 				}else{
-					tableViewer.removeFilter(methodDeclarationFilter);
+					tableViewer.removeFilter(Filter.methodDeclarationFilter);
 				}
 			}
 
@@ -354,9 +315,9 @@ public class EnsembleElementsTableView extends ViewPart {
 			@Override
 			public void run() {
 				if (!isChecked()){
-					tableViewer.addFilter(fieldDeclarationFilter);
+					tableViewer.addFilter(Filter.fieldDeclarationFilter);
 				}else{
-					tableViewer.removeFilter(fieldDeclarationFilter);
+					tableViewer.removeFilter(Filter.fieldDeclarationFilter);
 				}
 			}
 

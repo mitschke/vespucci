@@ -20,17 +20,12 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.PartInitException;
@@ -41,13 +36,11 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
-import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataView;
-import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
-import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.view.table.ColumnComparator;
 import de.tud.cs.st.vespucci.view.table.DataViewContentProvider;
+import de.tud.cs.st.vespucci.view.table.Filter;
 import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 public class UnmodeledElementsTableView extends ViewPart implements
@@ -240,9 +233,9 @@ public class UnmodeledElementsTableView extends ViewPart implements
 			@Override
 			public void run() {
 				if (!isChecked())
-					tableViewer.addFilter(classDeclarationFilter);
+					tableViewer.addFilter(Filter.classDeclarationFilter);
 				else
-					tableViewer.removeFilter(classDeclarationFilter);
+					tableViewer.removeFilter(Filter.classDeclarationFilter);
 			}
 
 		};
@@ -259,9 +252,9 @@ public class UnmodeledElementsTableView extends ViewPart implements
 			@Override
 			public void run() {
 				if (!isChecked())
-					tableViewer.addFilter(methodDeclarationFilter);
+					tableViewer.addFilter(Filter.methodDeclarationFilter);
 				else
-					tableViewer.removeFilter(methodDeclarationFilter);
+					tableViewer.removeFilter(Filter.methodDeclarationFilter);
 			}
 
 		};
@@ -278,44 +271,14 @@ public class UnmodeledElementsTableView extends ViewPart implements
 			@Override
 			public void run() {
 				if (!isChecked())
-					tableViewer.addFilter(fieldDeclarationFilter);
+					tableViewer.addFilter(Filter.fieldDeclarationFilter);
 				else
-					tableViewer.removeFilter(fieldDeclarationFilter);
+					tableViewer.removeFilter(Filter.fieldDeclarationFilter);
 			}
 
 		};
 		setFieldDeclarationsToFiltered.setChecked(true);
 		menu.add(setFieldDeclarationsToFiltered);
-	}
-
-	private void addColumnSortListener(final TableColumn tableColumn) {
-		final Table table = tableColumn.getParent();
-
-		tableColumn.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				switch (table.getSortDirection()) {
-				case SWT.NONE:
-
-				case SWT.DOWN:
-					table.setSortColumn(tableColumn);
-					table.setSortDirection(SWT.UP);
-					tableViewer.refresh();
-					break;
-				case SWT.UP:
-					table.setSortColumn(tableColumn);
-					table.setSortDirection(SWT.DOWN);
-					tableViewer.refresh();
-					break;
-				}
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});
 	}
 
 	/**
@@ -324,38 +287,4 @@ public class UnmodeledElementsTableView extends ViewPart implements
 	public void setFocus() {
 		tableViewer.getControl().setFocus();
 	}
-
-	private final ViewerFilter classDeclarationFilter = new ViewerFilter() {
-
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(element instanceof IClassDeclaration);
-		}
-	};
-
-	private final ViewerFilter methodDeclarationFilter = new ViewerFilter() {
-
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(element instanceof IMethodDeclaration);
-		}
-	};
-
-	private final ViewerFilter fieldDeclarationFilter = new ViewerFilter() {
-
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(element instanceof IFieldDeclaration);
-		}
-	};
-
 }

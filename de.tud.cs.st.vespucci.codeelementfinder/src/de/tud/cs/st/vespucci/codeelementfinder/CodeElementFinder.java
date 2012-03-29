@@ -118,7 +118,10 @@ public class CodeElementFinder {
 	 * Process the next step in the search process
 	 */
 	private void nextStep() {
-		getSearchStatus();
+		if (codeElementSearchRequestor != null) {
+			found = codeElementSearchRequestor.getSearchResult();
+			foundMatch = codeElementSearchRequestor.getSearchMatch();
+		}
 		if (found) {
 			foundCodeElement();
 		} else {
@@ -145,7 +148,7 @@ public class CodeElementFinder {
 					nextStep();
 				}
 			}
-			searchItem();
+			searchForNextItem();
 		}
 	}
 
@@ -167,22 +170,12 @@ public class CodeElementFinder {
 	}
 
 	/**
-	 * Catch information about the last search step from the SearchRequestor
-	 */
-	private void getSearchStatus() {
-		if (codeElementSearchRequestor != null) {
-			found = codeElementSearchRequestor.getSearchResult();
-			foundMatch = codeElementSearchRequestor.getSearchMatch();
-		}
-	}
-
-	/**
 	 * Start searching
 	 * 
 	 * @param codeElement
 	 *            ICodeElement searched for
 	 */
-	private void searchItem() {
+	private void searchForNextItem() {
 
 		codeElementSearchRequestor = new CodeElementSearchRequestor(
 				currentSearchItem, new IAction() {

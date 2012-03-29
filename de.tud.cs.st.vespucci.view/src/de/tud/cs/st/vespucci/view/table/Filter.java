@@ -31,47 +31,56 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.marker;
+package de.tud.cs.st.vespucci.view.table;
 
-import java.util.Iterator;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 
-import org.eclipse.core.resources.IProject;
-
-import de.tud.cs.st.vespucci.interfaces.IDataView;
-import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
+import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
+import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IPair;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 
 /**
- * An abstract, generic implementation of IDataViewObserver
  * 
- * @author 
+ * @author Ralf Mitschke
  */
-public abstract class DataViewObserver<A> implements IDataViewObserver<A>{
+public final class Filter {
+	public static final ViewerFilter classDeclarationFilter = new ViewerFilter() {
 
-	private IProject project;
-	
-	/**
-	 * 
-	 * Clients are expected to call this only once for initialization
-	 * 
-	 * @param dataView
-	 * @param project
-	 */
-	public void setView(IDataView<A> dataView, IProject project) {
-		this.project = project;
-		dataView.register(this);
-		for (Iterator<A> dataViewIterator = dataView.iterator(); dataViewIterator.hasNext();) {
-			added(dataViewIterator.next());
+		@SuppressWarnings("unchecked")
+		@Override
+		public boolean select(Viewer viewer, Object parentElement,
+				Object element) {
+			if (element == null)
+				return false;
+			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IClassDeclaration);
 		}
-	}
+	};
 
-	@Override
-	public void updated(A oldValue, A newValue) {
-		deleted(oldValue);
-		added(newValue);
-	}
-	
-	public IProject getRelatedProject(){
-		return project;
-	}
+	public static final ViewerFilter methodDeclarationFilter = new ViewerFilter() {
 
+		@SuppressWarnings("unchecked")
+		@Override
+		public boolean select(Viewer viewer, Object parentElement,
+				Object element) {
+			if (element == null)
+				return false;
+			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IMethodDeclaration);
+		}
+	};
+
+	public static final ViewerFilter fieldDeclarationFilter = new ViewerFilter() {
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public boolean select(Viewer viewer, Object parentElement,
+				Object element) {
+			if (element == null)
+				return false;
+			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IFieldDeclaration);
+		}
+	};
 }

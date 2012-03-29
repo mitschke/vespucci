@@ -69,6 +69,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
  * 
  * @author Patrick Gottschämmer
  * @author Olav Lenz
+ * @author Ralf Mitschke
  */
 public class AdapterIFile implements IAdapterFactory {
 

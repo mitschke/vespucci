@@ -76,9 +76,9 @@ public class Marker implements IResultProcessor {
 
 		long start = System.nanoTime();
 		if (violationView != null) {
-			violationManager.add(violationView, project);
+			violationManager.setView(violationView, project);
 			violationSummaryManager
-					.add(violationView.getSummaryView(), project);
+					.setView(violationView.getSummaryView(), project);
 		}
 		long taken = System.nanoTime() - start;
 		System.out
