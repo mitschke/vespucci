@@ -67,6 +67,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.tud.cs.st.vespucci.diagram.dnd.IJavaElementDropConstants;
 import de.tud.cs.st.vespucci.diagram.dnd.JavaElementEnsembleDropPolicy;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciCanonicalEditPolicy;
 
 /**
  * @generated

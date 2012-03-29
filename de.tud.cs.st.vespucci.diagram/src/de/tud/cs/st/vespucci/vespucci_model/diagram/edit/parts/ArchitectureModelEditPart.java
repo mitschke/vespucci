@@ -58,6 +58,7 @@ import org.eclipse.gmf.runtime.notation.View;
 import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDragDropEditPolicy;
 import de.tud.cs.st.vespucci.diagram.dnd.IJavaElementDropConstants;
 import de.tud.cs.st.vespucci.diagram.dnd.JavaElementDiagramDropPolicy;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciCanonicalEditPolicy;
 
 /**
  * @generated
@@ -96,6 +97,8 @@ public class ArchitectureModelEditPart extends DiagramEditPart {
 				new JavaElementDiagramDropPolicy());
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
 				new GlobalRepositoryDragDropEditPolicy());
+		installEditPolicy(VespucciCanonicalEditPolicy.SEMI_CANONICAL_ROLE,
+				new VespucciCanonicalEditPolicy());
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 

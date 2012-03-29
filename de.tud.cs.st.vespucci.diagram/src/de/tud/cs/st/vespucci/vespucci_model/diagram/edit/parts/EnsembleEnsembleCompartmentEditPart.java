@@ -50,6 +50,7 @@ import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDragDropEditPolicy;
 import de.tud.cs.st.vespucci.diagram.supports.CompartmentEditPartSupporter;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartment2CanonicalEditPolicy;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartmentCanonicalEditPolicy;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.VespucciCanonicalEditPolicy;
 
 /**
  * @generated
@@ -99,7 +100,7 @@ public class EnsembleEnsembleCompartmentEditPart extends
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
 				new ResizableCompartmentEditPolicy());
-		//		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new EnsembleEnsembleCompartmentCanonicalEditPolicy());
+		installEditPolicy(VespucciCanonicalEditPolicy.SEMI_CANONICAL_ROLE, new VespucciCanonicalEditPolicy());
 		installEditPolicy(
 				EditPolicyRoles.SEMANTIC_ROLE,
 				new de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.EnsembleEnsembleCompartmentItemSemanticEditPolicy());
