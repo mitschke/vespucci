@@ -12,6 +12,7 @@ import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.CompartmentEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
 import org.eclipse.gmf.runtime.diagram.ui.requests.DropObjectsRequest;
@@ -43,6 +44,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 		 */
 		public GlobalRepositoryDropTargetListener(EditingDomain editingDomain, IDiagramGraphicalViewer idgv , Transfer lt){
 			super(idgv, lt);
+			
 			this.editingDomain = editingDomain;
 		}
 
@@ -85,17 +87,25 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 		}
 		
 		/**
-		 * hopefully not needed anymore
+		 * determine correct children
 		 * @return
 		 */
 		private boolean areCorrectChildren(){
 			List l = getObjectsBeingDropped();
-			boolean result = false;
 			for(Object o : l){
-				if((o instanceof Ensemble) && ((View)(getTargetEditPart().getModel())).getElement().equals(((Ensemble)o).eContainer()))
-					result |= true;
+				if(!((o instanceof AbstractEnsemble) && isCorrectChild((AbstractEnsemble)o)))
+					return false;
 			}
-			return result;
+			return true;
+		}
+		
+		/**
+		 * determine if current {@link AbstractEnsemble} is the correct child
+		 * @param ens
+		 * @return
+		 */
+		private boolean isCorrectChild(AbstractEnsemble ens){
+			return ((View)(getTargetEditPart().getModel())).getElement().equals(ens.eContainer());
 		}
 	
 
@@ -125,13 +135,20 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 			//add Objects via URI
 			ArrayList<EObject> result = new ArrayList<EObject>(uris.size());
 			for (URI nextURI : uris) {
-				EObject modelObject = editingDomain.getResourceSet()
+				EObject modelObject = getEditingDomain().getResourceSet()
 						.getEObject(nextURI, true);
 				result.add(modelObject);
 			}
 			return result;
 		}
-		
+	
+		/**
+		 * Get the EditingDomain
+		 * @return
+		 */
+		public EditingDomain getEditingDomain() {
+			return editingDomain;
+		}
 		
 
 		/**
@@ -150,18 +167,6 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 			TransferData data = getCurrentEvent().currentDataType;
 			Object transferedObject = getJavaObject(data);
 			return transferedObject instanceof IStructuredSelection;
-		}
-
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener#createTargetRequest()
-		 */
-		@Override
-		protected Request createTargetRequest() {
-			DropObjectsRequest request = new DropObjectsRequest();
-			request.setLocation(getDropLocation());
-			request.setObjects(getObjectsBeingDropped());
-			return request;
 		}
 		
 		/* (non-Javadoc)

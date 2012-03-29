@@ -46,7 +46,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.NonResizableLabelEditPolicy;
 import org.eclipse.gmf.runtime.notation.View;
 
-import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDragDropEditPolicy;
+import de.tud.cs.st.vespucci.diagram.dnd.GlobalRepositoryDropEditPolicy;
 import de.tud.cs.st.vespucci.diagram.dnd.IJavaElementDropConstants;
 import de.tud.cs.st.vespucci.diagram.dnd.JavaElementDiagramDropPolicy;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.policies.ArchitectureModelCanonicalEditPolicy;
@@ -87,7 +87,7 @@ public class ArchitectureModelEditPart extends DiagramEditPart {
 		installEditPolicy(IJavaElementDropConstants.REQ_DROP_NEW_ENSEMBLE,
 				new JavaElementDiagramDropPolicy());
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
-				new GlobalRepositoryDragDropEditPolicy());
+				new GlobalRepositoryDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
 				new ArchitectureModelCanonicalEditPolicy());
 		removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);

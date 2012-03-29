@@ -37,11 +37,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.CompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DiagramDragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.DropObjectsRequest;
@@ -54,11 +59,11 @@ import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
 
 /**
- * 
+ * The DropEditPolicy that handles the behavior of {@link AbstractEnsemble}s being dropped on the canvas.
  * @author Robert Cibulla
  *
  */
-public class GlobalRepositoryDragDropEditPolicy extends
+public class GlobalRepositoryDropEditPolicy extends
 		DiagramDragDropEditPolicy {
 	
 	
@@ -69,18 +74,39 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	public Command getDropObjectsCommand(DropObjectsRequest dropRequest) {
 		ArrayList<CreateViewRequest.ViewDescriptor> viewDescriptors = new ArrayList<CreateViewRequest.ViewDescriptor>();
 		for (Iterator<?> it = dropRequest.getObjects().iterator(); it.hasNext();) {
-			Object nextObject = it.next();
+			EObject nextObject = loadFromEditingDomain(it.next());
 			if (!canBeDropped(nextObject, dropRequest)) {
 				continue;
 			}
-			viewDescriptors.add( new CreateViewRequest.ViewDescriptor(
-					new EObjectAdapter((EObject) nextObject), Node.class, null,
-					((GraphicalEditPart) getHost()).getDiagramPreferencesHint()));
+			viewDescriptors
+					.add(new CreateViewRequest.ViewDescriptor(
+							new EObjectAdapter((EObject) nextObject),
+							Node.class, null, ((GraphicalEditPart) getHost())
+									.getDiagramPreferencesHint()));
 		}
 		return createEnsembleCommand(dropRequest, viewDescriptors);
 	}
 	
 	
+	/**
+	 * load the object from the editing domain
+	 * @param nextObject
+	 * @return
+	 */
+	private EObject loadFromEditingDomain(Object nextObject) {
+		if(!(nextObject instanceof AbstractEnsemble) || nextObject == null){
+			return null;
+		}
+		ResourceSet srcSet = getEditingDomain().getResourceSet();
+		URI elementURI = EcoreUtil.getURI((EObject) nextObject);
+		
+		if(elementURI != null){
+			return srcSet.getEObject(elementURI, true);
+		}
+		return null;
+	}
+
+
 	/**
 	 * prevent child nodes and duplicates from being dropped
 	 * @param nextObject
@@ -106,7 +132,6 @@ public class GlobalRepositoryDragDropEditPolicy extends
 				result &= false;
 		}
 		return result;
-		
 	}
 	
 	/**
@@ -120,7 +145,7 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	
 	
 	/**
-	 * prevent duplicates in the Diagram
+	 * determine whether the nextObject is a duplicate
 	 * @param nextObject
 	 * @return
 	 */
@@ -138,6 +163,14 @@ public class GlobalRepositoryDragDropEditPolicy extends
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Returns the EditingDomain;
+	 * @return
+	 */
+	private TransactionalEditingDomain getEditingDomain(){
+		return ((IGraphicalEditPart)getHost()).getEditingDomain();
 	}
 	
 	/**
