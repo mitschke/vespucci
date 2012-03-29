@@ -38,7 +38,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gmf.runtime.diagram.core.util.ViewUtil;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.CanonicalEditPolicy;
 import org.eclipse.gmf.runtime.notation.View;
 
@@ -60,36 +62,37 @@ public class EnsembleEnsembleCompartmentCanonicalEditPolicy extends CanonicalEdi
 		super.refreshOnActivate();
 	}
 
-//	/**
-//	 * @generated
-//	 */
-//	@Override
-//	protected EStructuralFeature getFeatureToSynchronize() {
-//		return de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getEnsemble_Ensembles();
-//	}
-
 	/**
 	 * @generated
+	 */
+	@Override
+	protected EStructuralFeature getFeatureToSynchronize() {
+		return null;
+//		return de.tud.cs.st.vespucci.vespucci_model.Vespucci_modelPackage.eINSTANCE.getEnsemble_Ensembles();
+	}
+
+	/**
+	 * @generated NOT
 	 */
 	@Override
 	@SuppressWarnings("rawtypes")
 	protected List getSemanticChildrenList() {
-		View viewObject = (View) getHost().getModel();
+//		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
-		List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> childDescriptors = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
-				.getEnsembleEnsembleCompartment_7007SemanticChildren(viewObject);
-		for (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor d : childDescriptors) {
-			result.add(d.getModelElement());
-		}
+//		List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> childDescriptors = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramUpdater
+//				.getEnsembleEnsembleCompartment_7007SemanticChildren(viewObject);
+//		for (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor d : childDescriptors) {
+//			result.add(d.getModelElement());
+//		}
 		return result;
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
-		return isMyDiagramElement(view) && !semanticChildren.contains(view.getElement());
+		return ViewUtil.resolveSemanticElement(view) == null;
 	}
 
 	/**
