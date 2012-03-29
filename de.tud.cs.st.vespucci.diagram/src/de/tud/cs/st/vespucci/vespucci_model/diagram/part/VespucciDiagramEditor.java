@@ -662,83 +662,10 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 						getDiagramGraphicalViewer()));
 		getDiagramGraphicalViewer().addDropTargetListener(
 				new GlobalRepositoryDropTargetListener(getEditingDomain(),
-						getDiagramGraphicalViewer(), LocalSelectionTransfer
-								.getTransfer()) {
-
-					protected Object getJavaObject(TransferData data) {
-						return LocalSelectionTransfer.getTransfer()
-								.nativeToJava(data);
-					}
-
-				});
-		getDiagramGraphicalViewer().addDropTargetListener(
-				new GlobalRepositoryDropTargetListener(getEditingDomain(),
 						getDiagramGraphicalViewer(), LocalTransfer
-								.getInstance()) {
-
-					protected Object getJavaObject(TransferData data) {
-						return LocalTransfer.getInstance().nativeToJava(data);
-					}
-
-				});
+								.getInstance()));
 	}
 
-	/**
-	 * @generated
-	 */
-	private abstract class DropTargetListener extends DiagramDropTargetListener {
-
-		/**
-		 * @generated
-		 */
-		public DropTargetListener(EditPartViewer viewer, Transfer xfer) {
-			super(viewer, xfer);
-		}
-
-		/**
-		 * @generated
-		 */
-		protected List getObjectsBeingDropped() {
-			TransferData data = getCurrentEvent().currentDataType;
-			HashSet<URI> uris = new HashSet<URI>();
-
-			Object transferedObject = getJavaObject(data);
-			if (transferedObject instanceof IStructuredSelection) {
-				IStructuredSelection selection = (IStructuredSelection) transferedObject;
-				for (Iterator<?> it = selection.iterator(); it.hasNext();) {
-					Object nextSelectedObject = it.next();
-					if (nextSelectedObject instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
-						View view = ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) nextSelectedObject)
-								.getView();
-						nextSelectedObject = view.getElement();
-					} else if (nextSelectedObject instanceof IAdaptable) {
-						IAdaptable adaptable = (IAdaptable) nextSelectedObject;
-						nextSelectedObject = adaptable
-								.getAdapter(EObject.class);
-					}
-
-					if (nextSelectedObject instanceof EObject) {
-						EObject modelElement = (EObject) nextSelectedObject;
-						uris.add(EcoreUtil.getURI(modelElement));
-					}
-				}
-			}
-
-			ArrayList<EObject> result = new ArrayList<EObject>(uris.size());
-			for (URI nextURI : uris) {
-				EObject modelObject = getEditingDomain().getResourceSet()
-						.getEObject(nextURI, true);
-				result.add(modelObject);
-			}
-			return result;
-		}
-
-		/**
-		 * @generated
-		 */
-		protected abstract Object getJavaObject(TransferData data);
-
-	}
 
 	/**
 	 * Temp connections will be colored in red.

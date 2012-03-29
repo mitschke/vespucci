@@ -8,6 +8,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.CompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
@@ -25,7 +26,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 	/**
 	 * @generated NOT
 	 */
-	public abstract class GlobalRepositoryDropTargetListener extends
+	public class GlobalRepositoryDropTargetListener extends
 			DiagramDropTargetListener {
 		
 		private EditingDomain editingDomain;
@@ -105,7 +106,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 			//added via URIs to prevent object ID's from chaning
 			HashSet<URI> uris = new HashSet<URI>();
 
-			//gets Java Objects from transferred data (LocalSelectionTransfer or LocalTransfer)
+			//gets Java Objects from transferred data (LocalTransfer)
 			Object transferedObject = getJavaObject(data);
 			if (transferedObject instanceof IStructuredSelection) {
 				IStructuredSelection selection = (IStructuredSelection) transferedObject;
@@ -131,6 +132,19 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 		/**
 		 * @generated NOT
 		 */
-		protected abstract Object getJavaObject(TransferData data);
+		protected Object getJavaObject(TransferData data){
+			return LocalTransfer.getInstance().nativeToJava(data);
+		}
+
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener#isDataTransfered()
+		 */
+		@Override
+		protected boolean isDataTransfered() {
+			TransferData data = getCurrentEvent().currentDataType;
+			Object transferedObject = getJavaObject(data);
+			return super.isDataTransfered() || transferedObject != null;
+		}
 
 	}
