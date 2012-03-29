@@ -63,7 +63,7 @@ public class GlobalRepositoryDragDropEditPolicy extends
 	
 	
 	/**
-	 * 
+	 *	Returns the command to create views of ensembles.
 	 */
 	@Override
 	public Command getDropObjectsCommand(DropObjectsRequest dropRequest) {

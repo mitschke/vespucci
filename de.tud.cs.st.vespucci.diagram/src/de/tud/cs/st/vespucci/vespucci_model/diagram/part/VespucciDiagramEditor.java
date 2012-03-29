@@ -666,7 +666,6 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 								.getInstance()));
 	}
 
-
 	/**
 	 * Temp connections will be colored in red.
 	 * 

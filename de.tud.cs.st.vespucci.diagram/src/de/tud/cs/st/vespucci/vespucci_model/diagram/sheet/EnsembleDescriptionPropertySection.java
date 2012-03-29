@@ -188,7 +188,8 @@ public class EnsembleDescriptionPropertySection extends
 
 		if (eObject instanceof EnsembleImpl) {
 			getSectionComposite().setVisible(true);
-			return (String) eObject.eGet(vesPackage.getAbstractEnsemble_Description());
+			return (String) eObject.eGet(vesPackage
+					.getAbstractEnsemble_Description());
 		} else {
 			getSectionComposite().setVisible(false);
 			throw new VespucciUnexpectedException(String.format(

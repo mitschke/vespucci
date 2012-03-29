@@ -9,10 +9,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.CompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramGraphicalViewer;
+import org.eclipse.gmf.runtime.diagram.ui.requests.DropObjectsRequest;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
@@ -118,6 +122,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 					}
 				}
 			}
+			//add Objects via URI
 			ArrayList<EObject> result = new ArrayList<EObject>(uris.size());
 			for (URI nextURI : uris) {
 				EObject modelObject = editingDomain.getResourceSet()
@@ -144,7 +149,30 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 		protected boolean isDataTransfered() {
 			TransferData data = getCurrentEvent().currentDataType;
 			Object transferedObject = getJavaObject(data);
-			return super.isDataTransfered() || transferedObject != null;
+			return transferedObject instanceof IStructuredSelection;
+		}
+
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener#createTargetRequest()
+		 */
+		@Override
+		protected Request createTargetRequest() {
+			DropObjectsRequest request = new DropObjectsRequest();
+			request.setLocation(getDropLocation());
+			request.setObjects(getObjectsBeingDropped());
+			return request;
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener#updateTargetRequest()
+		 */
+		@Override
+		protected void updateTargetRequest(){
+			if(getTargetRequest() instanceof DropObjectsRequest){
+				((DropObjectsRequest) getTargetRequest()).setLocation(getDropLocation());
+				((DropObjectsRequest)getTargetRequest()).setObjects(getObjectsBeingDropped());
+			}
 		}
 
 	}

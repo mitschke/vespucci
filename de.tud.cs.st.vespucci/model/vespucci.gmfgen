@@ -141,8 +141,6 @@
     <viewmap
         xsi:type="gmfgen:FigureViewmap"
         figureQualifiedClassName="org.eclipse.draw2d.FreeformLayer"/>
-    <containsShortcutsTo>sam</containsShortcutsTo>
-    <shortcutsProvidedFor>Vespucci</shortcutsProvidedFor>
     <domainDiagramElement
         href="vespucci.genmodel#//vespucci_model/ArchitectureModel"/>
     <childNodes

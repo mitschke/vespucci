@@ -581,19 +581,6 @@ public class EnsembleEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	protected void handleNotificationEvent(Notification event) {
-		if (event.getNotifier() == getModel()
-				&& EcorePackage.eINSTANCE.getEModelElement_EAnnotations()
-						.equals(event.getFeature())) {
-			handleMajorSemanticChange();
-		} else {
-			super.handleNotificationEvent(event);
-		}
-	}
-
-	/**
-	 * @generated
-	 */
 	public class EnsembleFigure extends RoundedRectangle {
 
 		/**

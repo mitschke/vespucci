@@ -128,9 +128,6 @@ public class VespucciNavigatorLinkHelper implements ILinkHelper {
 			if (navigatorGroup.getParent() instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
 				navigatorView = ((de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) navigatorGroup
 						.getParent()).getView();
-			} else if (navigatorGroup.getParent() instanceof IAdaptable) {
-				navigatorView = (View) ((IAdaptable) navigatorGroup.getParent())
-						.getAdapter(View.class);
 			}
 		}
 		if (navigatorView == null) {

@@ -53,14 +53,6 @@ public class VespucciDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static boolean isShortcutOrphaned(View view) {
-		return !view.isSetElement() || view.getElement() == null
-				|| view.getElement().eIsProxy();
-	}
-
-	/**
-	 * @generated
-	 */
 	public static List<de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciNodeDescriptor> getSemanticChildren(
 			View view) {
 		switch (de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry

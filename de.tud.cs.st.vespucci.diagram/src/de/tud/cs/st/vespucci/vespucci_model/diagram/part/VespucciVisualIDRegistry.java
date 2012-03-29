@@ -134,8 +134,7 @@ public class VespucciVisualIDRegistry {
 		String containerModelID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getModelID(containerView);
 		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
-				.equals(containerModelID)
-				&& !"Vespucci".equals(containerModelID)) { //$NON-NLS-1$
+				.equals(containerModelID)) {
 			return -1;
 		}
 		int containerVisualID;
@@ -192,8 +191,7 @@ public class VespucciVisualIDRegistry {
 		String containerModelID = de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 				.getModelID(containerView);
 		if (!de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart.MODEL_ID
-				.equals(containerModelID)
-				&& !"Vespucci".equals(containerModelID)) { //$NON-NLS-1$
+				.equals(containerModelID)) {
 			return false;
 		}
 		int containerVisualID;

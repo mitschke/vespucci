@@ -48,17 +48,9 @@ public class VespucciNavigatorSorter extends ViewerSorter {
 	/**
 	 * @generated
 	 */
-	private static final int SHORTCUTS_CATEGORY = 7011;
-
-	/**
-	 * @generated
-	 */
 	public int category(Object element) {
 		if (element instanceof de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) {
 			de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem item = (de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem) element;
-			if (item.getView().getEAnnotation("Shortcut") != null) { //$NON-NLS-1$
-				return SHORTCUTS_CATEGORY;
-			}
 			return de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciVisualIDRegistry
 					.getVisualID(item.getView());
 		}
