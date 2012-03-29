@@ -30,6 +30,7 @@ import de.tud.cs.st.vespucci.database.architecture.provider.ArchitectureDatabase
 import de.tud.cs.st.vespucci.diagram.processing.IModelProcessor;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
+import de.tud.cs.st.vespucci.utilities.EnsemblePair;
 import de.tud.cs.st.vespucci.utilities.ModelUtils;
 import de.tud.cs.st.vespucci.utilities.Util;
 import de.tud.cs.st.vespucci.vespucci_model.Ensemble;
@@ -147,11 +148,6 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 		return null;
 	}
 
-	private static IPair<IEnsemble, IEnsemble> Pair(IEnsemble source,
-			IEnsemble target) {
-		return new EnsemblePair(source, target);
-	}
-
 	private static void checkAndInitCounter(
 			Map<IPair<IEnsemble, IEnsemble>, Integer> ensembleDependencies,
 			IPair<IEnsemble, IEnsemble> element) {
@@ -192,9 +188,9 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 				for (IEnsemble target : targets) {
 					if(sources.contains(target) || targets.contains(source))
 						continue;
-					combinations.add(Pair(source, target));
-					result.add(Pair(source, target));
-					incCounter(ensembleDependencies, Pair(source, target));
+					combinations.add(ModelUtils.Pair(source, target));
+					result.add(ModelUtils.Pair(source, target));
+					incCounter(ensembleDependencies, ModelUtils.Pair(source, target));
 				}
 			}
 
@@ -383,84 +379,5 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 			renameAllChildren(child, ensemble.getName());
 		}
 
-	}
-
-	private static class EnsemblePair implements IPair<IEnsemble, IEnsemble> {
-
-		private IEnsemble first;
-
-		private IEnsemble second;
-
-		public EnsemblePair(IEnsemble first, IEnsemble second) {
-			super();
-			this.first = first;
-			this.second = second;
-		}
-
-		/**
-		 * @return the first
-		 */
-		public IEnsemble getFirst() {
-			return first;
-		}
-
-		/**
-		 * @return the second
-		 */
-		public IEnsemble getSecond() {
-			return second;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#hashCode()
-		 */
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((first == null) ? 0 : first.hashCode());
-			result = prime * result
-					+ ((second == null) ? 0 : second.hashCode());
-			return result;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			EnsemblePair other = (EnsemblePair) obj;
-			if (first == null) {
-				if (other.first != null)
-					return false;
-			} else if (!first.equals(other.first))
-				return false;
-			if (second == null) {
-				if (other.second != null)
-					return false;
-			} else if (!second.equals(other.second))
-				return false;
-			return true;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return "(" + first + "," + second + ")";
-		}
 	}
 }

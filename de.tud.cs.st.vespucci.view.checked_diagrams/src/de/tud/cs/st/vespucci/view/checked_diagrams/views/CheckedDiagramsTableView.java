@@ -143,6 +143,7 @@ public class CheckedDiagramsTableView extends ViewPart {
 					IPair<IViolationView, IFile> entry = Pair.cast(iterator.next(), IViolationView.class, IFile.class);
 					if (entry != null){
 						entry.getFirst().dispose();
+						contentProvider.removeData(entry);
 						tableViewer.remove(entry);
 					}
 				}
@@ -224,6 +225,10 @@ public class CheckedDiagramsTableView extends ViewPart {
 
 		public void addData(IPair<IViolationView, IFile> element){
 			data.add(element);
+		}
+		
+		public void removeData(IPair<IViolationView, IFile> element){
+			data.remove(element);
 		}
 		
 		@Override

@@ -8,8 +8,19 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.tud.cs.st.vespucci.diagram.processing,
+Import-Package: de.tud.cs.st.vespucci.database.architecture.provider,
+ de.tud.cs.st.vespucci.diagram.processing,
  de.tud.cs.st.vespucci.interfaces,
  de.tud.cs.st.vespucci.model,
  de.tud.cs.st.vespucci.utilities,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ sae,
+ sae.bytecode.model,
+ sae.bytecode.model.dependencies;version="0.5.0",
+ sae.collections,
+ scala,
+ scala.collection,
+ scala.collection.immutable;version="2.9.0",
+ unisson.model,
+ unisson.model.kinds;version="0.5.0",
+ unisson.query.code_model

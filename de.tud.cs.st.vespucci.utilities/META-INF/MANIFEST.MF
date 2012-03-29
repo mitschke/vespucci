@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.7.0",
  de.tud.cs.st.vespucci;bundle-version="1.5.2"
 Export-Package: de.tud.cs.st.scala.utilitites,
  de.tud.cs.st.vespucci.utilities
-Import-Package: de.tud.cs.st.vespucci.model,
+Import-Package: de.tud.cs.st.vespucci.interfaces,
+ de.tud.cs.st.vespucci.model,
  scala;version="2.9.0",
  scala.runtime;version="2.9.0"
 Bundle-ActivationPolicy: lazy

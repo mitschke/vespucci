@@ -3,6 +3,7 @@ package de.tud.cs.st.vespucci.processor.constraintchecker;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -42,8 +43,8 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 
 	private final String diagramFileName;
 
-	public ViolationView(LazyView<IViolation> databaseViolations, IFile diagramFile,
-			IDataView<IViolationSummary> summaryView) {
+	public ViolationView(LazyView<IViolation> databaseViolations,
+			IFile diagramFile, IDataView<IViolationSummary> summaryView) {
 		this.diagramFile = diagramFile;
 		this.diagramFileName = diagramFile.getFullPath().makeAbsolute()
 				.toPortableString();
@@ -53,7 +54,8 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 
 					@Override
 					public Object apply(IViolation arg0) {
-						return Boolean.valueOf(diagramFileName.equals(arg0.getDiagramFile()));
+						return Boolean.valueOf(diagramFileName.equals(arg0
+								.getDiagramFile()));
 					}
 
 				}, databaseViolations);
@@ -76,8 +78,14 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 	public void dispose() {
 		IProject project = diagramFile.getProject();
 		// 1. remove all violations by removing the diagram
+		long start = System.nanoTime();
 		ArchitectureDatabaseProvider.getInstance().removeModelFileFromProject(
 				diagramFile, project);
+		long taken = System.nanoTime() - start;
+		System.out.println("time to remove model       : "
+				+ TimeUnit.MILLISECONDS.convert(taken, TimeUnit.NANOSECONDS)
+				+ " ms");
+
 		// 2. tear down all observers
 		cachedResults = null;
 		observers.clear();
@@ -90,7 +98,8 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 
 					@Override
 					public Object apply(Observable<?> arg0) {
-						// don't recurse removals into the databaseViolations (only child), even if no more observers are there
+						// don't recurse removals into the databaseViolations
+						// (only child), even if no more observers are there
 						return Boolean.FALSE;
 					}
 
@@ -110,7 +119,7 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 	@Override
 	public void added(IViolation arg0) {
 
-		System.out.println("  added: " + arg0);
+		// System.out.println("  added: " + arg0);
 
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.added(arg0);
@@ -120,7 +129,7 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 	@Override
 	public void removed(IViolation arg0) {
 
-		System.out.println("removed: " + arg0);
+		// System.out.println("removed: " + arg0);
 
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.deleted(arg0);
@@ -130,7 +139,7 @@ public class ViolationView implements IViolationView, Observer<IViolation> {
 	@Override
 	public void updated(IViolation arg0, IViolation arg1) {
 
-		System.out.println("updated: " + arg0 + " => " + arg1);
+		// System.out.println("updated: " + arg0 + " => " + arg1);
 
 		for (IDataViewObserver<IViolation> o : observers) {
 			o.updated(arg0, arg1);

@@ -1,5 +1,7 @@
 package de.tud.cs.st.vespucci.processor.constraintchecker;
 
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 
@@ -43,8 +45,14 @@ public class ArchitectureConformanceModelProcessor implements IModelProcessor {
 
 		ArchitectureDatabaseProvider.getInstance().initializeDatabase(project);
 
+		long start = System.nanoTime();
 		ArchitectureDatabaseProvider.getInstance().addModelFileToProject(
 				diagramFile, project);
+		long taken = System.nanoTime() - start;
+		System.out
+				.println("time to addd model         : "
+						+ TimeUnit.SECONDS.convert(taken, TimeUnit.NANOSECONDS)
+						+ " ms");
 
 		// List<Object> list = JavaConversions.asJavaList(constraints.asList());
 		// for (Object object : list) {
