@@ -60,7 +60,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * @author Olav Lenz
  */
 public class FillDiagramEditorSubMenu extends ContributionItem {
-
+ 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.diagram";
 	private static final String EXTENSIONPOINT_PROCESSORATTRIBUTE_NAME = "ModelElementProcessor";
 	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.diagram.modelElementProcessors";

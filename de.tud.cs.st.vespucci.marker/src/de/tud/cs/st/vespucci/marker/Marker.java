@@ -93,9 +93,4 @@ public class Marker implements IResultProcessor {
 		return IViolationView.class.equals(resultClass);
 	}
 
-	@Override
-	public void cleanUp() {
-		// unused in this result processor
-	}
-
 }

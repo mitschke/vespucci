@@ -83,9 +83,4 @@ public class EnsembleElementsVisualizer implements IResultProcessor{
 		return IEnsembleElementView.class.equals(resultClass);
 	}
 
-	@Override
-	public void cleanUp() {
-		//unused in this ResultProcessor
-	}
-
 }

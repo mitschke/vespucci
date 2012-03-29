@@ -34,8 +34,12 @@
 package de.tud.cs.st.vespucci.diagram.processing;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 
+/**
+ * 
+ * @author Patrick Gottschämmer
+ * @author Olav Lenz
+ */
 public interface IResultProcessor {
 
 	/** 
@@ -57,7 +61,4 @@ public interface IResultProcessor {
 	 * @return weather the ResultProcessor is interested or not
 	 */
 	boolean isInterested(Class<?> resultClass);
-
-	void cleanUp();
-
 }
