@@ -166,18 +166,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 		protected boolean isDataTransfered() {
 			TransferData data = getCurrentEvent().currentDataType;
 			Object transferedObject = getJavaObject(data);
-			return transferedObject instanceof IStructuredSelection;
-		}
-		
-		/* (non-Javadoc)
-		 * @see org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener#updateTargetRequest()
-		 */
-		@Override
-		protected void updateTargetRequest(){
-			if(getTargetRequest() instanceof DropObjectsRequest){
-				((DropObjectsRequest) getTargetRequest()).setLocation(getDropLocation());
-				((DropObjectsRequest)getTargetRequest()).setObjects(getObjectsBeingDropped());
-			}
+			return transferedObject instanceof IStructuredSelection && !((IStructuredSelection)transferedObject).isEmpty();
 		}
 
 	}
