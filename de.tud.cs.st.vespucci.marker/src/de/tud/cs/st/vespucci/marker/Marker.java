@@ -47,7 +47,7 @@ import de.tud.cs.st.vespucci.utilities.Util;
 
 /**
  * Receive IViolationViews and delegate them to ViolationManager and
- * ViolationSummaryManger, who mark and manage IViolations and IViolationSummary
+ * ViolationSummaryManger, which mark and manage IViolations and IViolationSummary
  * 
  * @author Olav Lenz
  */

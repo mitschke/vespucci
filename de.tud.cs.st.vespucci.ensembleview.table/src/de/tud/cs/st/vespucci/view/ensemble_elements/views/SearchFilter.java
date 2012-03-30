@@ -47,7 +47,7 @@ import de.tud.cs.st.vespucci.view.model.Pair;
 /**
  * Filter used for search functionality.
  * 
- * @author 
+ * @author Olav Lenz
  */
 public class SearchFilter extends ViewerFilter {
 	

@@ -73,7 +73,7 @@ import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
  * Show which diagrams are checked at the moment and prevent functionality 
  * to dispose the checking of diagrams if it is wanted.
  * 
- * @author 
+ * @author Olav Lenz
  */
 public class CheckedDiagramsTableView extends ViewPart {
 

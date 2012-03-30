@@ -44,6 +44,7 @@ import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
 /**
+ * Contain some useful filter
  * 
  * @author Ralf Mitschke
  */

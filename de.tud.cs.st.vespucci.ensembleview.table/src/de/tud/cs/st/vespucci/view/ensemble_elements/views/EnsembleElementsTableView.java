@@ -81,7 +81,6 @@ import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
  * with filter and sort functionalities
  * 
  * @author Olav Lenz
- * 
  */
 public class EnsembleElementsTableView extends ViewPart {
 

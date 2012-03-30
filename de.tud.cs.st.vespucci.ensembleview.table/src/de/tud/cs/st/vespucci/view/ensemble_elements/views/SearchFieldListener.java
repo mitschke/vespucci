@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Text;
  * Listener which add and remove an SearchFilter to an tableView
  * when the modifyText event is notified
  * 
- * @author 
+ * @author Olav Lenz
  */
 public class SearchFieldListener implements ModifyListener {
 

@@ -76,20 +76,17 @@ public class CodeElementFinder {
 
 	private ICodeElement currentSearchItem;
 	private ICodeElement actualSearchItem;
-	
+
 	private Boolean found = false;
 	private IMember foundMatch = null;
 
 	/**
 	 * Search an ICodeElement
 	 * 
-	 * @param sourceElement
-	 *            ICodeElement looking for
-	 * @param project
-	 *            IProject that looking in
-	 * @param processor
-	 *            Processor that declares what should be done when ICodeElement
-	 *            is found or not found
+	 * @param sourceElement ICodeElement looking for
+	 * @param project IProject searching in
+	 * @param processor Processor that define what should be done when ICodeElement
+	 *        is found or is not found
 	 */
 	public static void startSearch(ICodeElement sourceElement,
 			IProject project, ICodeElementFoundProcessor processor) {
@@ -171,10 +168,8 @@ public class CodeElementFinder {
 	}
 
 	/**
-	 * Start searching
+	 * Start searching for the currentSearchItem
 	 * 
-	 * @param codeElement
-	 *            ICodeElement searched for
 	 */
 	private void searchForNextItem() {
 
@@ -200,7 +195,7 @@ public class CodeElementFinder {
 					.createWorkspaceScope();
 			searchEngine.search(searchPattern,
 					new SearchParticipant[] { SearchEngine
-							.getDefaultSearchParticipant() }, javaSearchScope,
+					.getDefaultSearchParticipant() }, javaSearchScope,
 					codeElementSearchRequestor, null);
 		} catch (CoreException e) {
 			processException(e);

@@ -39,7 +39,7 @@ import de.tud.cs.st.vespucci.interfaces.IPair;
 /**
  * Generic implementation of IPair<A,B>
  * 
- * @author 
+ * @author Olav Lenz
  */
 public class Pair<A,B> implements IPair<A, B> {
 

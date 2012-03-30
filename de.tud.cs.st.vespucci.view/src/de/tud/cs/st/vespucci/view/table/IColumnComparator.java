@@ -34,10 +34,10 @@
 package de.tud.cs.st.vespucci.view.table;
 
 /**
- * Comparator which result can be depend on a given column.
+ * Comparator which result can be depending on the given column.
  * Can be used to compare elements in tables depending on an column
  * 
- * @author 
+ * @author Olav Lenz
  */
 public interface IColumnComparator {
 

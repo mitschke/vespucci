@@ -40,9 +40,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Class which provides icons and images (cached) for other Plug-in projects
+ * Class which provides images (cached) for other Plug-in projects
  * 
- * @author
+ * @author Olav Lenz 
  */
 public class ImageManager {
 
@@ -58,6 +58,14 @@ public class ImageManager {
 	
 	private static Map<String, Image> imageCache = new HashMap<String, Image>();
 	
+	/**
+	 * Return image for given name, if ImageManager know this name and is able to load
+	 * the image. Otherwise null is returned.
+	 * (Names and corresponding path for Images are stored as static variables in ImageManager)
+	 * 
+	 * @param name Name of the wanted image
+	 * @return Image for given name, null if there is no image for this name
+	 */
 	public static Image getImage(String name){
 		if (imageCache.containsKey(name)){
 			return imageCache.get(name);

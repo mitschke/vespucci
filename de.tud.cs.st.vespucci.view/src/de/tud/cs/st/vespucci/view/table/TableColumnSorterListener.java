@@ -47,9 +47,23 @@ import org.eclipse.swt.widgets.TableColumn;
  * Listener which change the sortedColumn and sortDirection of
  * an TableViewer when notified
  * 
- * @author 
+ * @author Olav Lenz
  */
 public final class TableColumnSorterListener implements SelectionListener {
+
+	/**
+	 * Add sorting functionality to an given TableViewer
+	 * 
+	 * @param tableViewer TableViewer where to add the sorting functionality
+	 * @param columnComparator Comparator which is used to sort the Table
+	 */
+	public static void addColumnSortFunctionality(TableViewer tableViewer, IColumnComparator columnComparator){
+		Table table = tableViewer.getTable();
+		for (int i = 0; i < table.getColumnCount(); i++){
+			table.getColumn(i).addSelectionListener(new TableColumnSorterListener(tableViewer, i));
+		}
+		tableViewer.setComparator(new TableColumnSorter(tableViewer, columnComparator));
+	}
 
 	private TableViewer tableViewer;
 	private TableColumn tableColumn;
@@ -83,21 +97,13 @@ public final class TableColumnSorterListener implements SelectionListener {
 	public void widgetDefaultSelected(SelectionEvent e) {
 		widgetSelected(e);
 	}
-
-	public static void addColumnSortFunctionality(TableViewer tableViewer, IColumnComparator columnComparator){
-		Table table = tableViewer.getTable();
-		for (int i = 0; i < table.getColumnCount(); i++){
-			table.getColumn(i).addSelectionListener(new TableColumnSorterListener(tableViewer, i));
-		}
-		tableViewer.setComparator(new TableColumnSorter(tableViewer, columnComparator));
-	}
 }
 
 /**
  * Sorter to sort a table depending on selected column.
  * Column specific order of table elements
  * 
- * @author 
+ * @author Olav Lenz
  */
 class TableColumnSorter extends ViewerSorter{
 	
@@ -137,6 +143,10 @@ class TableColumnSorter extends ViewerSorter{
 		return sortDirection;
 	}
 	
+	/**
+	 * 
+	 * @author Ralf Mitschke
+	 */
 	private static int getOriginialSortColumnIndex(Table table) {
 		TableColumn sortColumn = table.getSortColumn();
 		if (sortColumn == null)
