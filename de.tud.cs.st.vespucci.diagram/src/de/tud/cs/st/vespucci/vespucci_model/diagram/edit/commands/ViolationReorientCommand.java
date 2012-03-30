@@ -147,6 +147,12 @@ public class ViolationReorientCommand extends EditElementCommand {
 	 * @generated NOT
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
+		if (lastSourceIsNotOldEnd()) {
+			getLink().getOriginalSource().clear();
+			if (getLink().getOriginalTarget().isEmpty()) {
+				getLink().setTemp(false);
+			}
+		}
 		getOldSource().getTargetConnections().remove(getLink());
 		getNewSource().getTargetConnections().add(getLink());
 		getLink().setSource(getNewSource());
@@ -157,6 +163,12 @@ public class ViolationReorientCommand extends EditElementCommand {
 	 * @generated NOT
 	 */
 	protected CommandResult reorientTarget() throws ExecutionException {
+		if (lastTargetIsNotOldEnd()) {
+			getLink().getOriginalTarget().clear();
+			if (getLink().getOriginalSource().isEmpty()) {
+				getLink().setTemp(false);
+			}
+		}
 		getOldTarget().getSourceConnections().remove(getLink());
 		getNewTarget().getSourceConnections().add(getLink());
 		getLink().setTarget(getNewTarget());
@@ -196,5 +208,27 @@ public class ViolationReorientCommand extends EditElementCommand {
 	 */
 	protected de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getNewTarget() {
 		return (de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble) newEnd;
+	}
+
+	/**
+	 * @author Artem Vovk
+	 * @generated NOT
+	 * @return
+	 */
+	private boolean lastSourceIsNotOldEnd() {
+		return !getLink().getOriginalSource().isEmpty()
+				&& oldEnd != getLink().getOriginalSource().get(
+						getLink().getOriginalSource().size() - 1);
+	}
+
+	/**
+	 * @author Artem Vovk
+	 * @generated NOT
+	 * @return
+	 */
+	private boolean lastTargetIsNotOldEnd() {
+		return !getLink().getOriginalTarget().isEmpty()
+				&& oldEnd != getLink().getOriginalTarget().get(
+						getLink().getOriginalTarget().size() - 1);
 	}
 }
