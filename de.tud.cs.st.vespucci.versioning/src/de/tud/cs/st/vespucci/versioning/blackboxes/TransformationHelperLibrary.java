@@ -60,10 +60,10 @@ public class TransformationHelperLibrary {
 	private static HashMap<Shape, Shape> modelShapes2011_06_01 = new HashMap<Shape, Shape>();
 	
 	/**_________________________________________________________________
-	 * Maps the original model shapes to the resulting ones after the
+	 * Maps the original model shapes to the resulting AbstractEnsembles after the
 	 * transformation.
 	 */
-	private static HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble> modelShapes = new HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble>();
+	private static HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble> mapShape2AbstractEnsemble = new HashMap<Shape, de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble>();
 	
 	/**
 	 * Maps the original model connections to the resulting ones after the
@@ -170,7 +170,7 @@ public class TransformationHelperLibrary {
 	 */
 	@Operation(contextual=true)
 	public static void remember(de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble result, Shape self) {
-		modelShapes.put(self, result);
+		mapShape2AbstractEnsemble.put(self, result);
 	}	
 	
 	/**___________________________________________________________________
@@ -187,7 +187,7 @@ public class TransformationHelperLibrary {
 	
 	
 	/**
-	 * Returns the remembered ShapesDiagram (top model element)
+	 * Returns the remembered ArchitectureModel (top model element)
 	 * 
 	 * @param self Not needed; seems to be QVTO limitation that this is there
 	 * @return Remembered ShapesDiagram
@@ -219,7 +219,7 @@ public class TransformationHelperLibrary {
 	 */
 	@Operation(contextual=true)
 	public static de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble getRememberedShape(Object self) {
-		return modelShapes.get(self);
+		return mapShape2AbstractEnsemble.get(self);
 	}
 	
 	/**____________________________________________________________________

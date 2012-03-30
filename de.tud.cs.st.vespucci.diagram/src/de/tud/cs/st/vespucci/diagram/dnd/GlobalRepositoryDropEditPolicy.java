@@ -108,7 +108,7 @@ public class GlobalRepositoryDropEditPolicy extends
 
 
 	/**
-	 * prevent child nodes and duplicates from being dropped
+	 * Prevent child nodes and duplicates from being dropped
 	 * @param nextObject
 	 * @return
 	 */
@@ -120,6 +120,7 @@ public class GlobalRepositoryDropEditPolicy extends
 	
 	/**
 	 *TODO: may want to create children automatically and just prevent children from being dropped
+	 * Determines if TargetEditPart belongs to the correct element.
 	 * @param nextObject
 	 * @param dropRequest
 	 * @return
@@ -135,7 +136,7 @@ public class GlobalRepositoryDropEditPolicy extends
 	}
 	
 	/**
-	 * 
+	 * Determine whether the next object being dropped is a child
 	 * @param nextObject
 	 * @return
 	 */
@@ -145,7 +146,7 @@ public class GlobalRepositoryDropEditPolicy extends
 	
 	
 	/**
-	 * determine whether the nextObject is a duplicate
+	 * Determine whether the nextObject is a duplicate
 	 * @param nextObject
 	 * @return
 	 */
@@ -174,7 +175,7 @@ public class GlobalRepositoryDropEditPolicy extends
 	}
 	
 	/**
-	 * create and arrange the ensembles based on a ViewDescriptor
+	 * Create and arrange the Views of the AbstractEnsembles being dropped based on a ViewDescriptor
 	 * @param dropRequest
 	 * @param viewDescriptors
 	 * @return

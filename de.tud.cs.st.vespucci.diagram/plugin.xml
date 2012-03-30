@@ -149,13 +149,14 @@
              <?gmfgen generated="false"?>
          <Priority name="Lowest"/>
           <?gmfgen generated="false"?>
- <!--       <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
+     <ViewId id="de.tud.cs.st.vespucci.vespucci_model.diagram.part.VespucciDiagramEditorID">
             <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
-               <GlobalActionId actionId="cut"/>
+            	<GlobalActionId actionId="copy"/>
+            <!--   <GlobalActionId actionId="cut"/>
                <GlobalActionId actionId="copy"/>
-               <GlobalActionId actionId="paste"/>
+               <GlobalActionId actionId="paste"/> -->
             </ElementType>
-         </ViewId>		-->
+         </ViewId>
       </GlobalActionHandlerProvider>
    </extension>
 
@@ -952,33 +953,35 @@
          </factory>
       </extension> 
 -->
-       
        <?gmfgen generated="false"?>
        <extension
 			point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
 			<contributionItemProvider
 				checkPluginLoaded="false"
 				class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContributionItemProvider">
-
 				<Priority name="Low"/>
-
-				<popupContribution
-					id="remove_popup_menu_id"
-					class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
-
-					<popupStructuredContributionCriteria
-           objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart">
-					</popupStructuredContributionCriteria>
-					
-					<popupPredefinedItem id="addGroup" remove="false"/>
-					<popupPredefinedItem id="navigateGroup" remove="true"/>
-
+				<popupContribution id="remove_popup_menu_id" class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
+					<popupStructuredContributionCriteria objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart"/>
+						<popupPredefinedItem id="deleteFromModelAction" remove="true"/>
+						<popupPredefinedItem id="addGroup" remove="false"/>
+						<popupPredefinedItem id="navigateGroup" remove="true"/>
+						<popupPredefinedItem id="lineWidthMenu" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="lineTypeMenu" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="arrowTypeMenu" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="zorderMenu" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="lineColorContributionItem" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="routerMenu" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="arrangeMenu" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="alignMenu" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="textAlignmentMenu" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="copyAppearancePropertiesAction" path="/formatMenu/" remove="true"/>
+ 						<popupPredefinedItem id="addGeoShapesGroup" path="/diagramAddMenu/" remove="true"/>
+ 						<popupPredefinedItem id="addGeoShapes2Group" path="/diagramAddMenu/" remove="true"/>
 				</popupContribution>
-				
 			</contributionItemProvider>
 		</extension>
 		
-	<!--@author: Tabea Born -->
+	<!--@author: Tabea Born 
 	<?gmfgen generated="false"?>
 	<extension 
 			point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
@@ -1001,7 +1004,7 @@
  				<popupPredefinedItem id="addGeoShapes2Group" path="/diagramAddMenu/" remove="true"/>
 	 		</popupContribution>
  		</contributionItemProvider>
- 	</extension>
+ 	</extension> -->
 		
 		<?gmfgen generated="false"?>
        <extension
