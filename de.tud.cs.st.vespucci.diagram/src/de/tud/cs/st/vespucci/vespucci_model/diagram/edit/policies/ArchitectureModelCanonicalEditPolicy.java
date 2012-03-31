@@ -182,7 +182,7 @@ public class ArchitectureModelCanonicalEditPolicy extends CanonicalConnectionEdi
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	private Collection refreshConnections() {
 		Map domain2NotationMap = new HashMap();
@@ -214,6 +214,8 @@ public class ArchitectureModelCanonicalEditPolicy extends CanonicalConnectionEdi
 			}
 		}
 		deleteViews(existingLinks.iterator());
+		//Do NOT createConnections
+		linkDescriptors.clear();
 		return createConnections(linkDescriptors, domain2NotationMap);
 	}
 
@@ -368,6 +370,7 @@ public class ArchitectureModelCanonicalEditPolicy extends CanonicalConnectionEdi
 				}
 			}
 		}
+		adapters.clear();
 		return adapters;
 	}
 
