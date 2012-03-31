@@ -115,6 +115,9 @@ public class UpdateSadFileHandler extends AbstractHandler {
 	}
 
 	private static boolean isSadFile(final IFile file) {
+		if(!file.getFullPath().getFileExtension().equalsIgnoreCase("sad")){
+			return false;
+		}
 		final URI fileURI = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 		final ResourceSet rss= new ResourceSetImpl();
 		final Resource rs = rss.getResource(fileURI, true);
@@ -129,28 +132,19 @@ public class UpdateSadFileHandler extends AbstractHandler {
 			isNewSad = false;
 		}
 		
-		return file.getFullPath().getFileExtension().equalsIgnoreCase("sad") &&
-			isOldSad || isNewSad;
+		return isOldSad || isNewSad;
 	}
 	
 	private static boolean isNewSad(List<EObject> diagramFileContents,
 			Resource rs, ResourceSet rss) {
 		boolean result = (diagramFileContents.size() == 1 && diagramFileContents
 				.get(0) instanceof Diagram);
-		URI modelURI = EcoreUtil.getURI(((View) rs.getContents().get(0))
-				.getElement());
-		Resource modelResource = rss.getResource(modelURI, true);
-		if (result) {
-			if (modelResource.getContents() != null
-					&& modelResource.getContents().size() > 0) {
-				for (int i = 0; i < modelResource.getContents().size(); i++) {
-					if (modelResource.getContents().get(i) instanceof ArchitectureModel) {
-						result = true;
-						break;
-					} else {
-						result = false;
-					}
-				}
+		URI modelURI;
+		if(result){
+			modelURI = EcoreUtil.getURI(((View)diagramFileContents.get(0)).getElement());
+			EObject toTest = rss.getEObject(modelURI, true);
+			if(toTest instanceof ArchitectureModel){
+				return true;
 			}
 		}
 		return result;
