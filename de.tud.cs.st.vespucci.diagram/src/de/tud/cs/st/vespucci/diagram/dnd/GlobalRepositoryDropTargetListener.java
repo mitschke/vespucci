@@ -22,11 +22,13 @@ import org.eclipse.swt.dnd.TransferData;
 import de.tud.cs.st.vespucci.vespucci_model.AbstractEnsemble;
 import de.tud.cs.st.vespucci.vespucci_model.ArchitectureModel;
 import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModelEditPart;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciDomainNavigatorItem;
+import de.tud.cs.st.vespucci.vespucci_model.diagram.navigator.VespucciNavigatorItem;
 
 	/**
 	 * Extension of a DiagramDropTargetListener to listen for objects being dropped from the VespucciEditor
 	 */
-	public class GlobalRepositoryDropTargetListener extends
+	public abstract class GlobalRepositoryDropTargetListener extends
 			DiagramDropTargetListener {
 		
 		private EditingDomain editingDomain;
@@ -65,6 +67,10 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 						AbstractEnsemble modelElement = (AbstractEnsemble) nextSelectedObject;
 						uris.add(EcoreUtil.getURI(modelElement));
 					}
+					if(nextSelectedObject instanceof VespucciDomainNavigatorItem){
+						EObject navigatorItem = ((VespucciDomainNavigatorItem)nextSelectedObject).getEObject();
+						uris.add(EcoreUtil.getURI(navigatorItem));
+					}
 				}
 			}
 			//add Objects via URI
@@ -99,7 +105,7 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 		@Override
 		protected boolean isDataTransfered() {
 			Object transferedData = getJavaObject(getCurrentEvent().currentDataType);
-			return getCurrentEvent().currentDataType != null && transferedData instanceof IStructuredSelection && !((IStructuredSelection)transferedData).isEmpty();
+			return super.isDataTransfered() || getCurrentEvent().currentDataType != null && transferedData instanceof IStructuredSelection && !((IStructuredSelection)transferedData).isEmpty();
 		}
 
 
@@ -165,7 +171,5 @@ import de.tud.cs.st.vespucci.vespucci_model.diagram.edit.parts.ArchitectureModel
 		 * Decodes the LocalTransfer and returns the native Java Object(s)
 		 * @generated NOT
 		 */
-		protected Object getJavaObject(TransferData data){
-			return LocalTransfer.getInstance().nativeToJava(data);
-		}
+		protected abstract Object getJavaObject(TransferData data);
 	}

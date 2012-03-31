@@ -126,8 +126,9 @@ public class ArchitectureModelCanonicalEditPolicy extends CanonicalConnectionEdi
 	}
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected List getSemanticConnectionsList() {
 		return Collections.EMPTY_LIST;
 	}

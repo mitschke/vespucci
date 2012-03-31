@@ -663,7 +663,19 @@ public class VespucciDiagramEditor extends DiagramDocumentEditor implements
 		getDiagramGraphicalViewer().addDropTargetListener(
 				new GlobalRepositoryDropTargetListener(getEditingDomain(),
 						getDiagramGraphicalViewer(), LocalTransfer
-								.getInstance()));
+								.getInstance()) {
+					protected Object getJavaObject(TransferData data) {
+						return LocalTransfer.getInstance().nativeToJava(data);
+					}
+				});
+		getDiagramGraphicalViewer().addDropTargetListener(
+				new GlobalRepositoryDropTargetListener(getEditingDomain(),
+						getDiagramGraphicalViewer(), LocalSelectionTransfer
+								.getTransfer()) {
+					protected Object getJavaObject(TransferData data) {
+						return LocalSelectionTransfer.getTransfer().nativeToJava(data);
+					}
+				});
 	}
 
 	/**
