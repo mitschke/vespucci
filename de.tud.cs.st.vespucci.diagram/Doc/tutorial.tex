@@ -19,7 +19,7 @@
 
 \title{Vespucci-Tutorial}
 \subtitle{Eine kurze Einführung in Vespucci}
-\subsubtitle{Stand: \today{} \newline Version 1.0}
+\subsubtitle{Stand: \today{}}
 \institution{Fachbereich Informatik \newline \newline Dr.-Ing Michael Eichberg \newline Dipl.-Inform. Ralf Mitschke}
 %\setinstitutionlogo[width]{TUD_sublogo}
 \uppertitleback{(\textaccent{\textbackslash uppertitleback})}
@@ -35,7 +35,7 @@
   \section{Installation}
   \subsection{Benötigte Eclipse-Plugins}
   
-Um die korrekte Darstellung von Vespucci zu garantieren, müssen einige Plugins zu Eclipse hinzugefügt werden. Dies geht am einfachsten, wenn man sie über ''Help $\rightarrow$ Install New Software...'' in die Entwicklungsumgebung einbindet. Werden zu viele Plugins installiert, kann es zu fehlerhaften Ausgaben kommen. Es ist nicht empfehlenswert, das komplette ''Modeling''-Packet einzubinden, da dies dann zu besagtem fehlerhaften Verhalten des Plugins führt. \linebreak Folgende Plugins werden benötigt:
+Um die korrekte Darstellung von Vespucci zu garantieren, müssen einige Plugins zu Eclipse hinzugefügt werden. Dies geht am einfachsten, wenn man sie über "`Help $\rightarrow$ Install New Software..."' in die Entwicklungsumgebung einbindet. Werden zu viele Plugins installiert, kann es zu fehlerhaften Ausgaben kommen. Es ist nicht empfehlenswert, das komplette "`Modeling"'-Packet einzubinden, da dies dann zu besagtem fehlerhaften Verhalten des Plugins führt. \linebreak Folgende Plugins werden benötigt:
   
   \begin{itemize}
 \item Indigo - http://download.eclipse.org/release/indigo
@@ -46,24 +46,24 @@ Um die korrekte Darstellung von Vespucci zu garantieren, müssen einige Plugins z
 \item EMF - Eclipse Modeling Framework SDK
 \item Extended Editing Framework - SDK for Indigo
 \item Graphical Editing Framework GEF SDK
+\item Operational QVT SDK
 \end{itemize}
 \end{itemize}
-\item ''http://download.eclipse.org/modeling/gmp/gmf-tooling//updates/releases''
+\item "`http://download.eclipse.org/modeling/gmp/gmf-tooling//updates/releases"'
 \begin{itemize}
 \item GMF Tooling - SDK
 \begin{itemize}
 \item Graphical Modeling Framework SDK
 \end{itemize}
 \end{itemize}
-\item ''http://download.eclipse.org/modeling/mdt/ocl/updates''
+\item "`http://download.eclipse.org/modeling/mdt/ocl/updates"'
 \begin{itemize}
 \item Eclipse OCL-3.1.1RC4
 \begin{itemize}
 \item OCL All-In-One SDK
-\item OCL End User SDK
 \end{itemize}
 \end{itemize}
-\item ''http://www.opal-project.de/vespucci''
+\item "`http://www.opal-project.de/vespucci"'
 \begin{itemize}
 \item Opal project
 \end{itemize}
@@ -71,7 +71,7 @@ Um die korrekte Darstellung von Vespucci zu garantieren, müssen einige Plugins z
 \end{itemize}
 
 \bigskip
-Unter dem Punkt ''What is already installed?'' sollten jetzt unter ''Installed Software'' folgende Plugins aufgelistet sein:
+Unter dem Punkt "`What is already installed?"' sollten jetzt unter "`Installed Software"' folgende Plugins aufgelistet sein:
 
 \begin{itemize}
 
@@ -83,29 +83,30 @@ Unter dem Punkt ''What is already installed?'' sollten jetzt unter ''Installed S
 \item Graphical Editing Framework GEF SDK
 \item Graphical Modeling Framework SDK
 \item OCL All-In-One SDK
-\item OCL End User SDK
+\item Operational QVT SDK
 \end{itemize}
 
+\newpage
 \subsection{Einrichten von Git und Einbinden von Vespucci}
 \begin{enumerate}
 \item  Anmelden bzw. Registrieren bei www.github.com
-\item  Die Anmeldenamen an Ralf Mitschke (mitschke@st.informatik.tu-darmstadt.de) schicken, damit er das Projekt für diese freigeben kann
-\item  ''Set Up Git'' anklicken und dem Tutorial folgen (nur dem ersten Teil!)
+\item  Die Anmeldenamen an den Veranstalter (Ralf Mitschke) schicken, damit er das Projekt für diese freigeben kann
+\item  "`Set Up Git"' anklicken und dem Tutorial folgen (nur dem ersten Teil!)
 \item  Klonen des Projektes mit folgendem Code: \newline \textcolor{blue}{\$ git clone git@github.com:mitschke/vespucci.git}
 \item  Masterbranch auslesen: \newline \textcolor{blue}{\$ git checkout master} \newline 
 \textcolor{blue}{\$ git fetch origin master} \newline
 \textcolor{red}{\Large ACHTUNG: Der Masterbranch sollte niemals von euch überschrieben werden!} 
-\item  In Eclipse: Rechtsklick $\rightarrow$ ''Import...'' $\rightarrow$ ''General $\rightarrow$ Existing Projects into Workspace'' $\rightarrow$ ''Select root directory'' $\rightarrow$ neu angelegten Ordner ''vespucci'' 		auswählen, um das Projekt und alle Veränderungen, die gemacht werden, in Eclipse einzubinden.
-\item  Danach bei ''Run'' $\rightarrow$ ''Run Configurations'' $\rightarrow$ ''Eclipse Application'' $\rightarrow$ ''New configuration'' $\rightarrow$ ''Arguments'' $\rightarrow$ ''VM arguments'' den Befehl ''-XX:MaxPermSize=256m'' (bei Bedarf auch mehr - also z.B. 512) hinzufügen. Dieser verhindert einen ''out of perm-space'' Error, indem er den virtuellen Speicher von Eclipse automatisch erhöht.
+\item  In Eclipse: Rechtsklick $\rightarrow$ "`Import..."' $\rightarrow$ "`General $\rightarrow$ Existing Projects into Workspace"' $\rightarrow$ "`Select root directory"' $\rightarrow$ neu angelegten Ordner "`vespucci"'auswählen, um das Projekt und alle Veränderungen, die gemacht werden, in Eclipse einzubinden.
+\item  Danach bei "`Run"' $\rightarrow$ "`Run Configurations"' $\rightarrow$ "`Eclipse Application"' $\rightarrow$ "`New configuration"' $\rightarrow$ "`Arguments"' $\rightarrow$ "`VM arguments"' den Befehl "`-XX:MaxPermSize=256m"' (bei Bedarf auch mehr - also z.B. 512) hinzufügen. Dieser verhindert einen "`out of perm-space"' Error, indem er den virtuellen Speicher von Eclipse automatisch erhöht.
 \end{enumerate}
 
-\section{''Erste Schritte''}
+\section{"`Erste Schritte"'}
 \subsection{Starten des Plugins}
 Zum Öffnen einer neuen Instanz von Eclipse, führe folgende Schritte aus:
 \begin{itemize}
-\item Java-Projekt ''de.tud.cs.st.vespucci'' öffnen
-\item Ordner ''META-INF'' öffnen
-\item Rechtsklick auf ''MANIFEST.MF'' $\rightarrow$ ''Run As'' $\rightarrow$ ''Eclipse Application''
+\item Java-Projekt "`de.tud.cs.st.vespucci"' öffnen
+\item Ordner "`META-INF"' öffnen
+\item Rechtsklick auf "`MANIFEST.MF"' $\rightarrow$ "`Run As"' $\rightarrow$ "`Eclipse Application"'
 \end{itemize}
 
 \subsection{Erstellen einer *.sad-Datei}
@@ -118,24 +119,25 @@ Zum Öffnen einer neuen Instanz von Eclipse, führe folgende Schritte aus:
 \item File $\rightarrow$ New $\rightarrow$ Other... $\rightarrow$ Software Architecture Constraint Diagram.
 \item File $\rightarrow$ New $\rightarrow$ Other... $\rightarrow$ Software Architecture Visualization $\rightarrow$ Software Architecture Constraint Diagram.
 \end{enumerate}
-\item Die Module ''Ensemble'' und ''Empty Ensemble'' sowie alle Constraints können per Drag\&Drop in die Datei gezogen werden
+\item Beim Erstellen des ersten Diagrammes wird direkt eine Datei <NameDesProjektes>.sam erstellt. Diese Datei ist das \textit{GlobalRepository}.
+\item Die Module "`Ensemble"' und "`Empty Ensemble"' sowie alle Constraints können per Drag\&Drop in die Datei gezogen werden
 \end{itemize}
 
 \subsection{Testen}
 \begin{itemize}
-\item Jede BP-Gruppe hat zu diesem Projekt spezifische Testfälle generiert, die unter ''de.tud.cs.st.vespucci.diagram'' $\rightarrow$ ''Doc'' $\rightarrow$ ''GUI-Checkliste'' zu finden sind
+\item Jede BP-Gruppe hat zu diesem Projekt spezifische Testfälle generiert, die unter "`de.tud.cs.st.vespucci.diagram"' $\rightarrow$ "`Doc"' $\rightarrow$ "`GUI-Checkliste"' zu finden sind
 \item Tipp: Führt diese Testfälle zu Anfang des Praktikums mit dem Masterbranch durch, um euch in das Projekt einzufinden und um zu Testen, ob alles richtig funktioniert.
 \item Diese Tests, sowie dieses Dokument und alle weiteren Dokumente müssen von euch regelmäßig auf den neusten Stand gebracht werden.
 \end{itemize}
 
 \section{Das Projekt}
-Die ''ecore-model''-Datei und die dazugehörigen ''mapping''-Dateien sind im Package ''de.tud.cs.st.vespucci'' im Ordner ''model'' zu finden.
+Die "`ecore-model"'-Datei und die dazugehörigen "`mapping"'-Dateien sind im Package "`de.tud.cs.st.vespucci"' im Ordner "`model"' zu finden.
 \subsection{Die wichtigsten Komponenten}
 
 \begin{description}
-\item[de.tud.cs.st.vespucci] Metamodell für Vespucci
+\item[de.tud.cs.st.vespucci:] Metamodell für Vespucci
  \begin{itemize}
-\item Ordner model:
+\item Ordner "`model"':
 \begin{itemize}
 \item vespuci.ecore
 \item vespuci.ecore\_diagram
@@ -148,29 +150,30 @@ Die ''ecore-model''-Datei und die dazugehörigen ''mapping''-Dateien sind im Pack
 \end{itemize}
 \end{itemize}
 
-\item[de.tud.cs.st.vespucci.diagram] Das VespucciDiagram
+\item[de.tud.cs.st.vespucci.2011-06-01:] Eine Version des alten Vespuccis,die für das Versioning benötigt wird. Näheres kann in dem Tutorial "Versioning HowTo.pdf" nachgelesen werden.
+
+\item[de.tud.cs.st.vespucci.diagram:] Das VespucciDiagram
 \begin{description}
-\item[de.tu.cs.st.vespucci.diagram.dnd \& de.tu.cs.st.vespucci.diagram.dnd.JavaType]Hier werden die Drag\&Drop Funktionen implementiert.
-\item[de.tud.cs.st.vespucci.diagram.menuItems] Hier werden die Einträge für das ''Edit Constraint''/''SetDependency''-Menu erstellt.
+\item[de.tu.cs.st.vespucci.diagram.dnd \& de.tu.cs.st.vespucci.diagram.dnd.JavaType:]Hier werden die Drag\&Drop Funktionen implementiert.
+\item[de.tud.cs.st.vespucci.diagram.menuItems:] Hier werden die Einträge für das "`Edit Constraint"'/"`SetDependency"'-Menu erstellt.
 \item[Doc] In diesem Ordner befinden sich sämtliche Dokumentationen zu dem Projekt.
-\item[Ordner ''Model''] Eine graphische Erklärung in Form von .sad Dateien, die eine Vorstellung liefern, wie die Verbindungen zwischen alle Klassen und Packages aussehen.
-\item[plugin.xml] Sehr wichtige Initialisierungen und Implementierungen von allen Sachen, die sich in dem Diagramm befinden.(z.B. Menüs, Properties, etc.)
+\item[Ordner "`model"':] Eine graphische Erklärung in Form von .sad Dateien, die eine Vorstellung liefern, wie die Verbindungen zwischen alle Klassen und Packages aussehen.
+\item[plugin.xml:] Sehr wichtige Initialisierungen und Implementierungen von allen Sachen, die sich in dem Diagramm befinden.(z.B. Menüs, Properties, etc.)
 
 \end{description}
-\item[de.tud.cs.st.vespucci.diagram.resources] Hier befindet sich u.a. der ''icons-Ordner''. Dieses Java-Projekt ist für alle Ressourcen zuständig, die für das Diagramm benötigt werden. 
+\item[de.tud.cs.st.vespucci.diagram.resources:] Hier befindet sich u.a. der "`icons-Ordner"'. Dieses Java-Projekt ist für alle Ressourcen zuständig, die für das Diagramm benötigt werden. 
 
-\item[de.tud.cs.st.vespucci.versioning] Versioning Transformationen
+\item[de.tud.cs.st.vespucci.versioning:] Versioning Transformationen
 \begin{description}
-\item[de.tud.cs.st.vespucci.versioning] Das Package de.tud.cs.st.vespucci.versioning
+\item[de.tud.cs.st.vespucci.versioning:] Das Package de.tud.cs.st.vespucci.versioning
 \begin{description}
-\item[Activator.java] kontrolliert den Plugin-Lebenzyklus
-\item[VespucciTransformationHelper.java] Das ist eine Template-Klasse, die die Methoden zur
-Tranformation in Vespucci unterstützt
-\item[VespucciVersionChain.java] Bildet die Versionskette für Vespucci
+\item[Activator.java:] kontrolliert den Plugin-Lebenzyklus
+\item[VespucciTransformationHelper.java:] Das ist eine Template-Klasse, die die Methoden zur Tranformation in Vespucci unterstützt
+\item[VespucciVersionChain.java:] Bildet die Versionskette für Vespucci
 \end{description}
-\item[de.tud.cs.st.vespucci.versioning.versions] Alle Versionen in Form von Java Klassen, in denen Informationen über das Datum der Version und die QVT-Transformationen beschrieben werden.
-\item[Ordner model] Alle ecore-Modelle von dem verschiedenen Versionen.
-\item[Ordner Transformationen] QVT Transformationen die für das Update von einer alten Version zu der aktuellsten Version benötigt werden.
+\item[de.tud.cs.st.vespucci.versioning.versions:] Alle Versionen in Form von Java Klassen, in denen Informationen über das Datum der Version und die QVT-Transformationen beschrieben werden.
+\item[Ordner "`model"`:] Alle ecore-Modelle von dem verschiedenen Versionen.
+\item[Ordner Transformationen:] QVT Transformationen die für das Update von einer alten Version zu der aktuellsten Version benötigt werden.
 \end{description}
 \end{description}
 
@@ -178,15 +181,13 @@ Tranformation in Vespucci unterstützt
 \subsection{Einige wichtige Funktionen}
 
 \begin{itemize}
-\item Die gmfgen-Datei muss neu erstellt werden, sobald Veränderungen in ecore, gmfgraph, gmftool oder gmfmap stattgefunden haben.
-\item Um eine neue gmfgen-Datei zu erzeugen, mache einen Rechtsklick auf die gmfmap-Datei $\rightarrow$ wähle dann ''Create generator model...''
 \item Um Änderungen in model zu übernehmen, muss der neue Code generiert werden:
 \begin{enumerate}
-\item Generiere den ''model''-Code: Doppelklick auf die genmodel-Datei $\rightarrow$ Rechtsklick auf den Knoten ''vespucci model'' $\rightarrow$ wähle ''Generate Model Code''.
-\item Generiere den ''edit''-Code: Doppelklick auf die genmodel-Datei $\rightarrow$ Rechtsklick auf den Knoten ''vespucci model'' $\rightarrow$ wähle ''Generate Edit Code''.
-\item Generiere den ''editor''-Code: Doppelklick auf die genmodel-Datei $\rightarrow$ Rechtsklick auf den Knoten ''vespucci model'' $\rightarrow$ wähle ''Generate Editor Code''.
-\item Generiere ''diagram''-Code: Rechtsklick auf die gmfgen-Datei $\rightarrow$ wähle ''Generate diagram code''
-\item Lösche den Ordner ''icons/'' im Package ''de.tud.cs.st.vespucci.diagram'' (dieser wurde in das neue Package ''de.tud.cs.st.vespucci.diagram.resources'' übertragen).
+\item Generiere den "`model"'-Code: Doppelklick auf die genmodel-Datei $\rightarrow$ Rechtsklick auf den Knoten "`vespucci model"' $\rightarrow$ wähle "`Generate Model Code"'.
+\item Generiere den "`edit"'-Code: Doppelklick auf die genmodel-Datei $\rightarrow$ Rechtsklick auf den Knoten "`vespucci model"' $\rightarrow$ wähle "`Generate Edit Code"'.
+\item Generiere den '"`editor"'-Code: Doppelklick auf die genmodel-Datei $\rightarrow$ Rechtsklick auf den Knoten "`vespucci model"' $\rightarrow$ wähle "`Generate Editor Code"'.
+\item Generiere "`diagram"'-Code: Rechtsklick auf die gmfgen-Datei $\rightarrow$ wähle "`Generate diagram code"'
+\item Lösche den Ordner "`icons/"' im Package "`de.tud.cs.st.vespucci.diagram"' (dieser wurde in das neue Package "`de.tud.cs.st.vespucci.diagram.resources"' übertragen).
 \end{enumerate}
 \end{itemize}
 
@@ -194,19 +195,18 @@ Tranformation in Vespucci unterstützt
 Wer sich schon mit Git bzw. eGit auskennt, kann dieses Kapitel gerne überspringen. Für alle anderen soll es als ein kurze Referenz der Befehle dienen, die zu Anfang benötigt werden bzw. das Tool eGit vorstellen.
 \subsection{Eine kurze Befehlsreferenz für die Konsole}
 \begin{description} 
-\item[einen Branch erstellen] \textcolor{blue}{git branch branchname}
-\item[eine Kopie eines Repository herunterladen] \textcolor{blue}{git fetch branchname} \newline Beachte: Hierbei wird zwar eine Kopie heruntergeladen, aber nicht in den lokalen Branch gemerged!
-\item[einen Branch updaten] \textcolor{blue}{git pull (origin) branchname}
-\item[einen Branch wechseln] \textcolor{blue}{git checkout branchname}
-\item[alle lokalen Branches anzeigen lassen] \textcolor{blue}{git branch}
-\item[alle Branches anzeigen lassen] \textcolor{blue}{git branch -a}
-\item[einen Branch reseten]\textcolor{blue}{git reset --hard}
-\item[einen lokalen Branch löschen] \textcolor{blue}{git branch -d branchname} oder \textcolor{blue}{git branch -D branchname}
-\item[einen Branch aus dem Repository löschen] \textcolor{blue}{git push (origin) :branchname}
-\item[in einen Branch ''committen''] \textcolor{blue}{git commit -a -m -v ''Jetzt eine Nachricht einfügen''} \newline -a: all; -m: message; -v: view (your changes) \newline -a -v -m sind optional, allerdings sollte IMMER eine ''Message'' geschrieben werden für die Teammitglieder 
-\item[in einen Branch mergen] Im Zielordner \textcolor{blue}{git merge branchname} ausführen (dabei ist ''branchname'' der Ordner, der hinzugefügt werden soll)
-\item[einen Branch hochladen] \textcolor{blue}{git push (origin) branchname}
-\item[Änderungen in Git einsehen] \textcolor{blue}{gitk --all}
+\item[einen Branch erstellen:] \textcolor{blue}{git branch branchname}
+\item[eine Kopie eines Repository herunterladen:] \textcolor{blue}{git fetch branchname} \newline Beachte: Hierbei wird zwar eine Kopie heruntergeladen, aber nicht in den lokalen Branch gemerged!
+\item[einen Branch updaten:] \textcolor{blue}{git pull (origin) branchname}
+\item[einen Branch wechseln:] \textcolor{blue}{git checkout branchname}
+\item[alle lokalen Branches anzeigen lassen:] \textcolor{blue}{git branch}
+\item[alle Branches anzeigen lassen:] \textcolor{blue}{git branch -a} oder \textcolor{blue}{git branch --all}
+\item[einen Branch reseten:]\textcolor{blue}{git reset --hard}
+\item[einen lokalen Branch löschen:] \textcolor{blue}{git branch -d branchname} oder \textcolor{blue}{git branch -D branchname}
+\item[einen Branch aus dem Repository löschen:] \textcolor{blue}{git push (origin) :branchname}
+\item[in einen Branch "`committen"':] \textcolor{blue}{git commit -a -m -v "`Jetzt eine Nachricht einfügen"'} \newline -a: all; -m: message; -v: view (your changes) \newline -a -v -m sind optional, allerdings sollte IMMER eine "`Message"' geschrieben werden für die Teammitglieder 
+\item[einen Branch hochladen:] \textcolor{blue}{git push (origin) branchname}
+\item[Änderungen in Git einsehen:] \textcolor{blue}{gitk --all}
 \end{description}
 
 Quellen:
@@ -216,7 +216,7 @@ Quellen:
 \item \textit{gitref.org}
 \end{itemize}
 \subsection{Das Tool eGit}
-Folgendes PlugIn ermöglicht ebenfalls den Zugriff auf Git und ist bequem über Eclipse zu bedienen. Der Download  ist wieder mittels ''Help $\rightarrow$ Install New Software...'' möglich.
+Folgendes PlugIn ermöglicht ebenfalls den Zugriff auf Git und ist bequem über Eclipse zu bedienen. Der Download  ist wieder mittels "`Help $\rightarrow$ Install New Software..."' möglich.
 
 \begin{itemize}
 \item Indigo - http://download.eclipse.org/release/indigo
@@ -227,12 +227,12 @@ Folgendes PlugIn ermöglicht ebenfalls den Zugriff auf Git und ist bequem über Ec
 \end{itemize}
 \end{itemize}
 \end{itemize}
-Dann über ''Window'' $\rightarrow$ ''open Perspective'' $\rightarrow$ ''Git Repositories'' hinzufügen. Nun einfach mittels ''Add an existing local Git Repository to this view'' den Ordner mit Vespucci hinzufügen. Von hier aus lassen sich jetzt ebenfalls die in 4.1 genannten Aktionen durchführen.
+Dann über "`Window"' $\rightarrow$ "`open Perspective"' $\rightarrow$ "`Git Repositories"' hinzufügen. Nun einfach mittels "`Add an existing local Git Repository to this view"' den Ordner mit Vespucci hinzufügen. Von hier aus lassen sich jetzt ebenfalls die in 4.1 genannten Aktionen durchführen.
 
 \section{Tipps \& Tricks}
 \begin{itemize}
-\item Sollte es zu unerwarteten Fehlern kommen (z.B. in der Instanz von Eclipse Rechtsklick auf eine freie Fläche $\rightarrow$ unter ''Add'' sind plötzlich die gelöschten(!) Geoshapes (z.B. Diamond, Oval,...) zu finden) kann es helfen, im workspace-Ordner den Ordner ''.metadata'' zu löschen. Dies sollte nur im Notfall gemacht werden, da danach der workspace in Eclipse wieder komplett neu eingerichtet werden muss.
-\item Nachdem man die Instanz einmal nach dem Muster von Punkt 2.1 gestartet hat, kann man danach wie gewohnt auch einfach auf ''Run'' drücken.
+\item Sollte es zu unerwarteten Fehlern kommen (z.B. in der Instanz von Eclipse Rechtsklick auf eine freie Fläche $\rightarrow$ unter "`Add"' sind plötzlich die gelöschten(!) Geoshapes (z.B. Diamond, Oval,...) zu finden) kann es helfen, im workspace-Ordner den Ordner "`.metadata"' zu löschen. Dies sollte nur im Notfall gemacht werden, da danach der workspace in Eclipse wieder komplett neu eingerichtet werden muss.
+\item Nachdem man die Instanz einmal nach dem Muster von Punkt 2.1 gestartet hat, kann man danach wie gewohnt auch einfach auf "`Run"' drücken.
 \end{itemize}
 
 
