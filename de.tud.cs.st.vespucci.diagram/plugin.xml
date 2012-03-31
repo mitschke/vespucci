@@ -964,24 +964,11 @@
 					<popupStructuredContributionCriteria objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart"/>
 						<popupPredefinedItem id="deleteFromModelAction" remove="true"/>
 						<popupPredefinedItem id="addGroup" remove="false"/>
-						<popupPredefinedItem id="navigateGroup" remove="true"/>
-						<popupPredefinedItem id="lineWidthMenu" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="lineTypeMenu" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="arrowTypeMenu" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="zorderMenu" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="lineColorContributionItem" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="routerMenu" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="arrangeMenu" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="alignMenu" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="textAlignmentMenu" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="copyAppearancePropertiesAction" path="/formatMenu/" remove="true"/>
- 						<popupPredefinedItem id="addGeoShapesGroup" path="/diagramAddMenu/" remove="true"/>
- 						<popupPredefinedItem id="addGeoShapes2Group" path="/diagramAddMenu/" remove="true"/>
 				</popupContribution>
 			</contributionItemProvider>
 		</extension>
 		
-	<!--@author: Tabea Born 
+	<!--@author: Tabea Born -->
 	<?gmfgen generated="false"?>
 	<extension 
 			point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
@@ -990,6 +977,7 @@
  			class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContributionItemProvider">
  			<Priority name="High"/>
  			<popupContribution class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
+ 		 		<popupPredefinedItem id="deleteFromModelAction" remove="true"/>
  		 		<popupPredefinedItem id="lineWidthMenu" path="/formatMenu/" remove="true"/>
  				<popupPredefinedItem id="lineTypeMenu" path="/formatMenu/" remove="true"/>
  				<popupPredefinedItem id="arrowTypeMenu" path="/formatMenu/" remove="true"/>
@@ -1004,7 +992,7 @@
  				<popupPredefinedItem id="addGeoShapes2Group" path="/diagramAddMenu/" remove="true"/>
 	 		</popupContribution>
  		</contributionItemProvider>
- 	</extension> -->
+ 	</extension>
 		
 		<?gmfgen generated="false"?>
        <extension
@@ -1027,18 +1015,7 @@
                 properties="pointsToEmpty"
                 type="org.eclipse.gmf.runtime.diagram.ui.editparts.ConnectionNodeEditPart">
           </propertyTester>
-       </extension>
-
-
-
-
-
-
-
-
-
-
-    
+       </extension>    
         <!-- gmf generator persistent region end -->
           
 
