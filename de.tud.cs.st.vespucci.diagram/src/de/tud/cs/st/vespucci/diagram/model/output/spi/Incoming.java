@@ -37,7 +37,7 @@ import de.tud.cs.st.vespucci.model.IIncoming;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class Incoming extends Constraint implements IIncoming {

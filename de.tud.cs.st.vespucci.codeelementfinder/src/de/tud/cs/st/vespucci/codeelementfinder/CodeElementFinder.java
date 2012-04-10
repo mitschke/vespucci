@@ -56,6 +56,7 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
  * Class that is able to find ICodeElements in workspace
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class CodeElementFinder {
 

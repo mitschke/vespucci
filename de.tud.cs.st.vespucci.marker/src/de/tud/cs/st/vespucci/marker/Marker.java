@@ -50,6 +50,7 @@ import de.tud.cs.st.vespucci.utilities.Util;
  * ViolationSummaryManger, which mark and manage IViolations and IViolationSummary
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class Marker implements IResultProcessor {
 

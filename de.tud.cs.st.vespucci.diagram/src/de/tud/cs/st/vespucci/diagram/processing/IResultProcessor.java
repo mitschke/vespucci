@@ -37,7 +37,7 @@ import org.eclipse.core.resources.IFile;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public interface IResultProcessor {

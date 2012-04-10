@@ -47,7 +47,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 /**
  * A processor/handler for saving a *.sad file to a *.pl Prolog file
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class GenerateProlog implements IModelProcessor, IModelSaveAction {

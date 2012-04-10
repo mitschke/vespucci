@@ -50,6 +50,7 @@ import de.tud.cs.st.vespucci.interfaces.IViolation;
  * Explicit implementation of DataViewObserver for IViolations.
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class ViolationManager extends DataViewObserver<IViolation> {
 
@@ -57,11 +58,11 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 	public static final int SOURCE = 1;
 
 	private Map<IViolation, Set<IMarker>> marks;
-	private DescriptionFactory descriptionFactory;
+	private DescriptionGenerator descriptionFactory;
 
 	public ViolationManager(){
 		marks = new HashMap<IViolation, Set<IMarker>>();
-		descriptionFactory = new DescriptionFactory();
+		descriptionFactory = DescriptionGenerator.getInstance();
 	}
 
 	@Override
@@ -117,6 +118,7 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 	 * for marking CodeElements of IViolations
 	 * 
 	 * @author Olav Lenz
+	 * @author Patrick Gottschaemmer
 	 */
 	private class CodeElementMarker implements ICodeElementFoundProcessor{
 

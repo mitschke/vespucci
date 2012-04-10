@@ -37,7 +37,7 @@ import de.tud.cs.st.vespucci.model.INotAllowed;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class NotAllowed extends Constraint implements INotAllowed {

@@ -61,6 +61,7 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
  * Provide functionalities that is need to find ICodeElemnets
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 @SuppressWarnings("restriction")
 public class Util {

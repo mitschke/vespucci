@@ -42,7 +42,8 @@ import org.eclipse.swt.graphics.Image;
 /**
  * Class which provides images (cached) for other Plug-in projects
  * 
- * @author Olav Lenz 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class ImageManager {
 

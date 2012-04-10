@@ -35,7 +35,7 @@ package de.tud.cs.st.vespucci.model;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public interface IConstraint {

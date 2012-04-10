@@ -53,6 +53,7 @@ import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
  * 
  * @author Olav Lenz
  * @author Ralf Mitschke
+ * @author Patrick Gottschaemmer
  */
 public class DataViewContentProvider<A> implements IStructuredContentProvider {
 

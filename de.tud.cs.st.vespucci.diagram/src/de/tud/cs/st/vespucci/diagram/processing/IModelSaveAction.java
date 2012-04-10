@@ -37,7 +37,7 @@ package de.tud.cs.st.vespucci.diagram.processing;
  * An interface for declaring a save method on a diagramObject. 
  * See ExtensionPoint de.tud.cs.st.vespucci.diagram.saveActions
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public interface IModelSaveAction {

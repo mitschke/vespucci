@@ -38,6 +38,7 @@ package de.tud.cs.st.vespucci.view.table;
  * Can be used to compare elements in tables depending on an column
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public interface IColumnComparator {
 

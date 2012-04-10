@@ -37,6 +37,7 @@ package de.tud.cs.st.vespucci.codeelementfinder;
  * Action that is processed when called
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public interface IAction {
 

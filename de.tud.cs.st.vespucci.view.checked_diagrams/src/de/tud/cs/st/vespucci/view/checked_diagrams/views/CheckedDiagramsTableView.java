@@ -74,6 +74,7 @@ import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
  * to dispose the checking of diagrams if it is wanted.
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class CheckedDiagramsTableView extends ViewPart {
 

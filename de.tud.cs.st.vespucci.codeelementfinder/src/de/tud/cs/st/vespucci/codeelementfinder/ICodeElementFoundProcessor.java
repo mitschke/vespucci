@@ -42,6 +42,7 @@ import de.tud.cs.st.vespucci.interfaces.ICodeElement;
  * when an ICodeElement is found
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  *
  */
 public interface ICodeElementFoundProcessor {

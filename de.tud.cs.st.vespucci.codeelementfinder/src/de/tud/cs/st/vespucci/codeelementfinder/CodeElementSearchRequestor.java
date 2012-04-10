@@ -19,6 +19,7 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
  * SearchRequestor for searching ICodeElements
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class CodeElementSearchRequestor extends SearchRequestor {
 

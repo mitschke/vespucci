@@ -44,6 +44,7 @@ import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
  * An abstract, generic implementation of IDataViewObserver
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public abstract class DataViewObserver<A> implements IDataViewObserver<A>{
 

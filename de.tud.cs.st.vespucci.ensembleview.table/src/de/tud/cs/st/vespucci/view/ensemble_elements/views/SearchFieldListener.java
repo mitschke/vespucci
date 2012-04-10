@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Text;
  * when the modifyText event is notified
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class SearchFieldListener implements ModifyListener {
 

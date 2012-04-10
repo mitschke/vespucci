@@ -48,6 +48,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * an TableViewer when notified
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public final class TableColumnSorterListener implements SelectionListener {
 
@@ -104,6 +105,7 @@ public final class TableColumnSorterListener implements SelectionListener {
  * Column specific order of table elements
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 class TableColumnSorter extends ViewerSorter{
 	

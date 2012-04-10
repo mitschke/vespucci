@@ -52,6 +52,7 @@ import de.tud.cs.st.vespucci.view.model.Pair;
  * Receive IViolationViews and delegate them to CheckedDiagramsTable for visualization
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class CheckedDiagramsVisualizer implements IResultProcessor {
 

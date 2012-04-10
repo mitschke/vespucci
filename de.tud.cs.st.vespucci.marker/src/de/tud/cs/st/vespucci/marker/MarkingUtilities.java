@@ -44,6 +44,7 @@ import org.eclipse.jdt.core.JavaModelException;
  * Provide facilities to mark elements
  * 
  * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class MarkingUtilities {
 

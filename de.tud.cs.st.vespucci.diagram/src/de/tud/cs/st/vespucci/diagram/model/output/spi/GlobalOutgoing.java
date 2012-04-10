@@ -37,7 +37,7 @@ import de.tud.cs.st.vespucci.model.IGlobalOutgoing;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class GlobalOutgoing extends Constraint implements IGlobalOutgoing {

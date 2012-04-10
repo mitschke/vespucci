@@ -67,7 +67,7 @@ import de.tud.cs.st.vespucci.vespucci_model.ShapesDiagram;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  * @author Ralf Mitschke
  */

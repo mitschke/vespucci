@@ -37,7 +37,7 @@ import de.tud.cs.st.vespucci.model.IDocumentedViolation;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class DocumentedViolation extends Constraint implements IDocumentedViolation {
