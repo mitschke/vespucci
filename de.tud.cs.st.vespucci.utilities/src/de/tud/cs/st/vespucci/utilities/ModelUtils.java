@@ -37,7 +37,7 @@ public class ModelUtils {
 		if (constraint instanceof IIncoming)
 			return "incoming";
 		if (constraint instanceof IOutgoing)
-			return "incoming";
+			return "outgoing";
 		if (constraint instanceof IInAndOut)
 			return "in/out";
 		if (constraint instanceof IGlobalIncoming)

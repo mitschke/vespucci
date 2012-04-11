@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -34,7 +37,7 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 
 	private static String constraintHeader = "FromFull;From;ToFull;To;Type;Kinds;Diagram";
 
-	private static String ensembleHeader = "Name;FullName;Parent;isTopLevel;numberOfChildren";
+	private static String ensembleHeader = "Diagram;Name;FullName;Parent;isTopLevel;numberOfChildren;incoming;outgoing;global incoming;global outgoing;not allowed;total;isSourceOrTarget";
 
 	private static String ensembleElementsHeader = "FullName;Element";
 
@@ -54,28 +57,34 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 		printConstraintSubsumtions(model, diagramFile);
 
 		printEnsembleStatistics(model, diagramFile);
-		// printEnsembleElements(diagramFile);
+		
+		printEnsemblesPerDiagrams(model, diagramFile);
+		printEnsembleElements(diagramFile);
 		// printDependencies(diagramFile);
 		return null;
 	}
 
 	private void printConstraintSubsumtions(IArchitectureModel model,
 			IFile diagramFile) {
-		
+
 		IPath constraintSubsumptionsPath = diagramFile.getLocation()
 				.removeLastSegments(1).append("constraint-subsumptions")
 				.addFileExtension("csv");
-		
+
 		IPath constraintSubsumptionsAggregatedPath = diagramFile.getLocation()
-				.removeLastSegments(1).append("constraint-subsumptions-aggregated")
+				.removeLastSegments(1)
+				.append("constraint-subsumptions-aggregated")
 				.addFileExtension("csv");
 
-		PrintWriter subsumptionsWriter = openOrCreateFile(constraintSubsumptionsPath,  "From;To;Type;SubFrom;SubTo");
-		PrintWriter subsumptionsAggregatedWriter = openOrCreateFile(constraintSubsumptionsAggregatedPath,  "From;To;Type;SubsumptionCount");
-		
-		if(subsumptionsWriter == null || subsumptionsAggregatedWriter == null)
+		PrintWriter subsumptionsWriter = openOrCreateFile(
+				constraintSubsumptionsPath, "From;To;Type;SubFrom;SubTo");
+		PrintWriter subsumptionsAggregatedWriter = openOrCreateFile(
+				constraintSubsumptionsAggregatedPath,
+				"From;;To;;Type;SubsumptionCount");
+
+		if (subsumptionsWriter == null || subsumptionsAggregatedWriter == null)
 			return;
-		
+
 		UnissonDatabase database = ArchitectureDatabaseProvider.getInstance()
 				.getArchitectureDatabase(diagramFile.getProject());
 		QueryResult<Tuple3<IEnsemble, IEnsemble, Object>> ensembleDependencies = Conversions
@@ -90,36 +99,130 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 		for (IConstraint constraint : constraints) {
 			IPair<IEnsemble, IEnsemble> constraintRelation = ModelUtils.Pair(
 					constraint.getSource(), constraint.getTarget());
-			
-			int aggregatedCount = 0;
-			
+
+			Map<IEnsemble, Integer> targets = new HashMap<IEnsemble, Integer>();
+			Map<IEnsemble, Integer> sources = new HashMap<IEnsemble, Integer>();
+
 			for (Tuple3<IEnsemble, IEnsemble, Object> dependency : dependencies) {
 				IPair<IEnsemble, IEnsemble> dependencyRelation = ModelUtils
 						.Pair(dependency._1(), dependency._2());
 				if (constraintRelation.equals(dependencyRelation)
 						|| subsumes(constraintRelation, dependencyRelation)) {
-					aggregatedCount ++;
-					subsumptionsWriter.print(constraintRelation.getFirst());
-					subsumptionsWriter.print(";");
-					subsumptionsWriter.print(constraintRelation.getSecond());
-					subsumptionsWriter.print(";");
-					subsumptionsWriter.print(ModelUtils.getConstraintType(constraint));
-					subsumptionsWriter.print(";");
-					subsumptionsWriter.print(dependencyRelation.getFirst());
-					subsumptionsWriter.print(";");
-					subsumptionsWriter.print(dependencyRelation.getSecond());
-					subsumptionsWriter.println();
+					if (!targets.containsKey(dependency._2()))
+						targets.put(dependency._2(), new Integer(0));
+					targets.put(dependency._2(),
+							targets.get(dependency._2()) + 1);
+
+					if (!sources.containsKey(dependency._1()))
+						sources.put(dependency._1(), new Integer(0));
+					sources.put(dependency._1(),
+							sources.get(dependency._1()) + 1);
+
+					String type = ModelUtils.getConstraintType(constraint);
+
+					if (!type.equals("in/out")) {
+
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(constraintRelation
+										.getFirst()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(constraintRelation
+										.getSecond()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(type);
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(dependencyRelation
+										.getFirst()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(dependencyRelation
+										.getSecond()));
+						subsumptionsWriter.println();
+					} else {
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(constraintRelation
+										.getFirst()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(constraintRelation
+										.getSecond()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print("incoming");
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(dependencyRelation
+										.getFirst()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(dependencyRelation
+										.getSecond()));
+						subsumptionsWriter.println();
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(constraintRelation
+										.getFirst()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(constraintRelation
+										.getSecond()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print("outgoing");
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(dependencyRelation
+										.getFirst()));
+						subsumptionsWriter.print(";");
+						subsumptionsWriter.print(ModelUtils
+								.getFullEnsembleName(dependencyRelation
+										.getSecond()));
+						subsumptionsWriter.println();
+					}
 				}
 			}
-			
-			subsumptionsAggregatedWriter.print(constraintRelation.getFirst());
-			subsumptionsAggregatedWriter.print(";");
-			subsumptionsAggregatedWriter.print(constraintRelation.getSecond());
-			subsumptionsAggregatedWriter.print(";");
-			subsumptionsAggregatedWriter.print(ModelUtils.getConstraintType(constraint));
-			subsumptionsAggregatedWriter.print(";");
-			subsumptionsAggregatedWriter.print(aggregatedCount);
-			subsumptionsAggregatedWriter.println();
+
+			for (IEnsemble target : targets.keySet()) {
+				if( targets.get(target) == 1)
+					continue;
+				subsumptionsAggregatedWriter.print(ModelUtils
+						.getFullEnsembleName(constraintRelation.getFirst()));
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(ModelUtils
+						.getFullEnsembleName(constraintRelation.getSecond()));
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(ModelUtils
+						.getFullEnsembleName(target));
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(ModelUtils
+						.getConstraintType(constraint));
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(targets.get(target));
+				subsumptionsAggregatedWriter.println();
+
+			}
+
+			for (IEnsemble source : sources.keySet()) {
+				if( sources.get(source) == 1)
+					continue;
+				subsumptionsAggregatedWriter.print(ModelUtils
+						.getFullEnsembleName(constraintRelation.getFirst()));
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(ModelUtils
+						.getFullEnsembleName(source));
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(ModelUtils
+						.getFullEnsembleName(constraintRelation.getSecond()));
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(ModelUtils
+						.getConstraintType(constraint));
+				subsumptionsAggregatedWriter.print(";");
+				subsumptionsAggregatedWriter.print(sources.get(source));
+				subsumptionsAggregatedWriter.println();
+
+			}
+
 		}
 		subsumptionsWriter.close();
 		subsumptionsAggregatedWriter.close();
@@ -166,7 +269,9 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 			}
 			secondParent = secondParent.getParent();
 		}
-		return (subsumesFirst && parent.getSecond().equals(child.getSecond())) || (parent.getFirst().equals(child.getFirst()) && subsumesSecond) || (subsumesFirst && subsumesSecond); 
+		return (subsumesFirst && parent.getSecond().equals(child.getSecond()))
+				|| (parent.getFirst().equals(child.getFirst()) && subsumesSecond)
+				|| (subsumesFirst && subsumesSecond);
 	}
 
 	private void printDependencies(IFile diagramFile) {
@@ -244,7 +349,7 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 		for (Tuple2<IEnsemble, SourceElement<Object>> entry : list) {
 			writer.print(ModelUtils.getFullEnsembleName(entry._1));
 			writer.print(";");
-			writer.print(entry._2.toString());
+			writer.print("\"" + entry._2.toString() + "\"");
 			writer.println();
 		}
 		writer.close();
@@ -293,6 +398,42 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 		writer.close();
 	}
 
+	private void printEnsemblesPerDiagrams(IArchitectureModel model,
+			IFile diagramFile) {
+		IPath constraintStatisticsPath = diagramFile.getLocation()
+				.removeLastSegments(1).append("ensembles-per-diagram")
+				.addFileExtension("csv");
+
+		File statisticsFile = constraintStatisticsPath.toFile();
+		PrintWriter writer = null;
+		boolean writeHeader = false;
+		try {
+			if (!statisticsFile.exists()) {
+				statisticsFile.createNewFile();
+				writeHeader = true;
+			}
+			writer = new PrintWriter(new FileWriter(statisticsFile, true));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		if (writeHeader)
+			writer.println("Diagram;FullName;numberOfChildren");
+
+		Set<IEnsemble> topLevelEnsembles = model.getEnsembles();
+
+		for (IEnsemble ensemble : topLevelEnsembles) {
+
+			writer.print(model.getName() + ";");
+			writer.print(ModelUtils.getFullEnsembleName(ensemble) + ";");
+			writer.print(allChildren(ensemble).size());
+			writer.println();
+		}
+
+		writer.close();
+	}
+
 	private void printEnsembleStatistics(IArchitectureModel model,
 			IFile diagramFile) {
 		IPath constraintStatisticsPath = diagramFile.getLocation()
@@ -327,17 +468,59 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 
 		for (IEnsemble ensemble : ensembles) {
 
-			writer.println(ensemble.getName()
-					+ ";"
-					+ ModelUtils.getFullEnsembleName(ensemble)
-					+ ";"
-					+ (ensemble.getParent() != null ? ModelUtils
-							.getFullEnsembleName(ensemble.getParent()) : "")
-					+ ";" + (ensemble.getParent() != null ? "0" : "1") + ";"
-					+ allChildren(ensemble).size());
+			writer.print(model.getName() + ";");
+			writer.print(ensemble.getName() + ";");
+			writer.print(ModelUtils.getFullEnsembleName(ensemble) + ";");
+			writer.print((ensemble.getParent() != null ? ModelUtils
+					.getFullEnsembleName(ensemble.getParent()) : "") + ";");
+			writer.print((ensemble.getParent() != null ? "0" : "1") + ";");
+			writer.print(allChildren(ensemble).size() + ";");
+
+			Set<IConstraint> constraints = ensemble.getTargetConnections();
+			Map<String, List<IConstraint>> constraintsByType = mapConstraintsByType(constraints);
+			writer.print(constraintsByType.get("incoming").size() + ";");
+			writer.print(constraintsByType.get("outgoing").size() + ";");
+			writer.print(constraintsByType.get("global incoming").size() + ";");
+			writer.print(constraintsByType.get("global outgoing").size() + ";");
+			writer.print(constraintsByType.get("not allowed").size() + ";");
+			writer.print(constraints.size() + ";");
+			writer.print((isSourceOrTarget(ensemble, model.getConstraints()) ? "1"
+					: "0"));
+			writer.println();
 		}
 
 		writer.close();
+	}
+
+	private boolean isSourceOrTarget(IEnsemble ensemble,
+			Set<IConstraint> constraints) {
+		for (IConstraint constraint : constraints) {
+			if (constraint.getSource().equals(ensemble)
+					|| constraint.getTarget().equals(ensemble))
+				return true;
+		}
+		return false;
+	}
+
+	private static Map<String, List<IConstraint>> mapConstraintsByType(
+			Set<IConstraint> constraints) {
+		Map<String, List<IConstraint>> result = new HashMap<String, List<IConstraint>>();
+		result.put("incoming", new LinkedList<IConstraint>());
+		result.put("outgoing", new LinkedList<IConstraint>());
+		result.put("global incoming", new LinkedList<IConstraint>());
+		result.put("global outgoing", new LinkedList<IConstraint>());
+		result.put("not allowed", new LinkedList<IConstraint>());
+		for (IConstraint constraint : constraints) {
+			String type = ModelUtils.getConstraintType(constraint);
+			if (type.equals("in/out")) {
+				result.get("incoming").add(constraint);
+				result.get("outgoing").add(constraint);
+			} else {
+				List<IConstraint> list = result.get(type);
+				list.add(constraint);
+			}
+		}
+		return result;
 	}
 
 	public static Set<IEnsemble> allChildren(IEnsemble ensemble) {

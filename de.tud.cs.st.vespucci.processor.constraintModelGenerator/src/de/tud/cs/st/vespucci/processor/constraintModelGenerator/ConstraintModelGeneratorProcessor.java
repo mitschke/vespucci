@@ -212,8 +212,10 @@ public class ConstraintModelGeneratorProcessor implements IModelProcessor {
 			if (superEdges.size() == 0)
 				continue;
 			boolean hasSubsumingEdge = false;
+			int count = ensembleDependencies.get(dependency);
 			for (IPair<IEnsemble, IEnsemble> superEdge : superEdges) {
-				if (ensembleDependencies.get(superEdge) == 1)
+				// all super edges that have the same count do not subsume more than the current edge and can be removed
+				if (ensembleDependencies.get(superEdge) == count)
 					result.remove(superEdge);
 				else
 					hasSubsumingEdge = true;
