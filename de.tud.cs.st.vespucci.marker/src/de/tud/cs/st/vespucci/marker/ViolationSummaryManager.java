@@ -46,7 +46,8 @@ import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 /**
  * Explicit implementation of DataViewObserver for IViolationSummarys.
  * 
- * @author 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class ViolationSummaryManager extends DataViewObserver<IViolationSummary>{
 
@@ -57,7 +58,7 @@ public class ViolationSummaryManager extends DataViewObserver<IViolationSummary>
 	}
 
 	private String createViolationSummaryDescription(IViolationSummary element) {
-		return DescriptionFactory.getDescription(element);
+		return DescriptionGenerator.getDescription(element);
 	}
 
 	@Override

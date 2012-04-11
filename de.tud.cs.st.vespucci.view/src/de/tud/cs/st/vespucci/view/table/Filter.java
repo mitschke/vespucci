@@ -31,69 +31,57 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.information.interfaces.spi;
+package de.tud.cs.st.vespucci.view.table;
 
-import de.tud.cs.st.vespucci.model.IConstraint;
-import de.tud.cs.st.vespucci.model.IEnsemble;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
+
+import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
-import de.tud.cs.st.vespucci.interfaces.IViolation;
+import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IPair;
+import de.tud.cs.st.vespucci.model.IEnsemble;
 
-public class Violation implements IViolation{
+/**
+ * Contain some useful filter
+ * 
+ * @author Ralf Mitschke
+ */
+public final class Filter {
+	public static final ViewerFilter classDeclarationFilter = new ViewerFilter() {
 
-	String description;
-	ICodeElement sourceElement;
-	ICodeElement targetElement;
-	IEnsemble sourceEnsemble;
-	IEnsemble targetEnsemble;
-	IConstraint constraint;
-	
-	public Violation(String description, ICodeElement sourceElement,
-			ICodeElement targetElement, IEnsemble sourceEnsemble,
-			IEnsemble targetEnsemble, IConstraint constraint) {
-		super();
-		this.description = description;
-		this.sourceElement = sourceElement;
-		this.targetElement = targetElement;
-		this.sourceEnsemble = sourceEnsemble;
-		this.targetEnsemble = targetEnsemble;
-		this.constraint = constraint;
-	}
+		@SuppressWarnings("unchecked")
+		@Override
+		public boolean select(Viewer viewer, Object parentElement,
+				Object element) {
+			if (element == null)
+				return false;
+			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IClassDeclaration);
+		}
+	};
 
-	@Override
-	public ICodeElement getSourceElement() {
-		return sourceElement;
-	}
+	public static final ViewerFilter methodDeclarationFilter = new ViewerFilter() {
 
-	@Override
-	public ICodeElement getTargetElement() {
-		return targetElement;
-	}
+		@SuppressWarnings("unchecked")
+		@Override
+		public boolean select(Viewer viewer, Object parentElement,
+				Object element) {
+			if (element == null)
+				return false;
+			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IMethodDeclaration);
+		}
+	};
 
-	@Override
-	public IEnsemble getSourceEnsemble() {
-		return sourceEnsemble;
-	}
+	public static final ViewerFilter fieldDeclarationFilter = new ViewerFilter() {
 
-	@Override
-	public IEnsemble getTargetEnsemble() {
-		return targetEnsemble;
-	}
-
-	@Override
-	public IConstraint getConstraint() {
-		return constraint;
-	}
-
-	@Override
-	public String getViolatingKind() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getDiagramFile() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+		@SuppressWarnings("unchecked")
+		@Override
+		public boolean select(Viewer viewer, Object parentElement,
+				Object element) {
+			if (element == null)
+				return false;
+			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IFieldDeclaration);
+		}
+	};
 }

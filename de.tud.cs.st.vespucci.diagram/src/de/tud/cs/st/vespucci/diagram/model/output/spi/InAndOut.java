@@ -37,7 +37,7 @@ import de.tud.cs.st.vespucci.model.IInAndOut;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class InAndOut extends Constraint implements IInAndOut {

@@ -37,7 +37,7 @@ import de.tud.cs.st.vespucci.model.IExpected;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class Expected extends Constraint implements IExpected {

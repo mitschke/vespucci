@@ -37,7 +37,7 @@ import de.tud.cs.st.vespucci.model.IOutgoing;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class Outgoing extends Constraint implements IOutgoing {

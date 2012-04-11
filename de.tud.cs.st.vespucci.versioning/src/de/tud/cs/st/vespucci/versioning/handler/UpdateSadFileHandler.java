@@ -114,7 +114,7 @@ public class UpdateSadFileHandler extends AbstractHandler {
 	/**
 	 * 
 	 * @author Dominic Scheurer
-	 * @author Patrick Gottschämmer
+	 * @author Patrick Gottschaemmer
 	 * @author Olav Lenz
 	 */
 	private static boolean isSadFile(final IFile file) {

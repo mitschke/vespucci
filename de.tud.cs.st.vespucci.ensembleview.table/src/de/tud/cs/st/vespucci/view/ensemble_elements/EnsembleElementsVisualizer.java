@@ -48,7 +48,8 @@ import de.tud.cs.st.vespucci.view.ensemble_elements.views.EnsembleElementsTableV
 /**
  * Receive IEnsembleElementsViews and delegate them to EnsembleElementsTableView for visualization
  * 
- * @author 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class EnsembleElementsVisualizer implements IResultProcessor{
 

@@ -36,7 +36,7 @@ package de.tud.cs.st.vespucci.diagram.processing;
 /**
  * A generic data class for encapsulate properties of a diagramProcessor
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 

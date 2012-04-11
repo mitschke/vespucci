@@ -57,7 +57,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 /**
  * Some static helpful methods
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class Util {

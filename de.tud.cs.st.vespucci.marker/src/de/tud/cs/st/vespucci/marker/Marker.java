@@ -47,9 +47,10 @@ import de.tud.cs.st.vespucci.utilities.Util;
 
 /**
  * Receive IViolationViews and delegate them to ViolationManager and
- * ViolationSummaryManger, who mark and manage IViolations and IViolationSummary
+ * ViolationSummaryManger, which mark and manage IViolations and IViolationSummary
  * 
- * @author
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class Marker implements IResultProcessor {
 
@@ -76,9 +77,9 @@ public class Marker implements IResultProcessor {
 
 		long start = System.nanoTime();
 		if (violationView != null) {
-			violationManager.add(violationView, project);
+			violationManager.setView(violationView, project);
 			violationSummaryManager
-					.add(violationView.getSummaryView(), project);
+					.setView(violationView.getSummaryView(), project);
 		}
 		long taken = System.nanoTime() - start;
 		System.out

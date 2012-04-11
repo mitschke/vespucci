@@ -31,25 +31,17 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.view.table;
+package de.tud.cs.st.vespucci.marker;
+
+import de.tud.cs.st.vespucci.interfaces.IViolation;
 
 /**
- * Comparator which result can be depend on a given column.
- * Can be used to compare elements in tables depending on an column
  * 
- * @author 
+ * @author Patrick Gottschaemmer
+ * @author Olav Lenz
  */
-public interface ColumnComparator {
-
-	/**
-	 * Compare two elements depending of given column number
-	 * 
-     * @param e1 the first element
-     * @param e2 the second element
-     * @param column the column the elements should be compare for
-     * @return a negative number if (e1 < e2); the value <code>0</code> if (e1 = e2);
-     *  and a positive number if (e1 > e2)
-	 */
-	public int compare(Object e1, Object e2, int column);
-
+interface DescriptionBuilder{
+	
+	String buildDescription(IViolation violation);
+	
 }

@@ -60,7 +60,8 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 /**
  * Provide functionalities that is need to find ICodeElemnets
  * 
- * @author
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 @SuppressWarnings("restriction")
 public class Util {
@@ -161,7 +162,7 @@ public class Util {
 	public static Stack<ICodeElement> createSearchTryStack(
 			ICodeElement codeElement) {
 		List<ICodeElement> tempSearchItems = new LinkedList<ICodeElement>();
-		;
+
 		if (codeElement instanceof IClassDeclaration) {
 			tempSearchItems = createSearchItems((IClassDeclaration) codeElement);
 		} else if (codeElement instanceof IStatement) {
@@ -189,7 +190,7 @@ public class Util {
 	 * Creates list with the prioritize search items for an ICodeElement
 	 * containing all possible search items to find the contained class
 	 * 
-	 * The created search items are the worst for each ICodeElement.
+	 * The created search items are the worst approach for each ICodeElement.
 	 * 
 	 * @param codeElement
 	 *            ICodeElement stack create for

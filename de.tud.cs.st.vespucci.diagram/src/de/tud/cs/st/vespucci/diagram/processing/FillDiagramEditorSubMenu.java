@@ -56,7 +56,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * depending on which processor Extensions are registered.
  * See ExtensionPoint de.tud.cs.st.vespucci.diagram.modelElementProcessors
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class FillDiagramEditorSubMenu extends ContributionItem {

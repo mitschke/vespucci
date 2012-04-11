@@ -37,7 +37,7 @@ import java.util.Set;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public interface IEnsemble {

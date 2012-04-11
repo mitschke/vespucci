@@ -55,7 +55,8 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 /**
  * Class that is able to find ICodeElements in workspace
  * 
- * @author
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class CodeElementFinder {
 
@@ -76,35 +77,32 @@ public class CodeElementFinder {
 
 	private ICodeElement currentSearchItem;
 	private ICodeElement actualSearchItem;
-	
+
 	private Boolean found = false;
 	private IMember foundMatch = null;
 
 	/**
 	 * Search an ICodeElement
 	 * 
-	 * @param sourceElement
-	 *            ICodeElement looking for
-	 * @param project
-	 *            IProject that looking in
-	 * @param processor
-	 *            Processor that declares what should be done when ICodeElement
-	 *            is found or not found
+	 * @param sourceElement ICodeElement looking for
+	 * @param project IProject searching in
+	 * @param processor Processor that define what should be done when ICodeElement
+	 *        is found or is not found
 	 */
 	public static void startSearch(ICodeElement sourceElement,
 			IProject project, ICodeElementFoundProcessor processor) {
 
 		if (cache.containsKey(sourceElement)) {
 			IMember member = cache.get(sourceElement);
-			if(!member.exists())
-			processor.processFoundCodeElement(cache.get(sourceElement));
-		} else {
-			System.out.println("miss: " + sourceElement.toString());
-			CodeElementFinder cef = new CodeElementFinder(sourceElement,
-					project, processor);
-
-			cef.nextStep();
+			if(member.exists()){
+				processor.processFoundCodeElement(member);
+				return;
+			}
 		}
+
+		CodeElementFinder cef = new CodeElementFinder(sourceElement, project, processor);
+
+		cef.nextStep();
 	}
 
 	private CodeElementFinder(ICodeElement codeElement, IProject project,
@@ -118,7 +116,10 @@ public class CodeElementFinder {
 	 * Process the next step in the search process
 	 */
 	private void nextStep() {
-		getSearchStatus();
+		if (codeElementSearchRequestor != null) {
+			found = codeElementSearchRequestor.getSearchResult();
+			foundMatch = codeElementSearchRequestor.getSearchMatch();
+		}
 		if (found) {
 			foundCodeElement();
 		} else {
@@ -143,9 +144,10 @@ public class CodeElementFinder {
 					found = true;
 					foundMatch = match;
 					nextStep();
+					return;
 				}
 			}
-			searchItem();
+			searchForNextItem();
 		}
 	}
 
@@ -167,22 +169,10 @@ public class CodeElementFinder {
 	}
 
 	/**
-	 * Catch information about the last search step from the SearchRequestor
-	 */
-	private void getSearchStatus() {
-		if (codeElementSearchRequestor != null) {
-			found = codeElementSearchRequestor.getSearchResult();
-			foundMatch = codeElementSearchRequestor.getSearchMatch();
-		}
-	}
-
-	/**
-	 * Start searching
+	 * Start searching for the currentSearchItem
 	 * 
-	 * @param codeElement
-	 *            ICodeElement searched for
 	 */
-	private void searchItem() {
+	private void searchForNextItem() {
 
 		codeElementSearchRequestor = new CodeElementSearchRequestor(
 				currentSearchItem, new IAction() {
@@ -206,7 +196,7 @@ public class CodeElementFinder {
 					.createWorkspaceScope();
 			searchEngine.search(searchPattern,
 					new SearchParticipant[] { SearchEngine
-							.getDefaultSearchParticipant() }, javaSearchScope,
+					.getDefaultSearchParticipant() }, javaSearchScope,
 					codeElementSearchRequestor, null);
 		} catch (CoreException e) {
 			processException(e);

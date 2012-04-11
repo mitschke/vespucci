@@ -44,7 +44,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 /**
  * Preferencepage for saveActions width a dynamic createField editors based on registered PlugIns
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class SaveActions extends FieldEditorPreferencePage implements

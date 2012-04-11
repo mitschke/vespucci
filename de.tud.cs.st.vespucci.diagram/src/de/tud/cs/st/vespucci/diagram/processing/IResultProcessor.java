@@ -37,7 +37,7 @@ import org.eclipse.core.resources.IFile;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public interface IResultProcessor {
@@ -55,7 +55,7 @@ public interface IResultProcessor {
 	void processResult(Object result, IFile diagramFile);
 	
 	/**
-	 * Checks if the ResultProcessor is interested in a result of the given typ
+	 * Checks if the ResultProcessor is interested in a result of the given type
 	 * 
 	 * @param resultClass
 	 * @return weather the ResultProcessor is interested or not

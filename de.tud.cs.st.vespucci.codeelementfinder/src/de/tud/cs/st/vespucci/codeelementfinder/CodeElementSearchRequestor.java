@@ -18,7 +18,8 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 /**
  * SearchRequestor for searching ICodeElements
  * 
- * @author 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class CodeElementSearchRequestor extends SearchRequestor {
 
@@ -55,7 +56,6 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	/**
 	 * Return weather the search process was successful
 	 * Should be called only after the search process finished.
-	 * Best use in the IAction which was gave the constructor of CodeElementSearchRequester
 	 * 
 	 * @return true if the search was successful otherwise false
 	 */
@@ -66,7 +66,6 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	/**
 	 * Return the found match if the search process was successful
 	 * Should be called only after the search process finished.
-	 * Best use in the IAction which was gave the constructor of CodeElementSearchRequester
 	 * 
 	 * @return The found match or null if no match was found
 	 */
@@ -120,7 +119,7 @@ public class CodeElementSearchRequestor extends SearchRequestor {
 	 * @param classDeclaration IClassDeclaration looking for
 	 */
 	private void checkReturnedMatch(IType type, IStatement sourceElement) {
-		// In case of searching for an IStatement there is no possibility to checker
+		// In case of searching for an IStatement there is no possibility to checked
 		// if the found match is the correct. A found match is always process as a correct match
 		foundMatch = type;
 		found = true;

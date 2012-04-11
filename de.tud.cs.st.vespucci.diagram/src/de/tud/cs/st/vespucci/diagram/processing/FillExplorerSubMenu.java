@@ -62,7 +62,7 @@ import de.tud.cs.st.vespucci.utilities.Util;
  * depending on which processor Extensions are registered.
  * See ExtensionPoint de.tud.cs.st.vespucci.diagram.modelProcessors
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class FillExplorerSubMenu extends ContributionItem {

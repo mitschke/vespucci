@@ -50,7 +50,8 @@ import de.tud.cs.st.vespucci.view.model.Pair;
 /**
  * TableLabelProvider for the EnsembleElements table
  * 
- * @author 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 class EnsembleElementsTableLabelProvider extends LabelProvider implements ITableLabelProvider {
 	public String getColumnText(Object obj, int index) {

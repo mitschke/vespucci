@@ -46,7 +46,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer {
 	
 	/**
-	 * @author Patrick Gottschämmer
+	 * @author Patrick Gottschaemmer
 	 * @author Olav Lenz
 	 */
 	public void initializeDefaultPreferences() {

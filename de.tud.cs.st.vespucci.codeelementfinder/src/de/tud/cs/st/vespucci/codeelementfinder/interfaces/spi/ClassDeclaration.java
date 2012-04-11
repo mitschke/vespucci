@@ -38,7 +38,9 @@ import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 /**
  * Concrete implementation of IClassDeclaration
  * 
- * @author
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
  */
 public class ClassDeclaration extends CodeElement implements IClassDeclaration {
 

@@ -43,13 +43,21 @@ import de.tud.cs.st.vespucci.interfaces.IDataViewObserver;
 /**
  * An abstract, generic implementation of IDataViewObserver
  * 
- * @author 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public abstract class DataViewObserver<A> implements IDataViewObserver<A>{
 
 	private IProject project;
 	
-	public void add(IDataView<A> dataView, IProject project) {
+	/**
+	 * 
+	 * Clients are expected to call this only once for initialization
+	 * 
+	 * @param dataView
+	 * @param project
+	 */
+	public void setView(IDataView<A> dataView, IProject project) {
 		this.project = project;
 		dataView.register(this);
 		for (Iterator<A> dataViewIterator = dataView.iterator(); dataViewIterator.hasNext();) {

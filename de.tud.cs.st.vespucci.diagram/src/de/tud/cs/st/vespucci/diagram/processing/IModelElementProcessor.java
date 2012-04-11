@@ -37,7 +37,7 @@ package de.tud.cs.st.vespucci.diagram.processing;
  * An interface for declaring a model element process method on a diagramElement. 
  * See ExtensionPoint de.tud.cs.st.vespucci.diagram.modelElementProcessors
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public interface IModelElementProcessor {

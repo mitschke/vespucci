@@ -45,11 +45,11 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -65,24 +65,23 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.tud.cs.st.vespucci.codeelementfinder.CodeElementFinder;
 import de.tud.cs.st.vespucci.codeelementfinder.ICodeElementFoundProcessor;
-import de.tud.cs.st.vespucci.interfaces.IClassDeclaration;
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IDataView;
-import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
-import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.view.ensemble_elements.EnsembleElementsVisualizer;
 import de.tud.cs.st.vespucci.view.model.Pair;
-import de.tud.cs.st.vespucci.view.table.ColumnComparator;
+import de.tud.cs.st.vespucci.view.table.IColumnComparator;
 import de.tud.cs.st.vespucci.view.table.DataViewContentProvider;
+import de.tud.cs.st.vespucci.view.table.Filter;
 import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
 
 /**
  * View which visualize the information of an IEnsembleElementsView in a table
  * with filter and sort functionalities
  * 
- * @author 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
  */
 public class EnsembleElementsTableView extends ViewPart {
 
@@ -94,6 +93,7 @@ public class EnsembleElementsTableView extends ViewPart {
 	public static final int COLOUMN_ELEMENT = 3;
 
 	private TableViewer tableViewer;
+	private ScrolledComposite scrolledComposite;
 
 	private Text searchFieldEnsemble;
 	private Text searchFieldPackage;
@@ -107,19 +107,26 @@ public class EnsembleElementsTableView extends ViewPart {
 	}
 
 	public void createPartControl(Composite parent) {
-		GridLayout layout = new GridLayout(1, true);
-		parent.setLayout(layout);
+		parent.setLayout(new FillLayout());
 
-		addSearchFields(parent);
-		addTable(parent);
+		scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+
+		Composite composite = new Composite(scrolledComposite, SWT.NONE);
+		composite.setLayout(new GridLayout(1, true));
+
+		scrolledComposite.setContent(composite);
+		scrolledComposite.setExpandHorizontal(true);
+		scrolledComposite.setExpandVertical(true);
+
+		addSearchFields(composite);
+		addTable(composite);
 		addSearchFieldListener();
 		resizeSearchFields(parent);
-
 		addActions();
 	}
 
 	private void addTable(final Composite parent) {
-		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.V_SCROLL | SWT.FULL_SELECTION);
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -154,7 +161,7 @@ public class EnsembleElementsTableView extends ViewPart {
 		tableColumn.getColumn().setText("Element");
 		tableColumn.getColumn().setWidth(200);
 
-		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new ColumnComparator() {
+		TableColumnSorterListener.addColumnSortFunctionality(tableViewer, new IColumnComparator() {
 
 			@Override
 			public int compare(Object e1, Object e2, int column) {
@@ -254,6 +261,9 @@ public class EnsembleElementsTableView extends ViewPart {
 		searchFieldClass.setLayoutData(new RowData(columns[2].getWidth()-12, SWT.DEFAULT));
 		searchFieldElement.setLayoutData(new RowData(columns[3].getWidth()-12, SWT.DEFAULT));
 
+		int scrollCompositeWidth = columns[0].getWidth() + columns[1].getWidth() + columns[2].getWidth() + columns[3].getWidth() + 30;
+		scrolledComposite.setMinSize(scrollCompositeWidth, 300);
+
 		parent.layout();
 	}
 
@@ -263,42 +273,6 @@ public class EnsembleElementsTableView extends ViewPart {
 	public void setFocus() {
 		tableViewer.getControl().setFocus();
 	}
-
-	private final ViewerFilter classDeclarationFilter = new ViewerFilter() {
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IClassDeclaration);
-		}
-	};
-
-	private final ViewerFilter methodDeclarationFilter = new ViewerFilter() {
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IMethodDeclaration);
-		}
-	};
-
-	private final ViewerFilter fieldDeclarationFilter = new ViewerFilter() {
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public boolean select(Viewer viewer, Object parentElement,
-				Object element) {
-			if (element == null)
-				return false;
-			return !(((IPair<IEnsemble, ICodeElement>) element).getSecond() instanceof IFieldDeclaration);
-		}
-	};
 
 	private void addActions() {
 		IActionBars actionBars = getViewSite().getActionBars();
@@ -314,9 +288,9 @@ public class EnsembleElementsTableView extends ViewPart {
 			@Override
 			public void run() {
 				if (!isChecked()){
-					tableViewer.addFilter(classDeclarationFilter);
+					tableViewer.addFilter(Filter.classDeclarationFilter);
 				}else{
-					tableViewer.removeFilter(classDeclarationFilter);
+					tableViewer.removeFilter(Filter.classDeclarationFilter);
 				}
 			}
 
@@ -334,9 +308,9 @@ public class EnsembleElementsTableView extends ViewPart {
 			@Override
 			public void run() {
 				if (!isChecked()){
-					tableViewer.addFilter(methodDeclarationFilter);
+					tableViewer.addFilter(Filter.methodDeclarationFilter);
 				}else{
-					tableViewer.removeFilter(methodDeclarationFilter);
+					tableViewer.removeFilter(Filter.methodDeclarationFilter);
 				}
 			}
 
@@ -354,9 +328,9 @@ public class EnsembleElementsTableView extends ViewPart {
 			@Override
 			public void run() {
 				if (!isChecked()){
-					tableViewer.addFilter(fieldDeclarationFilter);
+					tableViewer.addFilter(Filter.fieldDeclarationFilter);
 				}else{
-					tableViewer.removeFilter(fieldDeclarationFilter);
+					tableViewer.removeFilter(Filter.fieldDeclarationFilter);
 				}
 			}
 

@@ -31,38 +31,26 @@
  *   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *   POSSIBILITY OF SUCH DAMAGE.
  */
-package de.tud.cs.st.vespucci.information.interfaces.spi;
+package de.tud.cs.st.vespucci.view.table;
 
-import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
+/**
+ * Comparator which result can be depending on the given column.
+ * Can be used to compare elements in tables depending on an column
+ * 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
+ */
+public interface IColumnComparator {
 
-public class MethodDeclaration extends CodeElement implements IMethodDeclaration  {
-	
-	private String methodName;
-	private String returnType;
-	private String[] paramTypes;
-
-	public MethodDeclaration(String packageIdentifier, String simpleClassName, String methodName, String returnType, String[] paramTypes){
-		
-		super(packageIdentifier, simpleClassName);
-		
-		this.methodName = methodName;
-		this.returnType = returnType;
-		this.paramTypes = paramTypes;
-	}
-
-	@Override
-	public String getMethodName() {
-		return this.methodName;
-	}
-
-	@Override
-	public String getReturnTypeQualifier() {
-		return this.returnType;
-	}
-	
-	@Override
-	public String[] getParameterTypeQualifiers() {
-		return this.paramTypes;
-	}
+	/**
+	 * Compare two elements depending of given column number
+	 * 
+     * @param e1 the first element
+     * @param e2 the second element
+     * @param column the column the elements should be compare for
+     * @return a negative number if (e1 < e2); the value <code>0</code> if (e1 = e2);
+     *  and a positive number if (e1 > e2)
+	 */
+	public int compare(Object e1, Object e2, int column);
 
 }

@@ -41,7 +41,7 @@ import de.tud.cs.st.vespucci.vespucci_model.Shape;
 
 /**
  * 
- * @author Patrick Gottschämmer
+ * @author Patrick Gottschaemmer
  * @author Olav Lenz
  */
 public class Constraint implements IConstraint {
