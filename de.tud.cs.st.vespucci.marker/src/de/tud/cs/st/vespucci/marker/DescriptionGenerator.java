@@ -102,7 +102,7 @@ public class DescriptionGenerator {
 
 	}
 
-	public static String getDescription(IViolationSummary violationSummmary){
+	public String getDescription(IViolationSummary violationSummmary){
 		
 		StringBuffer sb = new StringBuffer();
 		

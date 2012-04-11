@@ -52,13 +52,15 @@ import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 public class ViolationSummaryManager extends DataViewObserver<IViolationSummary>{
 
 	private Map<IViolationSummary, IMarker> marks;
+	private DescriptionGenerator descGen;
 
 	public ViolationSummaryManager(){
 		marks = new HashMap<IViolationSummary, IMarker>();
+		descGen = DescriptionGenerator.getInstance();
 	}
 
 	private String createViolationSummaryDescription(IViolationSummary element) {
-		return DescriptionGenerator.getDescription(element);
+		return descGen.getDescription(element);
 	}
 
 	@Override
