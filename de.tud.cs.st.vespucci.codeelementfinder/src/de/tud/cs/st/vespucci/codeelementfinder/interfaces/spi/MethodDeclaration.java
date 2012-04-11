@@ -40,7 +40,9 @@ import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 /**
  * Concrete implementation of IMethodDelcaration
  * 
- * @author
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
  */
 public class MethodDeclaration extends CodeElement implements
 		IMethodDeclaration {

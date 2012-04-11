@@ -38,7 +38,9 @@ import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 /**
  * Concrete implementation of ICodeElement
  * 
- * @author
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
  */
 public abstract class CodeElement implements ICodeElement {
 

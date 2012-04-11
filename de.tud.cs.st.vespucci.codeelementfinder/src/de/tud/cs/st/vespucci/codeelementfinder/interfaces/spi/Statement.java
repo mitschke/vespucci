@@ -38,7 +38,9 @@ import de.tud.cs.st.vespucci.interfaces.IStatement;
 /**
  * Concrete implementation of IStatement
  * 
- * @author 
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
  */
 public class Statement extends CodeElement implements IStatement {
 

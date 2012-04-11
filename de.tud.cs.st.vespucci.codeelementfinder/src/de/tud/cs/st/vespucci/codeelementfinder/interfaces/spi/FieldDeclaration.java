@@ -38,7 +38,9 @@ import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 /**
  * Concrete implementation of IFieldDeclaration
  * 
- * @author
+ * @author Olav Lenz
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
  */
 public class FieldDeclaration extends CodeElement implements IFieldDeclaration {
 
