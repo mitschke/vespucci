@@ -36,7 +36,9 @@ package de.tud.cs.st.vespucci.interfaces;
 /**
  * Representation of a statement
  * 
- * @author 
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
+ * @author Olav Lenz
  */
 public interface IStatement extends ICodeElement {
 

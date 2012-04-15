@@ -36,7 +36,9 @@ package de.tud.cs.st.vespucci.interfaces;
 /**
  * Representation of a field
  * 
- * @author 
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
+ * @author Olav Lenz 
  */
 public interface IFieldDeclaration extends ICodeElement {
 

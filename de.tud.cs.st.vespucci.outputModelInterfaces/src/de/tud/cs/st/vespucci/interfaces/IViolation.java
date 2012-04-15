@@ -40,7 +40,9 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
  * Stands for an violation of the regulations make in the diagram file.
  * Provide information about the violation.
  * 
- * @author 
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
+ * @author Olav Lenz
  */
 public interface IViolation {
 
