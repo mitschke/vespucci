@@ -202,7 +202,7 @@ public class Util {
 
 		String className = codeElement.getSimpleClassName();
 		String[] results = null;
-		String[] t = className.replace("$", ":").split(":");
+		String[] t = className.split("[$]");
 		for (int i = countDollars(className); i >= 0; i--) {
 			String res = t[0];
 			for (int j = 1; j <= i; j++) {
@@ -233,7 +233,7 @@ public class Util {
 		// length)
 		String className = codeElement.getSimpleClassName();
 		String[] results = null;
-		String[] t = className.replace("$", ":").split(":");
+		String[] t = className.split("[$]");
 		for (int i = countDollars(className); i >= 0; i--) {
 			String res = t[0];
 			for (int j = 1; j <= i; j++) {
@@ -349,7 +349,7 @@ public class Util {
 		for (int i = 0; i < results.length; i++) {
 			int[] line = temp[i];
 			String result = "";
-			String[] t = className.replace("$", ":").split(":");
+			String[] t = className.split("[$]");
 			for (int j = 0; j < line.length; j++) {
 				result += t[j];
 				if (line[j] == 0) {
