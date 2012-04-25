@@ -33,6 +33,8 @@
  */
 package de.tud.cs.st.vespucci.marker;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IFile;
@@ -56,6 +58,8 @@ public class Marker implements IResultProcessor {
 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.marker";
 
+	private static Set<IFile> checkedDiagrams= new HashSet<IFile>();
+	
 	protected static void processException(Exception e) {
 		final IStatus is = new Status(IStatus.ERROR, Marker.PLUGIN_ID,
 				e.getMessage(), e);
@@ -72,14 +76,18 @@ public class Marker implements IResultProcessor {
 
 	@Override
 	public void processResult(Object result, IFile file) {
+		System.out.println("Marker");
+		
 		IViolationView violationView = Util.adapt(result, IViolationView.class);
 		IProject project = file.getProject();
 
 		long start = System.nanoTime();
 		if (violationView != null) {
-			violationManager.setView(violationView, project);
-			violationSummaryManager
-					.setView(violationView.getSummaryView(), project);
+			if (!checkedDiagrams.contains(file)){
+				violationManager.setView(violationView, project);
+				violationSummaryManager
+						.setView(violationView.getSummaryView(), project);
+			}
 		}
 		long taken = System.nanoTime() - start;
 		System.out
@@ -92,6 +100,10 @@ public class Marker implements IResultProcessor {
 	@Override
 	public boolean isInterested(Class<?> resultClass) {
 		return IViolationView.class.equals(resultClass);
+	}
+
+	public static void setCurrentCheckedDiagrams(Set<IFile> checkedDiagrams) {
+		Marker.checkedDiagrams = checkedDiagrams;
 	}
 
 }

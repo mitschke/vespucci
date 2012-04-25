@@ -33,8 +33,15 @@
  */
 package de.tud.cs.st.vespucci.view.checked_diagrams;
 
+import java.util.LinkedList;
+import java.util.Set;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PartInitException;
@@ -57,6 +64,9 @@ import de.tud.cs.st.vespucci.view.model.Pair;
 public class CheckedDiagramsVisualizer implements IResultProcessor {
 
 	private static final String PLUGIN_ID = "de.tud.cs.st.vespucci.view.checked_diagrams";
+	
+	private static final String EXTENSIONPOINT_OBSERVERATTRIBUTE_NAME = "CheckedDiagrams";
+	private static final String EXTENSIONPOINT_ID = "de.tud.cs.st.vespucci.view.checked_diagrams.checkedDiagramsObserver";
 
 	protected static void processException(Exception e){
 		final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e);
@@ -67,15 +77,29 @@ public class CheckedDiagramsVisualizer implements IResultProcessor {
 
 	@Override
 	public void processResult(Object result, IFile diagramFile) {
-		
+		System.out.println("processResult");
 		IViolationView violationView = Util.adapt(result, IViolationView.class);
 		
 		if (violationView != null){
 			openView();
 			if (view != null){
-				IPair<IViolationView, IFile> element = new Pair<IViolationView, IFile>(violationView, diagramFile);
-				view.addEntry(element);
+				Set<IFile> fetchCheckedDiagrams = view.fetchCheckedDiagrams();
+				
+				if (!fetchCheckedDiagrams.contains(diagramFile)){
+					IPair<IViolationView, IFile> element = new Pair<IViolationView, IFile>(violationView, diagramFile);
+					view.addEntry(element);
+				}
+	
+				updateCheckedDiagrams();
+				
+
 			}
+		}
+	}
+
+	public void updateCheckedDiagrams() {
+		for (ICheckedDiagramsObserver checkedDiagramsObserver : getCheckedDiagramsObservers()) {
+			checkedDiagramsObserver.updateCheckedDiagrams(view.fetchCheckedDiagrams());	
 		}
 	}
 
@@ -91,6 +115,7 @@ public class CheckedDiagramsVisualizer implements IResultProcessor {
 						.getWorkbench().getActiveWorkbenchWindow()
 						.getActivePage().showView(PLUGIN_ID);
 			}
+			view.setVisualizer(this);
 		} catch (PartInitException e) {
 			processException(e);
 		}
@@ -99,6 +124,38 @@ public class CheckedDiagramsVisualizer implements IResultProcessor {
 	@Override
 	public boolean isInterested(Class<?> resultClass) {
 		return IViolationView.class.equals(resultClass);
+	}
+	
+	/**
+	 * Return all available ICheckedDiagramsObservers
+	 * 
+	 * @return List of ProcessorItems containing IModelProcessor and corresponding label
+	 */
+	private LinkedList<ICheckedDiagramsObserver> getCheckedDiagramsObservers() {
+		
+		LinkedList<ICheckedDiagramsObserver> converterItems = new LinkedList<ICheckedDiagramsObserver>();
+		
+		IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+		
+		IConfigurationElement[] configurationElement = extensionRegistry
+				.getConfigurationElementsFor(EXTENSIONPOINT_ID);
+		try {
+			for (IConfigurationElement i : configurationElement) {
+
+				// Get all Observers
+				final Object o = i.createExecutableExtension(EXTENSIONPOINT_OBSERVERATTRIBUTE_NAME);
+
+				if (o instanceof ICheckedDiagramsObserver) {
+					converterItems.add((ICheckedDiagramsObserver)  o);
+				}
+			}
+
+		} catch (CoreException ex) {
+			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID, ex.getMessage(), ex);
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+		}
+
+		return converterItems;
 	}
 
 }
