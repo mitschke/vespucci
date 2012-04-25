@@ -35,8 +35,6 @@ package de.tud.cs.st.vespucci.marker;
 
 import java.util.HashMap;
 
-import org.eclipse.jdt.core.IField;
-
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
@@ -171,7 +169,7 @@ public class DescriptionGenerator {
 				
 				sb.append(sourceToTargetEnsemble(violation));
 				sb.append(methodInClass(violation));
-				sb.append(" calls a constructor on ");
+				sb.append(" calls a constructor of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -188,7 +186,7 @@ public class DescriptionGenerator {
 				sb.append(methodInClass(violation));
 				sb.append(" calls method ");
 				sb.append(getMethodName(violation.getTargetElement()));
-				sb.append(" on ");
+				sb.append(" of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -205,7 +203,7 @@ public class DescriptionGenerator {
 				sb.append(methodInClass(violation));
 				sb.append(" calls method ");
 				sb.append(getMethodName(violation.getTargetElement()));
-				sb.append(" on ");
+				sb.append(" of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -222,7 +220,7 @@ public class DescriptionGenerator {
 				sb.append(methodInClass(violation));
 				sb.append(" calls static method ");
 				sb.append(getMethodName(violation.getTargetElement()));
-				sb.append(" on ");
+				sb.append(" of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -375,7 +373,7 @@ public class DescriptionGenerator {
 	
 	/**
 	 * 
-	 * @param violation The violation with sourceelement
+	 * @param violation The violation with sourceElement (ICodeElement)
 	 * @return Example: <br>
 	 * 				<div style="text-indent:30px;">Method foo in ClassA</div>
 	 */
@@ -385,7 +383,7 @@ public class DescriptionGenerator {
 		
 		sb.append("Method ");
 		sb.append(getMethodName(violation.getSourceElement()));
-		sb.append(" in ");
+		sb.append(" of ");
 		sb.append(violation.getSourceElement().getSimpleClassName());
 		
 		return sb.toString();
@@ -393,7 +391,7 @@ public class DescriptionGenerator {
 
 	
 	/**
-	 * Returns the fieldname of the given codeelement, 
+	 * Returns the name of the field by the given codeElement, 
 	 * if codeElement is an instance of IFieldDeclaration.
 	 * Returns null otherwise.
 	 * 
@@ -415,12 +413,12 @@ public class DescriptionGenerator {
 	}
 
 	/**
-	 * Returns the methodname of the given codeelement, 
+	 * Returns the methodName of the given codeElement, 
 	 * if codeElement is an instance of IMethodDeclaration.
 	 * Returns null otherwise.
 	 * 
 	 * @param codeElement Codelement which should be an instance of IMethodDeclaration
-	 * @return The methodname of the given codeelement 
+	 * @return The methodName of the given codeElement 
 	 * 
 	 */
 	private String getMethodName(ICodeElement codeElement) {
