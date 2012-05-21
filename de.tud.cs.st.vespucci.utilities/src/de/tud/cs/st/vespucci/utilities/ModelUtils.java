@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IConstraint;
+import de.tud.cs.st.vespucci.model.IDocumentedViolation;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 import de.tud.cs.st.vespucci.model.IExpected;
 import de.tud.cs.st.vespucci.model.IGlobalIncoming;
@@ -48,6 +49,8 @@ public class ModelUtils {
 			return "expected";
 		if (constraint instanceof INotAllowed)
 			return "not allowed";
+		if (constraint instanceof IDocumentedViolation)
+			return "documented violation";
 		return "unknown";
 	}
 

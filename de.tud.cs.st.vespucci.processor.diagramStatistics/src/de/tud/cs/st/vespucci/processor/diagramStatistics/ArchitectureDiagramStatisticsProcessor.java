@@ -35,11 +35,11 @@ import de.tud.cs.st.vespucci.utilities.Util;
 
 public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 
-	private static String constraintHeader = "FromFull;From;ToFull;To;Type;Kinds;Diagram";
+	private static String constraintHeader = "FromFull;From;ToFull;To;Type;Kinds;Diagram;FromOuter;ToOuter;FromIsTop;ToIsTop";
 
-	private static String ensembleHeader = "Diagram;Name;FullName;Parent;isTopLevel;numberOfChildren;incoming;outgoing;global incoming;global outgoing;not allowed;total;isSourceOrTarget";
+	private static String ensembleHeader = "Diagram;Name;FullName;Parent;isTopLevel;numberOfChildren;incoming;outgoing;global incoming;global outgoing;not allowed;documented violation;total;isSourceOrTarget";
 
-	private static String ensembleElementsHeader = "FullName;Element";
+	private static String ensembleElementsHeader = "FullName;TopLevelEnsemble;Element";
 
 	private static String dependenciesHeader = "Source;Target;Kind";
 
@@ -57,10 +57,11 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 		printConstraintSubsumtions(model, diagramFile);
 
 		printEnsembleStatistics(model, diagramFile);
-		
+
 		printEnsemblesPerDiagrams(model, diagramFile);
 		printEnsembleElements(diagramFile);
 		// printDependencies(diagramFile);
+		printEnsembleOverview(model, diagramFile);
 		return null;
 	}
 
@@ -182,7 +183,7 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 			}
 
 			for (IEnsemble target : targets.keySet()) {
-				if( targets.get(target) == 1)
+				if (targets.get(target) == 1)
 					continue;
 				subsumptionsAggregatedWriter.print(ModelUtils
 						.getFullEnsembleName(constraintRelation.getFirst()));
@@ -203,7 +204,7 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 			}
 
 			for (IEnsemble source : sources.keySet()) {
-				if( sources.get(source) == 1)
+				if (sources.get(source) == 1)
 					continue;
 				subsumptionsAggregatedWriter.print(ModelUtils
 						.getFullEnsembleName(constraintRelation.getFirst()));
@@ -349,6 +350,10 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 		for (Tuple2<IEnsemble, SourceElement<Object>> entry : list) {
 			writer.print(ModelUtils.getFullEnsembleName(entry._1));
 			writer.print(";");
+			writer.print(ModelUtils.getFullEnsembleName(ModelUtils.getOuterMostEnclosingEnsemble(entry._1)));
+			writer.print(";");
+			writer.print(entry._2.getClass().getName());
+			writer.print(";");
 			writer.print("\"" + entry._2.toString() + "\"");
 			writer.println();
 		}
@@ -379,23 +384,47 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 			writer.println(constraintHeader);
 		Set<IConstraint> constraints = model.getConstraints();
 		for (IConstraint constraint : constraints) {
-			writer.println(ModelUtils.getFullEnsembleName(constraint
-					.getSource())
-					+ ";"
-					+ constraint.getSource().getName()
-					+ ";"
-					+ ModelUtils.getFullEnsembleName(constraint.getTarget())
-					+ ";"
-					+ constraint.getTarget().getName()
-					+ ";"
-					+ ModelUtils.getConstraintType(constraint)
-					+ ";"
-					+ constraint.getDependencyKind()
-					+ ";"
-					+ diagramFile.getFullPath().toPortableString());
+			
+			if(ModelUtils.getConstraintType(constraint).equals("in/out"))
+			{
+				String line = getConstraintStatisticLine(diagramFile, constraint);
+				String incoming = line.replace("in/out", "incoming");
+				String outgoing = line.replace("in/out", "outgoing");
+				writer.println(incoming);
+				writer.println(outgoing);
+			}
+			else
+			{
+				writer.println(getConstraintStatisticLine(diagramFile, constraint));
+			}
 		}
 
 		writer.close();
+	}
+
+	private String getConstraintStatisticLine(IFile diagramFile,IConstraint constraint) {
+		return ModelUtils.getFullEnsembleName(constraint
+				.getSource())
+				+ ";"
+				+ constraint.getSource().getName()
+				+ ";"
+				+ ModelUtils.getFullEnsembleName(constraint.getTarget())
+				+ ";"
+				+ constraint.getTarget().getName()
+				+ ";"
+				+ ModelUtils.getConstraintType(constraint)
+				+ ";"
+				+ constraint.getDependencyKind()
+				+ ";"
+				+ diagramFile.getFullPath().lastSegment()
+				+ ";"
+				+ ModelUtils.getOuterMostEnclosingEnsemble(constraint.getSource()).getName()
+				+ ";"
+				+ ModelUtils.getOuterMostEnclosingEnsemble(constraint.getTarget()).getName()
+				+ ";"
+				+ (constraint.getSource().getParent() == null ? "1" : "0")
+				+ ";"
+				+ (constraint.getTarget().getParent() == null ? "1" : "0");
 	}
 
 	private void printEnsemblesPerDiagrams(IArchitectureModel model,
@@ -434,6 +463,41 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 		writer.close();
 	}
 
+	
+	private void printEnsembleOverview(IArchitectureModel model,
+			IFile diagramFile) {
+		IPath path = diagramFile.getLocation()
+				.removeLastSegments(1).append("ensemble-overview")
+				.addFileExtension("csv");
+
+		PrintWriter writer = openOrCreateFile(path, "Diagram;Name;FullName;Has Parent;Parent;TopParent;Num.Children");
+
+		Set<IEnsemble> topLevelEnsembles = model.getEnsembles();
+
+		Set<IEnsemble> ensembles = new HashSet<IEnsemble>();
+
+		for (IEnsemble ensemble : topLevelEnsembles) {
+			ensembles.add(ensemble);
+			ensembles.addAll(allChildren(ensemble));
+		}
+
+		for (IEnsemble ensemble : ensembles) {
+
+			writer.print(diagramFile.getProjectRelativePath().lastSegment() + ";");
+			writer.print(ensemble.getName() + ";");
+			writer.print(ModelUtils.getFullEnsembleName(ensemble) + ";");
+			writer.print((ensemble.getParent() != null ? "1" : "0") + ";");
+			writer.print((ensemble.getParent() != null ? ModelUtils
+					.getFullEnsembleName(ensemble.getParent()) : "") + ";");
+			writer.print(ModelUtils.getFullEnsembleName(ModelUtils.getOuterMostEnclosingEnsemble(ensemble)) + ";");
+			writer.print(allChildren(ensemble).size() + ";");
+
+			writer.println();
+		}
+
+		writer.close();
+	}
+	
 	private void printEnsembleStatistics(IArchitectureModel model,
 			IFile diagramFile) {
 		IPath constraintStatisticsPath = diagramFile.getLocation()
@@ -483,6 +547,7 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 			writer.print(constraintsByType.get("global incoming").size() + ";");
 			writer.print(constraintsByType.get("global outgoing").size() + ";");
 			writer.print(constraintsByType.get("not allowed").size() + ";");
+			writer.print(constraintsByType.get("documented violation").size() + ";");
 			writer.print(constraints.size() + ";");
 			writer.print((isSourceOrTarget(ensemble, model.getConstraints()) ? "1"
 					: "0"));
@@ -510,6 +575,7 @@ public class ArchitectureDiagramStatisticsProcessor implements IModelProcessor {
 		result.put("global incoming", new LinkedList<IConstraint>());
 		result.put("global outgoing", new LinkedList<IConstraint>());
 		result.put("not allowed", new LinkedList<IConstraint>());
+		result.put("documented violation", new LinkedList<IConstraint>());
 		for (IConstraint constraint : constraints) {
 			String type = ModelUtils.getConstraintType(constraint);
 			if (type.equals("in/out")) {

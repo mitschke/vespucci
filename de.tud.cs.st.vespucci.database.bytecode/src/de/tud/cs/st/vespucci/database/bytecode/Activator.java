@@ -1,17 +1,6 @@
 package de.tud.cs.st.vespucci.database.bytecode;
 
-import java.io.InputStream;
-
-import org.eclipse.core.filebuffers.FileBuffers;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 
 import de.tud.cs.st.vespucci.database.bytecode.provider.BytecodeDatabaseProvider;

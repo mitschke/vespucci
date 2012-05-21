@@ -34,6 +34,7 @@
 package de.tud.cs.st.vespucci.utilities;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,7 +42,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterManager;
@@ -50,6 +50,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -59,6 +60,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * 
  * @author Patrick Gottschaemmer
  * @author Olav Lenz
+ * @author Ralf Mitschke
  */
 public class Util {
 
@@ -154,41 +156,6 @@ public class Util {
 		return ifiles;
 	}
 
-	/**
-	 * Returns a list of Files with .jar libraries of a passed IProject.
-	 * 
-	 * @param project
-	 *            The IProject to search for Files
-	 * @return List of Files
-	 */
-	public static List<File> getLinkedLiberiesFiles(IProject project) {
-		LinkedList<File> elements = new LinkedList<File>();
-
-		IJavaProject javaProject = JavaCore.create(project);
-		try {
-			for (IClasspathEntry classpathentry : javaProject
-					.getResolvedClasspath(false)) {
-				if (classpathentry.getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
-					IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(classpathentry.getPath());
-					if(member != null)
-					{
-						// resource in workspace
-						elements.add(member.getLocation().toFile());
-					}
-					else{
-						// external resource
-						elements.add(classpathentry.getPath().toFile());
-					}
-				}
-			}
-		} catch (JavaModelException e) {
-			final IStatus is = new Status(IStatus.ERROR, PLUGIN_ID,
-					e.getMessage(), e);
-			StatusManager.getManager().handle(is, StatusManager.LOG);
-		}
-		return elements;
-	}
-
 	private static List<IFile> getFilesList(IProject project, String extension) {
 		List<IFile> ifiles = new LinkedList<IFile>();
 		try {
@@ -225,4 +192,74 @@ public class Util {
 		}
 	}
 
+	public static IClasspathEntry[] getProjectClasspathEntries(IProject project) {
+		IJavaProject javaProject = JavaCore.create(project);
+		IClasspathEntry[] rawClasspath;
+		try {
+			rawClasspath = javaProject.getRawClasspath();
+		} catch (JavaModelException e) {
+			IStatus is = new Status(IStatus.ERROR, PLUGIN_ID,
+					"Unable to read classpath for project: "
+							+ project.getName());
+			StatusManager.getManager().handle(is, StatusManager.LOG);
+			return new IClasspathEntry[0];
+		}
+		return rawClasspath;
+	}
+
+	public static boolean isJREContainer(IClasspathEntry entry) {
+		return entry.getPath().toString()
+				.startsWith("org.eclipse.jdt.launching.JRE_CONTAINER");
+	}
+	
+	public static interface ClasspathEntryFilter
+	{
+		boolean accept(IClasspathEntry entry);
+	}
+	public static IClasspathEntry[] filterClasspathEntries(IClasspathEntry[] entries, ClasspathEntryFilter filter)
+	{
+		List<IClasspathEntry> result = new ArrayList<IClasspathEntry>(entries.length);
+		for (IClasspathEntry entry : entries) {
+			if(filter.accept(entry))
+				result.add(entry);
+		}
+		return result.toArray(new IClasspathEntry[0]);
+	}
+	
+
+	public static List<File> getClasspathFiles(IProject project,
+			IClasspathEntry entry) {
+		IJavaProject javaProject = JavaCore.create(project);
+		IPackageFragmentRoot[] packageFragmentRoots = javaProject
+				.findPackageFragmentRoots(entry);
+
+		List<File> result = new ArrayList<File>(packageFragmentRoots.length);
+		for (IPackageFragmentRoot packageFragmentRoot : packageFragmentRoots) {
+
+			if (packageFragmentRoot.getResource() != null)
+			{
+				// the library stored as resource in the project
+				result.add(packageFragmentRoot.getResource().getLocation()
+						.toFile());
+			}
+			else
+			{
+				// the library stored externally
+				result.add(packageFragmentRoot.getPath().toFile());
+			}
+				
+		}
+
+		return result;
+	}
+	
+	public static List<File> getClasspathFiles(IProject project,
+			IClasspathEntry[] entries) {
+		List<File> result = new ArrayList<File>();
+		for (IClasspathEntry entry : entries) {
+			List<File> files = getClasspathFiles(project, entry);
+			result.addAll(files);
+		}
+		return result;
+	}
 }
