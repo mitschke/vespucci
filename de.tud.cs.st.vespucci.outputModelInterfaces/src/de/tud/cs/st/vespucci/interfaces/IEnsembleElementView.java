@@ -38,7 +38,7 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
 /**
  * Interface extends <code>IDataView&lt;T&gt;</code> use <code>IPair&lt;IEnsemble, ICodeElement&gt;</code> as T
  * 
- * @author 
+ * @author Ralf Mitschke
  */
 public interface IEnsembleElementView extends IDataView<IPair<IEnsemble, ICodeElement>>{
 

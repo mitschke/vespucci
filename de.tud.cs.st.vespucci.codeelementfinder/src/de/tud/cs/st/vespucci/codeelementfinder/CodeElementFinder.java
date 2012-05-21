@@ -119,6 +119,7 @@ public class CodeElementFinder {
 		if (codeElementSearchRequestor != null) {
 			found = codeElementSearchRequestor.getSearchResult();
 			foundMatch = codeElementSearchRequestor.getSearchMatch();
+			codeElementSearchRequestor = null;
 		}
 		if (found) {
 			foundCodeElement();

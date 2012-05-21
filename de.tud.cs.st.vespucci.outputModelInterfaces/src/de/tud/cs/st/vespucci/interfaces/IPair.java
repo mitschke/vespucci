@@ -33,6 +33,10 @@
  */
 package de.tud.cs.st.vespucci.interfaces;
 
+/**
+* @author Ralf Mitschke
+*/
+
 public interface IPair<U,V> {
 
 	U getFirst();

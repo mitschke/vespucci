@@ -50,5 +50,11 @@
             ResultProcessor="de.tud.cs.st.vespucci.marker.Marker">
       </resultProcessor>
    </extension>
+   <extension
+         point="de.tud.cs.st.vespucci.view.checked_diagrams.checkedDiagramsObserver">
+      <checkedDiagrams
+            CheckedDiagrams="de.tud.cs.st.vespucci.marker.CheckedDiagramObserver">
+      </checkedDiagrams>
+   </extension>
 
 </plugin>

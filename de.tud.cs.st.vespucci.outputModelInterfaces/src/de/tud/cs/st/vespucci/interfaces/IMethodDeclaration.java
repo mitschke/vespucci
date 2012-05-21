@@ -36,7 +36,9 @@ package de.tud.cs.st.vespucci.interfaces;
 /**
  * Representation of a method
  * 
- * @author 
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
+ * @author Olav Lenz
  */
 public interface IMethodDeclaration extends ICodeElement{
 

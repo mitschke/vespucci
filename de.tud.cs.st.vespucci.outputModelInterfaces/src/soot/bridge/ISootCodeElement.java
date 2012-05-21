@@ -2,6 +2,11 @@ package soot.bridge;
 
 import de.tud.cs.st.vespucci.interfaces.ICodeElement;
 
+/**
+ * 
+ * @author Ralf Mitschke
+ *
+ */
 public interface ISootCodeElement extends ICodeElement {
 
 	/**

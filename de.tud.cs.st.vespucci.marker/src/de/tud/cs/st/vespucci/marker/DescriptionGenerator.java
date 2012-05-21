@@ -35,6 +35,9 @@ package de.tud.cs.st.vespucci.marker;
 
 import java.util.HashMap;
 
+import de.tud.cs.st.vespucci.interfaces.ICodeElement;
+import de.tud.cs.st.vespucci.interfaces.IFieldDeclaration;
+import de.tud.cs.st.vespucci.interfaces.IMethodDeclaration;
 import de.tud.cs.st.vespucci.interfaces.IViolation;
 import de.tud.cs.st.vespucci.interfaces.IViolationSummary;
 import de.tud.cs.st.vespucci.model.IEnsemble;
@@ -81,28 +84,17 @@ public class DescriptionGenerator {
 		DescriptionBuilder descGen = this.descMap.get(violation
 				.getViolatingKind());
 		
-		//Check whether we recognized the ViolatingKind, deliver a generic DescriptionGenerator if not
+		// Check whether we recognized the ViolatingKind, deliver a generic DescriptionGenerator if not
 		if (descGen == null){
-			descGen = new DescriptionBuilder() {
-				
-				@Override
-				public String buildDescription(IViolation violation) {
-					
-					StringBuffer sb = new StringBuffer();
-					sb.append(prefix(violation));
-					sb.append("Unrecognized violation of kind '");
-					sb.append(violation.getViolatingKind());
-					sb.append("'");
-					return sb.toString();
-				}
-			};
+			descGen = genericDescription();
 		}
 		
 		return descGen.buildDescription(violation);
 
 	}
 
-	public static String getDescription(IViolationSummary violationSummmary){
+
+	public String getDescription(IViolationSummary violationSummmary){
 		
 		StringBuffer sb = new StringBuffer();
 		
@@ -143,7 +135,8 @@ public class DescriptionGenerator {
 			public String buildDescription(IViolation violation) {
 
 				StringBuffer sb = new StringBuffer();
-				sb.append(prefix(violation));
+				
+				sb.append(sourceToTargetEnsemble(violation));
 				sb.append(violation.getSourceElement().getSimpleClassName());
 				sb.append(" extends ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
@@ -157,7 +150,8 @@ public class DescriptionGenerator {
 			public String buildDescription(IViolation violation) {
 
 				StringBuffer sb = new StringBuffer();
-				sb.append(prefix(violation));
+				
+				sb.append(sourceToTargetEnsemble(violation));
 				sb.append(violation.getSourceElement().getSimpleClassName());
 				sb.append(" implements ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
@@ -173,10 +167,9 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 				
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
-				sb.append(" calls a constructor on ");
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
+				sb.append(" calls a constructor of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -189,10 +182,11 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
-				sb.append(" calls a method on ");
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
+				sb.append(" calls method ");
+				sb.append(getMethodName(violation.getTargetElement()));
+				sb.append(" of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -205,10 +199,11 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
-				sb.append(" calls a method on ");
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
+				sb.append(" calls method ");
+				sb.append(getMethodName(violation.getTargetElement()));
+				sb.append(" of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -221,10 +216,11 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
-				sb.append(" calls a static method on ");
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
+				sb.append(" calls static method ");
+				sb.append(getMethodName(violation.getTargetElement()));
+				sb.append(" of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -237,10 +233,11 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
-				sb.append(" assigns a new value to a field in ");
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
+				sb.append(" assigns a new value to field ");
+				sb.append(getFieldName(violation.getTargetElement()));
+				sb.append(" in ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 				
 				return sb.toString();
@@ -253,10 +250,11 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
-				sb.append(" reads the value of a field in ");
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
+				sb.append(" reads the value of field ");
+				sb.append(getFieldName(violation.getTargetElement()));
+				sb.append(" in ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 				
 				return sb.toString();
@@ -269,9 +267,8 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
 				sb.append(" declares a parameter of type ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
@@ -285,9 +282,8 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 				
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
 				sb.append(" has the return type of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
@@ -301,9 +297,8 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
 				sb.append(" casts an object to ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
@@ -317,9 +312,8 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A method in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
 				sb.append(" creates an instance of ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
@@ -333,8 +327,10 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("A field in ");
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append("Field ");
+				sb.append(getFieldName(violation.getSourceElement()));
+				sb.append(" in ");
 				sb.append(violation.getSourceElement().getSimpleClassName());
 				sb.append(" is declared as type ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
@@ -348,11 +344,10 @@ public class DescriptionGenerator {
 			public String buildDescription(IViolation violation) {
 
 				StringBuffer sb = new StringBuffer();
-
-				sb.append(prefix(violation));
-				sb.append("An exception in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
-				sb.append(" is thrown of type ");
+				
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
+				sb.append(" throws an exception of type ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
@@ -365,18 +360,104 @@ public class DescriptionGenerator {
 
 				StringBuffer sb = new StringBuffer();
 
-				sb.append(prefix(violation));
-				sb.append("An instanceof check in ");
-				sb.append(violation.getSourceElement().getSimpleClassName());
-				sb.append(" is performed on type: ");
+				
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append(methodInClass(violation));
+				sb.append(" performs an instanceof check on ");
 				sb.append(violation.getTargetElement().getSimpleClassName());
 
 				return sb.toString();
 			}
 		});
 	}
+	
+	/**
+	 * 
+	 * @param violation The violation with sourceElement (ICodeElement)
+	 * @return Example: <br>
+	 * 				<div style="text-indent:30px;">Method foo in ClassA</div>
+	 */
+	private String methodInClass(IViolation violation) {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Method ");
+		sb.append(getMethodName(violation.getSourceElement()));
+		sb.append(" of ");
+		sb.append(violation.getSourceElement().getSimpleClassName());
+		
+		return sb.toString();
+	}
 
-	private String prefix(IViolation violation){
+	
+	/**
+	 * Returns the name of the field by the given codeElement, 
+	 * if codeElement is an instance of IFieldDeclaration.
+	 * Returns null otherwise.
+	 * 
+	 * @param codeElement Codelement which should be an instance of IFieldDeclaration
+	 * @return The fieldname of the given codeelement 
+	 * 
+	 */
+	private String getFieldName(ICodeElement codeElement) {
+		
+		if (codeElement instanceof IFieldDeclaration){
+			StringBuilder sb = new StringBuilder();
+			sb.append("'");
+			sb.append(((IFieldDeclaration)codeElement).getFieldName());
+			sb.append("'");
+			return sb.toString();		
+		}
+		
+		return null;
+	}
+
+	/**
+	 * Returns the methodName of the given codeElement, 
+	 * if codeElement is an instance of IMethodDeclaration.
+	 * Returns null otherwise.
+	 * 
+	 * @param codeElement Codelement which should be an instance of IMethodDeclaration
+	 * @return The methodName of the given codeElement 
+	 * 
+	 */
+	private String getMethodName(ICodeElement codeElement) {
+		if (codeElement instanceof IMethodDeclaration){
+			StringBuilder sb = new StringBuilder();
+			sb.append("'");
+			sb.append(((IMethodDeclaration)codeElement).getMethodName());
+			sb.append("'");
+			return sb.toString();		
+		}
+		
+		return null;
+	}
+
+	private DescriptionBuilder genericDescription() {
+		DescriptionBuilder descGen;
+		descGen = new DescriptionBuilder() {
+			
+			@Override
+			public String buildDescription(IViolation violation) {
+				
+				StringBuffer sb = new StringBuffer();
+				sb.append(sourceToTargetEnsemble(violation));
+				sb.append("Unrecognized violation of kind '");
+				sb.append(violation.getViolatingKind());
+				sb.append("'");
+				return sb.toString();
+			}
+		};
+		return descGen;
+	}
+
+	/**
+	 * 
+	 * @param violation The violation with source- and targetelement
+	 * @return Example: <br>
+	 * 				<div style="text-indent:30px;">ensembleA &#8594 ensembleB</div>
+	 */
+	private String sourceToTargetEnsemble(IViolation violation){
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append(violation.getSourceEnsemble().getName());

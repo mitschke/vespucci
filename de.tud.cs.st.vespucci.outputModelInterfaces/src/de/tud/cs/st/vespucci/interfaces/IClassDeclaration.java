@@ -36,7 +36,9 @@ package de.tud.cs.st.vespucci.interfaces;
 /**
  * Representation of an class
  * 
- * @author 
+ * @author Patrick Gottschaemmer
+ * @author Olav Lenz
+ * @author Ralf Mitschke
  */
 public interface IClassDeclaration extends ICodeElement{
 

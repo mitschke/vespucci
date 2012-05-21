@@ -7,6 +7,11 @@ import java.util.Set;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.model.IEnsemble;
 
+/**
+ * 
+ * @author Ralf Mitschke
+ *
+ */
 public interface DataFlowEvaluator {
 	
 	/**

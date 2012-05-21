@@ -33,9 +33,11 @@
  */
 package de.tud.cs.st.vespucci.view.checked_diagrams.views;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.Action;
@@ -64,6 +66,7 @@ import org.eclipse.ui.part.ViewPart;
 import de.tud.cs.st.vespucci.interfaces.IPair;
 import de.tud.cs.st.vespucci.interfaces.IViolationView;
 import de.tud.cs.st.vespucci.view.ImageManager;
+import de.tud.cs.st.vespucci.view.checked_diagrams.CheckedDiagramsVisualizer;
 import de.tud.cs.st.vespucci.view.model.Pair;
 import de.tud.cs.st.vespucci.view.table.IColumnComparator;
 import de.tud.cs.st.vespucci.view.table.TableColumnSorterListener;
@@ -85,6 +88,7 @@ public class CheckedDiagramsTableView extends ViewPart {
 	private TableViewer tableViewer;
 	private Action disposeAction;
 	private ContentProvider contentProvider;
+	private CheckedDiagramsVisualizer checkedDiagramsVisualizer;
 
 	public void addEntry(IPair<IViolationView, IFile> element) {
 		contentProvider.addData(element);
@@ -230,6 +234,7 @@ public class CheckedDiagramsTableView extends ViewPart {
 		
 		public void removeData(IPair<IViolationView, IFile> element){
 			data.remove(element);
+			checkedDiagramsVisualizer.updateCheckedDiagrams();
 		}
 		
 		@Override
@@ -246,6 +251,23 @@ public class CheckedDiagramsTableView extends ViewPart {
 		public Object[] getElements(Object inputElement) {
 			return data.toArray();
 		}
+
+		public Set<IFile> fetchCheckedDiagrams() {
+			Set<IFile> checkedDiagrams = new HashSet<IFile>();
+			for (IPair<IViolationView, IFile> pair : data) {
+				checkedDiagrams.add(pair.getSecond());
+			}
+			return checkedDiagrams;
+		}
 		
+	}
+
+	public Set<IFile> fetchCheckedDiagrams() {
+		return contentProvider.fetchCheckedDiagrams();
+	}
+
+	public void setVisualizer(
+			CheckedDiagramsVisualizer checkedDiagramsVisualizer) {
+				this.checkedDiagramsVisualizer = checkedDiagramsVisualizer;
 	}
 }

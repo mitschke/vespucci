@@ -39,7 +39,9 @@ package de.tud.cs.st.vespucci.interfaces;
  * Always identified by a PackageIdentifier, a SimpleClassName and a LineNumber
  * We don't distinguish here between classes, methods or just simple fields
  * 
- * @author
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
+ * @author Olav Lenz
  */
 public interface ICodeElement {
 

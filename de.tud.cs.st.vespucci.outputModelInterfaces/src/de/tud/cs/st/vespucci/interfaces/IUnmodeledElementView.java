@@ -36,7 +36,7 @@ package de.tud.cs.st.vespucci.interfaces;
 /**
  * Interface extends <code>IDataView&lt;T&gt;</code> use <code>ICodeElement</code> as T
  * 
- * @author 
+ * @author Ralf Mitschke
  */
 public interface IUnmodeledElementView extends IDataView<ICodeElement>{
 

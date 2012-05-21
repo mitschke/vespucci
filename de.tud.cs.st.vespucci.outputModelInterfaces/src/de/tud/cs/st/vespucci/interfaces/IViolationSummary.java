@@ -42,7 +42,9 @@ import de.tud.cs.st.vespucci.model.IEnsemble;
  * Provide information about the corresponding DiagramFile and the
  * number of violations in the group.
  * 
- * @author 
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
+ * @author Olav Lenz
  */
 public interface IViolationSummary {
 

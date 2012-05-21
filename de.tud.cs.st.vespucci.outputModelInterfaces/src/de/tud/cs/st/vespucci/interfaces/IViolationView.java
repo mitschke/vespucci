@@ -36,7 +36,9 @@ package de.tud.cs.st.vespucci.interfaces;
 /**
  * Interface extends <code>IDataView&lt;T&gt;</code> use <code>IViolation</code> as T
  * 
- * @author 
+ * @author Patrick Gottschaemmer
+ * @author Ralf Mitschke
+ * @author Olav Lenz
  */
 public interface IViolationView extends IDataView<IViolation>{
 

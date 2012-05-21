@@ -12,3 +12,4 @@ Require-Bundle: org.eclipse.ui,
  de.tud.cs.st.vespucci.view;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: de.tud.cs.st.vespucci.view.checked_diagrams

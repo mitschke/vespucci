@@ -58,11 +58,11 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 	public static final int SOURCE = 1;
 
 	private Map<IViolation, Set<IMarker>> marks;
-	private DescriptionGenerator descriptionFactory;
+	private DescriptionGenerator descGen;
 
 	public ViolationManager(){
 		marks = new HashMap<IViolation, Set<IMarker>>();
-		descriptionFactory = DescriptionGenerator.getInstance();
+		descGen = DescriptionGenerator.getInstance();
 	}
 
 	@Override
@@ -106,11 +106,11 @@ public class ViolationManager extends DataViewObserver<IViolation> {
 	}
 
 	private String createTargetViolationDescription(IViolation element) {
-		return descriptionFactory.getDescription(element);
+		return descGen.getDescription(element);
 	}
 
 	private String createSourceViolationDescription(IViolation element) {
-		return descriptionFactory.getDescription(element);
+		return descGen.getDescription(element);
 	}
 	
 	/**
